@@ -3,13 +3,16 @@
   "version": "0.0.1",
   "license": "EUPL-1.2",
   "private": true,
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.3",
   "scripts": {
-    "start": "concurrently \"pnpm --filter @gen-epix/demo-client run oidc-server\" \"pnpm --filter @gen-epix/demo-client run start\"",
+    "start": "concurrently \"pnpm --filter @gen-epix/demo-client-casedb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-casedb run start\"",
+    "start-omop": "concurrently \"pnpm --filter @gen-epix/demo-client-omopdb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-omopdb run start\"",
+    "start-seq": "concurrently \"pnpm --filter @gen-epix/demo-client-seqdb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-seqdb run start\"",
     "clean": "lerna clean && rm -fr node_modules",
     "generate-api": "lerna run generate-api",
     "validate": "lerna run validate",
-    "lint-fix": "lerna run lint-fix"
+    "lint-fix": "lerna run lint-fix",
+    "check-types": "lerna run check-types"
   },
   "devDependencies": {
     "concurrently": "9.2.1",

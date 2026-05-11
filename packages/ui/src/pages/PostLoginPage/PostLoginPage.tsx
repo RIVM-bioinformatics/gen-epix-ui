@@ -23,7 +23,7 @@ export const PostLoginPage = () => {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    RouterManager.instance.router.navigate(path);
+    RouterManager.getInstance().router.navigate(path);
   }, [authState?.preLoginLocation]);
 
   return (

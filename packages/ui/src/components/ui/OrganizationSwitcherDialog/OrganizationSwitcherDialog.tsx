@@ -21,7 +21,6 @@ import {
   object,
   string,
 } from 'yup';
-import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
@@ -36,6 +35,7 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 export interface OrganizationSwitcherDialogOpenProps {
   //
@@ -60,7 +60,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
 ): ReactElement => {
   const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
-  const user = AuthorizationManager.instance.user;
+  const user = AuthorizationManager.getInstance().user;
   const [isChanging, setIsChanging] = useState(false);
   const [newOrganizationId, setNewOrganizationId] = useState<string>(null);
 
@@ -81,7 +81,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
   const { handleSubmit } = formMethods;
 
   const onRefreshPageClick = useCallback(() => {
-    WindowManager.instance.window.location.reload();
+    WindowManager.getInstance().window.location.reload();
   }, []);
 
   const onFormSubmit = useCallback((formValues: FormFields): void => {
@@ -89,21 +89,21 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       onClose();
     }
     const perform = async () => {
-      const notificationKey = NotificationManager.instance.showNotification({
+      const notificationKey = NotificationManager.getInstance().showNotification({
         isLoading: true,
         message: t`Changing organization...`,
         severity: 'info',
       });
       try {
         setIsChanging(true);
-        await CaseDbOrganizationApi.instance.updateUserOwnOrganization({
+        await ApiManager.getInstance().organizationApi.updateUserOwnOrganization({
           organization_id: formValues.organization_id,
         }, {});
         setNewOrganizationId(formValues.organization_id);
         setIsChanging(false);
-        NotificationManager.instance.fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
       } catch (_error: unknown) {
-        NotificationManager.instance.fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
+        NotificationManager.getInstance().fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
         onClose();
       }
     };

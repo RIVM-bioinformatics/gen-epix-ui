@@ -23,11 +23,8 @@ import type {
   FieldValues,
   UseFormReturn,
 } from 'react-hook-form';
-import type {
-  CaseDbApiPermission,
-  CaseDbCommandName,
-} from '@gen-epix/api-casedb';
-import { CaseDbPermissionType } from '@gen-epix/api-casedb';
+import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
+import { CommonDbPermissionType } from '@gen-epix/api-commondb';
 
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -49,7 +46,6 @@ import { useEditMutation } from '../../hooks/useEditMutation';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
 import type { GenericData } from '../../models/data';
 import type { Loadable } from '../../models/dataHooks';
-import type { QUERY_KEY } from '../../models/query';
 import type {
   TableColumn,
   TableRowParams,
@@ -60,12 +56,13 @@ import {
   createTableStore,
   TableStoreContextProvider,
 } from '../../stores/tableStore';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { TableUtil } from '../../utils/TableUtil';
 import type { DialogAction } from '../../components/ui/Dialog';
 import type { FormFieldDefinition } from '../../models/form';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import type { COMMON_QUERY_KEY } from '../../data/query';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -75,7 +72,13 @@ import { CrudPageDeleteDialog } from './CrudPageDeleteDialog';
 export type CrudPageProps<
   TFormFields extends FieldValues,
   TData extends GenericData,
-  TTableData extends TData = TData
+  TTableData extends TData = TData,
+  TQueryKey extends string = COMMON_QUERY_KEY,
+  TApiPermission extends {
+    command_name: string;
+    permission_type: string;
+  } = CommonDbApiPermission,
+  TCommandName extends TApiPermission['command_name'] = TApiPermission['command_name'],
 > = PropsWithTestIdAttributes<{
   readonly associationQueryKeys?: string[][];
   readonly canEditItem?: (item: TData) => boolean;
@@ -85,17 +88,17 @@ export type CrudPageProps<
   readonly createItemButtonText?: string;
   readonly createItemDialogTitle?: string;
   readonly createOne?: (item: TFormFields) => Promise<TData>;
-  readonly crudCommandType?: CaseDbCommandName;
-  readonly customOnRowClick?: (params: TableRowParams<TData>) => void;
+  readonly crudCommandType?: TCommandName;
+  readonly customOnRowClick?: (params: TableRowParams<TData, null>) => void;
   readonly defaultNewItem?: Partial<TFormFields>;
   readonly defaultSortByField: keyof TTableData;
   readonly defaultSortDirection: TableSortDirection;
   readonly deleteOne?: (item: TData) => Promise<unknown>;
   readonly editDialogExtraActionsFactory?: (item: TData) => DialogAction[];
-  readonly extraActionsFactory?: (params: TableRowParams<TData>) => ReactElement[];
-  readonly extraCreateOnePermissions?: CaseDbApiPermission[];
-  readonly extraDeleteOnePermissions?: CaseDbApiPermission[];
-  readonly extraUpdateOnePermissions?: CaseDbApiPermission[];
+  readonly extraActionsFactory?: (params: TableRowParams<TData, null>) => ReactElement[];
+  readonly extraCreateOnePermissions?: TApiPermission[];
+  readonly extraDeleteOnePermissions?: TApiPermission[];
+  readonly extraUpdateOnePermissions?: TApiPermission[];
   readonly fetchAll: (signal: AbortSignal) => Promise<TData[]>;
   readonly fetchAllSelect?: (data: TData[]) => TData[];
   readonly formFieldDefinitions: ((values: TFormFields, item: TData) => FormFieldDefinition<TFormFields>[]) | FormFieldDefinition<TFormFields>[];
@@ -111,14 +114,14 @@ export type CrudPageProps<
   readonly onEditSuccess?: (item: TData, variables: TFormFields, context: MutationContextEdit<TData>) => Promise<void> | void;
   readonly onFormChange?: (item: TData, formValues: TFormFields, formMethods: UseFormReturn<TFormFields>) => void;
   readonly onRowsChange?: (items: TData[]) => void;
-  readonly onShowItem?: (params: TableRowParams<TTableData>) => void;
+  readonly onShowItem?: (params: TableRowParams<TTableData, null>) => void;
   readonly readOnly?: boolean;
-  readonly resourceQueryKeyBase: QUERY_KEY;
+  readonly resourceQueryKeyBase: TQueryKey;
   readonly schema?: ObjectSchema<TFormFields, TFormFields>;
   readonly showBreadcrumbs?: boolean;
   readonly showIdColumn?: boolean;
   readonly subPages?: CrudPageSubPage<TData>[];
-  readonly tableColumns: TableColumn<TTableData>[];
+  readonly tableColumns: TableColumn<TTableData, null>[];
   readonly tableStoreStorageNamePostFix?: string;
   readonly tableStoreStorageVersion?: number;
   readonly title: string | string[];
@@ -134,7 +137,13 @@ export type CrudPageSubPage<TData extends GenericData> = {
 export const CrudPage = <
   TFormFields extends FieldValues,
   TData extends GenericData,
-  TTableData extends TData = TData
+  TTableData extends TData = TData,
+  TQueryKey extends string = COMMON_QUERY_KEY,
+  TApiPermission extends {
+    command_name: string;
+    permission_type: string;
+  } = CommonDbApiPermission,
+  TCommandName extends TApiPermission['command_name'] = TApiPermission['command_name'],
 >({
   associationQueryKeys,
   canEditItem,
@@ -181,18 +190,20 @@ export const CrudPage = <
   testIdAttributes,
   title,
   updateOne,
-}: CrudPageProps<TFormFields, TData, TTableData>) => {
+}: CrudPageProps<TFormFields, TData, TTableData, TQueryKey, TApiPermission, TCommandName>) => {
+  type CrudPermission = Pick<TApiPermission, 'command_name' | 'permission_type'>;
+
   const { t } = useTranslation();
   const theme = useTheme();
   const deleteConfirmationRef = useRef<CrudPageDeleteDialogRefMethods<TData>>(null);
   const editDialogRef = useRef<CrudPageEditDialogRefMethods<TData, TFormFields>>(null);
-  const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
+  const authorizationManager = useMemo(() => AuthorizationManager.getInstance(), []);
   const resourceQueryKey = useMemo(() => [resourceQueryKeyBase], [resourceQueryKeyBase]);
-  const tableStore = useMemo(() => createTableStore<TTableData>({
+  const tableStore = useMemo(() => createTableStore<TTableData, null>({
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
     idSelectorCallback: (item) => item.id,
-    navigatorFunction: RouterManager.instance.router.navigate,
+    navigatorFunction: RouterManager.getInstance().router.navigate,
     storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
     storageVersion: tableStoreStorageVersion ?? 1,
   }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
@@ -234,41 +245,48 @@ export const CrudPage = <
     return null;
   }, [rowsError, loadables]);
 
+  const createPermission = useCallback((permissionType: CrudPermission['permission_type']): CrudPermission => {
+    return {
+      command_name: crudCommandType,
+      permission_type: permissionType,
+    };
+  }, [crudCommandType]);
+
   const userCanEdit = useMemo(() => {
     if (!updateOne) {
       return false;
     }
-    return authorizationManager.doesUserHavePermission(
+    return authorizationManager.doesUserHavePermission<CrudPermission>(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: CaseDbPermissionType.UPDATE }] : []),
+        ...(crudCommandType ? [createPermission(CommonDbPermissionType.UPDATE as CrudPermission['permission_type'])] : []),
         ...(extraUpdateOnePermissions ?? []),
       ],
     );
-  }, [crudCommandType, extraUpdateOnePermissions, updateOne, authorizationManager]);
+  }, [authorizationManager, createPermission, crudCommandType, extraUpdateOnePermissions, updateOne]);
 
   const userCanDelete = useMemo(() => {
     if (!deleteOne) {
       return false;
     }
-    return authorizationManager.doesUserHavePermission(
+    return authorizationManager.doesUserHavePermission<CrudPermission>(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: CaseDbPermissionType.DELETE }] : []),
+        ...(crudCommandType ? [createPermission(CommonDbPermissionType.DELETE as CrudPermission['permission_type'])] : []),
         ...(extraDeleteOnePermissions ?? []),
       ],
     );
-  }, [crudCommandType, deleteOne, extraDeleteOnePermissions, authorizationManager]);
+  }, [authorizationManager, createPermission, crudCommandType, deleteOne, extraDeleteOnePermissions]);
 
   const userCanCreate = useMemo(() => {
     if (!createOne || error) {
       return false;
     }
-    return authorizationManager.doesUserHavePermission(
+    return authorizationManager.doesUserHavePermission<CrudPermission>(
       [
-        ...(crudCommandType ? [{ command_name: crudCommandType, permission_type: CaseDbPermissionType.CREATE }] : []),
+        ...(crudCommandType ? [createPermission(CommonDbPermissionType.CREATE as CrudPermission['permission_type'])] : []),
         ...(extraCreateOnePermissions ?? []),
       ],
     );
-  }, [createOne, error, authorizationManager, crudCommandType, extraCreateOnePermissions]);
+  }, [authorizationManager, createOne, createPermission, crudCommandType, error, extraCreateOnePermissions]);
 
   const normalizedEditDialogExtraActionsFactory = useCallback((item: TData) => {
     const actions: DialogAction[] = [];
@@ -280,7 +298,7 @@ export const CrudPage = <
       actions.push({
         color: 'primary',
         label: subPage.label,
-        onClick: async () => await RouterManager.instance.router.navigate({
+        onClick: async () => await RouterManager.getInstance().router.navigate({
           pathname: subPage.getPathName(item),
         }),
         variant: 'outlined',
@@ -356,7 +374,7 @@ export const CrudPage = <
   const calculatedAssociationQueryKeys = useMemo<string[][]>(() => {
     const keys = associationQueryKeys ?? [];
 
-    QueryUtil.getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
+    QueryClientManager.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
       keys.push(key);
     });
     return keys;
@@ -405,11 +423,11 @@ export const CrudPage = <
     }
   }, [mutateCreate, mutateEdit, mutateEditSetPreviousItem]);
 
-  const onEditIconClick = useCallback((params: TableRowParams<TTableData>) => {
+  const onEditIconClick = useCallback((params: TableRowParams<TTableData, null>) => {
     editItem(params.row);
   }, [editItem]);
 
-  const onRowClick = useCallback((params: TableRowParams<TTableData>) => {
+  const onRowClick = useCallback((params: TableRowParams<TTableData, null>) => {
     if (customOnRowClick) {
       customOnRowClick(params);
     } else if (onShowItem) {
@@ -423,7 +441,7 @@ export const CrudPage = <
     mutateDelete(item);
   }, [mutateDelete]);
 
-  const normalizedExtraActions = useCallback((params: TableRowParams<TTableData>) => {
+  const normalizedExtraActions = useCallback((params: TableRowParams<TTableData, null>) => {
     const actions: ReactElement[] = [];
 
     const extraActions = extraActionsFactory ? extraActionsFactory(params) : [];
@@ -435,7 +453,7 @@ export const CrudPage = <
         <MenuItem
           key={subPage.label}
           // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-          onClick={async () => await RouterManager.instance.router.navigate({
+          onClick={async () => await RouterManager.getInstance().router.navigate({
             pathname: subPage.getPathName(params.row),
           })}
         >
@@ -452,8 +470,8 @@ export const CrudPage = <
     return actions;
   }, [extraActionsFactory, subPages]);
 
-  const columns = useMemo<TableColumn<TTableData>[]>(() => {
-    const internalColumns: TableColumn<TTableData>[] = [
+  const columns = useMemo<TableColumn<TTableData, null>[]>(() => {
+    const internalColumns: TableColumn<TTableData, null>[] = [
       TableUtil.createReadableIndexColumn(),
     ];
 
@@ -539,7 +557,7 @@ export const CrudPage = <
     return convertToTableData(rows);
   }, [convertToTableData, rows]);
 
-  useInitializeTableStore<TTableData>({ columns, createFiltersFromColumns: true, rows: tableRows, store: tableStore });
+  useInitializeTableStore<TTableData, null>({ columns, context: null, createFiltersFromColumns: true, rows: tableRows, store: tableStore });
 
   const onCreateItemButtonClick = useCallback(() => {
     editDialogRef.current.open({
@@ -617,7 +635,7 @@ export const CrudPage = <
             <Box
               sx={{
                 height: '100%',
-                paddingLeft: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH + 1),
+                paddingLeft: theme.spacing(ConfigManager.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
                 width: '100%',
               }}
             >

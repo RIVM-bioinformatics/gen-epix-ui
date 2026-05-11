@@ -1,25 +1,38 @@
+import type { ReactElement } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { t } from 'i18next';
 
-import { createRoutes } from '../../../routes';
-import { WindowManager } from '../WindowManager';
+import { HmrUtil } from '../../../utils/HmrUtil';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 
+type HomePage = () => ReactElement;
 
 export class RouterManager {
-  public static get instance(): RouterManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+  private static __instance: RouterManager;
 
-    WindowManager.instance.window.managers.route = WindowManager.instance.window.managers.route || new RouterManager();
-    return WindowManager.instance.window.managers.route;
-  }
-  public readonly router: ReturnType<typeof createBrowserRouter>;
-
-  public readonly routes: MyNonIndexRouteObject[];
+  public adminRoutes: MyNonIndexRouteObject[] = [];
+  public homePageComponent: HomePage;
+  public router: ReturnType<typeof createBrowserRouter>;
+  public routes: MyNonIndexRouteObject[] = [];
 
   private constructor() {
-    this.routes = createRoutes(t);
-    this.router = createBrowserRouter(this.routes);
   }
 
+  public static getInstance(): RouterManager {
+    RouterManager.__instance = HmrUtil.getHmrSingleton('routerManager', RouterManager.__instance, () => new RouterManager());
+    return RouterManager.__instance;
+  }
+
+  public initialize(kwArgs: {
+    adminRoutes: MyNonIndexRouteObject[];
+    homePageComponent: HomePage;
+    routes: MyNonIndexRouteObject[];
+  }): void {
+    if (this.routes.length > 0) {
+      throw new Error('RouterManager already initialized');
+    }
+    this.homePageComponent = kwArgs.homePageComponent;
+    this.adminRoutes = kwArgs.adminRoutes;
+    this.routes = kwArgs.routes;
+    this.router = createBrowserRouter(this.routes);
+  }
 }

@@ -9,18 +9,18 @@ import {
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import last from 'lodash/last';
-import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
-import { QUERY_KEY } from '../../../models/query';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
-import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
+import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
+import { COMMON_QUERY_KEY } from '../../../data/query';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
   const { t } = useTranslation();
@@ -31,15 +31,15 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
   const userQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await CaseDbOrganizationApi.instance.userMeGetOne({ signal })).data,
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_ME),
+    queryFn: async ({ signal }) => (await ApiManager.getInstance().organizationApi.userMeGetOne({ signal })).data,
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_ME),
     staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await CaseDbOrganizationApi.instance.userMeRetrievePermissions({ signal })).data,
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.USER_PERMISSIONS),
+    queryFn: async ({ signal }) => (await ApiManager.getInstance().organizationApi.userMeRetrievePermissions({ signal })).data,
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
     staleTime: Infinity,
   });
 
@@ -50,10 +50,10 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
 
 
   if (userQuery.data) {
-    AuthorizationManager.instance.user = userQuery.data;
+    AuthorizationManager.getInstance().user = userQuery.data;
   }
   if (userPermissionsQuery.data) {
-    AuthorizationManager.instance.apiPermissions = userPermissionsQuery.data;
+    AuthorizationManager.getInstance().apiPermissions = userPermissionsQuery.data;
   }
 
   if (requiresUserProfile && (LoadableUtil.isSomeLoading(loadables) || LoadableUtil.hasSomeError(loadables))) {

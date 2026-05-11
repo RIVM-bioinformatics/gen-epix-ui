@@ -40,10 +40,10 @@ import type {
 import { TableCell } from './TableCell';
 import { tableHeaderCellClassNames } from './classNames';
 
-export interface TableHeaderCellProps<TRowData> extends TableCellProps<TRowData> {
+export interface TableHeaderCellProps<TRowData, TDataContext = null> extends TableCellProps<TRowData, TDataContext> {
   readonly dividerColor: string;
-  readonly onColumnDividerKeyDown: (event: ReactKeyboardEvent<HTMLDivElement>, column: TableColumn<TRowData>) => void;
-  readonly onColumnDividerMouseDown: (event: ReactMouseEvent<HTMLDivElement>, column: TableColumn<TRowData>) => void;
+  readonly onColumnDividerKeyDown: (event: ReactKeyboardEvent<HTMLDivElement>, column: TableColumn<TRowData, TDataContext>) => void;
+  readonly onColumnDividerMouseDown: (event: ReactMouseEvent<HTMLDivElement>, column: TableColumn<TRowData, TDataContext>) => void;
 }
 
 type TableSortLabelIconProps = {
@@ -101,11 +101,12 @@ const TableFilterLabelIconButton = styled(IconButton, {
   };
 });
 
-export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>) => {
+export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeaderCellProps<TRowData, TDataContext>) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const tableStore = useTableStoreContext<TRowData>();
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const sortByField = useStore(tableStore, (state) => state.sortByField);
+  const dataContext = useStore(tableStore, (state) => state.dataContext);
   const sortDirection = useStore(tableStore, (state) => state.sortDirection);
   const setSorting = useStore(tableStore, (state) => state.setSorting);
   const filters = useStore(tableStore, (state) => state.filters);
@@ -140,7 +141,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
     return (event.nativeEvent.target as HTMLDivElement).classList.contains(tableHeaderCellClassNames.content);
   }, [column.frozen, column.isStatic]);
 
-  const onCustomDragTableHeaderCell = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData>) => {
+  const onCustomDragTableHeaderCell = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData, TDataContext>) => {
     if (onCustomDrag) {
       if (event.type === 'start') {
         ignoreNextClickRef.current = true;
@@ -235,7 +236,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
 
   const iconSpacing = +theme.spacing(2).replace('px', '');
 
-  const ariaSortLabel = useMemo((): TableCellProps<TRowData>['ariaSort'] => {
+  const ariaSortLabel = useMemo((): TableCellProps<TRowData, TDataContext>['ariaSort'] => {
     if (sortByField !== column.id) {
       return undefined;
     }
@@ -311,6 +312,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
               {column.renderHeader({
                 column,
                 columnIndex,
+                dataContext,
               })}
             </>
           ) : (
@@ -337,6 +339,7 @@ export const TableHeaderCell = <TRowData,>(props: TableHeaderCellProps<TRowData>
                   ? column.renderHeaderContent({
                     column,
                     columnIndex,
+                    dataContext,
                   })
                   : column.headerName ?? ''}
               </Box>

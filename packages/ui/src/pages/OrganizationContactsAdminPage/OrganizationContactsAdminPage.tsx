@@ -8,39 +8,37 @@ import {
   string,
 } from 'yup';
 import { useParams } from 'react-router-dom';
-import type { CaseDbContact } from '@gen-epix/api-casedb';
-import {
-  CaseDbCommandName,
-  CaseDbOrganizationApi,
-} from '@gen-epix/api-casedb';
+import type { CommonDbContact } from '@gen-epix/api-commondb';
+import { CommonDbCommandName } from '@gen-epix/api-commondb';
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
+import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 // Note: site_id is given in the route params
-type FormFields = OmitWithMetaData<CaseDbContact, 'site_id' | 'site'>;
+type FormFields = OmitWithMetaData<CommonDbContact, 'site_id' | 'site'>;
 
 export const OrganizationContactsAdminPage = () => {
   const { siteId } = useParams();
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.contactsGetAll({ signal })).data;
+    return (await ApiManager.getInstance().organizationApi.contactsGetAll({ signal })).data;
   }, []);
 
-  const fetchAllSelect = useCallback((contacts: CaseDbContact[]) => {
+  const fetchAllSelect = useCallback((contacts: CommonDbContact[]) => {
     return contacts.filter((contact) => contact.site_id === siteId);
   }, [siteId]);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseDbContact) => {
-    return (await CaseDbOrganizationApi.instance.contactsPutOne(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CommonDbContact) => {
+    return (await ApiManager.getInstance().organizationApi.contactsPutOne(item.id, {
       id: item.id,
       site_id: siteId,
       ...variables,
@@ -48,14 +46,14 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOrganizationApi.instance.contactsPostOne({
+    return (await ApiManager.getInstance().organizationApi.contactsPostOne({
       site_id: siteId,
       ...variables,
     })).data;
   }, [siteId]);
 
-  const deleteOne = useCallback(async (item: CaseDbContact) => {
-    return await CaseDbOrganizationApi.instance.contactsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CommonDbContact) => {
+    return await ApiManager.getInstance().organizationApi.contactsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -70,7 +68,7 @@ export const OrganizationContactsAdminPage = () => {
     });
   }, []);
 
-  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbContact): CaseDbContact => {
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CommonDbContact): CommonDbContact => {
     return {
       id: previousItem.id,
       site_id: previousItem.site_id,
@@ -98,19 +96,19 @@ export const OrganizationContactsAdminPage = () => {
     ] as const;
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseDbContact>[] => {
+  const tableColumns = useMemo((): TableColumn<CommonDbContact>[] => {
     return [
-      TableUtil.createTextColumn<CaseDbContact>({ advancedSort: true, id: 'name', name: t`Name` }),
-      TableUtil.createTextColumn<CaseDbContact>({ id: 'email', name: t`Email` }),
-      TableUtil.createTextColumn<CaseDbContact>({ id: 'phone', name: t`Phone` }),
+      TableUtil.createTextColumn<CommonDbContact>({ advancedSort: true, id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CommonDbContact>({ id: 'email', name: t`Email` }),
+      TableUtil.createTextColumn<CommonDbContact>({ id: 'phone', name: t`Phone` }),
     ];
   }, [t]);
 
   return (
-    <CrudPage<FormFields, CaseDbContact>
+    <CrudPage<FormFields, CommonDbContact>
       createItemDialogTitle={t`Create new contact`}
       createOne={createOne}
-      crudCommandType={CaseDbCommandName.ContactCrudCommand}
+      crudCommandType={CommonDbCommandName.ContactCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
@@ -119,7 +117,7 @@ export const OrganizationContactsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
-      resourceQueryKeyBase={QUERY_KEY.CONTACTS}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.CONTACTS}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OrganizationContactsAdminPage')}

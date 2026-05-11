@@ -1,0 +1,144 @@
+import {
+  useCallback,
+  useMemo,
+} from 'react';
+import { useTranslation } from 'react-i18next';
+import { object } from 'yup';
+import { useParams } from 'react-router-dom';
+import type {
+  CaseDbApiPermission,
+  CaseDbConcept,
+} from '@gen-epix/api-casedb';
+import {
+  CaseDbCommandName,
+  CaseDbOntologyApi,
+} from '@gen-epix/api-casedb';
+import type {
+  FormFieldDefinition,
+  OmitWithMetaData,
+  TableColumn,
+} from '@gen-epix/ui';
+import {
+  CrudPage,
+  FORM_FIELD_DEFINITION_TYPE,
+  SchemaUtil,
+  TableUtil,
+  TestIdUtil,
+} from '@gen-epix/ui';
+
+import { CASEDB_QUERY_KEY } from '../../data/query';
+
+
+type FormFields = OmitWithMetaData<CaseDbConcept, 'concept_set_id' | 'concept_set' | 'props'>;
+
+export const ConceptsAdminPage = () => {
+  const { conceptSetId } = useParams();
+  const { t } = useTranslation();
+
+  const fetchAll = useCallback(async (signal: AbortSignal) => {
+    return (await CaseDbOntologyApi.getInstance().conceptsGetAll({ signal }))?.data;
+  }, []);
+
+  const fetchAllSelect = useCallback((concepts: CaseDbConcept[]) => {
+    return concepts.filter((concept) => concept.concept_set_id === conceptSetId);
+  }, [conceptSetId]);
+
+  const deleteOne = useCallback(async (item: CaseDbConcept) => {
+    return await CaseDbOntologyApi.getInstance().conceptsDeleteOne(item.id);
+  }, []);
+
+  const updateOne = useCallback(async (variables: FormFields, item: CaseDbConcept) => {
+    const updatedItem = (await CaseDbOntologyApi.getInstance().conceptsPutOne(item.id, {
+      ...variables,
+      concept_set_id: conceptSetId,
+      id: item.id,
+    })).data;
+    return updatedItem;
+  }, [conceptSetId]);
+
+  const createOne = useCallback(async (variables: FormFields) => {
+    return (await CaseDbOntologyApi.getInstance().conceptsPostOne({
+      ...variables,
+      concept_set_id: conceptSetId,
+    })).data;
+  }, [conceptSetId]);
+
+  const getName = useCallback((item: FormFields) => {
+    return item.name;
+  }, []);
+
+  const schema = useMemo(() => {
+    return object<FormFields>().shape({
+      code: SchemaUtil.code,
+      description: SchemaUtil.description,
+      name: SchemaUtil.name,
+      rank: SchemaUtil.rank,
+    });
+  }, []);
+
+  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
+    return [
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Rank`,
+        name: 'rank',
+        type: 'number',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Name`,
+        name: 'name',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Code`,
+        name: 'code',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Description`,
+        multiline: true,
+        name: 'description',
+        rows: 4,
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
+  }, [t]);
+
+  const tableColumns = useMemo((): TableColumn<CaseDbConcept>[] => {
+    return [
+      TableUtil.createNumberColumn<CaseDbConcept>({ flex: 0.25, id: 'rank', name: t`Rank` }),
+      TableUtil.createTextColumn<CaseDbConcept>({ id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CaseDbConcept>({ id: 'code', name: t`Code` }),
+    ];
+  }, [t]);
+
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CaseDbConcept): CaseDbConcept => {
+    return {
+      concept_set_id: previousItem.concept_set_id,
+      id: previousItem.id,
+      ...variables,
+    };
+  }, []);
+
+  return (
+    <CrudPage<FormFields, CaseDbConcept, CaseDbConcept, CASEDB_QUERY_KEY, CaseDbApiPermission>
+      createItemDialogTitle={t`Create new concept`}
+      createOne={createOne}
+      crudCommandType={CaseDbCommandName.ConceptCrudCommand}
+      defaultSortByField={'rank'}
+      defaultSortDirection={'asc'}
+      deleteOne={deleteOne}
+      fetchAll={fetchAll}
+      fetchAllSelect={fetchAllSelect}
+      formFieldDefinitions={formFieldDefinitions}
+      getName={getName}
+      getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      resourceQueryKeyBase={CASEDB_QUERY_KEY.CONCEPTS}
+      schema={schema}
+      tableColumns={tableColumns}
+      testIdAttributes={TestIdUtil.createAttributes('ConceptsAdminPage')}
+      title={t`Concepts`}
+      updateOne={updateOne}
+    />
+  );
+};

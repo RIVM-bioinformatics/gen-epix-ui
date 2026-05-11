@@ -25,7 +25,7 @@ export const ApplicationBarActionsOrganizationSwitcherItem = () => {
     organizationSwitcherDialogRef.current.open();
   }, []);
 
-  if (!FeatureFlagsManager.instance.featureFlags.update_own_organization) {
+  if (!FeatureFlagsManager.getInstance().featureFlags.update_own_organization) {
     return null;
   }
 

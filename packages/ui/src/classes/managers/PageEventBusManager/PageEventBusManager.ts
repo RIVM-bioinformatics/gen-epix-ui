@@ -1,12 +1,13 @@
-import type { CaseDbUser } from '@gen-epix/api-casedb';
+import type { CommonDbUser } from '@gen-epix/api-commondb';
 
-import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
+import { HmrUtil } from '../../../utils/HmrUtil';
+import { WindowManager } from '../WindowManager';
 
 type EpiEvent = {
   changePage: Page;
-  changeUser: CaseDbUser;
+  changeUser: CommonDbUser;
   click: {
     context?: string;
     label: string;
@@ -22,18 +23,18 @@ type Page = {
 };
 
 export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
-  public static get instance(): PageEventBusManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.pageEventBus = WindowManager.instance.window.managers.pageEventBus || new PageEventBusManager();
-    return WindowManager.instance.window.managers.pageEventBus;
-  }
+  private static __instance: PageEventBusManager;
 
   private lastPageEventPayload: string = null;
 
   private constructor() {
     super();
     this.setupClickEventListener();
+  }
+
+  public static getInstance(): PageEventBusManager {
+    PageEventBusManager.__instance = HmrUtil.getHmrSingleton('pageEventBusManager', PageEventBusManager.__instance, () => new PageEventBusManager());
+    return PageEventBusManager.__instance;
   }
 
   public emit<TEventName extends keyof EpiEvent>(eventName: TEventName, payload?: EpiEvent[TEventName]): void {
@@ -54,16 +55,16 @@ export class PageEventBusManager extends EventBusAbstract<EpiEvent> {
 
   public getPage(): Page {
     return {
-      location: WindowManager.instance.window.location,
+      location: WindowManager.getInstance().window.location,
       pageName: document.querySelector('[data-page-container]')?.getAttribute('data-testid'),
     };
   }
 
   private setupClickEventListener(): void {
-    if (!ConfigManager.instance.config.enablePageEvents) {
+    if (!ConfigManager.getInstance().config.enablePageEvents) {
       return;
     }
-    WindowManager.instance.window.addEventListener('click', (event: Event): void => {
+    WindowManager.getInstance().window.addEventListener('click', (event: Event): void => {
 
       const closestButton = (event.target as HTMLElement).closest('button');
       const closestLink = (event.target as HTMLElement).closest('a');

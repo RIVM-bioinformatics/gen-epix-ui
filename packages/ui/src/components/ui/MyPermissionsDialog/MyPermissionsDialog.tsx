@@ -12,7 +12,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { CaseDbPermissionType } from '@gen-epix/api-casedb';
+import { CommonDbPermissionType } from '@gen-epix/api-commondb';
 
 import type {
   WithDialogRefMethods,
@@ -43,16 +43,16 @@ export const MyPermissionsDialog = withDialog<MyPermissionsDialogProps, MyPermis
     onTitleChange(t`My Permissions`);
   }, [onTitleChange, t]);
 
-  const permissionTypeTranslationMap = useMemo<Record<CaseDbPermissionType, string>>(() => ({
-    [CaseDbPermissionType.CREATE]: t`Create`,
-    [CaseDbPermissionType.DELETE]: t`Delete`,
-    [CaseDbPermissionType.EXECUTE]: t`Execute`,
-    [CaseDbPermissionType.READ]: t`Read`,
-    [CaseDbPermissionType.UPDATE]: t`Update`,
+  const permissionTypeTranslationMap = useMemo<Record<CommonDbPermissionType, string>>(() => ({
+    [CommonDbPermissionType.CREATE]: t`Create`,
+    [CommonDbPermissionType.DELETE]: t`Delete`,
+    [CommonDbPermissionType.EXECUTE]: t`Execute`,
+    [CommonDbPermissionType.READ]: t`Read`,
+    [CommonDbPermissionType.UPDATE]: t`Update`,
   }), [t]);
 
   const readablePermissions = useMemo(() => {
-    return AuthorizationManager.instance.apiPermissions.sort((a, b) => a.command_name.localeCompare(b.command_name)).map(permission => ({
+    return AuthorizationManager.getInstance().apiPermissions.sort((a, b) => a.command_name.localeCompare(b.command_name)).map(permission => ({
       command_name: permission.command_name,
       key: `${permission.command_name}-${permission.permission_type}`,
       permission_type: permissionTypeTranslationMap[permission.permission_type],

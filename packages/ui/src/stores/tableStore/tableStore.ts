@@ -27,31 +27,31 @@ import type { UnwrapArray } from '../../models/generic';
 import type {
   TableColumn,
   TableColumnDimension,
-  TableColumnSettings,
+  TableColumnVisualSettings,
   TableSortDirection,
 } from '../../models/table';
 import { ObjectUtil } from '../../utils/ObjectUtil';
 import { TableUtil } from '../../utils/TableUtil';
 
 
-export interface CreateTableStoreInitialStateKwArgs<TData> {
+export interface CreateTableStoreInitialStateKwArgs<TData, TDataContext = null> {
   defaultSortByField?: string;
   defaultSortDirection?: TableSortDirection;
   idSelectorCallback: (row: TData) => string;
-  isRowEnabledCallback?: (row: TData) => boolean;
+  isRowEnabledCallback?: (row: TData, dataContext: TDataContext) => boolean;
   navigatorFunction?: NavigateFunction;
 }
-export type CreateTableStoreKwArgs<TData> = {
+export type CreateTableStoreKwArgs<TData, TDataContext = null> = {
   storageNamePostFix?: string;
   storageVersion?: number;
-} & CreateTableStoreInitialStateKwArgs<TData>;
+} & CreateTableStoreInitialStateKwArgs<TData, TDataContext>;
 
-export type TableStore<TData> = TableStoreActions<TData> & TableStoreState<TData>;
+export type TableStore<TData, TDataContext = null> = TableStoreActions<TData, TDataContext> & TableStoreState<TData, TDataContext>;
 
-export interface TableStoreActions<TData> {
-  addEventListener: <TEventName extends keyof TableEvent>(eventName: TEventName, callback: (payload: TableEvent[TEventName]) => void) => () => void;
+export interface TableStoreActions<TData, TDataContext = null> {
+  addEventListener: <TEventName extends keyof TableEvent<TData, TDataContext>>(eventName: TEventName, callback: (payload: TableEvent<TData, TDataContext>[TEventName]) => void) => () => void;
   destroy: () => void;
-  emitEvent: <TEventName extends keyof TableEvent>(eventName: TEventName, payload?: TableEvent[TEventName]) => void;
+  emitEvent: <TEventName extends keyof TableEvent<TData, TDataContext>>(eventName: TEventName, payload?: TableEvent<TData, TDataContext>[TEventName]) => void;
   fetchData: () => Promise<void> | void;
 
   initialize: (globalAbortSignal: AbortSignal) => Promise<void>;
@@ -65,8 +65,8 @@ export interface TableStoreActions<TData> {
   setBaseData: (items: TData[]) => void;
 
   setColumnDimensions: (columnDimensions: TableColumnDimension[]) => void;
-  setColumns: (columns: TableColumn<TData>[]) => void;
-  setColumnSettings: (columnSettings: TableColumnSettings[]) => void;
+  setColumns: (columns: TableColumn<TData, TDataContext>[]) => void;
+  setColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => void;
 
   setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => void;
   setFilterValue: (id: string, value: unknown) => Promise<void>;
@@ -84,16 +84,17 @@ export interface TableStoreActions<TData> {
   updateUrl: (searchParams: URLSearchParams) => Promise<void>;
 }
 
-export interface TableStoreState<TData> {
+export interface TableStoreState<TData, TDataContext = null> {
   backendFilters: Filters;
   baseData: TData[];
   columnDimensions: TableColumnDimension[];
-  columns: TableColumn<TData>[];
-  columnSettings: TableColumnSettings[];
+  columns: TableColumn<TData, TDataContext>[];
+  columnVisualSettings: TableColumnVisualSettings[];
+  dataContext: TDataContext;
   dataError: Error;
   defaultSortByField: string;
   defaultSortDirection: TableSortDirection;
-  eventBus: TableEventBus;
+  eventBus: TableEventBus<TData, TDataContext>;
   fetchAbortController: AbortController;
   filterDimensions: FilterDimension[];
   filteredData: { [key: string]: TData[] };
@@ -105,7 +106,7 @@ export interface TableStoreState<TData> {
   idSelectorCallback: (row: TData) => string;
   isDataLoading: boolean;
   isInitialized: boolean;
-  isRowEnabledCallback: (row: TData) => boolean;
+  isRowEnabledCallback: (row: TData, dataContext: TDataContext) => boolean;
   navigateFunction: NavigateFunction;
   selectedIds: string[];
   sortByField: string;
@@ -115,11 +116,11 @@ export interface TableStoreState<TData> {
   visibleFilterWithinDimensions: { [key: string]: string };
 }
 
-type Get<TData> = () => TableStore<TData>;
+type Get<TData, TDataContext = null> = () => TableStore<TData, TDataContext>;
 
-type Set<TData> = (partial: ((state: TableStore<TData>) => Partial<TableStore<TData>> | TableStore<TData>) | Partial<TableStore<TData>> | TableStore<TData>, replace?: false) => void;
+type Set<TData, TDataContext = null> = (partial: ((state: TableStore<TData, TDataContext>) => Partial<TableStore<TData, TDataContext>> | TableStore<TData, TDataContext>) | Partial<TableStore<TData, TDataContext>> | TableStore<TData, TDataContext>, replace?: false) => void;
 
-export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInitialStateKwArgs<TData>): TableStoreState<TData> => {
+export const createTableStoreInitialState = <TData, TDataContext = null>(kwArgs: CreateTableStoreInitialStateKwArgs<TData, TDataContext>): TableStoreState<TData, TDataContext> => {
   const { defaultSortByField, defaultSortDirection, idSelectorCallback, isRowEnabledCallback, navigatorFunction } = kwArgs;
   const url = new URL(document.location.href);
   const searchParams = url.searchParams;
@@ -141,11 +142,12 @@ export const createTableStoreInitialState = <TData>(kwArgs: CreateTableStoreInit
     baseData: [],
     columnDimensions: null,
     columns: [],
-    columnSettings: [],
+    columnVisualSettings: [],
+    dataContext: null,
     dataError: null,
     defaultSortByField,
     defaultSortDirection,
-    eventBus: new TableEventBus(),
+    eventBus: new TableEventBus<TData, TDataContext>(),
     fetchAbortController: null,
     filterDimensions: [],
     filteredData: { [DEFAULT_FILTER_GROUP]: [] },
@@ -180,11 +182,11 @@ export const updateSearchParams = (key: string, value: string, givenSearchParams
   return searchParams;
 };
 
-export const createTableStorePersistConfiguration = <TData, TStore extends TableStore<TData>>(storageNamePostFix: string, version: number, partialize?: (state: Partial<TStore>) => Partial<TStore>): PersistOptions<TStore> => {
+export const createTableStorePersistConfiguration = <TData, TDataContext, TStore extends TableStore<TData, TDataContext>>(storageNamePostFix: string, version: number, partialize?: (state: Partial<TStore>) => Partial<TStore>): PersistOptions<TStore> => {
   return {
     name: `GENEPIX-TableStore-${storageNamePostFix}`,
     partialize: (state) => ({
-      columnSettings: state.columnSettings,
+      columnVisualSettings: state.columnVisualSettings,
       sortByField: state.sortByField,
       sortDirection: state.sortDirection,
       ...partialize?.(state),
@@ -194,10 +196,10 @@ export const createTableStorePersistConfiguration = <TData, TStore extends Table
   } satisfies PersistOptions<TStore>;
 };
 
-export const createTableStoreActions = <TData>(kwArgs: {
-  get: Get<TData>;
-  set: Set<TData>;
-}): TableStoreActions<TData> => {
+export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
+  get: Get<TData, TDataContext>;
+  set: Set<TData, TDataContext>;
+}): TableStoreActions<TData, TDataContext> => {
   const { get, set } = kwArgs;
   return {
     addEventListener: (eventName, callback) => {
@@ -219,10 +221,10 @@ export const createTableStoreActions = <TData>(kwArgs: {
       if (globalAbortSignal) {
         set({ globalAbortSignal });
       }
-      const { columns, columnSettings, destroy, fetchData, setColumnSettings, sortByField, sortDirection, updateUrl } = get();
+      const { columns, columnVisualSettings, destroy, fetchData, setColumnVisualSettings, sortByField, sortDirection, updateUrl } = get();
 
-      if (!TableUtil.areColumnSettingsValid(columns, columnSettings)) {
-        setColumnSettings(TableUtil.createInitialColumnSettings(columns));
+      if (!TableUtil.areColumnVisualSettingsValid(columns, columnVisualSettings)) {
+        setColumnVisualSettings(TableUtil.createInitialVisualColumnSettings(columns));
       }
 
       const globalAbortSignalListener = () => {
@@ -258,7 +260,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
       reloadSortedData();
     },
     reloadFilterPriorityData: (filterPriority: string, data: TData[]): TData[] => {
-      const { columns, frontendFilters } = get();
+      const { columns, dataContext, frontendFilters } = get();
       const filters = frontendFilters[filterPriority];
 
       const columnMap = keyBy(columns, 'id');
@@ -269,7 +271,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
           }
 
           const column = columnMap[filter.id];
-          const value = column.valueGetter ? column.valueGetter({ id: column.id, row, rowIndex }) : row[column.id as keyof TData];
+          const value = column.valueGetter ? column.valueGetter({ dataContext, id: column.id, row, rowIndex }) : row[column.id as keyof TData];
           return (filter.matchRowValue as (value: unknown) => boolean)(value);
         });
       });
@@ -281,7 +283,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
       setSelectedIds(intersection(selectedIds, sortedData.map(item => idSelectorCallback(item))));
     },
     reloadSortedData: () => {
-      const { columns, defaultSortByField, defaultSortDirection, filteredData, frontendFilterPriorities, idSelectorCallback, sortByField, sortDirection, sortedIds } = get();
+      const { columns, dataContext, defaultSortByField, defaultSortDirection, filteredData, frontendFilterPriorities, idSelectorCallback, sortByField, sortDirection, sortedIds } = get();
 
       const preSortedData: TData[] = filteredData[last(frontendFilterPriorities)];
       let sanitizedSortByField = sortByField;
@@ -311,7 +313,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
         }
 
         // Note: as never because the type of column can be of different types
-        const comparator = column.comparatorFactory?.({ column: column as never, direction: sanitizedSortDirection });
+        const comparator = column.comparatorFactory?.({ column: column as never, dataContext, direction: sanitizedSortDirection });
         const sortedData = preSortedData.toSorted((a, b) => {
           if (column.comparatorFactory) {
             return comparator(a, b);
@@ -357,11 +359,11 @@ export const createTableStoreActions = <TData>(kwArgs: {
     setColumnDimensions: (columnDimensions: TableColumnDimension[]) => {
       set({ columnDimensions });
     },
-    setColumns: (columns: TableColumn<TData>[]) => {
+    setColumns: (columns: TableColumn<TData, TDataContext>[]) => {
       set({ columns });
     },
-    setColumnSettings: (columnSettings: TableColumnSettings[]) => {
-      set({ columnSettings });
+    setColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => {
+      set({ columnVisualSettings });
     },
     setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => {
       const { navigateFunction } = get();
@@ -371,7 +373,7 @@ export const createTableStoreActions = <TData>(kwArgs: {
         frontendFilters: Object.fromEntries(frontendFilterPriorities.map(filterPriority => [filterPriority, filters.filter(filter => filter.filterPriority === filterPriority)])),
       });
       if (navigateFunction) {
-        const searchParams = new URLSearchParams(WindowManager.instance.window.document.location.search);
+        const searchParams = new URLSearchParams(WindowManager.getInstance().window.document.location.search);
         filters.forEach(filter => {
           const searchParamStringValue = searchParams.get(filter.id);
           if (!searchParamStringValue) {
@@ -517,30 +519,32 @@ export const createTableStoreActions = <TData>(kwArgs: {
   };
 };
 
-export const createTableStore = <TData>(kwArgs: CreateTableStoreKwArgs<TData>) => {
+export const createTableStore = <TData, TDataContext = null>(kwArgs: CreateTableStoreKwArgs<TData, TDataContext>) => {
   const { storageNamePostFix, storageVersion, ...initialStateParams } = kwArgs;
-  const initialState = createTableStoreInitialState<TData>(initialStateParams);
+  const initialState = createTableStoreInitialState<TData, TDataContext>(initialStateParams);
 
   if (!storageNamePostFix) {
-    return createStore<TableStore<TData>>()(
+    return createStore<TableStore<TData, TDataContext>>()(
+
       (set, get) => {
         return {
           ...initialState,
-          ...createTableStoreActions<TData>({ get, set }),
+          ...createTableStoreActions<TData, TDataContext>({ get, set }),
         };
       },
     );
   }
 
-  return createStore<TableStore<TData>>()(
+  return createStore<TableStore<TData, TDataContext>>()(
+
     persist(
       (set, get) => {
         return {
           ...initialState,
-          ...createTableStoreActions<TData>({ get, set }),
+          ...createTableStoreActions<TData, TDataContext>({ get, set }),
         };
       },
-      createTableStorePersistConfiguration<TData, TableStore<TData>>(storageNamePostFix, storageVersion),
+      createTableStorePersistConfiguration<TData, TDataContext, TableStore<TData, TDataContext>>(storageNamePostFix, storageVersion),
     ),
   );
 };

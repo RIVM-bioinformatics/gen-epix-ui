@@ -17,7 +17,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { CaseDbLogLevel } from '@gen-epix/api-casedb';
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import {
   Confirmation,
@@ -25,11 +25,11 @@ import {
 } from '../Confirmation';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
-import { DataUtil } from '../../../utils/DataUtil';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { MyPermissionsDialogRefMethods } from '../MyPermissionsDialog';
 import { MyPermissionsDialog } from '../MyPermissionsDialog';
+import { DataUtil } from '../../../utils/DataUtil';
 
 import { UserOrganizationAdminMenuItem } from './UserOrganizationAdminMenuItem';
 import { UserOwnOrganizationMenuItem } from './UserOwnOrganizationMenuItem';
@@ -57,22 +57,22 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   }, []);
 
   const onLogoutConfirmationConfirm = useCallback(() => {
-    LogManager.instance.log([{
+    LogManager.getInstance().log([{
       detail: auth.user,
-      level: CaseDbLogLevel.TRACE,
+      level: CommonDbLogLevel.TRACE,
       topic: 'USER_LOGOUT',
     }]);
-    LogManager.instance.flushLog();
+    LogManager.getInstance().flushLog();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     auth.signoutRedirect();
   }, [auth]);
 
   const userName = useMemo(() => {
-    return DataUtil.getUserDisplayValue(AuthorizationManager.instance.user, t);
+    return DataUtil.getUserDisplayValue(AuthorizationManager.getInstance().user, t);
   }, [t]);
 
   const userRoles = useMemo(() => {
-    return AuthorizationManager.instance.user?.roles;
+    return AuthorizationManager.getInstance().user?.roles;
   }, []);
 
   return (

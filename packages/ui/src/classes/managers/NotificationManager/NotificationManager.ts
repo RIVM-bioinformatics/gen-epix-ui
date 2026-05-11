@@ -1,23 +1,23 @@
 import { StringUtil } from '../../../utils/StringUtil';
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
+import { HmrUtil } from '../../../utils/HmrUtil';
 import { ConfigManager } from '../ConfigManager';
-import { WindowManager } from '../WindowManager';
 import type { Notification } from '../../../models/notification';
 
 export class NotificationManager extends SubscribableAbstract<Notification[]> {
-  public static get instance(): NotificationManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.notification = WindowManager.instance.window.managers.notification || new NotificationManager();
-    return WindowManager.instance.window.managers.notification;
-  }
+  private static __instance: NotificationManager;
 
   private readonly notificationTimeouts: Record<string, ReturnType<typeof setTimeout>>;
 
   private constructor() {
     super(new Subject<Notification[]>([]));
     this.notificationTimeouts = {};
+  }
+
+  public static getInstance(): NotificationManager {
+    NotificationManager.__instance = HmrUtil.getHmrSingleton('notificationManager', NotificationManager.__instance, () => new NotificationManager());
+    return NotificationManager.__instance;
   }
 
   public clearNotification(key: string): void {
@@ -73,7 +73,7 @@ export class NotificationManager extends SubscribableAbstract<Notification[]> {
 
   public showNotification(notification: Omit<Notification, 'key' | 'timestamp' | 'visible'>): string {
     const key = StringUtil.createUuid();
-    const autoHideAfterMs = notification.autoHideAfterMs ?? ConfigManager.instance.config.notifications.autoHideAfterMs;
+    const autoHideAfterMs = notification.autoHideAfterMs ?? ConfigManager.getInstance().config.notifications.autoHideAfterMs;
 
     this.subject.next([
       {

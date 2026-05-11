@@ -20,22 +20,22 @@ import type {
 import type {
   HasCellDataFn,
   TableColumn,
-  TableColumnSettings,
+  TableColumnVisualSettings,
 } from '../../../models/table';
 import { SortableList } from '../SortableList/SortableList';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
 
 
-export interface TableColumnsEditorDialogOpenProps {
-  readonly hasCellData: HasCellDataFn<unknown>;
+export interface TableColumnsEditorDialogOpenProps<TRowData, TDataContext> {
+  readonly hasCellData: HasCellDataFn<TRowData, TDataContext>;
 }
 
-export interface TableColumnsEditorDialogProps extends WithDialogRenderProps<TableColumnsEditorDialogOpenProps> {
+export interface TableColumnsEditorDialogProps<TRowData, TDataContext> extends WithDialogRenderProps<TableColumnsEditorDialogOpenProps<TRowData, TDataContext>> {
   //
 }
 
-export type TableColumnsEditorDialogRefMethods = WithDialogRefMethods<TableColumnsEditorDialogProps, TableColumnsEditorDialogOpenProps>;
+export type TableColumnsEditorDialogRefMethods<TRowData, TDataContext> = WithDialogRefMethods<TableColumnsEditorDialogProps<TRowData, TDataContext>, TableColumnsEditorDialogOpenProps<TRowData, TDataContext>>;
 
 
 type Item = {
@@ -44,34 +44,35 @@ type Item = {
   label: string;
 };
 
-export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps, TableColumnsEditorDialogOpenProps>((
+export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps<unknown, unknown>, TableColumnsEditorDialogOpenProps<unknown, unknown>>((
   {
     onActionsChange,
     onClose,
     onTitleChange,
     openProps: { hasCellData },
-  }: TableColumnsEditorDialogProps,
+  }: TableColumnsEditorDialogProps<unknown, unknown>,
 ): ReactElement => {
   const { t } = useTranslation();
   const [items, setItems] = useState<Item[]>([]);
 
-  const tableStore = useTableStoreContext<unknown>();
+  const tableStore = useTableStoreContext<unknown, unknown>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
-  const tableColumnSettings = useStore(tableStore, useShallow((state) => state.columnSettings));
+  const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
+  const tableColumnVisualSettings = useStore(tableStore, useShallow((state) => state.columnVisualSettings));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
 
   const columnsMap = useMemo(() => {
-    const map = new Map<string, TableColumn<unknown>>();
+    const map = new Map<string, TableColumn<unknown, unknown>>();
     tableColumns.forEach((column) => {
       map.set(column.id, column);
     });
     return map;
   }, [tableColumns]);
 
-  const updateItems = useCallback((columnSettings: TableColumnSettings[]) => {
+  const updateItems = useCallback((columnVisualSettings: TableColumnVisualSettings[]) => {
     const newItems: Item[] = [];
-    columnSettings.forEach(columnSetting => {
+    columnVisualSettings.forEach(columnSetting => {
       const column = columnsMap.get(columnSetting.id);
       if (column && !column.isStatic && !column.frozen) {
         newItems.push({
@@ -85,11 +86,11 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
   }, [columnsMap]);
 
   useEffect(() => {
-    updateItems(tableColumnSettings);
-  }, [tableColumnSettings, updateItems]);
+    updateItems(tableColumnVisualSettings);
+  }, [tableColumnVisualSettings, updateItems]);
 
   const onResetButtonClick = useCallback(() => {
-    updateItems(TableUtil.createInitialColumnSettings(tableColumns));
+    updateItems(TableUtil.createInitialVisualColumnSettings(tableColumns));
   }, [tableColumns, updateItems]);
 
 
@@ -110,6 +111,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
 
   const filterColumnsWithPredicate = useCallback((predicate: (item: Item) => boolean) => {
     const newVisibleColumnIds = TableUtil.getColumnIdsWithData({
+      dataContext,
       hasCellData,
       sortedData,
       tableColumns,
@@ -121,7 +123,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
         isSelected: newVisibleColumnIds.includes(item.id.toString()),
       }));
     });
-  }, [hasCellData, items, sortedData, tableColumns]);
+  }, [dataContext, hasCellData, items, sortedData, tableColumns]);
 
 
   const onEnableOnlyColumnsWithDataClick = useCallback(() => {

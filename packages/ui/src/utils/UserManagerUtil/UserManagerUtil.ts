@@ -3,15 +3,15 @@ import {
   type UserManagerSettings,
   WebStorageStateStore,
 } from 'oidc-client-ts';
-import type { CaseDbIdentityProvider } from '@gen-epix/api-casedb';
+import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
 
 import { WindowManager } from '../../classes/managers/WindowManager';
 
 export class UserManagerUtil {
   public static readonly userManager: UserManager;
 
-  public static getSettings(oidcConfiguration: CaseDbIdentityProvider): UserManagerSettings {
-    const url = new URL(WindowManager.instance.window.location.href);
+  public static getSettings(oidcConfiguration: CommonDbIdentityProvider): UserManagerSettings {
+    const url = new URL(WindowManager.getInstance().window.location.href);
     url.search = '';
     url.pathname = '/post-login';
     const redirect_uri = url.toString();

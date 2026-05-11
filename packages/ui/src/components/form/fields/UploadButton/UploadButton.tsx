@@ -91,7 +91,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
         buttonRef?.current?.focus();
       },
     });
-    const inputElement = WindowManager.instance.document.getElementById(inputId) as HTMLInputElement | null;
+    const inputElement = WindowManager.getInstance().document.getElementById(inputId) as HTMLInputElement | null;
     if (!value && inputElement) {
       inputElement.value = '';
     }

@@ -13,24 +13,24 @@ import {
   Box,
   Button,
 } from '@mui/material';
-import { CaseDbSystemApi } from '@gen-epix/api-casedb';
 
 import { WindowManager } from '../../../classes/managers/WindowManager';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { QUERY_KEY } from '../../../models/query';
 import { outagesStore } from '../../../stores/outagesStore';
 import { OutageUtil } from '../../../utils/OutageUtil';
-import { QueryUtil } from '../../../utils/QueryUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
-import { OutageList } from '../../ui/OutageList';
-import { PageContainer } from '../../ui/PageContainer';
-import { ResponseHandler } from '../../ui/ResponseHandler';
 import { useArray } from '../../../hooks/useArray';
 import { FeatureFlagsManager } from '../../../classes/managers/FeatureFlagsManager';
 import { I18nManager } from '../../../classes/managers/I18nManager';
+import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
 import type { ConfirmationRefMethods } from '../../ui/Confirmation';
 import { Confirmation } from '../../ui/Confirmation';
+import { OutageList } from '../../ui/OutageList';
+import { PageContainer } from '../../ui/PageContainer';
+import { ResponseHandler } from '../../ui/ResponseHandler';
 import { Spinner } from '../../ui/Spinner';
+import { COMMON_QUERY_KEY } from '../../../data/query';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 
 export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode => {
@@ -44,20 +44,21 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const [isLanguageChanging, setIsLanguageChanging] = useState(false);
 
   useEffect(() => {
+    const i18nManager = I18nManager.getInstance();
     const callback = (code: string) => {
       newLanguageCodeRef.current = code;
       confirmationRef.current?.open();
     };
-    I18nManager.instance.addEventListener('onUserLanguageChange', callback);
+    i18nManager.addEventListener('onUserLanguageChange', callback);
     return () => {
-      I18nManager.instance.removeEventListener('onUserLanguageChange', callback);
+      i18nManager.removeEventListener('onUserLanguageChange', callback);
     };
   }, []);
 
   const outagesQuery = useQueryMemo({
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await CaseDbSystemApi.instance.retrieveOutages({ signal })).data,
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.OUTAGES),
+    queryFn: async ({ signal }) => (await ApiManager.getInstance().systemApi.retrieveOutages({ signal })).data,
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.OUTAGES),
     refetchInterval: 5 * 60 * 1000,
     staleTime: Infinity,
   });
@@ -69,7 +70,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   }, [outagesQuery.data]);
 
   const onRetryButtonClick = useCallback(() => {
-    WindowManager.instance.window.location.reload();
+    WindowManager.getInstance().window.location.reload();
   }, []);
 
   const onContinuButtonClick = useCallback(() => {
@@ -79,8 +80,8 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const onLanguageChangeConfirm = useCallback(async () => {
     if (newLanguageCodeRef.current) {
       setIsLanguageChanging(true);
-      await I18nManager.instance.switchLanguageConfig(newLanguageCodeRef.current);
-      WindowManager.instance.window.location.reload();
+      await I18nManager.getInstance().switchLanguageConfig(newLanguageCodeRef.current);
+      WindowManager.getInstance().window.location.reload();
     }
   }, []);
 
@@ -89,12 +90,12 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
       setCategorizedOutages(categorizedOutages);
     }
 
-    const timeout = WindowManager.instance.window.setTimeout(() => {
+    const timeout = WindowManager.getInstance().window.setTimeout(() => {
       setButtonsEnabled(true);
     }, 5000);
 
     return () => {
-      WindowManager.instance.window.clearTimeout(timeout);
+      WindowManager.getInstance().window.clearTimeout(timeout);
     };
   }, [categorizedOutages, setCategorizedOutages]);
 
@@ -104,8 +105,8 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
   const featureFlagsQuery = useQueryMemo({
     enabled: shouldShowChildren,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await CaseDbSystemApi.instance.retrieveFeatureFlags({ signal })).data,
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.FEATURE_FLAGS),
+    queryFn: async ({ signal }) => (await ApiManager.getInstance().systemApi.retrieveFeatureFlags({ signal })).data,
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.FEATURE_FLAGS),
     staleTime: Infinity,
   });
 
@@ -113,7 +114,7 @@ export const ApplicationBootstrap = ({ children }: PropsWithChildren): ReactNode
 
   useEffect(() => {
     if (featureFlagsQuery.data) {
-      FeatureFlagsManager.instance.featureFlags = featureFlagsQuery.data.feature_flags;
+      FeatureFlagsManager.getInstance().featureFlags = featureFlagsQuery.data.feature_flags;
     }
   }, [featureFlagsQuery.data]);
 

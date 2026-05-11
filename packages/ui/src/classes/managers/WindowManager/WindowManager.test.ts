@@ -9,7 +9,7 @@ describe('WindowManager', () => {
 
   beforeEach(() => {
     WindowManager['__instance'] = undefined;
-    windowManager = WindowManager.instance;
+    windowManager = WindowManager.getInstance();
   });
   afterEach(() => {
     vi.restoreAllMocks();

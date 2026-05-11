@@ -23,7 +23,7 @@ export const SidebarMenu = ({ children }: SidebarMenuProps) => {
         left: 0,
         position: 'absolute',
         top: 0,
-        width: theme.spacing(ConfigManager.instance.config.layout.SIDEBAR_MENU_WIDTH),
+        width: theme.spacing(ConfigManager.getInstance().config.layout.SIDEBAR_MENU_WIDTH),
         zIndex: 2,
       }}
     >

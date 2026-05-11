@@ -3,13 +3,13 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import type { CaseDbOutage } from '@gen-epix/api-casedb';
+import type { CommonDbOutage } from '@gen-epix/api-commondb';
 
 import { OutageItem } from './OutageItem';
 
 type OutageSectionProps = {
   readonly itemTitle: string;
-  readonly outages: CaseDbOutage[];
+  readonly outages: CommonDbOutage[];
   readonly severity: AlertProps['severity'];
   readonly title: string;
 };

@@ -32,8 +32,8 @@ export const ApplicationFooterLinkSection = ({ children, header }: ApplicationFo
       <Typography
         component={'h2'}
         sx={{
-          borderBottom: `1px solid ${theme['gen-epix'].footer.sectionBorderColor}`,
-          color: theme['gen-epix'].footer.color,
+          borderBottom: `1px solid ${theme['gen-epix-ui'].footer.sectionBorderColor}`,
+          color: theme['gen-epix-ui'].footer.color,
           fontWeight: 500,
           marginBottom: theme.spacing(1),
           paddingBottom: theme.spacing(1),

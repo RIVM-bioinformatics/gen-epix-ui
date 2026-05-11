@@ -16,11 +16,8 @@ import {
 } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import PasswordIcon from '@mui/icons-material/Password';
-import type { CaseDbUserInvitation } from '@gen-epix/api-casedb';
-import {
-  CaseDbCommandName,
-  CaseDbOrganizationApi,
-} from '@gen-epix/api-casedb';
+import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
+import { CommonDbCommandName } from '@gen-epix/api-commondb';
 
 import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
@@ -31,7 +28,6 @@ import type {
   OptionBase,
 } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type {
   TableColumn,
   TableRowParams,
@@ -42,6 +38,8 @@ import { CrudPage } from '../CrudPage';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
+import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 import { UserInvitationShareDialog } from './UserInvitationShareDialog';
 import type { UserInvitationShareDialogRefMethods } from './UserInvitationShareDialog';
@@ -50,7 +48,7 @@ import {
   type UserInvitationConsumeDialogRefMethods,
 } from './UserInvitationConsumeDialog';
 
-type FormFields = OmitWithMetaData<CaseDbUserInvitation, 'email' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'name' | 'organization' | 'token'>;
+type FormFields = OmitWithMetaData<CommonDbUserInvitation, 'email' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'name' | 'organization' | 'token'>;
 
 export const UserInvitationsAdminPage = () => {
   const { t } = useTranslation();
@@ -83,15 +81,15 @@ export const UserInvitationsAdminPage = () => {
   const userInvitationConsumeDialogRef = useRef<UserInvitationConsumeDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.userInvitationsGetAll({ signal }))?.data;
+    return (await ApiManager.getInstance().organizationApi.userInvitationsGetAll({ signal }))?.data;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseDbUserInvitation) => {
-    return await CaseDbOrganizationApi.instance.userInvitationsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CommonDbUserInvitation) => {
+    return await ApiManager.getInstance().organizationApi.userInvitationsDeleteOne(item.id);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOrganizationApi.instance.inviteUser({
+    return (await ApiManager.getInstance().organizationApi.inviteUser({
       ...variables,
     })).data;
   }, []);
@@ -109,11 +107,11 @@ export const UserInvitationsAdminPage = () => {
     });
   }, []);
 
-  const onCreateSuccess = useCallback((item: CaseDbUserInvitation) => {
+  const onCreateSuccess = useCallback((item: CommonDbUserInvitation) => {
     userInvitationShareDialogRef.current.open({ item });
   }, []);
 
-  const customOnRowClick = useCallback((params: TableRowParams<CaseDbUserInvitation>) => {
+  const customOnRowClick = useCallback((params: TableRowParams<CommonDbUserInvitation, null>) => {
     userInvitationShareDialogRef.current.open({ item: params.row });
   }, []);
 
@@ -152,7 +150,7 @@ export const UserInvitationsAdminPage = () => {
     return fields;
   }, [t, organizationOptions, organizationOptionsQuery.isLoading, roleOptions, inviteUserConstraintsQuery.isLoading]);
 
-  const extraActionsFactory = useCallback((params: TableRowParams<CaseDbUserInvitation>) => {
+  const extraActionsFactory = useCallback((params: TableRowParams<CommonDbUserInvitation, null>) => {
     return [
       (
         <MenuItem
@@ -185,24 +183,24 @@ export const UserInvitationsAdminPage = () => {
     ];
   }, [t]);
 
-  const tableColumns = useMemo((): TableColumn<CaseDbUserInvitation>[] => {
+  const tableColumns = useMemo((): TableColumn<CommonDbUserInvitation>[] => {
     return [
-      TableUtil.createTextColumn<CaseDbUserInvitation>({ id: 'key', name: t`Key` }),
-      TableUtil.createOptionsColumn<CaseDbUserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
-      TableUtil.createOptionsColumn<CaseDbUserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
-      TableUtil.createOptionsColumn<CaseDbUserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),
-      TableUtil.createTextColumn<CaseDbUserInvitation>({ id: 'description', name: t`Description` }),
-      TableUtil.createDateColumn<CaseDbUserInvitation>({ id: 'expires_at', name: t`Expires` }),
+      TableUtil.createTextColumn<CommonDbUserInvitation>({ id: 'key', name: t`Key` }),
+      TableUtil.createOptionsColumn<CommonDbUserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
+      TableUtil.createOptionsColumn<CommonDbUserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CommonDbUserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),
+      TableUtil.createTextColumn<CommonDbUserInvitation>({ id: 'description', name: t`Description` }),
+      TableUtil.createDateColumn<CommonDbUserInvitation>({ id: 'expires_at', name: t`Expires` }),
     ];
   }, [t, organizationOptions, userOptionsQuery.options, roleOptions]);
 
   return (
     <>
-      <CrudPage<FormFields, CaseDbUserInvitation>
+      <CrudPage<FormFields, CommonDbUserInvitation>
         createItemButtonText={t`Invite user`}
         createItemDialogTitle={t`Create new user invitation`}
         createOne={createOne}
-        crudCommandType={CaseDbCommandName.UserInvitationCrudCommand}
+        crudCommandType={CommonDbCommandName.UserInvitationCrudCommand}
         customOnRowClick={customOnRowClick}
         defaultSortByField={'key'}
         defaultSortDirection={'asc'}
@@ -213,7 +211,7 @@ export const UserInvitationsAdminPage = () => {
         getName={getName}
         loadables={loadables}
         onCreateSuccess={onCreateSuccess}
-        resourceQueryKeyBase={QUERY_KEY.USER_INVITATIONS}
+        resourceQueryKeyBase={COMMON_QUERY_KEY.USER_INVITATIONS}
         schema={schema}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UserInvitationsAdminPage')}

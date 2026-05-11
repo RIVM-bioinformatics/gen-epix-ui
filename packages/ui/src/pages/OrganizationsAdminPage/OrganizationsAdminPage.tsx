@@ -10,18 +10,16 @@ import {
 } from 'yup';
 import omit from 'lodash/omit';
 import type {
-  CaseDbApiPermission,
-  CaseDbOrganization,
-} from '@gen-epix/api-casedb';
+  CommonDbApiPermission,
+  CommonDbOrganization,
+} from '@gen-epix/api-commondb';
 import {
-  CaseDbCommandName,
-  CaseDbOrganizationApi,
-  CaseDbPermissionType,
-} from '@gen-epix/api-casedb';
+  CommonDbCommandName,
+  CommonDbPermissionType,
+} from '@gen-epix/api-commondb';
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { QUERY_KEY } from '../../models/query';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
@@ -33,10 +31,12 @@ import { useArray } from '../../hooks/useArray';
 import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOrganizationIdentifierIssuerLinksQuery';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
+import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 type FormFields = OmitWithMetaData<TableData>;
 
-type TableData = { identifierIssuerIds: string[] } & CaseDbOrganization;
+type TableData = { identifierIssuerIds: string[] } & CommonDbOrganization;
 
 export const OrganizationsAdminPage = () => {
   const { t } = useTranslation();
@@ -46,22 +46,22 @@ export const OrganizationsAdminPage = () => {
   const loadables = useArray([identifierIssuerOptionsQuery, organizationIdentifierIssuerLinksQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.instance.organizationsGetAll({ signal }))?.data;
+    return (await ApiManager.getInstance().organizationApi.organizationsGetAll({ signal }))?.data;
   }, []);
 
-  const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganization) => {
-    await CaseDbOrganizationApi.instance.organizationsPutIdentifierIssuers(item.id, {
+  const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganization) => {
+    await ApiManager.getInstance().organizationApi.organizationsPutIdentifierIssuers(item.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: item.id,
       })),
     });
-    return (await CaseDbOrganizationApi.instance.organizationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await ApiManager.getInstance().organizationApi.organizationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseDbOrganizationApi.instance.organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
-    await CaseDbOrganizationApi.instance.organizationsPutIdentifierIssuers(resultItem.id, {
+    const resultItem = (await ApiManager.getInstance().organizationApi.organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
+    await ApiManager.getInstance().organizationApi.organizationsPutIdentifierIssuers(resultItem.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: resultItem.id,
@@ -70,11 +70,11 @@ export const OrganizationsAdminPage = () => {
     return resultItem;
   }, []);
 
-  const deleteOne = useCallback(async (item: CaseDbOrganization) => {
-    return await CaseDbOrganizationApi.instance.organizationsDeleteOne(item.id);
+  const deleteOne = useCallback(async (item: CommonDbOrganization) => {
+    return await ApiManager.getInstance().organizationApi.organizationsDeleteOne(item.id);
   }, []);
 
-  const getName = useCallback((item: CaseDbOrganization) => {
+  const getName = useCallback((item: CommonDbOrganization) => {
     return item.name;
   }, []);
 
@@ -133,22 +133,22 @@ export const OrganizationsAdminPage = () => {
     ];
   }, [identifierIssuerOptionsQuery.options.length, t]);
 
-  const subPages = useMemo<CrudPageSubPage<CaseDbOrganization>[]>(() => {
-    if (!AuthorizationManager.instance.doesUserHavePermission([
-      { command_name: CaseDbCommandName.SiteCrudCommand, permission_type: CaseDbPermissionType.READ },
+  const subPages = useMemo<CrudPageSubPage<CommonDbOrganization>[]>(() => {
+    if (!AuthorizationManager.getInstance().doesUserHavePermission([
+      { command_name: CommonDbCommandName.SiteCrudCommand, permission_type: CommonDbPermissionType.READ },
     ])) {
       return [];
     }
 
     return [
       {
-        getPathName: (item: CaseDbOrganization) => `/management/organizations/${item.id}/sites`,
+        getPathName: (item: CommonDbOrganization) => `/management/organizations/${item.id}/sites`,
         label: t`Manage sites`,
-      } satisfies CrudPageSubPage<CaseDbOrganization>,
+      } satisfies CrudPageSubPage<CommonDbOrganization>,
     ];
   }, [t]);
 
-  const convertToTableData = useCallback((items: CaseDbOrganization[]) => {
+  const convertToTableData = useCallback((items: CommonDbOrganization[]) => {
     if (!items || !organizationIdentifierIssuerLinksQuery.data) {
       return [];
     }
@@ -162,20 +162,20 @@ export const OrganizationsAdminPage = () => {
   }, [organizationIdentifierIssuerLinksQuery.data]);
 
   const associationQueryKeys = useMemo(() => [
-    [QUERY_KEY.IDENTIFIER_ISSUER_LINKS],
+    [COMMON_QUERY_KEY.IDENTIFIER_ISSUER_LINKS],
   ], []);
 
-  const extraPermissions = useMemo<CaseDbApiPermission[]>(() => [
-    { command_name: CaseDbCommandName.OrganizationIdentifierIssuerLinkUpdateAssociationCommand, permission_type: CaseDbPermissionType.EXECUTE },
+  const extraPermissions = useMemo<CommonDbApiPermission[]>(() => [
+    { command_name: CommonDbCommandName.OrganizationIdentifierIssuerLinkUpdateAssociationCommand, permission_type: CommonDbPermissionType.EXECUTE },
   ], []);
 
   return (
-    <CrudPage<FormFields, CaseDbOrganization, TableData>
+    <CrudPage<FormFields, CommonDbOrganization, TableData>
       associationQueryKeys={associationQueryKeys}
       convertToTableData={convertToTableData}
       createItemDialogTitle={t`Create new organization`}
       createOne={createOne}
-      crudCommandType={CaseDbCommandName.OrganizationCrudCommand}
+      crudCommandType={CommonDbCommandName.OrganizationCrudCommand}
       defaultSortByField={'name'}
       defaultSortDirection={'asc'}
       deleteOne={deleteOne}
@@ -186,7 +186,7 @@ export const OrganizationsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       loadables={loadables}
-      resourceQueryKeyBase={QUERY_KEY.ORGANIZATIONS}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.ORGANIZATIONS}
       schema={schema}
       subPages={subPages}
       tableColumns={tableColumns}

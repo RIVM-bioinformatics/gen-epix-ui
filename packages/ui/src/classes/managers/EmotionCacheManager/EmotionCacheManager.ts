@@ -2,16 +2,11 @@ import type { EmotionCache } from '@emotion/cache';
 import createCache from '@emotion/cache';
 
 import { ConfigManager } from '../ConfigManager';
-import { WindowManager } from '../WindowManager';
+import { HmrUtil } from '../../../utils/HmrUtil';
 
 
 export class EmotionCacheManager {
-  public static get instance(): EmotionCacheManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.emotionCache = WindowManager.instance.window.managers.emotionCache || new EmotionCacheManager();
-    return WindowManager.instance.window.managers.emotionCache;
-  }
+  private static __instance: EmotionCacheManager;
 
   public emotionCache: EmotionCache;
 
@@ -19,9 +14,14 @@ export class EmotionCacheManager {
     this.emotionCache = createCache({
       container: window.document.head,
       key: 'genepix',
-      nonce: ConfigManager.instance.config.nonce,
-      prepend: !!ConfigManager.instance.config.nonce,
+      nonce: ConfigManager.getInstance().config.nonce,
+      prepend: !!ConfigManager.getInstance().config.nonce,
       stylisPlugins: [],
     });
+  }
+
+  public static getInstance(): EmotionCacheManager {
+    EmotionCacheManager.__instance = HmrUtil.getHmrSingleton('emotionCacheManager', EmotionCacheManager.__instance, () => new EmotionCacheManager());
+    return EmotionCacheManager.__instance;
   }
 }

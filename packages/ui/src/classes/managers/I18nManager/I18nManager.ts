@@ -4,9 +4,10 @@ import i18next, {
 } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import { WindowManager } from '../WindowManager';
 import { ConfigManager } from '../ConfigManager';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
+import { HmrUtil } from '../../../utils/HmrUtil';
+import { WindowManager } from '../WindowManager';
 
 type Bundle = {
   translation: Record<string, string>;
@@ -17,17 +18,18 @@ type I18nEvent = {
 };
 
 export class I18nManager extends EventBusAbstract<I18nEvent> {
-  public static get instance(): I18nManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+  private static __instance: I18nManager;
 
-    WindowManager.instance.window.managers.i18n = WindowManager.instance.window.managers.i18n || new I18nManager();
-    return WindowManager.instance.window.managers.i18n;
-  }
   private isInitialized = false;
-  private languageLoaded: Record<string, boolean> = {};
 
+  private languageLoaded: Record<string, boolean> = {};
   private constructor() {
     super();
+  }
+
+  public static getInstance(): I18nManager {
+    I18nManager.__instance = HmrUtil.getHmrSingleton('i18nManager', I18nManager.__instance, () => new I18nManager());
+    return I18nManager.__instance;
   }
 
   public async init(): Promise<void> {
@@ -35,8 +37,8 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
       console.warn('I18nManager is already initialized');
       return;
     }
-    const currentLanguageCode = await ConfigManager.instance.config.i18n.getCurrentLanguageCode();
-    const defaultLanguageConfig = ConfigManager.instance.config.i18n.languages.find(x => x.code === currentLanguageCode);
+    const currentLanguageCode = await ConfigManager.getInstance().config.i18n.getCurrentLanguageCode();
+    const defaultLanguageConfig = ConfigManager.getInstance().config.i18n.languages.find(x => x.code === currentLanguageCode);
 
     // eslint-disable-next-line @eslint-react/rules-of-hooks
     await use(initReactI18next)
@@ -67,7 +69,7 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
   }
 
   public async switchLanguageConfig(code: string): Promise<void> {
-    await ConfigManager.instance.config.i18n.setNewLanguageCode(code);
+    await ConfigManager.getInstance().config.i18n.setNewLanguageCode(code);
     this.updateLangAttribute(code);
   }
 
@@ -75,7 +77,7 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
     if (this.languageLoaded[code]) {
       return;
     }
-    const config = ConfigManager.instance.config.i18n.languages.find(x => x.code === code);
+    const config = ConfigManager.getInstance().config.i18n.languages.find(x => x.code === code);
     if (!config) {
       throw new Error(`No i18n config found for code: ${code}`);
     }
@@ -97,7 +99,7 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
   }
 
   private updateLangAttribute(code: string): void {
-    const doc = WindowManager.instance.document;
+    const doc = WindowManager.getInstance().document;
     if (!doc) {
       console.warn('Document is not available, cannot set lang attribute');
       return;

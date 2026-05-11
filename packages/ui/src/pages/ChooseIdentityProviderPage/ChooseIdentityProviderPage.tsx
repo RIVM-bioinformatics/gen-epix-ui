@@ -29,7 +29,7 @@ export const ChooseIdentityProviderPage = ({
   const { t } = useTranslation();
 
   const AfterIdentityProviderSelection =
-    ConfigManager.instance.config.login?.AfterIdentityProviderSelection;
+    ConfigManager.getInstance().config.login?.AfterIdentityProviderSelection;
 
   const onIdentityProviderButtonClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
@@ -37,7 +37,7 @@ export const ChooseIdentityProviderPage = ({
         'data-name',
       );
 
-      AuthenticationManager.instance.next(
+      AuthenticationManager.getInstance().next(
         identityProvidersWithAvailability.find(
           (identityProviderWithAvailability) =>
             identityProviderWithAvailability.provider.name === name,
@@ -122,7 +122,7 @@ export const ChooseIdentityProviderPage = ({
           variant={'h1'}
         >
           {t('Welcome to {{applicationName}}', {
-            applicationName: ConfigManager.instance.config.applicationName,
+            applicationName: ConfigManager.getInstance().config.applicationName,
           })}
         </Typography>
         <Typography

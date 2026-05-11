@@ -8,10 +8,7 @@ import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
-import type { CaseDbCase } from '@gen-epix/api-casedb';
-import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import { CaseUtil } from '../CaseUtil';
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
@@ -21,7 +18,6 @@ import { DateFilter } from '../../classes/filters/DateFilter';
 import { MultiSelectFilter } from '../../classes/filters/MultiSelectFilter';
 import { NumberRangeFilter } from '../../classes/filters/NumberRangeFilter';
 import { TextFilter } from '../../classes/filters/TextFilter';
-import type { CaseTypeRowValue } from '../../models/epi';
 import type { Filters } from '../../models/filter';
 import type { OptionBase } from '../../models/form';
 import type {
@@ -31,38 +27,37 @@ import type {
   TableColumn,
   TableColumnActions,
   TableColumnBoolean,
-  TableColumnCaseType,
   TableColumnDate,
   TableColumnDimension,
   TableColumnNumber,
   TableColumnOptions,
   TableColumnReadableIndex,
   TableColumnSelectable,
-  TableColumnSettings,
   TableColumnText,
+  TableColumnVisualSettings,
   TableRowParams,
 } from '../../models/table';
 import { FIXED_COLUMN_ID } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 
 export class TableUtil {
-  public static areColumnSettingsValid<TData>(tableColumns: TableColumn<TData>[], columnSettings: TableColumnSettings[]): boolean {
-    if (!columnSettings?.length) {
+  public static areColumnVisualSettingsValid<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], columnVisualSettings: TableColumnVisualSettings[]): boolean {
+    if (!columnVisualSettings?.length) {
       return false;
     }
 
     const tableColumnsIds = tableColumns?.map(c => c.id);
-    const columnSettingsIds = columnSettings?.map(c => c.id);
+    const columnVisualSettingsIds = columnVisualSettings?.map(c => c.id);
 
-    return tableColumnsIds.length === columnSettingsIds.length && difference(tableColumnsIds, columnSettingsIds).length === 0;
+    return tableColumnsIds.length === columnVisualSettingsIds.length && difference(tableColumnsIds, columnVisualSettingsIds).length === 0;
   }
 
   // Cell value getters
 
-  public static createActionsColumn<TData>(kwArgs: { getActions: (params: TableRowParams<TData>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData> {
+  public static createActionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; getActions: (params: TableRowParams<TData, TDataContext>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData, TDataContext, TColumnContext> {
     return {
+      columnContext: kwArgs.columnContext,
       getActions: kwArgs.getActions,
       headerName: kwArgs.t`Actions`,
       id: FIXED_COLUMN_ID.ACTIONS,
@@ -74,18 +69,19 @@ export class TableUtil {
     };
   }
 
-  public static createBooleanCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData>>): (a: TRowData, b: TRowData) => number {
+  public static createBooleanCellRowComperator<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableBooleanCellValue({ column, row: a, rowIndex: 0 }) ? 1 : 0;
-      const bValue = TableUtil.getTableBooleanCellValue({ column, row: b, rowIndex: 0 }) ? 1 : 0;
+      const aValue = TableUtil.getTableBooleanCellValue({ column, dataContext, row: a, rowIndex: 0 }) ? 1 : 0;
+      const bValue = TableUtil.getTableBooleanCellValue({ column, dataContext, row: b, rowIndex: 0 }) ? 1 : 0;
 
 
       return direction === 'asc' ? aValue - bValue : bValue - aValue;
     };
   }
 
-  public static createBooleanColumn<TData>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnBoolean<TData> {
+  public static createBooleanColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnBoolean<TData, TDataContext, TColumnContext> {
     return {
+      columnContext: kwArgs.columnContext,
       comparatorFactory: TableUtil.createBooleanCellRowComperator,
       filterLabel: kwArgs.filterLabel,
       headerName: kwArgs.name,
@@ -96,38 +92,7 @@ export class TableUtil {
     };
   }
 
-  public static createCaseTypeCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnCaseType<TRowData>>): (a: TRowData, b: TRowData) => number {
-    return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableCaseTypeCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableCaseTypeCellValue({ column, row: b, rowIndex: 0 });
-      const refCol = column.completeCaseType.ref_cols[column.col.ref_col_id];
-
-      const directionMultiplier = direction === 'asc' ? 1 : -1;
-
-      if (aValue.raw === bValue.raw) {
-        return 0;
-      }
-      if (aValue.isMissing) {
-        return 1;
-      }
-      if (bValue.isMissing) {
-        return -1;
-      }
-
-      if (refCol.col_type === CaseDbColType.ORDINAL) {
-        const conceptSetConceptIds = EpiDataManager.instance.data.conceptsIdsBySetId[refCol.concept_set_id];
-        return (conceptSetConceptIds.indexOf(aValue.raw) - conceptSetConceptIds.indexOf(bValue.raw)) * directionMultiplier;
-      }
-
-      if (([CaseDbColType.DECIMAL_0, CaseDbColType.DECIMAL_1, CaseDbColType.DECIMAL_2, CaseDbColType.DECIMAL_3, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_5, CaseDbColType.DECIMAL_6] as CaseDbColType[]).includes(refCol.col_type)) {
-        return (+aValue.raw - +bValue.raw) * directionMultiplier;
-      }
-
-      return aValue.short.localeCompare(bValue.short) * directionMultiplier;
-    };
-  }
-
-  public static createDateCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnDate<TRowData>>): (a: TRowData, b: TRowData) => number {
+  public static createDateCellRowComperator<TRowData, TDataContext = null, TColumnContext = null>({ column, direction }: GetTableCellRowComparatorProps<TableColumnDate<TRowData, TDataContext, TColumnContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = a[column.id as keyof TRowData] as string;
       const bValue = b[column.id as keyof TRowData] as string;
@@ -148,8 +113,9 @@ export class TableUtil {
     };
   }
 
-  public static createDateColumn<TData>(kwArgs: { dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT]; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnDate<TData> {
+  public static createDateColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT]; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnDate<TData, TDataContext, TColumnContext> {
     return {
+      columnContext: kwArgs.columnContext,
       comparatorFactory: TableUtil.createDateCellRowComperator,
       dateFormat: kwArgs.dateFormat ?? DATE_FORMAT.DATE,
       filterLabel: kwArgs.filterLabel,
@@ -161,7 +127,7 @@ export class TableUtil {
     };
   }
 
-  public static createFiltersFromColumns<TData>(columns: TableColumn<TData>[], baseRows: TData[]): Filters {
+  public static createFiltersFromColumns<TData, TDataContext = null,>(columns: TableColumn<TData, TDataContext>[], baseRows: TData[], dataContext: TDataContext): Filters {
     if (!columns?.length || !baseRows?.length) {
       return [];
     }
@@ -200,7 +166,7 @@ export class TableUtil {
 
         if (column.shouldFilterOptions) {
           const possibleOptions = baseRows.map((row, index) => {
-            const rowValue = column.valueGetter ? column.valueGetter({ id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
+            const rowValue = column.valueGetter ? column.valueGetter({ dataContext, id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
             if (!Array.isArray(rowValue)) {
               return [rowValue] as string[];
             }
@@ -248,8 +214,8 @@ export class TableUtil {
     return filters;
   }
 
-  public static createInitialColumnSettings<TData>(tableColumns: TableColumn<TData>[]): TableColumnSettings[] {
-    return tableColumns.map<TableColumnSettings>(column => ({
+  public static createInitialVisualColumnSettings<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[]): TableColumnVisualSettings[] {
+    return tableColumns.map<TableColumnVisualSettings>(column => ({
       id: column.id,
       isVisible: column.isInitiallyVisible,
       label: column.headerName,
@@ -259,16 +225,17 @@ export class TableUtil {
     }));
   }
 
-  public static createNumberCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData>>): (a: TRowData, b: TRowData) => number {
+  public static createNumberCellRowComperator<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData, TDataContext, TColumnContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableNumberCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableNumberCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = TableUtil.getTableNumberCellValue({ column, dataContext, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableNumberCellValue({ column, dataContext, row: b, rowIndex: 0 });
       return direction === 'asc' ? aValue - bValue : bValue - aValue;
     };
   }
 
-  public static createNumberColumn<TData>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnNumber<TData> {
+  public static createNumberColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnNumber<TData, TDataContext, TColumnContext> {
     return {
+      columnContext: kwArgs.columnContext,
       comparatorFactory: TableUtil.createNumberCellRowComperator,
       filterLabel: kwArgs.filterLabel,
       headerName: kwArgs.name,
@@ -280,10 +247,10 @@ export class TableUtil {
     };
   }
 
-  public static createOptionsCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnOptions<TRowData>>): (a: TRowData, b: TRowData) => number {
+  public static createOptionsCellRowComperator<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnOptions<TRowData, TDataContext, TColumnContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableOptionsCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableOptionsCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = TableUtil.getTableOptionsCellValue({ column, dataContext, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableOptionsCellValue({ column, dataContext, row: b, rowIndex: 0 });
 
       const stringifiedAValue = (Array.isArray(aValue) ? aValue.join(', ') : aValue) ?? '';
       const stringifiedBValue = (Array.isArray(bValue) ? bValue.join(', ') : bValue) ?? '';
@@ -292,8 +259,9 @@ export class TableUtil {
     };
   }
 
-  public static createOptionsColumn<TData>(kwArgs: { filterLabel?: string; flex?: number; id?: keyof TData; maxNumOptionsExpanded?: number; name: string; options: OptionBase<string>[]; shouldFilterOptions?: boolean }): TableColumnOptions<TData> {
+  public static createOptionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; maxNumOptionsExpanded?: number; name: string; options: OptionBase<string>[]; shouldFilterOptions?: boolean }): TableColumnOptions<TData, TDataContext, TColumnContext> {
     return {
+      columnContext: kwArgs.columnContext,
       comparatorFactory: TableUtil.createOptionsCellRowComperator,
       filterLabel: kwArgs.filterLabel,
       headerName: kwArgs.name,
@@ -307,8 +275,9 @@ export class TableUtil {
     };
   }
 
-  public static createReadableIndexColumn<TData>(kwArgs: { getAriaLabel?: (params: TableRowParams<TData>) => string } = {}): TableColumnReadableIndex<TData> {
+  public static createReadableIndexColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; getAriaLabel?: (params: TableRowParams<TData, TDataContext>) => string } = {}): TableColumnReadableIndex<TData, TDataContext, TColumnContext> {
     return {
+      columnContext: kwArgs.columnContext,
       disableEllipsis: true,
       frozen: true,
       getAriaLabel: kwArgs.getAriaLabel ?? (() => null),
@@ -323,8 +292,9 @@ export class TableUtil {
     };
   }
 
-  public static createSelectableColumn<TData>(kwArgs: { isDisabled?: (params: TableRowParams<TData>) => boolean } = {}): TableColumnSelectable<TData> {
+  public static createSelectableColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; isDisabled?: (params: TableRowParams<TData, TDataContext>) => boolean } = {}): TableColumnSelectable<TData, TDataContext, TColumnContext> {
     return {
+      columnContext: kwArgs.columnContext,
       disableEllipsis: true,
       frozen: true,
       id: FIXED_COLUMN_ID.ROW_SELECT,
@@ -337,28 +307,29 @@ export class TableUtil {
     };
   }
 
-  public static createTextCellRowAdvancedComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData>>): (a: TRowData, b: TRowData) => number {
+  public static createTextCellRowAdvancedComperator<TRowData, TDataContext = null>({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TDataContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = TableUtil.getTableTextCellValue({ column, dataContext, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableTextCellValue({ column, dataContext, row: b, rowIndex: 0 });
       const result = StringUtil.advancedSortComperator(aValue ?? '', bValue ?? '');
       return direction === 'asc' ? result : -result;
     };
   }
 
   // Cell row comparators
-  public static createTextCellRowComperator<TRowData>({ column, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData>>): (a: TRowData, b: TRowData) => number {
+  public static createTextCellRowComperator<TRowData, TDataContext = null>({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnText<TRowData, TDataContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
-      const aValue = TableUtil.getTableTextCellValue({ column, row: a, rowIndex: 0 });
-      const bValue = TableUtil.getTableTextCellValue({ column, row: b, rowIndex: 0 });
+      const aValue = TableUtil.getTableTextCellValue({ column, dataContext, row: a, rowIndex: 0 });
+      const bValue = TableUtil.getTableTextCellValue({ column, dataContext, row: b, rowIndex: 0 });
       const result = (aValue ?? '').localeCompare(bValue ?? '');
       return direction === 'asc' ? result : -result;
     };
   }
 
   // Column creation helpers
-  public static createTextColumn<TData>(kwArgs: { advancedSort?: boolean; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnText<TData> {
+  public static createTextColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { advancedSort?: boolean; columnContext?: TColumnContext; filterLabel?: string; flex?: number; id?: keyof TData; name: string }): TableColumnText<TData, TDataContext, TColumnContext> {
     return {
+      columnContext: kwArgs.columnContext,
       comparatorFactory: kwArgs.advancedSort ? TableUtil.createTextCellRowAdvancedComperator : TableUtil.createTextCellRowComperator,
       filterLabel: kwArgs.filterLabel,
       headerName: kwArgs.name,
@@ -369,8 +340,8 @@ export class TableUtil {
     };
   }
 
-  public static getColumnIdsWithData<TRowData>(params: { hasCellData: HasCellDataFn<TRowData>; sortedData: TRowData[]; tableColumns: TableColumn<TRowData>[]; visibleColumnIds: string[] }): string[] {
-    const { hasCellData, sortedData, tableColumns, visibleColumnIds } = params;
+  public static getColumnIdsWithData<TRowData, TDataContext = null>(params: { dataContext: TDataContext; hasCellData: HasCellDataFn<TRowData, TDataContext>; sortedData: TRowData[]; tableColumns: TableColumn<TRowData, TDataContext>[]; visibleColumnIds: string[] }): string[] {
+    const { dataContext, hasCellData, sortedData, tableColumns, visibleColumnIds } = params;
     const columns = visibleColumnIds.map(id => tableColumns.find(c => c.id === id));
     let newVisibleColumnIds: string[];
     if (hasCellData) {
@@ -378,7 +349,7 @@ export class TableUtil {
         if (column.isStatic) {
           return true;
         }
-        return sortedData.some((row, rowIndex) => hasCellData(row, column, rowIndex));
+        return sortedData.some((row, rowIndex) => hasCellData(row, column, rowIndex, dataContext));
       }).map(c => c.id);
     } else {
       newVisibleColumnIds = columns.filter(column => {
@@ -388,6 +359,7 @@ export class TableUtil {
         return sortedData.some((row, rowIndex) => {
           if (column.valueGetter) {
             return column.valueGetter({
+              dataContext,
               id: column.id,
               row,
               rowIndex,
@@ -400,33 +372,21 @@ export class TableUtil {
     return newVisibleColumnIds;
   }
 
-  public static getTableBooleanCellDisplayValue<TRowData>({ column, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData>>): string {
-    const value = TableUtil.getTableBooleanCellValue({ column, row, rowIndex });
+  public static getTableBooleanCellDisplayValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): string {
+    const value = TableUtil.getTableBooleanCellValue({ column, dataContext, row, rowIndex });
     return value ? t('Yes') : t('No');
   }
 
-  public static getTableBooleanCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData>>): boolean {
+  public static getTableBooleanCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): boolean {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
     }
     return (row[column.id as keyof TRowData] as boolean);
   }
 
-  public static getTableCaseTypeCellDisplayValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): string {
-    const value = TableUtil.getTableCaseTypeCellValue({ column, row, rowIndex });
-    return value.short;
-  }
-
-  public static getTableCaseTypeCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnCaseType<TRowData>>): CaseTypeRowValue {
+  public static getTableDateCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData, TDataContext, TColumnContext>, TDataContext>): string {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
-    }
-    return CaseUtil.getRowValue((row as CaseDbCase).content, column.col, column.completeCaseType);
-  }
-
-  public static getTableDateCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData>>): string {
-    if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
     }
     const value = row[column.id as keyof TRowData] as string;
     if (!value) {
@@ -435,21 +395,21 @@ export class TableUtil {
     return dateFnsFormat(value, column.dateFormat);
   }
 
-  public static getTableNumberCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData>>): number {
+  public static getTableNumberCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData, TDataContext, TColumnContext>, TDataContext>): number {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as number;
   }
 
-  public static getTableOptionsCellDisplayValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData>>): string {
-    const value = TableUtil.getTableOptionsCellValue({ column, row, rowIndex });
+  public static getTableOptionsCellDisplayValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TDataContext, TColumnContext>, TDataContext>): string {
+    const value = TableUtil.getTableOptionsCellValue({ column, dataContext, row, rowIndex });
     return Array.isArray(value) ? value.join(', ') : value;
   }
 
-  public static getTableOptionsCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData>>): string | string[] {
+  public static getTableOptionsCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TDataContext, TColumnContext>, TDataContext>): string | string[] {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
     }
     const values = row[column.id as keyof TRowData] as string | string[];
     if (Array.isArray(values)) {
@@ -458,21 +418,21 @@ export class TableUtil {
     return column.options.find(o => o.value === values)?.label ?? '';
   }
 
-  public static getTableSettingsMap<TRowData>(
+  public static getTableSettingsMap<TRowData, TDataContext = null>(
     container: HTMLDivElement,
     scrollbarSize: number,
     sortedData: TRowData[],
-    tableColumns: TableColumn<TRowData>[],
-    tableColumnSettings: TableColumnSettings[],
-    visibleTableSettingsColumns: TableColumnSettings[],
-  ): Map<string, TableColumnSettings> {
+    tableColumns: TableColumn<TRowData, TDataContext>[],
+    tableColumnVisualSettings: TableColumnVisualSettings[],
+    visibleTableSettingsColumns: TableColumnVisualSettings[],
+  ): Map<string, TableColumnVisualSettings> {
     const tableColumnMap = new Map(tableColumns.map(c => [c.id, c]));
 
     // As soon as the user resizes a column width widthFlex, we need to convert all columns to widthPx
     const hasResizedColumn = visibleTableSettingsColumns.some(column => column.hasResized);
     const hasFlexColumn = visibleTableSettingsColumns.some(column => column.widthFlex);
     if (hasResizedColumn && hasFlexColumn) {
-      tableColumnSettings.forEach(column => {
+      tableColumnVisualSettings.forEach(column => {
         if (!column.widthPx && column.calculatedWidth) {
           column.widthPx = column.calculatedWidth;
           column.widthFlex = undefined;
@@ -488,7 +448,7 @@ export class TableUtil {
     const flexRatio = totalFlexWidth > 0 ? availableFlexWidth / totalFlexWidth : 1;
 
     let totalOffset = 0;
-    tableColumnSettings.forEach(column => {
+    tableColumnVisualSettings.forEach(column => {
       const tableColumn = tableColumns.find(c => c.id === column.id);
       let width: number;
       if (column.hasResized) {
@@ -505,43 +465,43 @@ export class TableUtil {
       totalOffset += width;
     });
 
-    return new Map(tableColumnSettings.map(c => [c.id, c]));
+    return new Map(tableColumnVisualSettings.map(c => [c.id, c]));
   }
 
-  public static getTableTextCellValue<TRowData>({ column, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData>>): string {
+  public static getTableTextCellValue<TRowData, TDataContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, TDataContext>, TDataContext>): string {
     if (column.valueGetter) {
-      return column.valueGetter({ id: column.id, row, rowIndex });
+      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as string;
   }
 
-  public static handleMoveColumn<TRowData>(
+  public static handleMoveColumn<TRowData, TDataContext = null>(
     columnDimensions: TableColumnDimension[],
-    tableColumnSettings: TableColumnSettings[], // Will be mutated
-    tableColumns: TableColumn<TRowData>[],
-    elementTableColumn: TableColumn<TRowData>,
+    tableColumnVisualSettings: TableColumnVisualSettings[], // Will be mutated
+    tableColumns: TableColumn<TRowData, TDataContext>[],
+    elementTableColumn: TableColumn<TRowData, TDataContext>,
     direction: -1 | 1,
   ): boolean {
     if (!elementTableColumn || elementTableColumn.frozen || elementTableColumn.isStatic) {
       return false;
     }
 
-    const elementIndex = tableColumnSettings.findIndex(c => c.id === elementTableColumn.id);
-    const elementSettingsColumn = tableColumnSettings[elementIndex];
+    const elementIndex = tableColumnVisualSettings.findIndex(c => c.id === elementTableColumn.id);
+    const elementSettingsColumn = tableColumnVisualSettings[elementIndex];
     if (!elementSettingsColumn) {
       return false;
     }
 
     // find next/previous visible column
     let swappingElementIndex: number;
-    let swappingElementTableColumn: TableColumn<TRowData>;
-    let swappingElementSettingsColumn: TableColumnSettings;
-    for (let i = elementIndex + direction; i >= 0 && i < tableColumnSettings.length; i += direction) {
-      swappingElementSettingsColumn = tableColumnSettings[i];
+    let swappingElementTableColumn: TableColumn<TRowData, TDataContext>;
+    let swappingElementSettingsColumn: TableColumnVisualSettings;
+    for (let i = elementIndex + direction; i >= 0 && i < tableColumnVisualSettings.length; i += direction) {
+      swappingElementSettingsColumn = tableColumnVisualSettings[i];
       if (!swappingElementSettingsColumn?.isVisible) {
         continue;
       }
-      swappingElementTableColumn = tableColumns.find(c => c.id === tableColumnSettings[i].id);
+      swappingElementTableColumn = tableColumns.find(c => c.id === tableColumnVisualSettings[i].id);
       if (swappingElementTableColumn && !swappingElementTableColumn.frozen && !swappingElementTableColumn.isStatic) {
         swappingElementIndex = i;
         break;
@@ -554,13 +514,13 @@ export class TableUtil {
 
     // Simple swap if there are no dimensions
     if (!columnDimensions?.length) {
-      TableUtil.swapTwoTableColumns(tableColumnSettings, elementIndex, swappingElementIndex);
+      TableUtil.swapTwoTableColumns(tableColumnVisualSettings, elementIndex, swappingElementIndex);
       return true;
     }
 
     return TableUtil.handleMoveColumnAcrossDimensions(
       columnDimensions,
-      tableColumnSettings,
+      tableColumnVisualSettings,
       elementSettingsColumn,
       swappingElementSettingsColumn,
       elementIndex,
@@ -571,9 +531,9 @@ export class TableUtil {
 
   private static handleMoveColumnAcrossDimensions(
     columnDimensions: TableColumnDimension[],
-    tableColumnSettings: TableColumnSettings[], // Will be mutated
-    elementSettingsColumn: TableColumnSettings,
-    swappingElementSettingsColumn: TableColumnSettings,
+    tableColumnVisualSettings: TableColumnVisualSettings[], // Will be mutated
+    elementSettingsColumn: TableColumnVisualSettings,
+    swappingElementSettingsColumn: TableColumnVisualSettings,
     elementIndex: number,
     swappingElementIndex: number,
     direction: -1 | 1,
@@ -588,50 +548,50 @@ export class TableUtil {
 
     if (elementDimension.id === swappingElementDimension.id) {
       // if the columns are in the same dimension
-      TableUtil.swapTwoTableColumns(tableColumnSettings, elementIndex, swappingElementIndex);
+      TableUtil.swapTwoTableColumns(tableColumnVisualSettings, elementIndex, swappingElementIndex);
       return true;
     }
 
-    const elementDimensionVisibleColumnCount = elementDimension.columnIds.filter(id => tableColumnSettings.find(c => c.id === id)?.isVisible).length;
-    const swappingElementDimensionVisibleColumnCount = swappingElementDimension.columnIds.filter(id => tableColumnSettings.find(c => c.id === id)?.isVisible).length;
+    const elementDimensionVisibleColumnCount = elementDimension.columnIds.filter(id => tableColumnVisualSettings.find(c => c.id === id)?.isVisible).length;
+    const swappingElementDimensionVisibleColumnCount = swappingElementDimension.columnIds.filter(id => tableColumnVisualSettings.find(c => c.id === id)?.isVisible).length;
 
     if (elementDimensionVisibleColumnCount > 1 || swappingElementDimensionVisibleColumnCount > 1) {
       // if there is more than one visible column in the dimension
-      TableUtil.swapTwoTableColumns(tableColumnSettings, elementIndex, swappingElementIndex);
+      TableUtil.swapTwoTableColumns(tableColumnVisualSettings, elementIndex, swappingElementIndex);
       return true;
     }
 
     const elementDimensionColumnsCount = elementDimension.columnIds.length;
-    const elementDimensionIndices = elementDimension.columnIds.map(id => tableColumnSettings.findIndex(c => c.id === id));
+    const elementDimensionIndices = elementDimension.columnIds.map(id => tableColumnVisualSettings.findIndex(c => c.id === id));
     const elementDimensionMinIndex = Math.min(...elementDimensionIndices);
     const elementDimensionMaxIndex = Math.max(...elementDimensionIndices);
     if (elementDimensionMaxIndex - elementDimensionMinIndex !== elementDimensionColumnsCount - 1) {
       // if the columns are NOT next to each other in the dimension
-      TableUtil.swapTwoTableColumns(tableColumnSettings, elementIndex, swappingElementIndex);
+      TableUtil.swapTwoTableColumns(tableColumnVisualSettings, elementIndex, swappingElementIndex);
       return true;
     }
 
-    const swappingElementDimensionIndices = swappingElementDimension.columnIds.map(id => tableColumnSettings.findIndex(c => c.id === id));
+    const swappingElementDimensionIndices = swappingElementDimension.columnIds.map(id => tableColumnVisualSettings.findIndex(c => c.id === id));
     const swappingElementDimensionMinIndex = Math.min(...swappingElementDimensionIndices);
     const swappingElementDimensionMaxIndex = Math.max(...swappingElementDimensionIndices);
 
-    const elementDimensionSettingColumns = elementDimension.columnIds.map(id => tableColumnSettings.find(c => c.id === id));
-    const swappingElementSettingsColumns = swappingElementDimension.columnIds.map(id => tableColumnSettings.find(c => c.id === id));
+    const elementDimensionSettingColumns = elementDimension.columnIds.map(id => tableColumnVisualSettings.find(c => c.id === id));
+    const swappingElementSettingsColumns = swappingElementDimension.columnIds.map(id => tableColumnVisualSettings.find(c => c.id === id));
     const swappingElementSettingsColumnsCount = swappingElementSettingsColumns.length;
 
     if (swappingElementDimensionMaxIndex - swappingElementDimensionMinIndex === swappingElementDimension.columnIds.length - 1) {
       // The swapping element columns are next to each other in the dimension
 
       // Swap all columns within the element dimension with the all the columns in the swapping element dimension
-      tableColumnSettings.splice(elementDimensionMinIndex, elementDimensionColumnsCount, ...swappingElementSettingsColumns);
+      tableColumnVisualSettings.splice(elementDimensionMinIndex, elementDimensionColumnsCount, ...swappingElementSettingsColumns);
       if (direction === 1) {
-        tableColumnSettings.splice(
+        tableColumnVisualSettings.splice(
           (swappingElementDimensionMinIndex - elementDimensionColumnsCount) + swappingElementSettingsColumnsCount,
           swappingElementSettingsColumnsCount,
           ...elementDimensionSettingColumns,
         );
       } else {
-        tableColumnSettings.splice(
+        tableColumnVisualSettings.splice(
           swappingElementDimensionMinIndex,
           swappingElementSettingsColumnsCount,
           ...elementDimensionSettingColumns,
@@ -641,15 +601,15 @@ export class TableUtil {
       // The swapping element columns are NOT next to each other in the dimension
 
       // Swap all columns within the element dimension with the swapping element
-      tableColumnSettings.splice(elementDimensionMinIndex, elementDimensionColumnsCount, swappingElementSettingsColumn);
+      tableColumnVisualSettings.splice(elementDimensionMinIndex, elementDimensionColumnsCount, swappingElementSettingsColumn);
       if (direction === 1) {
-        tableColumnSettings.splice(
+        tableColumnVisualSettings.splice(
           swappingElementDimensionMinIndex - (elementDimensionColumnsCount - 1),
           1,
           ...elementDimensionSettingColumns,
         );
       } else {
-        tableColumnSettings.splice(
+        tableColumnVisualSettings.splice(
           swappingElementDimensionMinIndex,
           1,
           ...elementDimensionSettingColumns,
@@ -659,7 +619,7 @@ export class TableUtil {
     return true;
   }
 
-  private static swapTwoTableColumns(tableColumnSettings: TableColumnSettings[], elementIndex: number, swappingElementIndex: number): void {
-    tableColumnSettings[elementIndex] = tableColumnSettings.splice(swappingElementIndex, 1, tableColumnSettings[elementIndex])[0];
+  private static swapTwoTableColumns(tableColumnVisualSettings: TableColumnVisualSettings[], elementIndex: number, swappingElementIndex: number): void {
+    tableColumnVisualSettings[elementIndex] = tableColumnVisualSettings.splice(swappingElementIndex, 1, tableColumnVisualSettings[elementIndex])[0];
   }
 }

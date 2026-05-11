@@ -25,10 +25,7 @@ import {
 import FolderIcon from '@mui/icons-material/Folder';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import axios from 'axios';
-import {
-  type CaseDbPackageMetadata,
-  CaseDbSystemApi,
-} from '@gen-epix/api-casedb';
+import { type CommonDbPackageMetadata } from '@gen-epix/api-commondb';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';
@@ -39,9 +36,10 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { ResponseHandler } from '../ResponseHandler';
-import { QUERY_KEY } from '../../../models/query';
-import { QueryUtil } from '../../../utils/QueryUtil';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
+import { COMMON_QUERY_KEY } from '../../../data/query';
+import { ApiManager } from '../../../classes/managers/ApiManager';
 
 
 export interface LicensesDialogOpenProps {
@@ -64,25 +62,25 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   }: LicensesDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
-  const [item, setItem] = useState<CaseDbPackageMetadata>(null);
+  const [item, setItem] = useState<CommonDbPackageMetadata>(null);
 
-  const { LicenseInformation } = ConfigManager.instance.config;
+  const { LicenseInformation } = ConfigManager.getInstance().config;
 
   const { data: frontendLicenses, error: frontendLicensesError, isLoading: isFrontendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
       return (await axios.get('/licenses.json', {
         signal,
-      })).data as CaseDbPackageMetadata[];
+      })).data as CommonDbPackageMetadata[];
     },
     queryKey: ['LICENSES.JSON'],
   });
 
   const { data: backendLicenses, error: backendLicensesError, isLoading: isBackendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbSystemApi.instance.retrieveLicenses({ signal });
+      const response = await ApiManager.getInstance().systemApi.retrieveLicenses({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.LICENSES),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.LICENSES),
   });
 
   const isLoading = isFrontendLicensesLoading || isBackendLicensesLoading;
@@ -124,10 +122,10 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   }, [item, onActionsChange, onClose, t]);
 
   const onItemURLClick = useCallback((url: string) => {
-    WindowManager.instance.window.open(url, '_blank');
+    WindowManager.getInstance().window.open(url, '_blank');
   }, []);
 
-  const onItemLicenseClick = useCallback((entry: CaseDbPackageMetadata) => {
+  const onItemLicenseClick = useCallback((entry: CommonDbPackageMetadata) => {
     dialogContentRef?.current?.scrollTo(0, 0);
     setItem(entry);
   }, [dialogContentRef]);

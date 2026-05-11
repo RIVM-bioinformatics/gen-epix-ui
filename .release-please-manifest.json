@@ -1,5 +1,8 @@
 {
   "packages/ui": "1.25.0",
+  "packages/ui-casedb": "1.25.0",
+  "packages/ui-omopdb": "1.25.0",
+  "packages/ui-seqdb": "1.25.0",
   "packages/api-casedb": "1.2.0",
   "packages/api-seqdb": "1.0.4",
   "packages/api-omopdb": "1.0.4"

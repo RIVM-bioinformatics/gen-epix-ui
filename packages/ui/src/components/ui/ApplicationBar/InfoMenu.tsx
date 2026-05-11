@@ -64,7 +64,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
         >
           <ListItemText
             primary={t('Frontend version')}
-            secondary={ConfigManager.instance.config.getSoftwareVersion()}
+            secondary={ConfigManager.getInstance().config.getSoftwareVersion()}
             slotProps={{
               primary: {
                 sx: {
@@ -80,7 +80,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
         >
           <ListItemText
             primary={t('Backend version')}
-            secondary={BackendVersionManager.instance.version}
+            secondary={BackendVersionManager.getInstance().version}
             slotProps={{
               primary: {
                 sx: {

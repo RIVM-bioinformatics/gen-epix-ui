@@ -1,5 +1,5 @@
 import { createStore } from 'zustand';
-import type { CaseDbOutage } from '@gen-epix/api-casedb';
+import type { CommonDbOutage } from '@gen-epix/api-commondb';
 
 import type { CategorizedOutages } from '../../models/outage';
 
@@ -10,9 +10,9 @@ export interface OutagesStoreActions {
 }
 
 export interface OutagesStoreState {
-  activeOutages: CaseDbOutage[];
-  soonActiveOutages: CaseDbOutage[];
-  visibleOutages: CaseDbOutage[];
+  activeOutages: CommonDbOutage[];
+  soonActiveOutages: CommonDbOutage[];
+  visibleOutages: CommonDbOutage[];
 }
 
 const createOutagesStoreDefaultState: () => OutagesStoreState = () => ({

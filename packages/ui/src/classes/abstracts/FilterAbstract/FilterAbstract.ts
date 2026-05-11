@@ -21,6 +21,7 @@ export abstract class FilterAbstract<TFilterValue> {
   public id: string;
   public initialFilterValue: TFilterValue;
   public label: string;
+  public showInSidebar: boolean = true;
 
   public constructor(kwArgs: FilterAbstractKwArgs) {
     this.id = kwArgs.id;

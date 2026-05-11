@@ -1,4 +1,4 @@
-import { WindowManager } from '../WindowManager';
+import { HmrUtil } from '../../../utils/HmrUtil';
 
 const FORM_ELEMENT_TAG_NAMES = [
   'form',
@@ -22,17 +22,17 @@ type KeyboardShortcutConfig = {
 };
 
 export class KeyboardShortcutManager {
-  public static get instance(): KeyboardShortcutManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
-
-    WindowManager.instance.window.managers.keyboardShortcut = WindowManager.instance.window.managers.keyboardShortcut || new KeyboardShortcutManager();
-    return WindowManager.instance.window.managers.keyboardShortcut;
-  }
+  private static __instance: KeyboardShortcutManager;
 
   private readonly configs: KeyboardShortcutConfig[] = [];
 
   private constructor() {
     window.addEventListener('keydown', this.handleKeyDown.bind(this));
+  }
+
+  public static getInstance(): KeyboardShortcutManager {
+    KeyboardShortcutManager.__instance = HmrUtil.getHmrSingleton('keyboardShortcutManager', KeyboardShortcutManager.__instance, () => new KeyboardShortcutManager());
+    return KeyboardShortcutManager.__instance;
   }
 
   private static shouldIgnoreShortcut(): boolean {

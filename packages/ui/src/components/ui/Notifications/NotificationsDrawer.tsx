@@ -25,14 +25,14 @@ export type NotificationsDrawerProps = {
 export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawerProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const notifications = useSubscribable(NotificationManager.instance);
+  const notifications = useSubscribable(NotificationManager.getInstance());
 
   const onNotificationItemClose = useCallback((key: string) => {
-    NotificationManager.instance.clearNotification(key);
+    NotificationManager.getInstance().clearNotification(key);
   }, []);
 
   const onClearAllButtonClick = useCallback(() => {
-    NotificationManager.instance.clearNotifications();
+    NotificationManager.getInstance().clearNotifications();
     onDrawerClose();
   }, [onDrawerClose]);
 

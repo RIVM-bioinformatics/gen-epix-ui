@@ -30,8 +30,6 @@ import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { SidebarItem } from '../Sidebar';
 import type { SidebarItemSharedProps } from '../Sidebar';
 import { NestedDropdown } from '../NestedMenu';
-import { SelectionFilter } from '../../../classes/filters/SelectionFilter';
-import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import type {
   FilterDimension,
   Filters,
@@ -54,8 +52,8 @@ type TableFiltersSidebarItemContentFilterDimensionProps = {
   readonly visibleFilterWithinDimension: string;
 };
 
-const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimension, onFilterVisibilityChange, visibleFilterWithinDimension }: TableFiltersSidebarItemContentFilterDimensionProps) => {
-  const tableStore = useTableStoreContext<TRowData>();
+const TableFiltersSidebarItemContentFilterDimension = <TRowData, TDataContext = null>({ filterDimension, onFilterVisibilityChange, visibleFilterWithinDimension }: TableFiltersSidebarItemContentFilterDimensionProps) => {
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const filters = useStoreWithEqualityFn(tableStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
   const dimensionFilters = filterDimension.filterIds.map(filterId => filters.find(filter => filter.id === filterId));
 
@@ -173,10 +171,10 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData,>({ filterDimens
   );
 };
 
-export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFiltersSidebarItemContentProps) => {
+export const TableFiltersSidebarItemContent = <TRowData, TDataContext = null>({ onClose }: TableFiltersSidebarItemContentProps) => {
   const { t } = useTranslation();
 
-  const tableStore = useTableStoreContext<TRowData>();
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const setFilterValues = useStore(tableStore, (state) => state.setFilterValues);
   const filterDimensions = useStore(tableStore, (state) => state.filterDimensions);
   const filters = useStoreWithEqualityFn(tableStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
@@ -237,7 +235,7 @@ export const TableFiltersSidebarItemContent = <TRowData,>({ onClose }: TableFilt
     });
   }, [filters, setValue]);
 
-  const filteredFilters = useMemo(() => filters.filter(filter => !(filter instanceof TreeFilter) && !(filter instanceof SelectionFilter)), [filters]);
+  const filteredFilters = useMemo(() => filters.filter(filter => filter.showInSidebar), [filters]);
 
   return (
     <>

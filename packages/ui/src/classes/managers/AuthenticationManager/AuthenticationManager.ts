@@ -1,8 +1,9 @@
 import 'reflect-metadata';
 import type { InternalAxiosRequestConfig } from 'axios';
 import type { AuthContextProps } from 'react-oidc-context';
-import type { CaseDbIdentityProvider } from '@gen-epix/api-casedb';
+import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
 
+import { HmrUtil } from '../../../utils/HmrUtil';
 import { AuthorizationManager } from '../AuthorizationManager';
 import { WindowManager } from '../WindowManager';
 import { Subject } from '../../Subject';
@@ -13,14 +14,10 @@ import { oidcStore } from '../../../stores/oidcStore';
 
 export const createdAtMetaDataKey = Symbol('createdAt');
 
-export class AuthenticationManager extends SubscribableAbstract<CaseDbIdentityProvider> {
+export class AuthenticationManager extends SubscribableAbstract<CommonDbIdentityProvider> {
   public static autoLoginSkew = 500;
-  public static get instance(): AuthenticationManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+  private static __instance: AuthenticationManager;
 
-    WindowManager.instance.window.managers.authentication = WindowManager.instance.window.managers.authentication || new AuthenticationManager();
-    return WindowManager.instance.window.managers.authentication;
-  }
   public authContextProps: AuthContextProps;
 
   public temporaryToken: string;
@@ -37,11 +34,16 @@ export class AuthenticationManager extends SubscribableAbstract<CaseDbIdentityPr
     });
   }
 
+  public static getInstance(): AuthenticationManager {
+    AuthenticationManager.__instance = HmrUtil.getHmrSingleton('authenticationManager', AuthenticationManager.__instance, () => new AuthenticationManager());
+    return AuthenticationManager.__instance;
+  }
+
   public getUserManagerSettingsCreatedAt(): number {
     return Reflect.getMetadata(createdAtMetaDataKey, this.data) as number;
   }
 
-  public next(oidcConfiguration: CaseDbIdentityProvider) {
+  public next(oidcConfiguration: CommonDbIdentityProvider) {
     if (oidcConfiguration) {
       Reflect.defineMetadata(createdAtMetaDataKey, new Date().getTime(), oidcConfiguration);
       oidcStore.getState().setConfiguration(oidcConfiguration);
@@ -65,7 +67,7 @@ export class AuthenticationManager extends SubscribableAbstract<CaseDbIdentityPr
 
       // If the user is not logged in, or the user is already redirected, throw the error
 
-      if (redirectCounter > 0 || !AuthorizationManager.instance.user) {
+      if (redirectCounter > 0 || !AuthorizationManager.getInstance().user) {
         throw error;
       }
 
@@ -79,9 +81,9 @@ export class AuthenticationManager extends SubscribableAbstract<CaseDbIdentityPr
         await this.authContextProps.signinRedirect({
           state: {
             preLoginLocation: {
-              hash: WindowManager.instance.window.location.hash,
-              pathname: WindowManager.instance.window.location.pathname,
-              search: WindowManager.instance.window.location.search,
+              hash: WindowManager.getInstance().window.location.hash,
+              pathname: WindowManager.getInstance().window.location.pathname,
+              search: WindowManager.getInstance().window.location.search,
             },
             redirectCounter: redirectCounter + 1,
           },

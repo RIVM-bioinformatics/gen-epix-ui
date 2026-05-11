@@ -10,7 +10,7 @@ import {
   useMemo,
 } from 'react';
 import { format } from 'date-fns';
-import type { CaseDbUserInvitation } from '@gen-epix/api-casedb';
+import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { WindowManager } from '../../classes/managers/WindowManager';
@@ -24,7 +24,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import { DATE_FORMAT } from '../../data/date';
 
 export interface UserInvitationShareDialogOpenProps {
-  item: CaseDbUserInvitation;
+  item: CommonDbUserInvitation;
 }
 
 export interface UserInvitationShareDialogProps extends WithDialogRenderProps<UserInvitationShareDialogOpenProps> {
@@ -50,7 +50,7 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
   }, [openProps.item.expires_at]);
 
   const invitationLink = useMemo(() => {
-    const url = new URL(WindowManager.instance.window.location.href);
+    const url = new URL(WindowManager.getInstance().window.location.href);
     url.search = '';
     url.hash = '';
     url.pathname = `/accept-invitation/${openProps.item.token}`;
@@ -58,7 +58,7 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
   }, [openProps.item.token]);
 
   const shareInvitationHref = useMemo(() => {
-    return `mailto:?subject=${t('Invitation to join {{applicationName}}', { applicationName: ConfigManager.instance.config.applicationName })}&body=${t('Use the following link to accept the invitation: {{invitationLink}}. This link will expire: {{expiryDate}}.', { expiryDate, invitationLink })}&to=${openProps.item.key}`;
+    return `mailto:?subject=${t('Invitation to join {{applicationName}}', { applicationName: ConfigManager.getInstance().config.applicationName })}&body=${t('Use the following link to accept the invitation: {{invitationLink}}. This link will expire: {{expiryDate}}.', { expiryDate, invitationLink })}&to=${openProps.item.key}`;
   }, [expiryDate, invitationLink, openProps.item.key, t]);
 
 

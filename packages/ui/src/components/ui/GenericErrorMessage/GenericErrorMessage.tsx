@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { isRouteErrorResponse } from 'react-router-dom';
 import { isAxiosError } from 'axios';
-import { CaseDbLogLevel } from '@gen-epix/api-casedb';
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
@@ -33,37 +33,37 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       // Axios errors are logged in LogManager already
       return;
     }
-    LogManager.instance.log([{
+    LogManager.getInstance().log([{
       detail: {
         error,
         stack: (error as Error)?.stack,
       },
-      level: isAxiosError(error) ? CaseDbLogLevel.DEBUG : CaseDbLogLevel.ERROR,
+      level: isAxiosError(error) ? CommonDbLogLevel.DEBUG : CommonDbLogLevel.ERROR,
       topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
     }]);
-    LogManager.instance.flushLog();
-    if (error instanceof Error && ConfigManager.instance.config.enablePageEvents) {
-      PageEventBusManager.instance.emit('error', error);
+    LogManager.getInstance().flushLog();
+    if (error instanceof Error && ConfigManager.getInstance().config.enablePageEvents) {
+      PageEventBusManager.getInstance().emit('error', error);
     }
   }, [error]);
 
   const onBackToHomePageButtonClick = useCallback(async () => {
-    await RouterManager.instance.router.navigate({
+    await RouterManager.getInstance().router.navigate({
       pathname: '/',
     });
   }, []);
 
   const onBackButtonClick = useCallback(async () => {
-    await RouterManager.instance.router.navigate(-1);
+    await RouterManager.getInstance().router.navigate(-1);
   }, []);
 
   const onLogoutButtonClick = useCallback(async () => {
     AuthenticationManager.clearStaleState();
-    if (AuthenticationManager.instance.authContextProps) {
+    if (AuthenticationManager.getInstance().authContextProps) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      AuthenticationManager.instance.authContextProps.signoutRedirect();
+      AuthenticationManager.getInstance().authContextProps.signoutRedirect();
     } else {
-      await RouterManager.instance.router.navigate({
+      await RouterManager.getInstance().router.navigate({
         pathname: '/',
       });
     }

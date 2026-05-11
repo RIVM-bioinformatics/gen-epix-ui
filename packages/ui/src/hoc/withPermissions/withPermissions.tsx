@@ -1,22 +1,22 @@
 import { useMemo } from 'react';
 import type { ComponentType } from 'react';
-import type { CaseDbApiPermission } from '@gen-epix/api-casedb';
+import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 
 import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
 
-export interface WithPermissionsOptions {
+export interface WithPermissionsOptions<TApiPermission = CommonDbApiPermission> {
   readonly fallback?: ComponentType | null;
-  readonly requiredPermissions: CaseDbApiPermission[];
+  readonly requiredPermissions: TApiPermission[];
 }
 
-export const withPermissions = <TProps extends object>(
+export const withPermissions = <TApiPermission = CommonDbApiPermission, TProps extends object = Record<string, never>>(
   Component: ComponentType<TProps>,
-  options: WithPermissionsOptions,
+  options: WithPermissionsOptions<TApiPermission>,
 ) => {
   const WrappedComponent = (props: TProps) => {
-    const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
+    const authorizationManager = useMemo(() => AuthorizationManager.getInstance(), []);
 
-    if (!authorizationManager.doesUserHavePermission(options.requiredPermissions)) {
+    if (!authorizationManager.doesUserHavePermission(options.requiredPermissions as CommonDbApiPermission[])) {
       if (options.fallback) {
         const FallbackComponent = options.fallback;
         return <FallbackComponent />;

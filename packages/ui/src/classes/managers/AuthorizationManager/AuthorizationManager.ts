@@ -1,46 +1,47 @@
 import type {
-  CaseDbApiPermission,
-  CaseDbUser,
-} from '@gen-epix/api-casedb';
+  CommonDbApiPermission,
+  CommonDbUser,
+} from '@gen-epix/api-commondb';
 
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import { HmrUtil } from '../../../utils/HmrUtil';
 import { PageEventBusManager } from '../PageEventBusManager';
-import { WindowManager } from '../WindowManager';
 
 export class AuthorizationManager {
-  public static get instance(): AuthorizationManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+  private static __instance: AuthorizationManager;
 
-    WindowManager.instance.window.managers.authorization = WindowManager.instance.window.managers.authorization || new AuthorizationManager();
-    return WindowManager.instance.window.managers.authorization;
-  }
-  public set apiPermissions(permissions: CaseDbApiPermission[]) {
+  public set apiPermissions(permissions: CommonDbApiPermission[]) {
     this.__apiPermissions = permissions;
   }
 
-  public get apiPermissions(): CaseDbApiPermission[] {
+  public get apiPermissions(): CommonDbApiPermission[] {
     return this.__apiPermissions;
   }
 
-  public set user(user: CaseDbUser) {
-    PageEventBusManager.instance.emit('changeUser', user);
+  public set user(user: CommonDbUser) {
+    PageEventBusManager.getInstance().emit('changeUser', user);
     this.__user = user;
   }
 
-  public get user(): CaseDbUser {
+  public get user(): CommonDbUser {
     return this.__user;
   }
 
-  private __apiPermissions: CaseDbApiPermission[] = [];
+  private __apiPermissions: CommonDbApiPermission[] = [];
 
-  private __user: CaseDbUser;
-
+  private __user: CommonDbUser;
 
   private constructor() {
     //
   }
 
-  public doesUserHavePermission(permissions: CaseDbApiPermission[]): boolean {
+
+  public static getInstance(): AuthorizationManager {
+    AuthorizationManager.__instance = HmrUtil.getHmrSingleton('authorizationManager', AuthorizationManager.__instance, () => new AuthorizationManager());
+    return AuthorizationManager.__instance;
+  }
+
+  public doesUserHavePermission<TApiPermission = CommonDbApiPermission>(permissions: NoInfer<TApiPermission>[]): boolean {
     if (!permissions?.length) {
       return true;
     }
@@ -49,7 +50,7 @@ export class AuthorizationManager {
     }
     return permissions.every(permission => {
       return !!(this.apiPermissions).find(({ command_name, permission_type }) => {
-        return command_name === permission.command_name && permission_type === permission.permission_type;
+        return command_name === (permission as CommonDbApiPermission).command_name && permission_type === (permission as CommonDbApiPermission).permission_type;
       });
     });
   }

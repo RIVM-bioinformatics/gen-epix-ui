@@ -31,7 +31,7 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
   useEffect(() => {
     const handle = setTimeout(() => {
       setIsTakingLonger(true);
-    }, takingLongerTimeoutMs ?? ConfigManager.instance.config.spinner.DEFAULT_TAKING_LONGER_TIMEOUT_MS);
+    }, takingLongerTimeoutMs ?? ConfigManager.getInstance().config.spinner.DEFAULT_TAKING_LONGER_TIMEOUT_MS);
     return () => {
       clearTimeout(handle);
     };
@@ -61,7 +61,7 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
       >
         <CircularProgress
           color={color}
-          size={size ?? ConfigManager.instance.config.spinner.DEFAULT_CIRCULAR_PROGRESS_SIZE}
+          size={size ?? ConfigManager.getInstance().config.spinner.DEFAULT_CIRCULAR_PROGRESS_SIZE}
         />
       </Box>
       <Box

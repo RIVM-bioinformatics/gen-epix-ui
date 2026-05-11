@@ -16,22 +16,23 @@ import { useTableStoreContext } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 
 
-export type UseColumnsMenuProps<TRowData> = {
-  readonly hasCellData?: HasCellDataFn<TRowData>;
+export type UseColumnsMenuProps<TRowData, TDataContext = null> = {
+  readonly hasCellData?: HasCellDataFn<TRowData, TDataContext>;
 };
 
 //Note: must be CamelCase because of HMR
-export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<TRowData>): MenuItemData => {
-  const tableStore = useTableStoreContext<TRowData>();
+export const UseColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TDataContext>): MenuItemData => {
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
-  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnSettings.filter(c => c.isVisible).map(c => c.id)));
+  const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
+  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
   const { t } = useTranslation();
 
   const onColumnsEditorMenuItemClick = useCallback(() => {
-    emitTableEvent('openColumnsEditorDialog', hasCellData as HasCellDataFn<unknown>);
+    emitTableEvent('openColumnsEditorDialog', hasCellData);
   }, [emitTableEvent, hasCellData]);
 
   const toggleItem = useCallback((columnId: string): void => {
@@ -62,14 +63,15 @@ export const UseColumnsMenu = <TRowData,>({ hasCellData }: UseColumnsMenuProps<T
   }, [emitTableEvent, visibleColumnIds]);
 
   const onHideColumnsWithoutDataClick = useCallback(() => {
-    emitTableEvent('columnVisibilityChange', TableUtil.getColumnIdsWithData({
+    emitTableEvent('columnVisibilityChange', TableUtil.getColumnIdsWithData<TRowData, TDataContext>({
+      dataContext,
       hasCellData,
       sortedData,
       tableColumns,
       visibleColumnIds,
     }));
 
-  }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds]);
+  }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds, dataContext]);
 
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [

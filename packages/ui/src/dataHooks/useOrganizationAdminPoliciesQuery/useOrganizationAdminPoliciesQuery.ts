@@ -1,49 +1,49 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { CaseDbOrganizationAdminPolicy } from '@gen-epix/api-casedb';
-import { CaseDbAbacApi } from '@gen-epix/api-casedb';
+import type { CommonDbOrganizationAdminPolicy } from '@gen-epix/api-commondb';
 
 import type {
   UseMap,
   UseNameFactory,
   UseOptions,
 } from '../../models/dataHooks';
-import { QUERY_KEY } from '../../models/query';
 import { DataHookUtil } from '../../utils/DataHookUtil';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { useOrganizationMapQuery } from '../useOrganizationsQuery';
 import { useUsersMapQuery } from '../useUsersQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { DataUtil } from '../../utils/DataUtil';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
-export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CaseDbOrganizationAdminPolicy[]> => {
+export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrganizationAdminPolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbAbacApi.instance.organizationAdminPoliciesGetAll({ signal });
+      const response = await ApiManager.getInstance().abacApi.organizationAdminPoliciesGetAll({ signal });
       return response.data;
     },
-    queryKey: QueryUtil.getGenericKey(QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
   });
 };
 
-export const useOrganizationAdminPolicyMapQuery = (): UseMap<CaseDbOrganizationAdminPolicy> => {
+export const useOrganizationAdminPolicyMapQuery = (): UseMap<CommonDbOrganizationAdminPolicy> => {
   const organizationAdminPoliciesQuery = useOrganizationAdminPoliciesQuery();
 
   return useMemo(() => {
-    return DataHookUtil.createUseMapDataHook<CaseDbOrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id);
+    return DataHookUtil.createUseMapDataHook<CommonDbOrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id);
 
   }, [organizationAdminPoliciesQuery]);
 };
 
-export const useOrganizationAdminPolicyNameFactory = (): UseNameFactory<CaseDbOrganizationAdminPolicy> => {
+export const useOrganizationAdminPolicyNameFactory = (): UseNameFactory<CommonDbOrganizationAdminPolicy> => {
   const { t } = useTranslation();
 
   const organizationMapQuery = useOrganizationMapQuery();
   const usersMapQuery = useUsersMapQuery();
 
   return useMemo(() => {
-    const getName = (item: CaseDbOrganizationAdminPolicy) => {
+    const getName = (item: CommonDbOrganizationAdminPolicy) => {
       return `${organizationMapQuery.map.get(item.organization_id)?.name ?? item.organization_id} → ${DataUtil.getUserDisplayValue(usersMapQuery.map.get(item.user_id), t)}`;
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [organizationMapQuery, usersMapQuery]);
@@ -55,6 +55,6 @@ export const useOrganizationAdminPolicyOptionsQuery = (): UseOptions<string> => 
   const organizationAdminPolicyNameFactory = useOrganizationAdminPolicyNameFactory();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CaseDbOrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id, organizationAdminPolicyNameFactory.getName, [organizationAdminPolicyNameFactory]);
+    return DataHookUtil.createUseOptionsDataHook<CommonDbOrganizationAdminPolicy>(organizationAdminPoliciesQuery, item => item.id, organizationAdminPolicyNameFactory.getName, [organizationAdminPolicyNameFactory]);
   }, [organizationAdminPolicyNameFactory, organizationAdminPoliciesQuery]);
 };

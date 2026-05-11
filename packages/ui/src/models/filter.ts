@@ -1,17 +1,15 @@
 import type { TFunction } from 'i18next';
-import type {
-  CaseDbCase,
-  CaseDbFiltersInner,
-} from '@gen-epix/api-casedb';
+import type { CommonDbFiltersInner } from '@gen-epix/api-commondb';
 
+import type { FilterAbstract } from '../classes/abstracts/FilterAbstract/FilterAbstract';
 import type { BooleanFilter } from '../classes/filters/BooleanFilter';
 import type { DateFilter } from '../classes/filters/DateFilter';
 import type { GeoFilter } from '../classes/filters/GeoFilter';
 import type { MultiSelectFilter } from '../classes/filters/MultiSelectFilter';
 import type { NumberRangeFilter } from '../classes/filters/NumberRangeFilter';
-import type { SelectionFilter } from '../classes/filters/SelectionFilter';
 import type { TextFilter } from '../classes/filters/TextFilter';
-import type { TreeFilter } from '../classes/filters/TreeFilter';
+
+export type BuiltinFilter = BooleanFilter | DateFilter | GeoFilter | MultiSelectFilter | NumberRangeFilter | TextFilter;
 
 export interface Filter<TFilterValue, TRowValue> {
   filterValue: TFilterValue;
@@ -19,9 +17,9 @@ export interface Filter<TFilterValue, TRowValue> {
   initialFilterValue: TFilterValue;
   isInitialFilterValue: (value?: TFilterValue) => boolean;
   label: string;
-  matchRowValue: (rowValue: TRowValue, row?: CaseDbCase) => boolean;
+  matchRowValue: (rowValue: TRowValue) => boolean;
   setFilterValue: (value: TFilterValue) => void;
-  toBackendFilter: () => CaseDbFiltersInner;
+  toBackendFilter: () => CommonDbFiltersInner;
 }
 
 export type FilterDimension = {
@@ -34,6 +32,10 @@ export type FilterDimension = {
   preferredFilterId: string;
 };
 
-export type Filters = Array<BooleanFilter | DateFilter | GeoFilter | MultiSelectFilter | NumberRangeFilter | SelectionFilter | TextFilter | TreeFilter>;
+export type FilterInstance = FilterAbstract<unknown>
+  & Pick<Filter<never, never>, 'matchRowValue'>
+  & Pick<Filter<unknown, never>, 'getPresentationValue' | 'toBackendFilter'>;
+
+export type Filters<TExtraFilters extends FilterInstance = FilterInstance> = Array<BuiltinFilter | TExtraFilters>;
 
 export type FilterValues = { [key: string]: unknown };

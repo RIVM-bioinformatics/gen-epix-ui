@@ -36,11 +36,11 @@ export type ApplicationBarNavigationMenuProps = {
 export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNavigationMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const authorizationManager = useMemo(() => AuthorizationManager.instance, []);
+  const authorizationManager = useMemo(() => AuthorizationManager.getInstance(), []);
   const navId = useId();
 
   const menuItems = useMemo(() => {
-    const rootItem = RouterManager.instance.routes.find(r => r.handle.root);
+    const rootItem = RouterManager.getInstance().routes.find(r => r.handle.root);
     return [rootItem, ...rootItem.children.filter(r => !r.handle.hidden)] as MyNonIndexRouteObject[];
   }, []);
 
@@ -75,7 +75,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
         aria-label={t`Toggle navigation menu`}
         onClick={onMenuButtonClick}
         sx={{
-          color: theme['gen-epix'].navbar.primaryColor,
+          color: theme['gen-epix-ui'].navbar.primaryColor,
           [theme.breakpoints.up('md')]: {
             display: 'none',
           },
@@ -89,7 +89,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
         sx={{
           flexGrow: 1,
           [theme.breakpoints.down('md')]: {
-            background: theme['gen-epix'].navbar.background,
+            background: theme['gen-epix-ui'].navbar.background,
             display: isMenuOpen ? 'block' : 'none',
             left: 0,
             paddingBottom: 4,
@@ -120,18 +120,18 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                 sx={{
                   '&:has(.active)': {
                     '& svg': {
-                      color: theme['gen-epix'].navbar.activeColor,
+                      color: theme['gen-epix-ui'].navbar.activeColor,
                     },
                     a: {
-                      color: theme['gen-epix'].navbar.activeColor,
+                      color: theme['gen-epix-ui'].navbar.activeColor,
                     },
-                    background: theme['gen-epix'].navbar.activeBackground,
+                    background: theme['gen-epix-ui'].navbar.activeBackground,
                   },
                   '& svg': {
                     marginTop: '6px',
                   },
                   alignItems: 'center',
-                  color: theme['gen-epix'].navbar.primaryColor,
+                  color: theme['gen-epix-ui'].navbar.primaryColor,
                   display: 'flex',
                   fontWeight: 800,
                   height: 48,

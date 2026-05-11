@@ -1,11 +1,11 @@
 import { addHours } from 'date-fns';
-import type { CaseDbOutage } from '@gen-epix/api-casedb';
+import type { CommonDbOutage } from '@gen-epix/api-commondb';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import type { CategorizedOutages } from '../../models/outage';
 
 export class OutageUtil {
-  public static getCategorizedOutages(outages: CaseDbOutage[]): CategorizedOutages {
+  public static getCategorizedOutages(outages: CommonDbOutage[]): CategorizedOutages {
 
     const activeOutages = outages.filter((outage) => {
       if (outage.is_active) {
@@ -58,7 +58,7 @@ export class OutageUtil {
       }
       if (outage.active_from || outage.active_to) {
         const now = new Date();
-        const soon = addHours(now, ConfigManager.instance.config.outages.NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES);
+        const soon = addHours(now, ConfigManager.getInstance().config.outages.NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES);
         if (outage.active_from && outage.active_to) {
           return soon >= new Date(outage.active_from) && now < new Date(outage.active_to);
         }

@@ -9,7 +9,7 @@ import {
 } from 'vitest';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
-import type { Config } from '../../models/config';
+import type { ConfigBase } from '../../models/config';
 
 import { OutageUtil } from './OutageUtil';
 
@@ -19,11 +19,11 @@ describe('OutageUtil', () => {
       const date = new Date(2020, 5, 1, 10, 0, 0);
       vi.useFakeTimers();
       vi.setSystemTime(date);
-      vi.spyOn(ConfigManager.instance, 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigManager.getInstance(), 'config', 'get').mockReturnValue({
         outages: {
           NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES: 8,
         },
-      } as Config);
+      } as ConfigBase);
     });
     afterAll(() => {
       vi.restoreAllMocks();

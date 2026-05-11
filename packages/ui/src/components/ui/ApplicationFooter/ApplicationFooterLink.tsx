@@ -25,7 +25,7 @@ export const ApplicationFooterLink = ({ children, href, onClick, ...boxProps }: 
           onClick={onClick}
           rel={'noreferrer'}
           sx={{
-            color: theme['gen-epix'].footer.color,
+            color: theme['gen-epix-ui'].footer.color,
           }}
           target={'_blank'}
         >
@@ -37,7 +37,7 @@ export const ApplicationFooterLink = ({ children, href, onClick, ...boxProps }: 
           component={'button'}
           onClick={onClick}
           sx={{
-            color: theme['gen-epix'].footer.color,
+            color: theme['gen-epix-ui'].footer.color,
           }}
         >
           {children}

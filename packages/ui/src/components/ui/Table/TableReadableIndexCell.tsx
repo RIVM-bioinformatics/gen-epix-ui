@@ -11,26 +11,26 @@ import type {
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
 
-export type TableReadableIndexCellProps<TRowData> = {
-  readonly cell: TableRowParams<TRowData>;
+export type TableReadableIndexCellProps<TRowData, TDataContext> = {
+  readonly cell: TableRowParams<TRowData, TDataContext>;
   readonly getRowName?: (row: TRowData) => string;
   readonly onReadableIndexClick: (row: TRowData) => void;
-  readonly tableColumn: TableColumnReadableIndex<TRowData>;
+  readonly tableColumn: TableColumnReadableIndex<TRowData, TDataContext>;
 };
 
-export const TableReadableIndexCell = <TRowData, >({
+export const TableReadableIndexCell = <TRowData, TDataContext>({
   cell,
   getRowName,
   onReadableIndexClick,
   tableColumn,
-}: TableReadableIndexCellProps<TRowData>) => {
+}: TableReadableIndexCellProps<TRowData, TDataContext>) => {
   const onClick = useCallback((event: ReactMouseEvent) => {
     if (onReadableIndexClick) {
       if (!getRowName) {
         throw new Error('getRowName is required when onReadableIndexClick is provided');
       }
-      if (ConfigManager.instance.config.enablePageEvents) {
-        PageEventBusManager.instance.emit('click', {
+      if (ConfigManager.getInstance().config.enablePageEvents) {
+        PageEventBusManager.getInstance().emit('click', {
           label: getRowName(cell.row),
           type: 'table-row-index',
         });

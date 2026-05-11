@@ -68,15 +68,15 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
-      email: AuthorizationManager.instance.user?.email ?? AuthorizationManager.instance.user?.key ?? '',
+      email: AuthorizationManager.getInstance().user?.email ?? AuthorizationManager.getInstance().user?.key ?? '',
       message: '',
-      name: AuthorizationManager.instance.user?.name ?? '',
+      name: AuthorizationManager.getInstance().user?.name ?? '',
     },
   });
   const { handleSubmit } = formMethods;
 
   useEffect(() => {
-    UserSettingsManager.instance.showShowUserFeedbackTooltip = false;
+    UserSettingsManager.getInstance().showShowUserFeedbackTooltip = false;
   }, []);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
@@ -104,8 +104,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   }, [onTitleChange, t]);
 
   const onFormSubmit = useCallback((formValues: FormFields): void => {
-    const navigationHistory = NavigationHistoryManager.instance.navigationHistory;
-    LogManager.instance.log([{
+    const navigationHistory = NavigationHistoryManager.getInstance().navigationHistory;
+    LogManager.getInstance().log([{
       detail: {
         ...formValues,
         navigationHistory: navigationHistory.slice(navigationHistory.length - 50).reverse(),
@@ -113,8 +113,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
       level: 'INFO',
       topic: 'USER_FEEDBACK',
     }]);
-    LogManager.instance.flushLog();
-    NotificationManager.instance.showNotification({
+    LogManager.getInstance().flushLog();
+    NotificationManager.getInstance().showNotification({
       message: t`Thank you for sharing your feedback with us`,
       severity: 'success',
     });
@@ -152,7 +152,7 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
         }}
       >
         <Typography component={'p'}>
-          {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: ConfigManager.instance.config.applicationName })}
+          {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: ConfigManager.getInstance().config.applicationName })}
         </Typography>
       </Box>
       <GenericForm<FormFields>

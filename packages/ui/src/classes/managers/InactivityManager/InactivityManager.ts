@@ -1,13 +1,13 @@
 import throttle from 'lodash/throttle';
-import { CaseDbLogLevel } from '@gen-epix/api-casedb';
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import { Subject } from '../../Subject';
+import { HmrUtil } from '../../../utils/HmrUtil';
 import { AuthenticationManager } from '../AuthenticationManager';
 import { ConfigManager } from '../ConfigManager';
 import { LogManager } from '../LogManager';
 import { TimeUtil } from '../../../utils/TimeUtil';
-import { WindowManager } from '../WindowManager';
 
 export type InactivityState = {
   idleDiff: number;
@@ -18,18 +18,14 @@ export type InactivityState = {
 };
 
 export class InactivityManager extends SubscribableAbstract<InactivityState> {
-  public static get instance(): InactivityManager {
-    // Instances are stored on the window to prevent multiple instances of the same manager. HMR may load multiple instances of the same manager, but we only want one instance to be active at a time.
+  private static __instance: InactivityManager;
 
-    WindowManager.instance.window.managers.inactivity = WindowManager.instance.window.managers.inactivity || new InactivityManager();
-    return WindowManager.instance.window.managers.inactivity;
-  }
   private idleDiff: number = 0;
+
   private idleSince: number = Date.now();
   private isIdle: boolean = false;
   private isPaused: boolean = false;
   private notificationDiff: number = 0;
-
   private readonly onActivityDebounced: () => void;
 
   private constructor() {
@@ -41,8 +37,8 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
       readableNotificationDiff: '',
     }));
 
-    const ALLOWED_IDLE_TIME_MS = ConfigManager.instance.config.userInactivityConfirmation.ALLOWED_IDLE_TIME_MS;
-    const NOTIFICATION_TIME_MS = ConfigManager.instance.config.userInactivityConfirmation.NOTIFICATION_TIME_MS;
+    const ALLOWED_IDLE_TIME_MS = ConfigManager.getInstance().config.userInactivityConfirmation.ALLOWED_IDLE_TIME_MS;
+    const NOTIFICATION_TIME_MS = ConfigManager.getInstance().config.userInactivityConfirmation.NOTIFICATION_TIME_MS;
 
     this.onActivityDebounced = throttle(this.onActivity.bind(this), 1000, {
       leading: true,
@@ -70,15 +66,20 @@ export class InactivityManager extends SubscribableAbstract<InactivityState> {
     }, 500);
   }
 
+  public static getInstance(): InactivityManager {
+    InactivityManager.__instance = HmrUtil.getHmrSingleton('inactivityManager', InactivityManager.__instance, () => new InactivityManager());
+    return InactivityManager.__instance;
+  }
+
   public logout(): void {
-    LogManager.instance.log([{
-      detail: AuthenticationManager.instance.authContextProps.user,
-      level: CaseDbLogLevel.TRACE,
+    LogManager.getInstance().log([{
+      detail: AuthenticationManager.getInstance().authContextProps.user,
+      level: CommonDbLogLevel.TRACE,
       topic: 'USER_LOGOUT_BY_INACTIVITY',
     }]);
-    LogManager.instance.flushLog();
+    LogManager.getInstance().flushLog();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    AuthenticationManager.instance.authContextProps.signoutRedirect();
+    AuthenticationManager.getInstance().authContextProps.signoutRedirect();
   }
 
   public pause(): void {

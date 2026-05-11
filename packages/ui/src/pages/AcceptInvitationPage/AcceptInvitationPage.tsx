@@ -9,15 +9,16 @@ import {
   useCallback,
   useState,
 } from 'react';
-import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { WindowManager } from '../../classes/managers/WindowManager';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { QueryUtil } from '../../utils/QueryUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { COMMON_QUERY_KEY } from '../../data/query';
+import { ApiManager } from '../../classes/managers/ApiManager';
 
 export const AcceptInvitationPage = () => {
   const { token } = useParams();
@@ -27,17 +28,17 @@ export const AcceptInvitationPage = () => {
     enabled: shouldRegister,
     gcTime: 0,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbOrganizationApi.instance.userRegistrationsPostOne(token, { signal });
+      const response = await ApiManager.getInstance().organizationApi.userRegistrationsPostOne(token, { signal });
       return response.data;
     },
-    queryKey: QueryUtil.getUserRegistrationsKey(token),
+    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_INVITATIONS, token),
     staleTime: 0,
   });
 
   const { t } = useTranslation();
 
   const onGoToHomePageButtonClick = useCallback(() => {
-    WindowManager.instance.window.location.href = '/';
+    WindowManager.getInstance().window.location.href = '/';
   }, []);
 
   const onCompleteRegistrationButtonClick = useCallback(() => {
@@ -63,7 +64,7 @@ export const AcceptInvitationPage = () => {
               }}
             >
               <Typography>
-                {t('You have been invited to join {{applicationName}}.', { applicationName: ConfigManager.instance.config.applicationName })}
+                {t('You have been invited to join {{applicationName}}.', { applicationName: ConfigManager.getInstance().config.applicationName })}
               </Typography>
             </Box>
             <Box
@@ -85,7 +86,7 @@ export const AcceptInvitationPage = () => {
           <>
             <Box>
               <Typography>
-                {t('You have been successfully registered to {{applicationName}}.', { applicationName: ConfigManager.instance.config.applicationName })}
+                {t('You have been successfully registered to {{applicationName}}.', { applicationName: ConfigManager.getInstance().config.applicationName })}
               </Typography>
             </Box>
             <Box
