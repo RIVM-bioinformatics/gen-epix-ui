@@ -37,18 +37,6 @@
     "packages/api-omopdb": {
       "package-name": "@gen-epix/api-omopdb",
       "component": "api-omopdb"
-    },
-    "packages/demo-client-casedb": {
-      "package-name": "@gen-epix/demo-client-casedb",
-      "component": "demo-client-casedb"
-    },
-    "packages/demo-client-omopdb": {
-      "package-name": "@gen-epix/demo-client-omopdb",
-      "component": "demo-client-omopdb"
-    },
-    "packages/demo-client-seqdb": {
-      "package-name": "@gen-epix/demo-client-seqdb",
-      "component": "demo-client-seqdb"
     }
   }
 }
