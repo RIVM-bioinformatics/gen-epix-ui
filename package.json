@@ -12,7 +12,8 @@
     "generate-api": "lerna run generate-api",
     "validate": "lerna run validate",
     "lint-fix": "lerna run lint-fix",
-    "check-types": "lerna run check-types"
+    "check-types": "lerna run check-types",
+    "build": "lerna run build"
   },
   "devDependencies": {
     "concurrently": "9.2.1",
