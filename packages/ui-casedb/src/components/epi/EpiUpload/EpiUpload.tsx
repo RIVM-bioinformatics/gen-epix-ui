@@ -18,7 +18,7 @@ import {
   EpiUploadStoreContext,
   STEP_ORDER,
 } from '../../../stores/epiUploadStore';
-import { EPI_UPLOAD_STEP } from '../../../../../ui-casedb/src/models/epi';
+import { EPI_UPLOAD_STEP } from '../../../models/epi';
 
 import EpiUploadSelectFile from './EpiUploadSelectFile';
 import { EpiUploadMapColumns } from './EpiUploadMapColumns';

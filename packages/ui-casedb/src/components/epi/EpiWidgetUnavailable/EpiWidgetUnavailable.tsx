@@ -8,7 +8,7 @@ import { useCallback } from 'react';
 import { useStore } from 'zustand';
 import { produce } from 'immer';
 
-import type { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
+import type { EPI_ZONE } from '../../../models/epi';
 import { userProfileStore } from '../../../stores/userProfileStore';
 
 export type EpiWidgetUnavailableProps = {

@@ -31,7 +31,7 @@ import {
 
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import type { CaseUploadResultWithGeneratedId } from '../../../../../ui-casedb/src/models/epi';
+import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';

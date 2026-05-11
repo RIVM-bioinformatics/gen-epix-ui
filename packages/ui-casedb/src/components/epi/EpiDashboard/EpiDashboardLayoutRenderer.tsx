@@ -29,8 +29,8 @@ import {
   StringUtil,
 } from '@gen-epix/ui';
 
-import type { EpiDashboardLayoutPanelOrientation } from '../../../../../ui-casedb/src/models/epi';
-import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
+import type { EpiDashboardLayoutPanelOrientation } from '../../../models/epi';
+import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';

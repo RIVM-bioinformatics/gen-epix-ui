@@ -28,7 +28,7 @@ import {
   TestIdUtil,
 } from '@gen-epix/ui';
 
-import type { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
+import type { EPI_ZONE } from '../../../models/epi';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
 import { WidgetHeaderIconButton } from '../EpiWidgetHeaderIconButton';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';

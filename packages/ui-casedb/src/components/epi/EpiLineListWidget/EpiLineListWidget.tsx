@@ -50,11 +50,11 @@ import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
   StratificationLegendaItem,
-} from '../../../../../ui-casedb/src/models/epi';
+} from '../../../models/epi';
 import {
   EPI_ZONE,
   STRATIFICATION_MODE,
-} from '../../../../../ui-casedb/src/models/epi';
+} from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';

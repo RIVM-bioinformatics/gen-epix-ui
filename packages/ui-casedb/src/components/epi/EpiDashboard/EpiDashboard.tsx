@@ -64,8 +64,8 @@ import {
 import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
-} from '../../../../../ui-casedb/src/models/epi';
-import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
+} from '../../../models/epi';
+import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';

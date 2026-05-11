@@ -8,7 +8,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
+import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';

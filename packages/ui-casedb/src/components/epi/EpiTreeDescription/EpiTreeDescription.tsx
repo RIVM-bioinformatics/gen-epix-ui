@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import type { TreeConfiguration } from '../../../../../ui-casedb/src/models/epi';
+import type { TreeConfiguration } from '../../../models/epi';
 
 export type EpiTreeDescriptionProps = {
   readonly treeConfiguration: TreeConfiguration;

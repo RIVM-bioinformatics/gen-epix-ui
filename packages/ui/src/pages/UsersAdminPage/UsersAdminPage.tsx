@@ -39,7 +39,7 @@ import { COMMON_QUERY_KEY } from '../../data/query';
 import { ApiManager } from '../../classes/managers/ApiManager';
 
 export type UsersAdminPageProps = {
-  subPages?: CrudPageProps<FormFields, CommonDbUser>['subPages'];
+  subPages?: CrudPageProps<OmitWithMetaData<CommonDbUser, 'organization_id' | 'organization'>, CommonDbUser>['subPages'];
 };
 
 type FormFields = OmitWithMetaData<CommonDbUser, 'organization_id' | 'organization'>;

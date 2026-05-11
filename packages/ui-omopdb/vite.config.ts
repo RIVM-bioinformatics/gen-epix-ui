@@ -33,29 +33,6 @@ export const createIndex = () => {
   return './src/index.ts';
 };
 
-const staticCopyTargets: Parameters<typeof viteStaticCopy>[0]['targets'] = [];
-
-if (globSync(join(__dirname, 'src', '@types', '**/*.d.ts')).length > 0) {
-  staticCopyTargets.push({
-    dest: './',
-    rename: { stripBase: true as const },
-    src: [
-      './src/@types/**/*.d.ts',
-    ],
-    transform: (content: string) => content.replace(/from '\.\.\/classes\/[^']+'/g, "from './index'"),
-  });
-}
-
-if (globSync(join(__dirname, 'src', 'locale', '**/*')).length > 0) {
-  staticCopyTargets.push({
-    dest: './locale',
-    rename: { stripBase: true as const },
-    src: [
-      './src/locale',
-    ],
-  });
-}
-
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
@@ -95,15 +72,42 @@ export default defineConfig({
     svgr(),
     libInjectCss(),
     dts({
+      beforeWriteFile: (filePath, content) => {
+        if (/[/\\]dist[/\\]index\.d\.ts$/.test(filePath) && content.trim() === 'export {}') {
+          return {
+            content: "export * from './src/index'\nexport {}\n",
+            filePath,
+          };
+        }
+
+        return {
+          content,
+          filePath,
+        };
+      },
       insertTypesEntry: true,
       rollupTypes: true,
-      tsconfigPath: './tsconfig.json',
+      tsconfigPath: './tsconfig.build.json',
     }),
-    ...(staticCopyTargets.length > 0
-      ? [viteStaticCopy({
-        targets: staticCopyTargets,
-      })]
-      : []),
+    viteStaticCopy({
+      targets: [
+        {
+          dest: './',
+          rename: { stripBase: true },
+          src: [
+            './src/@types/**/*.d.ts',
+          ],
+          // transform: (content) => content.replace(/from '\.\.\/classes\/[^']+'/g, "from './index'"),
+        },
+        {
+          dest: './locale',
+          rename: { stripBase: true },
+          src: [
+            './src/locale',
+          ],
+        },
+      ],
+    }),
   ],
   test: {
     coverage: {

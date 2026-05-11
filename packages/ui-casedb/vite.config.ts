@@ -75,9 +75,22 @@ export default defineConfig({
     svgr(),
     libInjectCss(),
     dts({
+      beforeWriteFile: (filePath, content) => {
+        if (/[/\\]dist[/\\]index\.d\.ts$/.test(filePath) && content.trim() === 'export {}') {
+          return {
+            content: "export * from './src/index'\nexport {}\n",
+            filePath,
+          };
+        }
+
+        return {
+          content,
+          filePath,
+        };
+      },
       insertTypesEntry: true,
       rollupTypes: true,
-      tsconfigPath: './tsconfig.json',
+      tsconfigPath: './tsconfig.build.json',
     }),
     viteStaticCopy({
       targets: [

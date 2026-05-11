@@ -46,8 +46,8 @@ import type {
   EpiLinkedScrollSubjectValue,
   Highlighting,
   TreeConfiguration,
-} from '../../../../../ui-casedb/src/models/epi';
-import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
+} from '../../../models/epi';
+import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';

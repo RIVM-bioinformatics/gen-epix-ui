@@ -54,7 +54,7 @@ import {
 } from '@gen-epix/ui';
 
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
-import { EPI_ZONE } from '../../../../../ui-casedb/src/models/epi';
+import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
