@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v1.0.5...ui-casedb-v1.0.6) (2026-05-11)
+
+
+### Bug Fixes
+
+* fix build ([9d91efd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9d91efdf417efae0bbca87f2f15fa8703fb6221f))
+
 ## [1.0.5](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v1.0.4...ui-casedb-v1.0.5) (2026-05-11)
 
 
