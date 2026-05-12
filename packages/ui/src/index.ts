@@ -93,7 +93,6 @@ export * from './components/ui/Stepper';
 export * from './components/ui/Spinner';
 export * from './components/ui/Sidebar';
 export * from './components/ui/ResponseHandler';
-export * from './components/ui/PanelSeparator';
 export * from './components/ui/PageContainer';
 export * from './components/ui/OutagesDialog';
 export * from './components/ui/OutageList';

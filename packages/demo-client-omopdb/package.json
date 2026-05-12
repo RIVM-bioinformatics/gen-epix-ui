@@ -27,6 +27,7 @@
     "@mui/system": "9.0.1",
     "@mui/utils": "9.0.1",
     "@mui/x-date-pickers": "9.1.0",
+    "axios": "1.16.0",
     "date-fns": "4.1.0",
     "i18next": "26.1.0",
     "react": "19.2.6",

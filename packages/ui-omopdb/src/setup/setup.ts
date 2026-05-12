@@ -7,7 +7,7 @@ import {
   COMMON_QUERY_DEPENDENCIES,
   QueryClientManager,
   RouterManager,
-  setup as setupCommon,
+  setup,
 } from '@gen-epix/ui';
 import {
   OmopDbAbacApi,
@@ -45,5 +45,5 @@ export const setupOmopDb = () => {
     organizationApi: OmopDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
     systemApi: OmopDbSystemApi.getInstance(),
   });
-  setupCommon();
+  setup();
 };

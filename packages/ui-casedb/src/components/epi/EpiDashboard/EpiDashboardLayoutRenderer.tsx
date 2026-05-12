@@ -24,8 +24,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import {
   ConfigManager,
-  PanelSeparatorHorizontal,
-  PanelSeparatorVertical,
   StringUtil,
 } from '@gen-epix/ui';
 
@@ -35,6 +33,10 @@ import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import type { CaseDbConfig } from '../../../models/config';
+import {
+  PanelSeparatorHorizontal,
+  PanelSeparatorVertical,
+} from '../../ui/PanelSeparator';
 
 export type EpiDashboardLayoutRendererProps = {
   readonly disabled?: boolean;

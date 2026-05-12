@@ -118,6 +118,7 @@ export * from './context/caseTypeAbac';
 export * from './context/caseAbac';
 export * from './components/ui/UsersEffectiveRightsDetailsDialog';
 export * from './components/ui/PhylogeneticTreeComponent';
+export * from './components/ui/PanelSeparator';
 export * from './components/ui/HomePageTrends';
 export * from './components/ui/FileSelector';
 export * from './components/epi/EpiWidgetUnavailable';

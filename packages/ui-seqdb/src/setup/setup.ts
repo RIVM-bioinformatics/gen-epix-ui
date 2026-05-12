@@ -7,7 +7,7 @@ import {
   COMMON_QUERY_DEPENDENCIES,
   QueryClientManager,
   RouterManager,
-  setup as setupCommon,
+  setup,
 } from '@gen-epix/ui';
 import {
   SeqDbAbacApi,
@@ -45,5 +45,5 @@ export const setupSeqDb = () => {
     organizationApi: SeqDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
     systemApi: SeqDbSystemApi.getInstance(),
   });
-  setupCommon();
+  setup();
 };

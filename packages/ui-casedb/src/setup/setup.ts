@@ -7,7 +7,7 @@ import {
   COMMON_QUERY_DEPENDENCIES,
   QueryClientManager,
   RouterManager,
-  setup as setupCommon,
+  setup,
 } from '@gen-epix/ui';
 import {
   CaseDbAbacApi,
@@ -45,5 +45,5 @@ export const setupCaseDb = () => {
     organizationApi: CaseDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
     systemApi: CaseDbSystemApi.getInstance(),
   });
-  setupCommon();
+  setup();
 };
