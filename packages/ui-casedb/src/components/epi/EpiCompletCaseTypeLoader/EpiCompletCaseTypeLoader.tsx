@@ -27,8 +27,6 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseT
   const [isSideEffectLoading, setIsSideEffectLoading] = useState(true);
   const [sideEffectError, setSideEffectError] = useState<Error>();
 
-  console.log('EpiCompletCaseTypeLoader render', { caseTypeId });
-
   const { data: completeCaseType, error: completeCaseTypeError, isLoading: isCompleteCaseTypeLoading } = useItemQuery({
     baseQueryKey: CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES,
     itemId: caseTypeId,

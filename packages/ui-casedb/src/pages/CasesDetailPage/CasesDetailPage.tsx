@@ -21,8 +21,6 @@ export const CasesDetailPage = () => {
   const { t } = useTranslation();
   const { caseTypeId, slug } = useParams();
 
-  console.log('CasesDetailPage render', { caseTypeId, slug });
-
   const updateBreadcrumb = useUpdateBreadcrumb('Case type');
 
   const { data: caseType, error, isLoading } = useItemQuery({
@@ -32,8 +30,6 @@ export const CasesDetailPage = () => {
       queryFn: async ({ signal }) => (await CaseDbCaseApi.getInstance().caseTypesGetOne(caseTypeId, { signal })).data,
     },
   });
-
-  console.log('CasesDetailPage render - caseType', { caseType, error, isLoading });
 
   const title = useMemo(() => {
     return caseType?.name ? caseType?.name : t`Case`;

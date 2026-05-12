@@ -23,8 +23,6 @@ export const EpiDashboardStoreLoader = ({ caseSet, caseTypeId, children }: EpiDa
     setCompleteCaseType(c);
   }, []);
 
-  console.log('EpiDashboardStoreLoader render', { caseSet, caseTypeId, completeCaseType });
-
   return (
     <EpiCompletCaseTypeLoader
       caseTypeId={caseTypeId}

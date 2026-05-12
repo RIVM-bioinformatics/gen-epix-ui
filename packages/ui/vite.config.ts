@@ -62,6 +62,7 @@ export default defineConfig({
             /^i18next(\/.+)?$/,
             /^axios(\/.+)?$/,
             /^react(-dom|-i18next|-router(-dom)?)?(\/.+)?$/,
+            /^yup(\/.+)?$/,
           ],
         }),
       ],
