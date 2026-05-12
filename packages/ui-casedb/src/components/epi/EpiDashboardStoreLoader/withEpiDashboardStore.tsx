@@ -7,7 +7,6 @@ export type WithEpiDashboardStoreProps = EpiDashboardStoreLoaderProps;
 
 export const withEpiDashboardStore = <P extends WithEpiDashboardStoreProps>(WrappedComponent: ComponentType<P>): ComponentType<P> => {
   return (props: WithEpiDashboardStoreProps) => {
-    console.log('withEpiDashboardStore render', { props });
     return (
       <EpiDashboardStoreLoader
         caseSet={props.caseSet}
