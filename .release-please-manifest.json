@@ -1,9 +1,9 @@
 {
-  "packages/ui": "2.1.0",
-  "packages/ui-casedb": "2.1.1",
-  "packages/ui-omopdb": "2.1.0",
-  "packages/ui-seqdb": "2.1.0",
-  "packages/api-casedb": "2.1.0",
+  "packages/ui": "2.1.1",
+  "packages/ui-casedb": "2.1.2",
+  "packages/ui-omopdb": "2.1.1",
+  "packages/ui-seqdb": "2.1.1",
+  "packages/api-casedb": "2.1.1",
   "packages/api-commondb": "2.1.0",
   "packages/api-seqdb": "2.1.0",
   "packages/api-omopdb": "2.1.0"
