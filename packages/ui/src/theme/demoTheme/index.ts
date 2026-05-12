@@ -160,7 +160,7 @@ export const createDemoTheme = (paletteMode: PaletteMode): Theme => {
   `;
 
   const themeOptions: ThemeOptions = {
-    ...(process.env.NODE_ENV === 'test' && { transitions: { create: () => 'none' } }),
+    ...(import.meta.env.MODE === 'test' && { transitions: { create: () => 'none' } }),
     breakpoints: {
       values: {
         lg: 1340,
