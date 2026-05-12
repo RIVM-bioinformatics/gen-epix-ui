@@ -9,15 +9,16 @@
     "start-omop": "concurrently \"pnpm --filter @gen-epix/demo-client-omopdb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-omopdb run start\"",
     "start-seq": "concurrently \"pnpm --filter @gen-epix/demo-client-seqdb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-seqdb run start\"",
     "clean": "lerna clean && rm -fr node_modules",
-    "generate-api": "lerna run generate-api",
+    "generate-api": "lerna run generate-api && generate-common-api packages/api-casedb packages/api-seqdb packages/api-omopdb packages/api-commondb",
     "validate": "lerna run validate",
     "lint-fix": "lerna run lint-fix",
     "check-types": "lerna run check-types",
     "build": "lerna run build"
   },
   "devDependencies": {
+    "@gen-epix/generate-common-api": "0.0.1",
     "concurrently": "9.2.1",
     "lerna": "9.0.7",
-    "typescript": "6.0.2"
+    "typescript": "6.0.3"
   }
 }

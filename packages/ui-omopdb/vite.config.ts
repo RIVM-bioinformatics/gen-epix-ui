@@ -85,8 +85,8 @@ export default defineConfig({
           filePath,
         };
       },
+      bundleTypes: true,
       insertTypesEntry: true,
-      rollupTypes: true,
       tsconfigPath: './tsconfig.build.json',
     }),
     viteStaticCopy({
@@ -97,7 +97,6 @@ export default defineConfig({
           src: [
             './src/@types/**/*.d.ts',
           ],
-          // transform: (content) => content.replace(/from '\.\.\/classes\/[^']+'/g, "from './index'"),
         },
         {
           dest: './locale',

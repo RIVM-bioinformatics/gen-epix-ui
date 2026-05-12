@@ -145,94 +145,95 @@ export interface OmopDbCohortDefinition {
 }
 
 export const OmopDbCommandName = {
-    SiteCrudCommand: 'SiteCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
     DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    ProcedureOccurrenceIdentifierCrudCommand: 'ProcedureOccurrenceIdentifierCrudCommand',
-    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    MetadataCrudCommand: 'MetadataCrudCommand',
-    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
-    DomainCrudCommand: 'DomainCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
-    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
-    CareSiteCrudCommand: 'CareSiteCrudCommand',
-    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
-    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
-    MeasurementCrudCommand: 'MeasurementCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
-    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
     MeasurementRelationIdentifierCrudCommand: 'MeasurementRelationIdentifierCrudCommand',
-    SpecimenCrudCommand: 'SpecimenCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
-    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
-    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
-    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
-    OmopDbUploadPersonsCommand: 'OmopDbUploadPersonsCommand',
-    DeathCrudCommand: 'DeathCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    ObservationCrudCommand: 'ObservationCrudCommand',
-    EpisodeCrudCommand: 'EpisodeCrudCommand',
-    RelationshipCrudCommand: 'RelationshipCrudCommand',
-    CohortCrudCommand: 'CohortCrudCommand',
-    CohortDefinitionCrudCommand: 'CohortDefinitionCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
-    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
-    CostCrudCommand: 'CostCrudCommand',
-    LocationCrudCommand: 'LocationCrudCommand',
-    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
     NoteCrudCommand: 'NoteCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
-    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
     UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    ProviderCrudCommand: 'ProviderCrudCommand',
-    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
-    DoseEraCrudCommand: 'DoseEraCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    VocabularyCrudCommand: 'VocabularyCrudCommand',
-    DrugExposureIdentifierCrudCommand: 'DrugExposureIdentifierCrudCommand',
-    VisitDetailCrudCommand: 'VisitDetailCrudCommand',
-    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
-    EpisodeEventCrudCommand: 'EpisodeEventCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    ObservationIdentifierCrudCommand: 'ObservationIdentifierCrudCommand',
-    FactRelationshipCrudCommand: 'FactRelationshipCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
+    UploadPersonsCommand: 'UploadPersonsCommand',
+    MetadataCrudCommand: 'MetadataCrudCommand',
+    CohortDefinitionCrudCommand: 'CohortDefinitionCrudCommand',
+    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
+    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
     DrugEraCrudCommand: 'DrugEraCrudCommand',
+    ObservationCrudCommand: 'ObservationCrudCommand',
+    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
+    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
+    CareSiteCrudCommand: 'CareSiteCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    DoseEraCrudCommand: 'DoseEraCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    EpisodeCrudCommand: 'EpisodeCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RelationshipCrudCommand: 'RelationshipCrudCommand',
+    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
+    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
+    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
+    MeasurementCrudCommand: 'MeasurementCrudCommand',
     ConceptRelationshipCrudCommand: 'ConceptRelationshipCrudCommand',
     ConceptClassCrudCommand: 'ConceptClassCrudCommand',
-    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
-    PersonCrudCommand: 'PersonCrudCommand',
-    ConceptSynonymCrudCommand: 'ConceptSynonymCrudCommand',
-    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
-    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
+    CohortCrudCommand: 'CohortCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    SpecimenCrudCommand: 'SpecimenCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
     DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    VisitDetailCrudCommand: 'VisitDetailCrudCommand',
+    FactRelationshipCrudCommand: 'FactRelationshipCrudCommand',
+    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
+    DeathCrudCommand: 'DeathCrudCommand',
+    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
+    CostCrudCommand: 'CostCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
+    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
+    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
+    DomainCrudCommand: 'DomainCrudCommand',
+    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
+    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
+    VocabularyCrudCommand: 'VocabularyCrudCommand',
+    ConceptSynonymCrudCommand: 'ConceptSynonymCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    PersonCrudCommand: 'PersonCrudCommand',
+    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
+    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
+    ProviderCrudCommand: 'ProviderCrudCommand',
+    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    EpisodeEventCrudCommand: 'EpisodeEventCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    RetrieveSpecimenIdsByCohortIdsCommand: 'RetrieveSpecimenIdsByCohortIdsCommand',
+    DrugExposureIdentifierCrudCommand: 'DrugExposureIdentifierCrudCommand',
+    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
+    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    LocationCrudCommand: 'LocationCrudCommand',
+    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
+    ProcedureOccurrenceIdentifierCrudCommand: 'ProcedureOccurrenceIdentifierCrudCommand',
+    ObservationIdentifierCrudCommand: 'ObservationIdentifierCrudCommand',
 } as const;
 
 export type OmopDbCommandName = typeof OmopDbCommandName[keyof typeof OmopDbCommandName];
@@ -2341,6 +2342,16 @@ export interface OmopDbRetrievePersonsByIdsRequestBody {
      */
     'person_ids': Array<string>;
 }
+export interface OmopDbRetrieveSpecimenIdsByCohortIdsRequestBody {
+    /**
+     * The cohort definition ID.
+     */
+    'cohort_definition_id': string;
+    /**
+     * The cohort IDs to look up. UNIQUE
+     */
+    'cohort_ids': Array<string>;
+}
 /**
  * Represents a physical site of an organization.
  */
@@ -2506,6 +2517,16 @@ export interface OmopDbSpecimenIdentifier {
      */
     'internal_id': string;
     'specimen'?: OmopDbSpecimen;
+}
+export interface OmopDbSpecimenIdsByCohortResult {
+    'created_at'?: string | null;
+    'modified_at'?: string | null;
+    'modified_by'?: string | null;
+    'id'?: string | null;
+    /**
+     * Map from cohort_id to the specimen_ids of the person in that cohort.
+     */
+    'specimen_ids_by_cohort_id': { [key: string]: Array<string>; };
 }
 export interface OmopDbTypedCompositeFilter {
     /**
@@ -23689,6 +23710,41 @@ const OmopDbOmopApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Given a set of cohort IDs (equivalent to CASEDB case IDs) and a cohort definition ID, retrieve the specimen IDs (equivalent to SEQDB sample IDs) for the persons belonging to those cohorts.
+         * @summary Retrieve OmopDbSpecimen Ids By OmopDbCohort Ids
+         * @param {OmopDbRetrieveSpecimenIdsByCohortIdsRequestBody} retrieveSpecimenIdsByCohortIdsRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveSpecimenIdsByCohortIds: async (retrieveSpecimenIdsByCohortIdsRequestBody: OmopDbRetrieveSpecimenIdsByCohortIdsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveSpecimenIdsByCohortIdsRequestBody' is not null or undefined
+            assertParamExists('retrieveSpecimenIdsByCohortIds', 'retrieveSpecimenIdsByCohortIdsRequestBody', retrieveSpecimenIdsByCohortIdsRequestBody)
+            const localVarPath = `/v1/retrieve/specimen_ids_by_cohort_ids`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveSpecimenIdsByCohortIdsRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Sourcetoconceptmaps  Delete All
          * @param {*} [options] Override http request option.
@@ -34372,6 +34428,19 @@ const OmopDbOmopApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Given a set of cohort IDs (equivalent to CASEDB case IDs) and a cohort definition ID, retrieve the specimen IDs (equivalent to SEQDB sample IDs) for the persons belonging to those cohorts.
+         * @summary Retrieve OmopDbSpecimen Ids By OmopDbCohort Ids
+         * @param {OmopDbRetrieveSpecimenIdsByCohortIdsRequestBody} retrieveSpecimenIdsByCohortIdsRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveSpecimenIdsByCohortIds(retrieveSpecimenIdsByCohortIdsRequestBody: OmopDbRetrieveSpecimenIdsByCohortIdsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OmopDbSpecimenIdsByCohortResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveSpecimenIdsByCohortIds(retrieveSpecimenIdsByCohortIdsRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OmopApi.retrieveSpecimenIdsByCohortIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @summary Sourcetoconceptmaps  Delete All
          * @param {*} [options] Override http request option.
@@ -41826,6 +41895,17 @@ export class OmopDbOmopApi extends OmopDbBaseAPI {
      */
     public retrievePersonsByIds(retrievePersonsByIdsRequestBody: OmopDbRetrievePersonsByIdsRequestBody, options?: RawAxiosRequestConfig) {
         return OmopDbOmopApiFp(this.configuration).retrievePersonsByIds(retrievePersonsByIdsRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Given a set of cohort IDs (equivalent to CASEDB case IDs) and a cohort definition ID, retrieve the specimen IDs (equivalent to SEQDB sample IDs) for the persons belonging to those cohorts.
+     * @summary Retrieve OmopDbSpecimen Ids By OmopDbCohort Ids
+     * @param {OmopDbRetrieveSpecimenIdsByCohortIdsRequestBody} retrieveSpecimenIdsByCohortIdsRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public retrieveSpecimenIdsByCohortIds(retrieveSpecimenIdsByCohortIdsRequestBody: OmopDbRetrieveSpecimenIdsByCohortIdsRequestBody, options?: RawAxiosRequestConfig) {
+        return OmopDbOmopApiFp(this.configuration).retrieveSpecimenIdsByCohortIds(retrieveSpecimenIdsByCohortIdsRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**

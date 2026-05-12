@@ -150,7 +150,7 @@ export const createRoutes = (
           { command_name: CaseDbCommandName.RetrieveProtocolsCommand, permission_type: CaseDbPermissionType.EXECUTE },
           { command_name: CaseDbCommandName.CreateFileForReadSetCommand, permission_type: CaseDbPermissionType.EXECUTE },
           { command_name: CaseDbCommandName.CreateFileForSeqCommand, permission_type: CaseDbPermissionType.EXECUTE },
-          { command_name: CaseDbCommandName.CaseDbUploadCasesCommand, permission_type: CaseDbPermissionType.EXECUTE },
+          { command_name: CaseDbCommandName.UploadCasesCommand, permission_type: CaseDbPermissionType.EXECUTE },
         ],
         requiresUserProfile: true,
         title: t`Upload`,

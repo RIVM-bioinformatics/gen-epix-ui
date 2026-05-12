@@ -21,66 +21,66 @@ import globalAxios from 'axios';
 export const BASE_PATH = "";
 
 export const COLLECTION_FORMATS = {
-    csv: ",",
-    ssv: " ",
-    tsv: "\t",
-    pipes: "|",
+  csv: ",",
+  ssv: " ",
+  tsv: "\t",
+  pipes: "|",
 };
 
 export interface RequestArgs {
-    url: string;
-    options: RawAxiosRequestConfig;
+  url: string;
+  options: RawAxiosRequestConfig;
 }
 
 export class SeqDbBaseAPI {
-    public static defaultRequestTimeout: number;
-    public static baseUrl: string;
-    public static onRequest: Array<(request: InternalAxiosRequestConfig) => InternalAxiosRequestConfig<unknown>> = [];
-    public static onResponseFulfilled: Array<(response: AxiosResponse) => AxiosResponse> = [];
-    public static onResponseRejected: Array<(error: unknown) => void> = [];    public static accessToken: string;
-  
-    protected configuration = new Configuration();
-    protected axios: AxiosInstance;
-  
-    public constructor() {
-      this.axios = globalAxios.create();
-      this.axios.interceptors.request.use(request => {
-        if (SeqDbBaseAPI.onRequest?.length) {
-          return SeqDbBaseAPI.onRequest.reduce((prev, curr) => {
-            return curr(prev);
-          }, request);
-        }
-        return request;
-      });
-      this.axios.interceptors.response.use(response => {
-        if (SeqDbBaseAPI.onResponseFulfilled?.length) {
-          SeqDbBaseAPI.onResponseFulfilled.reduce((prev, curr) => {
-            return curr(prev);
-          }, response)
-        }
-        return response;
-      }, (err: unknown) => {
-        if (SeqDbBaseAPI.onResponseRejected?.length) {
-          SeqDbBaseAPI.onResponseRejected.forEach(cb => cb(err));
-        }
-        return err;
-      });
-    }
+  public static defaultRequestTimeout: number;
+  public static baseUrl: string;
+  public static onRequest: Array<(request: InternalAxiosRequestConfig) => InternalAxiosRequestConfig<unknown>> = [];
+  public static onResponseFulfilled: Array<(response: AxiosResponse) => AxiosResponse> = [];
+  public static onResponseRejected: Array<(error: unknown) => void> = []; public static accessToken: string;
+
+  protected configuration = new Configuration();
+  protected axios: AxiosInstance;
+
+  public constructor() {
+    this.axios = globalAxios.create();
+    this.axios.interceptors.request.use(request => {
+      if (SeqDbBaseAPI.onRequest?.length) {
+        return SeqDbBaseAPI.onRequest.reduce((prev, curr) => {
+          return curr(prev);
+        }, request);
+      }
+      return request;
+    });
+    this.axios.interceptors.response.use(response => {
+      if (SeqDbBaseAPI.onResponseFulfilled?.length) {
+        SeqDbBaseAPI.onResponseFulfilled.reduce((prev, curr) => {
+          return curr(prev);
+        }, response)
+      }
+      return response;
+    }, (err: unknown) => {
+      if (SeqDbBaseAPI.onResponseRejected?.length) {
+        SeqDbBaseAPI.onResponseRejected.forEach(cb => cb(err));
+      }
+      return err;
+    });
+  }
 };
 
 
 export class RequiredError extends Error {
-    constructor(public field: string, msg?: string) {
-        super(msg);
-        this.name = "RequiredError"
-    }
+  constructor(public field: string, msg?: string) {
+    super(msg);
+    this.name = "RequiredError"
+  }
 }
 
 interface ServerMap {
-    [key: string]: {
-        url: string,
-        description: string,
-    }[];
+  [key: string]: {
+    url: string,
+    description: string,
+  }[];
 }
 
 export const operationServerMap: ServerMap = {

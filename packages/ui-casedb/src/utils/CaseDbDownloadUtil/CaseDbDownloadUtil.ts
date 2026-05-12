@@ -59,7 +59,7 @@ export class CaseDbDownloadUtil {
     const blob = await writeXlsxFile(data, {
       columns: headers.map(() => ({ width: 20 })),
       stickyRowsCount: 1,
-    });
+    }).toBlob();
 
     // Convert blob to base64 and download
     const arrayBuffer = await blob.arrayBuffer();
@@ -108,7 +108,7 @@ export class CaseDbDownloadUtil {
         columns: headers.map(() => ({ width: 20 })),
         showGridLines: true,
         stickyRowsCount: 1,
-      });
+      }).toBlob();
 
       // Convert blob to base64 and download
       const arrayBuffer = await blob.arrayBuffer();
