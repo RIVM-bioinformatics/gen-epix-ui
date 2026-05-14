@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.2...ui-v2.2.3) (2026-05-14)
+
+
+### Bug Fixes
+
+* broaden the semver range for workspace dependencies ([4ddbac5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4ddbac55a35865cefabff8e0e8cad78a1d0aed39))
+
 ## [2.2.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.1...ui-v2.2.2) (2026-05-14)
 
 
