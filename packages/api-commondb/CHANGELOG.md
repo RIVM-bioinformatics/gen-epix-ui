@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v2.1.0...api-commondb-v2.2.0) (2026-05-14)
+
+
+### Features
+
+* move dependencies to peer dependencies ([d91409c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d91409cd21ce6653f8f027f49246a67324ff233b))
+
 ## [2.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v2.0.1...api-commondb-v2.1.0) (2026-05-12)
 
 
