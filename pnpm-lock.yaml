@@ -162,13 +162,13 @@ importers:
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
       '@gen-epix/api-casedb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-casedb
       '@gen-epix/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui
       '@gen-epix/ui-casedb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui-casedb
       '@mui/icons-material':
         specifier: 9.0.1
@@ -277,13 +277,13 @@ importers:
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
       '@gen-epix/api-omopdb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-omopdb
       '@gen-epix/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui
       '@gen-epix/ui-omopdb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui-omopdb
       '@mui/icons-material':
         specifier: 9.0.1
@@ -392,13 +392,13 @@ importers:
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
       '@gen-epix/api-seqdb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-seqdb
       '@gen-epix/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui
       '@gen-epix/ui-seqdb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui-seqdb
       '@mui/icons-material':
         specifier: 9.0.1
@@ -516,7 +516,7 @@ importers:
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
       '@gen-epix/api-commondb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-commondb
       '@gen-epix/eslint-config':
         specifier: 0.3.2
@@ -795,10 +795,10 @@ importers:
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
       '@gen-epix/api-casedb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-casedb
       '@gen-epix/api-commondb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-commondb
       '@gen-epix/eslint-config':
         specifier: 0.3.2
@@ -807,7 +807,7 @@ importers:
         specifier: 0.1.1
         version: 0.1.1
       '@gen-epix/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui
       '@hookform/resolvers':
         specifier: 5.2.2
@@ -966,10 +966,10 @@ importers:
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
       '@gen-epix/api-commondb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-commondb
       '@gen-epix/api-omopdb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-omopdb
       '@gen-epix/eslint-config':
         specifier: 0.3.2
@@ -978,7 +978,7 @@ importers:
         specifier: 0.1.1
         version: 0.1.1
       '@gen-epix/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui
       '@mui/icons-material':
         specifier: 9.0.1
@@ -1074,10 +1074,10 @@ importers:
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
       '@gen-epix/api-commondb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-commondb
       '@gen-epix/api-seqdb':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-seqdb
       '@gen-epix/eslint-config':
         specifier: 0.3.2
@@ -1086,7 +1086,7 @@ importers:
         specifier: 0.1.1
         version: 0.1.1
       '@gen-epix/ui':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../ui
       '@mui/icons-material':
         specifier: 9.0.1
