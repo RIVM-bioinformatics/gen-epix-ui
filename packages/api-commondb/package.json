@@ -36,15 +36,15 @@
     "build-publish": "pnpm build && pnpm publish --access=public"
   },
   "peerDependencies": {
-    "axios": "1.16.0"
+    "axios": "1.16.1"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.3.0",
+    "@gen-epix/eslint-config": "0.3.2",
     "@types/node": "25.7.0",
-    "axios": "1.16.0",
+    "axios": "1.16.1",
     "eslint": "10.3.0",
     "typescript": "6.0.3",
-    "vite": "8.0.12",
+    "vite": "8.0.13",
     "vite-plugin-dts": "5.0.0",
     "vite-plugin-static-copy": "4.1.0"
   },

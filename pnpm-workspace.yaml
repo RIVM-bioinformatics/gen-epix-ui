@@ -18,3 +18,5 @@ allowBuilds:
   '@openapitools/openapi-generator-cli': true
   nx: true
   unrs-resolver: true
+
+lockfile: true

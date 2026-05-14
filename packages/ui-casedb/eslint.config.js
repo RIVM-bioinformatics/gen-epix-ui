@@ -11,6 +11,4 @@ import baseEslintConfig from '@gen-epix/eslint-config';
 //   noSortAlphabetically: true,
 //   multiline: 'ignore',
 // }];
-
-
 export default baseEslintConfig;
