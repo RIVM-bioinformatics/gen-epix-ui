@@ -17,10 +17,8 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  EpiUserRightsDialog,
-  type EpiUserRightsDialogRefMethods,
-} from '../../components/epi/EpiUserRightsDialog';
+import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
+import type { EpiUserRightsDialogRefMethods } from '../../components/epi/EpiUserRightsDialog';
 
 export const CaseDbUsersAdminPage = () => {
   const { t } = useTranslation();

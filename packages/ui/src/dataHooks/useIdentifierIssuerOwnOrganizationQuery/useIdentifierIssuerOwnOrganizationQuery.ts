@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { type UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
 import type { CommonDbIdentifierIssuer } from '@gen-epix/api-commondb';
 
 import type { UseOptions } from '../../models/dataHooks';

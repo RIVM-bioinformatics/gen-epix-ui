@@ -4,10 +4,8 @@ import {
   ConfigManager,
   I18nManager,
 } from '@gen-epix/ui';
-import {
-  type SeqDbConfig,
-  setupSeqDb,
-} from '@gen-epix/ui-seqdb';
+import { setupSeqDb } from '@gen-epix/ui-seqdb';
+import type { SeqDbConfig } from '@gen-epix/ui-seqdb';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 

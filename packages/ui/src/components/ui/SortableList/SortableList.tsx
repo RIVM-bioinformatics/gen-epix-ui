@@ -1,9 +1,11 @@
 import {
-  type ChangeEvent as ReactChangeEvent,
-  type ReactNode,
   useCallback,
   useMemo,
   useState,
+} from 'react';
+import type {
+  ChangeEvent as ReactChangeEvent,
+  ReactNode,
 } from 'react';
 import {
   DndContext,

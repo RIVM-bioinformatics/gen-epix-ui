@@ -6,13 +6,13 @@ describe('ValidationUtil', () => {
   describe('edge cases', () => {
     it('should return true for undefined, null and empty string when not required', () => {
       expect(ValidationUtil.validate('ALPHA', undefined as unknown as string)).toBe(true);
-      expect(ValidationUtil.validate('ALPHA', null as unknown as string)).toBe(true);
+      expect(ValidationUtil.validate('ALPHA', null)).toBe(true);
       expect(ValidationUtil.validate('ALPHA', '')).toBe(true);
     });
 
     it('should return false for undefined, null and empty string when required', () => {
       expect(ValidationUtil.validate('ALPHA', undefined as unknown as string, true)).toBe(false);
-      expect(ValidationUtil.validate('ALPHA', null as unknown as string, true)).toBe(false);
+      expect(ValidationUtil.validate('ALPHA', null, true)).toBe(false);
       expect(ValidationUtil.validate('ALPHA', '', true)).toBe(false);
     });
 

@@ -185,7 +185,7 @@ export const setupYup = () => {
           }
           return customValidation.message(...args);
         },
-        ((value: string): boolean => customValidation.assertCallback(value as unknown as string, ...args)) as TestFunction,
+        ((value: string): boolean => customValidation.assertCallback(value, ...args)) as TestFunction,
       );
     }
     addMethod(string, customValidation.name, method);

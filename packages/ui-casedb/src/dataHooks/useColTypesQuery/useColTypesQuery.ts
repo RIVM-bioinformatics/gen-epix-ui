@@ -51,6 +51,6 @@ export const useColTypeOptionsQuery = (): UseOptions<string> => {
       isLoading: false,
       isPending: false,
       options,
-    } as UseOptions<string>;
+    };
   }, []);
 };

@@ -20,6 +20,6 @@ export const useCaseTypeSetCategoryPurposeOptionsQuery = (): UseOptions<string> 
       isLoading: false,
       isPending: false,
       options,
-    } as UseOptions<string>;
+    };
   }, []);
 };

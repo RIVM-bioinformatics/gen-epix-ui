@@ -12,3 +12,9 @@ onlyBuiltDependencies:
   - nx
   - playwright
   - unrs-resolver
+
+allowBuilds:
+  '@nestjs/core': true
+  '@openapitools/openapi-generator-cli': true
+  nx: true
+  unrs-resolver: true

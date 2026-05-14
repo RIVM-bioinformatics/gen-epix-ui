@@ -102,7 +102,7 @@ export const EpiCaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, o
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
-  }, [onIsSavingChange, t, caseAbacContext?.rights, caseAbacContext.itemDataCollectionLinks, caseTypeId, caseSet.id, onFinish]);
+  }, [onIsSavingChange, t, caseAbacContext?.rights, caseAbacContext.itemDataCollectionLinks, caseSet.id, onFinish, caseTypeId]);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
     {
@@ -117,14 +117,14 @@ export const EpiCaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, o
       label: t`Should the same sharing be applied to the cases in the event?`,
       name: 'shouldApplySharingToCases',
     } as const satisfies FormFieldDefinition<FormFields>,
-  ] as const, [caseAbacContext?.itemDataCollectionOptions, t]);
+  ] as const, [caseAbacContext, t]);
 
   const item = useMemo<FormFields>(() => {
     return {
       dataCollectionIds: caseAbacContext?.rights?.[0]?.shared_in_data_collection_ids ?? [],
       shouldApplySharingToCases: true,
     };
-  }, [caseAbacContext?.rights]);
+  }, [caseAbacContext]);
 
   const values = useMemo<FormFields>(() => FormUtil.createFormValues(formFieldDefinitions, item), [formFieldDefinitions, item]);
 

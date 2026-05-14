@@ -58,11 +58,11 @@ import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiTreeDescription } from '../EpiTreeDescription';
 import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
-import {
-  PhylogeneticTreeComponent,
-  type PhylogeneticTreeComponentPathClickEvent,
-  type PhylogeneticTreeComponentRef,
-  type PhylogeneticTreeComponentViewState,
+import { PhylogeneticTreeComponent } from '../../ui/PhylogeneticTreeComponent';
+import type {
+  PhylogeneticTreeComponentPathClickEvent,
+  PhylogeneticTreeComponentRef,
+  PhylogeneticTreeComponentViewState,
 } from '../../ui/PhylogeneticTreeComponent';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
@@ -181,7 +181,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
     case_type_id: completeCaseType.id,
     genetic_distance_col_id: treeConfiguration?.col.id,
     tree_algorithm_code: treeConfiguration?.treeAlgorithm.code,
-  }), [caseIds, completeCaseType.id, treeConfiguration?.col.id, treeConfiguration?.treeAlgorithm.code]);
+  }), [caseIds, completeCaseType.id, treeConfiguration]);
 
   const { data: treeData, error: treeError, isLoading: isTreeLoading } = useQueryMemo({
     enabled: hasEnoughSequencesToShowTree && !!treeConfiguration && !hasToManyResultsToShowTree,
@@ -279,7 +279,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
     await addTreeFilter(zoomInMenuItemConfig.rootId);
     resetZoomLevelAndScrollPosition();
     onMenuClose();
-  }, [addTreeFilter, zoomInMenuItemConfig?.rootId, resetZoomLevelAndScrollPosition]);
+  }, [addTreeFilter, zoomInMenuItemConfig, resetZoomLevelAndScrollPosition]);
 
   const onRemoveTreeFilterButtonClick = useCallback(async () => {
     await removeTreeFilter();

@@ -29,7 +29,7 @@ import {
   DateTimePicker as MuiDateTimePicker,
 } from '@mui/x-date-pickers';
 import classNames from 'classnames';
-import { type Locale } from 'date-fns';
+import type { Locale } from 'date-fns';
 import {
   enUS,
   sv,
@@ -114,7 +114,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
 
     return (
       <FormControl
-        {...TestIdUtil.createAttributes('DatePicker', { label, name: name as string })}
+        {...TestIdUtil.createAttributes('DatePicker', { label, name })}
         fullWidth
       >
         <LocalizationProvider

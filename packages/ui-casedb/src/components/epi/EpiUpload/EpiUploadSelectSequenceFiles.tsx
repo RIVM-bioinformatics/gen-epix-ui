@@ -11,7 +11,7 @@ import {
   useEffect,
   useId,
   useMemo,
-  useRef,
+  useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
@@ -48,6 +48,26 @@ type FormFields = {
   sequencingProtocolId: string;
 };
 
+const getSelectedFiles = (dataTransfer?: DataTransfer) => {
+  return Array.from(dataTransfer?.files ?? []);
+};
+
+const createSchema = ({
+  hasGenomeFiles,
+  hasReadsFiles,
+  hasSelectedFiles,
+}: {
+  hasGenomeFiles: boolean;
+  hasReadsFiles: boolean;
+  hasSelectedFiles: boolean;
+}) => {
+  return object<FormFields>().shape({
+    assemblyProtocolId: hasGenomeFiles ? string().uuid4().required() : string().nullable().notRequired(),
+    sampleIdColId: hasSelectedFiles ? string().uuid4().required() : string().nullable().notRequired(),
+    sequencingProtocolId: hasReadsFiles ? string().uuid4().required() : string().nullable().notRequired(),
+  });
+};
+
 export const EpiUploadSelectSequenceFiles = () => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -61,7 +81,7 @@ export const EpiUploadSelectSequenceFiles = () => {
   const setSequenceFilesDataTransfer = useStore(store, (state) => state.setSequenceFilesDataTransfer);
   const sampleIdColId = useStore(store, (state) => state.sampleIdColId);
   const initialDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
-  const dataTransferRef = useRef(initialDataTransfer);
+  const [currentDataTransfer, setCurrentDataTransfer] = useState(initialDataTransfer);
 
   const formId = useId();
 
@@ -80,23 +100,25 @@ export const EpiUploadSelectSequenceFiles = () => {
     } satisfies SelectOption<string>));
   }, [mappedColumns]);
 
-  const schema = useMemo(() => object<FormFields>().shape({
-    assemblyProtocolId: string().when({
-      is: () => Array.from(dataTransferRef.current?.files ?? []).filter(f => EpiUploadUtil.isGenomeFile(f.name)).length > 0,
-      otherwise: () => string().nullable().notRequired(),
-      then: () => string().uuid4().required(),
-    }),
-    sampleIdColId: string().when({
-      is: () => Array.from(dataTransferRef.current?.files ?? []).length > 0,
-      otherwise: () => string().nullable().notRequired(),
-      then: () => string().uuid4().required(),
-    }),
-    sequencingProtocolId: string().when({
-      is: () => Array.from(dataTransferRef.current?.files ?? []).filter(f => EpiUploadUtil.isReadsFile(f.name)).length > 0,
-      otherwise: () => string().nullable().notRequired(),
-      then: () => string().uuid4().required(),
-    }),
-  }), []);
+  const selectedFiles = useMemo(() => {
+    return getSelectedFiles(currentDataTransfer);
+  }, [currentDataTransfer]);
+
+  const hasSelectedFiles = selectedFiles.length > 0;
+  const hasGenomeFiles = useMemo(() => {
+    return selectedFiles.some(file => EpiUploadUtil.isGenomeFile(file.name));
+  }, [selectedFiles]);
+  const hasReadsFiles = useMemo(() => {
+    return selectedFiles.some(file => EpiUploadUtil.isReadsFile(file.name));
+  }, [selectedFiles]);
+
+  const schema = useMemo(() => {
+    return createSchema({
+      hasGenomeFiles,
+      hasReadsFiles,
+      hasSelectedFiles,
+    });
+  }, [hasGenomeFiles, hasReadsFiles, hasSelectedFiles]);
 
   const defaultFormValues = useMemo<FormFields>(() => {
     return {
@@ -215,23 +237,19 @@ export const EpiUploadSelectSequenceFiles = () => {
   }, [canUploadReads, canUploadSequences]);
 
   const onProceedButtonClick = useCallback(async () => {
-    setSequenceFilesDataTransfer(canUpload ? dataTransferRef.current : new DataTransfer());
+    setSequenceFilesDataTransfer(canUpload ? currentDataTransfer : new DataTransfer());
     await handleSubmit(async () => {
       await goToNextStep();
     })();
-  }, [canUpload, goToNextStep, handleSubmit, setSequenceFilesDataTransfer]);
+  }, [canUpload, currentDataTransfer, goToNextStep, handleSubmit, setSequenceFilesDataTransfer]);
 
   const onGoBackButtonClick = useCallback(() => {
     goToPreviousStep();
   }, [goToPreviousStep]);
 
   const onDataTransferChange = useCallback((dt: DataTransfer) => {
-    dataTransferRef.current = dt;
-
-    // Note: setState in a timeout to avoid React state update during rendering warning
-    setTimeout(() => {
-      setSequenceFilesDataTransfer(dataTransferRef.current);
-    });
+    setCurrentDataTransfer(dt);
+    setSequenceFilesDataTransfer(dt);
   }, [setSequenceFilesDataTransfer]);
 
   const wrapForm = useCallback((children: ReactElement) => {

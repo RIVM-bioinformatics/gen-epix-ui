@@ -40,7 +40,7 @@ export class FormUtil {
         case FORM_FIELD_DEFINITION_TYPE.DATE:
           try {
             const dateValue = parseISO(item?.[formFieldDefinition.name as unknown as keyof typeof item] as string);
-            itemValues[formFieldDefinition.name] = isValid(dateValue) ? dateValue as TFormFields[keyof TFormFields] : null;
+            itemValues[formFieldDefinition.name] = isValid(dateValue) ? dateValue : null;
           } catch (_error) {
             itemValues[formFieldDefinition.name] = null;
           }

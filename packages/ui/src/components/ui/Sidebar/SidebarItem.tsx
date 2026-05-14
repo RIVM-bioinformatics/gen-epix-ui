@@ -7,10 +7,12 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  type PropsWithChildren,
-  type ReactElement,
   useEffect,
   useState,
+} from 'react';
+import type {
+  PropsWithChildren,
+  ReactElement,
 } from 'react';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
@@ -36,6 +38,7 @@ export const SidebarItem = ({ children, closeIcon, closeIconTooltipText, onClose
   useEffect(() => {
     const mainContentElement = document.getElementById(ConfigManager.getInstance().config.layout.MAIN_CONTENT_ID);
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMainContentDOMRect(mainContentElement.getBoundingClientRect());
 
     const observer = new ResizeObserver(() => {

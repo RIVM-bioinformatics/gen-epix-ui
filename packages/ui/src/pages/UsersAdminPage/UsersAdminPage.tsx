@@ -58,6 +58,8 @@ export const UsersAdminPage = ({
     inviteUserConstraintsQuery,
   ]);
 
+  const userRoles = AuthorizationManager.getInstance().user.roles;
+
   const onRowsChange = useCallback((items: CommonDbUser[]) => {
     // Because roles are a string array (instead of an enum or similar), we need to dynamically determine the options for the roles column in the table and in the form.
     // The options for the form are determined by the invite user constraints endpoint, but if the user doesn't have access to that endpoint, we fall back to using the roles that are currently in use by users in the system.
@@ -83,14 +85,14 @@ export const UsersAdminPage = ({
     }
     // The users own roles may not be included in the options from the invite user constraints endpoint (if they don't have permission to view that endpoint),
     // so we need to add those to the options as well, but disable them since the user doesn't have permission to assign those roles to other users.
-    const extraRolesFromUser = AuthorizationManager.getInstance().user.roles.filter(role => !_formRoleOptions.some(option => option.value === role));
+    const extraRolesFromUser = userRoles.filter(role => !_formRoleOptions.some(option => option.value === role));
     _formRoleOptions.push(...extraRolesFromUser.map(role => ({
       disabled: true,
       label: role,
       value: role,
     })));
     setFormRoleOptions(_formRoleOptions);
-  }, [inviteUserConstraintsQuery.data]);
+  }, [inviteUserConstraintsQuery.data, userRoles]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     const users = (await ApiManager.getInstance().organizationApi.usersGetAll({ signal }))?.data;

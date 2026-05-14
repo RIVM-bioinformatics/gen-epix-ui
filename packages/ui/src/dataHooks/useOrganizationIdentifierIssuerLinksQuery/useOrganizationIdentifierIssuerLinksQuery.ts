@@ -1,4 +1,4 @@
-import { type UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
 import type { CommonDbOrganizationIdentifierIssuerLink } from '@gen-epix/api-commondb';
 
 import { useQueryMemo } from '../../hooks/useQueryMemo';

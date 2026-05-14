@@ -71,7 +71,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
     });
     return (
       <FormControl
-        {...TestIdUtil.createAttributes('Select', { label, name: name as string })}
+        {...TestIdUtil.createAttributes('Select', { label, name })}
         fullWidth
       >
         <FormControlLabel

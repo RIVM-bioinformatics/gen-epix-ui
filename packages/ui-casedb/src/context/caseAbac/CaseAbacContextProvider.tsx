@@ -1,7 +1,5 @@
-import {
-  type PropsWithChildren,
-  useMemo,
-} from 'react';
+import { useMemo } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import type { CaseAbacContext } from './CaseAbacContext';
 import { EpiCaseAbacContext } from './CaseAbacContext';

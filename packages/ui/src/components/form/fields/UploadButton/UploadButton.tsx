@@ -79,7 +79,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
   const onInputChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (event: ChangeEvent<HTMLInputElement>) => {
       if (onChangeProp) {
-        onChangeProp(event.target.files as TFieldValues[TName]);
+        onChangeProp(event.target.files);
       }
       onChange(event.target.files);
     }
@@ -132,7 +132,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
   return (
     <FormControl
       error={hasError}
-      {...TestIdUtil.createAttributes('UploadButton', { label, name: name as string })}
+      {...TestIdUtil.createAttributes('UploadButton', { label, name })}
       fullWidth
     >
       <FormLabel

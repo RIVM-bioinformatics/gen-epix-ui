@@ -5,10 +5,10 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import {
-  type ReactElement,
-  type ReactNode,
-  useEffect,
+import { useEffect } from 'react';
+import type {
+  ReactElement,
+  ReactNode,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 

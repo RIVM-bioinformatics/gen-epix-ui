@@ -26,7 +26,7 @@ export const App = () => {
 
   const touchIconUrl = config.getTouchIconUrl();
   if (touchIconUrl) {
-    // eslint-disable-next-line @eslint-react/purity
+
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
   }
   const apiManager = ApiManager.getInstance();

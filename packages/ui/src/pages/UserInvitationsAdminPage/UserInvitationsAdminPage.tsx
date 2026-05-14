@@ -43,10 +43,8 @@ import { ApiManager } from '../../classes/managers/ApiManager';
 
 import { UserInvitationShareDialog } from './UserInvitationShareDialog';
 import type { UserInvitationShareDialogRefMethods } from './UserInvitationShareDialog';
-import {
-  UserInvitationConsumeDialog,
-  type UserInvitationConsumeDialogRefMethods,
-} from './UserInvitationConsumeDialog';
+import { UserInvitationConsumeDialog } from './UserInvitationConsumeDialog';
+import type { UserInvitationConsumeDialogRefMethods } from './UserInvitationConsumeDialog';
 
 type FormFields = OmitWithMetaData<CommonDbUserInvitation, 'email' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'name' | 'organization' | 'token'>;
 

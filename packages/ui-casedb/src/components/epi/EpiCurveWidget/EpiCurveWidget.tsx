@@ -4,7 +4,12 @@ import {
   ListItemText,
   MenuItem,
 } from '@mui/material';
-import * as echarts from 'echarts/core';
+import {
+  dispose,
+  getInstanceByDom,
+  init,
+  use as registerECharts,
+} from 'echarts/core';
 import {
   DataZoomComponent,
   GridComponent,
@@ -30,6 +35,7 @@ import sum from 'lodash/sum';
 import type {
   BarSeriesOption,
   EChartsOption,
+  EChartsType,
 } from 'echarts';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
@@ -67,7 +73,13 @@ import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 import type { CaseDbConfig } from '../../../models/config';
 
-echarts.use([TooltipComponent, GridComponent, DataZoomComponent, BarChart, CanvasRenderer]);
+const echartsCore = {
+  dispose,
+  getInstanceByDom,
+  init,
+};
+
+registerECharts([TooltipComponent, GridComponent, DataZoomComponent, BarChart, CanvasRenderer]);
 
 type GenEpixEchartsEvent = {
   data: [unknown, unknown, string];
@@ -79,7 +91,6 @@ type GenEpixEchartsEvent = {
 export const EpiCurveWidget = () => {
   const { t } = useTranslation();
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
-  const [hasRenderedOnce, setHasRenderedOnce] = useState(false);
   const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
   const chartRef = useRef<EChartsReact>(null);
 
@@ -95,6 +106,7 @@ export const EpiCurveWidget = () => {
   const timeDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [CaseDbDimType.TIME]), [completeCaseType]);
   const [focussedDate, setFocussedDate] = useState<string>(null);
   const [col, setCol] = useState<CaseDbCol>(null);
+  const colLabel = col?.label ?? '';
 
   const onEpiContextMenuClose = useCallback(() => {
     setEpiContextMenuConfig(null);
@@ -259,12 +271,6 @@ export const EpiCurveWidget = () => {
 
   const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
     return {
-      finished: !hasRenderedOnce ? () => {
-        const dom = chartRef?.current?.getEchartsInstance()?.getDom();
-        dom?.setAttribute('aria-label', t('Epidemiological curve showing the number of cases over time ({{label}})', { label: col?.label ?? '' }));
-        dom?.setAttribute('role', 'img');
-        setHasRenderedOnce(true);
-      } : undefined,
       mouseout: () => {
         highlightingManager.highlight({
           caseIds: [],
@@ -292,7 +298,13 @@ export const EpiCurveWidget = () => {
       },
 
     };
-  }, [col?.label, hasRenderedOnce, highlightingManager, t]);
+  }, [highlightingManager]);
+
+  const onChartReady = useCallback((chart: EChartsType) => {
+    const dom = chart.getDom();
+    dom?.setAttribute('aria-label', t('Epidemiological curve showing the number of cases over time ({{label}})', { label: colLabel }));
+    dom?.setAttribute('role', 'img');
+  }, [colLabel, t]);
 
   useEffect(() => {
     const unsubscribe = highlightingManager.subscribe((highlighting) => {
@@ -423,7 +435,7 @@ export const EpiCurveWidget = () => {
     }
 
     onMenuClose();
-  }, [focussedDate, col?.id, filterDimensions, setFilterValue]);
+  }, [focussedDate, col, filterDimensions, setFilterValue]);
 
   const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
     if (!focussedDate) {
@@ -504,8 +516,9 @@ export const EpiCurveWidget = () => {
         >
           {items?.length > 0 && (
             <EChartsReact
-              echarts={echarts}
+              echarts={echartsCore}
               notMerge
+              onChartReady={onChartReady}
               onEvents={onEvents}
               option={getOptions()}
               ref={chartRef}

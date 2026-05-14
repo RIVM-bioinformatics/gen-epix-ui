@@ -1,7 +1,7 @@
-import {
-  type ChangeEvent,
-  type MouseEvent as ReactMouseEvent,
-  useCallback,
+import { useCallback } from 'react';
+import type {
+  ChangeEvent,
+  MouseEvent as ReactMouseEvent,
 } from 'react';
 import { Checkbox } from '@mui/material';
 import { useStore } from 'zustand';

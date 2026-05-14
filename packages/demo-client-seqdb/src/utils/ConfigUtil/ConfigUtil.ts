@@ -3,10 +3,8 @@ import {
   I18nManager,
   WindowManager,
 } from '@gen-epix/ui';
-import {
-  createSeqDbDemoTheme,
-  type SeqDbConfig,
-} from '@gen-epix/ui-seqdb';
+import { createSeqDbDemoTheme } from '@gen-epix/ui-seqdb';
+import type { SeqDbConfig } from '@gen-epix/ui-seqdb';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
 import { ConsentDialogContent } from '../../components/ConsentDialogContent';

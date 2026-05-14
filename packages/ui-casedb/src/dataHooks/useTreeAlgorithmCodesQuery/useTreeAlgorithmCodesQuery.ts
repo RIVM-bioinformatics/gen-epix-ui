@@ -36,7 +36,7 @@ export const useTreeAlgorithmCodeOptionsQuery = (): UseOptions<string> => {
   return useMemo(() => {
     const options: OptionBase<string>[] = Object.entries(treeAlgorithmCodeValues).map(([value, label]) => ({ label, value }));
     return {
-      error: null as UseOptions<string>,
+      error: null,
       isEnabled: true,
       isFetching: false,
       isLoading: false,

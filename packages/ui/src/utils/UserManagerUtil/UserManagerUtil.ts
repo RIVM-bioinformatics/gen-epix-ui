@@ -1,7 +1,7 @@
-import {
-  type UserManager,
-  type UserManagerSettings,
-  WebStorageStateStore,
+import { WebStorageStateStore } from 'oidc-client-ts';
+import type {
+  UserManager,
+  UserManagerSettings,
 } from 'oidc-client-ts';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
 

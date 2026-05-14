@@ -8,13 +8,12 @@ import { useStore } from 'zustand';
 import { t } from 'i18next';
 import { useShallow } from 'zustand/shallow';
 import { yupResolver } from '@hookform/resolvers/yup';
-import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import {
   Box,
-  type BoxProps,
   Typography,
 } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
@@ -81,7 +80,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
 
   const values = useMemo<CaseDbCase['content']>(() => FormUtil.createFormValues(formFieldDefinitions, epiCase.content), [formFieldDefinitions, epiCase.content]);
   const formMethods = useForm<CaseDbCase['content']>({
-    resolver: yupResolver(schema) as unknown as Resolver<CaseDbCase['content']>,
+    resolver: yupResolver(schema),
     values,
   });
   const { handleSubmit } = formMethods;

@@ -8,9 +8,9 @@ import { t } from 'i18next';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import {
   createRoutes as createCommonRoutes,
-  type MyNonIndexRouteObject,
   RouterErrorPage,
 } from '@gen-epix/ui';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui';
 
 import { CasesDetailPage } from '../pages/CasesDetailPage';
 import { CasesPage } from '../pages/CasesPage';

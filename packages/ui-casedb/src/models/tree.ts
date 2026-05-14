@@ -1,4 +1,4 @@
-import type Decimal from 'decimal.js';
+import type { Decimal } from 'decimal.js';
 
 export type TreeAssembly = {
   ancestorNodes: Array<{ nodeNames: string[]; shape: Path2D }>;

@@ -61,12 +61,12 @@ const TableFiltersSidebarItemContentFilterDimension = <TRowData, TDataContext = 
 
   const filteredDimensionFilters = useMemo<Filters>(() => {
     if (filterDimension.allowOnlyPreferredFilter || filterDimension.filterIds.length === 1) {
-      return [dimensionFilters.find(f => f?.id && f.id === filterDimension.preferredFilterId)].filter(x => !!x) as Filters;
+      return [dimensionFilters.find(f => f?.id && f.id === filterDimension.preferredFilterId)].filter(x => !!x);
     }
     if (!filterDimension.allowMultipleVisibleFilters) {
       const visibleFilterId = visibleFilterWithinDimension ?? filterDimension.preferredFilterId;
       const visibleFilter = dimensionFilters.find(f => f?.id && f.id === visibleFilterId);
-      return [visibleFilter].filter(x => !!x) as Filters;
+      return [visibleFilter].filter(x => !!x);
     }
     return dimensionFilters;
   }, [dimensionFilters, filterDimension.allowMultipleVisibleFilters, filterDimension.allowOnlyPreferredFilter, filterDimension.filterIds.length, filterDimension.preferredFilterId, visibleFilterWithinDimension]);

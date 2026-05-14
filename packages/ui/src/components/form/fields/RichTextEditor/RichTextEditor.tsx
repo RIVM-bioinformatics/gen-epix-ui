@@ -122,7 +122,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
       <FormControl
         component={'fieldset'}
         error={hasError}
-        {...TestIdUtil.createAttributes('CheckboxGroup', { label, name: name as string })}
+        {...TestIdUtil.createAttributes('CheckboxGroup', { label, name })}
         fullWidth
         sx={{
           '&:hover legend button, &:focus-within legend button': {

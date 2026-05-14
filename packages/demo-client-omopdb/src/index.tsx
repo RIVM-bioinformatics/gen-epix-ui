@@ -4,10 +4,8 @@ import {
   ConfigManager,
   I18nManager,
 } from '@gen-epix/ui';
-import {
-  type OmopDbConfig,
-  setupOmopDb,
-} from '@gen-epix/ui-omopdb';
+import { setupOmopDb } from '@gen-epix/ui-omopdb';
+import type { OmopDbConfig } from '@gen-epix/ui-omopdb';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 

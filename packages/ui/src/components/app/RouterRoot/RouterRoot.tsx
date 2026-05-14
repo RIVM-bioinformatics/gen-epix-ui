@@ -40,6 +40,7 @@ import { QueryClientManager } from '../../../classes/managers/QueryClientManager
 import { COMMON_QUERY_KEY } from '../../../data/query';
 import { RouterManager } from '../../../classes/managers/RouterManager';
 import { ApiManager } from '../../../classes/managers/ApiManager';
+import { WindowManager } from '../../../classes/managers/WindowManager';
 
 
 export const RouterRoot = () => {
@@ -116,9 +117,9 @@ export const RouterRoot = () => {
       AuthenticationManager.getInstance().next(undefined);
       return null;
     }
-    window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
-    return window.userManager;
-  }, [availableIdentityProviders?.length, identityProvidersWithAvailability, oidcConfiguration]);
+    WindowManager.getInstance().window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
+    return WindowManager.getInstance().window.userManager;
+  }, [availableIdentityProviders, identityProvidersWithAvailability, oidcConfiguration]);
 
   const onSignin = useCallback(() => {
     LogManager.getInstance().log([{

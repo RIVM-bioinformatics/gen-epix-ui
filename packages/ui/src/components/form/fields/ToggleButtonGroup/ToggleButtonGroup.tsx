@@ -58,7 +58,7 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
         return;
       }
       if (onChangeProp) {
-        onChangeProp(value as TFieldValues[TName]);
+        onChangeProp(value);
       }
       onChange(value);
     }
@@ -76,7 +76,7 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
         exclusive
         onBlur={onBlur}
         onChange={onMuiToggleButtonChange(onChange)}
-        value={value as string}
+        value={value}
       >
         { options.map((option) => {
           return (
@@ -97,7 +97,7 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
   return (
     <FormControl
       error={hasError}
-      {...TestIdUtil.createAttributes('ToggleButtonGroup', { name: name as string })}
+      {...TestIdUtil.createAttributes('ToggleButtonGroup', { name })}
       fullWidth
     >
       <Controller

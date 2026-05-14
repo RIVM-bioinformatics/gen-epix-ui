@@ -1,5 +1,4 @@
 import {
-  type ReactElement,
   use,
   useCallback,
   useEffect,
@@ -7,6 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   object,

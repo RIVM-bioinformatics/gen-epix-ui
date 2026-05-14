@@ -235,7 +235,7 @@ export const NumberField = <TFieldValues extends FieldValues, TName extends Path
 
   return (
     <FormControl
-      {...TestIdUtil.createAttributes('NumberField', { label, name: name as string })}
+      {...TestIdUtil.createAttributes('NumberField', { label, name })}
       fullWidth
       ref={formControlRef}
       sx={{

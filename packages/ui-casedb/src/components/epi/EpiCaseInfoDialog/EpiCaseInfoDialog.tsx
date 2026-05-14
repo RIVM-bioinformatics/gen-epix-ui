@@ -4,7 +4,6 @@ import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import {
-  type ReactElement,
   use,
   useCallback,
   useEffect,
@@ -13,6 +12,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';

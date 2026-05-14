@@ -77,7 +77,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
       }
 
       if (onChangeProp) {
-        onChangeProp(newValue as TFieldValues[TName]);
+        onChangeProp(newValue);
       }
       onChange(newValue);
     }
@@ -97,7 +97,7 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
       <FormControl
         component={'fieldset'}
         error={hasError}
-        {...TestIdUtil.createAttributes('CheckboxGroup', { label, name: name as string })}
+        {...TestIdUtil.createAttributes('CheckboxGroup', { label, name })}
         fullWidth
         sx={{
           '&:hover legend button, &:focus-within legend button': {

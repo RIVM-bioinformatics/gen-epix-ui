@@ -5,7 +5,7 @@ export class ObjectUtil {
     const clonedObject = JSON.parse(JSON.stringify(inputObject)) as T;
 
     if (typeof clonedObject === 'string') {
-      return (clonedObject === '' ? null : clonedObject) as unknown as T;
+      return clonedObject === '' ? null : clonedObject;
     }
     if (Array.isArray(clonedObject)) {
       return clonedObject.map(item => ObjectUtil.deepRemoveEmptyStrings<T>(item as unknown as T)) as unknown as T;

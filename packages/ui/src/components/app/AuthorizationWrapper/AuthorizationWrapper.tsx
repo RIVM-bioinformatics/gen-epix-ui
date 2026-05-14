@@ -1,12 +1,10 @@
-import {
-  type PropsWithChildren,
-  type ReactNode,
-  useMemo,
+import { useMemo } from 'react';
+import type {
+  PropsWithChildren,
+  ReactNode,
 } from 'react';
-import {
-  type UIMatch,
-  useMatches,
-} from 'react-router-dom';
+import { useMatches } from 'react-router-dom';
+import type { UIMatch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import last from 'lodash/last';
 

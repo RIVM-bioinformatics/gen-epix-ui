@@ -14,7 +14,8 @@ export const useQueryMemo = <TQueryFnData = unknown, TError = DefaultError, TDat
 
   return useMemo(() => {
     return query;
-    // eslint-disable-next-line @eslint-react/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/use-memo
   }, [JSON.stringify({
     data: query.data,
     error: query.error,

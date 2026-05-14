@@ -149,7 +149,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
 
     return (
       <Box
-        {...TestIdUtil.createAttributes('RangeSlider', { label, name: name as string })}
+        {...TestIdUtil.createAttributes('RangeSlider', { label, name })}
         sx={{
           '&:hover legend button, &:focus-within legend button': {
             display: 'initial',

@@ -25,7 +25,7 @@ import {
 import FolderIcon from '@mui/icons-material/Folder';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import axios from 'axios';
-import { type CommonDbPackageMetadata } from '@gen-epix/api-commondb';
+import type { CommonDbPackageMetadata } from '@gen-epix/api-commondb';
 
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 import { WindowManager } from '../../../classes/managers/WindowManager';

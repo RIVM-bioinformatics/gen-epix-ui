@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import {
-  type ReactElement,
   useEffect,
   useMemo,
 } from 'react';
+import type { ReactElement } from 'react';
 import {
   Box,
   Table,

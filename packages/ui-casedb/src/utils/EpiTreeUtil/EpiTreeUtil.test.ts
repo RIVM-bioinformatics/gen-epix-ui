@@ -1,4 +1,4 @@
-import Decimal from 'decimal.js';
+import { Decimal } from 'decimal.js';
 import {
   afterAll,
   beforeAll,
@@ -947,7 +947,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('returns an empty assembly for a null rootNode without throwing', () => {
-      const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: null as unknown as TreeNode, treeCanvasWidth });
+      const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: null, treeCanvasWidth });
       expect(asm.leafNodes).toHaveLength(0);
       expect(asm.ancestorNodes).toHaveLength(0);
     });
@@ -1971,7 +1971,7 @@ describe('EpiTreeUtil', () => {
     let savedTreeAlgorithms: CaseDbTreeAlgorithm[];
 
     const mockAlgo1: CaseDbTreeAlgorithm = {
-      code: 'NJ' as CaseDbTreeAlgorithm['code'],
+      code: 'NJ',
       id: 'algo-nj',
       is_ultrametric: false,
       name: 'Neighbour Joining',
@@ -1980,7 +1980,7 @@ describe('EpiTreeUtil', () => {
     };
 
     const mockAlgo2: CaseDbTreeAlgorithm = {
-      code: 'UPGMA' as CaseDbTreeAlgorithm['code'],
+      code: 'UPGMA',
       id: 'algo-upgma',
       is_ultrametric: true,
       name: 'UPGMA',

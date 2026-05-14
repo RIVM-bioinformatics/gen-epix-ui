@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import {
-  type FieldValues,
-  type Path,
-  set,
-  type UseFormGetValues,
+import { set } from 'react-hook-form';
+import type {
+  FieldValues,
+  Path,
+  UseFormGetValues,
 } from 'react-hook-form';
 import type {
   ObjectSchema,
@@ -16,7 +16,7 @@ const useIsFormFieldRequiredFromSchema = <TFormFields extends FieldValues, TName
       const values = structuredClone(getFormValues());
       set(values, fieldName, undefined);
 
-      schema.validateSyncAt(fieldName as string, values, {
+      schema.validateSyncAt(fieldName, values, {
         abortEarly: true,
         strict: false,
       });

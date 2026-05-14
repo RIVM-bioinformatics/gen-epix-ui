@@ -217,7 +217,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
   const onMuiAutocompleteChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (_event: SyntheticEvent, value: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>) => {
       if (onChangeProp) {
-        onChangeProp(value as TFieldValues[TName]);
+        onChangeProp(value);
       }
       onChange(value);
     }
@@ -265,7 +265,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
 
   return (
     <FormControl
-      {...TestIdUtil.createAttributes('Autocomplete', { label, name: name as string })}
+      {...TestIdUtil.createAttributes('Autocomplete', { label, name })}
       fullWidth
     >
       <Controller

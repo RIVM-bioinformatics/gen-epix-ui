@@ -5,11 +5,11 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  type MouseEvent as ReactMouseEvent,
   useCallback,
   useMemo,
   useRef,
 } from 'react';
+import type { MouseEvent as ReactMouseEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';

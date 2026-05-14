@@ -22,7 +22,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   AuthorizationManager,
-  UseColumnsMenu,
+  useColumnsMenu,
 } from '@gen-epix/ui';
 
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
@@ -68,7 +68,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
   }, [setFilterValue, selectedIds, setSelectedIds]);
 
   const hasSelectionFilter = filters.some((filter) => filter instanceof SelectionFilter && filter.filterValue.length > 0);
-  const columnsMenuItem = UseColumnsMenu({ hasCellData });
+  const columnsMenuItem = useColumnsMenu({ hasCellData });
 
   const similarCaseIds = useMemo(() => findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [], [findSimilarCasesResults]);
 

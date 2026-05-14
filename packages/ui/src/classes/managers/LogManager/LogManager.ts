@@ -1,12 +1,10 @@
-import {
-  type AxiosResponse,
-  type InternalAxiosRequestConfig,
-  isAxiosError,
+import { isAxiosError } from 'axios';
+import type {
+  AxiosResponse,
+  InternalAxiosRequestConfig,
 } from 'axios';
-import {
-  type CommonDbLogItem,
-  CommonDbLogLevel,
-} from '@gen-epix/api-commondb';
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
+import type { CommonDbLogItem } from '@gen-epix/api-commondb';
 
 import { HmrUtil } from '../../../utils/HmrUtil';
 import { AuthenticationManager } from '../AuthenticationManager';

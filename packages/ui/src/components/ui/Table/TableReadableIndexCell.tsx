@@ -1,8 +1,6 @@
 import { Button } from '@mui/material';
-import {
-  type MouseEvent as ReactMouseEvent,
-  useCallback,
-} from 'react';
+import { useCallback } from 'react';
+import type { MouseEvent as ReactMouseEvent } from 'react';
 
 import type {
   TableColumnReadableIndex,

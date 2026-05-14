@@ -33,10 +33,8 @@ import {
   EPI_ZONE,
   STRATIFICATION_MODE,
 } from '../../../models/epi';
-import {
-  EpiContextMenu,
-  type EpiContextMenuConfigWithAnchor,
-} from '../EpiContextMenu';
+import { EpiContextMenu } from '../EpiContextMenu';
+import type { EpiContextMenuConfigWithAnchor } from '../EpiContextMenu';
 
 export type EpiLegendaItemProps = {
   readonly children?: ReactNode;
@@ -72,7 +70,7 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
     });
 
     return caseIds;
-  }, [stratification?.caseIdColors]);
+  }, [stratification]);
 
   const onClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
     setFocussedLegendaItem(item);
@@ -110,7 +108,7 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
 
     await setFilterValue(stratification.col.id, filterValue);
     onMenuClose();
-  }, [focussedLegendaItem?.rowValue?.raw, setFilterValue, stratification?.col?.id, filters]);
+  }, [focussedLegendaItem, setFilterValue, stratification, filters]);
 
   const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
     if (!focussedLegendaItem || focussedLegendaItem?.rowValue?.isMissing || !stratification?.col?.id) {
@@ -135,7 +133,7 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
         </ListItemText>
       </MenuItem>
     );
-  }, [filters, focussedLegendaItem, onShowOnlySelectedLegendaItemMenuItemClick, stratification?.col?.id, t]);
+  }, [filters, focussedLegendaItem, onShowOnlySelectedLegendaItemMenuItemClick, stratification, t]);
 
   const disabled = stratification.mode === STRATIFICATION_MODE.FIELD && item.caseIds.length === 0;
 

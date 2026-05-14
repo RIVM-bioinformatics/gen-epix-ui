@@ -1,10 +1,10 @@
 import {
-  type ReactElement,
   useCallback,
   useEffect,
   useId,
   useMemo,
 } from 'react';
+import type { ReactElement } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
 import {
@@ -14,10 +14,10 @@ import {
   string,
 } from 'yup';
 import {
-  type Resolver,
   useForm,
   useWatch,
 } from 'react-hook-form';
+import type { Resolver } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Alert,

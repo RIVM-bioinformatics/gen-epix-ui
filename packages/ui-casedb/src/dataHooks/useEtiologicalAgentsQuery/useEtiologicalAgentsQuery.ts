@@ -1,4 +1,4 @@
-import { type UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbEtiologicalAgent } from '@gen-epix/api-casedb';
 import { CaseDbOntologyApi } from '@gen-epix/api-casedb';

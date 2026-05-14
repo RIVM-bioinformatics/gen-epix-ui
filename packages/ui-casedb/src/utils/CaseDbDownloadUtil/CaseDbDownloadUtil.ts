@@ -1,14 +1,16 @@
-import { type TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { format } from 'date-fns';
 import type { ECharts } from 'echarts';
 import writeXlsxFile from 'write-excel-file/browser';
 import { stringify } from 'csv/browser/esm/sync';
 import {
-  type CaseDbCase,
   CaseDbCaseApi,
-  type CaseDbCol,
-  type CaseDbCompleteCaseType,
   CaseDbLogLevel,
+} from '@gen-epix/api-casedb';
+import type {
+  CaseDbCase,
+  CaseDbCol,
+  CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import {
   ConfigManager,

@@ -3,11 +3,9 @@ import {
   QueryCache,
   QueryClient,
 } from '@tanstack/react-query';
-import {
-  remove,
-  uniq,
-  uniqBy,
-} from 'lodash';
+import remove from 'lodash/remove';
+import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
 
 import { ConfigManager } from '../ConfigManager';
 import { HmrUtil } from '../../../utils/HmrUtil';

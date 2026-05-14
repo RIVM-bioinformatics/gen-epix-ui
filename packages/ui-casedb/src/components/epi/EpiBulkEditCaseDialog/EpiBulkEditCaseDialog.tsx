@@ -1,7 +1,5 @@
-import {
-  type ReactElement,
-  useEffect,
-} from 'react';
+import { useEffect } from 'react';
+import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import type {
