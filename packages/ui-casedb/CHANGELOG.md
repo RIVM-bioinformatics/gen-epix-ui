@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.1.2...ui-casedb-v2.2.0) (2026-05-14)
+
+
+### Features
+
+* move dependencies to peer dependencies ([d91409c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d91409cd21ce6653f8f027f49246a67324ff233b))
+
+
+### Bug Fixes
+
+* fix legenda item disabledd state ([529eb65](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/529eb65c3d770d8b89c7969aee2c7102190ab2b3))
+
 ## [2.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.1.1...ui-casedb-v2.1.2) (2026-05-12)
 
 
