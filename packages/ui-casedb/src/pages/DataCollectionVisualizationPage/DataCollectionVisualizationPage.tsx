@@ -9,16 +9,23 @@ import {
   useTheme,
 } from '@mui/material';
 import EChartsReact from 'echarts-for-react';
-import * as echarts from 'echarts/core';
+import {
+  dispose,
+  getInstanceByDom,
+  init,
+  use as registerECharts,
+} from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { TooltipComponent } from 'echarts/components';
 import { GraphChart } from 'echarts/charts';
 import {
-  type MouseEvent as ReactMouseEvent,
-  type SyntheticEvent,
   useCallback,
   useMemo,
   useState,
+} from 'react';
+import type {
+  MouseEvent as ReactMouseEvent,
+  SyntheticEvent,
 } from 'react';
 import type {
   EChartsOption,
@@ -41,7 +48,13 @@ import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrgan
 import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrganizationShareCasePoliciesQuery';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 
-echarts.use([TooltipComponent, CanvasRenderer, GraphChart]);
+const echartsCore = {
+  dispose,
+  getInstanceByDom,
+  init,
+};
+
+registerECharts([TooltipComponent, CanvasRenderer, GraphChart]);
 
 type AccessLink = {
   accessPolicyCount: number;
@@ -810,7 +823,7 @@ export const DataCollectionVisualizationPage = () => {
           >
             {hasSelection && graph.nodes.length > 0 ? (
               <EChartsReact
-                echarts={echarts}
+                echarts={echartsCore}
                 notMerge
                 option={getOptions()}
                 style={{

@@ -1,8 +1,8 @@
 import {
-  type PropsWithChildren,
   useCallback,
   useState,
 } from 'react';
+import type { PropsWithChildren } from 'react';
 import type {
   CaseDbCaseSet,
   CaseDbCompleteCaseType,

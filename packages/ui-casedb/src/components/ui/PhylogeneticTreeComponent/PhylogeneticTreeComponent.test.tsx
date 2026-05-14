@@ -9,8 +9,8 @@ import {
   DevicePixelRatioManager,
   Subject,
 } from '@gen-epix/ui';
+import { customRender } from '@gen-epix/ui/test-lib';
 
-import { customRender } from '../../../../../ui/src/test/lib/render';
 import type {
   Highlighting,
   Stratification,

@@ -37,30 +37,18 @@ import { EpiCaseSetInfoDialog } from '../EpiCaseSetInfoDialog';
 import type { EpiCaseTypeInfoDialogRefMethods } from '../EpiCaseTypeInfoDialog';
 import { EpiCaseTypeInfoDialog } from '../EpiCaseTypeInfoDialog';
 import { withEpiDashboardStore } from '../EpiDashboardStoreLoader';
-import {
-  EpiAddCasesToEventDialog,
-  type EpiAddCasesToEventDialogRefMethods,
-} from '../EpiAddCasesToEventDialog';
-import {
-  EpiBulkEditCaseDialog,
-  type EpiBulkEditCaseDialogRefMethods,
-} from '../EpiBulkEditCaseDialog';
-import {
-  EpiCaseInfoDialog,
-  type EpiCaseInfoDialogRefMethods,
-} from '../EpiCaseInfoDialog';
-import {
-  EpiCreateEventDialog,
-  type EpiCreateEventDialogRefMethods,
-} from '../EpiCreateEventDialog';
-import {
-  EpiRemoveCasesFromEventDialog,
-  type EpiRemoveCasesFromEventDialogRefMethods,
-} from '../EpiRemoveCasesFromEventDialog';
-import {
-  EpiSequenceDownloadDialog,
-  type EpiSequenceDownloadDialogRefMethods,
-} from '../EpiSequenceDownloadDialog';
+import { EpiAddCasesToEventDialog } from '../EpiAddCasesToEventDialog';
+import type { EpiAddCasesToEventDialogRefMethods } from '../EpiAddCasesToEventDialog';
+import { EpiBulkEditCaseDialog } from '../EpiBulkEditCaseDialog';
+import type { EpiBulkEditCaseDialogRefMethods } from '../EpiBulkEditCaseDialog';
+import { EpiCaseInfoDialog } from '../EpiCaseInfoDialog';
+import type { EpiCaseInfoDialogRefMethods } from '../EpiCaseInfoDialog';
+import { EpiCreateEventDialog } from '../EpiCreateEventDialog';
+import type { EpiCreateEventDialogRefMethods } from '../EpiCreateEventDialog';
+import { EpiRemoveCasesFromEventDialog } from '../EpiRemoveCasesFromEventDialog';
+import type { EpiRemoveCasesFromEventDialogRefMethods } from '../EpiRemoveCasesFromEventDialog';
+import { EpiSequenceDownloadDialog } from '../EpiSequenceDownloadDialog';
+import type { EpiSequenceDownloadDialogRefMethods } from '../EpiSequenceDownloadDialog';
 import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
@@ -76,14 +64,10 @@ import { EpiStratification } from '../EpiStratification';
 import type { EpiTreeWidgetRef } from '../EpiTreeWidget';
 import { EpiTreeWidget } from '../EpiTreeWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
-import {
-  EpiFindSimilarCasesDialog,
-  type EpiFindSimilarCasesDialogRefMethods,
-} from '../EpiFindSimilarCasesDialog';
-import {
-  EpiRemoveFindSimilarCasesResultDialog,
-  type EpiRemoveFindSimilarCasesResultDialogRefMethods,
-} from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
+import { EpiFindSimilarCasesDialog } from '../EpiFindSimilarCasesDialog';
+import type { EpiFindSimilarCasesDialogRefMethods } from '../EpiFindSimilarCasesDialog';
+import { EpiRemoveFindSimilarCasesResultDialog } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
+import type { EpiRemoveFindSimilarCasesResultDialogRefMethods } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import type { CaseDbConfig } from '../../../models/config';
 

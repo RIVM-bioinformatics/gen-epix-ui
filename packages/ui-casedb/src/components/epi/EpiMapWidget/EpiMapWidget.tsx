@@ -13,7 +13,13 @@ import {
   TooltipComponent,
 } from 'echarts/components';
 import { PieChart } from 'echarts/charts';
-import * as echarts from 'echarts/core';
+import {
+  dispose,
+  getInstanceByDom,
+  init,
+  use as registerECharts,
+  registerMap,
+} from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import type { ReactElement } from 'react';
 import {
@@ -26,6 +32,7 @@ import {
 } from 'react';
 import type {
   EChartsOption,
+  EChartsType,
   PieSeriesOption,
 } from 'echarts';
 import { useTranslation } from 'react-i18next';
@@ -69,8 +76,13 @@ import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import type { CaseDbConfig } from '../../../models/config';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 
+const echartsCore = {
+  dispose,
+  getInstanceByDom,
+  init,
+};
 
-echarts.use([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, PieChart]);
+registerECharts([GeoComponent, TooltipComponent, LegendComponent, CanvasRenderer, PieChart]);
 
 type GenEpixEchartsEvent = {
   data: GenEpixPieSeriesOptionEventData;
@@ -91,8 +103,8 @@ type GeoJSON = { features: unknown[] };
 export const EpiMapWidget = () => {
   const { t } = useTranslation();
   const [col, setCol] = useState<CaseDbCol>(null);
+  const colLabel = col?.label ?? '';
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
-  const [hasRenderedOnce, setHasRenderedOnce] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsReact>(null);
   const { dimensions: { height, width } } = useDimensions(containerRef);
@@ -196,7 +208,7 @@ export const EpiMapWidget = () => {
     return zonePieArea;
   }, [height, numZones, width]);
 
-  const lineListRegionStatistics = useMemo(() => EpiMapUtil.getRegionStatistics(sortedData, col?.id, regions), [col?.id, sortedData, regions]);
+  const lineListRegionStatistics = useMemo(() => EpiMapUtil.getRegionStatistics(sortedData, col?.id, regions), [col, sortedData, regions]);
   const getPieChartRadius = useCallback((numCases: number): number => {
     return EpiMapUtil.getPieChartRadius(numCases, maxPieChartArea, lineListRegionStatistics);
   }, [lineListRegionStatistics, maxPieChartArea]);
@@ -299,7 +311,7 @@ export const EpiMapWidget = () => {
       return;
     }
 
-    echarts.registerMap(regionSetShape.id, regionSetShape.geo_json);
+    registerMap(regionSetShape.id, regionSetShape.geo_json);
     const aspectScale = EpiMapUtil.getGeoJsonAspectScale(regionSetShape.geo_json);
 
     return {
@@ -333,14 +345,14 @@ export const EpiMapWidget = () => {
     } satisfies EChartsOption;
   }, [regionSetShape, series]);
 
+  const onChartReady = useCallback((chart: EChartsType) => {
+    const dom = chart.getDom();
+    dom?.setAttribute('aria-label', t('Figure of a map showing the geographical distribution of cases per region ({{label}})', { label: colLabel }));
+    dom?.setAttribute('role', 'img');
+  }, [colLabel, t]);
+
   const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
     return {
-      finished: !hasRenderedOnce ? () => {
-        const dom = chartRef?.current?.getEchartsInstance()?.getDom();
-        dom?.setAttribute('aria-label', t('Figure of a map showing the geographical distribution of cases per region ({{label}})', { label: col?.label ?? '' }));
-        dom?.setAttribute('role', 'img');
-        setHasRenderedOnce(true);
-      } : undefined,
       mouseout: () => {
         highlightingManager.highlight({
           caseIds: [],
@@ -372,7 +384,7 @@ export const EpiMapWidget = () => {
         setFocussedRegion(region);
       },
     };
-  }, [col?.label, hasRenderedOnce, highlightingManager, regions, t]);
+  }, [highlightingManager, regions]);
 
   useEffect(() => {
     const unsubscribe = highlightingManager.subscribe((highlighting) => {
@@ -451,7 +463,7 @@ export const EpiMapWidget = () => {
   const onShowOnlySelectedRegionMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     await setFilterValue(col.id, [focussedRegion.id]);
     onMenuClose();
-  }, [col?.id, focussedRegion, setFilterValue]);
+  }, [col, focussedRegion, setFilterValue]);
 
   const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
     if (!col || !focussedRegion?.name) {
@@ -531,8 +543,9 @@ export const EpiMapWidget = () => {
         )}
         {shouldShowMap && (
           <EChartsReact
-            echarts={echarts}
+            echarts={echartsCore}
             notMerge
+            onChartReady={onChartReady}
             onEvents={onEvents}
             option={getOptions()}
             ref={chartRef}

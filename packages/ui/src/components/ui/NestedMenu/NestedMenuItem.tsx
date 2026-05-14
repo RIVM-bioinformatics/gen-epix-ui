@@ -74,6 +74,7 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
   const menuItemRef = useRef<HTMLLIElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const menuContainerRef = useRef<HTMLDivElement>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLLIElement | null>(null);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const [origins, setOrigins] = useState<Origins>(rightOrigins);
 
@@ -93,6 +94,11 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
   } = props;
 
   useImperativeHandle(ref, () => menuItemRef.current);
+
+  const setMenuItemNode = useCallback((node: HTMLLIElement | null): void => {
+    menuItemRef.current = node;
+    setAnchorEl(node);
+  }, []);
 
   const onIconMenuItemClick = useCallback((): void => {
     if (callback) {
@@ -181,14 +187,18 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
 
   const open = isSubMenuOpen && parentMenuOpen;
 
-  const menuRef = useCallback((node: HTMLElement) => {
-    if (node !== null) {
-      const subMenuWidth = menuContainerRef?.current?.clientWidth;
-      const { width, x } = menuItemRef.current.getBoundingClientRect();
-      const bodyWidth = document.body.clientWidth;
+  const menuRef = useCallback((node: HTMLElement | null) => {
+    const menuItem = menuItemRef.current;
 
-      setOrigins(x + width + subMenuWidth > bodyWidth ? leftOrigins : rightOrigins);
+    if (node === null || menuItem === null) {
+      return;
     }
+
+    const subMenuWidth = menuContainerRef.current?.clientWidth ?? 0;
+    const { width, x } = menuItem.getBoundingClientRect();
+    const bodyWidth = document.body.clientWidth;
+
+    setOrigins(x + width + subMenuWidth > bodyWidth ? leftOrigins : rightOrigins);
   }, []);
 
   // Root element must have a `tabIndex` attribute for keyboard navigation
@@ -216,13 +226,13 @@ export const NestedMenuItem = ({ ref, ...props }: NestedMenuItemProps) => {
         leftIcon={leftIcon}
         MenuItemProps={MenuItemProps}
         onClick={onIconMenuItemClick}
-        ref={menuItemRef}
+        ref={setMenuItemNode}
         rightIcon={rightIcon}
       />
       <Menu
         // from capturing events for clicks and hovers
-        // eslint-disable-next-line @eslint-react/refs
-        anchorEl={menuItemRef.current}
+
+        anchorEl={anchorEl}
         anchorOrigin={origins.anchor}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={false}

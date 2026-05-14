@@ -1,6 +1,6 @@
 import type { BoxProps } from '@mui/material';
 
-import { UseColumnsMenu } from '../../../hooks/useColumnsMenu';
+import { useColumnsMenu } from '../../../hooks/useColumnsMenu';
 import { NestedDropdown } from '../NestedMenu';
 
 export type TableMenuProps = {
@@ -9,7 +9,7 @@ export type TableMenuProps = {
 };
 
 export const TableMenu = ({ ContainerProps }: TableMenuProps) => {
-  const columnsMenu = UseColumnsMenu({});
+  const columnsMenu = useColumnsMenu({});
 
   return (
     <NestedDropdown

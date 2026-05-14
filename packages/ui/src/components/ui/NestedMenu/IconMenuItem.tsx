@@ -7,7 +7,7 @@ import type { SxProps } from '@mui/material';
 import type {
   MouseEvent,
   ReactNode,
-  RefObject,
+  Ref,
 } from 'react';
 
 const StyledMenuItem = styled(MenuItem)({
@@ -37,7 +37,7 @@ type IconMenuItemProps = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly MenuItemProps?: MenuItemProps;
   readonly onClick?: (event: MouseEvent<HTMLElement>) => void;
-  readonly ref?: RefObject<HTMLLIElement>;
+  readonly ref?: Ref<HTMLLIElement>;
   readonly rightIcon?: ReactNode;
   readonly sx?: SxProps;
 };

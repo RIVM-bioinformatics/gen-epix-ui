@@ -229,7 +229,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
       <FormControl
         component={'fieldset'}
         error={hasError}
-        {...TestIdUtil.createAttributes('DateRangePicker', { label, name: name as string })}
+        {...TestIdUtil.createAttributes('DateRangePicker', { label, name })}
         fullWidth
         sx={{
           '&:hover legend button, &:focus-within legend button': {

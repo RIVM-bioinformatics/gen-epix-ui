@@ -92,7 +92,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
   const onMuiSelectChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (event: SelectChangeEvent<string>) => {
       if (onChangeProp) {
-        onChangeProp(event.target.value as TFieldValues[TName]);
+        onChangeProp(event.target.value);
       }
       onChange(event.target.value);
     }
@@ -204,7 +204,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
 
   return (
     <FormControl
-      {...TestIdUtil.createAttributes('Select', { label, name: name as string })}
+      {...TestIdUtil.createAttributes('Select', { label, name })}
       fullWidth
     >
       <Controller

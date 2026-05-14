@@ -16,7 +16,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import { type CaseDbCol } from '@gen-epix/api-casedb';
+import type { CaseDbCol } from '@gen-epix/api-casedb';
 import type {
   TableColumn,
   TableRowParams,
@@ -182,6 +182,7 @@ export const EpiUploadMapSequences = () => {
     const dropDownValueRev = epiUploadSequenceMappingRef.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.rev || '';
     const onChangeFwd = (newValue: string) => {
       if (!newValue) {
+
         delete epiUploadSequenceMappingRef.current?.[id]?.readsFileNames?.[col.id]?.fwd;
       } else {
         epiUploadSequenceMappingRef.current[id].readsFileNames[col.id].fwd = newValue;
@@ -189,6 +190,7 @@ export const EpiUploadMapSequences = () => {
     };
     const onChangeRev = (newValue: string) => {
       if (!newValue) {
+
         delete epiUploadSequenceMappingRef.current?.[id]?.readsFileNames?.[col.id]?.rev;
       } else {
         epiUploadSequenceMappingRef.current[id].readsFileNames[col.id].rev = newValue;
@@ -248,6 +250,7 @@ export const EpiUploadMapSequences = () => {
       });
     }
 
+    // eslint-disable-next-line react-hooks/refs
     completeCaseTypeColStats.sequenceColumns.forEach((col) => {
       tableCols.push({
         cellTitleGetter: () => null,
@@ -262,6 +265,7 @@ export const EpiUploadMapSequences = () => {
       });
     });
 
+    // eslint-disable-next-line react-hooks/refs
     completeCaseTypeColStats.readsColumns.forEach((col) => {
       tableCols.push({
         cellTitleGetter: () => null,

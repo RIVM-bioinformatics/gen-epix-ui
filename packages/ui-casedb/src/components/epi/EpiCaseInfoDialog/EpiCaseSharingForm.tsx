@@ -15,9 +15,9 @@ import { useForm } from 'react-hook-form';
 import difference from 'lodash/difference';
 import {
   Box,
-  type BoxProps,
   Typography,
 } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { FormFieldDefinition } from '@gen-epix/ui';
@@ -61,13 +61,13 @@ export const EpiCaseSharingForm = ({ epiCase, formId, onFinish, onIsSavingChange
       name: 'dataCollectionIds',
       options: caseAbacContext?.itemDataCollectionOptions?.[0] ?? [],
     } as const satisfies FormFieldDefinition<FormFields>,
-  ] as const, [t, caseAbacContext?.itemDataCollectionOptions]);
+  ] as const, [t, caseAbacContext]);
 
   const item = useMemo<FormFields>(() => {
     return {
       dataCollectionIds: caseAbacContext?.rights?.[0]?.shared_in_data_collection_ids ?? [],
     };
-  }, [caseAbacContext?.rights]);
+  }, [caseAbacContext]);
 
   const values = useMemo<FormFields>(() => FormUtil.createFormValues(formFieldDefinitions, item), [formFieldDefinitions, item]);
 
@@ -114,7 +114,7 @@ export const EpiCaseSharingForm = ({ epiCase, formId, onFinish, onIsSavingChange
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
-  }, [caseAbacContext.itemDataCollectionLinks, caseAbacContext?.rights, epiCase.id, onFinish, onIsSavingChange, t]);
+  }, [caseAbacContext, epiCase.id, onFinish, onIsSavingChange, t]);
 
   if (isSaving) {
     return (

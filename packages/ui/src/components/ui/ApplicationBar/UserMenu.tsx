@@ -19,10 +19,8 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
-import {
-  Confirmation,
-  type ConfirmationRefMethods,
-} from '../Confirmation';
+import { Confirmation } from '../Confirmation';
+import type { ConfirmationRefMethods } from '../Confirmation';
 import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
 import { LogManager } from '../../../classes/managers/LogManager';
 import { StringUtil } from '../../../utils/StringUtil';

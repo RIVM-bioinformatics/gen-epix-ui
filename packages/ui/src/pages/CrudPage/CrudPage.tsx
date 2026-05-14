@@ -258,7 +258,7 @@ export const CrudPage = <
     }
     return authorizationManager.doesUserHavePermission<CrudPermission>(
       [
-        ...(crudCommandType ? [createPermission(CommonDbPermissionType.UPDATE as CrudPermission['permission_type'])] : []),
+        ...(crudCommandType ? [createPermission(CommonDbPermissionType.UPDATE)] : []),
         ...(extraUpdateOnePermissions ?? []),
       ],
     );
@@ -270,7 +270,7 @@ export const CrudPage = <
     }
     return authorizationManager.doesUserHavePermission<CrudPermission>(
       [
-        ...(crudCommandType ? [createPermission(CommonDbPermissionType.DELETE as CrudPermission['permission_type'])] : []),
+        ...(crudCommandType ? [createPermission(CommonDbPermissionType.DELETE)] : []),
         ...(extraDeleteOnePermissions ?? []),
       ],
     );
@@ -282,7 +282,7 @@ export const CrudPage = <
     }
     return authorizationManager.doesUserHavePermission<CrudPermission>(
       [
-        ...(crudCommandType ? [createPermission(CommonDbPermissionType.CREATE as CrudPermission['permission_type'])] : []),
+        ...(crudCommandType ? [createPermission(CommonDbPermissionType.CREATE)] : []),
         ...(extraCreateOnePermissions ?? []),
       ],
     );
@@ -419,7 +419,7 @@ export const CrudPage = <
       mutateEditSetPreviousItem(item);
       mutateEdit(formValues);
     } else {
-      mutateCreate(formValues as unknown as TFormFields);
+      mutateCreate(formValues);
     }
   }, [mutateCreate, mutateEdit, mutateEditSetPreviousItem]);
 

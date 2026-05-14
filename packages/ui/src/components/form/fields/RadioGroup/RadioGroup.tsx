@@ -63,7 +63,7 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
   const onMuiRadioGroupChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (_event: ChangeEvent<unknown>, value: string) => {
       if (onChangeProp) {
-        onChangeProp(value as TFieldValues[TName]);
+        onChangeProp(value);
       }
       onChange(value);
     }
@@ -81,7 +81,7 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
         onBlur={onBlur}
         onChange={onMuiRadioGroupChange(onChange)}
         row={row}
-        value={value as string}
+        value={value}
       >
         { options.map((option, index) => {
           return (
@@ -110,7 +110,7 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
   return (
     <FormControl
       error={hasError}
-      {...TestIdUtil.createAttributes('RadioGroup', { label, name: name as string })}
+      {...TestIdUtil.createAttributes('RadioGroup', { label, name })}
       fullWidth
     >
       <FormLabel

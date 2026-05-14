@@ -329,7 +329,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
   return (
     <FormControl
       error={hasError}
-      {...TestIdUtil.createAttributes('ToggleButtonGroup', { name: name as string })}
+      {...TestIdUtil.createAttributes('ToggleButtonGroup', { name })}
       fullWidth
       sx={{
         margin: `${theme.spacing(2)} 0`,

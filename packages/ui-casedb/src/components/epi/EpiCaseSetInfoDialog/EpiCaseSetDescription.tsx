@@ -1,8 +1,8 @@
 import {
   Box,
-  type BoxProps,
   Typography,
 } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import { RichTextEditorContent } from '@gen-epix/ui';

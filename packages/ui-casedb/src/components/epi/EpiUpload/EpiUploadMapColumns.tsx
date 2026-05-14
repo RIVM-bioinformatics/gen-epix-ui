@@ -7,7 +7,6 @@ import {
   useMemo,
 } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import type { Resolver } from 'react-hook-form';
 import {
   useForm,
   useWatch,
@@ -76,7 +75,7 @@ export const EpiUploadMapColumns = () => {
 
   const formMethods = useForm<EpiUploadMappedColumnsFormFields>({
     defaultValues: { ...defaultValues },
-    resolver: yupResolver(schema) as unknown as Resolver<EpiUploadMappedColumnsFormFields>,
+    resolver: yupResolver(schema),
     values: { ...defaultValues },
   });
 

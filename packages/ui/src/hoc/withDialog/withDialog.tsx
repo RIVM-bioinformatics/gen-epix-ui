@@ -9,10 +9,10 @@ import {
   createRef,
 } from 'react';
 
-import {
-  Dialog,
-  type DialogAction,
-  type DialogProps,
+import { Dialog } from '../../components/ui/Dialog';
+import type {
+  DialogAction,
+  DialogProps,
 } from '../../components/ui/Dialog';
 
 export type WithDialogOptions = {
@@ -102,7 +102,7 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
           titleVariant={withDialogOptions?.titleVariant}
         >
           <Content
-            {...this.props as TProps}
+            {...this.props}
             dialogContentRef={this.dialogContentRef}
             onActionsChange={this.onActionsChange}
             onClose={this.onClose}

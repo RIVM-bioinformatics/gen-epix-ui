@@ -4,13 +4,13 @@ import {
   Box,
 } from '@mui/material';
 import {
-  type ReactElement,
   use,
   useCallback,
   useEffect,
   useId,
   useMemo,
 } from 'react';
+import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import {

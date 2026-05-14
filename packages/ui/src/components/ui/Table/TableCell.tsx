@@ -86,7 +86,7 @@ export const TableCell = <TRowData, TDataContext = null>({
       return;
     }
 
-    const target = mouseDownEvent.currentTarget as HTMLDivElement;
+    const target = mouseDownEvent.currentTarget;
     const elementWidth = target.getBoundingClientRect().width;
     const elementOffsetX = mouseDownEvent.clientX - target.getBoundingClientRect().left;
 

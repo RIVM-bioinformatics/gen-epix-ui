@@ -40,7 +40,8 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
     const currentLanguageCode = await ConfigManager.getInstance().config.i18n.getCurrentLanguageCode();
     const defaultLanguageConfig = ConfigManager.getInstance().config.i18n.languages.find(x => x.code === currentLanguageCode);
 
-    // eslint-disable-next-line @eslint-react/rules-of-hooks
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(initReactI18next)
       .init({
         fallbackLng: defaultLanguageConfig.code,

@@ -15,7 +15,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { type CommonDbUserInvitation } from '@gen-epix/api-commondb';
+import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 
 import type {
   WithDialogRefMethods,

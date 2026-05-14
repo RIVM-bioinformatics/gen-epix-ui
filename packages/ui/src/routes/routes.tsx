@@ -70,7 +70,6 @@ export const createRoutes = <TExtraPermission = never>(
         {
           children: [
             {
-              // eslint-disable-next-line @eslint-react/component-hook-factories
               Component: () => <AdminPage />,
               errorElement: <RouterErrorPage />,
               handle: {

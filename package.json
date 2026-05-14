@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "EUPL-1.2",
   "private": true,
-  "packageManager": "pnpm@10.33.3",
+  "packageManager": "pnpm@11.1.1",
   "scripts": {
     "start": "concurrently \"pnpm --filter @gen-epix/demo-client-casedb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-casedb run start\"",
     "start-omop": "concurrently \"pnpm --filter @gen-epix/demo-client-omopdb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-omopdb run start\"",
@@ -11,6 +11,7 @@
     "clean": "lerna clean && rm -fr node_modules",
     "generate-api": "lerna run generate-api && generate-common-api packages/api-casedb packages/api-seqdb packages/api-omopdb packages/api-commondb",
     "validate": "lerna run validate",
+    "lint": "lerna run lint",
     "lint-fix": "lerna run lint-fix",
     "check-types": "lerna run check-types",
     "build": "lerna run build"

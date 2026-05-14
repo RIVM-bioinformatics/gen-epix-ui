@@ -2,10 +2,8 @@ import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox
 import { Checkbox } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
-import {
-  type ChangeEvent,
-  useCallback,
-} from 'react';
+import { useCallback } from 'react';
+import type { ChangeEvent } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 

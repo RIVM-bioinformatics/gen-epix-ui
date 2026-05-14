@@ -1,8 +1,6 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import {
-  CaseDbAbacApi,
-  type CaseDbOrganizationAccessCasePolicy,
-} from '@gen-epix/api-casedb';
+import { CaseDbAbacApi } from '@gen-epix/api-casedb';
+import type { CaseDbOrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
 import {
   QueryClientManager,
   useQueryMemo,

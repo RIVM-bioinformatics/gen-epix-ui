@@ -16,10 +16,8 @@ import { useShallow } from 'zustand/shallow';
 import type { TableColumnActions } from '../../../models/table';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
-import {
-  TableCell,
-  type TableCellProps,
-} from './TableCell';
+import { TableCell } from './TableCell';
+import type { TableCellProps } from './TableCell';
 
 export interface TableActionsCellProps<TRowData, TDataContext = null> extends TableCellProps<TRowData, TDataContext> {
   readonly column: TableColumnActions<TRowData, TDataContext>;

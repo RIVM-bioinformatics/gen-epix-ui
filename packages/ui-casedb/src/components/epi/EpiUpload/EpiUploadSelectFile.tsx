@@ -50,7 +50,7 @@ type FormFields = {
   sheet: string;
 };
 
-const EpiUploadSelectFile = () => {
+export const EpiUploadSelectFile = () => {
   const { t } = useTranslation();
   const caseTypesQuery = useCaseTypesQuery();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
@@ -283,5 +283,3 @@ const EpiUploadSelectFile = () => {
     </ResponseHandler>
   );
 };
-
-export default EpiUploadSelectFile;

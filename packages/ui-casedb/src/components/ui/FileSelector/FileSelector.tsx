@@ -14,6 +14,7 @@ import type {
 } from 'react';
 import {
   useCallback,
+  useEffect,
   useId,
   useMemo,
   useRef,
@@ -59,6 +60,15 @@ export const FileSelector = ({
   const [labelText, setLabelText] = useState<string>(hoverLabel);
   const [errorText, setErrorText] = useState<string>(null);
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
+  const initialDataTransferEffectRef = useRef(true);
+
+  useEffect(() => {
+    if (initialDataTransferEffectRef.current) {
+      initialDataTransferEffectRef.current = false;
+      return;
+    }
+    onDataTransferChange(dataTransfer);
+  }, [dataTransfer, onDataTransferChange]);
 
   const stopDefaults = useCallback((e: DragEvent) => {
     e.stopPropagation();
@@ -105,10 +115,9 @@ export const FileSelector = ({
       Array.from(oldDataTransfer.files)
         .filter(f => f.name !== fileName)
         .forEach(f => newDataTransfer.items.add(f));
-      onDataTransferChange(newDataTransfer);
       return newDataTransfer;
     });
-  }, [onDataTransferChange]);
+  }, []);
 
   const addFileList = useCallback((fileList: FileList) => {
     setErrorText(null);
@@ -141,11 +150,10 @@ export const FileSelector = ({
         newDataTransfer.items.add(file);
       });
 
-      onDataTransferChange(newDataTransfer);
       return newDataTransfer;
 
     });
-  }, [accept, areFileTypesValid, numFilesAllowed, onDataTransferChange, t]);
+  }, [accept, areFileTypesValid, numFilesAllowed, t]);
 
   const onDrop = useCallback((event: DragEvent<HTMLElement>) => {
     stopDefaults(event);
@@ -171,8 +179,7 @@ export const FileSelector = ({
   const onClearAllButtonClick = useCallback(() => {
     setErrorText(null);
     setDataTransfer(new DataTransfer());
-    onDataTransferChange(new DataTransfer());
-  }, [onDataTransferChange]);
+  }, []);
 
   return (
     <>

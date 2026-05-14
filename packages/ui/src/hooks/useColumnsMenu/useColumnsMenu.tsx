@@ -21,7 +21,7 @@ export type UseColumnsMenuProps<TRowData, TDataContext = null> = {
 };
 
 //Note: must be CamelCase because of HMR
-export const UseColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TDataContext>): MenuItemData => {
+export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TDataContext>): MenuItemData => {
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));

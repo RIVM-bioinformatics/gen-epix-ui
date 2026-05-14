@@ -9,10 +9,8 @@ import {
   useTheme,
 } from '@mui/material';
 import { useStore } from 'zustand';
-import {
-  type Step,
-  Stepper,
-} from '@gen-epix/ui';
+import { Stepper } from '@gen-epix/ui';
+import type { Step } from '@gen-epix/ui';
 
 import {
   EpiUploadStoreContext,
@@ -20,7 +18,7 @@ import {
 } from '../../../stores/epiUploadStore';
 import { EPI_UPLOAD_STEP } from '../../../models/epi';
 
-import EpiUploadSelectFile from './EpiUploadSelectFile';
+import { EpiUploadSelectFile } from './EpiUploadSelectFile';
 import { EpiUploadMapColumns } from './EpiUploadMapColumns';
 import { EpiUploadValidate } from './EpiUploadValidate';
 import { EpiUploadCreateCases } from './EpiUploadCreateCases';

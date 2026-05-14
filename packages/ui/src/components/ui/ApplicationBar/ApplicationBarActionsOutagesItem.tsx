@@ -13,10 +13,8 @@ import ConstructionIcon from '@mui/icons-material/Construction';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 
-import {
-  OutagesDialog,
-  type OutagesDialogRefMethods,
-} from '../OutagesDialog';
+import { OutagesDialog } from '../OutagesDialog';
+import type { OutagesDialogRefMethods } from '../OutagesDialog';
 import { outagesStore } from '../../../stores/outagesStore';
 
 export const ApplicationBarActionsOutagesItem = () => {

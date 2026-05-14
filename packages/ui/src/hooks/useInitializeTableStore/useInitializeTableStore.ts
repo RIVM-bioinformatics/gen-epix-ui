@@ -1,7 +1,5 @@
-import {
-  type StoreApi,
-  useStore,
-} from 'zustand';
+import { useStore } from 'zustand';
+import type { StoreApi } from 'zustand';
 import { useEffect } from 'react';
 
 import { DEFAULT_FILTER_GROUP } from '../../classes/abstracts/FilterAbstract';

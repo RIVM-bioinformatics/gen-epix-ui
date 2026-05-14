@@ -1,6 +1,6 @@
-import {
-  type SxProps,
-  type Theme,
+import type {
+  SxProps,
+  Theme,
 } from '@mui/material';
 import {
   alpha,
@@ -67,14 +67,10 @@ import type { Subject } from '../../../classes/Subject';
 import { TableCellAsyncContent } from './TableCellAsyncContent';
 import { TableHeaderCell } from './TableHeaderCell';
 import { TableActionsCell } from './TableActionsCell';
-import {
-  TableCell,
-  type TableCellProps,
-} from './TableCell';
-import {
-  TableColumnsEditorDialog,
-  type TableColumnsEditorDialogRefMethods,
-} from './TableColumnsEditorDialog';
+import { TableCell } from './TableCell';
+import type { TableCellProps } from './TableCell';
+import { TableColumnsEditorDialog } from './TableColumnsEditorDialog';
+import type { TableColumnsEditorDialogRefMethods } from './TableColumnsEditorDialog';
 import { TableCheckboxCell } from './TableCheckboxCell';
 import { TableCheckboxHeader } from './TableCheckboxHeader';
 import { TableReadableIndexCell } from './TableReadableIndexCell';
@@ -725,7 +721,7 @@ export const Table = <TRowData, TDataContext = null>({
                 }}
               />
             )),
-            // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp
+            // eslint-disable-next-line @eslint-react/no-forward-ref, @typescript-eslint/naming-convention, @eslint-react/kit/no-multi-comp, react-hooks/refs
             Table: forwardRef((props: VirtuosoTableProps, tableElementRef) => (
               <Box
                 {...props}
@@ -735,7 +731,7 @@ export const Table = <TRowData, TDataContext = null>({
                 sx={{
                   minWidth: '100%',
                   position: 'relative',
-                  // eslint-disable-next-line @eslint-react/refs
+
                   width: tableWidthRef.current,
                 }}
               />

@@ -1,6 +1,6 @@
 import type {
-  FormEventHandler,
   ReactElement,
+  SubmitEventHandler,
 } from 'react';
 import {
   Fragment,
@@ -39,7 +39,7 @@ export type GenericFormProps<TFormFields extends FieldValues> = {
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
   readonly formId?: string;
   readonly formMethods: UseFormReturn<TFormFields>;
-  readonly onSubmit?: FormEventHandler<HTMLFormElement>;
+  readonly onSubmit?: SubmitEventHandler<HTMLFormElement>;
   readonly renderField?: (definition: FormFieldDefinition<TFormFields>, element: ReactElement) => ReactElement;
   readonly schema: ObjectSchema<TFormFields, TFormFields>;
   readonly wrapForm?: (children: ReactElement) => ReactElement;

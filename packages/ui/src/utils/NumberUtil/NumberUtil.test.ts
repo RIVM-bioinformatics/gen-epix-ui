@@ -19,7 +19,7 @@ describe('NumberUtil', () => {
     it('should return an empty string if the value is not a number', () => {
       expect(NumberUtil.toStringWithPrecision(NaN, 0.01)).toBe('');
       expect(NumberUtil.toStringWithPrecision(undefined as unknown as number, 0.01)).toBe('');
-      expect(NumberUtil.toStringWithPrecision(null as unknown as number, 0.01)).toBe('');
+      expect(NumberUtil.toStringWithPrecision(null, 0.01)).toBe('');
     });
 
     it('should handle cases where the base has no decimal part', () => {

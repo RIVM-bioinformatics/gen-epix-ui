@@ -1,9 +1,9 @@
-import Decimal from 'decimal.js';
+import { Decimal } from 'decimal.js';
 import first from 'lodash/first';
 import intersection from 'lodash/intersection';
 import last from 'lodash/last';
 import round from 'lodash/round';
-import { type Theme } from '@mui/material';
+import type { Theme } from '@mui/material';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import {

@@ -14,10 +14,8 @@ import { useTranslation } from 'react-i18next';
 import ChatIcon from '@mui/icons-material/Chat';
 
 import { UserSettingsManager } from '../../../classes/managers/UserSettingsManager';
-import {
-  UserFeedbackDialog,
-  type UserFeedbackDialogRefMethods,
-} from '../UserFeedbackDialog';
+import { UserFeedbackDialog } from '../UserFeedbackDialog';
+import type { UserFeedbackDialogRefMethods } from '../UserFeedbackDialog';
 import { ConfigManager } from '../../../classes/managers/ConfigManager';
 
 const NOW = new Date().getTime();

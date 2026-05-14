@@ -106,11 +106,11 @@ export const PhylogeneticTreeComponent = ({
     caseIds: [],
     origin: null,
   }), []);
-  const zoomLevelSubject = useMemo(() => new Subject<number>(!isNaN(initialViewState?.zoomLevel) ? initialViewState.zoomLevel : 1), [initialViewState?.zoomLevel]);
+  const zoomLevelSubject = useMemo(() => new Subject<number>(!isNaN(initialViewState?.zoomLevel) ? initialViewState.zoomLevel : 1), [initialViewState]);
   const scrollPositionSubject = useMemo(() => new Subject<{ horizontal: number; vertical: number }>({
     horizontal: !isNaN(initialViewState?.horizontalScrollPosition) ? initialViewState.horizontalScrollPosition : 0,
     vertical: !isNaN(initialViewState?.verticalScrollPosition) ? initialViewState.verticalScrollPosition : 0,
-  }), [initialViewState?.horizontalScrollPosition, initialViewState?.verticalScrollPosition]);
+  }), [initialViewState]);
   const effectiveHighlightingSubject = highlightingSubject ?? fallbackHighlightingSubject;
 
   const headerHeight = ConfigManager.getInstance<CaseDbConfig>().config.epiTree.HEADER_HEIGHT;
@@ -294,7 +294,7 @@ export const PhylogeneticTreeComponent = ({
     });
 
     link(newScrollPosition);
-  }, [itemHeight, link, scrollPositionSubject, tree?.size, treeCanvasHeight, treeHeight, zoomLevelSubject]);
+  }, [itemHeight, link, scrollPositionSubject, tree, treeCanvasHeight, treeHeight, zoomLevelSubject]);
 
   useImperativeHandle(ref, () => ({
     link,

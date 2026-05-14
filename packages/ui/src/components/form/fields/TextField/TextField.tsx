@@ -141,7 +141,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
             required: required && !disabled,
           },
         }}
-        value={value ?? '' as string}
+        value={value ?? ''}
         variant={'outlined'}
       />
     );
@@ -149,7 +149,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
 
   return (
     <FormControl
-      {...TestIdUtil.createAttributes('TextField', { label, name: name as string })}
+      {...TestIdUtil.createAttributes('TextField', { label, name })}
       fullWidth
       sx={{
         '&:hover button, &:focus-within button': {

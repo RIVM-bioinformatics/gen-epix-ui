@@ -1,4 +1,4 @@
-import { type UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbCaseSetRights } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
