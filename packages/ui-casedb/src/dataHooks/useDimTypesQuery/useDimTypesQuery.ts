@@ -17,7 +17,7 @@ export const dimTypePresentationValues: Record<CaseDbDimType, string> = {
 };
 
 export const useDimTypeOptionsQuery = (): UseOptions<string> => {
-  return useMemo(() => {
+  return useMemo<UseOptions<string>>(() => {
     const options: OptionBase<string>[] = Object.entries(dimTypePresentationValues).map(([value, label]) => ({ label, value }));
     return {
       error: null,

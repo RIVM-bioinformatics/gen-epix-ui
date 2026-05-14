@@ -182,7 +182,7 @@ export const EpiUploadMapSequences = () => {
     const dropDownValueRev = epiUploadSequenceMappingRef.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.rev || '';
     const onChangeFwd = (newValue: string) => {
       if (!newValue) {
-        // eslint-disable-next-line react-hooks/syntax
+
         delete epiUploadSequenceMappingRef.current?.[id]?.readsFileNames?.[col.id]?.fwd;
       } else {
         epiUploadSequenceMappingRef.current[id].readsFileNames[col.id].fwd = newValue;
@@ -190,7 +190,7 @@ export const EpiUploadMapSequences = () => {
     };
     const onChangeRev = (newValue: string) => {
       if (!newValue) {
-        // eslint-disable-next-line react-hooks/syntax
+
         delete epiUploadSequenceMappingRef.current?.[id]?.readsFileNames?.[col.id]?.rev;
       } else {
         epiUploadSequenceMappingRef.current[id].readsFileNames[col.id].rev = newValue;

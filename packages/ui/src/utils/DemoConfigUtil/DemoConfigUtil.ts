@@ -1,6 +1,6 @@
 import type { ConfigBase } from '../../models/config';
-import { AxiosUtil } from '../../utils/AxiosUtil';
 import { createDemoTheme } from '../../theme/demoTheme';
+import { AxiosUtil } from '../AxiosUtil';
 
 const ApplicationHeader = (): ReturnType<ConfigBase['ApplicationHeader']> => null;
 const ConsentDialogContent = (): ReturnType<ConfigBase['consentDialog']['Content']> => null;

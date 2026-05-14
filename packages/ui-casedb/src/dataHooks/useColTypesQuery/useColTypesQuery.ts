@@ -42,7 +42,7 @@ export const colTypePresentationValues: Record<CaseDbColType, string> = {
 };
 
 export const useColTypeOptionsQuery = (): UseOptions<string> => {
-  return useMemo(() => {
+  return useMemo<UseOptions<string>>(() => {
     const options: OptionBase<string>[] = Object.entries(colTypePresentationValues).map(([value, label]) => ({ label, value }));
     return {
       error: null,

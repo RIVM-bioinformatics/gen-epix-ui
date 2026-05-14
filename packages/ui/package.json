@@ -12,9 +12,12 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "files": [
-    "dist"
+    "src"
   ],
   "publishConfig": {
+    "files": [
+      "dist"
+    ],
     "access": "public",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
@@ -35,6 +38,10 @@
     },
     "./client": {
       "types": "./src/@types/ui.d.ts"
+    },
+    "./test-lib": {
+      "types": "./src/test/lib/index.ts",
+      "import": "./src/test/lib/index.ts"
     }
   },
   "scripts": {
@@ -132,7 +139,7 @@
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@gen-epix/api-commondb": "workspace:*",
-    "@gen-epix/eslint-config": "link:../../../gen-epix-ui-tools/packages/eslint-config",
+    "@gen-epix/eslint-config": "0.3.0",
     "@gen-epix/translation-util": "0.1.1",
     "@hookform/resolvers": "5.2.2",
     "@mui/icons-material": "9.0.1",

@@ -33,7 +33,7 @@ export const treeAlgorithmCodeValues: Record<CaseDbTreeAlgorithmType, string> = 
 };
 
 export const useTreeAlgorithmCodeOptionsQuery = (): UseOptions<string> => {
-  return useMemo(() => {
+  return useMemo<UseOptions<string>>(() => {
     const options: OptionBase<string>[] = Object.entries(treeAlgorithmCodeValues).map(([value, label]) => ({ label, value }));
     return {
       error: null,

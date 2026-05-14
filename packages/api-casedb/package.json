@@ -29,7 +29,7 @@
     "axios": "1.16.0"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "link:../../../gen-epix-ui-tools/packages/eslint-config",
+    "@gen-epix/eslint-config": "0.3.0",
     "@gen-epix/generate-api": "0.3.2",
     "@openapitools/openapi-generator-cli": "2.32.0",
     "@types/node": "25.7.0",

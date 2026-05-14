@@ -9,7 +9,7 @@ import {
   DevicePixelRatioManager,
   Subject,
 } from '@gen-epix/ui';
-import { customRender } from '@gen-epix/ui/src/test/lib/render';
+import { customRender } from '@gen-epix/ui/test-lib';
 
 import type {
   Highlighting,

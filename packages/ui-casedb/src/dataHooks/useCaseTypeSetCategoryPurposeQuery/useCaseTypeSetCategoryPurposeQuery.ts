@@ -11,7 +11,7 @@ export const caseTypeSetCategoryPurposePresentationValues: Record<CaseDbCaseType
 };
 
 export const useCaseTypeSetCategoryPurposeOptionsQuery = (): UseOptions<string> => {
-  return useMemo(() => {
+  return useMemo<UseOptions<string>>(() => {
     const options: OptionBase<string>[] = Object.entries(caseTypeSetCategoryPurposePresentationValues).map(([value, label]) => ({ label, value }));
     return {
       error: null,

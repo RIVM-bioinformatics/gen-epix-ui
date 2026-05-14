@@ -42,7 +42,7 @@ export const createIndex = () => {
     join(__dirname, 'src', 'models', '*.ts'),
   ]).forEach((file) => {
     const relativePath = file.replace(`${__dirname}/src/`, '');
-    if (relativePath === 'index.ts') {
+    if (relativePath === 'index.ts' || relativePath.startsWith('test/')) {
       return;
     }
     const exportPath = relativePath.replace(/(?:\/index)?\.ts$/, '');

@@ -38,7 +38,7 @@ export const SidebarItem = ({ children, closeIcon, closeIconTooltipText, onClose
   useEffect(() => {
     const mainContentElement = document.getElementById(ConfigManager.getInstance().config.layout.MAIN_CONTENT_ID);
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setMainContentDOMRect(mainContentElement.getBoundingClientRect());
 
     const observer = new ResizeObserver(() => {

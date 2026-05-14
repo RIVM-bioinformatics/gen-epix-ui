@@ -76,7 +76,7 @@
     "@emotion/styled": "^11.14.1",
     "@gen-epix/api-commondb": "workspace:*",
     "@gen-epix/api-omopdb": "workspace:*",
-    "@gen-epix/eslint-config": "link:../../../gen-epix-ui-tools/packages/eslint-config",
+    "@gen-epix/eslint-config": "0.3.0",
     "@gen-epix/translation-util": "0.1.1",
     "@gen-epix/ui": "workspace:*",
     "@mui/icons-material": "^9.0.1",

@@ -4,10 +4,8 @@ import {
   ConfigManager,
   I18nManager,
 } from '@gen-epix/ui';
-import {
-  type CaseDbConfig,
-  setupCaseDb,
-} from '@gen-epix/ui-casedb';
+import { setupCaseDb } from '@gen-epix/ui-casedb';
+import type { CaseDbConfig } from '@gen-epix/ui-casedb';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 

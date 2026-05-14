@@ -1,6 +1,6 @@
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { setup } from '../../setup/setup';
-import { DemoConfigUtil } from '../lib/DemoConfigUtil';
+import { DemoConfigUtil } from '../../utils/DemoConfigUtil';
 
 export const setupTestEnvironment = () => {
   const configManager = ConfigManager.getInstance();
