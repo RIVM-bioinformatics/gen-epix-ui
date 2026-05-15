@@ -12,7 +12,6 @@ import {
   isEqual,
   isValid,
 } from 'date-fns';
-import sum from 'lodash/sum';
 import type {
   CaseDbCase,
   CaseDbCol,
@@ -28,19 +27,23 @@ import { CaseTypeUtil } from '../CaseTypeUtil';
 import { EpiFilterUtil } from '../EpiFilterUtil';
 import type { CaseDbConfig } from '../../models/config';
 
-interface Item {
+export interface EpiCurveChartItem {
   date: Date;
   row: CaseDbCase;
   value: number;
 }
 
-interface NormalizedAreaChartDataPoint {
+export interface EpiCurveNormalizedAreaChartDataPoint {
   caseIds: { [seriesName: string]: string[] };
   date: Date;
   values: { [seriesName: string]: number };
 }
 
-export type { Item, NormalizedAreaChartDataPoint };
+type IntervalBucket = {
+  byColor: { [color: string]: { caseIds: string[]; value: number } };
+  caseIds: string[];
+  value: number;
+};
 
 export class EpiCurveUtil {
   /**
@@ -52,7 +55,7 @@ export class EpiCurveUtil {
    * @returns Area chart series data with max value (always 100) and series array
    */
   public static getAreaChartSeriesData(
-    items: Item[],
+    items: EpiCurveChartItem[],
     xAxisIntervals: Date[],
     getXAxisLabel: (value: Date) => string,
     stratification?: {
@@ -82,12 +85,13 @@ export class EpiCurveUtil {
 
     // Step 2: Output series for ECharts (each series: [x, y, caseIds])
     const seriesNames = stratification.legendaItems.map(item => item.rowValue.full);
+    const xAxisLabels = xAxisIntervals.map(interval => getXAxisLabel(interval));
     const areaSeries: unknown[] = seriesNames.map((seriesName, seriesIdx) => {
       return {
         areaStyle: {},
         color: stratification.legendaItems[seriesIdx].color,
-        data: normalizedDataPoints.map(point => [
-          getXAxisLabel(point.date),
+        data: normalizedDataPoints.map((point, pointIdx) => [
+          xAxisLabels[pointIdx],
           point.values[seriesName],
           JSON.stringify(point.caseIds[seriesName]),
         ]),
@@ -115,7 +119,7 @@ export class EpiCurveUtil {
    * @param index
    * @returns
    */
-  public static getBarChartItemsWithinInterval(items: Item[], intervals: Date[], index: number): Item[] {
+  public static getBarChartItemsWithinInterval(items: EpiCurveChartItem[], intervals: Date[], index: number): EpiCurveChartItem[] {
     return items.filter(item => {
       const nextInterval = intervals[index + 1];
       const itemDate = item.date;
@@ -132,7 +136,7 @@ export class EpiCurveUtil {
    * @returns Bar chart series data with max value and series array
    */
   public static getBarChartSeriesData(
-    items: Item[],
+    items: EpiCurveChartItem[],
     xAxisIntervals: Date[],
     getXAxisLabel: (value: Date) => string,
     stratification?: {
@@ -158,6 +162,7 @@ export class EpiCurveUtil {
     const barSeries: unknown[] = [];
 
     const hasStratification = stratification?.legendaItems?.length;
+    const buckets = EpiCurveUtil.getIntervalBuckets(items, xAxisIntervals, stratification?.caseIdColors);
 
     if (!hasStratification) {
       (barSeries).push({
@@ -177,10 +182,11 @@ export class EpiCurveUtil {
       });
     }
 
-    xAxisIntervals.forEach((interval, intervalIndex) => {
-      const itemsWithinInterval = EpiCurveUtil.getBarChartItemsWithinInterval(items, xAxisIntervals, intervalIndex);
-      const xAxisLabel = getXAxisLabel(interval);
-      const intervalTotal = sum(itemsWithinInterval.map(item => item.value));
+    const xAxisLabels = xAxisIntervals.map(interval => getXAxisLabel(interval));
+    for (let intervalIndex = 0; intervalIndex < xAxisIntervals.length; intervalIndex++) {
+      const intervalBucket = buckets[intervalIndex];
+      const xAxisLabel = xAxisLabels[intervalIndex];
+      const intervalTotal = intervalBucket.value;
 
       if (intervalTotal > max) {
         max = intervalTotal;
@@ -191,21 +197,20 @@ export class EpiCurveUtil {
         firstBarSerie?.data.push([
           xAxisLabel,
           intervalTotal,
-          JSON.stringify(itemsWithinInterval.map(item => item.row.id)),
+          JSON.stringify(intervalBucket.caseIds),
         ]);
       } else {
         barSeries.forEach((barSerie) => {
           const barSerieData = (barSerie as { color: string; data: unknown[] });
-          const caseIdColors = stratification.caseIdColors || {};
-          const filteredItems = itemsWithinInterval.filter(item => caseIdColors[item.row.id] === barSerieData.color);
+          const bucketByColor = intervalBucket.byColor[barSerieData.color] ?? { caseIds: [], value: 0 };
           barSerieData.data.push([
             xAxisLabel,
-            sum(filteredItems.map(item => item.value)),
-            JSON.stringify(filteredItems.map(item => item.row.id)),
+            bucketByColor.value,
+            JSON.stringify(bucketByColor.caseIds),
           ]);
         });
       }
-    });
+    }
 
     return {
       max,
@@ -220,7 +225,7 @@ export class EpiCurveUtil {
    * @param cols
    * @returns
    */
-  public static getBarChartSortedItems(completeCaseType: CaseDbCompleteCaseType, cases: CaseDbCase[], cols: CaseDbCol[]): Item[] {
+  public static getBarChartSortedItems(completeCaseType: CaseDbCompleteCaseType, cases: CaseDbCase[], cols: CaseDbCol[]): EpiCurveChartItem[] {
     return EpiCurveUtil.getSortedItems(completeCaseType, cases, cols);
   }
 
@@ -228,7 +233,7 @@ export class EpiCurveUtil {
    * Alias for backward compatibility
    * @deprecated Use getBarChartItemsWithinInterval instead
    */
-  public static getItemsWithinInterval(items: Item[], intervals: Date[], index: number): Item[] {
+  public static getItemsWithinInterval(items: EpiCurveChartItem[], intervals: Date[], index: number): EpiCurveChartItem[] {
     return EpiCurveUtil.getBarChartItemsWithinInterval(items, intervals, index);
   }
 
@@ -240,37 +245,35 @@ export class EpiCurveUtil {
    * @returns Normalized data points ready for area chart
    */
   public static getNormalizedAreaChartData(
-    items: Item[],
+    items: EpiCurveChartItem[],
     xAxisIntervals: Date[],
     stratification: { caseIdColors: { [caseId: string]: string }; legendaItems: Array<{ color: string; rowValue: { full: string } }> } | null,
-  ): NormalizedAreaChartDataPoint[] {
+  ): EpiCurveNormalizedAreaChartDataPoint[] {
     if (!stratification || !xAxisIntervals.length) {
       return [];
     }
 
     // Step 1: Build value matrix for each series at each interval
     const seriesNames = stratification.legendaItems.map(item => item.rowValue.full);
-    // Matrix: seriesName -> array of {date, value, caseIds}
-    const seriesMatrix: {
-      [seriesName: string]: Array<{ caseIds: string[]; date: Date; value: number }>;
-    } = {};
-    seriesNames.forEach(seriesName => {
-      seriesMatrix[seriesName] = xAxisIntervals.map((interval, intervalIndex) => {
-        const itemsWithinInterval = EpiCurveUtil.getBarChartItemsWithinInterval(items, xAxisIntervals, intervalIndex);
-        const filteredItems = itemsWithinInterval.filter(
-          item => stratification.caseIdColors[item.row.id] === stratification.legendaItems.find(l => l.rowValue.full === seriesName)?.color,
-        );
+    const seriesColors = stratification.legendaItems.map(item => item.color);
+    const buckets = EpiCurveUtil.getIntervalBuckets(items, xAxisIntervals, stratification.caseIdColors);
+
+    // Matrix: seriesIndex -> array of {date, value, caseIds}
+    const seriesMatrix: Array<Array<{ caseIds: string[]; date: Date; value: number }>> = seriesNames.map((_, seriesIndex) => {
+      const seriesColor = seriesColors[seriesIndex];
+      return xAxisIntervals.map((interval, intervalIndex) => {
+        const byColorBucket = buckets[intervalIndex].byColor[seriesColor] ?? { caseIds: [], value: 0 };
         return {
-          caseIds: filteredItems.map(item => item.row.id),
+          caseIds: byColorBucket.caseIds,
           date: interval,
-          value: filteredItems.length > 0 ? sum(filteredItems.map(item => item.value)) : 0,
+          value: byColorBucket.value,
         };
       });
     });
 
     // Step 2: Interpolate missing values for each series
-    seriesNames.forEach(seriesName => {
-      const arr = seriesMatrix[seriesName];
+    for (let seriesIndex = 0; seriesIndex < seriesNames.length; seriesIndex++) {
+      const arr = seriesMatrix[seriesIndex];
       // Find all indices with value > 0
       let lastKnownIdx = -1;
       for (let i = 0; i < arr.length; i++) {
@@ -291,22 +294,22 @@ export class EpiCurveUtil {
           lastKnownIdx = i;
         }
       }
-    });
+    }
 
     // Step 3: For each interval, collect values for all series and normalize to 100%
-    const normalizedDataPoints: NormalizedAreaChartDataPoint[] = xAxisIntervals.map((interval, idx) => {
+    const normalizedDataPoints: EpiCurveNormalizedAreaChartDataPoint[] = xAxisIntervals.map((interval, idx) => {
       const values: { [seriesName: string]: number } = {};
       const caseIds: { [seriesName: string]: string[] } = {};
       let total = 0;
-      seriesNames.forEach(seriesName => {
-        const v = seriesMatrix[seriesName][idx].value;
-        total += v;
-      });
-      seriesNames.forEach(seriesName => {
-        const v = seriesMatrix[seriesName][idx].value;
+      for (let seriesIndex = 0; seriesIndex < seriesNames.length; seriesIndex++) {
+        total += seriesMatrix[seriesIndex][idx].value;
+      }
+      for (let seriesIndex = 0; seriesIndex < seriesNames.length; seriesIndex++) {
+        const v = seriesMatrix[seriesIndex][idx].value;
+        const seriesName = seriesNames[seriesIndex];
         values[seriesName] = total > 0 ? (v / total) * 100 : 0;
-        caseIds[seriesName] = seriesMatrix[seriesName][idx].caseIds;
-      });
+        caseIds[seriesName] = seriesMatrix[seriesIndex][idx].caseIds;
+      }
       return {
         caseIds,
         date: interval,
@@ -370,7 +373,7 @@ export class EpiCurveUtil {
    * @param cols
    * @returns
    */
-  public static getSortedItems(completeCaseType: CaseDbCompleteCaseType, cases: CaseDbCase[], cols: CaseDbCol[]): Item[] {
+  public static getSortedItems(completeCaseType: CaseDbCompleteCaseType, cases: CaseDbCase[], cols: CaseDbCol[]): EpiCurveChartItem[] {
     if (!cols.length || !cases.length || !completeCaseType) {
       return [];
     }
@@ -381,7 +384,7 @@ export class EpiCurveUtil {
       dateParsers[col.id] = EpiFilterUtil.getDateParser(completeCaseType.ref_cols[col.ref_col_id]);
     });
 
-    const items: Item[] = cases.map(row => {
+    const items: EpiCurveChartItem[] = cases.map(row => {
       const dates = cols.map(col => {
         const columnDate = row.content[col.id];
         if (!columnDate) {
@@ -424,7 +427,7 @@ export class EpiCurveUtil {
     return ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS;
   }
 
-  public static getXAxisIntervals(colType: CaseDbColType, items: Item[]): Date[] {
+  public static getXAxisIntervals(colType: CaseDbColType, items: EpiCurveChartItem[]): Date[] {
     if (items.length === 0) {
       return [];
     }
@@ -463,6 +466,57 @@ export class EpiCurveUtil {
       default:
         throw Error(`unknown col_type ${colType}`);
     }
+  }
+
+  private static getIntervalBuckets(
+    items: EpiCurveChartItem[],
+    intervals: Date[],
+    caseIdColors?: { [caseId: string]: string },
+  ): IntervalBucket[] {
+    if (!intervals.length) {
+      return [];
+    }
+
+    const intervalStartTimes = intervals.map(interval => interval.getTime());
+    const lastIntervalIndex = intervalStartTimes.length - 1;
+    const buckets: IntervalBucket[] = intervals.map(() => ({
+      byColor: {},
+      caseIds: [] as string[],
+      value: 0,
+    }));
+
+    let intervalIndex = 0;
+    for (const item of items) {
+      const itemTime = item.date.getTime();
+
+      // Move interval pointer until item belongs to [interval, nextInterval).
+      while (
+        intervalIndex < lastIntervalIndex
+        && itemTime >= intervalStartTimes[intervalIndex + 1]
+      ) {
+        intervalIndex += 1;
+      }
+
+      const bucket = buckets[intervalIndex];
+      bucket.value += item.value;
+      bucket.caseIds.push(item.row.id);
+
+      const color = caseIdColors?.[item.row.id];
+      if (!color) {
+        continue;
+      }
+
+      if (!bucket.byColor[color]) {
+        bucket.byColor[color] = {
+          caseIds: [] as string[],
+          value: 0,
+        };
+      }
+      bucket.byColor[color].value += item.value;
+      bucket.byColor[color].caseIds.push(item.row.id);
+    }
+
+    return buckets;
   }
 
   // interpolateAreaChartData is now inlined in getNormalizedAreaChartData for per-series interpolation

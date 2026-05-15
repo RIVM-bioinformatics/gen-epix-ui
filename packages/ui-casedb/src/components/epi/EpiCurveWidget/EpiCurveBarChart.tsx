@@ -12,14 +12,14 @@ import type { Ref } from 'react';
 import isString from 'lodash/isString';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
-import type { Item } from '../../../utils/EpiCurveUtil';
+import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
 import type { Stratification } from '../../../models/epi';
 
 export interface EpiCurveBarChartProps {
   chartRef: Ref<EChartsReact>;
   echarts: unknown;
   getXAxisLabel: (value: Date) => string;
-  items: Item[];
+  items: EpiCurveChartItem[];
   onCaseIdsChange?: (caseIds: string[]) => void;
   onChartReady?: (chart: EChartsType) => void;
   onPointMouseUp?: (payload: { caseIds: string[]; focussedDate: string; mouseEvent: MouseEvent }) => void;

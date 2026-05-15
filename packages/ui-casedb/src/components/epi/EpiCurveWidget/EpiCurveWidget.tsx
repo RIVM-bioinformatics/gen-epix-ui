@@ -135,7 +135,7 @@ export const EpiCurveWidget = () => {
           setChartType('area');
         },
         disabled: !stratification,
-        label: t`Area chart`,
+        label: t`Normalized stacked area chart`,
         leftIcon: <AreaChartIcon />,
       },
     ];
