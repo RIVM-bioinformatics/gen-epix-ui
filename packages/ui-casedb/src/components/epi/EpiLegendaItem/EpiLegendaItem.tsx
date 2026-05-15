@@ -135,7 +135,7 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
     );
   }, [filters, focussedLegendaItem, onShowOnlySelectedLegendaItemMenuItemClick, stratification, t]);
 
-  const disabled = stratification.mode === STRATIFICATION_MODE.FIELD && item.caseIds.length === 0;
+  const disabled = stratification?.mode === STRATIFICATION_MODE.FIELD && item.caseIds.length === 0;
 
   const innerContent = useMemo(() => {
     const value = item.rowValue.isMissing ? ConfigManager.getInstance<CaseDbConfig>().config.epi.DATA_MISSING_CHARACTER : item.rowValue.short;

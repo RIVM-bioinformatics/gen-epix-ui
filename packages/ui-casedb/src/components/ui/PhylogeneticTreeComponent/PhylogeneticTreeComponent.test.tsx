@@ -426,6 +426,7 @@ describe('PhylogeneticTreeComponent', () => {
     const onCanvasChange = vi.fn();
     const stratification: Stratification = {
       caseIdColors: Object.fromEntries([['LeafB', '#ff0000']]),
+      colorForIsMissing: '#999999',
       mode: STRATIFICATION_MODE.SELECTION,
     };
     const { canvas, layout, renderResult } = await renderTree({

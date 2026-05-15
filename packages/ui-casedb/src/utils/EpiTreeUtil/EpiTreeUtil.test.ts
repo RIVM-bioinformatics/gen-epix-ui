@@ -2769,6 +2769,7 @@ describe('EpiTreeUtil', () => {
       assembly.leafNodes = [{ nodeName: 'case-1', shape: leafShape }];
       const stratification: Stratification = {
         caseIdColors: { 'case-1': '#ff0000' },
+        colorForIsMissing: '#999999',
         mode: STRATIFICATION_MODE.FIELD,
       };
       EpiTreeUtil.drawTree({

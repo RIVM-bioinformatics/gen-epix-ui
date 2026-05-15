@@ -13,6 +13,7 @@ import { SidebarItem } from '@gen-epix/ui';
 import { EpiDashboardGeneralSettingsForm } from './EpiDashboardGeneralSettingsForm';
 import { EpiDashboardLayoutSettingsForm } from './EpiDashboardLayoutSettingsForm';
 import { EpiDashboardTreeSettingsForm } from './EpiDashboardTreeSettingsForm';
+import { EpiDashboardEpiCurveSettingsForm } from './EpiDashboardEpiCurveSettingsForm';
 
 export type EpiDashboardSettingsSidebarItemProps = {
   readonly onReset: () => void;
@@ -33,6 +34,10 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
     {
       component: <EpiDashboardTreeSettingsForm onReset={onReset} />,
       label: t`Phylogenetic tree`,
+    },
+    {
+      component: <EpiDashboardEpiCurveSettingsForm onReset={onReset} />,
+      label: t`Epi curve`,
     },
     {
       component: <EpiDashboardLayoutSettingsForm onReset={onReset} />,
