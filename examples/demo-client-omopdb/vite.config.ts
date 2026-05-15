@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 
-import * as child from 'child_process';
+import { execSync } from 'child_process';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
 
@@ -14,11 +14,12 @@ import {
 import { defineConfig } from 'vitest/config';
 import { findGitRootPath } from '@gen-epix/tools-lib';
 
+// eslint-disable-next-line import-x/extensions
 import packageJson from './package.json';
 
 let commitHash = 'not-a-git-repo';
 try {
-  commitHash = child.execSync('git rev-parse --short HEAD').toString().trim();
+  commitHash = execSync('git rev-parse --short HEAD').toString().trim();
 } catch {
   // not a git repo or git is unavailable
 }
@@ -43,6 +44,7 @@ const proxyResponseCodeConfig: {
 };
 
 // https://vitejs.dev/config/
+// eslint-disable-next-line import-x/no-default-export
 export default defineConfig({
   build: {
     rollupOptions: {
@@ -55,7 +57,7 @@ export default defineConfig({
     // eslint-disable-next-line @typescript-eslint/naming-convention
     __COMMIT_HASH__: JSON.stringify(commitHash.trim()),
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    __PACKAGE_JSON_VERSION__: JSON.stringify((packageJson.version as unknown as string).trim()),
+    __PACKAGE_JSON_VERSION__: JSON.stringify((packageJson.version).trim()),
   },
   html: {
     cspNonce: '**CSP_NONCE**',
@@ -79,14 +81,14 @@ export default defineConfig({
         },
         {
           dest: './locale/ui',
-          rename: (fileName, fileExtension) => `../../../${fileName}.${fileExtension}`,
+          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
           src: [
             normalizePath(resolve(gitRootPath, 'packages', 'ui', 'src', 'locale', '*.json')),
           ],
         },
         {
           dest: './locale/ui-omopdb',
-          rename: (fileName, fileExtension) => `../../../${fileName}.${fileExtension}`,
+          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
           src: [
             normalizePath(resolve(gitRootPath, 'packages', 'ui-omopdb', 'src', 'locale', '*.json')),
           ],
