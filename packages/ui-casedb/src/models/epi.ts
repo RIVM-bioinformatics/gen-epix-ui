@@ -165,6 +165,7 @@ export type Highlighting = {
 export type Stratification = {
   caseIdColors: { [key: string]: string };
   col?: CaseDbCol;
+  colorForIsMissing: string;
   legendaItems?: StratificationLegendaItem[];
   legendaItemsByColor?: { [key: string]: StratificationLegendaItem };
   legendaItemsByValue?: { [key: string]: StratificationLegendaItem };

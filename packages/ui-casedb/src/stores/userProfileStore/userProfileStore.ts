@@ -7,6 +7,10 @@ import {
 import type { EpiDashboardLayoutUserConfig } from '../../models/epi';
 import { DashboardUtil } from '../../utils/DashboardUtil';
 
+export type EpiDashboardEpiCurveSettings = {
+  isShowMissingValuesInAreaChartEnabled: boolean;
+};
+
 export type EpiDashboardGeneralSettings = {
   isHighlightingEnabled: boolean;
 };
@@ -19,17 +23,19 @@ export type EpiDashboardTreeSettings = {
 export type UserProfileStore = UserProfileStoreActions & UserProfileStoreState;
 
 export interface UserProfileStoreActions {
+  resetEpiDashboardEpiCurveSettings: () => void;
   resetEpiDashboardGeneralSettings: () => void;
   resetEpiDashboardLayout: () => void;
   resetEpiDashboardTreeSettings: () => void;
+  setEpiDashboardEpiCurveSettings: (settings: EpiDashboardEpiCurveSettings) => void;
   setEpiDashboardGeneralSettings: (settings: EpiDashboardGeneralSettings) => void;
   setEpiDashboardLayoutUserConfig: (config: EpiDashboardLayoutUserConfig) => void;
-
   setEpiDashboardPanelConfiguration: (id: string, configuration: string) => void;
   setEpiDashboardTreeSettings: (settings: EpiDashboardTreeSettings) => void;
 }
 
 export interface UserProfileStoreState {
+  epiDashboardEpiCurveSettings: EpiDashboardEpiCurveSettings;
   epiDashboardGeneralSettings: EpiDashboardGeneralSettings;
   epiDashboardLayoutUserConfig: EpiDashboardLayoutUserConfig;
   epiDashboardPanels: {
@@ -39,6 +45,9 @@ export interface UserProfileStoreState {
 }
 
 export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => ({
+  epiDashboardEpiCurveSettings: {
+    isShowMissingValuesInAreaChartEnabled: false,
+  },
   epiDashboardGeneralSettings: {
     isHighlightingEnabled: true,
   },
@@ -56,6 +65,13 @@ export const userProfileStore = createStore<UserProfileStore>()(
     (set, get) => {
       return {
         ...createUserProfileStoreInitialState(),
+        resetEpiDashboardEpiCurveSettings: () => {
+          set({
+            epiDashboardEpiCurveSettings: {
+              isShowMissingValuesInAreaChartEnabled: false,
+            },
+          });
+        },
         resetEpiDashboardGeneralSettings: () => {
           set({
             epiDashboardGeneralSettings: {
@@ -63,7 +79,6 @@ export const userProfileStore = createStore<UserProfileStore>()(
             },
           });
         },
-
         resetEpiDashboardLayout: () => {
           set({
             epiDashboardLayoutUserConfig: DashboardUtil.createDashboardLayoutUserConfigInitialState(),
@@ -78,14 +93,16 @@ export const userProfileStore = createStore<UserProfileStore>()(
             },
           });
         },
-
+        setEpiDashboardEpiCurveSettings: (settings: EpiDashboardEpiCurveSettings) => {
+          set({ epiDashboardEpiCurveSettings: settings });
+        },
         setEpiDashboardGeneralSettings: (settings: EpiDashboardGeneralSettings) => {
           set({ epiDashboardGeneralSettings: settings });
         },
+
         setEpiDashboardLayoutUserConfig: (config: EpiDashboardLayoutUserConfig) => {
           set({ epiDashboardLayoutUserConfig: config });
         },
-
         setEpiDashboardPanelConfiguration: (id: string, configuration: string) => {
           const epiDashboardPanels = get().epiDashboardPanels;
           set({
@@ -109,7 +126,7 @@ export const userProfileStore = createStore<UserProfileStore>()(
         epiDashboardTreeSettings: state.epiDashboardTreeSettings,
       }),
       storage: createJSONStorage(() => localStorage),
-      version: 2,
+      version: 3,
     },
   ),
 );

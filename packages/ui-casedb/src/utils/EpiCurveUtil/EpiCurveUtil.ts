@@ -26,6 +26,7 @@ import {
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { EpiFilterUtil } from '../EpiFilterUtil';
 import type { CaseDbConfig } from '../../models/config';
+import type { Stratification } from '../../models/epi';
 
 export interface EpiCurveChartItem {
   date: Date;
@@ -58,10 +59,8 @@ export class EpiCurveUtil {
     items: EpiCurveChartItem[],
     xAxisIntervals: Date[],
     getXAxisLabel: (value: Date) => string,
-    stratification?: {
-      caseIdColors?: { [caseId: string]: string };
-      legendaItems?: Array<{ color: string; rowValue: { full: string } }>;
-    } | null,
+    showMissingValues: boolean,
+    stratification?: Stratification,
   ): { max: number; series: (null | unknown[]) } {
     if (!items || !stratification?.legendaItems?.length) {
       return {
@@ -70,11 +69,29 @@ export class EpiCurveUtil {
       };
     }
 
+    const visibleLegendaItems = showMissingValues
+      ? stratification.legendaItems
+      : stratification.legendaItems.filter(item => item.color !== stratification.colorForIsMissing);
+
+    if (!visibleLegendaItems.length) {
+      return {
+        max: 100,
+        series: null,
+      };
+    }
+
+    const visibleStratification = {
+      caseIdColors: stratification.caseIdColors,
+      legendaItems: visibleLegendaItems.map(item => ({
+        color: item.color,
+        rowValue: {
+          full: item.rowValue.full,
+        },
+      })),
+    };
+
     // Step 1: Interpolate and normalize data for each series
-    const normalizedDataPoints = EpiCurveUtil.getNormalizedAreaChartData(items, xAxisIntervals, stratification as {
-      caseIdColors: { [caseId: string]: string };
-      legendaItems: Array<{ color: string; rowValue: { full: string } }>;
-    });
+    const normalizedDataPoints = EpiCurveUtil.getNormalizedAreaChartData(items, xAxisIntervals, visibleStratification);
 
     if (!normalizedDataPoints.length) {
       return {
@@ -84,12 +101,12 @@ export class EpiCurveUtil {
     }
 
     // Step 2: Output series for ECharts (each series: [x, y, caseIds])
-    const seriesNames = stratification.legendaItems.map(item => item.rowValue.full);
+    const seriesNames = visibleLegendaItems.map(item => item.rowValue.full);
     const xAxisLabels = xAxisIntervals.map(interval => getXAxisLabel(interval));
     const areaSeries: unknown[] = seriesNames.map((seriesName, seriesIdx) => {
       return {
         areaStyle: {},
-        color: stratification.legendaItems[seriesIdx].color,
+        color: visibleLegendaItems[seriesIdx].color,
         data: normalizedDataPoints.map((point, pointIdx) => [
           xAxisLabels[pointIdx],
           point.values[seriesName],
@@ -139,10 +156,7 @@ export class EpiCurveUtil {
     items: EpiCurveChartItem[],
     xAxisIntervals: Date[],
     getXAxisLabel: (value: Date) => string,
-    stratification?: {
-      caseIdColors?: { [caseId: string]: string };
-      legendaItems?: Array<{ color: string; rowValue: { full: string } }>;
-    } | null,
+    stratification?: Stratification,
   ): { max: number; series: (null | unknown[]) } {
     if (!items) {
       return {

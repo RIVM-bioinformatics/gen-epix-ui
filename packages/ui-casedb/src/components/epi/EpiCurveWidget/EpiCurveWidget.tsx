@@ -67,6 +67,7 @@ import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
+import { userProfileStore } from '../../../stores/userProfileStore';
 
 import { EpiCurveBarChart } from './EpiCurveBarChart';
 import { EpiCurveStackedAreaChart } from './EpiCurveStackedAreaChart';
@@ -98,6 +99,7 @@ export const EpiCurveWidget = () => {
   const setFilterValue = useStore(epiDashboardStore, (state) => state.setFilterValue);
   const filterDimensions = useStore(epiDashboardStore, (state) => state.filterDimensions);
   const timeDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [CaseDbDimType.TIME]), [completeCaseType]);
+  const isShowMissingValuesInAreaChartEnabled = useStore(userProfileStore, (state) => state.epiDashboardEpiCurveSettings.isShowMissingValuesInAreaChartEnabled);
   const [focussedDate, setFocussedDate] = useState<string>(null);
   const [col, setCol] = useState<CaseDbCol>(null);
   const colLabel = col?.label ?? '';
@@ -230,9 +232,9 @@ export const EpiCurveWidget = () => {
 
   const currentSeriesData = useMemo(() => {
     return currentChartType === 'area'
-      ? EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, stratification)
+      ? EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, isShowMissingValuesInAreaChartEnabled, stratification)
       : EpiCurveUtil.getBarChartSeriesData(items, xAxisIntervals, getXAxisLabel, stratification);
-  }, [currentChartType, items, stratification, xAxisIntervals, getXAxisLabel]);
+  }, [currentChartType, items, xAxisIntervals, getXAxisLabel, isShowMissingValuesInAreaChartEnabled, stratification]);
 
   const onChartCaseIdsChange = useCallback((caseIds: string[]) => {
     highlightingManager.highlight({
@@ -457,6 +459,7 @@ export const EpiCurveWidget = () => {
               onCaseIdsChange={onChartCaseIdsChange}
               onChartReady={onChartReady}
               onPointMouseUp={onChartPointMouseUp}
+              showMissingValues={isShowMissingValuesInAreaChartEnabled}
               stratification={stratification}
               xAxisIntervals={xAxisIntervals}
             />

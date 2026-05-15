@@ -24,6 +24,7 @@ export interface EpiCurveStackedAreaChartProps {
   onCaseIdsChange?: (caseIds: string[]) => void;
   onChartReady?: (chart: EChartsType) => void;
   onPointMouseUp?: (payload: { caseIds: string[]; focussedDate: string; mouseEvent: MouseEvent }) => void;
+  showMissingValues: boolean;
   stratification?: Stratification;
   xAxisIntervals: Date[];
 }
@@ -36,6 +37,7 @@ export const EpiCurveStackedAreaChart = ({
   onCaseIdsChange,
   onChartReady,
   onPointMouseUp,
+  showMissingValues,
   stratification,
   xAxisIntervals,
 }: EpiCurveStackedAreaChartProps) => {
@@ -43,7 +45,7 @@ export const EpiCurveStackedAreaChart = ({
   const chartInstanceRef = useRef<EChartsType | null>(null);
 
   // Calculate series data only when rendering
-  const seriesData = useMemo(() => EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, stratification), [items, xAxisIntervals, getXAxisLabel, stratification]);
+  const seriesData = useMemo(() => EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, showMissingValues, stratification), [items, xAxisIntervals, getXAxisLabel, showMissingValues, stratification]);
 
   // Fast lookup table: color -> all caseIds having that stratification color.
   const caseIdsByColor = useMemo(() => {
@@ -62,12 +64,15 @@ export const EpiCurveStackedAreaChart = ({
 
   // Fast O(1) lookup: all caseIds for a hovered stratification area (series).
   const caseIdsBySeriesIndex = useMemo(() => {
-    if (!stratification?.legendaItems?.length) {
+    if (!seriesData.series?.length) {
       return [] as string[][];
     }
 
-    return stratification.legendaItems.map(legendaItem => caseIdsByColor[legendaItem.color] ?? []);
-  }, [caseIdsByColor, stratification]);
+    return (seriesData.series as Array<{ color?: string }>).map((series) => {
+      const seriesColor = series.color;
+      return typeof seriesColor === 'string' ? (caseIdsByColor[seriesColor] ?? []) : [];
+    });
+  }, [caseIdsByColor, seriesData]);
 
   const getCaseIdsForPoint = useCallback((seriesIndex: number, dataIndex: number): string[] => {
     if (!seriesData.series || seriesIndex < 0 || dataIndex < 0) {

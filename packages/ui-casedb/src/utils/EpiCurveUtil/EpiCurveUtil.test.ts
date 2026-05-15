@@ -14,6 +14,7 @@ import type {
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import { ConfigManager } from '@gen-epix/ui';
 
+import { STRATIFICATION_MODE } from '../../models/epi';
 import type { CaseDbConfig } from '../../models/config';
 
 import type { EpiCurveChartItem } from './EpiCurveUtil';
@@ -144,10 +145,20 @@ describe('EpiCurveUtil', () => {
           b: '#blue',
           c: '#red',
         },
+        colorForIsMissing: '#missing',
         legendaItems: [
-          { color: '#red', rowValue: { full: 'Red' } },
-          { color: '#blue', rowValue: { full: 'Blue' } },
+          {
+            caseIds: ['a', 'c'],
+            color: '#red',
+            rowValue: { full: 'Red', long: 'Red', raw: 'Red', short: 'Red' },
+          },
+          {
+            caseIds: ['b'],
+            color: '#blue',
+            rowValue: { full: 'Blue', long: 'Blue', raw: 'Blue', short: 'Blue' },
+          },
         ],
+        mode: STRATIFICATION_MODE.FIELD,
       };
 
       const result = EpiCurveUtil.getBarChartSeriesData(items, intervals, d => d.toISOString().slice(0, 10), stratification);
@@ -225,13 +236,26 @@ describe('EpiCurveUtil', () => {
           a: '#red',
           b: '#blue',
         },
+        colorForIsMissing: '#missing',
         legendaItems: [
-          { color: '#red', rowValue: { full: 'Red' } },
-          { color: '#blue', rowValue: { full: 'Blue' } },
+          {
+            caseIds: ['a'],
+            color: '#red',
+            rowValue: { full: 'Red', long: 'Red', raw: 'Red', short: 'Red' },
+          },
+          {
+            caseIds: ['b'],
+            color: '#blue',
+            rowValue: { full: 'Blue', long: 'Blue', raw: 'Blue', short: 'Blue' },
+          },
         ],
+        mode: STRATIFICATION_MODE.FIELD,
       };
 
-      const result = EpiCurveUtil.getAreaChartSeriesData(items, intervals, d => d.toISOString().slice(0, 10), stratification);
+      const result = EpiCurveUtil.getAreaChartSeriesData(items, intervals, d => d.toISOString().slice(0, 10), true, {
+        ...stratification,
+        colorForIsMissing: '#missing',
+      });
 
       expect(result.max).toBe(100);
       const series = result.series as Array<{ data: unknown[]; stack: string; triggerLineEvent: boolean; type: string }>;
@@ -243,11 +267,56 @@ describe('EpiCurveUtil', () => {
     });
 
     it('returns null series when stratification is missing', () => {
-      const result = EpiCurveUtil.getAreaChartSeriesData([], [], () => '', null);
+      const result = EpiCurveUtil.getAreaChartSeriesData([], [], () => '', true, null);
       expect(result).toEqual({
         max: 100,
         series: null,
       });
+    });
+
+    it('filters missing-value series when showMissingValues is false', () => {
+      const items: EpiCurveChartItem[] = [
+        { date: new Date('2024-01-01T00:00:00Z'), row: { id: 'a' } as CaseDbCase, value: 1 },
+        { date: new Date('2024-01-01T00:00:00Z'), row: { id: 'm' } as CaseDbCase, value: 1 },
+      ];
+      const intervals = [new Date('2024-01-01T00:00:00Z')];
+      const stratification = {
+        caseIdColors: {
+          a: '#red',
+          m: '#missing',
+        },
+        colorForIsMissing: '#missing',
+        legendaItems: [
+          {
+            caseIds: ['a'],
+            color: '#red',
+            rowValue: {
+              full: 'Red',
+              long: 'Red',
+              raw: 'Red',
+              short: 'Red',
+            },
+          },
+          {
+            caseIds: ['m'],
+            color: '#missing',
+            rowValue: {
+              full: 'Missing',
+              long: 'Missing',
+              raw: 'Missing',
+              short: 'Missing',
+            },
+          },
+        ],
+        mode: STRATIFICATION_MODE.FIELD,
+      };
+
+      const withMissing = EpiCurveUtil.getAreaChartSeriesData(items, intervals, d => d.toISOString().slice(0, 10), true, stratification);
+      const withoutMissing = EpiCurveUtil.getAreaChartSeriesData(items, intervals, d => d.toISOString().slice(0, 10), false, stratification);
+
+      expect(withMissing.series).toHaveLength(2);
+      expect(withoutMissing.series).toHaveLength(1);
+      expect(((withoutMissing.series as Array<{ name: string }>)[0]).name).toBe('Red');
     });
   });
 

@@ -405,16 +405,16 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
               return true;
             });
             const stratifyableColumns = filteredCols.map<StratifiableColumn>(col => {
-              const numUniqueValues = uniq(data.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType).raw)).length;
+              const numUniqueValues = uniq(data.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType).raw).filter(x => !!x)).length;
               let enabled = true;
-              if (numUniqueValues === 0 || numUniqueValues > STRATIFICATION_COLORS.length) {
+              if (numUniqueValues <= 1 || numUniqueValues > STRATIFICATION_COLORS.length) {
                 enabled = false;
               }
               return {
                 col,
                 enabled,
               };
-            });
+            }).sort((a, b) => a.col.label.localeCompare(b.col.label));
             set({ stratifyableColumns });
           },
           reloadTree: () => {
@@ -665,6 +665,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 stratification: {
                   caseIdColors,
                   col,
+                  colorForIsMissing: STRATIFICATION_COLOR_ITEM_MISSING,
                   legendaItems,
                   legendaItemsByColor,
                   legendaItemsByValue,
@@ -704,6 +705,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
                 stratification: {
                   caseIdColors,
                   col,
+                  colorForIsMissing: STRATIFICATION_COLOR_ITEM_MISSING,
                   legendaItems,
                   legendaItemsByColor,
                   legendaItemsByValue,
