@@ -20,7 +20,6 @@ export type UseColumnsMenuProps<TRowData, TDataContext = null> = {
   readonly hasCellData?: HasCellDataFn<TRowData, TDataContext>;
 };
 
-//Note: must be CamelCase because of HMR
 export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TDataContext>): MenuItemData => {
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
@@ -28,8 +27,13 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
   const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
   const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
+  const isCondensed = useStore(tableStore, useShallow((state) => state.isCondensed));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
   const { t } = useTranslation();
+
+  const isCondensingSupported = useMemo(() => {
+    return tableColumns.some(c => c.cellColorGetter);
+  }, [tableColumns]);
 
   const onColumnsEditorMenuItemClick = useCallback(() => {
     emitTableEvent('openColumnsEditorDialog', hasCellData);
@@ -73,8 +77,25 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
 
   }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds, dataContext]);
 
+  const onIsCondensedMenuItemClick = useCallback(() => {
+    tableStore.setState((state) => {
+      return {
+        ...state,
+        isCondensed: !state.isCondensed,
+      };
+    });
+  }, [tableStore]);
+
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [
+      {
+        callback: () => onIsCondensedMenuItemClick(),
+        checked: isCondensed ? 'true' : 'false',
+        disabled: !isCondensingSupported,
+        divider: true,
+        label: t`Condensed table`,
+        rightIcon: isCondensed ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
+      },
       {
         callback: () => onColumnsEditorMenuItemClick(),
         divider: true,
@@ -148,7 +169,7 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
       items,
       label: t`Columns`,
     };
-  }, [t, columnDimensions, onColumnsEditorMenuItemClick, emitTableEvent, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleDimension, toggleItem]);
+  }, [isCondensed, isCondensingSupported, t, columnDimensions, onIsCondensedMenuItemClick, onColumnsEditorMenuItemClick, emitTableEvent, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleDimension, toggleItem]);
 
   return menuItemData;
 };

@@ -153,7 +153,8 @@ export interface TableRowParams<TRowData, TDataContext = null> {
 export type TableSortDirection = 'asc' | 'desc';
 
 interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext = null> {
-  cellTitleGetter?: (params: TableRowParams<TRowData, TDataContext>) => string;
+  cellColorGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
+  cellTitleGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   columnContext?: TColumnContext;
   disableEllipsis?: boolean;
   displayValueGetter?: (params: TableRowParams<TRowData, TDataContext>) => string;

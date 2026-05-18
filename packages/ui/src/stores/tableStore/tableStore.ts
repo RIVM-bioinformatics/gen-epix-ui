@@ -104,6 +104,7 @@ export interface TableStoreState<TData, TDataContext = null> {
   frontendFilters: { [key: string]: Filters };
   globalAbortSignal: AbortSignal;
   idSelectorCallback: (row: TData) => string;
+  isCondensed: boolean;
   isDataLoading: boolean;
   isInitialized: boolean;
   isRowEnabledCallback: (row: TData, dataContext: TDataContext) => boolean;
@@ -157,6 +158,7 @@ export const createTableStoreInitialState = <TData, TDataContext = null>(kwArgs:
     frontendFilters: { [DEFAULT_FILTER_GROUP]: [] },
     globalAbortSignal: null,
     idSelectorCallback,
+    isCondensed: false,
     isDataLoading: false,
     isInitialized: false,
     isRowEnabledCallback,

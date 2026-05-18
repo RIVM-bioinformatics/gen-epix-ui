@@ -139,6 +139,7 @@ export const Table = <TRowData, TDataContext = null>({
   const isRowEnabledCallback = useStore(tableStore, useShallow((state) => state.isRowEnabledCallback));
   const addTableEventListener = useStore(tableStore, useShallow((state) => state.addEventListener));
   const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
+  const isCondensed = useStore(tableStore, useShallow((state) => state.isCondensed));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const tableColumnVisualSettingsRef = useRef<TableColumnVisualSettings[]>(null);
   const eventListenersCleanerRef = useRef<() => void>(noop);
@@ -502,12 +503,7 @@ export const Table = <TRowData, TDataContext = null>({
           const tableColumn = tableColumns.find(c => c.id === column.id);
           let title: string;
           if (tableColumn.cellTitleGetter) {
-            title = tableColumn.cellTitleGetter({
-              dataContext,
-              id: column.id,
-              row,
-              rowIndex: index,
-            });
+            title = tableColumn.cellTitleGetter({ column: tableColumn, columnIndex, dataContext, id: column.id, row, rowIndex: index });
           } else if (tableColumn.type === 'text') {
             title = TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index });
           } else if (tableColumn.type === 'boolean') {
@@ -545,35 +541,48 @@ export const Table = <TRowData, TDataContext = null>({
             );
           }
 
+          const shouldRenderCondensed = isCondensed && tableColumn.cellColorGetter;
+
           return (
             <TableCell
               key={column.id}
               {...baseProps as TableCellProps<TRowData, TDataContext>}
               column={tableColumn}
             >
-              {!!tableColumn.renderCell && (
+              {shouldRenderCondensed && (
+                <Fragment key={tableColumn.id}>
+                  <Box
+                    sx={{
+                      background: tableColumn.cellColorGetter({ column: tableColumn, columnIndex, dataContext, id: column.id, row, rowIndex: index }),
+                      height: '100%',
+                      width: '100%',
+                    }}
+                  />
+                </Fragment>
+              )}
+              {!shouldRenderCondensed && !!tableColumn.renderCell && (
                 <Fragment key={tableColumn.id}>
                   {tableColumn.renderCell({ column: tableColumn, columnIndex, dataContext, id: column.id, row, rowIndex: index })}
                 </Fragment>
               )}
-              {!tableColumn.renderCell && !!tableColumn.displayValueGetter && (
+              {!shouldRenderCondensed && !tableColumn.renderCell && !!tableColumn.displayValueGetter && (
                 <Fragment key={tableColumn.id}>
                   <TableCellAsyncContent content={tableColumn.displayValueGetter({ dataContext, id: column.id, row, rowIndex: index })} />
                 </Fragment>
               )}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'boolean' && TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index, t })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderSelectableCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
+              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'boolean' && TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index, t })}
+              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
+              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderSelectableCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
             </TableCell>
           );
         })}
       </>
     );
-  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme, dataContext]);
+  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme, dataContext, isCondensed]);
 
   const onRowMouseEnterCallback = useCallback((row: TRowData) => {
     onRowMouseEnter(row);
