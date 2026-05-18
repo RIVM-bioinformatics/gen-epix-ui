@@ -627,6 +627,16 @@ export const Table = <TRowData, TDataContext = null>({
     };
 
     const listeners = [
+      addTableEventListener('condensedChange', (newIsCondensed: boolean) => {
+        tableStore.setState((state) => {
+          return {
+            ...state,
+            isCondensed: newIsCondensed,
+          };
+        });
+        tableColumnVisualSettingsRef.current = TableUtil.createCondensedVisualColumnSettings(tableColumns, tableColumnVisualSettingsRef.current);
+        updateTable();
+      }),
       addTableEventListener('reset', () => {
         tableColumnVisualSettingsRef.current = TableUtil.createInitialVisualColumnSettings(tableColumns);
         updateTable();
@@ -654,7 +664,7 @@ export const Table = <TRowData, TDataContext = null>({
       listeners.forEach(cb => cb());
     };
 
-  }, [addTableEventListener, saveColumnVisualSettingsToStore, tableColumns, updateColumnOrderInDOM, updateColumnSizes, updateTableWidth]);
+  }, [addTableEventListener, saveColumnVisualSettingsToStore, tableColumns, tableStore, updateColumnOrderInDOM, updateColumnSizes, updateTableWidth]);
 
   const onTableScroll = useCallback(() => {
     const scrollerElement = getScrollerElement();

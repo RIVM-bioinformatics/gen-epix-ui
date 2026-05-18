@@ -78,13 +78,8 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
   }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds, dataContext]);
 
   const onIsCondensedMenuItemClick = useCallback(() => {
-    tableStore.setState((state) => {
-      return {
-        ...state,
-        isCondensed: !state.isCondensed,
-      };
-    });
-  }, [tableStore]);
+    emitTableEvent('condensedChange', !isCondensed);
+  }, [emitTableEvent, isCondensed]);
 
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [

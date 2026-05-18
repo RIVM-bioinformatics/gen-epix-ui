@@ -92,6 +92,16 @@ export class TableUtil {
     };
   }
 
+  public static createCondensedVisualColumnSettings<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], tableColumnVisualSettings?: TableColumnVisualSettings[]): TableColumnVisualSettings[] {
+    tableColumnVisualSettings.forEach(setting => {
+      const tableColumn = tableColumns.find(c => c.id === setting.id);
+      if (!tableColumn.isStatic && !tableColumn.frozen && tableColumn.widthPx) {
+        setting.widthPx = 50;
+      }
+    });
+    return tableColumnVisualSettings;
+  }
+
   public static createDateCellRowComperator<TRowData, TDataContext = null, TColumnContext = null>({ column, direction }: GetTableCellRowComparatorProps<TableColumnDate<TRowData, TDataContext, TColumnContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = a[column.id as keyof TRowData] as string;
@@ -215,14 +225,16 @@ export class TableUtil {
   }
 
   public static createInitialVisualColumnSettings<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[]): TableColumnVisualSettings[] {
-    return tableColumns.map<TableColumnVisualSettings>(column => ({
-      id: column.id,
-      isVisible: column.isInitiallyVisible,
-      label: column.headerName,
-      widthFlex: column.widthFlex,
-      widthPx: column.widthPx,
-      widthPxFn: column.widthPxFn,
-    }));
+    return tableColumns.map<TableColumnVisualSettings>(column => {
+      return {
+        id: column.id,
+        isVisible: column.isInitiallyVisible,
+        label: column.headerName,
+        widthFlex: column.widthFlex,
+        widthPx: column.widthPx,
+        widthPxFn: column.widthPxFn,
+      };
+    });
   }
 
   public static createNumberCellRowComperator<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData, TDataContext, TColumnContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
@@ -424,16 +436,16 @@ export class TableUtil {
     scrollbarSize: number,
     sortedData: TRowData[],
     tableColumns: TableColumn<TRowData, TDataContext>[],
-    tableColumnVisualSettings: TableColumnVisualSettings[],
-    visibleTableSettingsColumns: TableColumnVisualSettings[],
+    allColumnVisualSettings: TableColumnVisualSettings[],
+    visibleColumnVisualSettings: TableColumnVisualSettings[],
   ): Map<string, TableColumnVisualSettings> {
     const tableColumnMap = new Map(tableColumns.map(c => [c.id, c]));
 
     // As soon as the user resizes a column width widthFlex, we need to convert all columns to widthPx
-    const hasResizedColumn = visibleTableSettingsColumns.some(column => column.hasResized);
-    const hasFlexColumn = visibleTableSettingsColumns.some(column => column.widthFlex);
+    const hasResizedColumn = visibleColumnVisualSettings.some(column => column.hasResized);
+    const hasFlexColumn = visibleColumnVisualSettings.some(column => column.widthFlex);
     if (hasResizedColumn && hasFlexColumn) {
-      tableColumnVisualSettings.forEach(column => {
+      allColumnVisualSettings.forEach(column => {
         if (!column.widthPx && column.calculatedWidth) {
           column.widthPx = column.calculatedWidth;
           column.widthFlex = undefined;
@@ -442,14 +454,14 @@ export class TableUtil {
     }
 
     // Divide the available width between the columns
-    const totalFlexWidth = sumBy(visibleTableSettingsColumns, column => column.hasResized ? 0 : column.widthFlex) ?? 0;
-    const totalFixedWidth = sumBy(visibleTableSettingsColumns, column => tableColumnMap.get(column.id)?.widthPxFn ? tableColumnMap.get(column.id)?.widthPxFn(sortedData.length) : column.widthPx) ?? 0;
+    const totalFlexWidth = sumBy(visibleColumnVisualSettings, column => column.hasResized ? 0 : column.widthFlex) ?? 0;
+    const totalFixedWidth = sumBy(visibleColumnVisualSettings, column => tableColumnMap.get(column.id)?.widthPxFn ? tableColumnMap.get(column.id)?.widthPxFn(sortedData.length) : column.widthPx) ?? 0;
     const totalAvailableWidth = container.getBoundingClientRect().width - scrollbarSize;
     const availableFlexWidth = totalAvailableWidth - totalFixedWidth;
     const flexRatio = totalFlexWidth > 0 ? availableFlexWidth / totalFlexWidth : 1;
 
     let totalOffset = 0;
-    tableColumnVisualSettings.forEach(column => {
+    allColumnVisualSettings.forEach(column => {
       const tableColumn = tableColumns.find(c => c.id === column.id);
       let width: number;
       if (column.hasResized) {
@@ -466,7 +478,7 @@ export class TableUtil {
       totalOffset += width;
     });
 
-    return new Map(tableColumnVisualSettings.map(c => [c.id, c]));
+    return new Map(allColumnVisualSettings.map(c => [c.id, c]));
   }
 
   public static getTableTextCellValue<TRowData, TDataContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, TDataContext>, TDataContext>): string {
