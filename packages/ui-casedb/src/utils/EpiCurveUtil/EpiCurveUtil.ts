@@ -59,7 +59,7 @@ export class EpiCurveUtil {
     items: EpiCurveChartItem[],
     xAxisIntervals: Date[],
     getXAxisLabel: (value: Date) => string,
-    showMissingValues: boolean,
+    includeMissingValues: boolean,
     stratification?: Stratification,
   ): { max: number; series: (null | unknown[]) } {
     if (!items || !stratification?.legendaItems?.length) {
@@ -69,7 +69,7 @@ export class EpiCurveUtil {
       };
     }
 
-    const visibleLegendaItems = showMissingValues
+    const visibleLegendaItems = includeMissingValues
       ? stratification.legendaItems
       : stratification.legendaItems.filter(item => item.color !== stratification.colorForIsMissing);
 

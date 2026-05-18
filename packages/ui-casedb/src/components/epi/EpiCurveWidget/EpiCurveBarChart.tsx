@@ -6,10 +6,13 @@ import type {
 } from 'echarts';
 import {
   useCallback,
+  useEffect,
   useMemo,
+  useRef,
 } from 'react';
 import type { Ref } from 'react';
 import isString from 'lodash/isString';
+import intersection from 'lodash/intersection';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
@@ -19,6 +22,7 @@ export interface EpiCurveBarChartProps {
   chartRef: Ref<EChartsReact>;
   echarts: unknown;
   getXAxisLabel: (value: Date) => string;
+  highlightedCaseIds?: string[];
   items: EpiCurveChartItem[];
   onCaseIdsChange?: (caseIds: string[]) => void;
   onChartReady?: (chart: EChartsType) => void;
@@ -31,6 +35,7 @@ export const EpiCurveBarChart = ({
   chartRef,
   echarts,
   getXAxisLabel,
+  highlightedCaseIds,
   items,
   onCaseIdsChange,
   onChartReady,
@@ -38,8 +43,56 @@ export const EpiCurveBarChart = ({
   stratification,
   xAxisIntervals,
 }: EpiCurveBarChartProps) => {
+  const chartInstanceRef = useRef<EChartsType | null>(null);
+
   // Calculate series data only when rendering
   const seriesData = useMemo(() => EpiCurveUtil.getBarChartSeriesData(items, xAxisIntervals, getXAxisLabel, stratification), [items, xAxisIntervals, getXAxisLabel, stratification]);
+
+  useEffect(() => {
+    const instance = chartInstanceRef.current;
+    if (!instance) {
+      return;
+    }
+
+    if (!highlightedCaseIds?.length) {
+      instance.dispatchAction({
+        type: 'downplay',
+      });
+      return;
+    }
+
+    const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
+    seriesData.series?.forEach((serie, serieIndex) => {
+      const serieData = (serie as { data: unknown[] }).data;
+      serieData?.forEach((dataArray: unknown, dataIndex: number) => {
+        const caseIds = JSON.parse((dataArray as [unknown, unknown, string])[2]) as string[];
+        if (intersection(caseIds, highlightedCaseIds).length) {
+          highlightTargets.push({
+            dataIndex,
+            seriesIndex: serieIndex,
+          });
+        }
+      });
+    });
+
+    instance.dispatchAction({
+      type: 'downplay',
+    });
+
+    highlightTargets.forEach((target) => {
+      instance.dispatchAction({
+        dataIndex: target.dataIndex,
+        seriesIndex: target.seriesIndex,
+        type: 'highlight',
+      });
+    });
+  }, [highlightedCaseIds, seriesData]);
+
+  const onInternalChartReady = useCallback((chart: EChartsType) => {
+    chartInstanceRef.current = chart;
+    onChartReady?.(chart);
+  }, [onChartReady]);
+
   const getOptions = useCallback(() => {
     return {
       color: EpiCurveUtil.getStratificationColors(),
@@ -116,7 +169,7 @@ export const EpiCurveBarChart = ({
     <EChartsReact
       echarts={echarts}
       notMerge
-      onChartReady={onChartReady}
+      onChartReady={onInternalChartReady}
       onEvents={onEvents}
       option={getOptions()}
       ref={chartRef}

@@ -274,7 +274,7 @@ describe('EpiCurveUtil', () => {
       });
     });
 
-    it('filters missing-value series when showMissingValues is false', () => {
+    it('filters missing-value series when includeMissingValues is false', () => {
       const items: EpiCurveChartItem[] = [
         { date: new Date('2024-01-01T00:00:00Z'), row: { id: 'a' } as CaseDbCase, value: 1 },
         { date: new Date('2024-01-01T00:00:00Z'), row: { id: 'm' } as CaseDbCase, value: 1 },

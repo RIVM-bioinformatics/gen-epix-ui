@@ -32,7 +32,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import intersection from 'lodash/intersection';
 import isString from 'lodash/isString';
 import round from 'lodash/round';
 import type { EChartsType } from 'echarts';
@@ -88,6 +87,7 @@ export const EpiCurveWidget = () => {
   const [chartType, setChartType] = useState<ChartType>('bar');
   const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
   const chartRef = useRef<EChartsReact>(null);
+  const [highlightedCaseIds, setHighlightedCaseIds] = useState<string[]>([]);
 
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const stratification = useStore(epiDashboardStore, (state) => state.stratification);
@@ -99,7 +99,7 @@ export const EpiCurveWidget = () => {
   const setFilterValue = useStore(epiDashboardStore, (state) => state.setFilterValue);
   const filterDimensions = useStore(epiDashboardStore, (state) => state.filterDimensions);
   const timeDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [CaseDbDimType.TIME]), [completeCaseType]);
-  const isShowMissingValuesInAreaChartEnabled = useStore(userProfileStore, (state) => state.epiDashboardEpiCurveSettings.isShowMissingValuesInAreaChartEnabled);
+  const isIncludeMissingValuesInAreaChartEnabled = useStore(userProfileStore, (state) => state.epiDashboardEpiCurveSettings.isIncludeMissingValuesInAreaChartEnabled);
   const [focussedDate, setFocussedDate] = useState<string>(null);
   const [col, setCol] = useState<CaseDbCol>(null);
   const colLabel = col?.label ?? '';
@@ -227,15 +227,6 @@ export const EpiCurveWidget = () => {
     return EpiCurveUtil.getXAxisIntervals(completeCaseType.ref_cols[col.ref_col_id].col_type, items);
   }, [col, completeCaseType.ref_cols, items]);
 
-  // Select chart type for highlighting logic
-  const currentChartType = chartType;
-
-  const currentSeriesData = useMemo(() => {
-    return currentChartType === 'area'
-      ? EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, isShowMissingValuesInAreaChartEnabled, stratification)
-      : EpiCurveUtil.getBarChartSeriesData(items, xAxisIntervals, getXAxisLabel, stratification);
-  }, [currentChartType, items, xAxisIntervals, getXAxisLabel, isShowMissingValuesInAreaChartEnabled, stratification]);
-
   const onChartCaseIdsChange = useCallback((caseIds: string[]) => {
     highlightingManager.highlight({
       caseIds,
@@ -263,54 +254,16 @@ export const EpiCurveWidget = () => {
 
   useEffect(() => {
     const unsubscribe = highlightingManager.subscribe((highlighting) => {
-      const instance = chartRef.current?.getEchartsInstance();
-      if (highlighting.origin === EPI_ZONE.EPI_CURVE || !instance) {
+      if (highlighting.origin === EPI_ZONE.EPI_CURVE) {
         return;
       }
-      const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
-      // Calculate series data for highlighting (matches chart rendering logic)
-      const seriesData = currentSeriesData;
-      if (seriesData.series) {
-        (seriesData.series).forEach((serie, serieIndex) => {
-          const serieData = (serie as { data: unknown[] }).data;
-          serieData?.forEach((dataArray: unknown, dataIndex: number) => {
-            const caseIds = JSON.parse((dataArray as [unknown, unknown, string])[2]) as string[];
-            if (intersection(caseIds, highlighting.caseIds).length) {
-              highlightTargets.push({
-                dataIndex,
-                seriesIndex: serieIndex,
-              });
-            }
-          });
-        });
-      }
-      if (!chartRef?.current) {
-        return;
-      }
-      if (highlighting.caseIds.length) {
-        // Reset previous emphasis state before applying new outbound highlights.
-        instance.dispatchAction({
-          type: 'downplay',
-        });
-
-        highlightTargets.forEach((target) => {
-          instance.dispatchAction({
-            dataIndex: target.dataIndex,
-            seriesIndex: target.seriesIndex,
-            type: 'highlight',
-          });
-        });
-      } else {
-        instance.dispatchAction({
-          type: 'downplay',
-        });
-      }
+      setHighlightedCaseIds(highlighting.caseIds);
     });
 
     return () => {
       unsubscribe();
     };
-  }, [chartRef, highlightingManager, currentSeriesData]);
+  }, [highlightingManager]);
 
   const onShowOnlySelectedDateMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     if (!isString(focussedDate) || !col?.id) {
@@ -442,6 +395,7 @@ export const EpiCurveWidget = () => {
               chartRef={chartRef}
               echarts={echartsCore}
               getXAxisLabel={getXAxisLabel}
+              highlightedCaseIds={highlightedCaseIds}
               items={items}
               onCaseIdsChange={onChartCaseIdsChange}
               onChartReady={onChartReady}
@@ -455,11 +409,12 @@ export const EpiCurveWidget = () => {
               chartRef={chartRef}
               echarts={echartsCore}
               getXAxisLabel={getXAxisLabel}
+              highlightedCaseIds={highlightedCaseIds}
+              includeMissingValues={isIncludeMissingValuesInAreaChartEnabled}
               items={items}
               onCaseIdsChange={onChartCaseIdsChange}
               onChartReady={onChartReady}
               onPointMouseUp={onChartPointMouseUp}
-              showMissingValues={isShowMissingValuesInAreaChartEnabled}
               stratification={stratification}
               xAxisIntervals={xAxisIntervals}
             />

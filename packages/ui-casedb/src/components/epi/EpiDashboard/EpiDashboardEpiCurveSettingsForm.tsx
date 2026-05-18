@@ -69,8 +69,8 @@ export const EpiDashboardEpiCurveSettingsForm = ({ onReset }: EpiDashboardEpiCur
         >
           <FormGroup>
             <Switch<EpiDashboardEpiCurveSettings>
-              label={t`Show missing values in area chart`}
-              name={'isShowMissingValuesInAreaChartEnabled'}
+              label={t`Include missing values in area chart`}
+              name={'isIncludeMissingValuesInAreaChartEnabled'}
             />
           </FormGroup>
         </Box>

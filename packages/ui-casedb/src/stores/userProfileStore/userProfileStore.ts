@@ -8,7 +8,7 @@ import type { EpiDashboardLayoutUserConfig } from '../../models/epi';
 import { DashboardUtil } from '../../utils/DashboardUtil';
 
 export type EpiDashboardEpiCurveSettings = {
-  isShowMissingValuesInAreaChartEnabled: boolean;
+  isIncludeMissingValuesInAreaChartEnabled: boolean;
 };
 
 export type EpiDashboardGeneralSettings = {
@@ -46,7 +46,7 @@ export interface UserProfileStoreState {
 
 export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => ({
   epiDashboardEpiCurveSettings: {
-    isShowMissingValuesInAreaChartEnabled: false,
+    isIncludeMissingValuesInAreaChartEnabled: false,
   },
   epiDashboardGeneralSettings: {
     isHighlightingEnabled: true,
@@ -68,7 +68,7 @@ export const userProfileStore = createStore<UserProfileStore>()(
         resetEpiDashboardEpiCurveSettings: () => {
           set({
             epiDashboardEpiCurveSettings: {
-              isShowMissingValuesInAreaChartEnabled: false,
+              isIncludeMissingValuesInAreaChartEnabled: false,
             },
           });
         },

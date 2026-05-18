@@ -6,11 +6,13 @@ import type {
 } from 'echarts';
 import {
   useCallback,
+  useEffect,
   useMemo,
   useRef,
 } from 'react';
 import type { Ref } from 'react';
 import isString from 'lodash/isString';
+import intersection from 'lodash/intersection';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
@@ -20,11 +22,12 @@ export interface EpiCurveStackedAreaChartProps {
   chartRef: Ref<EChartsReact>;
   echarts: unknown;
   getXAxisLabel: (value: Date) => string;
+  highlightedCaseIds?: string[];
+  includeMissingValues: boolean;
   items: EpiCurveChartItem[];
   onCaseIdsChange?: (caseIds: string[]) => void;
   onChartReady?: (chart: EChartsType) => void;
   onPointMouseUp?: (payload: { caseIds: string[]; focussedDate: string; mouseEvent: MouseEvent }) => void;
-  showMissingValues: boolean;
   stratification?: Stratification;
   xAxisIntervals: Date[];
 }
@@ -33,11 +36,12 @@ export const EpiCurveStackedAreaChart = ({
   chartRef,
   echarts,
   getXAxisLabel,
+  highlightedCaseIds,
+  includeMissingValues,
   items,
   onCaseIdsChange,
   onChartReady,
   onPointMouseUp,
-  showMissingValues,
   stratification,
   xAxisIntervals,
 }: EpiCurveStackedAreaChartProps) => {
@@ -45,7 +49,7 @@ export const EpiCurveStackedAreaChart = ({
   const chartInstanceRef = useRef<EChartsType | null>(null);
 
   // Calculate series data only when rendering
-  const seriesData = useMemo(() => EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, showMissingValues, stratification), [items, xAxisIntervals, getXAxisLabel, showMissingValues, stratification]);
+  const seriesData = useMemo(() => EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification), [items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification]);
 
   // Fast lookup table: color -> all caseIds having that stratification color.
   const caseIdsByColor = useMemo(() => {
@@ -175,6 +179,46 @@ export const EpiCurveStackedAreaChart = ({
       });
     }
   }, []);
+
+  useEffect(() => {
+    const instance = chartInstanceRef.current;
+    if (!instance) {
+      return;
+    }
+
+    if (!highlightedCaseIds?.length) {
+      instance.dispatchAction({
+        type: 'downplay',
+      });
+      return;
+    }
+
+    const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
+    seriesData.series?.forEach((serie, serieIndex) => {
+      const serieData = (serie as { data: unknown[] }).data;
+      serieData?.forEach((dataArray: unknown, dataIndex: number) => {
+        const caseIds = JSON.parse((dataArray as [unknown, unknown, string])[2]) as string[];
+        if (intersection(caseIds, highlightedCaseIds).length) {
+          highlightTargets.push({
+            dataIndex,
+            seriesIndex: serieIndex,
+          });
+        }
+      });
+    });
+
+    instance.dispatchAction({
+      type: 'downplay',
+    });
+
+    highlightTargets.forEach((target) => {
+      instance.dispatchAction({
+        dataIndex: target.dataIndex,
+        seriesIndex: target.seriesIndex,
+        type: 'highlight',
+      });
+    });
+  }, [highlightedCaseIds, seriesData]);
 
   const onInternalChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;
