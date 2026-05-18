@@ -503,7 +503,7 @@ export const Table = <TRowData, TDataContext = null>({
           const tableColumn = tableColumns.find(c => c.id === column.id);
           let title: string;
           if (tableColumn.cellTitleGetter) {
-            title = tableColumn.cellTitleGetter({ column: tableColumn, columnIndex, dataContext, id: column.id, row, rowIndex: index });
+            title = tableColumn.cellTitleGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index });
           } else if (tableColumn.type === 'text') {
             title = TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index });
           } else if (tableColumn.type === 'boolean') {
@@ -553,7 +553,7 @@ export const Table = <TRowData, TDataContext = null>({
                 <Fragment key={tableColumn.id}>
                   <Box
                     sx={{
-                      background: tableColumn.cellColorGetter({ column: tableColumn, columnIndex, dataContext, id: column.id, row, rowIndex: index }),
+                      background: tableColumn.cellColorGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index }),
                       height: '100%',
                       width: '100%',
                     }}
@@ -562,12 +562,12 @@ export const Table = <TRowData, TDataContext = null>({
               )}
               {!shouldRenderCondensed && !!tableColumn.renderCell && (
                 <Fragment key={tableColumn.id}>
-                  {tableColumn.renderCell({ column: tableColumn, columnIndex, dataContext, id: column.id, row, rowIndex: index })}
+                  {tableColumn.renderCell({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index })}
                 </Fragment>
               )}
               {!shouldRenderCondensed && !tableColumn.renderCell && !!tableColumn.displayValueGetter && (
                 <Fragment key={tableColumn.id}>
-                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ dataContext, id: column.id, row, rowIndex: index })} />
+                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index })} />
                 </Fragment>
               )}
               {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}

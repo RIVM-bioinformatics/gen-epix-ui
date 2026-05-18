@@ -133,7 +133,7 @@ export class TableUtil {
     }
 
     const filters: Filters = [];
-    columns.forEach(column => {
+    columns.forEach((column) => {
       if (column.hideInFilter) {
         return;
       }
@@ -166,7 +166,7 @@ export class TableUtil {
 
         if (column.shouldFilterOptions) {
           const possibleOptions = baseRows.map((row, index) => {
-            const rowValue = column.valueGetter ? column.valueGetter({ dataContext, id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
+            const rowValue = column.valueGetter ? column.valueGetter({ column, dataContext, id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
             if (!Array.isArray(rowValue)) {
               return [rowValue] as string[];
             }
@@ -359,6 +359,7 @@ export class TableUtil {
         return sortedData.some((row, rowIndex) => {
           if (column.valueGetter) {
             return column.valueGetter({
+              column,
               dataContext,
               id: column.id,
               row,
@@ -372,21 +373,21 @@ export class TableUtil {
     return newVisibleColumnIds;
   }
 
-  public static getTableBooleanCellDisplayValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): string {
+  public static getTableBooleanCellDisplayValue<TRowData, TDataContext, TColumnContext>({ column, dataContext, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): string {
     const value = TableUtil.getTableBooleanCellValue({ column, dataContext, row, rowIndex });
     return value ? t('Yes') : t('No');
   }
 
-  public static getTableBooleanCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): boolean {
+  public static getTableBooleanCellValue<TRowData, TDataContext, TColumnContext>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): boolean {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column: column as TableColumn<TRowData, TDataContext>, dataContext, id: column.id, row, rowIndex });
     }
     return (row[column.id as keyof TRowData] as boolean);
   }
 
   public static getTableDateCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData, TDataContext, TColumnContext>, TDataContext>): string {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column: column as TableColumn<TRowData, TDataContext>, dataContext, id: column.id, row, rowIndex });
     }
     const value = row[column.id as keyof TRowData] as string;
     if (!value) {
@@ -397,7 +398,7 @@ export class TableUtil {
 
   public static getTableNumberCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData, TDataContext, TColumnContext>, TDataContext>): number {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column: column as TableColumn<TRowData, TDataContext>, dataContext, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as number;
   }
@@ -409,7 +410,7 @@ export class TableUtil {
 
   public static getTableOptionsCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TDataContext, TColumnContext>, TDataContext>): string | string[] {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column: column as TableColumn<TRowData, TDataContext>, dataContext, id: column.id, row, rowIndex });
     }
     const values = row[column.id as keyof TRowData] as string | string[];
     if (Array.isArray(values)) {
@@ -470,7 +471,7 @@ export class TableUtil {
 
   public static getTableTextCellValue<TRowData, TDataContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, TDataContext>, TDataContext>): string {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column, dataContext, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as string;
   }

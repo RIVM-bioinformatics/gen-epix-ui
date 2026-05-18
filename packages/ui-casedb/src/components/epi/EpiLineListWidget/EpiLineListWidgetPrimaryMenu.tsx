@@ -53,6 +53,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
   const hasCellData = useCallback((row: CaseDbCase, tableColumn: TableColumn<CaseDbCase, CaseDbCompleteCaseType>, rowIndex: number) => {
     if (tableColumn.valueGetter) {
       return !!tableColumn.valueGetter({
+        column: tableColumn,
         dataContext: completeCaseType,
         id: tableColumn.id,
         row,

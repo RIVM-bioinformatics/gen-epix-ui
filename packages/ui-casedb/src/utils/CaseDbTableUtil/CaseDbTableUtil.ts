@@ -7,6 +7,7 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 import type {
   GetTableCellRowComparatorProps,
   GetTableCellValueProps,
+  TableColumn,
   TableColumnText,
 } from '@gen-epix/ui';
 
@@ -49,7 +50,7 @@ export class CaseDbTableUtil {
 
   public static getTableCaseTypeCellValue<TRowData>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, CaseDbCompleteCaseType, CaseDbCol>, CaseDbCompleteCaseType>): string {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column: column as TableColumn<TRowData, CaseDbCompleteCaseType>, dataContext, id: column.id, row, rowIndex });
     }
     return CaseUtil.getRowValue((row as CaseDbCase).content, column.columnContext, dataContext).raw;
   }

@@ -273,7 +273,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
           }
 
           const column = columnMap[filter.id];
-          const value = column.valueGetter ? column.valueGetter({ dataContext, id: column.id, row, rowIndex }) : row[column.id as keyof TData];
+          const value = column.valueGetter ? column.valueGetter({ column, dataContext, id: column.id, row, rowIndex }) : row[column.id as keyof TData];
           return (filter.matchRowValue as (value: unknown) => boolean)(value);
         });
       });

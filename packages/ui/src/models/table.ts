@@ -88,7 +88,6 @@ export interface TableColumnOptions<TRowData, TDataContext = null, TColumnContex
 
 export interface TableColumnParams<TRowData, TDataContext = null> {
   column: TableColumn<TRowData, TDataContext>;
-  columnIndex: number;
   dataContext: TDataContext;
 }
 
@@ -157,7 +156,7 @@ interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext 
   cellTitleGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   columnContext?: TColumnContext;
   disableEllipsis?: boolean;
-  displayValueGetter?: (params: TableRowParams<TRowData, TDataContext>) => string;
+  displayValueGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   filterLabel?: string;
   frozen?: boolean;
   headerName?: string;
@@ -172,7 +171,7 @@ interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext 
   resizable?: boolean;
   sx?: SxProps<Theme>;
   textAlign?: 'left' | 'right';
-  valueGetter?: (params: TableRowParams<TRowData, TDataContext>) => TValue;
+  valueGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => TValue;
   widthFlex?: number;
   widthPx?: number;
   widthPxFn?: (dataLength: number) => number;
