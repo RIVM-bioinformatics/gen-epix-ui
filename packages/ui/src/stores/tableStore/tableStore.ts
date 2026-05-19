@@ -53,34 +53,32 @@ export interface TableStoreActions<TData, TDataContext = null> {
   destroy: () => void;
   emitEvent: <TEventName extends keyof TableEvent<TData, TDataContext>>(eventName: TEventName, payload?: TableEvent<TData, TDataContext>[TEventName]) => void;
   fetchData: () => Promise<void> | void;
-
+  getCurrentColumnVisualSettings: () => TableColumnVisualSettings[];
   initialize: (globalAbortSignal: AbortSignal) => Promise<void>;
   reloadFilterData: (fistFilterPriorityToFilterFrom?: string) => void;
   reloadFilterPriorityData: (filterPriority: string, data: TData[]) => TData[];
   reloadSelectedIds: () => void;
   reloadSortedData: () => void;
+  resetColumns: () => void;
   resetFilters: () => Promise<void>;
-
   selectId: (id: string) => void;
   setBaseData: (items: TData[]) => void;
-
   setColumnDimensions: (columnDimensions: TableColumnDimension[]) => void;
   setColumns: (columns: TableColumn<TData, TDataContext>[]) => void;
-  setColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => void;
-
+  setColumnVisualSettingsCondensed: (columnVisualSettingsCondensed: TableColumnVisualSettings[]) => void;
+  setColumnVisualSettingsUncondensed: (columnVisualSettingsUncondensed: TableColumnVisualSettings[]) => void;
+  setCurrentColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => void;
   setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => void;
   setFilterValue: (id: string, value: unknown) => Promise<void>;
-
   setFilterValues: (filterValues: FilterValues) => Promise<void>;
+  setIsCondensed: (isCondensed: boolean) => void;
   setNavigateFunction: (navigateFunction: NavigateFunction) => void;
-
   setSelectedIds: (selectedIds: string[]) => void;
   setSortedIds: (sortedIds: string[]) => void;
   setSorting(id: string, direction: TableSortDirection): Promise<void>;
   setVisibleFilterWithinDimension: (filterDimensionId: string, filterId: string) => void;
   setVisibleFilterWithinDimensions: (visibleFilters: { [key: string]: string }) => void;
   unselectId: (id: string) => void;
-  // private
   updateUrl: (searchParams: URLSearchParams) => Promise<void>;
 }
 
@@ -89,7 +87,8 @@ export interface TableStoreState<TData, TDataContext = null> {
   baseData: TData[];
   columnDimensions: TableColumnDimension[];
   columns: TableColumn<TData, TDataContext>[];
-  columnVisualSettings: TableColumnVisualSettings[];
+  columnVisualSettingsCondensed: TableColumnVisualSettings[];
+  columnVisualSettingsUncondensed: TableColumnVisualSettings[];
   dataContext: TDataContext;
   dataError: Error;
   defaultSortByField: string;
@@ -104,6 +103,7 @@ export interface TableStoreState<TData, TDataContext = null> {
   frontendFilters: { [key: string]: Filters };
   globalAbortSignal: AbortSignal;
   idSelectorCallback: (row: TData) => string;
+  isCondensed: boolean;
   isDataLoading: boolean;
   isInitialized: boolean;
   isRowEnabledCallback: (row: TData, dataContext: TDataContext) => boolean;
@@ -142,7 +142,8 @@ export const createTableStoreInitialState = <TData, TDataContext = null>(kwArgs:
     baseData: [],
     columnDimensions: null,
     columns: [],
-    columnVisualSettings: [],
+    columnVisualSettingsCondensed: null,
+    columnVisualSettingsUncondensed: [],
     dataContext: null,
     dataError: null,
     defaultSortByField,
@@ -157,6 +158,7 @@ export const createTableStoreInitialState = <TData, TDataContext = null>(kwArgs:
     frontendFilters: { [DEFAULT_FILTER_GROUP]: [] },
     globalAbortSignal: null,
     idSelectorCallback,
+    isCondensed: false,
     isDataLoading: false,
     isInitialized: false,
     isRowEnabledCallback,
@@ -186,7 +188,9 @@ export const createTableStorePersistConfiguration = <TData, TDataContext, TStore
   return {
     name: `GENEPIX-TableStore-${storageNamePostFix}`,
     partialize: (state) => ({
-      columnVisualSettings: state.columnVisualSettings,
+      columnVisualSettingsCondensed: state.columnVisualSettingsCondensed,
+      columnVisualSettingsUncondensed: state.columnVisualSettingsUncondensed,
+      isCondensed: state.isCondensed,
       sortByField: state.sortByField,
       sortDirection: state.sortDirection,
       ...partialize?.(state),
@@ -217,14 +221,22 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       const { reloadFilterData } = get();
       reloadFilterData();
     },
+    getCurrentColumnVisualSettings: () => {
+      const { columnVisualSettingsCondensed, columnVisualSettingsUncondensed, isCondensed } = get();
+      return isCondensed ? columnVisualSettingsCondensed : columnVisualSettingsUncondensed;
+    },
     initialize: async (globalAbortSignal?: AbortSignal) => {
       if (globalAbortSignal) {
         set({ globalAbortSignal });
       }
-      const { columns, columnVisualSettings, destroy, fetchData, setColumnVisualSettings, sortByField, sortDirection, updateUrl } = get();
+      const { columns, columnVisualSettingsCondensed, columnVisualSettingsUncondensed, destroy, fetchData, isCondensed, setColumnVisualSettingsCondensed, setColumnVisualSettingsUncondensed, sortByField, sortDirection, updateUrl } = get();
 
-      if (!TableUtil.areColumnVisualSettingsValid(columns, columnVisualSettings)) {
-        setColumnVisualSettings(TableUtil.createInitialVisualColumnSettings(columns));
+      if (!TableUtil.areColumnVisualSettingsValid(columns, columnVisualSettingsUncondensed)) {
+        setColumnVisualSettingsUncondensed(TableUtil.createInitialVisualColumnSettings(columns));
+      }
+      if (!TableUtil.areColumnVisualSettingsValid(columns, columnVisualSettingsCondensed)) {
+        // note: use get() to ensure we get the updated columnVisualSettingsUncondensed if it was just set in the previous line
+        setColumnVisualSettingsCondensed(isCondensed ? TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, get().columnVisualSettingsUncondensed) : null);
       }
 
       const globalAbortSignalListener = () => {
@@ -271,7 +283,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
           }
 
           const column = columnMap[filter.id];
-          const value = column.valueGetter ? column.valueGetter({ dataContext, id: column.id, row, rowIndex }) : row[column.id as keyof TData];
+          const value = column.valueGetter ? column.valueGetter({ column, dataContext, id: column.id, row, rowIndex }) : row[column.id as keyof TData];
           return (filter.matchRowValue as (value: unknown) => boolean)(value);
         });
       });
@@ -337,6 +349,11 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         set({ sortedData });
       }
     },
+    resetColumns: () => {
+      const { columns, isCondensed, setColumnVisualSettingsCondensed, setColumnVisualSettingsUncondensed } = get();
+      setColumnVisualSettingsUncondensed(TableUtil.createInitialVisualColumnSettings(columns));
+      setColumnVisualSettingsCondensed(isCondensed ? TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, get().columnVisualSettingsUncondensed) : null);
+    },
     resetFilters: async () => {
       const { setFilterValues } = get();
       const filterValues: FilterValues = {};
@@ -362,8 +379,19 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
     setColumns: (columns: TableColumn<TData, TDataContext>[]) => {
       set({ columns });
     },
-    setColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => {
-      set({ columnVisualSettings });
+    setColumnVisualSettingsCondensed: (columnVisualSettingsCondensed: TableColumnVisualSettings[]) => {
+      set({ columnVisualSettingsCondensed });
+    },
+    setColumnVisualSettingsUncondensed: (columnVisualSettingsUncondensed: TableColumnVisualSettings[]) => {
+      set({ columnVisualSettingsUncondensed });
+    },
+    setCurrentColumnVisualSettings: (columnVisualSettings: TableColumnVisualSettings[]) => {
+      const { isCondensed } = get();
+      if (isCondensed) {
+        set({ columnVisualSettingsCondensed: columnVisualSettings });
+      } else {
+        set({ columnVisualSettingsUncondensed: columnVisualSettings });
+      }
     },
     setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => {
       const { navigateFunction } = get();
@@ -473,6 +501,16 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       });
 
       reloadFilterData(fistFilterPriorityToFilterFrom);
+    },
+    setIsCondensed: (isCondensed: boolean) => {
+      const { columns } = get();
+      set((state) => {
+        return {
+          ...state,
+          columnVisualSettingsCondensed: isCondensed ? state.columnVisualSettingsCondensed ?? TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, state.columnVisualSettingsUncondensed) : state.columnVisualSettingsCondensed,
+          isCondensed,
+        };
+      });
     },
     setNavigateFunction: (navigateFunction: NavigateFunction) => {
       set({ navigateFunction });

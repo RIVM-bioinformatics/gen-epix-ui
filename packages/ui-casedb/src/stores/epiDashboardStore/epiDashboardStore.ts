@@ -2,7 +2,6 @@ import { createStore } from 'zustand';
 import { produce } from 'immer';
 import { t } from 'i18next';
 import difference from 'lodash/difference';
-import uniqBy from 'lodash/uniqBy';
 import uniq from 'lodash/uniq';
 import last from 'lodash/last';
 import { persist } from 'zustand/middleware';
@@ -15,10 +14,7 @@ import type {
   CaseDbPhylogeneticTree,
   CaseDbTypedCompositeFilter,
 } from '@gen-epix/api-casedb';
-import {
-  CaseDbCaseApi,
-  CaseDbColType,
-} from '@gen-epix/api-casedb';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
   AxiosUtil,
   ConfigManager,
@@ -39,28 +35,22 @@ import type {
 } from '@gen-epix/ui';
 
 import type {
-  CaseTypeRowValue,
   EPI_ZONE,
   FindSimilarCasesResult,
   Stratification,
-  StratificationLegendaItem,
   TreeConfiguration,
 } from '../../models/epi';
-import {
-  STRATIFICATION_MODE,
-  STRATIFICATION_SELECTED,
-} from '../../models/epi';
+import { STRATIFICATION_MODE } from '../../models/epi';
 import type { TreeNode } from '../../models/tree';
 import {
-  CaseTypeUtil,
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
 } from '../../utils/CaseTypeUtil';
-import { CaseUtil } from '../../utils/CaseUtil';
 import { EpiFilterUtil } from '../../utils/EpiFilterUtil';
+import { EpiLineListUtil } from '../../utils/EpiLineListUtil';
+import type { StratifiableColumn } from '../../utils/EpiLineListUtil';
 import { NewickUtil } from '../../utils/NewickUtil';
 import { EpiTreeUtil } from '../../utils/EpiTreeUtil';
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingManager';
 import type { CaseDbConfig } from '../../models/config';
 import { CASEDB_QUERY_KEY } from '../../data/query';
@@ -145,27 +135,9 @@ interface EpiTreeWidgetData extends WidgetData {
   zoomLevel: number;
 }
 
-interface StratifiableColumn {
-  col: CaseDbCol;
-  enabled: boolean;
-}
-
 interface WidgetData {
   isUnavailable: boolean;
 }
-
-const rowValueComperator = (a: CaseTypeRowValue, b: CaseTypeRowValue): number => {
-  if (a.raw === b.raw) {
-    return 0;
-  }
-  if (a.isMissing) {
-    return 1;
-  }
-  if (b.isMissing) {
-    return -1;
-  }
-  return a.short.localeCompare(b.short);
-};
 
 const createWidgetDataInitialState = (): WidgetData => ({
   isUnavailable: false,
@@ -395,26 +367,10 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const { filteredData, frontendFilterPriorities } = get();
 
             const data = filteredData[last(frontendFilterPriorities)];
-            const { ALLOWED_COL_TYPES_FOR_STRATIFICATION, STRATIFICATION_COLORS } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
-
-            const filteredCols = CaseTypeUtil.getCols(completeCaseType).filter(col => {
-              const column = completeCaseType.ref_cols[col.ref_col_id];
-              if (!ALLOWED_COL_TYPES_FOR_STRATIFICATION.includes(column.col_type)) {
-                return false;
-              }
-              return true;
+            const stratifyableColumns = EpiLineListUtil.getStratifyableColumns({
+              completeCaseType,
+              data,
             });
-            const stratifyableColumns = filteredCols.map<StratifiableColumn>(col => {
-              const numUniqueValues = uniq(data.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType).raw).filter(x => !!x)).length;
-              let enabled = true;
-              if (numUniqueValues <= 1 || numUniqueValues > STRATIFICATION_COLORS.length) {
-                enabled = false;
-              }
-              return {
-                col,
-                enabled,
-              };
-            }).sort((a, b) => a.col.label.localeCompare(b.col.label));
             set({ stratifyableColumns });
           },
           reloadTree: () => {
@@ -542,179 +498,15 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
 
           stratify: (mode: STRATIFICATION_MODE, col?: CaseDbCol) => {
             const { selectedIds, sortedData } = get();
-            const caseIdColors: { [key: string]: string } = {};
-
-            const legendaItems: StratificationLegendaItem[] = [];
-            const legendaItemsByColor: { [key: string]: StratificationLegendaItem } = {};
-            const legendaItemsByValue: { [key: string]: StratificationLegendaItem } = {};
-
-            const { STRATIFICATION_COLOR_ITEM_MISSING, STRATIFICATION_COLORS } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
-
-            if (mode === STRATIFICATION_MODE.FIELD) {
-              const column = completeCaseType.ref_cols[col.ref_col_id];
-              const conceptSetConceptIds = EpiDataManager.getInstance().data.conceptsIdsBySetId[column.concept_set_id];
-              if (conceptSetConceptIds) {
-                if (conceptSetConceptIds.length <= STRATIFICATION_COLORS.length) {
-                  conceptSetConceptIds.map(conceptId => EpiDataManager.getInstance().data.conceptsById[conceptId]).sort((a, b) => {
-                    if (([
-                      CaseDbColType.ORDINAL,
-                      CaseDbColType.INTERVAL,
-                      CaseDbColType.DECIMAL_0,
-                      CaseDbColType.DECIMAL_1,
-                      CaseDbColType.DECIMAL_2,
-                      CaseDbColType.DECIMAL_3,
-                      CaseDbColType.DECIMAL_4,
-                      CaseDbColType.DECIMAL_5,
-                      CaseDbColType.DECIMAL_6,
-                    ] as CaseDbColType[]).includes(column.col_type) && a.rank !== b.rank) {
-                      return a.rank - b.rank;
-                    }
-                    return a.code.localeCompare(b.code);
-                  }).forEach((concept, index) => {
-                    const color = STRATIFICATION_COLORS[index];
-                    const legendaItem: StratificationLegendaItem = {
-                      caseIds: [],
-                      color,
-                      columnType: column.col_type,
-                      rowValue: {
-                        full: `${concept.code} (${concept.name})`,
-                        isMissing: false,
-                        long: concept.name,
-                        raw: concept.id,
-                        short: concept.code,
-                      },
-                    };
-                    legendaItemsByColor[color] = legendaItem;
-                    legendaItemsByValue[concept.id] = legendaItem;
-                    legendaItems.push(legendaItem);
-                  });
-                  const legendaItemMissingData: StratificationLegendaItem = {
-                    caseIds: [],
-                    color: STRATIFICATION_COLOR_ITEM_MISSING,
-                    columnType: column.col_type,
-                    rowValue: CaseUtil.getMissingRowValue(''),
-                  };
-                  legendaItemsByColor[STRATIFICATION_COLOR_ITEM_MISSING] = legendaItemMissingData;
-                  legendaItemsByValue[''] = legendaItemMissingData;
-                  legendaItems.push(legendaItemMissingData);
-
-                  sortedData.forEach(row => {
-                    const rowValue = CaseUtil.getRowValue(row.content, col, completeCaseType);
-                    const legendaItem = rowValue.isMissing ? legendaItemMissingData : legendaItemsByValue[rowValue.raw];
-                    legendaItem.caseIds.push(row.id);
-                    caseIdColors[row.id] = legendaItem.color;
-                  });
-                  if (legendaItemMissingData.caseIds.length === 0) {
-                    legendaItems.splice(legendaItems.indexOf(legendaItemMissingData), 1);
-                    delete legendaItemsByColor[STRATIFICATION_COLOR_ITEM_MISSING];
-                    delete legendaItemsByValue[''];
-                  }
-                } else {
-                  const rowValues = sortedData.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType));
-                  const uniqueRowValues = uniqBy(rowValues, (rowValue => rowValue.raw)).sort((a, b) => {
-                    return rowValueComperator(a, b);
-                  });
-
-                  uniqueRowValues.forEach((rowValue, index) => {
-                    const color = rowValue.isMissing ? STRATIFICATION_COLOR_ITEM_MISSING : STRATIFICATION_COLORS[index];
-                    const legendaItem: StratificationLegendaItem = {
-                      caseIds: [],
-                      color,
-                      columnType: column.col_type,
-                      rowValue,
-                    };
-
-                    legendaItemsByColor[color] = legendaItem;
-                    legendaItemsByValue[rowValue.raw] = legendaItem;
-                    legendaItems.push(legendaItem);
-                  });
-                  sortedData.forEach(row => {
-                    const rowValue = CaseUtil.getRowValue(row.content, col, completeCaseType);
-                    const legendaItem = legendaItemsByValue[rowValue.raw];
-                    legendaItem.caseIds.push(row.id);
-                    caseIdColors[row.id] = legendaItem.color;
-                  });
-                }
-
-              } else {
-                const rawValues = sortedData.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType));
-                const uniqueRowValues = uniqBy(rawValues, v => v.raw).sort(rowValueComperator);
-
-                uniqueRowValues.forEach((rowValue, index) => {
-                  const color = rowValue.isMissing ? STRATIFICATION_COLOR_ITEM_MISSING : STRATIFICATION_COLORS[index];
-                  const legendaItem: StratificationLegendaItem = {
-                    caseIds: [],
-                    color,
-                    columnType: column.col_type,
-                    rowValue,
-                  };
-
-                  legendaItemsByColor[color] = legendaItem;
-                  legendaItemsByValue[rowValue.raw] = legendaItem;
-                  legendaItems.push(legendaItem);
-                });
-
-                sortedData.forEach(row => {
-                  const rowValue = CaseUtil.getRowValue(row.content, col, completeCaseType);
-                  const legendaItem = legendaItemsByValue[rowValue.raw];
-                  legendaItem.caseIds.push(row.id);
-                  caseIdColors[row.id] = legendaItem.color;
-                });
-              }
-              set({
-                stratification: {
-                  caseIdColors,
-                  col,
-                  colorForIsMissing: STRATIFICATION_COLOR_ITEM_MISSING,
-                  legendaItems,
-                  legendaItemsByColor,
-                  legendaItemsByValue,
-                  mode: STRATIFICATION_MODE.FIELD,
-                },
-              });
-            } else if (mode === STRATIFICATION_MODE.SELECTION) {
-              const rawValues: STRATIFICATION_SELECTED[] = [STRATIFICATION_SELECTED.SELECTED, STRATIFICATION_SELECTED.UNSELECTED];
-
-              rawValues.forEach(rawValue => {
-                const color = rawValue === STRATIFICATION_SELECTED.SELECTED ? STRATIFICATION_COLORS[0] : STRATIFICATION_COLORS[1];
-                const presentationValue = rawValue === STRATIFICATION_SELECTED.SELECTED ? t`Selected` : t`Unselected`;
-                const legendaItem: StratificationLegendaItem = {
-                  caseIds: [],
-                  color,
-                  rowValue: {
-                    full: presentationValue,
-                    isMissing: false,
-                    long: presentationValue,
-                    raw: rawValue,
-                    short: presentationValue,
-                  },
-                };
-
-                legendaItemsByColor[color] = legendaItem;
-                legendaItemsByValue[rawValue] = legendaItem;
-                legendaItems.push(legendaItem);
-              });
-
-              sortedData.forEach(row => {
-                const legendaItem = selectedIds.includes(row.id) ? legendaItemsByValue[STRATIFICATION_SELECTED.SELECTED] : legendaItemsByValue[STRATIFICATION_SELECTED.UNSELECTED];
-
-                legendaItem.caseIds.push(row.id);
-                caseIdColors[row.id] = legendaItem.color;
-              });
-              set({
-                stratification: {
-                  caseIdColors,
-                  col,
-                  colorForIsMissing: STRATIFICATION_COLOR_ITEM_MISSING,
-                  legendaItems,
-                  legendaItemsByColor,
-                  legendaItemsByValue,
-                  mode: STRATIFICATION_MODE.SELECTION,
-                },
-              });
-            } else {
-              set({ stratification: null });
-            }
+            set({
+              stratification: EpiLineListUtil.getStratification({
+                col,
+                completeCaseType,
+                mode,
+                selectedIds,
+                sortedData,
+              }),
+            });
           },
           treeFilterStepOut: async () => {
             const { filters, resetTreeAddresses, setFilterValue, treeResponse } = get();

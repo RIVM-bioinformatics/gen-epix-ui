@@ -69,6 +69,7 @@ export interface ConfigBase {
     DEFAULT_TAKING_LONGER_TIMEOUT_MS: number;
   };
   table: {
+    CONDENSED_WIDTH_PX: number;
     DEFAULT_OVERSCAN_MAIN: number;
     DEFAULT_OVERSCAN_REVERSE: number;
   };

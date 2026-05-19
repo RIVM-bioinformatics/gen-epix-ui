@@ -30,6 +30,7 @@ import type {
   TableColumn,
   TableColumnText,
   TableRef,
+  TableRowAndColumnParams,
   TableRowParams,
 } from '@gen-epix/ui';
 import {
@@ -60,6 +61,7 @@ import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import type { CaseDbConfig } from '../../../models/config';
 import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
+import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
 
 import { EpiLineListWidgetTitle } from './EpiLineListWidgetTitle';
 import { EpiLineListWidgetPrimaryMenu } from './EpiLineListWidgetPrimaryMenu';
@@ -87,6 +89,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   const stratification = useStore(epiDashboardStore, (state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null);
   const updateEpiListWidgetData = useStore(epiDashboardStore, (state) => state.updateEpiListWidgetData);
   const treeAddresses = useStore(epiDashboardStore, (state) => state.treeAddresses);
+  const stratifyableColumns = useStore(epiDashboardStore, (state) => state.stratifyableColumns);
   const setTableColumns = useStore(epiDashboardStore, (state) => state.setColumns);
   const isDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
 
@@ -332,6 +335,35 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     ];
   }, [renderEventsCell, renderSimilarCell, renderEventsHeader, renderSimilarHeader, t]);
 
+
+  const columnStratificationCache = useMemo(() => {
+    const cache: Record<string, ReturnType<typeof EpiLineListUtil.getStratification>> = {};
+    completeCaseType.ordered_col_ids.forEach((colId) => {
+      const col = completeCaseType.cols[colId];
+      if (!stratifyableColumns.some(s => s.enabled && s.col.id === colId)) {
+        return;
+      }
+      cache[colId] = EpiLineListUtil.getStratification({
+        col,
+        completeCaseType,
+        mode: STRATIFICATION_MODE.FIELD,
+        sortedData,
+      });
+    });
+
+    return cache;
+  }, [completeCaseType, sortedData, stratifyableColumns]);
+
+  const cellColorGetter = useCallback((params: TableRowAndColumnParams<CaseDbCase, CaseDbCompleteCaseType>): string | undefined => {
+    const columnStratification = columnStratificationCache[params.column.id];
+    return columnStratification?.caseIdColors[params.row.id];
+  }, [columnStratificationCache]);
+
+  const cellTitleGetter = useCallback((params: TableRowAndColumnParams<CaseDbCase, CaseDbCompleteCaseType>): string | undefined => {
+    const rowValue = CaseUtil.getRowValue(params.row.content, completeCaseType.cols[params.column.id], completeCaseType);
+    return rowValue.isMissing ? undefined : rowValue.long;
+  }, [completeCaseType]);
+
   const tableColumns = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
     const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
 
@@ -343,6 +375,8 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
       completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach(col => {
         const refCol = completeCaseType.ref_cols[col.ref_col_id];
         const baseCaseTypeTableColumn: Partial<TableColumn<CaseDbCase, CaseDbCompleteCaseType, CaseDbCol>> = {
+          cellColorGetter: stratifyableColumns.some(s => s.enabled && s.col.id === col.id) ? cellColorGetter : undefined,
+          cellTitleGetter,
           columnContext: col,
           headerName: col.label,
           headerTooltipContent: refCol.description,
@@ -352,6 +386,10 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
         if (refCol.col_type === CaseDbColType.GENETIC_DISTANCE) {
           caseTypeTableColumns.push({
             ...baseCaseTypeTableColumn,
+            cellTitleGetter: (params) => {
+              const value = treeAddresses[col.id]?.addresses[params.row.id] ? `${treeAddresses[col.id].algorithmCode} ${treeAddresses[col.id].addresses[params.row.id]}` : undefined;
+              return value ?? undefined;
+            },
             comparatorFactory: ({ direction }: GetTableCellRowComparatorProps<TableColumnText<CaseDbCase, CaseDbCompleteCaseType>, CaseDbCompleteCaseType>) => (a: CaseDbCase, b: CaseDbCase) => {
               const sortValue = StringUtil.advancedSortComperator(treeAddresses[col.id]?.addresses?.[a.id], treeAddresses[col.id]?.addresses?.[b.id]);
               return direction === 'asc' ? sortValue : -sortValue;
@@ -389,7 +427,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
       ...staticTableColumns,
       ...caseTypeTableColumns,
     ];
-  }, [completeCaseType, staticTableColumns, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
+  }, [completeCaseType, staticTableColumns, stratifyableColumns, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
 
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
     highlightingManager.highlight({

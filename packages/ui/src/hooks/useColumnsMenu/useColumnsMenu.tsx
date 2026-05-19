@@ -3,6 +3,8 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
+import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
+import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import {
   useCallback,
@@ -20,16 +22,20 @@ export type UseColumnsMenuProps<TRowData, TDataContext = null> = {
   readonly hasCellData?: HasCellDataFn<TRowData, TDataContext>;
 };
 
-//Note: must be CamelCase because of HMR
 export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TDataContext>): MenuItemData => {
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
-  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
+  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.getCurrentColumnVisualSettings().filter(c => c.isVisible).map(c => c.id)));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
+  const isCondensed = useStore(tableStore, useShallow((state) => state.isCondensed));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
   const { t } = useTranslation();
+
+  const isCondensingSupported = useMemo(() => {
+    return tableColumns.some(c => c.cellColorGetter);
+  }, [tableColumns]);
 
   const onColumnsEditorMenuItemClick = useCallback(() => {
     emitTableEvent('openColumnsEditorDialog', hasCellData);
@@ -73,8 +79,20 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
 
   }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds, dataContext]);
 
+  const onIsCondensedMenuItemClick = useCallback(() => {
+    emitTableEvent('condensedChange', !isCondensed);
+  }, [emitTableEvent, isCondensed]);
+
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [
+      isCondensingSupported ? {
+        autoCloseDisabled: true,
+        callback: () => onIsCondensedMenuItemClick(),
+        checked: isCondensed ? 'true' : 'false',
+        divider: true,
+        label: t`Condensed`,
+        rightIcon: isCondensed ? <ToggleOnOutlinedIcon /> : <ToggleOffOutlinedIcon />,
+      } : undefined,
       {
         callback: () => onColumnsEditorMenuItemClick(),
         divider: true,
@@ -105,7 +123,7 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
         divider: true,
         label: t`Hide columns without data`,
       },
-    ];
+    ].filter(x => x) as MenuItemData[];
 
     if (columnDimensions) {
       columnDimensions.forEach((columnDimension) => {
@@ -148,7 +166,7 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
       items,
       label: t`Columns`,
     };
-  }, [t, columnDimensions, onColumnsEditorMenuItemClick, emitTableEvent, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleDimension, toggleItem]);
+  }, [isCondensed, isCondensingSupported, t, columnDimensions, onIsCondensedMenuItemClick, onColumnsEditorMenuItemClick, emitTableEvent, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleDimension, toggleItem]);
 
   return menuItemData;
 };

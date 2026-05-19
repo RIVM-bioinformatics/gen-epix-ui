@@ -129,9 +129,9 @@ export const Table = <TRowData, TDataContext = null>({
   const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = ConfigManager.getInstance().config.table;
 
   // make sure the table re-renders when the visible columns change
-  useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
+  useStore(tableStore, useShallow((state) => state.getCurrentColumnVisualSettings().filter(c => c.isVisible).map(c => c.id)));
 
-  const setColumnVisualSettingsInStore = useStore(tableStore, useShallow((state) => state.setColumnVisualSettings));
+  const setCurrentColumnVisualSettingsInStore = useStore(tableStore, useShallow((state) => state.setCurrentColumnVisualSettings));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
   const idSelectorCallback = useStore(tableStore, useShallow((state) => state.idSelectorCallback));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
@@ -139,6 +139,7 @@ export const Table = <TRowData, TDataContext = null>({
   const isRowEnabledCallback = useStore(tableStore, useShallow((state) => state.isRowEnabledCallback));
   const addTableEventListener = useStore(tableStore, useShallow((state) => state.addEventListener));
   const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
+  const isCondensed = useStore(tableStore, useShallow((state) => state.isCondensed));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const tableColumnVisualSettingsRef = useRef<TableColumnVisualSettings[]>(null);
   const eventListenersCleanerRef = useRef<() => void>(noop);
@@ -231,18 +232,17 @@ export const Table = <TRowData, TDataContext = null>({
     );
   }, [idSelectorCallback]);
 
-  const updateColumnSizes = useCallback(() => {
+  const updateColumnSizesInVisualSettings = useCallback(() => {
     if (!tableColumns.length || !container) {
       return;
     }
 
-    const tableSettingsMap = TableUtil.getTableSettingsMap(
+    const tableSettingsMap = TableUtil.updateColumnSizesInVisualSettings(
       container,
       scrollbarSize,
       sortedData,
       tableColumns,
       tableColumnVisualSettingsRef.current,
-      getVisibleTableSettingsColumns(),
     );
 
     if (isInitialized) {
@@ -253,7 +253,7 @@ export const Table = <TRowData, TDataContext = null>({
       });
       updateTableWidth();
     }
-  }, [tableColumns, container, scrollbarSize, sortedData, getVisibleTableSettingsColumns, isInitialized, updateTableWidth]);
+  }, [tableColumns, container, scrollbarSize, sortedData, isInitialized, updateTableWidth]);
 
   // Initialize the table
   useEffect(() => {
@@ -261,17 +261,18 @@ export const Table = <TRowData, TDataContext = null>({
       return;
     }
 
-    tableColumnVisualSettingsRef.current = tableStore.getState().columnVisualSettings;
-    updateColumnSizes();
+    tableColumnVisualSettingsRef.current = tableStore.getState().getCurrentColumnVisualSettings();
+    updateColumnSizesInVisualSettings();
     updateTableWidth();
     setIsInitialized(true);
-  }, [container, getVisibleTableSettingsColumns, isInitialized, isStoreInitialized, tableStore, updateColumnSizes, updateTableWidth]);
+  }, [container, isInitialized, isStoreInitialized, tableStore, updateColumnSizesInVisualSettings, updateTableWidth]);
+
 
   const getScrollerElement = useCallback(() => container?.querySelector('[data-virtuoso-scroller=true]'), [container]);
 
   const saveColumnVisualSettingsToStore = useCallback(() => {
-    setColumnVisualSettingsInStore(tableColumnVisualSettingsRef.current);
-  }, [setColumnVisualSettingsInStore]);
+    setCurrentColumnVisualSettingsInStore(tableColumnVisualSettingsRef.current);
+  }, [setCurrentColumnVisualSettingsInStore]);
 
   const saveColumnVisualSettingsToStoreDebounced = useDebouncedCallback(() => {
     saveColumnVisualSettingsToStore();
@@ -281,9 +282,9 @@ export const Table = <TRowData, TDataContext = null>({
     columnVisualSettings.calculatedWidth = newWidth;
     columnVisualSettings.widthPx = newWidth;
     columnVisualSettings.hasResized = true;
-    updateColumnSizes();
+    updateColumnSizesInVisualSettings();
     saveColumnVisualSettingsToStoreDebounced();
-  }, [updateColumnSizes, saveColumnVisualSettingsToStoreDebounced]);
+  }, [updateColumnSizesInVisualSettings, saveColumnVisualSettingsToStoreDebounced]);
 
   const onColumnDividerKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>, tableColumn: TableColumn<TRowData, TDataContext>) => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
@@ -357,7 +358,7 @@ export const Table = <TRowData, TDataContext = null>({
 
   useEffect(() => {
     const onWindowResize = () => {
-      updateColumnSizes();
+      updateColumnSizesInVisualSettings();
       updateColumnOrderInDOM();
     };
     const windowManager = WindowManager.getInstance();
@@ -365,7 +366,7 @@ export const Table = <TRowData, TDataContext = null>({
     return () => {
       windowManager.window.removeEventListener('resize', onWindowResize);
     };
-  }, [updateColumnOrderInDOM, updateColumnSizes]);
+  }, [updateColumnOrderInDOM, updateColumnSizesInVisualSettings]);
 
   const calculateColumnBoundaries = useCallback((tableColumn: TableColumn<TRowData, TDataContext>) => {
     const visibleTableSettingsColumns = getVisibleTableSettingsColumns();
@@ -502,12 +503,7 @@ export const Table = <TRowData, TDataContext = null>({
           const tableColumn = tableColumns.find(c => c.id === column.id);
           let title: string;
           if (tableColumn.cellTitleGetter) {
-            title = tableColumn.cellTitleGetter({
-              dataContext,
-              id: column.id,
-              row,
-              rowIndex: index,
-            });
+            title = tableColumn.cellTitleGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index });
           } else if (tableColumn.type === 'text') {
             title = TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index });
           } else if (tableColumn.type === 'boolean') {
@@ -522,6 +518,7 @@ export const Table = <TRowData, TDataContext = null>({
           }
 
           const baseProps: Partial<TableCellProps<TRowData, TDataContext>> = {
+            backgroundColor: isCondensed && tableColumn.cellColorGetter ? tableColumn.cellColorGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index }) : undefined,
             columnIndex,
             enabled: isRowEnabledCallback ? isRowEnabledCallback(row, dataContext) : true,
             height: theme.spacing(rowHeight),
@@ -553,12 +550,12 @@ export const Table = <TRowData, TDataContext = null>({
             >
               {!!tableColumn.renderCell && (
                 <Fragment key={tableColumn.id}>
-                  {tableColumn.renderCell({ column: tableColumn, columnIndex, dataContext, id: column.id, row, rowIndex: index })}
+                  {tableColumn.renderCell({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index })}
                 </Fragment>
               )}
               {!tableColumn.renderCell && !!tableColumn.displayValueGetter && (
                 <Fragment key={tableColumn.id}>
-                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ dataContext, id: column.id, row, rowIndex: index })} />
+                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index })} />
                 </Fragment>
               )}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
@@ -573,7 +570,7 @@ export const Table = <TRowData, TDataContext = null>({
         })}
       </>
     );
-  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme, dataContext]);
+  }, [getVisibleTableSettingsColumns, isRowEnabledCallback, onTableRowClick, renderSelectableCell, renderReadableIndexCell, rowHeight, t, tableColumns, theme, dataContext, isCondensed]);
 
   const onRowMouseEnterCallback = useCallback((row: TRowData) => {
     onRowMouseEnter(row);
@@ -611,15 +608,21 @@ export const Table = <TRowData, TDataContext = null>({
 
   useEffect(() => {
     const updateTable = () => {
-      updateColumnSizes();
+      updateColumnSizesInVisualSettings();
       updateColumnOrderInDOM();
       updateTableWidth();
       saveColumnVisualSettingsToStore();
     };
 
     const listeners = [
+      addTableEventListener('condensedChange', (newIsCondensed: boolean) => {
+        tableStore.getState().setIsCondensed(newIsCondensed);
+        tableColumnVisualSettingsRef.current = tableStore.getState().getCurrentColumnVisualSettings();
+        updateTable();
+      }),
       addTableEventListener('reset', () => {
-        tableColumnVisualSettingsRef.current = TableUtil.createInitialVisualColumnSettings(tableColumns);
+        tableStore.getState().resetColumns();
+        tableColumnVisualSettingsRef.current = tableStore.getState().getCurrentColumnVisualSettings();
         updateTable();
       }),
       addTableEventListener('columnVisibilityChange', (columnIds: string[]) => {
@@ -645,7 +648,7 @@ export const Table = <TRowData, TDataContext = null>({
       listeners.forEach(cb => cb());
     };
 
-  }, [addTableEventListener, saveColumnVisualSettingsToStore, tableColumns, updateColumnOrderInDOM, updateColumnSizes, updateTableWidth]);
+  }, [addTableEventListener, saveColumnVisualSettingsToStore, tableColumns, tableStore, updateColumnOrderInDOM, updateColumnSizesInVisualSettings, updateTableWidth]);
 
   const onTableScroll = useCallback(() => {
     const scrollerElement = getScrollerElement();
@@ -767,10 +770,18 @@ export const Table = <TRowData, TDataContext = null>({
                   role={'row'}
                   sx={{
                     '&:hover, &.highlighted': {
+                      '*': {
+                        color: `${theme.palette.text.primary} !important`,
+                      },
                       '& [role=cell]': {
+                        '*': {
+                          color: `${theme.palette.text.primary} !important`,
+                        },
                         backgroundColor: theme.palette.grey[100],
+                        color: `${theme.palette.text.primary} !important`,
                       },
                       backgroundColor: theme.palette.grey[100],
+                      color: `${theme.palette.text.primary} !important`,
                     },
                     borderBottom: `1px solid ${borderColor}`,
                     color: isRowEnabled ? undefined : 'text.disabled',

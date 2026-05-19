@@ -311,7 +311,6 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
             <>
               {column.renderHeader({
                 column,
-                columnIndex,
                 dataContext,
               })}
             </>
@@ -338,7 +337,6 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
                 {column.renderHeaderContent
                   ? column.renderHeaderContent({
                     column,
-                    columnIndex,
                     dataContext,
                   })
                   : column.headerName ?? ''}

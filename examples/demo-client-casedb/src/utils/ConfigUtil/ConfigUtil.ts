@@ -450,6 +450,7 @@ export class ConfigUtil {
         DEFAULT_TAKING_LONGER_TIMEOUT_MS: 8000,
       },
       table: {
+        CONDENSED_WIDTH_PX: 150,
         DEFAULT_OVERSCAN_MAIN: 10,
         DEFAULT_OVERSCAN_REVERSE: 10,
       },

@@ -58,7 +58,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
   const tableStore = useTableStoreContext<unknown, unknown>();
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
-  const tableColumnVisualSettings = useStore(tableStore, useShallow((state) => state.columnVisualSettings));
+  const tableColumnVisualSettings = useStore(tableStore, useShallow((state) => state.getCurrentColumnVisualSettings()));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
 

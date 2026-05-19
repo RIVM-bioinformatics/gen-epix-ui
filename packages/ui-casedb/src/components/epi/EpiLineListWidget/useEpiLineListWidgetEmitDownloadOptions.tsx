@@ -20,7 +20,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
   const completeCaseType = useStore(epiDashboardStore, useShallow((state) => state.completeCaseType));
 
   const getVisibleColumnIds = useCallback(() => {
-    return epiDashboardStore.getState().columnVisualSettings.filter(x => x.isVisible).map(x => x.id);
+    return epiDashboardStore.getState().getCurrentColumnVisualSettings().filter(x => x.isVisible).map(x => x.id);
   }, [epiDashboardStore]);
 
   useEffect(() => {

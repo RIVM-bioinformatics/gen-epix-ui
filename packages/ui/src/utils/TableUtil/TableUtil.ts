@@ -40,6 +40,7 @@ import type {
 import { FIXED_COLUMN_ID } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
+import { ConfigManager } from '../../classes/managers/ConfigManager';
 
 export class TableUtil {
   public static areColumnVisualSettingsValid<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], columnVisualSettings: TableColumnVisualSettings[]): boolean {
@@ -92,6 +93,75 @@ export class TableUtil {
     };
   }
 
+  public static createCondensedVisualColumnSettingsFromColumnSettings<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], tableColumnVisualSettings: TableColumnVisualSettings[]): TableColumnVisualSettings[] {
+    const tableColumnVisualSettingsCopy = JSON.parse(JSON.stringify(tableColumnVisualSettings)) as TableColumnVisualSettings[];
+
+    // Set condensed width for columns with cellColorGetter
+    tableColumnVisualSettingsCopy.forEach(setting => {
+      const tableColumn = tableColumns.find(c => c.id === setting.id);
+      if (tableColumn?.cellColorGetter) {
+        setting.widthPx = ConfigManager.getInstance().config.table.CONDENSED_WIDTH_PX;
+        setting.isVisible = true;
+      }
+    });
+
+    // Move condensed columns (with cellColorGetter, not frozen/static) after frozen/static columns using handleMoveColumn
+    const frozenOrStaticIds = tableColumns.filter(c => c.frozen || c.isStatic).map(c => c.id);
+    const condensedIds = tableColumns.filter(c => c.cellColorGetter && !c.frozen && !c.isStatic).map(c => c.id);
+
+    // Find the last frozen/static column's index in visual settings
+    let insertIndex = -1;
+    for (let i = 0; i < tableColumnVisualSettingsCopy.length; ++i) {
+      if (frozenOrStaticIds.includes(tableColumnVisualSettingsCopy[i].id)) {
+        insertIndex = i;
+      }
+    }
+    insertIndex++;
+
+    // For each condensed column, move it to the correct position using handleMoveColumn
+    // We need to use the actual TableUtil.handleMoveColumn logic for each move
+    condensedIds.forEach(condensedId => {
+      let currentIdx = tableColumnVisualSettingsCopy.findIndex(c => c.id === condensedId);
+      if (currentIdx === -1) {
+        return;
+      }
+      // Move the column right after the last frozen/static (or after previous condensed)
+      while (currentIdx > insertIndex) {
+        // Move left
+        const col = tableColumns.find(c => c.id === condensedId);
+        if (!col) {
+          break;
+        }
+        TableUtil.handleMoveColumn(
+          [], // no dimensions
+          tableColumnVisualSettingsCopy,
+          tableColumns,
+          col,
+          -1,
+        );
+        currentIdx--;
+      }
+      while (currentIdx < insertIndex) {
+        // Move right
+        const col = tableColumns.find(c => c.id === condensedId);
+        if (!col) {
+          break;
+        }
+        TableUtil.handleMoveColumn(
+          [], // no dimensions
+          tableColumnVisualSettingsCopy,
+          tableColumns,
+          col,
+          1,
+        );
+        currentIdx++;
+      }
+      insertIndex++;
+    });
+
+    return tableColumnVisualSettingsCopy;
+  }
+
   public static createDateCellRowComperator<TRowData, TDataContext = null, TColumnContext = null>({ column, direction }: GetTableCellRowComparatorProps<TableColumnDate<TRowData, TDataContext, TColumnContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
     return (a: TRowData, b: TRowData) => {
       const aValue = a[column.id as keyof TRowData] as string;
@@ -133,7 +203,7 @@ export class TableUtil {
     }
 
     const filters: Filters = [];
-    columns.forEach(column => {
+    columns.forEach((column) => {
       if (column.hideInFilter) {
         return;
       }
@@ -166,7 +236,7 @@ export class TableUtil {
 
         if (column.shouldFilterOptions) {
           const possibleOptions = baseRows.map((row, index) => {
-            const rowValue = column.valueGetter ? column.valueGetter({ dataContext, id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
+            const rowValue = column.valueGetter ? column.valueGetter({ column, dataContext, id: column.id, row, rowIndex: index }) : row[column.id as keyof TData];
             if (!Array.isArray(rowValue)) {
               return [rowValue] as string[];
             }
@@ -215,14 +285,16 @@ export class TableUtil {
   }
 
   public static createInitialVisualColumnSettings<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[]): TableColumnVisualSettings[] {
-    return tableColumns.map<TableColumnVisualSettings>(column => ({
-      id: column.id,
-      isVisible: column.isInitiallyVisible,
-      label: column.headerName,
-      widthFlex: column.widthFlex,
-      widthPx: column.widthPx,
-      widthPxFn: column.widthPxFn,
-    }));
+    return tableColumns.map<TableColumnVisualSettings>(column => {
+      return {
+        id: column.id,
+        isVisible: column.isInitiallyVisible,
+        label: column.headerName,
+        widthFlex: column.widthFlex,
+        widthPx: column.widthPx,
+        widthPxFn: column.widthPxFn,
+      };
+    });
   }
 
   public static createNumberCellRowComperator<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, direction }: GetTableCellRowComparatorProps<TableColumnNumber<TRowData, TDataContext, TColumnContext>, TDataContext>): (a: TRowData, b: TRowData) => number {
@@ -359,6 +431,7 @@ export class TableUtil {
         return sortedData.some((row, rowIndex) => {
           if (column.valueGetter) {
             return column.valueGetter({
+              column,
               dataContext,
               id: column.id,
               row,
@@ -372,21 +445,21 @@ export class TableUtil {
     return newVisibleColumnIds;
   }
 
-  public static getTableBooleanCellDisplayValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): string {
+  public static getTableBooleanCellDisplayValue<TRowData, TDataContext, TColumnContext>({ column, dataContext, row, rowIndex, t }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): string {
     const value = TableUtil.getTableBooleanCellValue({ column, dataContext, row, rowIndex });
     return value ? t('Yes') : t('No');
   }
 
-  public static getTableBooleanCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): boolean {
+  public static getTableBooleanCellValue<TRowData, TDataContext, TColumnContext>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnBoolean<TRowData, TDataContext, TColumnContext>, TDataContext>): boolean {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column: column as TableColumn<TRowData, TDataContext>, dataContext, id: column.id, row, rowIndex });
     }
     return (row[column.id as keyof TRowData] as boolean);
   }
 
   public static getTableDateCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnDate<TRowData, TDataContext, TColumnContext>, TDataContext>): string {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column: column as TableColumn<TRowData, TDataContext>, dataContext, id: column.id, row, rowIndex });
     }
     const value = row[column.id as keyof TRowData] as string;
     if (!value) {
@@ -397,7 +470,7 @@ export class TableUtil {
 
   public static getTableNumberCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnNumber<TRowData, TDataContext, TColumnContext>, TDataContext>): number {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column: column as TableColumn<TRowData, TDataContext>, dataContext, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as number;
   }
@@ -409,7 +482,7 @@ export class TableUtil {
 
   public static getTableOptionsCellValue<TRowData, TDataContext = null, TColumnContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnOptions<TRowData, TDataContext, TColumnContext>, TDataContext>): string | string[] {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column: column as TableColumn<TRowData, TDataContext>, dataContext, id: column.id, row, rowIndex });
     }
     const values = row[column.id as keyof TRowData] as string | string[];
     if (Array.isArray(values)) {
@@ -418,59 +491,9 @@ export class TableUtil {
     return column.options.find(o => o.value === values)?.label ?? '';
   }
 
-  public static getTableSettingsMap<TRowData, TDataContext = null>(
-    container: HTMLDivElement,
-    scrollbarSize: number,
-    sortedData: TRowData[],
-    tableColumns: TableColumn<TRowData, TDataContext>[],
-    tableColumnVisualSettings: TableColumnVisualSettings[],
-    visibleTableSettingsColumns: TableColumnVisualSettings[],
-  ): Map<string, TableColumnVisualSettings> {
-    const tableColumnMap = new Map(tableColumns.map(c => [c.id, c]));
-
-    // As soon as the user resizes a column width widthFlex, we need to convert all columns to widthPx
-    const hasResizedColumn = visibleTableSettingsColumns.some(column => column.hasResized);
-    const hasFlexColumn = visibleTableSettingsColumns.some(column => column.widthFlex);
-    if (hasResizedColumn && hasFlexColumn) {
-      tableColumnVisualSettings.forEach(column => {
-        if (!column.widthPx && column.calculatedWidth) {
-          column.widthPx = column.calculatedWidth;
-          column.widthFlex = undefined;
-        }
-      });
-    }
-
-    // Divide the available width between the columns
-    const totalFlexWidth = sumBy(visibleTableSettingsColumns, column => column.hasResized ? 0 : column.widthFlex) ?? 0;
-    const totalFixedWidth = sumBy(visibleTableSettingsColumns, column => tableColumnMap.get(column.id)?.widthPxFn ? tableColumnMap.get(column.id)?.widthPxFn(sortedData.length) : column.widthPx) ?? 0;
-    const totalAvailableWidth = container.getBoundingClientRect().width - scrollbarSize;
-    const availableFlexWidth = totalAvailableWidth - totalFixedWidth;
-    const flexRatio = totalFlexWidth > 0 ? availableFlexWidth / totalFlexWidth : 1;
-
-    let totalOffset = 0;
-    tableColumnVisualSettings.forEach(column => {
-      const tableColumn = tableColumns.find(c => c.id === column.id);
-      let width: number;
-      if (column.hasResized) {
-        width = column.widthPx;
-      } else if (column.widthFlex) {
-        width = column.widthFlex * flexRatio;
-      } else if (tableColumnMap.get(column.id)?.widthPxFn) {
-        width = tableColumnMap.get(column.id)?.widthPxFn(sortedData.length);
-      } else {
-        width = column.widthPx;
-      }
-      column.calculatedWidth = width;
-      column.offsetX = tableColumn.frozen ? totalOffset : 0;
-      totalOffset += width;
-    });
-
-    return new Map(tableColumnVisualSettings.map(c => [c.id, c]));
-  }
-
   public static getTableTextCellValue<TRowData, TDataContext = null>({ column, dataContext, row, rowIndex }: GetTableCellValueProps<TRowData, TableColumnText<TRowData, TDataContext>, TDataContext>): string {
     if (column.valueGetter) {
-      return column.valueGetter({ dataContext, id: column.id, row, rowIndex });
+      return column.valueGetter({ column, dataContext, id: column.id, row, rowIndex });
     }
     return row[column.id as keyof TRowData] as string;
   }
@@ -527,6 +550,56 @@ export class TableUtil {
       swappingElementIndex,
       direction,
     );
+  }
+
+  public static updateColumnSizesInVisualSettings<TRowData, TDataContext = null>(
+    container: HTMLDivElement,
+    scrollbarSize: number,
+    sortedData: TRowData[],
+    tableColumns: TableColumn<TRowData, TDataContext>[],
+    allColumnVisualSettings: TableColumnVisualSettings[],
+  ): Map<string, TableColumnVisualSettings> {
+    const tableColumnMap = new Map(tableColumns.map(c => [c.id, c]));
+    const visibleColumnVisualSettings = allColumnVisualSettings.filter(c => c.isVisible);
+
+    // As soon as the user resizes a column width widthFlex, we need to convert all columns to widthPx
+    const hasResizedColumn = visibleColumnVisualSettings.some(column => column.hasResized);
+    const hasFlexColumn = visibleColumnVisualSettings.some(column => column.widthFlex);
+    if (hasResizedColumn && hasFlexColumn) {
+      allColumnVisualSettings.forEach(column => {
+        if (!column.widthPx && column.calculatedWidth) {
+          column.widthPx = column.calculatedWidth;
+          column.widthFlex = undefined;
+        }
+      });
+    }
+
+    // Divide the available width between the columns
+    const totalFlexWidth = sumBy(visibleColumnVisualSettings, column => column.hasResized ? 0 : column.widthFlex) ?? 0;
+    const totalFixedWidth = sumBy(visibleColumnVisualSettings, column => tableColumnMap.get(column.id)?.widthPxFn ? tableColumnMap.get(column.id)?.widthPxFn(sortedData.length) : column.widthPx) ?? 0;
+    const totalAvailableWidth = container.getBoundingClientRect().width - scrollbarSize;
+    const availableFlexWidth = totalAvailableWidth - totalFixedWidth;
+    const flexRatio = totalFlexWidth > 0 ? availableFlexWidth / totalFlexWidth : 1;
+
+    let totalOffset = 0;
+    allColumnVisualSettings.forEach(column => {
+      const tableColumn = tableColumns.find(c => c.id === column.id);
+      let width: number;
+      if (column.hasResized) {
+        width = column.widthPx;
+      } else if (column.widthFlex) {
+        width = column.widthFlex * flexRatio;
+      } else if (tableColumnMap.get(column.id)?.widthPxFn) {
+        width = tableColumnMap.get(column.id)?.widthPxFn(sortedData.length);
+      } else {
+        width = column.widthPx;
+      }
+      column.calculatedWidth = width;
+      column.offsetX = tableColumn.frozen ? totalOffset : 0;
+      totalOffset += width;
+    });
+
+    return new Map(allColumnVisualSettings.map(c => [c.id, c]));
   }
 
   private static handleMoveColumnAcrossDimensions(

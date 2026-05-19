@@ -4,6 +4,7 @@ import { EventBusAbstract } from '../abstracts/EventBusAbstract';
 export type TableEvent<TRowData = unknown, TDataContext = null> = {
   columnOrderChange: string[];
   columnVisibilityChange: string[];
+  condensedChange: boolean;
   destroy: void;
   openColumnsEditorDialog: HasCellDataFn<TRowData, TDataContext>;
   reset: void;

@@ -14,6 +14,8 @@
     "lint": "lerna run lint",
     "lint-fix": "lerna run lint-fix",
     "check-types": "lerna run check-types",
+    "test": "lerna run test-run",
+    "add-missing-translations": "lerna run add-missing-translations",
     "build": "lerna run build"
   },
   "devDependencies": {
