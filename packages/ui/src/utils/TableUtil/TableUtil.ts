@@ -101,6 +101,7 @@ export class TableUtil {
       const tableColumn = tableColumns.find(c => c.id === setting.id);
       if (tableColumn?.cellColorGetter) {
         setting.widthPx = ConfigManager.getInstance().config.table.CONDENSED_WIDTH_PX;
+        setting.isVisible = true;
       }
     });
 

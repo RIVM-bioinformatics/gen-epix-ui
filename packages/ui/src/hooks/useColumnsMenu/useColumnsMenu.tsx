@@ -3,6 +3,8 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
+import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
+import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import {
   useCallback,
@@ -83,15 +85,14 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
 
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [
-      {
+      isCondensingSupported ? {
         autoCloseDisabled: true,
         callback: () => onIsCondensedMenuItemClick(),
         checked: isCondensed ? 'true' : 'false',
-        disabled: !isCondensingSupported,
         divider: true,
-        label: t`Condensed table`,
-        rightIcon: isCondensed ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
-      },
+        label: t`Condensed`,
+        rightIcon: isCondensed ? <ToggleOnOutlinedIcon /> : <ToggleOffOutlinedIcon />,
+      } : undefined,
       {
         callback: () => onColumnsEditorMenuItemClick(),
         divider: true,
@@ -122,7 +123,7 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
         divider: true,
         label: t`Hide columns without data`,
       },
-    ];
+    ].filter(x => x) as MenuItemData[];
 
     if (columnDimensions) {
       columnDimensions.forEach((columnDimension) => {

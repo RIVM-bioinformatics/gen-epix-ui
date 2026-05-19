@@ -518,6 +518,7 @@ export const Table = <TRowData, TDataContext = null>({
           }
 
           const baseProps: Partial<TableCellProps<TRowData, TDataContext>> = {
+            backgroundColor: isCondensed && tableColumn.cellColorGetter ? tableColumn.cellColorGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index }) : undefined,
             columnIndex,
             enabled: isRowEnabledCallback ? isRowEnabledCallback(row, dataContext) : true,
             height: theme.spacing(rowHeight),
@@ -541,42 +542,29 @@ export const Table = <TRowData, TDataContext = null>({
             );
           }
 
-          const shouldRenderCondensed = isCondensed && tableColumn.cellColorGetter;
-
           return (
             <TableCell
               key={column.id}
               {...baseProps as TableCellProps<TRowData, TDataContext>}
               column={tableColumn}
             >
-              {shouldRenderCondensed && (
-                <Fragment key={tableColumn.id}>
-                  <Box
-                    sx={{
-                      background: tableColumn.cellColorGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index }),
-                      height: '100%',
-                      width: '100%',
-                    }}
-                  />
-                </Fragment>
-              )}
-              {!shouldRenderCondensed && !!tableColumn.renderCell && (
+              {!!tableColumn.renderCell && (
                 <Fragment key={tableColumn.id}>
                   {tableColumn.renderCell({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index })}
                 </Fragment>
               )}
-              {!shouldRenderCondensed && !tableColumn.renderCell && !!tableColumn.displayValueGetter && (
+              {!tableColumn.renderCell && !!tableColumn.displayValueGetter && (
                 <Fragment key={tableColumn.id}>
                   <TableCellAsyncContent content={tableColumn.displayValueGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index })} />
                 </Fragment>
               )}
-              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
-              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'boolean' && TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index, t })}
-              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
-              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
-              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index })}
-              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
-              {!shouldRenderCondensed && !tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderSelectableCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'boolean' && TableUtil.getTableBooleanCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index, t })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderSelectableCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
             </TableCell>
           );
         })}
@@ -782,10 +770,18 @@ export const Table = <TRowData, TDataContext = null>({
                   role={'row'}
                   sx={{
                     '&:hover, &.highlighted': {
+                      '*': {
+                        color: `${theme.palette.text.primary} !important`,
+                      },
                       '& [role=cell]': {
+                        '*': {
+                          color: `${theme.palette.text.primary} !important`,
+                        },
                         backgroundColor: theme.palette.grey[100],
+                        color: `${theme.palette.text.primary} !important`,
                       },
                       backgroundColor: theme.palette.grey[100],
+                      color: `${theme.palette.text.primary} !important`,
                     },
                     borderBottom: `1px solid ${borderColor}`,
                     color: isRowEnabled ? undefined : 'text.disabled',

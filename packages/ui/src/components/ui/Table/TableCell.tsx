@@ -28,6 +28,7 @@ import { useTableStoreContext } from '../../../stores/tableStore';
 
 export type TableCellProps<TRowData, TDataContext = null> = PropsWithChildren<{
   readonly ariaSort?: 'ascending' | 'descending' | 'other';
+  readonly backgroundColor?: string;
   readonly canDrag?: (event: ReactMouseEvent<HTMLDivElement>) => boolean;
   readonly className?: string;
   readonly column: TableColumn<TRowData, TDataContext>;
@@ -50,8 +51,13 @@ export type TableCellProps<TRowData, TDataContext = null> = PropsWithChildren<{
 
 export type TableCellRef = HTMLDivElement;
 
+// Cache for contrast colors to avoid recalculating them on every render for the same background color.
+// The list of background colors is expected to be limited, so this should not grow indefinitely.
+const contrastColorCache: Record<string, string> = {};
+
 export const TableCell = <TRowData, TDataContext = null>({
   ariaSort,
+  backgroundColor,
   canDrag,
   children,
   className,
@@ -127,9 +133,22 @@ export const TableCell = <TRowData, TDataContext = null>({
   const isMovable = column.isStatic !== true && column.frozen !== true;
 
   const getCellStyles = useCallback((): SxProps<Theme> => {
+    let color: string | undefined;
+    if (backgroundColor) {
+      if (contrastColorCache[backgroundColor]) {
+        color = contrastColorCache[backgroundColor];
+      } else {
+        color = theme.palette.getContrastText(backgroundColor);
+        contrastColorCache[backgroundColor] = color;
+      }
+    }
     return {
-      background: column.frozen ? theme.palette.background.paper : undefined,
+      '*': {
+        color: color ? `${color} !important` : undefined,
+      },
+      background: column.frozen ? theme.palette.background.paper : backgroundColor,
       boxSizing: 'border-box',
+      color,
       left: column.frozen ? `${xOffset || '0'}px` : undefined,
       lineHeight: height,
       order,
@@ -144,7 +163,7 @@ export const TableCell = <TRowData, TDataContext = null>({
       zIndex: column.frozen ? 1 : 0,
       ...sx,
     };
-  }, [column.disableEllipsis, column.frozen, column.textAlign, height, order, sx, theme.palette.background.paper, width, xOffset]);
+  }, [backgroundColor, column.disableEllipsis, column.frozen, column.textAlign, height, order, sx, theme.palette, width, xOffset]);
 
   return (
     <Box
