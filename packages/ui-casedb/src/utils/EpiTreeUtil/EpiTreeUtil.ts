@@ -9,6 +9,7 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 import {
   ConfigManager,
   NumberUtil,
+  StringUtil,
 } from '@gen-epix/ui';
 
 import type {
@@ -883,14 +884,19 @@ export class EpiTreeUtil {
     sanitize(rootNode);
 
     // Handle edge case: deeply nested zero-distance comb where all children end up with zero branch length
-    // Only assign fallbackDistance if ALL root children have zero branch length
     const allChildrenHaveZeroBranchLength = rootNode.children?.every(child => (child.branchLength?.toNumber() ?? 0) === 0) ?? false;
     if (allChildrenHaveZeroBranchLength && rootNode.children?.length) {
-      rootNode.children.forEach(child => {
-        child.branchLength = new Decimal(fallbackDistance);
-        child.maxBranchLength = new Decimal(fallbackDistance);
-      });
-      rootNode.maxBranchLength = new Decimal(fallbackDistance);
+      rootNode.name = `Generated-${StringUtil.createHash(rootNode.subTreeNames.join(','))}`;
+      const newRootNode: TreeNode = {
+        branchLength: new Decimal(fallbackDistance),
+        children: [rootNode],
+        maxBranchLength: new Decimal(fallbackDistance),
+        name: 'root',
+        size: rootNode.size,
+        subTreeLeaveNames: rootNode.subTreeLeaveNames,
+        subTreeNames: [rootNode.name, ...rootNode.subTreeNames],
+      };
+      return newRootNode;
     }
 
     return rootNode;

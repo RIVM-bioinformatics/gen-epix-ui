@@ -202,8 +202,9 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
 
           return (
             <Chip
-              key={String(value)}
               {...props}
+              // eslint-disable-next-line @eslint-react/jsx-no-key-after-spread
+              key={String(value)}
               label={getOptionLabel(value)}
               onDelete={option?.disabled ? undefined : props.onDelete}
               size={'small'}

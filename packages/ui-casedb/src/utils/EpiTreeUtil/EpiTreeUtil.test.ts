@@ -424,20 +424,18 @@ describe('EpiTreeUtil', () => {
       const c = makeLeaf('C', 0);
       const root = makeNode('Root', 0, [a, b, c]);
 
-      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      const sanitizedRoot = EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
-      // All children should now have fallbackDistance
-      expect(root.children?.map(child => child.branchLength?.toNumber())).toEqual([
-        FALLBACK_DISTANCE,
-        FALLBACK_DISTANCE,
-        FALLBACK_DISTANCE,
-      ]);
-      // maxBranchLength should also be set to fallbackDistance
-      expect(root.children?.map(child => child.maxBranchLength?.toNumber())).toEqual([
-        FALLBACK_DISTANCE,
-        FALLBACK_DISTANCE,
-        FALLBACK_DISTANCE,
-      ]);
+      expect(sanitizedRoot.name).toBe('root');
+      expect(sanitizedRoot.children).toHaveLength(1);
+      const generatedRoot = sanitizedRoot.children?.[0];
+
+      // Existing children are kept under the generated node with original lengths
+      expect(generatedRoot?.children?.map(child => child.branchLength?.toNumber())).toEqual([0, 0, 0]);
+      // Wrapper root carries fallback distance; generated node is the original root
+      expect(sanitizedRoot.branchLength?.toNumber()).toBe(FALLBACK_DISTANCE);
+      expect(sanitizedRoot.maxBranchLength?.toNumber()).toBe(FALLBACK_DISTANCE);
+      expect(generatedRoot?.branchLength?.toNumber()).toBe(0);
     });
 
     it('applies fallbackDistance to all root children when ALL have undefined branch length', () => {
@@ -446,13 +444,21 @@ describe('EpiTreeUtil', () => {
       const b = { name: 'B', size: 1, subTreeLeaveNames: ['B'], subTreeNames: [] } as TreeNode;
       const root = makeNode('Root', 0, [a, b]);
 
-      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      const sanitizedRoot = EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
-      // All children should now have fallbackDistance
-      expect(root.children?.map(child => child.branchLength?.toNumber())).toEqual([
-        FALLBACK_DISTANCE,
-        FALLBACK_DISTANCE,
+      expect(sanitizedRoot.name).toBe('root');
+      expect(sanitizedRoot.children).toHaveLength(1);
+      const generatedRoot = sanitizedRoot.children?.[0];
+
+      // Existing children remain unchanged under generated root
+      expect(generatedRoot?.children?.map(child => child.branchLength?.toNumber())).toEqual([
+        undefined,
+        undefined,
       ]);
+      // Wrapper root carries fallback distance; generated node is the original root
+      expect(sanitizedRoot.branchLength?.toNumber()).toBe(FALLBACK_DISTANCE);
+      expect(sanitizedRoot.maxBranchLength?.toNumber()).toBe(FALLBACK_DISTANCE);
+      expect(generatedRoot?.branchLength?.toNumber()).toBe(0);
     });
 
     it('handles deeply nested zero-distance comb where all leaves end up as root children with zero distance', () => {
@@ -461,13 +467,16 @@ describe('EpiTreeUtil', () => {
       const leaves = ['L1', 'L2', 'L3', 'L4'].map(name => makeLeaf(name, 0));
       const root = makeNode('Root', 0, leaves);
 
-      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      const sanitizedRoot = EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+      const generatedRoot = sanitizedRoot.children?.[0];
 
-      // All root children should have fallbackDistance assigned
-      expect(root.children?.every(child => child.branchLength?.toNumber() === FALLBACK_DISTANCE)).toBe(true);
-      expect(root.children?.every(child => child.maxBranchLength?.toNumber() === FALLBACK_DISTANCE)).toBe(true);
-      // The structure should otherwise remain unchanged
-      expect(root.children?.map(n => n.name)).toEqual(['L1', 'L2', 'L3', 'L4']);
+      expect(sanitizedRoot.name).toBe('root');
+      expect(sanitizedRoot.branchLength?.toNumber()).toBe(FALLBACK_DISTANCE);
+      expect(sanitizedRoot.maxBranchLength?.toNumber()).toBe(FALLBACK_DISTANCE);
+      expect(generatedRoot?.branchLength?.toNumber()).toBe(0);
+      // Leaves remain unchanged under the generated root node
+      expect(generatedRoot?.children?.every(child => child.branchLength?.toNumber() === 0)).toBe(true);
+      expect(generatedRoot?.children?.map(n => n.name)).toEqual(['L1', 'L2', 'L3', 'L4']);
     });
   });
 
