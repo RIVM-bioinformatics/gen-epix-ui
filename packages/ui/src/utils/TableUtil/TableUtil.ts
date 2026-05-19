@@ -40,6 +40,7 @@ import type {
 import { FIXED_COLUMN_ID } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
+import { ConfigManager } from '../../classes/managers/ConfigManager';
 
 export class TableUtil {
   public static areColumnVisualSettingsValid<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], columnVisualSettings: TableColumnVisualSettings[]): boolean {
@@ -92,14 +93,71 @@ export class TableUtil {
     };
   }
 
-  public static createCondensedVisualColumnSettingsFromColumnSettings<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], tableColumnVisualSettings?: TableColumnVisualSettings[]): TableColumnVisualSettings[] {
+  public static createCondensedVisualColumnSettingsFromColumnSettings<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], tableColumnVisualSettings: TableColumnVisualSettings[]): TableColumnVisualSettings[] {
     const tableColumnVisualSettingsCopy = JSON.parse(JSON.stringify(tableColumnVisualSettings)) as TableColumnVisualSettings[];
+
+    // Set condensed width for columns with cellColorGetter
     tableColumnVisualSettingsCopy.forEach(setting => {
       const tableColumn = tableColumns.find(c => c.id === setting.id);
-      if (tableColumn.cellColorGetter) {
-        setting.widthPx = 100;
+      if (tableColumn?.cellColorGetter) {
+        setting.widthPx = ConfigManager.getInstance().config.table.CONDENSED_WIDTH_PX;
       }
     });
+
+    // Move condensed columns (with cellColorGetter, not frozen/static) after frozen/static columns using handleMoveColumn
+    const frozenOrStaticIds = tableColumns.filter(c => c.frozen || c.isStatic).map(c => c.id);
+    const condensedIds = tableColumns.filter(c => c.cellColorGetter && !c.frozen && !c.isStatic).map(c => c.id);
+
+    // Find the last frozen/static column's index in visual settings
+    let insertIndex = -1;
+    for (let i = 0; i < tableColumnVisualSettingsCopy.length; ++i) {
+      if (frozenOrStaticIds.includes(tableColumnVisualSettingsCopy[i].id)) {
+        insertIndex = i;
+      }
+    }
+    insertIndex++;
+
+    // For each condensed column, move it to the correct position using handleMoveColumn
+    // We need to use the actual TableUtil.handleMoveColumn logic for each move
+    condensedIds.forEach(condensedId => {
+      let currentIdx = tableColumnVisualSettingsCopy.findIndex(c => c.id === condensedId);
+      if (currentIdx === -1) {
+        return;
+      }
+      // Move the column right after the last frozen/static (or after previous condensed)
+      while (currentIdx > insertIndex) {
+        // Move left
+        const col = tableColumns.find(c => c.id === condensedId);
+        if (!col) {
+          break;
+        }
+        TableUtil.handleMoveColumn(
+          [], // no dimensions
+          tableColumnVisualSettingsCopy,
+          tableColumns,
+          col,
+          -1,
+        );
+        currentIdx--;
+      }
+      while (currentIdx < insertIndex) {
+        // Move right
+        const col = tableColumns.find(c => c.id === condensedId);
+        if (!col) {
+          break;
+        }
+        TableUtil.handleMoveColumn(
+          [], // no dimensions
+          tableColumnVisualSettingsCopy,
+          tableColumns,
+          col,
+          1,
+        );
+        currentIdx++;
+      }
+      insertIndex++;
+    });
+
     return tableColumnVisualSettingsCopy;
   }
 

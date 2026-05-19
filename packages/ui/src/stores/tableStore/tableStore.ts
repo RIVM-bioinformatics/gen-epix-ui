@@ -352,7 +352,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
     resetColumns: () => {
       const { columns, isCondensed, setColumnVisualSettingsCondensed, setColumnVisualSettingsUncondensed } = get();
       setColumnVisualSettingsUncondensed(TableUtil.createInitialVisualColumnSettings(columns));
-      setColumnVisualSettingsCondensed(isCondensed ? TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, TableUtil.createInitialVisualColumnSettings(columns)) : null);
+      setColumnVisualSettingsCondensed(isCondensed ? TableUtil.createCondensedVisualColumnSettingsFromColumnSettings(columns, get().columnVisualSettingsUncondensed) : null);
     },
     resetFilters: async () => {
       const { setFilterValues } = get();
