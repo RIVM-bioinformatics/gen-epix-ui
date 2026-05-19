@@ -459,7 +459,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             if (phylogeneticTree.newick_repr && phylogeneticTree.newick_repr.trim().length > 0 && phylogeneticTree.newick_repr !== '();') {
               // parse the newick into a tree
               const parsedTree = NewickUtil.parse(phylogeneticTree.newick_repr);
-              const sanitizedTree = EpiTreeUtil.sanitizeTree(parsedTree);
+              const sanitizedTree = EpiTreeUtil.sanitizeTree(parsedTree, completeCaseType.genetic_distance_protocols[phylogeneticTree.protocol_id].seqdb_max_stored_distance); // FIXME
 
               // the tree determines the order of the line list
               const sortedIds = NewickUtil.getSortedNames(sanitizedTree);

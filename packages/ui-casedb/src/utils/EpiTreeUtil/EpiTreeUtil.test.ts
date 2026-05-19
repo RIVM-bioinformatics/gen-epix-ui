@@ -268,14 +268,16 @@ describe('EpiTreeUtil', () => {
   });
 
   describe('sanitizeTree', () => {
+    const FALLBACK_DISTANCE = 20;
+
     it('returns the same root node reference', () => {
       const root = makeNode('Root', 0, [makeLeaf('A'), makeLeaf('B')]);
-      expect(EpiTreeUtil.sanitizeTree(root)).toBe(root);
+      expect(EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE)).toBe(root);
     });
 
     it('leaves a leaf node (no children) unchanged', () => {
       const leaf = makeLeaf('A');
-      EpiTreeUtil.sanitizeTree(leaf);
+      EpiTreeUtil.sanitizeTree(leaf, FALLBACK_DISTANCE);
       expect(leaf.children).toBeUndefined();
       expect(leaf.subTreeNames).toEqual([]);
     });
@@ -287,7 +289,7 @@ describe('EpiTreeUtil', () => {
       const inner = makeNode('Inner', 1, [b, makeLeaf('C')]);
       const root = makeNode('Root', 0, [a, inner]);
 
-      EpiTreeUtil.sanitizeTree(root);
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(c => c.name)).toEqual(['A', 'Inner']);
     });
@@ -300,7 +302,7 @@ describe('EpiTreeUtil', () => {
       const inner = makeNode('Inner', 0, [b, c]);
       const root = makeNode('Root', 0, [a, inner]);
 
-      EpiTreeUtil.sanitizeTree(root);
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'C']);
     });
@@ -312,7 +314,7 @@ describe('EpiTreeUtil', () => {
         makeNode('Inner', 0, [makeLeaf('B'), makeLeaf('C')]),
       ]);
 
-      EpiTreeUtil.sanitizeTree(root);
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.subTreeNames).toEqual(['A', 'B', 'C']);
     });
@@ -322,7 +324,7 @@ describe('EpiTreeUtil', () => {
       const root = makeNode('Root', 0, [makeLeaf('A'), inner]);
       const originalSubTreeNames = [...root.subTreeNames];
 
-      EpiTreeUtil.sanitizeTree(root);
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'Inner']);
       expect(root.subTreeNames).toEqual(originalSubTreeNames);
@@ -339,7 +341,7 @@ describe('EpiTreeUtil', () => {
       } as TreeNode;
       const root = makeNode('Root', 0, [makeLeaf('A'), inner]);
 
-      EpiTreeUtil.sanitizeTree(root);
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
       // inner treated as zero-branch → its children B,C hoisted to root
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'C']);
@@ -352,7 +354,7 @@ describe('EpiTreeUtil', () => {
         makeNode('Inner2', 0, [makeLeaf('C'), makeLeaf('D')]),
       ]);
 
-      EpiTreeUtil.sanitizeTree(root);
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'C', 'D']);
       expect(root.subTreeNames).toEqual(['A', 'B', 'C', 'D']);
@@ -365,7 +367,7 @@ describe('EpiTreeUtil', () => {
         makeNode('Inner2', 1, [makeLeaf('C'), makeLeaf('D')]),
       ]);
 
-      EpiTreeUtil.sanitizeTree(root);
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'Inner2']);
       expect(root.subTreeNames).toEqual(['A', 'B', 'Inner2', 'C', 'D']);
@@ -383,7 +385,7 @@ describe('EpiTreeUtil', () => {
       const a = makeLeaf('A');
       const root = makeNode('Root', 0, [a, outer]);
 
-      EpiTreeUtil.sanitizeTree(root);
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'C', 'D']);
     });
@@ -399,10 +401,73 @@ describe('EpiTreeUtil', () => {
         ]),
       ]);
 
-      EpiTreeUtil.sanitizeTree(root);
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
       // 'Outer' is removed; 'Inner' stays because it was spliced from Outer (not Root) subTreeNames
       expect(root.subTreeNames).toEqual(['A', 'Inner', 'B', 'C', 'D']);
+    });
+
+    it('does not apply fallbackDistance when only some root children have zero branch length', () => {
+      // Only some children have bl=0 → edge case should NOT apply
+      const root = makeNode('Root', 0, [makeLeaf('A', 1), makeLeaf('B', 0)]);
+
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+
+      // B still has bl=0 (not assigned fallbackDistance)
+      expect(root.children?.[1]?.branchLength?.toNumber()).toBe(0);
+    });
+
+    it('applies fallbackDistance to all root children when ALL have zero branch length', () => {
+      // All children have bl=0 → edge case applies
+      const a = makeLeaf('A', 0);
+      const b = makeLeaf('B', 0);
+      const c = makeLeaf('C', 0);
+      const root = makeNode('Root', 0, [a, b, c]);
+
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+
+      // All children should now have fallbackDistance
+      expect(root.children?.map(child => child.branchLength?.toNumber())).toEqual([
+        FALLBACK_DISTANCE,
+        FALLBACK_DISTANCE,
+        FALLBACK_DISTANCE,
+      ]);
+      // maxBranchLength should also be set to fallbackDistance
+      expect(root.children?.map(child => child.maxBranchLength?.toNumber())).toEqual([
+        FALLBACK_DISTANCE,
+        FALLBACK_DISTANCE,
+        FALLBACK_DISTANCE,
+      ]);
+    });
+
+    it('applies fallbackDistance to all root children when ALL have undefined branch length', () => {
+      // All children have undefined bl → treated as bl=0 → edge case applies
+      const a = { name: 'A', size: 1, subTreeLeaveNames: ['A'], subTreeNames: [] } as TreeNode;
+      const b = { name: 'B', size: 1, subTreeLeaveNames: ['B'], subTreeNames: [] } as TreeNode;
+      const root = makeNode('Root', 0, [a, b]);
+
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+
+      // All children should now have fallbackDistance
+      expect(root.children?.map(child => child.branchLength?.toNumber())).toEqual([
+        FALLBACK_DISTANCE,
+        FALLBACK_DISTANCE,
+      ]);
+    });
+
+    it('handles deeply nested zero-distance comb where all leaves end up as root children with zero distance', () => {
+      // Simulate the pathological case from NewickUtil test:
+      // deeply nested comb collapses such that all leaves become direct children of root with bl=0
+      const leaves = ['L1', 'L2', 'L3', 'L4'].map(name => makeLeaf(name, 0));
+      const root = makeNode('Root', 0, leaves);
+
+      EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
+
+      // All root children should have fallbackDistance assigned
+      expect(root.children?.every(child => child.branchLength?.toNumber() === FALLBACK_DISTANCE)).toBe(true);
+      expect(root.children?.every(child => child.maxBranchLength?.toNumber() === FALLBACK_DISTANCE)).toBe(true);
+      // The structure should otherwise remain unchanged
+      expect(root.children?.map(n => n.name)).toEqual(['L1', 'L2', 'L3', 'L4']);
     });
   });
 

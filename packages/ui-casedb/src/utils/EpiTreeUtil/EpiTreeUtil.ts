@@ -855,7 +855,7 @@ export class EpiTreeUtil {
    * @param rootNode - The root of the tree to sanitize. Mutated in place.
    * @returns The sanitized root node.
    */
-  public static sanitizeTree(rootNode: TreeNode): TreeNode {
+  public static sanitizeTree(rootNode: TreeNode, fallbackDistance: number): TreeNode {
     const sanitize = (node: TreeNode): SanitizeResult => {
       const results: SanitizeResult[] = [];
       node.children?.forEach(child => {
@@ -881,6 +881,18 @@ export class EpiTreeUtil {
       return null;
     };
     sanitize(rootNode);
+
+    // Handle edge case: deeply nested zero-distance comb where all children end up with zero branch length
+    // Only assign fallbackDistance if ALL root children have zero branch length
+    const allChildrenHaveZeroBranchLength = rootNode.children?.every(child => (child.branchLength?.toNumber() ?? 0) === 0) ?? false;
+    if (allChildrenHaveZeroBranchLength && rootNode.children?.length) {
+      rootNode.children.forEach(child => {
+        child.branchLength = new Decimal(fallbackDistance);
+        child.maxBranchLength = new Decimal(fallbackDistance);
+      });
+      rootNode.maxBranchLength = new Decimal(fallbackDistance);
+    }
+
     return rootNode;
   }
 

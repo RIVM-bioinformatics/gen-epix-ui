@@ -185,7 +185,7 @@ const waitForCanvasPaint = async (canvas: HTMLCanvasElement, assertion: () => bo
 };
 
 const parseTree = (newick: string) => {
-  return EpiTreeUtil.sanitizeTree(NewickUtil.parse(newick));
+  return EpiTreeUtil.sanitizeTree(NewickUtil.parse(newick), 20);
 };
 
 const getLayoutNode = (layout: TreeLayout, nodeName: string) => {
