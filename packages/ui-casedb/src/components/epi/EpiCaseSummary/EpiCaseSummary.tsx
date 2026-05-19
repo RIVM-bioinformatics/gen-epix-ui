@@ -33,8 +33,8 @@ export const EpiCaseSummary = ({ epiCase }: EpiCaseSummaryProps) => {
   const numVisibleAttributesInSummary = useStore(epiDashboardStore, (state) => state.numVisibleAttributesInSummary);
   const setNumVisibleAttributesInSummary = useStore(epiDashboardStore, (state) => state.setNumVisibleAttributesInSummary);
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
-  const columnVisualSettings = useStore(tableStore, useShallow((state) => state.columnVisualSettings));
-  const columnVisualSettingsVisibleColumnIds = useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
+  const columnVisualSettings = useStore(tableStore, useShallow((state) => state.getCurrentColumnVisualSettings()));
+  const columnVisualSettingsVisibleColumnIds = useStore(tableStore, useShallow((state) => state.getCurrentColumnVisualSettings().filter(c => c.isVisible).map(c => c.id)));
 
   const visibleCaseTypeTableColumns = useMemo(() => columnVisualSettings.map(x => tableColumns.find(c => c.id === x.id)).filter(c => c.columnContext && columnVisualSettingsVisibleColumnIds.includes(c.id)) as TableColumnText<CaseDbCase>[], [columnVisualSettings, tableColumns, columnVisualSettingsVisibleColumnIds]);
 

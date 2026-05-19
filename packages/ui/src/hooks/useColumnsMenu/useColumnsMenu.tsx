@@ -25,7 +25,7 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
   const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
   const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
   const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
-  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.columnVisualSettings.filter(c => c.isVisible).map(c => c.id)));
+  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.getCurrentColumnVisualSettings().filter(c => c.isVisible).map(c => c.id)));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const isCondensed = useStore(tableStore, useShallow((state) => state.isCondensed));
   const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
@@ -84,6 +84,7 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
   const menuItemData: MenuItemData = useMemo(() => {
     const items: MenuItemData[] = [
       {
+        autoCloseDisabled: true,
         callback: () => onIsCondensedMenuItemClick(),
         checked: isCondensed ? 'true' : 'false',
         disabled: !isCondensingSupported,

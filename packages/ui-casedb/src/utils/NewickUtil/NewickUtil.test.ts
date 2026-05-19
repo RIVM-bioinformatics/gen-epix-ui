@@ -171,6 +171,28 @@ describe('NewickUtil', () => {
       const tree = NewickUtil.parse(newick);
       expect(tree).toEqual(expectedTree);
     });
+
+    it('should parse a very deep zero-distance comb Newick without losing leaves', () => {
+      // Mirrors the pathological production input shape: a deeply nested comb where
+      // each merge and each leaf has 0.00 branch length.
+      const leafCount = 1200;
+      const leafIds = Array.from({ length: leafCount }, (_, i) => `case-${i.toString().padStart(4, '0')}`);
+      const newick = `${leafIds.reduce((acc, leafId, index) => {
+        const leaf = `${leafId}:0.00`;
+        if (index === 0) {
+          return leaf;
+        }
+        return `(${acc},${leaf}):0.00`;
+      }, '')};`;
+
+      const tree = NewickUtil.parse(newick);
+
+      expect(tree.name).toBe('Root');
+      expect(tree.branchLength?.toNumber()).toBe(0);
+      expect(tree.maxBranchLength?.toNumber()).toBe(0);
+      expect(tree.size).toBe(leafCount);
+      expect(tree.subTreeLeaveNames).toEqual(leafIds);
+    });
   });
 
   describe('getSortedNames', () => {
