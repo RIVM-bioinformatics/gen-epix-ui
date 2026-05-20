@@ -51,7 +51,6 @@ export interface TableColumnActions<TRowData, TDataContext = null, TColumnContex
   getActions: (params: TableRowParams<TRowData, TDataContext>) => ReactElement[];
   id: FIXED_COLUMN_ID.ACTIONS;
   isInitiallyVisible: true;
-  isStatic: true;
   resizable: false;
   type: 'actions';
 }
@@ -97,7 +96,6 @@ export interface TableColumnReadableIndex<TRowData, TDataContext = null, TColumn
   frozen: true;
   getAriaLabel: (params: TableRowParams<TRowData, TDataContext>) => string;
   id: FIXED_COLUMN_ID.READABLE_INDEX;
-  isStatic: true;
   resizable: false;
   type: 'readableIndex';
 }
@@ -108,7 +106,6 @@ export interface TableColumnSelectable<TRowData, TDataContext = null, TColumnCon
   frozen: true;
   id: FIXED_COLUMN_ID.ROW_SELECT;
   isDisabled?: (params: TableRowParams<TRowData, TDataContext>) => boolean;
-  isStatic: true;
   resizable: false;
   type: 'selectable';
 }
@@ -164,7 +161,6 @@ interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext 
   hideInFilter?: boolean;
   id?: string;
   isInitiallyVisible: boolean;
-  isStatic?: boolean;
   renderCell?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => ReactElement;
   renderHeader?: (params: TableColumnParams<TRowData, TDataContext>) => ReactElement;
   renderHeaderContent?: (params: TableColumnParams<TRowData, TDataContext>) => ReactElement;

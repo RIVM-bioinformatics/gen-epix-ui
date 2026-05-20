@@ -74,7 +74,7 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
     const newItems: Item[] = [];
     columnVisualSettings.forEach(columnSetting => {
       const column = columnsMap.get(columnSetting.id);
-      if (column && !column.isStatic && !column.frozen) {
+      if (column && !column.frozen) {
         newItems.push({
           id: column.id,
           isSelected: columnSetting.isVisible,
@@ -99,9 +99,9 @@ export const TableColumnsEditorDialog = withDialog<TableColumnsEditorDialogProps
   }, [onTitleChange, t]);
 
   const onSaveButtonClick = useCallback(() => {
-    emitTableEvent('columnVisibilityChange', [...tableColumns.filter(c => c.isStatic || c.frozen).map(c => c.id), ...items.filter((item) => item.isSelected).map((item) => item.id.toString())]);
+    emitTableEvent('columnVisibilityChange', [...tableColumns.filter(c => c.frozen).map(c => c.id), ...items.filter((item) => item.isSelected).map((item) => item.id.toString())]);
 
-    const firstMovableColumnIndex = tableColumns.findIndex(c => !c.isStatic && !c.frozen);
+    const firstMovableColumnIndex = tableColumns.findIndex(c => !c.frozen);
     const leadingStaticColumns = tableColumns.slice(0, firstMovableColumnIndex);
     const trailingStaticColumns = tableColumns.slice(firstMovableColumnIndex + items.length);
 

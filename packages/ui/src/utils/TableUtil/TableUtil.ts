@@ -59,11 +59,11 @@ export class TableUtil {
   public static createActionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; getActions: (params: TableRowParams<TData, TDataContext>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData, TDataContext, TColumnContext> {
     return {
       columnContext: kwArgs.columnContext,
+      frozen: true,
       getActions: kwArgs.getActions,
       headerName: kwArgs.t`Actions`,
       id: FIXED_COLUMN_ID.ACTIONS,
       isInitiallyVisible: true,
-      isStatic: true,
       resizable: false,
       type: 'actions',
       widthPx: 48,
@@ -106,8 +106,8 @@ export class TableUtil {
     });
 
     // Move condensed columns (with cellColorGetter, not frozen/static) after frozen/static columns using handleMoveColumn
-    const frozenOrStaticIds = tableColumns.filter(c => c.frozen || c.isStatic).map(c => c.id);
-    const condensedIds = tableColumns.filter(c => c.cellColorGetter && !c.frozen && !c.isStatic).map(c => c.id);
+    const frozenOrStaticIds = tableColumns.filter(c => c.frozen).map(c => c.id);
+    const condensedIds = tableColumns.filter(c => c.cellColorGetter && !c.frozen).map(c => c.id);
 
     // Find the last frozen/static column's index in visual settings
     let insertIndex = -1;
@@ -356,7 +356,6 @@ export class TableUtil {
       headerName: '',
       id: FIXED_COLUMN_ID.READABLE_INDEX,
       isInitiallyVisible: true,
-      isStatic: true,
       resizable: false,
       textAlign: 'right',
       type: 'readableIndex',
@@ -372,7 +371,6 @@ export class TableUtil {
       id: FIXED_COLUMN_ID.ROW_SELECT,
       isDisabled: kwArgs.isDisabled,
       isInitiallyVisible: true,
-      isStatic: true,
       resizable: false,
       type: 'selectable',
       widthPx: 38,
@@ -418,14 +416,14 @@ export class TableUtil {
     let newVisibleColumnIds: string[];
     if (hasCellData) {
       newVisibleColumnIds = columns.filter(column => {
-        if (column.isStatic) {
+        if (column.frozen) {
           return true;
         }
         return sortedData.some((row, rowIndex) => hasCellData(row, column, rowIndex, dataContext));
       }).map(c => c.id);
     } else {
       newVisibleColumnIds = columns.filter(column => {
-        if (column.isStatic) {
+        if (column.frozen) {
           return true;
         }
         return sortedData.some((row, rowIndex) => {
@@ -505,7 +503,7 @@ export class TableUtil {
     elementTableColumn: TableColumn<TRowData, TDataContext>,
     direction: -1 | 1,
   ): boolean {
-    if (!elementTableColumn || elementTableColumn.frozen || elementTableColumn.isStatic) {
+    if (!elementTableColumn || elementTableColumn.frozen) {
       return false;
     }
 
@@ -525,13 +523,13 @@ export class TableUtil {
         continue;
       }
       swappingElementTableColumn = tableColumns.find(c => c.id === tableColumnVisualSettings[i].id);
-      if (swappingElementTableColumn && !swappingElementTableColumn.frozen && !swappingElementTableColumn.isStatic) {
+      if (swappingElementTableColumn && !swappingElementTableColumn.frozen) {
         swappingElementIndex = i;
         break;
       }
     }
 
-    if (!swappingElementSettingsColumn || !swappingElementTableColumn || swappingElementTableColumn.frozen || swappingElementTableColumn.isStatic || swappingElementIndex === undefined) {
+    if (!swappingElementSettingsColumn || !swappingElementTableColumn || swappingElementTableColumn.frozen || swappingElementIndex === undefined) {
       return false;
     }
 

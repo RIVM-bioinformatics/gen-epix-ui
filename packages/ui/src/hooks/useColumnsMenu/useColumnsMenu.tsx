@@ -113,7 +113,7 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
       {
         autoCloseDisabled: true,
         callback: () => {
-          emitTableEvent('columnVisibilityChange', [...tableColumns.filter(c => c.isStatic).map(c => c.id)]);
+          emitTableEvent('columnVisibilityChange', [...tableColumns.filter(c => c.frozen).map(c => c.id)]);
         },
         label: t`Hide all`,
       },
@@ -150,7 +150,7 @@ export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: U
         });
       });
     } else {
-      tableColumns.filter(c => !c.isStatic).forEach((column) => {
+      tableColumns.filter(c => !c.frozen).forEach((column) => {
         const checked = visibleColumnIds.includes(column.id);
         items.push({
           autoCloseDisabled: true,

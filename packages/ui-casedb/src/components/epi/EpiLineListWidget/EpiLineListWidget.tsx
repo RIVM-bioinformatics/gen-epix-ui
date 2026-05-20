@@ -313,25 +313,23 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
         frozen: true,
         id: 'events',
         isInitiallyVisible: true,
-        isStatic: true,
         renderCell: renderEventsCell,
         renderHeader: renderEventsHeader,
         resizable: false,
         type: 'text',
         widthPx: 24,
-      },
+      } satisfies TableColumn<CaseDbCase, CaseDbCompleteCaseType>,
       {
         frozen: true,
         headerTooltipContent: t`Is similar case?`,
         id: 'similar',
         isInitiallyVisible: true,
-        isStatic: true,
         renderCell: renderSimilarCell,
         renderHeader: renderSimilarHeader,
         resizable: false,
         type: 'text',
         widthPx: 24,
-      },
+      } satisfies TableColumn<CaseDbCase, CaseDbCompleteCaseType>,
     ];
   }, [renderEventsCell, renderSimilarCell, renderEventsHeader, renderSimilarHeader, t]);
 
