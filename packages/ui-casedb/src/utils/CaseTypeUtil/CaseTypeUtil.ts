@@ -79,7 +79,7 @@ export class CaseTypeUtil {
 
   public static getCols(completeCaseType: CaseDbCompleteCaseType, dimId?: string): CaseDbCol[] {
     if (!dimId) {
-      return Object.values(completeCaseType.cols);
+      return Object.values(completeCaseType.ordered_col_ids).map(id => completeCaseType.cols[id]);
     }
     return completeCaseType.ordered_col_ids_by_dim[dimId].map(id => completeCaseType.cols[id]);
   }
