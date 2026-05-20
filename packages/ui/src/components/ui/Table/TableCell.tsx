@@ -130,7 +130,7 @@ export const TableCell = <TRowData, TDataContext = null>({
   }, [onCustomDrag, canDrag, column]);
 
 
-  const isMovable = column.frozen !== true;
+  const isMovable = !column.frozen;
 
   const getCellStyles = useCallback((): SxProps<Theme> => {
     let color: string | undefined;

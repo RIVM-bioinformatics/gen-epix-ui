@@ -38,6 +38,7 @@ import {
   StringUtil,
   Subject,
   Table,
+  TABLE_COLUMN_FROZEN,
   TableUtil,
 } from '@gen-epix/ui';
 
@@ -310,7 +311,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
       }),
       TableUtil.createSelectableColumn(),
       {
-        frozen: true,
+        frozen: TABLE_COLUMN_FROZEN.LEFT,
         id: 'events',
         isInitiallyVisible: true,
         renderCell: renderEventsCell,
@@ -320,7 +321,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
         widthPx: 24,
       } satisfies TableColumn<CaseDbCase, CaseDbCompleteCaseType>,
       {
-        frozen: true,
+        frozen: TABLE_COLUMN_FROZEN.LEFT,
         headerTooltipContent: t`Is similar case?`,
         id: 'similar',
         isInitiallyVisible: true,

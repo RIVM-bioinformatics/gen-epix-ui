@@ -37,7 +37,10 @@ import type {
   TableColumnVisualSettings,
   TableRowParams,
 } from '../../models/table';
-import { FIXED_COLUMN_ID } from '../../models/table';
+import {
+  FIXED_COLUMN_ID,
+  TABLE_COLUMN_FROZEN,
+} from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -59,7 +62,7 @@ export class TableUtil {
   public static createActionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; getActions: (params: TableRowParams<TData, TDataContext>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData, TDataContext, TColumnContext> {
     return {
       columnContext: kwArgs.columnContext,
-      frozen: true,
+      frozen: TABLE_COLUMN_FROZEN.RIGHT,
       getActions: kwArgs.getActions,
       headerName: kwArgs.t`Actions`,
       id: FIXED_COLUMN_ID.ACTIONS,
@@ -351,7 +354,7 @@ export class TableUtil {
     return {
       columnContext: kwArgs.columnContext,
       disableEllipsis: true,
-      frozen: true,
+      frozen: TABLE_COLUMN_FROZEN.LEFT,
       getAriaLabel: kwArgs.getAriaLabel ?? (() => null),
       headerName: '',
       id: FIXED_COLUMN_ID.READABLE_INDEX,
@@ -367,7 +370,7 @@ export class TableUtil {
     return {
       columnContext: kwArgs.columnContext,
       disableEllipsis: true,
-      frozen: true,
+      frozen: TABLE_COLUMN_FROZEN.LEFT,
       id: FIXED_COLUMN_ID.ROW_SELECT,
       isDisabled: kwArgs.isDisabled,
       isInitiallyVisible: true,

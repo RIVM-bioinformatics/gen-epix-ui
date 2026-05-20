@@ -15,6 +15,11 @@ export enum FIXED_COLUMN_ID {
   ROW_SELECT = 'ROW_SELECT',
 }
 
+export enum TABLE_COLUMN_FROZEN {
+  LEFT = 'left',
+  RIGHT = 'right',
+}
+
 export interface GetTableCellRowComparatorProps<TColumn, TDataContext = null> {
   readonly column: TColumn;
   readonly dataContext: TDataContext;
@@ -48,6 +53,7 @@ export type TableColumn<TRowData, TDataContext = null, TColumnContext = null> =
 
 export interface TableColumnActions<TRowData, TDataContext = null, TColumnContext = null> extends TableColumnBase<TRowData, string, TDataContext, TColumnContext> {
   comparatorFactory?: (params: GetTableCellRowComparatorProps<TableColumnActions<TRowData, TDataContext, TColumnContext>, TDataContext>) => (a: TRowData, b: TRowData) => number;
+  frozen: TABLE_COLUMN_FROZEN.RIGHT;
   getActions: (params: TableRowParams<TRowData, TDataContext>) => ReactElement[];
   id: FIXED_COLUMN_ID.ACTIONS;
   isInitiallyVisible: true;
@@ -93,7 +99,7 @@ export interface TableColumnParams<TRowData, TDataContext = null> {
 export interface TableColumnReadableIndex<TRowData, TDataContext = null, TColumnContext = null> extends TableColumnBase<TRowData, never, TDataContext, TColumnContext> {
   comparatorFactory?: never;
   disableEllipsis: true;
-  frozen: true;
+  frozen: TABLE_COLUMN_FROZEN.LEFT;
   getAriaLabel: (params: TableRowParams<TRowData, TDataContext>) => string;
   id: FIXED_COLUMN_ID.READABLE_INDEX;
   resizable: false;
@@ -103,7 +109,7 @@ export interface TableColumnReadableIndex<TRowData, TDataContext = null, TColumn
 export interface TableColumnSelectable<TRowData, TDataContext = null, TColumnContext = null> extends TableColumnBase<TRowData, never, TDataContext, TColumnContext> {
   comparatorFactory?: never;
   disableEllipsis: true;
-  frozen: true;
+  frozen: TABLE_COLUMN_FROZEN.LEFT;
   id: FIXED_COLUMN_ID.ROW_SELECT;
   isDisabled?: (params: TableRowParams<TRowData, TDataContext>) => boolean;
   resizable: false;
@@ -125,6 +131,7 @@ export type TableColumnVisualSettings = {
   widthPx: number;
 };
 
+
 export type TableDragEvent = {
   clientX: number;
   clientY: number;
@@ -135,7 +142,6 @@ export type TableDragEvent = {
   target: HTMLDivElement;
   type: 'end' | 'move' | 'start';
 };
-
 
 export type TableRowAndColumnParams<TRowData, TDataContext = null> = TableColumnParams<TRowData, TDataContext> & TableRowParams<TRowData, TDataContext>;
 
@@ -155,7 +161,7 @@ interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext 
   disableEllipsis?: boolean;
   displayValueGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   filterLabel?: string;
-  frozen?: boolean;
+  frozen?: TABLE_COLUMN_FROZEN;
   headerName?: string;
   headerTooltipContent?: string;
   hideInFilter?: boolean;
