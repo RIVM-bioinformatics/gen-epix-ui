@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.3.0...ui-casedb-v2.4.0) (2026-05-20)
+
+
+### Features
+
+* implement frozen left- and right table columns ([#138](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/138)) ([2ab2912](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2ab2912ba361fc896df3d89ca936705b0d101a4a))
+
 ## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.2.3...ui-casedb-v2.3.0) (2026-05-20)
 
 
