@@ -180,7 +180,7 @@ export const Table = <TRowData, TDataContext = null>({
   }, [getRowName, onRowClick]);
 
   const getVisibleTableSettingsColumns = useCallback(() => {
-    return tableColumnVisualSettingsRef?.current?.filter(c => c.isVisible);
+    return tableColumnVisualSettingsRef?.current?.filter(c => c.isVisible) ?? [];
   }, []);
 
   const updateTableWidth = useCallback(() => {
@@ -499,11 +499,11 @@ export const Table = <TRowData, TDataContext = null>({
   const renderItemContent = useCallback((index: number, row: TRowData) => {
     return (
       <>
-        {getVisibleTableSettingsColumns().map((column, columnIndex) => {
-          const tableColumn = tableColumns.find(c => c.id === column.id);
+        {getVisibleTableSettingsColumns().map((tableSettingsColumn, columnIndex) => {
+          const tableColumn = tableColumns.find(c => c.id === tableSettingsColumn.id);
           let title: string;
           if (tableColumn.cellTitleGetter) {
-            title = tableColumn.cellTitleGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index });
+            title = tableColumn.cellTitleGetter({ column: tableColumn, dataContext, id: tableSettingsColumn.id, row, rowIndex: index });
           } else if (tableColumn.type === 'text') {
             title = TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index });
           } else if (tableColumn.type === 'boolean') {
@@ -518,24 +518,24 @@ export const Table = <TRowData, TDataContext = null>({
           }
 
           const baseProps: Partial<TableCellProps<TRowData, TDataContext>> = {
-            backgroundColor: isCondensed && tableColumn.cellColorGetter ? tableColumn.cellColorGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index }) : undefined,
+            backgroundColor: isCondensed && tableColumn.cellColorGetter ? tableColumn.cellColorGetter({ column: tableColumn, dataContext, id: tableSettingsColumn.id, row, rowIndex: index }) : undefined,
             columnIndex,
             enabled: isRowEnabledCallback ? isRowEnabledCallback(row, dataContext) : true,
             height: theme.spacing(rowHeight),
             onClick: onTableRowClick,
-            order: tableColumnVisualSettingsRef.current.findIndex(c => c.id === column.id),
+            order: tableColumnVisualSettingsRef.current.findIndex(c => c.id === tableSettingsColumn.id),
             row,
             rowIndex: index,
             sx: tableColumn.sx,
             title,
-            width: tableColumnVisualSettingsRef.current.find(c => c.id === column.id).calculatedWidth,
-            xOffset: tableColumnVisualSettingsRef.current.find(c => c.id === column.id).offsetX,
+            width: tableSettingsColumn.calculatedWidth,
+            xOffset: tableSettingsColumn.offsetX,
           };
 
           if (tableColumn.type === 'actions') {
             return (
               <TableActionsCell<TRowData, TDataContext>
-                key={column.id}
+                key={tableSettingsColumn.id}
                 {...baseProps as TableCellProps<TRowData, TDataContext>}
                 column={tableColumn}
               />
@@ -544,18 +544,18 @@ export const Table = <TRowData, TDataContext = null>({
 
           return (
             <TableCell
-              key={column.id}
+              key={tableSettingsColumn.id}
               {...baseProps as TableCellProps<TRowData, TDataContext>}
               column={tableColumn}
             >
               {!!tableColumn.renderCell && (
                 <Fragment key={tableColumn.id}>
-                  {tableColumn.renderCell({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index })}
+                  {tableColumn.renderCell({ column: tableColumn, dataContext, id: tableSettingsColumn.id, row, rowIndex: index })}
                 </Fragment>
               )}
               {!tableColumn.renderCell && !!tableColumn.displayValueGetter && (
                 <Fragment key={tableColumn.id}>
-                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ column: tableColumn, dataContext, id: column.id, row, rowIndex: index })} />
+                  <TableCellAsyncContent content={tableColumn.displayValueGetter({ column: tableColumn, dataContext, id: tableSettingsColumn.id, row, rowIndex: index })} />
                 </Fragment>
               )}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'text' && TableUtil.getTableTextCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
@@ -563,8 +563,8 @@ export const Table = <TRowData, TDataContext = null>({
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'number' && TableUtil.getTableNumberCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'date' && TableUtil.getTableDateCellValue({ column: tableColumn, dataContext, row, rowIndex: index })}
               {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'options' && TableUtil.getTableOptionsCellDisplayValue({ column: tableColumn, dataContext, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
-              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderSelectableCell(tableColumn, { dataContext, id: column.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'readableIndex' && renderReadableIndexCell(tableColumn, { dataContext, id: tableSettingsColumn.id, row, rowIndex: index })}
+              {!tableColumn.displayValueGetter && !tableColumn.renderCell && tableColumn.type === 'selectable' && renderSelectableCell(tableColumn, { dataContext, id: tableSettingsColumn.id, row, rowIndex: index })}
             </TableCell>
           );
         })}

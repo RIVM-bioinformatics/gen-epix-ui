@@ -19,6 +19,7 @@ import type {
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
+import { TABLE_COLUMN_FROZEN } from '../../../models/table';
 import type {
   TableColumn,
   TableDragEvent,
@@ -133,6 +134,9 @@ export const TableCell = <TRowData, TDataContext = null>({
   const isMovable = !column.frozen;
 
   const getCellStyles = useCallback((): SxProps<Theme> => {
+    const isFrozenLeft = column.frozen === TABLE_COLUMN_FROZEN.LEFT;
+    const isFrozenRight = column.frozen === TABLE_COLUMN_FROZEN.RIGHT;
+    const isFrozen = isFrozenLeft || isFrozenRight;
     let color: string | undefined;
     if (backgroundColor) {
       if (contrastColorCache[backgroundColor]) {
@@ -146,21 +150,22 @@ export const TableCell = <TRowData, TDataContext = null>({
       '*': {
         color: color ? `${color} !important` : undefined,
       },
-      background: column.frozen ? theme.palette.background.paper : backgroundColor,
+      background: isFrozen ? theme.palette.background.paper : backgroundColor,
       boxSizing: 'border-box',
       color,
-      left: column.frozen ? `${xOffset || '0'}px` : undefined,
+      left: isFrozenLeft ? `${xOffset ?? 0}px` : undefined,
       lineHeight: height,
       order,
       overflow: 'hidden',
       paddingLeft: '8px',
       paddingRight: '8px',
-      position: column.frozen ? 'sticky' : 'relative',
+      position: isFrozen ? 'sticky' : 'relative',
+      right: isFrozenRight ? `${xOffset ?? 0}px` : undefined,
       textAlign: column.textAlign ?? 'left',
       textOverflow: column.disableEllipsis ? undefined : 'ellipsis',
       whiteSpace: column.disableEllipsis ? undefined : 'nowrap',
       width: `${width}px`,
-      zIndex: column.frozen ? 1 : 0,
+      zIndex: isFrozen ? 1 : 0,
       ...sx,
     };
   }, [backgroundColor, column.disableEllipsis, column.frozen, column.textAlign, height, order, sx, theme.palette, width, xOffset]);

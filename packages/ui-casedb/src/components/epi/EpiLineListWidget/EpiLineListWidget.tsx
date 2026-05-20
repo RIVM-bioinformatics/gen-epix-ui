@@ -2,6 +2,9 @@ import {
   Box,
   CircularProgress,
   Link,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
   Tooltip,
   useTheme,
 } from '@mui/material';
@@ -18,6 +21,7 @@ import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
 import type { ListRange } from 'react-virtuoso';
 import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import type {
   CaseDbCase,
   CaseDbCaseSet,
@@ -100,12 +104,16 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     };
   }, [lineListRangeSubject]);
 
-  const onIndexCellClick = useCallback((row: CaseDbCase) => {
+  const openCaseInfoDialog = useCallback((caseId: string) => {
     EpiEventBusManager.getInstance().emit('openCaseInfoDialog', {
-      caseId: row.id,
+      caseId,
       caseTypeId: completeCaseType.id,
     });
   }, [completeCaseType.id]);
+
+  const onIndexCellClick = useCallback((row: CaseDbCase) => {
+    openCaseInfoDialog(row.id);
+  }, [openCaseInfoDialog]);
 
   const getColumnWidth = useCallback((col: CaseDbCol, label: string) => {
     let maxTextLength = label?.length * 0.8;
@@ -304,7 +312,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     );
   }, [completeCaseType, stratification?.caseIdColors, stratification?.col?.id]);
 
-  const staticTableColumns = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
+  const frozenTableColumnsLeft = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
     return [
       TableUtil.createReadableIndexColumn({
         getAriaLabel: (params: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => t('Show case information for {{index}}', { index: params.rowIndex + 1 }),
@@ -333,6 +341,33 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
       } satisfies TableColumn<CaseDbCase, CaseDbCompleteCaseType>,
     ];
   }, [renderEventsCell, renderSimilarCell, renderEventsHeader, renderSimilarHeader, t]);
+
+  const frozenTableColumnsRight = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
+    return [
+      TableUtil.createActionsColumn({
+        columnContext: null,
+        getActions: (params: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
+          const actions: ReactElement[] = [];
+          actions.push(
+            <MenuItem
+              key={'showCaseInformation'}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onClick={() => openCaseInfoDialog(params.row.id)}
+            >
+              <ListItemIcon>
+                <ArrowCircleRightIcon />
+              </ListItemIcon>
+              <ListItemText>
+                {t`Show case information`}
+              </ListItemText>
+            </MenuItem>,
+          );
+          return actions;
+        },
+        t,
+      }),
+    ];
+  }, [openCaseInfoDialog, t]);
 
 
   const columnStratificationCache = useMemo(() => {
@@ -423,10 +458,11 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     });
 
     return [
-      ...staticTableColumns,
+      ...frozenTableColumnsLeft,
       ...caseTypeTableColumns,
+      ...frozenTableColumnsRight,
     ];
-  }, [completeCaseType, staticTableColumns, stratifyableColumns, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
+  }, [completeCaseType, frozenTableColumnsLeft, frozenTableColumnsRight, stratifyableColumns, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
 
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
     highlightingManager.highlight({

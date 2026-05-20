@@ -73,7 +73,7 @@ export class EpiLineListCaseSetMembersManager {
         if (newCache[caseId] === undefined) {
           newCache[caseId] = false;
         }
-        this.queuedCases[caseId].resolve(newCache[caseId]);
+        this.queuedCases[caseId]?.resolve(newCache[caseId]);
         delete this.queuedCases[caseId];
       });
       queryClient.setQueryData<EpiCaseHasCaseSet>(QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET), {
@@ -81,7 +81,7 @@ export class EpiLineListCaseSetMembersManager {
       });
     } catch (_error: unknown) {
       caseIdsToFetch.forEach(caseId => {
-        this.queuedCases[caseId].reject();
+        this.queuedCases[caseId]?.reject();
         delete this.queuedCases[caseId];
       });
     }

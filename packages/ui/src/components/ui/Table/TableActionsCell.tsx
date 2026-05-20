@@ -62,8 +62,9 @@ export const TableActionsCell = <TRowData, TDataContext = null>(props: TableActi
               '& svg': {
                 fontSize: 18,
               },
-              marginTop: '-2px',
               position: 'absolute',
+              top: '50%',
+              transform: 'translateY(-50%)',
             }}
           >
             <MoreVertIcon />

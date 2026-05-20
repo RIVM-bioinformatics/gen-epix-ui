@@ -108,14 +108,15 @@ export class TableUtil {
       }
     });
 
-    // Move condensed columns (with cellColorGetter, not frozen/static) after frozen/static columns using handleMoveColumn
-    const frozenOrStaticIds = tableColumns.filter(c => c.frozen).map(c => c.id);
+    // Move condensed columns (with cellColorGetter, not frozen/static) after the left-pinned/static columns using handleMoveColumn.
+    // Right-pinned columns must remain at the far right.
+    const leftPinnedIds = tableColumns.filter(c => c.frozen === TABLE_COLUMN_FROZEN.LEFT).map(c => c.id);
     const condensedIds = tableColumns.filter(c => c.cellColorGetter && !c.frozen).map(c => c.id);
 
-    // Find the last frozen/static column's index in visual settings
+    // Find the last left-pinned/static column's index in visual settings
     let insertIndex = -1;
     for (let i = 0; i < tableColumnVisualSettingsCopy.length; ++i) {
-      if (frozenOrStaticIds.includes(tableColumnVisualSettingsCopy[i].id)) {
+      if (leftPinnedIds.includes(tableColumnVisualSettingsCopy[i].id)) {
         insertIndex = i;
       }
     }
@@ -128,7 +129,7 @@ export class TableUtil {
       if (currentIdx === -1) {
         return;
       }
-      // Move the column right after the last frozen/static (or after previous condensed)
+      // Move the column right after the last left-pinned column (or after previous condensed)
       while (currentIdx > insertIndex) {
         // Move left
         const col = tableColumns.find(c => c.id === condensedId);
@@ -582,9 +583,7 @@ export class TableUtil {
     const availableFlexWidth = totalAvailableWidth - totalFixedWidth;
     const flexRatio = totalFlexWidth > 0 ? availableFlexWidth / totalFlexWidth : 1;
 
-    let totalOffset = 0;
     allColumnVisualSettings.forEach(column => {
-      const tableColumn = tableColumns.find(c => c.id === column.id);
       let width: number;
       if (column.hasResized) {
         width = column.widthPx;
@@ -596,9 +595,31 @@ export class TableUtil {
         width = column.widthPx;
       }
       column.calculatedWidth = width;
-      column.offsetX = tableColumn.frozen ? totalOffset : 0;
-      totalOffset += width;
+      column.offsetX = 0;
     });
+
+    let leftOffset = 0;
+    visibleColumnVisualSettings.forEach(column => {
+      const tableColumn = tableColumnMap.get(column.id);
+      if (tableColumn?.frozen !== TABLE_COLUMN_FROZEN.LEFT) {
+        return;
+      }
+
+      column.offsetX = leftOffset;
+      leftOffset += column.calculatedWidth ?? 0;
+    });
+
+    let rightOffset = 0;
+    for (let i = visibleColumnVisualSettings.length - 1; i >= 0; --i) {
+      const column = visibleColumnVisualSettings[i];
+      const tableColumn = tableColumnMap.get(column.id);
+      if (tableColumn?.frozen !== TABLE_COLUMN_FROZEN.RIGHT) {
+        continue;
+      }
+
+      column.offsetX = rightOffset;
+      rightOffset += column.calculatedWidth ?? 0;
+    }
 
     return new Map(allColumnVisualSettings.map(c => [c.id, c]));
   }
