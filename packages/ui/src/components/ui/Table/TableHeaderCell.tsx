@@ -132,14 +132,11 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
   const ignoreNextClickRef = useRef(false);
 
   const canDrag = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
-    if (column.frozen || column.isStatic) {
-      return false;
-    }
-    if (event.button !== 0) {
+    if (column.frozen || event.button !== 0) {
       return false;
     }
     return (event.nativeEvent.target as HTMLDivElement).classList.contains(tableHeaderCellClassNames.content);
-  }, [column.frozen, column.isStatic]);
+  }, [column.frozen]);
 
   const onCustomDragTableHeaderCell = useCallback((event: TableDragEvent, tableColumn: TableColumn<TRowData, TDataContext>) => {
     if (onCustomDrag) {

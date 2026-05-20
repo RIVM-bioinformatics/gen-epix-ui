@@ -37,7 +37,10 @@ import type {
   TableColumnVisualSettings,
   TableRowParams,
 } from '../../models/table';
-import { FIXED_COLUMN_ID } from '../../models/table';
+import {
+  FIXED_COLUMN_ID,
+  TABLE_COLUMN_FROZEN,
+} from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
 import { ConfigManager } from '../../classes/managers/ConfigManager';
@@ -59,11 +62,11 @@ export class TableUtil {
   public static createActionsColumn<TData, TDataContext = null, TColumnContext = null>(kwArgs: { columnContext?: TColumnContext; getActions: (params: TableRowParams<TData, TDataContext>) => ReactElement[]; t: TFunction<'translation', undefined> }): TableColumnActions<TData, TDataContext, TColumnContext> {
     return {
       columnContext: kwArgs.columnContext,
+      frozen: TABLE_COLUMN_FROZEN.RIGHT,
       getActions: kwArgs.getActions,
       headerName: kwArgs.t`Actions`,
       id: FIXED_COLUMN_ID.ACTIONS,
       isInitiallyVisible: true,
-      isStatic: true,
       resizable: false,
       type: 'actions',
       widthPx: 48,
@@ -105,14 +108,15 @@ export class TableUtil {
       }
     });
 
-    // Move condensed columns (with cellColorGetter, not frozen/static) after frozen/static columns using handleMoveColumn
-    const frozenOrStaticIds = tableColumns.filter(c => c.frozen || c.isStatic).map(c => c.id);
-    const condensedIds = tableColumns.filter(c => c.cellColorGetter && !c.frozen && !c.isStatic).map(c => c.id);
+    // Move condensed columns (with cellColorGetter, not frozen/static) after the left-pinned/static columns using handleMoveColumn.
+    // Right-pinned columns must remain at the far right.
+    const leftPinnedIds = tableColumns.filter(c => c.frozen === TABLE_COLUMN_FROZEN.LEFT).map(c => c.id);
+    const condensedIds = tableColumns.filter(c => c.cellColorGetter && !c.frozen).map(c => c.id);
 
-    // Find the last frozen/static column's index in visual settings
+    // Find the last left-pinned/static column's index in visual settings
     let insertIndex = -1;
     for (let i = 0; i < tableColumnVisualSettingsCopy.length; ++i) {
-      if (frozenOrStaticIds.includes(tableColumnVisualSettingsCopy[i].id)) {
+      if (leftPinnedIds.includes(tableColumnVisualSettingsCopy[i].id)) {
         insertIndex = i;
       }
     }
@@ -125,7 +129,7 @@ export class TableUtil {
       if (currentIdx === -1) {
         return;
       }
-      // Move the column right after the last frozen/static (or after previous condensed)
+      // Move the column right after the last left-pinned column (or after previous condensed)
       while (currentIdx > insertIndex) {
         // Move left
         const col = tableColumns.find(c => c.id === condensedId);
@@ -351,12 +355,11 @@ export class TableUtil {
     return {
       columnContext: kwArgs.columnContext,
       disableEllipsis: true,
-      frozen: true,
+      frozen: TABLE_COLUMN_FROZEN.LEFT,
       getAriaLabel: kwArgs.getAriaLabel ?? (() => null),
       headerName: '',
       id: FIXED_COLUMN_ID.READABLE_INDEX,
       isInitiallyVisible: true,
-      isStatic: true,
       resizable: false,
       textAlign: 'right',
       type: 'readableIndex',
@@ -368,11 +371,10 @@ export class TableUtil {
     return {
       columnContext: kwArgs.columnContext,
       disableEllipsis: true,
-      frozen: true,
+      frozen: TABLE_COLUMN_FROZEN.LEFT,
       id: FIXED_COLUMN_ID.ROW_SELECT,
       isDisabled: kwArgs.isDisabled,
       isInitiallyVisible: true,
-      isStatic: true,
       resizable: false,
       type: 'selectable',
       widthPx: 38,
@@ -418,14 +420,14 @@ export class TableUtil {
     let newVisibleColumnIds: string[];
     if (hasCellData) {
       newVisibleColumnIds = columns.filter(column => {
-        if (column.isStatic) {
+        if (column.frozen) {
           return true;
         }
         return sortedData.some((row, rowIndex) => hasCellData(row, column, rowIndex, dataContext));
       }).map(c => c.id);
     } else {
       newVisibleColumnIds = columns.filter(column => {
-        if (column.isStatic) {
+        if (column.frozen) {
           return true;
         }
         return sortedData.some((row, rowIndex) => {
@@ -505,7 +507,7 @@ export class TableUtil {
     elementTableColumn: TableColumn<TRowData, TDataContext>,
     direction: -1 | 1,
   ): boolean {
-    if (!elementTableColumn || elementTableColumn.frozen || elementTableColumn.isStatic) {
+    if (!elementTableColumn || elementTableColumn.frozen) {
       return false;
     }
 
@@ -525,13 +527,13 @@ export class TableUtil {
         continue;
       }
       swappingElementTableColumn = tableColumns.find(c => c.id === tableColumnVisualSettings[i].id);
-      if (swappingElementTableColumn && !swappingElementTableColumn.frozen && !swappingElementTableColumn.isStatic) {
+      if (swappingElementTableColumn && !swappingElementTableColumn.frozen) {
         swappingElementIndex = i;
         break;
       }
     }
 
-    if (!swappingElementSettingsColumn || !swappingElementTableColumn || swappingElementTableColumn.frozen || swappingElementTableColumn.isStatic || swappingElementIndex === undefined) {
+    if (!swappingElementSettingsColumn || !swappingElementTableColumn || swappingElementTableColumn.frozen || swappingElementIndex === undefined) {
       return false;
     }
 
@@ -581,9 +583,7 @@ export class TableUtil {
     const availableFlexWidth = totalAvailableWidth - totalFixedWidth;
     const flexRatio = totalFlexWidth > 0 ? availableFlexWidth / totalFlexWidth : 1;
 
-    let totalOffset = 0;
     allColumnVisualSettings.forEach(column => {
-      const tableColumn = tableColumns.find(c => c.id === column.id);
       let width: number;
       if (column.hasResized) {
         width = column.widthPx;
@@ -595,9 +595,31 @@ export class TableUtil {
         width = column.widthPx;
       }
       column.calculatedWidth = width;
-      column.offsetX = tableColumn.frozen ? totalOffset : 0;
-      totalOffset += width;
+      column.offsetX = 0;
     });
+
+    let leftOffset = 0;
+    visibleColumnVisualSettings.forEach(column => {
+      const tableColumn = tableColumnMap.get(column.id);
+      if (tableColumn?.frozen !== TABLE_COLUMN_FROZEN.LEFT) {
+        return;
+      }
+
+      column.offsetX = leftOffset;
+      leftOffset += column.calculatedWidth ?? 0;
+    });
+
+    let rightOffset = 0;
+    for (let i = visibleColumnVisualSettings.length - 1; i >= 0; --i) {
+      const column = visibleColumnVisualSettings[i];
+      const tableColumn = tableColumnMap.get(column.id);
+      if (tableColumn?.frozen !== TABLE_COLUMN_FROZEN.RIGHT) {
+        continue;
+      }
+
+      column.offsetX = rightOffset;
+      rightOffset += column.calculatedWidth ?? 0;
+    }
 
     return new Map(allColumnVisualSettings.map(c => [c.id, c]));
   }

@@ -471,6 +471,7 @@
     "Sheet name: {{sheet}}": "Sheet naam: {{sheet}}",
     "Should the same sharing be applied to the cases in the event?": "Moet hetzelfde delen toegepast worden op de casussen in het event?",
     "Should the selected cases be given the same access rights as the selected event?": "Moeten de geselecteerde casussen dezelfde toegangsrechten krijgen als de geselecteerde event?",
+    "Show case information": "Toon casus informatie",
     "Show case information for {{index}}": "Toon casus informatie voor {{index}}",
     "Show case type information": "Toon casus type informatie",
     "Show details": "Toon details",

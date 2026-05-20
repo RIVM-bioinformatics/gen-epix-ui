@@ -24,6 +24,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   Table,
+  TABLE_COLUMN_FROZEN,
   TableMenu,
   TableUtil,
   useInitializeTableStore,
@@ -277,12 +278,11 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawD
     }));
     tableCols.push({
       disableEllipsis: true,
-      frozen: true,
+      frozen: TABLE_COLUMN_FROZEN.LEFT,
       headerName: '',
       hideInFilter: true,
       id: 'gen-epix-ui-issue',
       isInitiallyVisible: true,
-      isStatic: true,
       renderCell: renderHasIssueCell,
       renderHeader: renderHasIssueHeader,
       resizable: false,
@@ -292,12 +292,11 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawD
     });
     tableCols.push({
       disableEllipsis: true,
-      frozen: true,
+      frozen: TABLE_COLUMN_FROZEN.LEFT,
       headerName: '',
       hideInFilter: true,
       id: 'gen-epix-ui-id',
       isInitiallyVisible: true,
-      isStatic: true,
       renderCell: renderIsNewCell,
       renderHeader: renderIsNewHeader,
       resizable: false,

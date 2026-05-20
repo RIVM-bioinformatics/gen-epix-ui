@@ -471,6 +471,7 @@
     "Sheet name: {{sheet}}": "Sheet name: {{sheet}}",
     "Should the same sharing be applied to the cases in the event?": "Should the same sharing be applied to the cases in the event?",
     "Should the selected cases be given the same access rights as the selected event?": "Should the selected cases be given the same access rights as the selected event?",
+    "Show case information": "Show case information",
     "Show case information for {{index}}": "Show case information for {{index}}",
     "Show case type information": "Show case type information",
     "Show details": "Show details",
