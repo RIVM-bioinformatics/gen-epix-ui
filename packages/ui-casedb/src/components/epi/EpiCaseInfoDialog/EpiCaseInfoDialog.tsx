@@ -80,7 +80,6 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
 ): ReactElement => {
   const { t } = useTranslation();
   const caseIds = useMemo(() => [openProps.caseId], [openProps.caseId]);
-  const caseRightsQuery = useCaseRightsQuery(caseIds, openProps.caseTypeId);
   const dataCollectionsQuery = useDataCollectionsQuery();
   const dataCollectionsMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
@@ -95,11 +94,21 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   const deleteConfirmationRef = useRef<ConfirmationRefMethods>(null);
   const valuesFormId = useId();
   const dataCollectionsFormId = useId();
-  const loadables = useArray([caseRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery]);
 
-  const onDeleteSuccess = useCallback(() => {
+  const onFinish = useCallback(async () => {
+    setIsEpiCaseFormSaving(false);
+    setIsEpiCaseDataCollectionFormSaving(false);
+    setIsRefreshingData(true);
+    setIsEditingCaseContent(false);
+    setIsEditingDataCollections(false);
+    await fetchData();
+    setIsRefreshingData(false);
+  }, [fetchData]);
+
+  const onDeleteSuccess = useCallback(async () => {
+    await onFinish();
     onClose();
-  }, [onClose]);
+  }, [onClose, onFinish]);
 
   const onDeleteError = useCallback(() => {
     onClose();
@@ -107,9 +116,9 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
 
   const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<CaseDbCase>({
     associationQueryKeys: QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true),
-    getErrorNotificationMessage: (data) => t('Unable to remove case: {{id}}.', { name: data.id }),
-    getProgressNotificationMessage: (data) => t('Deleting case: {{id}}...', { name: data.id }),
-    getSuccessNotificationMessage: (data) => t('Case: {{id}}, has been removed.', { name: data.id }),
+    getErrorNotificationMessage: (data) => t('Unable to remove case: {{id}}.', { id: data.id }),
+    getProgressNotificationMessage: (data) => t('Deleting case: {{id}}...', { id: data.id }),
+    getSuccessNotificationMessage: (data) => t('Case: {{id}}, has been removed.', { id: data.id }),
     onError: onDeleteError,
     onSuccess: onDeleteSuccess,
     queryFn: async (item: CaseDbCase) => {
@@ -118,11 +127,14 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     resourceQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES),
   });
 
+  const caseRightsQuery = useCaseRightsQuery(caseIds, openProps.caseTypeId, !isDeleteMutating && !isRefreshingData);
+  const loadables = useArray([caseRightsQuery, dataCollectionsQuery, dataCollectionsMapQuery, dataCollectionOptionsQuery]);
+
   const { data: epiCase, error: epiCaseError, isLoading: epiCaseIsLoading } = useItemQuery<CaseDbCase>({
     baseQueryKey: CASEDB_QUERY_KEY.CASES_LAZY,
     itemId: openProps.caseId,
     useQueryOptions: {
-      enabled: !isDeleteMutating,
+      enabled: !isDeleteMutating && !isRefreshingData,
       queryFn: async ({ signal }) => {
         const response = await CaseDbCaseApi.getInstance().casesGetOne(openProps.caseId, { signal });
         return response.data;
@@ -170,20 +182,6 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     setIsEditingCaseContent(false);
     setIsEditingDataCollections(false);
   }, []);
-
-  const onFinish = useCallback(() => {
-    const perform = async () => {
-      setIsEpiCaseFormSaving(false);
-      setIsEpiCaseDataCollectionFormSaving(false);
-      setIsRefreshingData(true);
-      setIsEditingCaseContent(false);
-      setIsEditingDataCollections(false);
-      await fetchData();
-      setIsRefreshingData(false);
-    };
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    perform();
-  }, [fetchData]);
 
 
   const onEpiCaseFormIsSavingChange = useCallback((isSaving: boolean) => {

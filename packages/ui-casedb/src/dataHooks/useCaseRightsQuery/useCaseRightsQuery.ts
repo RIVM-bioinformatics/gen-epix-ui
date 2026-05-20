@@ -9,8 +9,10 @@ import {
 import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
-export const useCaseRightsQuery = (caseIds: string[], caseTypeId: string): UseQueryResult<CaseDbCaseRights[]> => {
+export const useCaseRightsQuery = (caseIds: string[], caseTypeId: string, enabled: boolean = true): UseQueryResult<CaseDbCaseRights[]> => {
+  console.log('useCaseRightsQuery', { caseIds, caseTypeId, enabled });
   return useQueryMemo({
+    enabled,
     queryFn: async ({ signal }) => {
       const response = await CaseDbCaseApi.getInstance().retrieveCaseRights({
         case_ids: caseIds,
