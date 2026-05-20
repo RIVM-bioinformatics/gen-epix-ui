@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.2.3...ui-seqdb-v2.3.0) (2026-05-20)
+
+
+### Features
+
+* condensed table / linelist ([#136](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/136)) ([d0fcdab](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d0fcdaba622ea0aac9b7241d5b637699bb02c51b))
+
 ## [2.2.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.2.2...ui-seqdb-v2.2.3) (2026-05-14)
 
 

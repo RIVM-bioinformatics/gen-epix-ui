@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.4...ui-v2.3.0) (2026-05-20)
+
+
+### Features
+
+* condensed table / linelist ([#136](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/136)) ([d0fcdab](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d0fcdaba622ea0aac9b7241d5b637699bb02c51b))
+
+
+### Bug Fixes
+
+* re-fix rendering tree when all leaves have 0 distance ([ee2be7c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ee2be7cc6d1f938ca3c678b7e6a17996b9a19488))
+
 ## [2.2.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.3...ui-v2.2.4) (2026-05-14)
 
 
