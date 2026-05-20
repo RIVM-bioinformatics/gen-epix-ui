@@ -119,6 +119,20 @@ export const CaseDbCaseClassification = {
 export type CaseDbCaseClassification = typeof CaseDbCaseClassification[keyof typeof CaseDbCaseClassification];
 
 
+export interface CaseDbCaseCohortIds {
+    'created_at'?: string | null;
+    'modified_at'?: string | null;
+    'modified_by'?: string | null;
+    'id'?: string | null;
+    /**
+     * The ID of the case.
+     */
+    'case_id': string;
+    /**
+     * The IDs of the cohorts linked to this case.
+     */
+    'cohort_ids': Array<string>;
+}
 export interface CaseDbCaseDataCollectionLink {
     'created_at'?: string | null;
     'modified_at'?: string | null;
@@ -769,93 +783,94 @@ export type CaseDbColType = typeof CaseDbColType[keyof typeof CaseDbColType];
 
 
 export const CaseDbCommandName = {
-    CaseCrudCommand: 'CaseCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
     RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
     RegionSetCrudCommand: 'RegionSetCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
     CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
     OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
     UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
     RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RetrieveCaseCohortIdsByCaseTypeCommand: 'RetrieveCaseCohortIdsByCaseTypeCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
 } as const;
 
 export type CaseDbCommandName = typeof CaseDbCommandName[keyof typeof CaseDbCommandName];
@@ -2022,6 +2037,12 @@ export interface CaseDbRegionSetShape {
      * The GeoJSON representation of the region set shape.
      */
     'geo_json': string;
+}
+export interface CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody {
+    /**
+     * The CaseDbCaseType ID to retrieve pairs for.
+     */
+    'case_type_id': string;
 }
 export interface CaseDbRetrieveCaseRightsRequestBody {
     /**
@@ -14697,6 +14718,41 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN. Today cohort_id == case_id; in the future a case may have multiple linked cohort IDs.
+         * @summary Retrieve CaseDbCase Cohort Ids By CaseDbCase Type
+         * @param {CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody} retrieveCaseCohortIdsByCaseTypeRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveCaseCohortIdsByCaseType: async (retrieveCaseCohortIdsByCaseTypeRequestBody: CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveCaseCohortIdsByCaseTypeRequestBody' is not null or undefined
+            assertParamExists('retrieveCaseCohortIdsByCaseType', 'retrieveCaseCohortIdsByCaseTypeRequestBody', retrieveCaseCohortIdsByCaseTypeRequestBody)
+            const localVarPath = `/v1/retrieve/case_cohort_ids_by_case_type`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveCaseCohortIdsByCaseTypeRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Retrieve cases based on a query.
          * @summary Retrieve CaseDbCase Ids By Query
          * @param {CaseDbCaseQuery} caseQuery 
@@ -19004,6 +19060,19 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN. Today cohort_id == case_id; in the future a case may have multiple linked cohort IDs.
+         * @summary Retrieve CaseDbCase Cohort Ids By CaseDbCase Type
+         * @param {CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody} retrieveCaseCohortIdsByCaseTypeRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveCaseCohortIdsByCaseType(retrieveCaseCohortIdsByCaseTypeRequestBody: CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseCohortIds>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveCaseCohortIdsByCaseType(retrieveCaseCohortIdsByCaseTypeRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveCaseCohortIdsByCaseType']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Retrieve cases based on a query.
          * @summary Retrieve CaseDbCase Ids By Query
          * @param {CaseDbCaseQuery} caseQuery 
@@ -22063,6 +22132,17 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public retrieveAssemblyProtocols(options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).retrieveAssemblyProtocols(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN. Today cohort_id == case_id; in the future a case may have multiple linked cohort IDs.
+     * @summary Retrieve CaseDbCase Cohort Ids By CaseDbCase Type
+     * @param {CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody} retrieveCaseCohortIdsByCaseTypeRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public retrieveCaseCohortIdsByCaseType(retrieveCaseCohortIdsByCaseTypeRequestBody: CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).retrieveCaseCohortIdsByCaseType(retrieveCaseCohortIdsByCaseTypeRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
