@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.2.3...ui-casedb-v2.3.0) (2026-05-20)
+
+
+### Features
+
+* condensed table / linelist ([#136](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/136)) ([d0fcdab](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d0fcdaba622ea0aac9b7241d5b637699bb02c51b))
+* normalized area chart ([#135](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/135)) ([4d0c144](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4d0c144e95bea717622a575129448c7364c4fd1c))
+
+
+### Bug Fixes
+
+* fix rendering tree when all leaves have 0 distance ([0dce79b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0dce79b2b200c335961b3bb943621d4c2385160a))
+* improve area epi curve performance ([ce9b06b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ce9b06b1b153afe1a1616961bc6fd2e22c23b01c))
+* re-fix rendering tree when all leaves have 0 distance ([ee2be7c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ee2be7cc6d1f938ca3c678b7e6a17996b9a19488))
+
 ## [2.2.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.2.2...ui-casedb-v2.2.3) (2026-05-14)
 
 
