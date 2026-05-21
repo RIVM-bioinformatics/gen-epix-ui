@@ -36,6 +36,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 export type TextFieldProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly autocomplete?: string;
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly multiline?: boolean;
@@ -45,12 +46,13 @@ export type TextFieldProps<TFieldValues extends FieldValues, TName extends Path<
   readonly required?: boolean;
   readonly rows?: number;
   readonly type?: InputHTMLAttributes<unknown>['type'];
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 export const TextField = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   autocomplete,
   disabled = false,
+  infoMessage,
   label,
   loading = false,
   multiline = false,
@@ -97,6 +99,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
         helperText={(
           <FormFieldHelperText
             errorMessage={errorMessage}
+            infoMessage={infoMessage}
             warningMessage={warningMessage}
           />
         )}
@@ -145,7 +148,7 @@ export const TextField = <TFieldValues extends FieldValues, TName extends Path<T
         variant={'outlined'}
       />
     );
-  }, [disabled, loading, hasError, errorMessage, warningMessage, label, multiline, placeholder, rows, hasWarning, autocomplete, name, type, t, required, onMuiTextFieldChange]);
+  }, [disabled, loading, infoMessage, hasError, errorMessage, warningMessage, label, multiline, placeholder, rows, hasWarning, autocomplete, name, type, t, required, onMuiTextFieldChange]);
 
   return (
     <FormControl

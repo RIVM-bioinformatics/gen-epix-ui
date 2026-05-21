@@ -31,16 +31,18 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 export type SwitchPropsProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>> = {
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
   readonly onChange?: (value: boolean) => void;
   readonly required?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled = false,
+  infoMessage,
   label,
   loading = false,
   name,
@@ -97,6 +99,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
         >
           <FormFieldHelperText
             errorMessage={errorMessage}
+            infoMessage={infoMessage}
             noIndent
             warningMessage={warningMessage}
           />
@@ -105,7 +108,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
       </FormControl>
 
     );
-  }, [disabled, errorMessage, hasWarning, label, loading, name, onMuiSwitchChange, warningMessage]);
+  }, [disabled, infoMessage, errorMessage, hasWarning, label, loading, name, onMuiSwitchChange, warningMessage]);
 
   return (
 

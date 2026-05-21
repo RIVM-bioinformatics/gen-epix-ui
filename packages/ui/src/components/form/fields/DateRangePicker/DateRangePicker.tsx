@@ -61,6 +61,7 @@ import { DATE_FORMAT } from '../../../../data/date';
 export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly dateFormat: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly maxDate?: Date;
@@ -68,12 +69,13 @@ export type DateRangePickerProps<TFieldValues extends FieldValues, TName extends
   readonly name: TName;
   readonly onChange?: (value: [Date, Date]) => void;
   readonly required?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 export const DateRangePicker = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   dateFormat = DATE_FORMAT.DATE,
   disabled = false,
+  infoMessage,
   label,
   loading = false,
   maxDate,
@@ -339,13 +341,14 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             errorMessage={errorMessage}
+            infoMessage={infoMessage}
             noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>
       </FormControl>
     );
-  }, [hasError, label, name, disabled, loading, id, required, customLocale, theme, t, maxDate, minDate, defaultFromDate, hasWarning, views, errorMessage, warningMessage, handleChange, inputValueToDate]);
+  }, [hasError, infoMessage, label, name, disabled, loading, id, required, customLocale, theme, t, maxDate, minDate, defaultFromDate, hasWarning, views, errorMessage, warningMessage, handleChange, inputValueToDate]);
 
   return (
     <Controller

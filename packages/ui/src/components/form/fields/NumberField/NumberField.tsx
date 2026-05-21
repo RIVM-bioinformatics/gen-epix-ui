@@ -33,6 +33,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 export type NumberFieldProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly autocomplete?: string;
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly max?: number;
@@ -43,7 +44,7 @@ export type NumberFieldProps<TFieldValues extends FieldValues, TName extends Pat
   readonly required?: boolean;
   readonly showSlider?: boolean;
   readonly step?: number;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 const MAX_NUMBER_OF_SLIDER_STEPS = 250;

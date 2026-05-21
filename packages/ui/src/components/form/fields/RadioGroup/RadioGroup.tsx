@@ -33,6 +33,7 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 
 export type RadioGroupProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean; // NOT USED YET
   readonly name: TName;
@@ -40,11 +41,12 @@ export type RadioGroupProps<TFieldValues extends FieldValues, TName extends Path
   readonly options: RadioButtonOption[];
   readonly required?: boolean;
   readonly row?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,
+  infoMessage,
   label,
   name,
   onChange: onChangeProp,
@@ -129,6 +131,7 @@ export const RadioGroup = <TFieldValues extends FieldValues, TName extends Path<
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
           errorMessage={errorMessage}
+          infoMessage={infoMessage}
           noIndent
           warningMessage={warningMessage}
         />

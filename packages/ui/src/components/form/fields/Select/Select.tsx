@@ -40,6 +40,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly multiple?: TMultiple;
@@ -47,13 +48,14 @@ export type SelectProps<TFieldValues extends FieldValues, TName extends Path<TFi
   readonly onChange?: (value: string) => void;
   readonly options: SelectOption[];
   readonly required?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 type Value = boolean | number | string;
 
 export const Select = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean = false>({
   disabled = false,
+  infoMessage,
   label,
   loading = false,
   multiple,
@@ -194,13 +196,14 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
         >
           <FormFieldHelperText
             errorMessage={errorMessage}
+            infoMessage={infoMessage}
             noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>
       </>
     );
-  }, [disabled, errorMessage, getIsOptionDisabled, t, hasError, hasWarning, helperTextId, id, label, labelId, loading, multiple, onMuiSelectChange, options, renderValue, required, warningMessage]);
+  }, [disabled, infoMessage, errorMessage, getIsOptionDisabled, t, hasError, hasWarning, helperTextId, id, label, labelId, loading, multiple, onMuiSelectChange, options, renderValue, required, warningMessage]);
 
   return (
     <FormControl

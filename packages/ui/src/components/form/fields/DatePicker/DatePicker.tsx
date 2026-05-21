@@ -46,17 +46,19 @@ import { DATE_FORMAT } from '../../../../data/date';
 export type DatePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
   readonly onChange?: (value: Date) => void;
   readonly required?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   dateFormat = DATE_FORMAT.DATE,
   disabled = false,
+  infoMessage,
   label,
   loading = false,
   name,
@@ -149,13 +151,14 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             errorMessage={errorMessage}
+            infoMessage={infoMessage}
             noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>
       </FormControl>
     );
-  }, [MuiComponent, customLocale, dateFormat, disabled, errorMessage, hasError, hasWarning, label, loading, name, onMuiDatePickerChange, required, views, warningMessage]);
+  }, [MuiComponent, infoMessage, customLocale, dateFormat, disabled, errorMessage, hasError, hasWarning, label, loading, name, onMuiDatePickerChange, required, views, warningMessage]);
 
   return (
     <Controller

@@ -50,6 +50,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
   readonly disabled?: boolean;
   readonly groupValues?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly multiple?: TMultiple;
@@ -58,7 +59,7 @@ export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Pa
   readonly options: AutoCompleteOption[];
   readonly required?: boolean;
   readonly shouldSortOptions?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 type MultipleRenderValueItemProps = ReturnType<AutocompleteRenderValueGetItemProps<true>>;
 
@@ -67,6 +68,7 @@ type Value = number | string;
 export const Autocomplete = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean = false>({
   disabled = false,
   groupValues = false,
+  infoMessage,
   label,
   loading = false,
   multiple,
@@ -150,6 +152,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
     const helperText = (
       <FormFieldHelperText
         errorMessage={errorMessage}
+        infoMessage={infoMessage}
         warningMessage={warningMessage}
       />
     );
@@ -183,7 +186,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         variant={'outlined'}
       />
     );
-  }, [disabled, errorMessage, hasError, hasWarning, label, required, warningMessage]);
+  }, [disabled, errorMessage, hasError, hasWarning, infoMessage, label, required, warningMessage]);
 
   const renderValue = useCallback((values: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>, getItemProps: AutocompleteRenderValueGetItemProps<TMultiple>) => {
     const selectedValues = (Array.isArray(values) ? values : [values]) as Value[];

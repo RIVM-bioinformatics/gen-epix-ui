@@ -68,16 +68,18 @@ import { useRichTextEditorExtensions } from './useRichTextEditorExtensions';
 
 export type RichTextEditorProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
   readonly onChange?: (value: string) => void;
   readonly required?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 export const RichTextEditor = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,
+  infoMessage,
   label,
   loading,
   name,
@@ -304,6 +306,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             errorMessage={errorMessage}
+            infoMessage={infoMessage}
             noIndent
             warningMessage={warningMessage}
           />
@@ -312,7 +315,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
     );
 
 
-  }, [disabled, errorMessage, extensions, hasError, id, label, loading, name, onChangeProp, required, t, theme.palette.text.primary, warningMessage]);
+  }, [disabled, infoMessage, errorMessage, extensions, hasError, id, label, loading, name, onChangeProp, required, t, theme.palette.text.primary, warningMessage]);
 
   return (
     <Controller

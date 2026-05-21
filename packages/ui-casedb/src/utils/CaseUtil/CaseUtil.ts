@@ -139,6 +139,7 @@ export class CaseUtil {
             definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
             label: col.label,
             name: col.id,
+            warningMessage: 'mock',
           } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
           break;
         case CaseDbColType.GEO_REGION:
@@ -197,6 +198,13 @@ export class CaseUtil {
               warningMessage: t`Unable to parse regular expression. You may enter text, but it's not guaranteed to be valid.`,
             } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
           }
+          break;
+        case CaseDbColType.TIME_DAY:
+          acc.push({
+            definition: FORM_FIELD_DEFINITION_TYPE.DATE,
+            label: col.label,
+            name: col.id,
+          } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
           break;
         default:
           break;

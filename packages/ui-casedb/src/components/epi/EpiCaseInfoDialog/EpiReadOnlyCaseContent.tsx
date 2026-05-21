@@ -9,10 +9,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { format } from 'date-fns';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import {
-  DATE_FORMAT,
   GenericErrorMessage,
   ResponseHandler,
   useArray,
@@ -72,14 +70,6 @@ export const EpiReadOnlyCaseContent = ({ epiCase, ...boxProps }: EpiReadOnlyCase
                 </TableCell>
                 <TableCell>
                   {epiCase.id}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  {t`Case date`}
-                </TableCell>
-                <TableCell>
-                  {format(epiCase.case_date, DATE_FORMAT.DATE)}
                 </TableCell>
               </TableRow>
             </TableBody>

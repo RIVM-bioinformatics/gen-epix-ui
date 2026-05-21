@@ -45,18 +45,20 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 export type TransferListProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
   readonly height?: number;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
   readonly onChange?: (value: string) => void;
   readonly options: TransferListOption[];
   readonly required?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 export const TransferList = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,
   height = 500,
+  infoMessage,
   label,
   loading,
   name,
@@ -352,6 +354,7 @@ export const TransferList = <TFieldValues extends FieldValues, TName extends Pat
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
           errorMessage={errorMessage}
+          infoMessage={infoMessage}
           noIndent
           warningMessage={warningMessage}
         />

@@ -30,16 +30,18 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 
 export type ToggleButtonProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly name: TName;
   readonly onChange?: (value: string) => void;
   readonly options: ToggleButtonOption[];
   readonly required?: boolean;
   readonly row?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,
+  infoMessage,
   name,
   onChange: onChangeProp,
   options,
@@ -109,6 +111,7 @@ export const ToggleButtonGroup = <TFieldValues extends FieldValues, TName extend
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
           errorMessage={errorMessage}
+          infoMessage={infoMessage}
           noIndent
           warningMessage={warningMessage}
         />

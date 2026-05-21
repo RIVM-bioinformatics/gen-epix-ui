@@ -41,6 +41,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 export type NumberRangeInputProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly max: number;
@@ -48,11 +49,12 @@ export type NumberRangeInputProps<TFieldValues extends FieldValues, TName extend
   readonly name: TName;
   readonly onChange?: (value: number | number[]) => void;
   readonly required?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled = false,
+  infoMessage,
   label,
   loading = false,
   max,
@@ -60,7 +62,7 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
   name,
   onChange: onChangeProp,
   required = false,
-  warningMessage = '',
+  warningMessage,
 }: NumberRangeInputProps<TFieldValues, TName>): ReactElement => {
   const shouldShowSlider = isFinite(min) && isFinite(max);
   const theme = useTheme();
@@ -280,13 +282,14 @@ export const NumberRangeInput = <TFieldValues extends FieldValues, TName extends
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             errorMessage={errorMessage}
+            infoMessage={infoMessage}
             noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>
       </Box>
     );
-  }, [disabled, errorMessage, handleChange, hasError, id, label, loading, max, min, name, onMuiRangeSliderChange, required, shouldShowSlider, t, warningMessage, theme]);
+  }, [disabled, errorMessage, handleChange, hasError, id, infoMessage, label, loading, max, min, name, onMuiRangeSliderChange, required, shouldShowSlider, t, warningMessage, theme]);
 
   return (
     <Controller

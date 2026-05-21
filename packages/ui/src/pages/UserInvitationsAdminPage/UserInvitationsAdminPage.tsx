@@ -120,9 +120,9 @@ export const UserInvitationsAdminPage = () => {
     fields.push(
       {
         definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        infoMessage: t`If known, fill in the user's key. This is typically the user's email address, but can be any string depending on the Identity Provider. Filling in a key makes the invitation more secure. If left empty, the invitation can be consumed by anyone with the invite link.`,
         label: t`Key`,
         name: 'key',
-        warningMessage: t`If known, fill in the user's key. This is typically the user's email address, but can be any string depending on the Identity Provider. Filling in a key makes the invitation more secure. If left empty, the invitation can be consumed by anyone with the invite link.`,
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,

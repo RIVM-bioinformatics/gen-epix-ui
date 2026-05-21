@@ -36,13 +36,14 @@ import { WindowManager } from '../../../../classes/managers/WindowManager';
 export type UploadButtonProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly accept: string;
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean; // NOT implemented
   readonly multiple?: boolean;
   readonly name: TName;
   readonly onChange?: (value: FileList) => void;
   readonly required?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 const VisuallyHiddenInput = styled('input')({
@@ -60,6 +61,7 @@ const VisuallyHiddenInput = styled('input')({
 export const UploadButton = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   accept,
   disabled,
+  infoMessage,
   label,
   multiple = false,
   name,
@@ -151,6 +153,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
       <FormHelperText sx={{ ml: 0 }}>
         <FormFieldHelperText
           errorMessage={errorMessage}
+          infoMessage={infoMessage}
           noIndent
           warningMessage={warningMessage}
         />

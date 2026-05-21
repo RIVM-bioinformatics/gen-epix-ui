@@ -26,7 +26,6 @@ export const EpiCaseTypeInfoDialogWithLoader = withDialog<EpiCaseTypeInfoDialogW
     openProps,
   }: EpiCaseTypeInfoDialogWithLoaderProps,
 ): ReactElement => {
-  console.log('EpiCaseTypeInfoDialogWithLoader render', { openProps });
   return (
     <EpiDashboardStoreLoader caseTypeId={openProps.caseTypeId}>
       <EpiCaseTypeInfoDialogContent

@@ -38,6 +38,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 export type CheckboxGroupProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
+  readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
@@ -45,13 +46,14 @@ export type CheckboxGroupProps<TFieldValues extends FieldValues, TName extends P
   readonly options: CheckboxOption[];
   readonly required?: boolean;
   readonly row?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 type CheckBoxGroupValue = Array<number | string>;
 
 export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled,
+  infoMessage,
   label,
   loading,
   name,
@@ -172,13 +174,14 @@ export const CheckboxGroup = <TFieldValues extends FieldValues, TName extends Pa
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             errorMessage={errorMessage}
+            infoMessage={infoMessage}
             noIndent
             warningMessage={warningMessage}
           />
         </FormHelperText>
       </FormControl>
     );
-  }, [hasError, label, name, disabled, loading, id, required, t, row, options, errorMessage, warningMessage, onMuiCheckboxChange]);
+  }, [hasError, infoMessage, label, name, disabled, loading, id, required, t, row, options, errorMessage, warningMessage, onMuiCheckboxChange]);
 
   return (
     <Controller

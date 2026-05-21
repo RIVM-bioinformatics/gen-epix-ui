@@ -9,14 +9,16 @@ import {
 } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/WarningAmber';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import type { ReactElement } from 'react';
 
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 
 export type FormFieldHelperTextProps = {
   readonly errorMessage?: string;
+  readonly infoMessage?: string;
   readonly noIndent?: boolean;
-  readonly warningMessage?: boolean | string;
+  readonly warningMessage?: string;
 };
 
 const iconStyle: SxProps<Theme> = {
@@ -27,7 +29,12 @@ const iconStyle: SxProps<Theme> = {
   width: '13px',
 };
 
-export const FormFieldHelperText = ({ errorMessage, noIndent, warningMessage }: FormFieldHelperTextProps): ReactElement => {
+export const FormFieldHelperText = ({
+  errorMessage,
+  infoMessage,
+  noIndent,
+  warningMessage,
+}: FormFieldHelperTextProps): ReactElement => {
   const testIdAttributes = TestIdUtil.createAttributes('FormFieldHelperText');
   const theme = useTheme();
 
@@ -61,6 +68,21 @@ export const FormFieldHelperText = ({ errorMessage, noIndent, warningMessage }: 
       >
         <WarningIcon sx={iconStyle} />
         {warningMessage}
+      </Box>
+    );
+  } else if (infoMessage) {
+    return (
+      <Box
+        {...testIdAttributes}
+        component={'span'}
+        role={'alert'}
+        sx={{
+          marginLeft: noIndent ? 0 : theme.spacing(-2),
+          position: 'relative',
+        }}
+      >
+        <InfoOutlinedIcon sx={iconStyle} />
+        {infoMessage}
       </Box>
     );
   }

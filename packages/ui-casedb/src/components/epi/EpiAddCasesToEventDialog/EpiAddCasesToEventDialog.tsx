@@ -273,10 +273,10 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
               }}
             >
               <Autocomplete
+                infoMessage={filteredCaseSetOptions?.length === 0 ? t`No events of the same case type available` : undefined}
                 label={t`Select event`}
                 name={'caseSetId'}
                 options={filteredCaseSetOptions}
-                warningMessage={filteredCaseSetOptions?.length === 0 ? t`No events of the same case type available` : undefined}
               />
             </Box>
             <Box
@@ -286,11 +286,11 @@ export const EpiAddCasesToEventDialog = withDialog<EpiAddCasesToEventDialogProps
             >
               <Select
                 disabled={caseSetDataCollectionLinks?.length === 0}
+                infoMessage={caseSetDataCollectionLinks?.length === 0 ? t`No data collections to add` : undefined}
                 label={t`Should the selected cases be given the same access rights as the selected event?`}
                 loading={caseSetDataCollectionLinks?.length && isCaseSetDataCollectionLinksLoading}
                 name={'shouldApplySharingToCases'}
                 options={booleanOptions}
-                warningMessage={caseSetDataCollectionLinks?.length === 0 ? t`No data collections to add` : undefined}
               />
             </Box>
           </Box>
