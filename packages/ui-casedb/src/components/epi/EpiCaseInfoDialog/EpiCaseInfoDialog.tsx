@@ -52,7 +52,7 @@ import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 import { EpiCaseCaseSetInfo } from './EpiCaseCaseSetInfo';
-import { EpiCaseForm } from './EpiCaseForm';
+import { EpiCaseInfoForm } from './EpiCaseInfoForm';
 import { EpiReadOnlyCaseContent } from './EpiReadOnlyCaseContent';
 import { EpiCaseContent } from './EpiCaseContent';
 import { EpiCaseSharingInfo } from './EpiCaseSharingInfo';
@@ -349,7 +349,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
             </>
           )}
           {isEditingCaseContent && (
-            <EpiCaseForm
+            <EpiCaseInfoForm
               epiCase={epiCase}
               formId={valuesFormId}
               onFinish={onFinish}

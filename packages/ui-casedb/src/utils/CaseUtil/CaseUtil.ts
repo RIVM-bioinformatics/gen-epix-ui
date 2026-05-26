@@ -139,7 +139,6 @@ export class CaseUtil {
             definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
             label: col.label,
             name: col.id,
-            warningMessage: 'mock',
           } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
           break;
         case CaseDbColType.GEO_REGION:
@@ -253,6 +252,10 @@ export class CaseUtil {
           return s.concat(object().shape({
             [col.id]: string().nullable().decimal6().transform((_val: unknown, orig: string) => orig ?? null),
           }));
+        case CaseDbColType.GENETIC_DISTANCE:
+        case CaseDbColType.GENETIC_READS:
+        case CaseDbColType.GENETIC_SEQUENCE:
+          return s;
         case CaseDbColType.GEO_LATLON:
           return s.concat(object().shape({
             [col.id]: string().nullable().latLong().transform((_val: unknown, orig: string) => orig || null),
@@ -283,9 +286,6 @@ export class CaseUtil {
               [col.id]: string().nullable().max(col.max_length ?? 65535),
             })).transform((_val: unknown, orig: string) => orig || null);
           }
-        case CaseDbColType.GENETIC_DISTANCE:
-        case CaseDbColType.GENETIC_SEQUENCE:
-          return s;
         case CaseDbColType.TEXT:
           return s.concat(object().shape({
             [col.id]: string().nullable().extendedAlphaNumeric().max(65535).transform((_val: unknown, orig: string) => orig || null),
@@ -311,7 +311,7 @@ export class CaseUtil {
             [col.id]: string().nullable().timeYear().transform((_val: unknown, orig: string) => orig || null),
           }));
         default:
-          console.error(`Unknown column type: ${refCol.col_type}`);
+          console.warn(`Unknown column type: ${refCol.col_type}`);
           return s;
       }
     }, object({}));

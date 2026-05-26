@@ -1,10 +1,15 @@
+import type { ReactElement } from 'react';
 import {
   useCallback,
   useMemo,
 } from 'react';
+import EditIcon from '@mui/icons-material/Edit';
 import type { StoreApi } from 'zustand';
 import {
   Box,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
   Tooltip,
   useTheme,
 } from '@mui/material';
@@ -14,11 +19,13 @@ import { useTranslation } from 'react-i18next';
 import type {
   CaseDbCaseDataIssue,
   CaseDbCaseUploadResult,
+  CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbDataIssueType } from '@gen-epix/api-casedb';
 import type {
   TableColumn,
+  TableRowAndColumnParams,
   TableRowParams,
   TableStore,
 } from '@gen-epix/ui';
@@ -30,25 +37,27 @@ import {
   useInitializeTableStore,
 } from '@gen-epix/ui';
 
-import type {
-  CaseUploadResultWithGeneratedId,
-  EpiUploadMappedColumn,
-} from '../../../models/epi';
+import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 import { CaseUtil } from '../../../utils/CaseUtil';
 
 
 export type EpiUploadCaseResultTableProps = {
   readonly completeCaseType: CaseDbCompleteCaseType;
-  readonly mappedColumns: EpiUploadMappedColumn[];
-  readonly rawData?: string[][];
-  readonly rowsWithGeneratedId?: CaseUploadResultWithGeneratedId[];
+  readonly getOriginalCellValue: (col: CaseDbCol, cellParams: TableRowAndColumnParams<CaseUploadResultWithGeneratedId, null>, issue: CaseDbCaseDataIssue) => string;
   readonly tableStore: StoreApi<TableStore<CaseUploadResultWithGeneratedId>>;
   readonly validatedCases?: CaseDbCaseUploadResult[];
 };
 
-export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawData, rowsWithGeneratedId, tableStore, validatedCases }: EpiUploadCaseResultTableProps) => {
+export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValue, tableStore, validatedCases }: EpiUploadCaseResultTableProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
+
+  const rowsWithGeneratedId = useMemo<CaseUploadResultWithGeneratedId[]>(() => {
+    return (validatedCases || []).map((vc, index) => ({
+      ...vc,
+      generatedId: vc.id || index.toString(),
+    }));
+  }, [validatedCases]);
 
   const dataRulePriority: CaseDbDataIssueType[] = useMemo(() => [
     CaseDbDataIssueType.UNAUTHORIZED,
@@ -324,8 +333,8 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawD
         tableCols.push({
           cellTitleGetter: (params) => {
             const issue = params.row.data_issues.find((i) => i.col_id === col.id);
-            if (!issue) {
-              const originalValue = rawData.slice(1)[params.rowIndex][mappedColumns.find(mc => mc.col?.id === col.id)?.originalIndex || -1];
+            if (!issue && getOriginalCellValue) {
+              const originalValue = getOriginalCellValue(col, params, issue) ?? '';
               return t('{{value}} (original value: "{{originalValue}}")', {
                 originalValue,
                 value: CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
@@ -357,8 +366,29 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, mappedColumns, rawD
       } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
     }
 
+    tableCols.push(TableUtil.createActionsColumn({
+      getActions: (_params: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+        const actions: ReactElement[] = [];
+        actions.push(
+          <MenuItem
+            key={'editCase'}
+            // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+            onClick={() => console.log('hier')}
+          >
+            <ListItemIcon>
+              <EditIcon />
+            </ListItemIcon>
+            <ListItemText>
+              {t`Edit`}
+            </ListItemText>
+          </MenuItem>,
+        );
+        return actions;
+      },
+      t,
+    }));
     return tableCols;
-  }, [validatedCases, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, errorIssueTypes, renderCell, rawData, mappedColumns, t]);
+  }, [validatedCases, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, t, errorIssueTypes, renderCell, getOriginalCellValue]);
 
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: rowsWithGeneratedId, store: tableStore });
 

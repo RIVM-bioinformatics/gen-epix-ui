@@ -147,7 +147,7 @@ export const TableCell = <TRowData, TDataContext = null>({
       }
     }
     return {
-      '*': {
+      '*': backgroundColor ?? {
         color: color ? `${color} !important` : undefined,
       },
       background: isFrozen ? theme.palette.background.paper : backgroundColor,
