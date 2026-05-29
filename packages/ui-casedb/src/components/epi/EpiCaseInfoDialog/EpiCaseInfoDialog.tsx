@@ -350,6 +350,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
           )}
           {isEditingCaseContent && (
             <EpiCaseInfoForm
+              caseRights={caseRightsQuery.data[0]}
               epiCase={epiCase}
               formId={valuesFormId}
               onFinish={onFinish}

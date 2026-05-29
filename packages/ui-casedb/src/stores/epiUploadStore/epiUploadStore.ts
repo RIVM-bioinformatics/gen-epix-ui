@@ -1,6 +1,7 @@
 import { createStore } from 'zustand';
 import { t } from 'i18next';
 import type {
+  CaseDbCaseForUpload,
   CaseDbCaseUploadResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
@@ -62,6 +63,8 @@ export interface EpiUploadStoreActions {
 export interface EpiUploadStoreState {
   activeStep: EPI_UPLOAD_STEP;
   assemblyProtocolId: string;
+  casesForVerification: CaseDbCaseForUpload[];
+  casesForVerificationFromSourceData: CaseDbCaseForUpload[];
   caseTypeId: string;
   cols: CaseDbCol[];
   completeCaseType: CaseDbCompleteCaseType;
@@ -92,6 +95,8 @@ export interface EpiUploadStoreState {
 const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   activeStep: STEP_ORDER[0],
   assemblyProtocolId: null,
+  casesForVerification: null,
+  casesForVerificationFromSourceData: null,
   caseTypeId: null,
   cols: null,
   completeCaseType: null,
@@ -144,7 +149,7 @@ export const createEpiUploadStore = () => {
       },
 
       goToNextStep: async () => {
-        const { activeStep, completeCaseType, mappedColumns, rawData, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCasesWithGeneratedId } = get();
+        const { activeStep, completeCaseType, createdInDataCollectionId, mappedColumns, rawData, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCasesWithGeneratedId } = get();
 
         let nextStep = get().findNextStep(activeStep);
 
@@ -159,6 +164,16 @@ export const createEpiUploadStore = () => {
           if ((shouldResetColumnMapping && mappedColumns) || !mappedColumns) {
             await setMappedColumns(EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData));
           }
+        }
+
+        if (nextStep === EPI_UPLOAD_STEP.PREVIEW) {
+          const casesForVerification = EpiUploadUtil.getCasesForVerification({
+            caseTypeId: completeCaseType.id,
+            createdInDataCollectionId,
+            mappedColumns,
+            rawData,
+          });
+          set({ casesForVerification, casesForVerificationFromSourceData: casesForVerification });
         }
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_SEQUENCES) {

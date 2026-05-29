@@ -17,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import { useShallow } from 'zustand/shallow';
 import type {
   CaseDbCaseDataIssue,
-  CaseDbCaseForUpload,
   CaseDbCol,
 } from '@gen-epix/api-casedb';
 import {
@@ -35,7 +34,6 @@ import {
 } from '@gen-epix/ui';
 
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 import { withEpiCompleteCaseTypeLoader } from '../EpiCompletCaseTypeLoader/withEpiCompleteCaseTypeLoader';
 
@@ -49,26 +47,18 @@ export type EpiUploadPreviewProps = {
 export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewProps>(({ caseTypeId }) => {
   const { t } = useTranslation();
 
-
   const store = use(EpiUploadStoreContext);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const mappedColumns = useStore(store, (state) => state.mappedColumns);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
+  const casesForVerification = useStore(store, (state) => state.casesForVerification);
+  const casesForVerificationFromSourceData = useStore(store, (state) => state.casesForVerificationFromSourceData);
   const setValidatedCases = useStore(store, (state) => state.setValidatedCases);
   const createdInDataCollectionId = useStore(store, (state) => state.createdInDataCollectionId);
   const rawData = useStore(store, (state) => state.rawData);
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
   const [exceedsMaxNumCases, setExceedsMaxNumCases] = useState(false);
-
-  const casesForVerification = useMemo<CaseDbCaseForUpload[]>(() => {
-    return EpiUploadUtil.getCasesForVerification({
-      caseTypeId,
-      createdInDataCollectionId,
-      mappedColumns,
-      rawData,
-    });
-  }, [caseTypeId, createdInDataCollectionId, mappedColumns, rawData]);
 
   const caseUploadValidationResultQuery = useQueryMemo({
     enabled: mappedColumns.length > 0 && casesForVerification.length > 0,

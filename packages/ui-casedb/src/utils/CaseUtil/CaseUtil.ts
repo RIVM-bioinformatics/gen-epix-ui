@@ -112,7 +112,7 @@ export class CaseUtil {
     }
   }
 
-  public static createFormDefinitions(completeCaseType: CaseDbCompleteCaseType, organizationsQueryResult: UseQueryResult<CaseDbOrganization[]>, onClearGroupFields?: (fieldNames: string[]) => void): { fieldDefinitions: FormFieldDefinition<CaseDbCase['content']>[]; groupDefinitions: FormGroupDefinition[] } {
+  public static createFormDefinitions(completeCaseType: CaseDbCompleteCaseType, organizationsQueryResult: UseQueryResult<CaseDbOrganization[]>, onClearGroupFields?: (fieldNames: string[]) => void, enabledColIds?: string[]): { fieldDefinitions: FormFieldDefinition<CaseDbCase['content']>[]; groupDefinitions: FormGroupDefinition[] } {
     const cols = CaseTypeUtil.getCols(completeCaseType);
     const dimensions = CaseTypeUtil.getDims(completeCaseType);
     const effectiveColumnAccessRights = AbacUtil.createEffectieveColumnAccessRights(Object.values(completeCaseType.case_type_access_abacs));
@@ -121,6 +121,7 @@ export class CaseUtil {
       if (!hasAccess) {
         return acc;
       }
+      const disabled = enabledColIds ? !enabledColIds.includes(col.id) : false;
 
       const refCol = completeCaseType.ref_cols[col.ref_col_id];
       switch (refCol.col_type) {
@@ -143,6 +144,7 @@ export class CaseUtil {
         case CaseDbColType.TIME_YEAR:
           acc.push({
             definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+            disabled,
             label: col.label,
             name: col.id,
           } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
@@ -151,6 +153,7 @@ export class CaseUtil {
           if (EpiDataManager.getInstance().data.regionsByRegionSetId[refCol.region_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+              disabled,
               label: col.label,
               name: col.id,
               options: EpiDataManager.getInstance().data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
@@ -166,6 +169,7 @@ export class CaseUtil {
           if (EpiDataManager.getInstance().data.conceptsBySetId[refCol.concept_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+              disabled,
               label: col.label,
               name: col.id,
               options: EpiDataManager.getInstance().data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
@@ -178,6 +182,7 @@ export class CaseUtil {
         case CaseDbColType.ORGANIZATION:
           acc.push({
             definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+            disabled,
             label: col.label,
             loading: organizationsQueryResult.isLoading,
             name: col.id,
@@ -192,12 +197,14 @@ export class CaseUtil {
             new RegExp(col.pattern);
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+              disabled,
               label: col.label,
               name: col.id,
             } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
           } catch (_error) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+              disabled,
               label: col.label,
               name: col.id,
               warningMessage: t`Unable to parse regular expression. You may enter text, but it's not guaranteed to be valid.`,
@@ -207,6 +214,7 @@ export class CaseUtil {
         case CaseDbColType.TIME_DAY:
           acc.push({
             definition: FORM_FIELD_DEFINITION_TYPE.DATE,
+            disabled,
             label: col.label,
             name: col.id,
           } as const satisfies FormFieldDefinition<CaseDbCase['content']>);

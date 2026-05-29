@@ -160,6 +160,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
 
     return (
       <TextField
+        disabled={disabled || loading}
         error={hasError}
         fullWidth={params.fullWidth}
         helperText={helperText}
@@ -187,7 +188,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         variant={'outlined'}
       />
     );
-  }, [disabled, errorMessage, hasError, hasWarning, infoMessage, label, required, warningMessage]);
+  }, [disabled, errorMessage, hasError, hasWarning, infoMessage, label, loading, required, warningMessage]);
 
   const renderValue = useCallback((values: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>, getItemProps: AutocompleteRenderValueGetItemProps<TMultiple>) => {
     const selectedValues = (Array.isArray(values) ? values : [values]) as Value[];

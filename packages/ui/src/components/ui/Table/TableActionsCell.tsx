@@ -72,6 +72,7 @@ export const TableActionsCell = <TRowData, TDataContext = null>(props: TableActi
           <Menu
             anchorEl={anchorElement}
             id={'basic-menu'}
+            onClick={onMenuClose}
             onClose={onMenuClose}
             open={open}
             slotProps={{
