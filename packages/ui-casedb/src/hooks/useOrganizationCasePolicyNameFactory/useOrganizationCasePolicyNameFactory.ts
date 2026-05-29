@@ -24,7 +24,7 @@ export const useOrganizationCasePolicyNameFactory = (): UseNameFactory<CaseDbOrg
       const dataCollection = dataCollectionsMapQuery.map.get(item.data_collection_id)?.name ?? item.data_collection_id;
       const caseTypeSet = caseTypeSetsMapQuery.map.get(item.case_type_set_id)?.name ?? item.case_type_set_id;
 
-      return `${organization.name} → ${dataCollection} → ${caseTypeSet}`;
+      return `${organization.name} -> ${dataCollection} -> ${caseTypeSet}`;
     };
 
     return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeSetsMapQuery, organizationMapQuery, dataCollectionsMapQuery]);

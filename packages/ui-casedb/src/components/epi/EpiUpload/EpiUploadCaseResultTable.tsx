@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import {
   useCallback,
   useMemo,
+  useRef,
 } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import type { StoreApi } from 'zustand';
@@ -17,6 +18,7 @@ import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
 import type {
+  CaseDbCase,
   CaseDbCaseDataIssue,
   CaseDbCaseUploadResult,
   CaseDbCol,
@@ -39,6 +41,8 @@ import {
 
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 import { CaseUtil } from '../../../utils/CaseUtil';
+import type { EpiCaseContentFormDialogRefMethods } from '../EpiCaseContentFormDialog';
+import { EpiCaseContentFormDialog } from '../EpiCaseContentFormDialog';
 
 
 export type EpiUploadCaseResultTableProps = {
@@ -51,6 +55,7 @@ export type EpiUploadCaseResultTableProps = {
 export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValue, tableStore, validatedCases }: EpiUploadCaseResultTableProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const epiCaseFormDialogRef = useRef<EpiCaseContentFormDialogRefMethods>(null);
 
   const rowsWithGeneratedId = useMemo<CaseUploadResultWithGeneratedId[]>(() => {
     return (validatedCases || []).map((vc, index) => ({
@@ -274,6 +279,10 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
     );
   }, [completeCaseType, errorIssueTypes, getFilteredIssueTypes, getIssueTooltipContent, theme, warningIssueTypes]);
 
+  const onEpiCaseFormSubmit = useCallback((content: CaseDbCase['content']) => {
+    console.log({ content });
+  }, []);
+
   const tableColumns = useMemo<TableColumn<CaseUploadResultWithGeneratedId>[]>(() => {
     const tableCols: TableColumn<CaseUploadResultWithGeneratedId>[] = [];
     if (!validatedCases?.length) {
@@ -367,13 +376,20 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
     }
 
     tableCols.push(TableUtil.createActionsColumn({
-      getActions: (_params: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+      getActions: (params: TableRowParams<CaseUploadResultWithGeneratedId>) => {
         const actions: ReactElement[] = [];
         actions.push(
           <MenuItem
             key={'editCase'}
             // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-            onClick={() => console.log('hier')}
+            onClick={() => {
+              epiCaseFormDialogRef.current?.open({
+                caseContent: params.row.validated_content,
+                completeCaseType,
+                formId: `edit-case-form`,
+                onSubmit: onEpiCaseFormSubmit,
+              });
+            }}
           >
             <ListItemIcon>
               <EditIcon />
@@ -388,7 +404,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
       t,
     }));
     return tableCols;
-  }, [validatedCases, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, t, errorIssueTypes, renderCell, getOriginalCellValue]);
+  }, [validatedCases, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, t, errorIssueTypes, renderCell, getOriginalCellValue, onEpiCaseFormSubmit]);
 
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: rowsWithGeneratedId, store: tableStore });
 
@@ -407,6 +423,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
       <Table
         font={theme['gen-epix-ui-casedb'].lineList.font}
       />
+      <EpiCaseContentFormDialog ref={epiCaseFormDialogRef} />
     </>
   );
 };

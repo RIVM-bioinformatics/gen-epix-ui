@@ -19,8 +19,13 @@ import type {
 import {
   CaseDbCaseApi,
   CaseDbColType,
+  CaseDbDimType,
 } from '@gen-epix/api-casedb';
-import type { FormFieldDefinition } from '@gen-epix/ui';
+import type {
+  FormFieldDefinition,
+  FormGroupDefinition,
+  FormGroupMessage,
+} from '@gen-epix/ui';
 import {
   ConfigManager,
   FORM_FIELD_DEFINITION_TYPE,
@@ -107,10 +112,11 @@ export class CaseUtil {
     }
   }
 
-  public static createFormFieldDefinitions(completeCaseType: CaseDbCompleteCaseType, organizationsQueryResult: UseQueryResult<CaseDbOrganization[]>): FormFieldDefinition<CaseDbCase['content']>[] {
+  public static createFormDefinitions(completeCaseType: CaseDbCompleteCaseType, organizationsQueryResult: UseQueryResult<CaseDbOrganization[]>, onClearGroupFields?: (fieldNames: string[]) => void): { fieldDefinitions: FormFieldDefinition<CaseDbCase['content']>[]; groupDefinitions: FormGroupDefinition[] } {
     const cols = CaseTypeUtil.getCols(completeCaseType);
+    const dimensions = CaseTypeUtil.getDims(completeCaseType);
     const effectiveColumnAccessRights = AbacUtil.createEffectieveColumnAccessRights(Object.values(completeCaseType.case_type_access_abacs));
-    return cols.reduce((acc, col) => {
+    const fieldDefinitions: FormFieldDefinition<CaseDbCase['content']>[] = cols.reduce((acc, col) => {
       const hasAccess = effectiveColumnAccessRights.get(col.id)?.write;
       if (!hasAccess) {
         return acc;
@@ -211,6 +217,52 @@ export class CaseUtil {
 
       return acc;
     }, [] as FormFieldDefinition<CaseDbCase['content']>[]);
+
+    dimensions.forEach(dim => {
+      const colIds = CaseTypeUtil.getCols(completeCaseType, dim.id).map(col => col.id);
+      fieldDefinitions.forEach(definition => {
+        if (colIds.includes(definition.name)) {
+          definition.groupKey = dim.id;
+        }
+      });
+    });
+
+    const groupDefinitions: FormGroupDefinition[] = [];
+
+    dimensions.forEach(dim => {
+      const colsInDim = CaseTypeUtil.getCols(completeCaseType, dim.id);
+      const refDim = completeCaseType.ref_dims[dim.ref_dim_id];
+      const messages: FormGroupMessage[] = [];
+
+      if (refDim.dim_type === CaseDbDimType.GEO) {
+        messages.push({ message: t`This dimension contains geographical regions. When making updates, first clear all values and only fill in the highest known resolution(s) of the geographical regions.`, severity: 'info' });
+      }
+      if (refDim.dim_type === CaseDbDimType.TIME) {
+        messages.push({ message: t`This dimension contains time-related data. When making updates, first clear all values and only fill in the highest known resolution(s) of the time-related data.`, severity: 'info' });
+      }
+      const DECIMAL_COL_TYPES = [CaseDbColType.DECIMAL_0, CaseDbColType.DECIMAL_1, CaseDbColType.DECIMAL_2, CaseDbColType.DECIMAL_3, CaseDbColType.DECIMAL_4, CaseDbColType.DECIMAL_5, CaseDbColType.DECIMAL_6] as const;
+      if (
+        (colsInDim.some(col => completeCaseType.ref_cols[col.ref_col_id].col_type === CaseDbColType.ORDINAL) || colsInDim.some(col => completeCaseType.ref_cols[col.ref_col_id].col_type === CaseDbColType.INTERVAL)) &&
+        colsInDim.some(col => (DECIMAL_COL_TYPES as readonly string[]).includes(completeCaseType.ref_cols[col.ref_col_id].col_type))
+      ) {
+        messages.push({ message: t`This dimension contains a mix of ordinal/interval and decimal columns. When making updates, first clear all values and only fill in the highest known resolution(s) of the data (typically the decimal data).`, severity: 'info' });
+      }
+
+      const groupFieldNames = fieldDefinitions.filter(f => f.groupKey === dim.id).map(f => f.name);
+      groupDefinitions.push({
+        groupKey: dim.id,
+        label: dim.label,
+        messages: onClearGroupFields
+          ? messages.map(msg => ({
+            ...msg,
+            buttonLabel: t('Clear all {{dimension}} fields', { dimension: dim.label }),
+            onButtonClick: () => onClearGroupFields(groupFieldNames),
+          }))
+          : messages,
+      });
+    });
+
+    return { fieldDefinitions, groupDefinitions };
   }
 
   public static createYupSchema(completeCaseType: CaseDbCompleteCaseType): ObjectSchema<{ [key: string]: string }> {

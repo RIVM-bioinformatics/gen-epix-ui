@@ -22,7 +22,7 @@ import {
 
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
-import { EpiCaseForm } from '../EpiCaseForm';
+import { EpiCaseContentForm } from '../EpiCaseContentForm';
 
 export type EpiCaseInfoFormProps = {
   readonly epiCase: CaseDbCase;
@@ -83,7 +83,7 @@ export const EpiCaseInfoForm = ({ epiCase, formId, onFinish, onIsSavingChange, .
           />
         )}
         {!isSaving && (
-          <EpiCaseForm
+          <EpiCaseContentForm
             caseContent={epiCase.content}
             completeCaseType={completeCaseType}
             formId={formId}

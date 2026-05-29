@@ -42,7 +42,7 @@ export const useDimNameFactory = (): UseNameFactory<CaseDbDim> => {
   return useMemo(() => {
     const getName = (item: CaseDbDim) => {
       const caseTypeName = caseTypeMapQuery.map.get(item.case_type_id)?.name ?? item.case_type_id;
-      return `${caseTypeName} → ${item.label}`;
+      return `${caseTypeName} -> ${item.label}`;
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeMapQuery]);
   }, [caseTypeMapQuery]);

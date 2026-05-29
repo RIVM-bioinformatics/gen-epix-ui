@@ -39,7 +39,7 @@ export const useConceptNameFactory = (): UseNameFactory<CaseDbConcept> => {
 
   return useMemo(() => {
     const getName = (item: CaseDbConcept) => {
-      return `${conceptSetMapQuery.map.get(item.concept_set_id)?.name ?? item.concept_set_id} → ${item.name}`;
+      return `${conceptSetMapQuery.map.get(item.concept_set_id)?.name ?? item.concept_set_id} -> ${item.name}`;
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [conceptSetMapQuery]);
   }, [conceptSetMapQuery]);

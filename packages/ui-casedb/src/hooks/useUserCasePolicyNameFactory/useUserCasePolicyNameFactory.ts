@@ -30,7 +30,7 @@ export const useUserCasePolicyNameFactory = (): UseNameFactory<CaseDbUserAccessC
 
       const userName = DataUtil.getUserDisplayValue(user, t);
 
-      return `${userName} → ${dataCollection} → ${caseTypeSet}`;
+      return `${userName} -> ${dataCollection} -> ${caseTypeSet}`;
     };
 
     return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeSetsMapQuery, usersMapQuery, dataCollectionsMapQuery]);

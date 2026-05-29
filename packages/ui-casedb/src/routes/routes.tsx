@@ -23,6 +23,17 @@ import { createAdminRoutes } from './adminRoutes';
 
 type RoutePermission = CaseDbApiPermission | CommonDbApiPermission;
 
+const epiDashboardPermissions: RoutePermission[] = [
+  { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
+  { command_name: CaseDbCommandName.ConceptSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+  { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
+  { command_name: CaseDbCommandName.RegionSetCrudCommand, permission_type: CaseDbPermissionType.READ },
+  { command_name: CaseDbCommandName.RetrieveCasesByIdCommand, permission_type: CaseDbPermissionType.EXECUTE },
+  { command_name: CaseDbCommandName.RetrieveCasesByQueryCommand, permission_type: CaseDbPermissionType.EXECUTE },
+  { command_name: CaseDbCommandName.RetrievePhylogeneticTreeByCasesCommand, permission_type: CaseDbPermissionType.EXECUTE },
+];
+
+
 export const createRoutes = (
   adminRoutes: MyNonIndexRouteObject<RoutePermission>[] = createAdminRoutes(),
 ): MyNonIndexRouteObject<RoutePermission>[] => {
@@ -52,13 +63,7 @@ export const createRoutes = (
           handle: {
             hidden: false,
             requiredPermissions: [
-              { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
-              { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
-              { command_name: CaseDbCommandName.ConceptSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-              { command_name: CaseDbCommandName.RegionSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-              { command_name: CaseDbCommandName.RetrieveCasesByIdCommand, permission_type: CaseDbPermissionType.EXECUTE },
-              { command_name: CaseDbCommandName.RetrieveCasesByQueryCommand, permission_type: CaseDbPermissionType.EXECUTE },
-              { command_name: CaseDbCommandName.RetrievePhylogeneticTreeByCasesCommand, permission_type: CaseDbPermissionType.EXECUTE },
+              ...epiDashboardPermissions,
             ],
             requiresUserProfile: true,
             title: t`Case type`,
@@ -104,14 +109,7 @@ export const createRoutes = (
             hidden: false,
             requiredPermissions: [
               { command_name: CaseDbCommandName.CaseSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-              { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
-              { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
-              { command_name: CaseDbCommandName.ConceptSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-              { command_name: CaseDbCommandName.RegionSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-              { command_name: CaseDbCommandName.RetrieveCasesByIdCommand, permission_type: CaseDbPermissionType.EXECUTE },
-              { command_name: CaseDbCommandName.RetrieveCasesByQueryCommand, permission_type: CaseDbPermissionType.EXECUTE },
-              { command_name: CaseDbCommandName.RetrievePhylogeneticTreeByCasesCommand, permission_type: CaseDbPermissionType.EXECUTE },
-              { command_name: CaseDbCommandName.RetrievePhylogeneticTreeByCasesCommand, permission_type: CaseDbPermissionType.EXECUTE },
+              ...epiDashboardPermissions,
             ],
             requiresUserProfile: true,
             title: t`Event`,

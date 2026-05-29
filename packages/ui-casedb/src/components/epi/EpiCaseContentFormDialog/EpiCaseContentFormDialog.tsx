@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { CaseDbCase } from '@gen-epix/api-casedb';
 import type {
   DialogAction,
   WithDialogRefMethods,
@@ -12,30 +11,34 @@ import {
   withDialog,
 } from '@gen-epix/ui';
 
+import { EpiCaseContentForm } from '../EpiCaseContentForm/EpiCaseContentForm';
+import type { EpiCaseContentFormProps } from '../EpiCaseContentForm/EpiCaseContentForm';
 
-export interface EpiBulkEditCaseDialogOpenProps {
-  rows: CaseDbCase[];
-}
 
-export interface EpiBulkEditCaseDialogProps extends WithDialogRenderProps<EpiBulkEditCaseDialogOpenProps> {
+export interface EpiCaseContentFormDialogProps extends WithDialogRenderProps<EpiCaseFormDialogOpenProps> {
   //
 }
 
-export type EpiBulkEditCaseDialogRefMethods = WithDialogRefMethods<EpiBulkEditCaseDialogProps, EpiBulkEditCaseDialogOpenProps>;
+export type EpiCaseContentFormDialogRefMethods = WithDialogRefMethods<EpiCaseContentFormDialogProps, EpiCaseFormDialogOpenProps>;
 
-export const EpiBulkEditCaseDialog = withDialog<EpiBulkEditCaseDialogProps, EpiBulkEditCaseDialogOpenProps>((
+// !FIXME
+export interface EpiCaseFormDialogOpenProps extends EpiCaseContentFormProps {
+  //
+}
+
+export const EpiCaseContentFormDialog = withDialog<EpiCaseContentFormDialogProps, EpiCaseFormDialogOpenProps>((
   {
     onActionsChange,
     onClose,
     onTitleChange,
     openProps,
-  }: EpiBulkEditCaseDialogProps,
+  }: EpiCaseContentFormDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
   console.log({ openProps });
 
   useEffect(() => {
-    onTitleChange(t`Bulk edit selected cases`);
+    onTitleChange(t`Edit case`);
   }, [t, onTitleChange]);
 
   useEffect(() => {
@@ -50,12 +53,18 @@ export const EpiBulkEditCaseDialog = withDialog<EpiBulkEditCaseDialogProps, EpiB
     onActionsChange(actions);
   }, [onActionsChange, onClose, t]);
 
+
   return (
-    <div />
+    <EpiCaseContentForm
+      caseContent={openProps.caseContent}
+      completeCaseType={openProps.completeCaseType}
+      formId={openProps.formId}
+      onSubmit={openProps.onSubmit}
+    />
   );
 }, {
   defaultTitle: '',
   fullWidth: true,
   maxWidth: 'lg',
-  testId: 'EpiBulkEditCaseDialog',
+  testId: 'EpiCaseFormDialog',
 });

@@ -45,7 +45,7 @@ export const useColNameFactory = (): UseNameFactory<CaseDbCol> => {
       const caseTypeName = caseTypeMapQuery.map.get(item.case_type_id)?.name ?? item.case_type_id;
       const dimName = dimMapQuery.map.get(item.dim_id)?.label ?? item.dim_id;
 
-      return `${caseTypeName} → ${dimName} → ${item.label}`;
+      return `${caseTypeName} -> ${dimName} -> ${item.label}`;
 
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [caseTypeMapQuery, dimMapQuery]);

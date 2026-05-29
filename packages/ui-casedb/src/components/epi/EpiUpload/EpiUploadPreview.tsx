@@ -37,12 +37,18 @@ import {
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
+import { withEpiCompleteCaseTypeLoader } from '../EpiCompletCaseTypeLoader/withEpiCompleteCaseTypeLoader';
 
 import { EpiUploadCaseResultTable } from './EpiUploadCaseResultTable';
 import { EpiUploadValidateNavigation } from './EpiUploadValidateNavigation';
 
-export const EpiUploadValidateInner = () => {
+export type EpiUploadPreviewProps = {
+  readonly caseTypeId: string;
+};
+
+export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewProps>(({ caseTypeId }) => {
   const { t } = useTranslation();
+
 
   const store = use(EpiUploadStoreContext);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
@@ -50,7 +56,6 @@ export const EpiUploadValidateInner = () => {
   const mappedColumns = useStore(store, (state) => state.mappedColumns);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const setValidatedCases = useStore(store, (state) => state.setValidatedCases);
-  const caseTypeId = useStore(store, (state) => state.caseTypeId);
   const createdInDataCollectionId = useStore(store, (state) => state.createdInDataCollectionId);
   const rawData = useStore(store, (state) => state.rawData);
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
@@ -188,4 +193,4 @@ export const EpiUploadValidateInner = () => {
       </TableStoreContextProvider>
     </Box>
   );
-};
+});

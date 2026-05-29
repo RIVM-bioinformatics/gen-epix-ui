@@ -599,7 +599,7 @@ export const CrudPage = <
 
   const normalizedTitle = useMemo<string>(() => {
     if (isArray(title)) {
-      return title.join(' → ');
+      return title.join(' -> ');
     }
     return title;
   }, [title]);

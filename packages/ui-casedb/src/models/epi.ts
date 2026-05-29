@@ -16,7 +16,7 @@ import type {
 export enum EPI_UPLOAD_STEP {
   SELECT_FILE = 0,
   MAP_COLUMNS = 1,
-  VALIDATE = 2,
+  PREVIEW = 2,
   SELECT_SEQUENCE_FILES = 3,
   MAP_SEQUENCES = 4,
   CREATE_CASES = 5,

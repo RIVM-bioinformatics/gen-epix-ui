@@ -42,6 +42,8 @@ import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 import { DATE_FORMAT } from '../../../../data/date';
 
+import { DatePickerInputAdornment } from './DatePickerInputAdornment';
+
 
 export type DatePickerProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly dateFormat?: typeof DATE_FORMAT[keyof typeof DATE_FORMAT];
@@ -71,6 +73,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
   const inputRef = useRef<HTMLInputElement>(null);
+  const onResetButtonClickRef = useRef<() => void>(() => undefined);
 
   const onMuiDatePickerChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (newValue: Date) => {
@@ -114,10 +117,22 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
       },
     });
 
+    onResetButtonClickRef.current = () => {
+      onChange(null);
+    };
+
     return (
       <FormControl
         {...TestIdUtil.createAttributes('DatePicker', { label, name })}
         fullWidth
+        sx={{
+          '&:hover .DatePicker-resetButton, &:focus-within .DatePicker-resetButton': {
+            display: 'initial',
+          },
+          '& .DatePicker-resetButton': {
+            display: 'none',
+          },
+        }}
       >
         <LocalizationProvider
           adapterLocale={customLocale}
@@ -143,6 +158,16 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
                 variant: 'outlined',
               },
             }}
+            slots={{
+              inputAdornment: (props) => (
+                <DatePickerInputAdornment
+                  {...props}
+                  disabled={disabled}
+                  loading={loading}
+                  onResetButtonClickRef={onResetButtonClickRef}
+                />
+              ),
+            }}
             value={value}
             views={views as MuiDatePickerProps['views']}
           />
@@ -158,7 +183,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
         </FormHelperText>
       </FormControl>
     );
-  }, [MuiComponent, infoMessage, customLocale, dateFormat, disabled, errorMessage, hasError, hasWarning, label, loading, name, onMuiDatePickerChange, required, views, warningMessage]);
+  }, [MuiComponent, customLocale, dateFormat, disabled, errorMessage, hasError, hasWarning, infoMessage, label, loading, name, onMuiDatePickerChange, required, views, warningMessage]);
 
   return (
     <Controller

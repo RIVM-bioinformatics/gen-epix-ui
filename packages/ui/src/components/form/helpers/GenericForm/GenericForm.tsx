@@ -14,10 +14,19 @@ import type {
   UseFormReturn,
 } from 'react-hook-form';
 import { FormProvider } from 'react-hook-form';
-import { Box } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Typography,
+} from '@mui/material';
 import type { ObjectSchema } from 'yup';
 
-import type { FormFieldDefinition } from '../../../../models/form';
+import type {
+  FormFieldDefinition,
+  FormGroupDefinition,
+} from '../../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { RichTextEditor } from '../../fields/RichTextEditor';
@@ -37,10 +46,12 @@ export type GenericFormProps<TFormFields extends FieldValues> = {
   readonly defaultFormValues?: Partial<TFormFields>;
   readonly disableAll?: boolean;
   readonly formFieldDefinitions: FormFieldDefinition<TFormFields>[];
+  readonly formGroupDefinitions?: FormGroupDefinition[];
   readonly formId?: string;
   readonly formMethods: UseFormReturn<TFormFields>;
   readonly onSubmit?: SubmitEventHandler<HTMLFormElement>;
   readonly renderField?: (definition: FormFieldDefinition<TFormFields>, element: ReactElement) => ReactElement;
+  readonly renderGroup?: (definition: FormGroupDefinition, children: ReactElement) => ReactElement;
   readonly schema: ObjectSchema<TFormFields, TFormFields>;
   readonly wrapForm?: (children: ReactElement) => ReactElement;
 };
@@ -48,10 +59,12 @@ export type GenericFormProps<TFormFields extends FieldValues> = {
 export const GenericForm = <TFormFields extends FieldValues>({
   disableAll,
   formFieldDefinitions,
+  formGroupDefinitions,
   formId,
   formMethods,
   onSubmit,
   renderField,
+  renderGroup,
   schema,
   wrapForm,
 }: GenericFormProps<TFormFields>) => {
@@ -150,29 +163,115 @@ export const GenericForm = <TFormFields extends FieldValues>({
   }, [booleanOptions, disableAll, isFormFieldRequired]);
 
 
-  const formContent = (
-    <>
-      {formFieldDefinitions.map(formFieldDefinition => {
-        if (renderField) {
-          return (
-            <Fragment key={formFieldDefinition.name}>
-              {renderField(formFieldDefinition, renderFormFieldDefinition(formFieldDefinition))}
-            </Fragment>
+  const renderSingleField = useCallback((formFieldDefinition: FormFieldDefinition<TFormFields>) => {
+    if (renderField) {
+      return (
+        <Fragment key={formFieldDefinition.name}>
+          {renderField(formFieldDefinition, renderFormFieldDefinition(formFieldDefinition))}
+        </Fragment>
+      );
+    }
+    return (
+      <Box
+        key={formFieldDefinition.name}
+        sx={{
+          marginY: 1,
+        }}
+      >
+        {renderFormFieldDefinition(formFieldDefinition)}
+      </Box>
+    );
+  }, [renderField, renderFormFieldDefinition]);
+
+  const formFieldsContent = useMemo(() => {
+    if (!formGroupDefinitions?.length) {
+      return (
+        <>
+          {formFieldDefinitions.map(renderSingleField)}
+        </>
+      );
+    }
+
+    const groupFieldsMap = new Map<string, FormFieldDefinition<TFormFields>[]>();
+    for (const group of formGroupDefinitions) {
+      groupFieldsMap.set(group.groupKey, []);
+    }
+
+    const ungroupedFields: FormFieldDefinition<TFormFields>[] = [];
+    for (const field of formFieldDefinitions) {
+      if (field.groupKey && groupFieldsMap.has(field.groupKey)) {
+        groupFieldsMap.get(field.groupKey)?.push(field);
+      } else {
+        ungroupedFields.push(field);
+      }
+    }
+
+    return (
+      <>
+        {formGroupDefinitions.map(group => {
+          const groupFields = groupFieldsMap.get(group.groupKey) ?? [];
+          if (!groupFields.length) {
+            return null;
+          }
+          const groupContent = (
+            <>
+              {groupFields.map(renderSingleField)}
+            </>
           );
-        }
-        return (
-          <Box
-            key={formFieldDefinition.name}
-            sx={{
-              marginY: 1,
-            }}
-          >
-            {renderFormFieldDefinition(formFieldDefinition)}
-          </Box>
-        );
-      })}
-    </>
-  );
+          if (renderGroup) {
+            return (
+              <Fragment key={group.groupKey}>
+                {renderGroup(group, groupContent)}
+              </Fragment>
+            );
+          }
+          return (
+            <Box
+              key={group.groupKey}
+              sx={{ marginY: 2 }}
+            >
+              <Typography variant={'subtitle1'}>
+                {group.label}
+              </Typography>
+              {group.description && (
+                <Typography
+                  color={'text.secondary'}
+                  variant={'body2'}
+                >
+                  {group.description}
+                </Typography>
+              )}
+              {group.messages?.map((msg) => (
+                <Alert
+                  key={msg.message}
+                  severity={msg.severity}
+                  sx={{ '& .MuiAlert-message': { width: '100%' } }}
+                >
+                  <AlertTitle>
+                    {msg.message}
+                  </AlertTitle>
+                  {msg.buttonLabel && msg.onButtonClick && (
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <Button
+                        color={'inherit'}
+                        onClick={msg.onButtonClick}
+                        size={'small'}
+                        variant={'text'}
+                      >
+                        {msg.buttonLabel}
+                      </Button>
+                    </Box>
+                  )}
+                </Alert>
+              ))}
+              {groupContent}
+            </Box>
+          );
+        })}
+        {ungroupedFields.map(renderSingleField)}
+      </>
+    );
+  }, [formFieldDefinitions, formGroupDefinitions, renderGroup, renderSingleField]);
 
   return (
     <FormProvider {...formMethods}>
@@ -182,7 +281,7 @@ export const GenericForm = <TFormFields extends FieldValues>({
         id={formId}
         onSubmit={onSubmit}
       >
-        {wrapForm ? wrapForm(formContent) : formContent}
+        {wrapForm ? wrapForm(formFieldsContent) : formFieldsContent}
       </Box>
     </FormProvider>
   );
