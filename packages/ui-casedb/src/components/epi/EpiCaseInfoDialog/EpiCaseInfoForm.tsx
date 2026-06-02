@@ -57,7 +57,7 @@ export const EpiCaseInfoForm = ({ caseRights, epiCase, formId, onFinish, onIsSav
     return colIds;
   }, [caseRights]);
 
-  const onFormSubmit = useCallback((content: CaseDbCase['content']) => {
+  const onFormSubmit = useCallback((caseId: string, content: CaseDbCase['content']) => {
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
@@ -77,7 +77,7 @@ export const EpiCaseInfoForm = ({ caseRights, epiCase, formId, onFinish, onIsSav
                   case_type_id: completeCaseType.id,
                   content,
                   created_in_data_collection_id: epiCase.created_in_data_collection_id,
-                  id: epiCase.id,
+                  id: caseId,
                 },
               },
             ],
@@ -120,6 +120,7 @@ export const EpiCaseInfoForm = ({ caseRights, epiCase, formId, onFinish, onIsSav
         {!isSaving && (
           <EpiCaseContentForm
             caseContent={epiCase.content}
+            caseId={epiCase.id}
             completeCaseType={completeCaseType}
             enabledColIds={enabledColIds}
             formId={formId}

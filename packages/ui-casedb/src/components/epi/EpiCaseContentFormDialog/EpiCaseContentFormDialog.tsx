@@ -10,6 +10,7 @@ import {
   TestIdUtil,
   withDialog,
 } from '@gen-epix/ui';
+import SaveIcon from '@mui/icons-material/Save';
 
 import { EpiCaseContentForm } from '../EpiCaseContentForm/EpiCaseContentForm';
 import type { EpiCaseContentFormProps } from '../EpiCaseContentForm/EpiCaseContentForm';
@@ -35,29 +36,41 @@ export const EpiCaseContentFormDialog = withDialog<EpiCaseContentFormDialogProps
   }: EpiCaseContentFormDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
-  console.log({ openProps });
-
   useEffect(() => {
     onTitleChange(t`Edit case`);
   }, [t, onTitleChange]);
 
   useEffect(() => {
     const actions: DialogAction[] = [];
-    actions.push({
-      ...TestIdUtil.createAttributes('EpiCaseInfoDialog-closeButton'),
-      color: 'secondary',
-      label: t`Close`,
-      onClick: onClose,
-      variant: 'contained',
-    });
+    actions.push(
+      {
+        ...TestIdUtil.createAttributes('EpiCaseInfoDialog-closeButton'),
+        color: 'secondary',
+        label: t`Close`,
+        onClick: onClose,
+        variant: 'outlined',
+      },
+      {
+        ...TestIdUtil.createAttributes('EpiCaseInfoDialog-saveButton'),
+        autoFocus: true,
+        color: 'primary',
+        form: openProps.formId,
+        label: t`Save`,
+        startIcon: <SaveIcon />,
+        type: 'submit',
+        variant: 'contained',
+      },
+    );
     onActionsChange(actions);
-  }, [onActionsChange, onClose, t]);
+  }, [onActionsChange, onClose, t, openProps.formId]);
 
 
   return (
     <EpiCaseContentForm
       caseContent={openProps.caseContent}
+      caseId={openProps.caseId}
       completeCaseType={openProps.completeCaseType}
+      enabledColIds={openProps.enabledColIds}
       formId={openProps.formId}
       onSubmit={openProps.onSubmit}
     />

@@ -46,23 +46,24 @@ import { EpiCaseContentFormDialog } from '../EpiCaseContentFormDialog';
 
 
 export type EpiUploadCaseResultTableProps = {
+  readonly caseUploadResults?: CaseDbCaseUploadResult[];
   readonly completeCaseType: CaseDbCompleteCaseType;
   readonly getOriginalCellValue: (col: CaseDbCol, cellParams: TableRowAndColumnParams<CaseUploadResultWithGeneratedId, null>, issue: CaseDbCaseDataIssue) => string;
+  readonly onCaseContentEditSubmit: (caseId: string, content: CaseDbCase['content']) => void;
   readonly tableStore: StoreApi<TableStore<CaseUploadResultWithGeneratedId>>;
-  readonly validatedCases?: CaseDbCaseUploadResult[];
 };
 
-export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValue, tableStore, validatedCases }: EpiUploadCaseResultTableProps) => {
+export const EpiUploadCaseResultTable = ({ caseUploadResults, completeCaseType, getOriginalCellValue, onCaseContentEditSubmit, tableStore }: EpiUploadCaseResultTableProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const epiCaseFormDialogRef = useRef<EpiCaseContentFormDialogRefMethods>(null);
 
   const rowsWithGeneratedId = useMemo<CaseUploadResultWithGeneratedId[]>(() => {
-    return (validatedCases || []).map((vc, index) => ({
+    return (caseUploadResults || []).map((vc, index) => ({
       ...vc,
       generatedId: vc.id || index.toString(),
     }));
-  }, [validatedCases]);
+  }, [caseUploadResults]);
 
   const dataRulePriority: CaseDbDataIssueType[] = useMemo(() => [
     CaseDbDataIssueType.UNAUTHORIZED,
@@ -82,6 +83,11 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
     CaseDbDataIssueType.MISSING,
     CaseDbDataIssueType.CONFLICT,
   ], []);
+
+  const onCaseContentFormDialogSubmit = useCallback((caseId: string, content: CaseDbCase['content']) => {
+    onCaseContentEditSubmit(caseId, content);
+    epiCaseFormDialogRef.current?.close();
+  }, [onCaseContentEditSubmit]);
 
   const getIssueTooltipMessages = useCallback((issues: CaseDbCaseDataIssue[]) => {
     const messages: { key: string; message: string }[] = [];
@@ -279,13 +285,9 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
     );
   }, [completeCaseType, errorIssueTypes, getFilteredIssueTypes, getIssueTooltipContent, theme, warningIssueTypes]);
 
-  const onEpiCaseFormSubmit = useCallback((content: CaseDbCase['content']) => {
-    console.log({ content });
-  }, []);
-
   const tableColumns = useMemo<TableColumn<CaseUploadResultWithGeneratedId>[]>(() => {
     const tableCols: TableColumn<CaseUploadResultWithGeneratedId>[] = [];
-    if (!validatedCases?.length) {
+    if (!caseUploadResults?.length) {
       return tableCols;
     }
     tableCols.push(TableUtil.createReadableIndexColumn());
@@ -324,7 +326,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
     });
 
     const uniqueColIds: Set<string> = new Set();
-    validatedCases.forEach((validatedCase) => {
+    caseUploadResults.forEach((validatedCase) => {
       Object.keys(validatedCase.validated_content || {}).forEach((colId) => uniqueColIds.add(colId));
       validatedCase.data_issues.forEach((issue) => uniqueColIds.add(issue.col_id));
     });
@@ -335,7 +337,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
       }
       const col = completeCaseType.cols[colId];
 
-      const issuesForCol = validatedCases.flatMap(vc => vc.data_issues.filter((i) => i.col_id === col.id));
+      const issuesForCol = caseUploadResults.flatMap(vc => vc.data_issues.filter((i) => i.col_id === col.id));
       const isInitiallyVisible = issuesForCol.length === 0 || issuesForCol.some(i => i.data_issue_type !== CaseDbDataIssueType.DERIVED);
 
       if (col) {
@@ -363,7 +365,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
       }
     });
 
-    if (validatedCases.some(vc => vc.id)) {
+    if (caseUploadResults.some(vc => vc.id)) {
       tableCols.push({
         headerName: t('case_id'),
         hideInFilter: true,
@@ -385,9 +387,11 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
             onClick={() => {
               epiCaseFormDialogRef.current?.open({
                 caseContent: params.row.validated_content,
+                caseId: params.row.generatedId,
                 completeCaseType,
+                enabledColIds: completeCaseType.ordered_col_ids,
                 formId: `edit-case-form`,
-                onSubmit: onEpiCaseFormSubmit,
+                onSubmit: onCaseContentFormDialogSubmit,
               });
             }}
           >
@@ -404,7 +408,7 @@ export const EpiUploadCaseResultTable = ({ completeCaseType, getOriginalCellValu
       t,
     }));
     return tableCols;
-  }, [validatedCases, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, t, errorIssueTypes, renderCell, getOriginalCellValue, onEpiCaseFormSubmit]);
+  }, [caseUploadResults, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, t, errorIssueTypes, renderCell, getOriginalCellValue, onCaseContentFormDialogSubmit]);
 
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: rowsWithGeneratedId, store: tableStore });
 

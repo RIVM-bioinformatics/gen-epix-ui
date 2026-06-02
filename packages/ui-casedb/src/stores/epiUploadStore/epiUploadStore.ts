@@ -2,7 +2,6 @@ import { createStore } from 'zustand';
 import { t } from 'i18next';
 import type {
   CaseDbCaseForUpload,
-  CaseDbCaseUploadResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
@@ -57,14 +56,12 @@ export interface EpiUploadStoreActions {
   setSequenceMapping: (sequenceMapping: EpiUploadSequenceMapping) => void;
   setSheet: (sheet: string) => Promise<void>;
   setSheetOptions: (sheetOptions: AutoCompleteOption<string>[]) => Promise<void>;
-  setValidatedCases: (validatedCases: CaseDbCaseUploadResult[]) => void;
 }
 
 export interface EpiUploadStoreState {
   activeStep: EPI_UPLOAD_STEP;
   assemblyProtocolId: string;
-  casesForVerification: CaseDbCaseForUpload[];
-  casesForVerificationFromSourceData: CaseDbCaseForUpload[];
+  casesForUpload: CaseDbCaseForUpload[];
   caseTypeId: string;
   cols: CaseDbCol[];
   completeCaseType: CaseDbCompleteCaseType;
@@ -79,6 +76,7 @@ export interface EpiUploadStoreState {
   mappedColumns: EpiUploadMappedColumn[];
   rawData: string[][];
   sampleIdColId: string;
+  selectedGeneratedIdsForUpload: string[];
   sequenceFilesDataTransfer: DataTransfer;
   sequenceMapping: EpiUploadSequenceMapping;
   sequencingProtocolId: string;
@@ -87,7 +85,6 @@ export interface EpiUploadStoreState {
   shouldResetColumnMapping: boolean;
   shouldResetSequenceMapping: boolean;
   validateCasesQueryKey: string[];
-  validatedCases: CaseDbCaseUploadResult[];
   validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
 }
 
@@ -95,8 +92,8 @@ export interface EpiUploadStoreState {
 const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   activeStep: STEP_ORDER[0],
   assemblyProtocolId: null,
-  casesForVerification: null,
-  casesForVerificationFromSourceData: null,
+  casesForUpload: null,
+  casesForUploadFromSourceData: null,
   caseTypeId: null,
   cols: null,
   completeCaseType: null,
@@ -111,6 +108,7 @@ const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   mappedColumns: null,
   rawData: null,
   sampleIdColId: null,
+  selectedGeneratedIdsForUpload: [],
   sequenceFilesDataTransfer: new DataTransfer(),
   sequenceMapping: null,
   sequencingProtocolId: null,
@@ -119,7 +117,6 @@ const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   shouldResetColumnMapping: false,
   shouldResetSequenceMapping: false,
   validateCasesQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
-  validatedCases: [],
   validatedCasesWithGeneratedId: [],
 });
 
@@ -167,13 +164,14 @@ export const createEpiUploadStore = () => {
         }
 
         if (nextStep === EPI_UPLOAD_STEP.PREVIEW) {
-          const casesForVerification = EpiUploadUtil.getCasesForVerification({
-            caseTypeId: completeCaseType.id,
-            createdInDataCollectionId,
-            mappedColumns,
-            rawData,
+          set({
+            casesForUpload: EpiUploadUtil.getCasesForVerification({
+              caseTypeId: completeCaseType.id,
+              createdInDataCollectionId,
+              mappedColumns,
+              rawData,
+            }),
           });
-          set({ casesForVerification, casesForVerificationFromSourceData: casesForVerification });
         }
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_SEQUENCES) {
@@ -339,7 +337,7 @@ export const createEpiUploadStore = () => {
           // Call the callback with parsed data
           await setRawData(await EpiUploadUtil.readRawData(fileList, sheet));
         } catch (error) {
-          console.log('Error reading sheet', error);
+          console.error('Error reading sheet', error);
           set({ sheet: null });
           set({ fileParsingError: t('Error reading sheet') });
           await setRawData(null);
@@ -353,15 +351,6 @@ export const createEpiUploadStore = () => {
         if (sheetOptions.length === 1) {
           await setSheet(sheetOptions[0].value);
         }
-      },
-
-      setValidatedCases: (validatedCases: CaseDbCaseUploadResult[]) => {
-        set({
-          validatedCases, validatedCasesWithGeneratedId: (validatedCases || []).map((vc, index) => ({
-            ...vc,
-            generatedId: index.toString(),
-          })),
-        });
       },
     };
   });

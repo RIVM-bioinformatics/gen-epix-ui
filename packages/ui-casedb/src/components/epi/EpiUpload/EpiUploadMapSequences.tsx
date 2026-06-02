@@ -46,8 +46,10 @@ export const EpiUploadMapSequences = () => {
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const sampleIdColId = useStore(store, (state) => state.sampleIdColId);
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
-  const validatedCasesWithGeneratedId = useStore(store, (state) => state.validatedCasesWithGeneratedId);
-  const validatedCases = useStore(store, (state) => state.validatedCases);
+  const selectedValidatedCasesWithGeneratedId = useStore(store, (state) => {
+    const selectedGeneratedIdsForUpload = state.selectedGeneratedIdsForUpload;
+    return state.validatedCasesWithGeneratedId.filter(vc => selectedGeneratedIdsForUpload.includes(vc.generatedId));
+  });
   const setSequenceMapping = useStore(store, (state) => state.setSequenceMapping);
 
   const completeCaseTypeColStats = useMemo(() => {
@@ -238,7 +240,7 @@ export const EpiUploadMapSequences = () => {
     ];
 
     const sampleIdCol = completeCaseTypeColStats.sampleIdColumns.find(x => x.id === sampleIdColId);
-    if (sampleIdCol && caseHasColumnContent(validatedCasesWithGeneratedId, sampleIdCol)) {
+    if (sampleIdCol && caseHasColumnContent(selectedValidatedCasesWithGeneratedId, sampleIdCol)) {
       tableCols.push({
         headerName: sampleIdCol.label,
         hideInFilter: true,
@@ -281,7 +283,7 @@ export const EpiUploadMapSequences = () => {
     });
 
     const uniqueColIds: Set<string> = new Set();
-    validatedCases.forEach((vc) => {
+    selectedValidatedCasesWithGeneratedId.forEach((vc) => {
       Object.keys(vc.validated_content || {}).forEach((colId) => uniqueColIds.add(colId));
     });
 
@@ -307,9 +309,9 @@ export const EpiUploadMapSequences = () => {
     });
 
     return tableCols;
-  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColStats.readsColumns, completeCaseTypeColStats.sampleIdColumns, completeCaseTypeColStats.sequenceColumns, renderReadsCell, renderSequenceCell, sampleIdColId, validatedCases, validatedCasesWithGeneratedId]);
+  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColStats.readsColumns, completeCaseTypeColStats.sampleIdColumns, completeCaseTypeColStats.sequenceColumns, renderReadsCell, renderSequenceCell, sampleIdColId, selectedValidatedCasesWithGeneratedId]);
 
-  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: validatedCasesWithGeneratedId, store: tableStore });
+  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: selectedValidatedCasesWithGeneratedId, store: tableStore });
 
   return (
     <Box

@@ -38,10 +38,10 @@ export const EpiUploadCreateCases = () => {
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const sequenceMapping = useStore(store, (state) => state.sequenceMapping);
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
-  const validatedCases = useStore(store, (state) => state.validatedCases);
   const validatedCasesWithGeneratedId = useStore(store, (state) => state.validatedCasesWithGeneratedId);
+  const selectedGeneratedIdsForUpload = useStore(store, (state) => state.selectedGeneratedIdsForUpload);
+
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
-  const rawData = useStore(store, (state) => state.rawData);
   const [progress, setProgress] = useState(0);
   const [progressMessage, setProgressMessage] = useState('');
 
@@ -52,6 +52,10 @@ export const EpiUploadCreateCases = () => {
   const sequenceFileStats = useMemo(() => {
     return EpiUploadUtil.getSequenceMappingStats(sequenceMapping, sequenceFilesDataTransfer);
   }, [sequenceFilesDataTransfer, sequenceMapping]);
+
+  const selectedValidatedCasesWithGeneratedId = useMemo(() => {
+    return validatedCasesWithGeneratedId.filter(vc => selectedGeneratedIdsForUpload.includes(vc.generatedId));
+  }, [validatedCasesWithGeneratedId, selectedGeneratedIdsForUpload]);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -84,12 +88,11 @@ export const EpiUploadCreateCases = () => {
         setProgressMessage(message);
       },
       sampleIdColId: store.getState().sampleIdColId,
+      selectedValidatedCasesWithGeneratedId,
       sequenceFilesDataTransfer,
       sequenceMapping,
       sequencingProtocolId: store.getState().sequencingProtocolId,
       signal,
-      validatedCases,
-      validatedCasesWithGeneratedId,
     }).catch((e) => {
       if (!signal.aborted) {
         setError(e);
@@ -97,7 +100,7 @@ export const EpiUploadCreateCases = () => {
     });
 
     return abort;
-  }, [isUploadStarted, sequenceFilesDataTransfer, sequenceMapping, store, t, validatedCases, validatedCasesWithGeneratedId]);
+  }, [isUploadStarted, sequenceFilesDataTransfer, sequenceMapping, store, t, selectedValidatedCasesWithGeneratedId]);
 
 
   const onStartOverButtonClick = useCallback(async () => {
@@ -210,7 +213,7 @@ export const EpiUploadCreateCases = () => {
           >
             <Alert severity={'info'}>
               <AlertTitle>
-                {t('{{numCases}} cases are ready to be uploaded.', { numCases: validatedCases.length })}
+                {t('{{numCases}} cases are ready to be uploaded.', { numCases: selectedValidatedCasesWithGeneratedId.length })}
               </AlertTitle>
             </Alert>
           </Box>
@@ -240,7 +243,7 @@ export const EpiUploadCreateCases = () => {
               </Alert>
             </Box>
           )}
-          {(rawData.length - 1) - validatedCases.length > 0 && (
+          {validatedCasesWithGeneratedId.length - selectedValidatedCasesWithGeneratedId.length > 0 && (
             <Box
               sx={{
                 marginY: 2,
@@ -248,7 +251,7 @@ export const EpiUploadCreateCases = () => {
             >
               <Alert severity={'warning'}>
                 <AlertTitle>
-                  {t('{{numCases}} cases were not selected and will not be uploaded.', { numCases: (rawData.length - 1) - validatedCases.length })}
+                  {t('{{numCases}} cases were not selected and will not be uploaded.', { numCases: validatedCasesWithGeneratedId.length - selectedValidatedCasesWithGeneratedId.length })}
                 </AlertTitle>
               </Alert>
             </Box>

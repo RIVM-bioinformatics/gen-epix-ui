@@ -21,7 +21,6 @@ import type {
   CaseDbCaseBatchUploadResult,
   CaseDbCaseForUpload,
   CaseDbCaseType,
-  CaseDbCaseUploadResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
   CaseDbReadSetForUpload,
@@ -87,11 +86,10 @@ export class EpiUploadUtil {
     createdInDataCollectionId: string;
     mappedColumns: EpiUploadMappedColumn[];
     sampleIdColId: string;
+    selectedValidatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
     signal: AbortSignal;
-    validatedCases: CaseDbCaseUploadResult[];
-    validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
   }): Promise<CaseDbCaseBatchUploadResult> {
     const {
       assemblyProtocolId,
@@ -100,18 +98,17 @@ export class EpiUploadUtil {
       createdInDataCollectionId,
       mappedColumns,
       sampleIdColId,
+      selectedValidatedCasesWithGeneratedId: validatedCasesWithGeneratedId,
       sequenceMapping,
       sequencingProtocolId,
       signal,
-      validatedCases,
-      validatedCasesWithGeneratedId,
     } = kwArgs;
     const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col.id === sampleIdColId);
 
     return (await CaseDbCaseApi.getInstance().uploadCases({
       case_batch: {
-        cases: validatedCasesWithGeneratedId.map((vc, index) => {
-          const caseId = validatedCases[index].id ?? undefined;
+        cases: validatedCasesWithGeneratedId.map((vc) => {
+          const caseId = vc.id;
           const readSetsForUpload: CaseDbReadSetForUpload[] = [];
           const seqsForUpload: CaseDbSeqForUpload[] = [];
           const externalSampleId = CaseUtil.getRowValue(
@@ -153,16 +150,16 @@ export class EpiUploadUtil {
             }
           }
 
-          return {
+          return ObjectUtil.deepRemoveEmptyStrings({
             case: {
               case_type_id: caseTypeId,
-              content: ObjectUtil.deepRemoveEmptyStrings(vc.validated_content),
+              content: vc.validated_content,
               created_in_data_collection_id: createdInDataCollectionId,
               id: caseId,
             },
             read_sets: readSetsForUpload,
             seqs: seqsForUpload,
-          } satisfies CaseDbCaseForUpload;
+          } satisfies CaseDbCaseForUpload);
         }),
       },
       case_type_id: caseTypeId,
@@ -181,12 +178,11 @@ export class EpiUploadUtil {
     onError: (error: Error) => void;
     onProgress: (progress: number, message: string) => void;
     sampleIdColId: string;
+    selectedValidatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
     sequenceFilesDataTransfer: DataTransfer;
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
     signal: AbortSignal;
-    validatedCases: CaseDbCaseUploadResult[];
-    validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
   }): Promise<void> {
     const {
       onComplete,
@@ -379,7 +375,7 @@ export class EpiUploadUtil {
     return defaultFormValues;
   }
 
-  public static getEpiUploadSequenceMapping(completeCaseType: CaseDbCompleteCaseType, validatedCases: CaseUploadResultWithGeneratedId[], sequenceFilesDataTransfer: DataTransfer): EpiUploadSequenceMapping {
+  public static getEpiUploadSequenceMapping(completeCaseType: CaseDbCompleteCaseType, validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[], sequenceFilesDataTransfer: DataTransfer): EpiUploadSequenceMapping {
     if (!sequenceFilesDataTransfer || sequenceFilesDataTransfer.files.length === 0) {
       return {};
     }
@@ -387,7 +383,7 @@ export class EpiUploadUtil {
     const stats = EpiUploadUtil.getCompleteCaseTypeColStats(completeCaseType);
     const result: EpiUploadSequenceMapping = {};
 
-    validatedCases.forEach((vc) => {
+    (JSON.parse(JSON.stringify(validatedCasesWithGeneratedId)) as CaseUploadResultWithGeneratedId[]).forEach((vc) => {
       const caseSequenceMapping: EpiUploadSequenceMappingForCaseId = {
         readsFileNames: {},
         sequenceFileNames: {},
@@ -746,13 +742,12 @@ export class EpiUploadUtil {
     onError: (error: Error) => void;
     onProgress: (progress: number, message: string) => void;
     sampleIdColId: string;
+    selectedValidatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
     sequenceFilesDataTransfer: DataTransfer;
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
     signal: AbortSignal;
     startPercentage: number;
-    validatedCases: CaseDbCaseUploadResult[];
-    validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
   }): Promise<void> {
     const {
       caseBatchUploadResult,
@@ -769,7 +764,7 @@ export class EpiUploadUtil {
     let totalFileSizeToUpload = 0;
 
     for (const [index, caseUploadResult] of caseBatchUploadResult.cases.entries()) {
-      const { generatedId } = kwArgs.validatedCasesWithGeneratedId[index];
+      const { generatedId } = kwArgs.selectedValidatedCasesWithGeneratedId[index];
       if (sequenceMapping[generatedId]) {
         const caseId = caseUploadResult.id;
         for (const [colId, fileName] of Object.entries(sequenceMapping[generatedId].sequenceFileNames)) {

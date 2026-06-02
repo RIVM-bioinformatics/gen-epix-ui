@@ -19,13 +19,14 @@ import { CaseUtil } from '../../../utils/CaseUtil';
 
 export type EpiCaseContentFormProps = {
   readonly caseContent: CaseDbCase['content'];
+  readonly caseId: string;
   readonly completeCaseType: CaseDbCompleteCaseType;
   readonly enabledColIds: string[];
   readonly formId: string;
-  readonly onSubmit: (content: CaseDbCase['content']) => void;
+  readonly onSubmit: (caseId: string, content: CaseDbCase['content']) => void;
 };
 
-export const EpiCaseContentForm = ({ caseContent, completeCaseType, enabledColIds, formId, onSubmit }: EpiCaseContentFormProps) => {
+export const EpiCaseContentForm = ({ caseContent, caseId, completeCaseType, enabledColIds, formId, onSubmit }: EpiCaseContentFormProps) => {
   const organizationsQuery = useOrganizationsQuery();
   const schema = useMemo(() => CaseUtil.createYupSchema(completeCaseType), [completeCaseType]);
 
@@ -45,8 +46,10 @@ export const EpiCaseContentForm = ({ caseContent, completeCaseType, enabledColId
 
 
   const onFormSubmit = useCallback((content: { [key: string]: string }) => {
-    onSubmit(FormUtil.createStringValuesFromFormValues(fieldDefinitions, content));
-  }, [fieldDefinitions, onSubmit]);
+    if (caseId) {
+      onSubmit(caseId, FormUtil.createStringValuesFromFormValues(fieldDefinitions, content));
+    }
+  }, [caseId, fieldDefinitions, onSubmit]);
   const values = useMemo<CaseDbCase['content']>(() => FormUtil.createFormValues(fieldDefinitions, caseContent), [fieldDefinitions, caseContent]);
 
   useEffect(() => {

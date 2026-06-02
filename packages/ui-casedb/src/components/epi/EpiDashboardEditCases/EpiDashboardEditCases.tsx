@@ -7,8 +7,7 @@ export type EpiDashboardEditCasesProps = {
   onClose: () => void;
 };
 
-export const EpiDashboardEditCases = ({ cases, onClose }: EpiDashboardEditCasesProps) => {
-  console.log('Editing cases:', cases);
+export const EpiDashboardEditCases = ({ cases: _cases, onClose }: EpiDashboardEditCasesProps) => {
   return (
     <Box>
       {'Editing cases...'}
