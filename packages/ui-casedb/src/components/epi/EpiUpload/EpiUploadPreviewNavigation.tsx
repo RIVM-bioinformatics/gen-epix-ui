@@ -8,12 +8,12 @@ import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
-export type EpiUploadValidateNavigationProps = {
+export type EpiUploadPreviewNavigationProps = {
   readonly onGoBackButtonClick: () => void;
   readonly onProceedButtonClick: () => void;
 };
 
-export const EpiUploadValidateNavigation = ({ onGoBackButtonClick, onProceedButtonClick }: EpiUploadValidateNavigationProps) => {
+export const EpiUploadPreviewNavigation = ({ onGoBackButtonClick, onProceedButtonClick }: EpiUploadPreviewNavigationProps) => {
   const { t } = useTranslation();
   const tableStore = useTableStoreContext<CaseUploadResultWithGeneratedId>();
   const uploadStore = use(EpiUploadStoreContext);
@@ -28,7 +28,7 @@ export const EpiUploadValidateNavigation = ({ onGoBackButtonClick, onProceedButt
       onGoBackButtonClick={onGoBackButtonClick}
       onProceedButtonClick={onProceedButtonClick}
       proceedDisabled={proceedDisabled}
-      proceedLabel={t`Continue`}
+      proceedLabel={selectedIds.length ? t('Proceed with {{count}} selected cases', { count: selectedIds.length }) : t('Proceed')}
     />
   );
 };

@@ -9,6 +9,7 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui';
 import {
+  FormUtil,
   GenericForm,
   TestIdUtil,
   withDialog,
@@ -55,7 +56,7 @@ export const EpiUploadEditColumnValuesDialog = withDialog<EpiUploadEditColumnVal
   }, [openProps.completeCaseType.cols, openProps.colId]);
 
   useEffect(() => {
-    onTitleChange(t('Edit all values for: {{colLabel}}', { colLabel: col.label }));
+    onTitleChange(t('Edit values for: {{colLabel}} (for selected rows)', { colLabel: col.label }));
   }, [onTitleChange, col.label, t]);
 
   const schema = useMemo(() => CaseTypeFormUtil.createYupSchema({
@@ -76,9 +77,9 @@ export const EpiUploadEditColumnValuesDialog = withDialog<EpiUploadEditColumnVal
   }, [openProps.completeCaseType, openProps.colId]);
 
   const onFormSubmit = useCallback((content: CaseDbCase['content']) => {
-    onSubmit(content);
+    onSubmit(FormUtil.createStringValuesFromFormValues(fieldDefinitions, content));
     onClose();
-  }, [onClose, onSubmit]);
+  }, [fieldDefinitions, onClose, onSubmit]);
 
   useEffect(() => {
     const actions: DialogAction[] = [

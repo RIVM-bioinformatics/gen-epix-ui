@@ -25,8 +25,13 @@ import {
   CaseDbEtlStatus,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
-import type { TableRowAndColumnParams } from '@gen-epix/ui';
+import type {
+  ConfirmationRefMethods,
+  TableRowAndColumnParams,
+} from '@gen-epix/ui';
 import {
+  BackdropSpinner,
+  Confirmation,
   createTableStore,
   ObjectUtil,
   QueryClientManager,
@@ -42,7 +47,7 @@ import { withEpiCompleteCaseTypeLoader } from '../EpiCompletCaseTypeLoader/withE
 import { CaseUtil } from '../../../utils/CaseUtil';
 
 import { EpiUploadCaseResultTable } from './EpiUploadCaseResultTable';
-import { EpiUploadValidateNavigation } from './EpiUploadValidateNavigation';
+import { EpiUploadPreviewNavigation } from './EpiUploadPreviewNavigation';
 
 export type EpiUploadPreviewProps = {
   readonly caseTypeId: string;
@@ -62,7 +67,9 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
   const [exceedsMaxNumCases, setExceedsMaxNumCases] = useState(false);
   const [isRevalidatingCases, setIsRevalidatingCases] = useState(false);
+  const [revalidationError, setRevalidationError] = useState<Error | null>(null);
   const selectedIdsRef = useRef<string[]>([]);
+  const continueWithoutFixingConfirmationRef = useRef<ConfirmationRefMethods>(null);
 
   const caseUploadValidationResultQuery = useQueryMemo({
     enabled: mappedColumns.length > 0 && casesForVerification.length > 0,
@@ -99,65 +106,71 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
 
   const revalidateCases = useCallback(async (casesToValidate: Array<{ content: CaseDbCase['content']; row: CaseUploadResultWithGeneratedId }>) => {
     setIsRevalidatingCases(true);
-    const batchValidationResult = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepRemoveEmptyStrings({
-      case_batch: {
-        cases: casesToValidate.map(({ content, row }) => ({
-          case: {
-            case_type_id: completeCaseType.id,
-            content: Object.fromEntries(
-              Object.entries(content).map(([colId]) => {
-                const col = completeCaseType.cols[colId];
-                if (!col) {
-                  return [colId, content[colId]];
-                }
-                const rowValue = CaseUtil.getRowValue(content, col, completeCaseType);
-                return [colId, rowValue.isMissing ? '' : rowValue.long];
-              }),
-            ),
-            created_in_data_collection_id: createdInDataCollectionId,
-            id: row.id,
-          },
-        })),
-      },
-      case_type_id: caseTypeId,
-      created_in_data_collection_id: createdInDataCollectionId,
-      on_exists: CaseDbUploadAction.UPDATE,
-      verify_only: true,
-    }))).data;
+    try {
+      const batchValidationResult = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepRemoveEmptyStrings({
+        case_batch: {
+          cases: casesToValidate.map(({ content, row }) => ({
+            case: {
+              case_type_id: completeCaseType.id,
+              content: Object.fromEntries(
+                Object.entries(content).map(([colId]) => {
+                  const col = completeCaseType.cols[colId];
+                  if (!col) {
+                    return [colId, content[colId]];
+                  }
+                  const rowValue = CaseUtil.getRowValue(content, col, completeCaseType);
+                  return [colId, rowValue.isMissing ? '' : rowValue.long];
+                }),
+              ),
+              created_in_data_collection_id: createdInDataCollectionId,
+              id: row.id,
+            },
+          })),
+        },
+        case_type_id: caseTypeId,
+        created_in_data_collection_id: createdInDataCollectionId,
+        on_exists: CaseDbUploadAction.UPDATE,
+        verify_only: true,
+      }))).data;
 
-    const resultByGeneratedId = new Map(
-      casesToValidate.map(({ row }, index) => [row.generatedId, batchValidationResult.cases[index]]),
-    );
+      const resultByGeneratedId = new Map(
+        casesToValidate.map(({ row }, index) => [row.generatedId, batchValidationResult.cases[index]]),
+      );
 
-    QueryClientManager.getInstance().queryClient.setQueryData(validateCasesQueryKey, {
-      cases: caseUploadValidationResultQuery.data.map(row => {
-        const newResult = resultByGeneratedId.get(row.generatedId);
-        if (newResult) {
-          return { ...newResult, generatedId: row.generatedId };
+      QueryClientManager.getInstance().queryClient.setQueryData(validateCasesQueryKey, {
+        cases: caseUploadValidationResultQuery.data.map(row => {
+          const newResult = resultByGeneratedId.get(row.generatedId);
+          if (newResult) {
+            return { ...newResult, generatedId: row.generatedId };
+          }
+          return row;
+        }),
+      });
+
+      const newlyFailedIds: string[] = [];
+      casesToValidate.forEach(({ row }, index) => {
+        const newResult = batchValidationResult.cases[index];
+        if (newResult.status !== CaseDbEtlStatus.SKIPPED && newResult.status !== CaseDbEtlStatus.SUCCESS && newResult.status !== CaseDbEtlStatus.UPDATED) {
+          if (!selectedIdsRef.current.includes(row.generatedId)) {
+            selectedIdsRef.current.push(row.generatedId);
+            newlyFailedIds.push(row.generatedId);
+          }
         }
-        return row;
-      }),
-    });
+      });
 
-    const newlyFailedIds: string[] = [];
-    casesToValidate.forEach(({ row }, index) => {
-      const newResult = batchValidationResult.cases[index];
-      if (newResult.status !== CaseDbEtlStatus.SKIPPED && newResult.status !== CaseDbEtlStatus.SUCCESS && newResult.status !== CaseDbEtlStatus.UPDATED) {
-        if (!selectedIdsRef.current.includes(row.generatedId)) {
-          selectedIdsRef.current.push(row.generatedId);
-          newlyFailedIds.push(row.generatedId);
+      if (newlyFailedIds.length > 0) {
+        const currentSelectedIds = tableStore.getState().selectedIds;
+        const idsToAdd = newlyFailedIds.filter(id => !currentSelectedIds.includes(id));
+        if (idsToAdd.length > 0) {
+          setSelectedIds([...currentSelectedIds, ...idsToAdd]);
         }
       }
-    });
-
-    if (newlyFailedIds.length > 0) {
-      const currentSelectedIds = tableStore.getState().selectedIds;
-      const idsToAdd = newlyFailedIds.filter(id => !currentSelectedIds.includes(id));
-      if (idsToAdd.length > 0) {
-        setSelectedIds([...currentSelectedIds, ...idsToAdd]);
-      }
+    } catch (error) {
+      setRevalidationError(error as Error);
+    } finally {
+      setIsRevalidatingCases(false);
     }
-    setIsRevalidatingCases(false);
+
   }, [caseTypeId, caseUploadValidationResultQuery.data, completeCaseType, createdInDataCollectionId, setSelectedIds, tableStore, validateCasesQueryKey]);
 
   const onColContentEditSubmit = useCallback(async (colContent: CaseDbCase['content']) => {
@@ -199,7 +212,24 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
     setSelectedIds(newSelectedIds);
   }, [caseUploadValidationResultQuery.data, setSelectedIds]);
 
+
+  const onProceedWithOutFixing = useCallback(async () => {
+    const selectedIds = tableStore.getState().selectedIds;
+    const validCases = caseUploadValidationResultQuery.data.filter(row => selectedIds.includes(row.generatedId) && !row.data_issues.some(issue => issue.data_issue_type === CaseDbDataIssueType.INVALID));
+    store.setState((state) => ({
+      ...state,
+      selectedGeneratedIdsForUpload: validCases.map(c => c.generatedId),
+      validatedCasesWithGeneratedId: caseUploadValidationResultQuery.data,
+    }));
+    await goToNextStep();
+  }, [caseUploadValidationResultQuery.data, goToNextStep, store, tableStore]);
+
   const onProceedButtonClick = useCallback(async () => {
+    if (caseUploadValidationResultQuery.data.some(row => tableStore.getState().selectedIds.includes(row.generatedId) && (row.data_issues.some(issue => issue.data_issue_type === CaseDbDataIssueType.INVALID) || row.status === CaseDbEtlStatus.FAILED))) {
+      continueWithoutFixingConfirmationRef.current?.open();
+      return;
+    }
+
     store.setState((state) => ({
       ...state,
       selectedGeneratedIdsForUpload: selectedIdsRef.current,
@@ -207,7 +237,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
     }));
 
     await goToNextStep();
-  }, [goToNextStep, caseUploadValidationResultQuery.data, store]);
+  }, [goToNextStep, caseUploadValidationResultQuery.data, store, tableStore]);
 
   const onGoBackButtonClick = useCallback(() => {
     goToPreviousStep();
@@ -230,8 +260,8 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
     >
       <TableStoreContextProvider store={tableStore}>
         <ResponseHandler
+          error={revalidationError}
           inlineSpinner
-          isLoading={isRevalidatingCases}
           loadables={loadables}
           loadingMessage={t('Validating cases')}
           takingLongerTimeoutMs={10000}
@@ -259,12 +289,24 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
             onColContentEditSubmit={onColContentEditSubmit}
             tableStore={tableStore}
           />
-          <EpiUploadValidateNavigation
+          <EpiUploadPreviewNavigation
             onGoBackButtonClick={onGoBackButtonClick}
             onProceedButtonClick={onProceedButtonClick}
           />
         </ResponseHandler>
       </TableStoreContextProvider>
+      <BackdropSpinner
+        label={t('Revalidating cases')}
+        open={isRevalidatingCases}
+      />
+      <Confirmation
+        body={t`Some of the selected cases contain issues. If you proceed, these cases will be excluded. Are you sure you want to proceed without them?`}
+        cancelLabel={t`Cancel`}
+        confirmLabel={t`Proceed`}
+        onConfirm={onProceedWithOutFixing}
+        ref={continueWithoutFixingConfirmationRef}
+        title={t`Issues found with selected cases`}
+      />
     </Box>
   );
 });

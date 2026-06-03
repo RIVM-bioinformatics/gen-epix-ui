@@ -307,11 +307,7 @@ export const EpiUploadCaseResultTable = ({ caseUploadResults, completeCaseType, 
       return tableCols;
     }
     tableCols.push(TableUtil.createReadableIndexColumn());
-    tableCols.push(TableUtil.createSelectableColumn({
-      isDisabled: (params: TableRowParams<CaseUploadResultWithGeneratedId>) => {
-        return params.row.data_issues.some(issue => errorIssueTypes.includes(issue.data_issue_type));
-      },
-    }));
+    tableCols.push(TableUtil.createSelectableColumn());
     tableCols.push({
       disableEllipsis: true,
       frozen: TABLE_COLUMN_FROZEN.LEFT,
@@ -370,14 +366,15 @@ export const EpiUploadCaseResultTable = ({ caseUploadResults, completeCaseType, 
             }
             return '';
           },
-          customHeaderIcon: (
-            <EditIcon fontSize={'inherit'} />
-          ),
+          customHeaderIcon: {
+            iconElement: (<EditIcon fontSize={'inherit'} />),
+            label: t('Edit values for {{code}} (for selected rows)', { code: col.code }),
+            onClick: onTableCustomHeaderIconClick,
+          },
           headerName: col.code,
           hideInFilter: true,
           id: col.id,
           isInitiallyVisible,
-          onCustomHeaderIconClick: onTableCustomHeaderIconClick,
           renderCell,
           type: 'text',
           valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
@@ -428,7 +425,7 @@ export const EpiUploadCaseResultTable = ({ caseUploadResults, completeCaseType, 
       t,
     }));
     return tableCols;
-  }, [caseUploadResults, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, t, errorIssueTypes, onTableCustomHeaderIconClick, renderCell, getOriginalCellValue]);
+  }, [caseUploadResults, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, t, onTableCustomHeaderIconClick, renderCell, getOriginalCellValue]);
 
   useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: rowsWithGeneratedId, store: tableStore });
 

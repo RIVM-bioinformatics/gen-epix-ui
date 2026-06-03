@@ -222,7 +222,7 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
   }, [filter]);
 
   const onCustomHeaderIconClick = useCallback(() => {
-    column.onCustomHeaderIconClick?.({ column, dataContext });
+    column.customHeaderIcon?.onClick({ column, dataContext });
   }, [column, dataContext]);
 
   const onFilterPopOverClose = useCallback(() => {
@@ -368,8 +368,9 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
               className={tableHeaderCellClassNames.customHeaderIcon}
               onClick={onCustomHeaderIconClick}
               tabIndex={0}
+              title={column.customHeaderIcon?.label}
             >
-              {column.customHeaderIcon}
+              {column.customHeaderIcon?.iconElement}
             </TableCustomHeaderIconButton>
           )}
           {shouldShowFilterIcon && (

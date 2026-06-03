@@ -94,6 +94,7 @@ export * from './components/ui/Spinner';
 export * from './components/ui/Sidebar';
 export * from './components/ui/ResponseHandler';
 export * from './components/ui/PageContainer';
+export * from './components/ui/BackdropSpinner';
 export * from './components/ui/OutagesDialog';
 export * from './components/ui/OutageList';
 export * from './components/ui/OrganizationSwitcherDialog';
