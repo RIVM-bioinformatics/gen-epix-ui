@@ -56,7 +56,7 @@ export const EpiUploadEditColumnValuesDialog = withDialog<EpiUploadEditColumnVal
   }, [openProps.completeCaseType.cols, openProps.colId]);
 
   useEffect(() => {
-    onTitleChange(t('Edit values for: {{colLabel}} (for selected rows)', { colLabel: col.label }));
+    onTitleChange(t('Edit values for {{colLabel}} (for selected rows)', { colLabel: col.label }));
   }, [onTitleChange, col.label, t]);
 
   const schema = useMemo(() => CaseTypeFormUtil.createYupSchema({

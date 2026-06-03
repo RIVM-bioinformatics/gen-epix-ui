@@ -368,7 +368,7 @@ export const EpiUploadCaseResultTable = ({ caseUploadResults, completeCaseType, 
           },
           customHeaderIcon: {
             iconElement: (<EditIcon fontSize={'inherit'} />),
-            label: t('Edit values for {{code}} (for selected rows)', { code: col.code }),
+            label: t('Edit values for {{colLabel}} (for selected rows)', { colLabel: col.label }),
             onClick: onTableCustomHeaderIconClick,
           },
           headerName: col.code,
