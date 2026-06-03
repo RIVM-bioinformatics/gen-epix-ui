@@ -61,9 +61,8 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const mappedColumns = useStore(store, (state) => state.mappedColumns);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
-  const casesForVerification = useStore(store, (state) => state.casesForUpload);
+  const casesForVerificationFromSourceData = useStore(store, (state) => state.casesForVerificationFromSourceData);
   const createdInDataCollectionId = useStore(store, (state) => state.createdInDataCollectionId);
-  const rawData = useStore(store, (state) => state.rawData);
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
   const [exceedsMaxNumCases, setExceedsMaxNumCases] = useState(false);
   const [isRevalidatingCases, setIsRevalidatingCases] = useState(false);
@@ -71,13 +70,17 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const selectedIdsRef = useRef<string[]>([]);
   const continueWithoutFixingConfirmationRef = useRef<ConfirmationRefMethods>(null);
 
+  const getOriginalCellValue = useCallback((col: CaseDbCol, params: TableRowAndColumnParams<CaseUploadResultWithGeneratedId, null>, _issue: CaseDbCaseDataIssue): string => {
+    return casesForVerificationFromSourceData[params.rowIndex]?.case?.content[col.id] ?? '';
+  }, [casesForVerificationFromSourceData]);
+
   const caseUploadValidationResultQuery = useQueryMemo({
-    enabled: mappedColumns.length > 0 && casesForVerification.length > 0,
+    enabled: mappedColumns.length > 0 && casesForVerificationFromSourceData.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
       const response = await CaseDbCaseApi.getInstance().uploadCases({
         case_batch: {
-          cases: casesForVerification,
+          cases: casesForVerificationFromSourceData,
         },
         case_type_id: caseTypeId,
         created_in_data_collection_id: createdInDataCollectionId,
@@ -242,11 +245,6 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const onGoBackButtonClick = useCallback(() => {
     goToPreviousStep();
   }, [goToPreviousStep]);
-
-  const getOriginalCellValue = useCallback((col: CaseDbCol, params: TableRowAndColumnParams<CaseUploadResultWithGeneratedId, null>, _issue: CaseDbCaseDataIssue): string => {
-    const originalValue = rawData.slice(1)[params.rowIndex][mappedColumns.find(mc => mc.col?.id === col.id)?.originalIndex || -1];
-    return originalValue;
-  }, [mappedColumns, rawData]);
 
   return (
     <Box

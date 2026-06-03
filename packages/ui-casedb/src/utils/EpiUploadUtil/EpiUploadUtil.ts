@@ -50,6 +50,7 @@ import {
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
 import type {
+  CaseForUploadWithGeneratedId,
   CaseUploadResultWithGeneratedId,
   EpiUploadCompleteColStats,
   EpiUploadMappedColumn,
@@ -209,9 +210,9 @@ export class EpiUploadUtil {
     }
   }
 
-  public static getCasesForVerification(kwArgs: { caseTypeId: string; createdInDataCollectionId: string; mappedColumns: EpiUploadMappedColumn[]; rawData: string[][] }): CaseDbCaseForUpload[] {
+  public static getCasesForUpload(kwArgs: { caseTypeId: string; createdInDataCollectionId: string; mappedColumns: EpiUploadMappedColumn[]; rawData: string[][] }): CaseForUploadWithGeneratedId[] {
     const { caseTypeId, createdInDataCollectionId, mappedColumns, rawData } = kwArgs;
-    return rawData.slice(1).map((row) => {
+    return rawData.slice(1).map((row, index) => {
       const caseIdColumn = mappedColumns.find((mappedColumn) => mappedColumn.isCaseIdColumn)?.originalIndex;
       const content: { [key: string]: string } = {};
 
@@ -220,14 +221,15 @@ export class EpiUploadUtil {
           content[mappedColumn.col.id] = row[mappedColumn.originalIndex];
         }
       });
-
-      const caseForCreateUpdate: CaseDbCaseForUpload = {
+      const id = caseIdColumn !== undefined ? row[caseIdColumn] : undefined;
+      const caseForCreateUpdate: CaseForUploadWithGeneratedId = {
         case: {
           case_type_id: caseTypeId,
           content: ObjectUtil.deepRemoveEmptyStrings(content),
           created_in_data_collection_id: createdInDataCollectionId,
         },
-        id: caseIdColumn !== undefined ? row[caseIdColumn] : undefined,
+        generatedId: id ?? index.toString(), // Use original case ID if available, otherwise use the index as a temporary ID
+        id,
       };
 
       return { ...caseForCreateUpdate, content };

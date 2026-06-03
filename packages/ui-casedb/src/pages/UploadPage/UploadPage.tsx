@@ -17,6 +17,7 @@ import {
 
 export const UploadPage = () => {
   const { t } = useTranslation();
+
   const epiUploadStore = useMemo(() => createEpiUploadStore(), []);
 
   useEffect(() => {

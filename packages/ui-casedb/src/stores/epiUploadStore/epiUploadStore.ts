@@ -1,7 +1,6 @@
 import { createStore } from 'zustand';
 import { t } from 'i18next';
 import type {
-  CaseDbCaseForUpload,
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
@@ -16,6 +15,7 @@ import {
 } from '@gen-epix/ui';
 
 import type {
+  CaseForUploadWithGeneratedId,
   CaseUploadResultWithGeneratedId,
   EpiUploadMappedColumn,
   EpiUploadSequenceMapping,
@@ -61,7 +61,7 @@ export interface EpiUploadStoreActions {
 export interface EpiUploadStoreState {
   activeStep: EPI_UPLOAD_STEP;
   assemblyProtocolId: string;
-  casesForUpload: CaseDbCaseForUpload[];
+  casesForVerificationFromSourceData: CaseForUploadWithGeneratedId[];
   caseTypeId: string;
   cols: CaseDbCol[];
   completeCaseType: CaseDbCompleteCaseType;
@@ -92,8 +92,7 @@ export interface EpiUploadStoreState {
 const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
   activeStep: STEP_ORDER[0],
   assemblyProtocolId: null,
-  casesForUpload: null,
-  casesForUploadFromSourceData: null,
+  casesForVerificationFromSourceData: null,
   caseTypeId: null,
   cols: null,
   completeCaseType: null,
@@ -165,7 +164,7 @@ export const createEpiUploadStore = () => {
 
         if (nextStep === EPI_UPLOAD_STEP.PREVIEW) {
           set({
-            casesForUpload: EpiUploadUtil.getCasesForVerification({
+            casesForVerificationFromSourceData: EpiUploadUtil.getCasesForUpload({
               caseTypeId: completeCaseType.id,
               createdInDataCollectionId,
               mappedColumns,
