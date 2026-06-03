@@ -158,6 +158,7 @@ interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext 
   cellColorGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   cellTitleGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   columnContext?: TColumnContext;
+  customHeaderIcon?: ReactElement;
   disableEllipsis?: boolean;
   displayValueGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   filterLabel?: string;
@@ -167,6 +168,7 @@ interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext 
   hideInFilter?: boolean;
   id?: string;
   isInitiallyVisible: boolean;
+  onCustomHeaderIconClick?: (params: TableColumnParams<TRowData, TDataContext>) => void;
   renderCell?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => ReactElement;
   renderHeader?: (params: TableColumnParams<TRowData, TDataContext>) => ReactElement;
   renderHeaderContent?: (params: TableColumnParams<TRowData, TDataContext>) => ReactElement;

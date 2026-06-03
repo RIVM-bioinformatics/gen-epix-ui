@@ -1,4 +1,7 @@
-import { useEffect } from 'react';
+import {
+  useCallback,
+  useEffect,
+} from 'react';
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
@@ -11,26 +14,25 @@ import {
   withDialog,
 } from '@gen-epix/ui';
 import SaveIcon from '@mui/icons-material/Save';
+import type { CaseDbCase } from '@gen-epix/api-casedb';
 
 import { EpiCaseContentForm } from '../EpiCaseContentForm/EpiCaseContentForm';
 import type { EpiCaseContentFormProps } from '../EpiCaseContentForm/EpiCaseContentForm';
 
 
 export interface EpiCaseContentFormDialogProps extends WithDialogRenderProps<EpiCaseFormDialogOpenProps> {
-  //
+  readonly onSubmit: (caseId: string, content: CaseDbCase['content']) => void;
 }
 
 export type EpiCaseContentFormDialogRefMethods = WithDialogRefMethods<EpiCaseContentFormDialogProps, EpiCaseFormDialogOpenProps>;
 
-// !FIXME
-export interface EpiCaseFormDialogOpenProps extends EpiCaseContentFormProps {
-  //
-}
+export type EpiCaseFormDialogOpenProps = Omit<EpiCaseContentFormProps, 'onSubmit'>;
 
 export const EpiCaseContentFormDialog = withDialog<EpiCaseContentFormDialogProps, EpiCaseFormDialogOpenProps>((
   {
     onActionsChange,
     onClose,
+    onSubmit,
     onTitleChange,
     openProps,
   }: EpiCaseContentFormDialogProps,
@@ -64,6 +66,11 @@ export const EpiCaseContentFormDialog = withDialog<EpiCaseContentFormDialogProps
     onActionsChange(actions);
   }, [onActionsChange, onClose, t, openProps.formId]);
 
+  const onEpiCaseContentFormSubmit = useCallback((caseId: string, content: CaseDbCase['content']) => {
+    onSubmit(caseId, content);
+    onClose();
+  }, [onClose, onSubmit]);
+
 
   return (
     <EpiCaseContentForm
@@ -72,7 +79,7 @@ export const EpiCaseContentFormDialog = withDialog<EpiCaseContentFormDialogProps
       completeCaseType={openProps.completeCaseType}
       enabledColIds={openProps.enabledColIds}
       formId={openProps.formId}
-      onSubmit={openProps.onSubmit}
+      onSubmit={onEpiCaseContentFormSubmit}
     />
   );
 }, {

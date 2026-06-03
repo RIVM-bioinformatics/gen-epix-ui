@@ -39,6 +39,7 @@ import {
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 import { withEpiCompleteCaseTypeLoader } from '../EpiCompletCaseTypeLoader/withEpiCompleteCaseTypeLoader';
+import { CaseUtil } from '../../../utils/CaseUtil';
 
 import { EpiUploadCaseResultTable } from './EpiUploadCaseResultTable';
 import { EpiUploadValidateNavigation } from './EpiUploadValidateNavigation';
@@ -60,6 +61,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const rawData = useStore(store, (state) => state.rawData);
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
   const [exceedsMaxNumCases, setExceedsMaxNumCases] = useState(false);
+  const [isRevalidatingCases, setIsRevalidatingCases] = useState(false);
   const selectedIdsRef = useRef<string[]>([]);
 
   const caseUploadValidationResultQuery = useQueryMemo({
@@ -95,20 +97,27 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   }), []);
   const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));
 
-  const onCaseContentEditSubmit = useCallback(async (caseId: string, content: CaseDbCase['content']) => {
-    const originalCaseUploadResult = caseUploadValidationResultQuery.data.find(r => r.generatedId === caseId);
-    const singleCaseValidationResult = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepRemoveEmptyStrings({
+  const revalidateCases = useCallback(async (casesToValidate: Array<{ content: CaseDbCase['content']; row: CaseUploadResultWithGeneratedId }>) => {
+    setIsRevalidatingCases(true);
+    const batchValidationResult = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepRemoveEmptyStrings({
       case_batch: {
-        cases: [
-          {
-            case: {
-              case_type_id: completeCaseType.id,
-              content,
-              created_in_data_collection_id: createdInDataCollectionId,
-              id: originalCaseUploadResult.id,
-            },
+        cases: casesToValidate.map(({ content, row }) => ({
+          case: {
+            case_type_id: completeCaseType.id,
+            content: Object.fromEntries(
+              Object.entries(content).map(([colId]) => {
+                const col = completeCaseType.cols[colId];
+                if (!col) {
+                  return [colId, content[colId]];
+                }
+                const rowValue = CaseUtil.getRowValue(content, col, completeCaseType);
+                return [colId, rowValue.isMissing ? '' : rowValue.long];
+              }),
+            ),
+            created_in_data_collection_id: createdInDataCollectionId,
+            id: row.id,
           },
-        ],
+        })),
       },
       case_type_id: caseTypeId,
       created_in_data_collection_id: createdInDataCollectionId,
@@ -116,27 +125,57 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
       verify_only: true,
     }))).data;
 
+    const resultByGeneratedId = new Map(
+      casesToValidate.map(({ row }, index) => [row.generatedId, batchValidationResult.cases[index]]),
+    );
+
     QueryClientManager.getInstance().queryClient.setQueryData(validateCasesQueryKey, {
       cases: caseUploadValidationResultQuery.data.map(row => {
-        if (row.generatedId === caseId) {
-          return {
-            ...singleCaseValidationResult.cases[0],
-            generatedId: row.generatedId,
-          };
+        const newResult = resultByGeneratedId.get(row.generatedId);
+        if (newResult) {
+          return { ...newResult, generatedId: row.generatedId };
         }
         return row;
       }),
     });
 
-    if (singleCaseValidationResult.status !== CaseDbEtlStatus.SKIPPED && singleCaseValidationResult.status !== CaseDbEtlStatus.SUCCESS && singleCaseValidationResult.status !== CaseDbEtlStatus.UPDATED) {
-      if (!selectedIdsRef.current.includes(originalCaseUploadResult.generatedId)) {
-        selectedIdsRef.current.push(originalCaseUploadResult.generatedId);
+    const newlyFailedIds: string[] = [];
+    casesToValidate.forEach(({ row }, index) => {
+      const newResult = batchValidationResult.cases[index];
+      if (newResult.status !== CaseDbEtlStatus.SKIPPED && newResult.status !== CaseDbEtlStatus.SUCCESS && newResult.status !== CaseDbEtlStatus.UPDATED) {
+        if (!selectedIdsRef.current.includes(row.generatedId)) {
+          selectedIdsRef.current.push(row.generatedId);
+          newlyFailedIds.push(row.generatedId);
+        }
       }
-      if (!tableStore.getState().selectedIds.includes(originalCaseUploadResult.generatedId)) {
-        setSelectedIds([...tableStore.getState().selectedIds, originalCaseUploadResult.generatedId]);
+    });
+
+    if (newlyFailedIds.length > 0) {
+      const currentSelectedIds = tableStore.getState().selectedIds;
+      const idsToAdd = newlyFailedIds.filter(id => !currentSelectedIds.includes(id));
+      if (idsToAdd.length > 0) {
+        setSelectedIds([...currentSelectedIds, ...idsToAdd]);
       }
     }
-  }, [caseTypeId, caseUploadValidationResultQuery.data, completeCaseType.id, createdInDataCollectionId, setSelectedIds, tableStore, validateCasesQueryKey]);
+    setIsRevalidatingCases(false);
+  }, [caseTypeId, caseUploadValidationResultQuery.data, completeCaseType, createdInDataCollectionId, setSelectedIds, tableStore, validateCasesQueryKey]);
+
+  const onColContentEditSubmit = useCallback(async (colContent: CaseDbCase['content']) => {
+    const selectedIds = tableStore.getState().selectedIds;
+    await revalidateCases(
+      caseUploadValidationResultQuery.data
+        .filter(row => selectedIds.includes(row.generatedId))
+        .map(row => ({
+          content: { ...row.validated_content, ...colContent },
+          row,
+        })),
+    );
+  }, [caseUploadValidationResultQuery.data, revalidateCases, tableStore]);
+
+  const onCaseContentEditSubmit = useCallback(async (caseId: string, content: CaseDbCase['content']) => {
+    const originalCaseUploadResult = caseUploadValidationResultQuery.data.find(r => r.generatedId === caseId);
+    await revalidateCases([{ content, row: originalCaseUploadResult }]);
+  }, [caseUploadValidationResultQuery.data, revalidateCases]);
 
   useEffect(() => {
     const unsubscribe = tableStore.subscribe((state, prevState) => {
@@ -192,6 +231,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
       <TableStoreContextProvider store={tableStore}>
         <ResponseHandler
           inlineSpinner
+          isLoading={isRevalidatingCases}
           loadables={loadables}
           loadingMessage={t('Validating cases')}
           takingLongerTimeoutMs={10000}
@@ -216,6 +256,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
             completeCaseType={completeCaseType}
             getOriginalCellValue={getOriginalCellValue}
             onCaseContentEditSubmit={onCaseContentEditSubmit}
+            onColContentEditSubmit={onColContentEditSubmit}
             tableStore={tableStore}
           />
           <EpiUploadValidateNavigation

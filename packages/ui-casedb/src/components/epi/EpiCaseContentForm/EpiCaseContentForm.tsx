@@ -12,10 +12,9 @@ import type {
 import {
   FormUtil,
   GenericForm,
-  useOrganizationsQuery,
 } from '@gen-epix/ui';
 
-import { CaseUtil } from '../../../utils/CaseUtil';
+import { CaseTypeFormUtil } from '../../../utils/CaseTypeFormUtil';
 
 export type EpiCaseContentFormProps = {
   readonly caseContent: CaseDbCase['content'];
@@ -27,8 +26,7 @@ export type EpiCaseContentFormProps = {
 };
 
 export const EpiCaseContentForm = ({ caseContent, caseId, completeCaseType, enabledColIds, formId, onSubmit }: EpiCaseContentFormProps) => {
-  const organizationsQuery = useOrganizationsQuery();
-  const schema = useMemo(() => CaseUtil.createYupSchema(completeCaseType), [completeCaseType]);
+  const schema = useMemo(() => CaseTypeFormUtil.createYupSchema({ completeCaseType }), [completeCaseType]);
 
   const formMethods = useForm<CaseDbCase['content']>({ resolver: yupResolver(schema) });
   const { handleSubmit, reset, setValue } = formMethods;
@@ -39,10 +37,9 @@ export const EpiCaseContentForm = ({ caseContent, caseId, completeCaseType, enab
     });
   }, [setValue]);
 
-  const { fieldDefinitions, groupDefinitions } = useMemo(
-    () => CaseUtil.createFormDefinitions(completeCaseType, organizationsQuery, onClearGroupFields, enabledColIds),
-    [completeCaseType, organizationsQuery, onClearGroupFields, enabledColIds],
-  );
+  const { fieldDefinitions, groupDefinitions } = useMemo(() => {
+    return CaseTypeFormUtil.createFormDefinitions({ completeCaseType, enabledColIds, onClearGroupFields });
+  }, [completeCaseType, onClearGroupFields, enabledColIds]);
 
 
   const onFormSubmit = useCallback((content: { [key: string]: string }) => {
