@@ -1,6 +1,7 @@
 import { createStore } from 'zustand';
 import { t } from 'i18next';
 import type {
+  CaseDbCaseBatchUploadResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
@@ -41,7 +42,12 @@ export const STEP_ORDER_BULK_EDIT = [
 export interface CreateEpiUploadStoreInitialStateKwArg {
   casesForVerificationFromSourceData?: CaseForUploadWithGeneratedId[];
   completeCaseType?: CaseDbCompleteCaseType;
+  goBackFromFirstStepCallback?: () => void;
+  goBackFromFirstStepLabel?: string;
+  onUploadComplete?: (result: CaseDbCaseBatchUploadResult) => Promise<void> | void;
   stepOrder: EPI_UPLOAD_STEP[];
+  uploadCompleteButtonCallback?: () => void;
+  uploadCompleteButtonLabel?: string;
 }
 
 export type CreateEpiUploadStoreKwArgs = CreateEpiUploadStoreInitialStateKwArg;
@@ -83,9 +89,12 @@ export interface EpiUploadStoreState {
   fileList: FileList;
   fileName: string;
   fileParsingError: string;
+  goBackFromFirstStepCallback: () => void;
+  goBackFromFirstStepLabel: string;
   initError: unknown;
   isInitLoading: boolean;
   mappedColumns: EpiUploadMappedColumn[];
+  onUploadComplete: (result: CaseDbCaseBatchUploadResult) => Promise<void> | void;
   rawData: string[][];
   sampleIdColId: string;
   selectedGeneratedIdsForUpload: string[];
@@ -97,6 +106,8 @@ export interface EpiUploadStoreState {
   shouldResetColumnMapping: boolean;
   shouldResetSequenceMapping: boolean;
   stepOrder: EPI_UPLOAD_STEP[];
+  uploadCompleteButtonCallback: () => void;
+  uploadCompleteButtonLabel: string;
   validateCasesQueryKey: string[];
   validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
 }
@@ -107,7 +118,7 @@ const createEpiUploadStoreInitialState: (kwArgs: CreateEpiUploadStoreKwArgs) => 
   assemblyProtocolId: null,
   casesForVerificationFromSourceData: kwArgs.casesForVerificationFromSourceData ?? [],
   caseTypeId: null,
-  cols: null,
+  cols: [],
   completeCaseType: kwArgs.completeCaseType ?? null,
   createdInDataCollectionId: null,
   createdInDataCollectionOptions: [],
@@ -115,20 +126,25 @@ const createEpiUploadStoreInitialState: (kwArgs: CreateEpiUploadStoreKwArgs) => 
   fileList: null,
   fileName: null,
   fileParsingError: null,
+  goBackFromFirstStepCallback: kwArgs.goBackFromFirstStepCallback ?? null,
+  goBackFromFirstStepLabel: kwArgs.goBackFromFirstStepLabel ?? null,
   initError: null,
   isInitLoading: true,
-  mappedColumns: null,
+  mappedColumns: [],
+  onUploadComplete: kwArgs.onUploadComplete ?? null,
   rawData: null,
   sampleIdColId: null,
   selectedGeneratedIdsForUpload: [],
   sequenceFilesDataTransfer: new DataTransfer(),
-  sequenceMapping: null,
+  sequenceMapping: {},
   sequencingProtocolId: null,
   sheet: null,
   sheetOptions: [],
   shouldResetColumnMapping: false,
   shouldResetSequenceMapping: false,
   stepOrder: kwArgs.stepOrder,
+  uploadCompleteButtonCallback: kwArgs.uploadCompleteButtonCallback ?? null,
+  uploadCompleteButtonLabel: kwArgs.uploadCompleteButtonLabel ?? null,
   validateCasesQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
   validatedCasesWithGeneratedId: [],
 });
@@ -192,7 +208,7 @@ export const createEpiUploadStore = (kwArgs: CreateEpiUploadStoreKwArgs) => {
         }
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_SEQUENCES) {
-          if (shouldResetSequenceMapping && sequenceMapping) {
+          if (shouldResetSequenceMapping && Object.keys(sequenceMapping).length > 0) {
             NotificationManager.getInstance().showNotification({
               isLoading: false,
               message: t`Sequence mappings have been reset due to changes in the selected uploaded files.`,

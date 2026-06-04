@@ -12,10 +12,7 @@ import { useStore } from 'zustand';
 import { Stepper } from '@gen-epix/ui';
 import type { Step } from '@gen-epix/ui';
 
-import {
-  EpiUploadStoreContext,
-  STEP_ORDER_UPLOAD,
-} from '../../../stores/epiUploadStore';
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import { EPI_UPLOAD_STEP } from '../../../models/epi';
 
 import { EpiUploadSelectFile } from './EpiUploadSelectFile';
@@ -25,10 +22,6 @@ import { EpiUploadCreateCases } from './EpiUploadCreateCases';
 import { EpiUploadSelectSequenceFiles } from './EpiUploadSelectSequenceFiles';
 import { EpiUploadMapSequences } from './EpiUploadMapSequences';
 
-export type EpiUploadProps = {
-  STEP_ORDER_UPLOAD: EPI_UPLOAD_STEP[];
-};
-
 export const EpiUpload = () => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -36,6 +29,7 @@ export const EpiUpload = () => {
   const store = use(EpiUploadStoreContext);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const activeStep = useStore(store, (state) => state.activeStep);
+  const stepOrder = useStore(store, (state) => state.stepOrder);
 
   const stepLabels = useMemo<Record<EPI_UPLOAD_STEP, string>>(() => {
     return {
@@ -56,12 +50,12 @@ export const EpiUpload = () => {
   }, []);
 
   const steps = useMemo<Step[]>(() => {
-    return STEP_ORDER_UPLOAD.map((step) => ({
+    return stepOrder.map((step) => ({
       key: String(step),
       label: stepLabels[step],
       optional: optionalSteps.includes(step),
     }));
-  }, [optionalSteps, stepLabels]);
+  }, [optionalSteps, stepLabels, stepOrder]);
 
   return (
     <Box

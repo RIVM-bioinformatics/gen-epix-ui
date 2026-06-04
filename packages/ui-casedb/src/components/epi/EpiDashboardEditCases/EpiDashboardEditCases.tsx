@@ -1,13 +1,13 @@
 import type { CaseDbCase } from '@gen-epix/api-casedb';
-import { Button } from '@mui/material';
-import { Box } from '@mui/system';
 import noop from 'lodash/noop';
 import {
   use,
+  useCallback,
   useEffect,
   useMemo,
 } from 'react';
 import { useStore } from 'zustand';
+import { useTranslation } from 'react-i18next';
 
 import {
   createEpiUploadStore,
@@ -16,6 +16,7 @@ import {
 } from '../../../stores/epiUploadStore';
 import { EpiUpload } from '../EpiUpload';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
+import type { CaseForUploadWithGeneratedId } from '../../../models/epi';
 
 export type EpiDashboardEditCasesProps = {
   cases: CaseDbCase[];
@@ -25,19 +26,33 @@ export type EpiDashboardEditCasesProps = {
 export const EpiDashboardEditCases = ({ cases, onClose }: EpiDashboardEditCasesProps) => {
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
+  const fetchData = useStore(epiDashboardStore, (state) => state.fetchData);
+  const { t } = useTranslation();
 
-  const casesForVerificationFromSourceData = useMemo(() => {
-    return cases.map((caseItem) => ({
-      ...caseItem,
+  const casesForVerificationFromSourceData = useMemo<CaseForUploadWithGeneratedId[]>(() => {
+    return cases.map<CaseForUploadWithGeneratedId>((caseItem) => ({
+      case: {
+        ...caseItem,
+      },
       generatedId: caseItem.id,
-    }));
+      id: caseItem.id,
+    } satisfies CaseForUploadWithGeneratedId));
   }, [cases]);
+
+  const onUploadComplete = useCallback(async () => {
+    await fetchData();
+  }, [fetchData]);
 
   const epiUploadStore = useMemo(() => createEpiUploadStore({
     casesForVerificationFromSourceData,
     completeCaseType,
+    goBackFromFirstStepCallback: onClose,
+    goBackFromFirstStepLabel: t`Back to line list`,
+    onUploadComplete,
     stepOrder: STEP_ORDER_BULK_EDIT,
-  }), [casesForVerificationFromSourceData, completeCaseType]);
+    uploadCompleteButtonCallback: onClose,
+    uploadCompleteButtonLabel: t`Back to line list`,
+  }), [casesForVerificationFromSourceData, completeCaseType, onClose, onUploadComplete, t]);
 
   useEffect(() => {
     return () => {
@@ -46,18 +61,8 @@ export const EpiDashboardEditCases = ({ cases, onClose }: EpiDashboardEditCasesP
   }, [epiUploadStore]);
 
   return (
-    <Box>
-      {'Editing cases...'}
-      <Box>
-        <EpiUploadStoreContext value={epiUploadStore}>
-          <EpiUpload />
-        </EpiUploadStoreContext>
-      </Box>
-      <Box>
-        <Button onClick={onClose}>
-          {'Close'}
-        </Button>
-      </Box>
-    </Box>
+    <EpiUploadStoreContext value={epiUploadStore}>
+      <EpiUpload />
+    </EpiUploadStoreContext>
   );
 };

@@ -40,6 +40,10 @@ export const EpiUploadCreateCases = () => {
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
   const validatedCasesWithGeneratedId = useStore(store, (state) => state.validatedCasesWithGeneratedId);
   const selectedGeneratedIdsForUpload = useStore(store, (state) => state.selectedGeneratedIdsForUpload);
+  const casesForVerificationFromSourceData = useStore(store, (state) => state.casesForVerificationFromSourceData);
+  const uploadCompleteButtonCallback = useStore(store, (state) => state.uploadCompleteButtonCallback);
+  const uploadCompleteButtonLabel = useStore(store, (state) => state.uploadCompleteButtonLabel);
+  const onUploadComplete = useStore(store, (state) => state.onUploadComplete);
 
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const [progress, setProgress] = useState(0);
@@ -71,36 +75,44 @@ export const EpiUploadCreateCases = () => {
     }
     InactivityManager.getInstance().pause();
 
-    EpiUploadUtil.createCasesAndUploadFiles({
-      assemblyProtocolId: store.getState().assemblyProtocolId,
-      caseTypeId: store.getState().caseTypeId,
-      completeCaseType: store.getState().completeCaseType,
-      createdInDataCollectionId: store.getState().createdInDataCollectionId,
-      mappedColumns: store.getState().mappedColumns,
-      onComplete: () => {
-        setIsUploadCompleted(true);
-      },
-      onError: (e: Error) => {
-        setError(e);
-      },
-      onProgress: (percentage: number, message: string) => {
-        setProgress(percentage);
-        setProgressMessage(message);
-      },
-      sampleIdColId: store.getState().sampleIdColId,
-      selectedValidatedCasesWithGeneratedId,
-      sequenceFilesDataTransfer,
-      sequenceMapping,
-      sequencingProtocolId: store.getState().sequencingProtocolId,
-      signal,
-    }).catch((e) => {
+    const perform = async () => {
+      const result = await EpiUploadUtil.createCasesAndUploadFiles({
+        assemblyProtocolId: store.getState().assemblyProtocolId,
+        casesForVerificationFromSourceData,
+        completeCaseType: store.getState().completeCaseType,
+        createdInDataCollectionId: store.getState().createdInDataCollectionId,
+        mappedColumns: store.getState().mappedColumns,
+        onComplete: () => {
+          setIsUploadCompleted(true);
+        },
+        onError: (e: Error) => {
+          setError(e);
+        },
+        onProgress: (percentage: number, message: string) => {
+          setProgress(percentage);
+          setProgressMessage(message);
+        },
+        sampleIdColId: store.getState().sampleIdColId,
+        selectedValidatedCasesWithGeneratedId,
+        sequenceFilesDataTransfer,
+        sequenceMapping,
+        sequencingProtocolId: store.getState().sequencingProtocolId,
+        signal,
+      });
+      if (onUploadComplete) {
+        await onUploadComplete(result);
+      }
+    };
+
+    perform().catch((e) => {
       if (!signal.aborted) {
         setError(e);
       }
     });
 
+
     return abort;
-  }, [isUploadStarted, sequenceFilesDataTransfer, sequenceMapping, store, t, selectedValidatedCasesWithGeneratedId]);
+  }, [isUploadStarted, sequenceFilesDataTransfer, sequenceMapping, store, t, selectedValidatedCasesWithGeneratedId, casesForVerificationFromSourceData, onUploadComplete]);
 
 
   const onStartOverButtonClick = useCallback(async () => {
@@ -155,18 +167,30 @@ export const EpiUploadCreateCases = () => {
             marginTop: 2,
           }}
         >
-          <Button
-            onClick={onStartOverButtonClick}
-            variant={'outlined'}
-          >
-            {t('Upload more cases')}
-          </Button>
-          <Button
-            onClick={onGotoCasesButtonClick}
-            variant={'contained'}
-          >
-            {t('View uploaded cases')}
-          </Button>
+          {uploadCompleteButtonCallback && uploadCompleteButtonLabel ? (
+            <Button
+              // eslint-disable-next-line @eslint-react/kit/jsx-handler-names
+              onClick={uploadCompleteButtonCallback}
+              variant={'contained'}
+            >
+              {uploadCompleteButtonLabel}
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={onStartOverButtonClick}
+                variant={'outlined'}
+              >
+                {t('Upload more cases')}
+              </Button>
+              <Button
+                onClick={onGotoCasesButtonClick}
+                variant={'contained'}
+              >
+                {t('View uploaded cases')}
+              </Button>
+            </>
+          )}
         </Box>
       </Box>
     );

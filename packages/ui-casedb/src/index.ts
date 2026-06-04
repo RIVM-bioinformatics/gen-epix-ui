@@ -15,6 +15,7 @@ export * from './utils/DataSetUtil';
 export * from './utils/DashboardUtil';
 export * from './utils/CaseUtil';
 export * from './utils/CaseTypeUtil';
+export * from './utils/CaseTypeFormUtil';
 export * from './utils/CaseSetUtil';
 export * from './utils/CaseSelectionUtil';
 export * from './utils/CaseDbTableUtil';
