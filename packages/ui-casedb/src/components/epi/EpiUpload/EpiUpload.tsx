@@ -14,7 +14,7 @@ import type { Step } from '@gen-epix/ui';
 
 import {
   EpiUploadStoreContext,
-  STEP_ORDER,
+  STEP_ORDER_UPLOAD,
 } from '../../../stores/epiUploadStore';
 import { EPI_UPLOAD_STEP } from '../../../models/epi';
 
@@ -24,6 +24,10 @@ import { EpiUploadPreview } from './EpiUploadPreview';
 import { EpiUploadCreateCases } from './EpiUploadCreateCases';
 import { EpiUploadSelectSequenceFiles } from './EpiUploadSelectSequenceFiles';
 import { EpiUploadMapSequences } from './EpiUploadMapSequences';
+
+export type EpiUploadProps = {
+  STEP_ORDER_UPLOAD: EPI_UPLOAD_STEP[];
+};
 
 export const EpiUpload = () => {
   const { t } = useTranslation();
@@ -52,7 +56,7 @@ export const EpiUpload = () => {
   }, []);
 
   const steps = useMemo<Step[]>(() => {
-    return STEP_ORDER.map((step) => ({
+    return STEP_ORDER_UPLOAD.map((step) => ({
       key: String(step),
       label: stepLabels[step],
       optional: optionalSteps.includes(step),

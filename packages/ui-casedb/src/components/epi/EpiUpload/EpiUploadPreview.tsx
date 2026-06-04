@@ -59,7 +59,6 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const store = use(EpiUploadStoreContext);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
-  const mappedColumns = useStore(store, (state) => state.mappedColumns);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const casesForVerificationFromSourceData = useStore(store, (state) => state.casesForVerificationFromSourceData);
   const createdInDataCollectionId = useStore(store, (state) => state.createdInDataCollectionId);
@@ -75,7 +74,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   }, [casesForVerificationFromSourceData]);
 
   const caseUploadValidationResultQuery = useQueryMemo({
-    enabled: mappedColumns.length > 0 && casesForVerificationFromSourceData.length > 0,
+    enabled: casesForVerificationFromSourceData.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
       const response = await CaseDbCaseApi.getInstance().uploadCases({

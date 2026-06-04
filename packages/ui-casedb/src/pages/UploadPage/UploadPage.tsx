@@ -13,12 +13,15 @@ import { EpiUpload } from '../../components/epi/EpiUpload';
 import {
   createEpiUploadStore,
   EpiUploadStoreContext,
+  STEP_ORDER_UPLOAD,
 } from '../../stores/epiUploadStore';
 
 export const UploadPage = () => {
   const { t } = useTranslation();
 
-  const epiUploadStore = useMemo(() => createEpiUploadStore(), []);
+  const epiUploadStore = useMemo(() => createEpiUploadStore({
+    stepOrder: STEP_ORDER_UPLOAD,
+  }), []);
 
   useEffect(() => {
     return () => {
