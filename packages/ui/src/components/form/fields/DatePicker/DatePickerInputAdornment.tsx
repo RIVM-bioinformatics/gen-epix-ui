@@ -1,4 +1,4 @@
-import type { MutableRefObject } from 'react';
+import type { RefObject } from 'react';
 import type { InputAdornmentProps } from '@mui/material';
 import {
   IconButton,
@@ -9,11 +9,11 @@ import { useTranslation } from 'react-i18next';
 
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 
-export type DatePickerInputAdornmentProps = InputAdornmentProps & {
+export type DatePickerInputAdornmentProps = {
   readonly disabled: boolean;
   readonly loading: boolean;
-  readonly onResetButtonClickRef: MutableRefObject<() => void>;
-};
+  readonly onResetButtonClickRef: RefObject<() => void>;
+} & InputAdornmentProps;
 
 export const DatePickerInputAdornment = ({
   children,
