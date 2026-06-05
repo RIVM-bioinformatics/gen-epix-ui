@@ -68,6 +68,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const [revalidationError, setRevalidationError] = useState<Error | null>(null);
   const selectedIdsRef = useRef<string[]>([]);
   const continueWithoutFixingConfirmationRef = useRef<ConfirmationRefMethods>(null);
+  const continueWithoutSelectingAllCasesRef = useRef<ConfirmationRefMethods>(null);
 
   const getOriginalCellValue = useCallback((col: CaseDbCol, params: TableRowAndColumnParams<CaseUploadResultWithGeneratedId, null>, _issue: CaseDbCaseDataIssue): string => {
     return casesForVerificationFromSourceData[params.rowIndex]?.case?.content[col.id] ?? '';
@@ -218,7 +219,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   }, [caseUploadValidationResultQuery.data, setSelectedIds]);
 
 
-  const onProceedWithOutFixing = useCallback(async () => {
+  const onProceedWithoutFixingIssues = useCallback(async () => {
     const selectedIds = tableStore.getState().selectedIds;
     const validCases = caseUploadValidationResultQuery.data.filter(row => selectedIds.includes(row.generatedId) && !row.data_issues.some(issue => issue.data_issue_type === CaseDbDataIssueType.INVALID));
     store.setState((state) => ({
@@ -229,12 +230,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
     await goToNextStep();
   }, [caseUploadValidationResultQuery.data, goToNextStep, store, tableStore]);
 
-  const onProceedButtonClick = useCallback(async () => {
-    if (caseUploadValidationResultQuery.data.some(row => tableStore.getState().selectedIds.includes(row.generatedId) && (row.data_issues.some(issue => issue.data_issue_type === CaseDbDataIssueType.INVALID) || row.status === CaseDbEtlStatus.FAILED))) {
-      continueWithoutFixingConfirmationRef.current?.open();
-      return;
-    }
-
+  const onProceed = useCallback(async () => {
     store.setState((state) => ({
       ...state,
       selectedGeneratedIdsForUpload: selectedIdsRef.current,
@@ -242,7 +238,21 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
     }));
 
     await goToNextStep();
-  }, [goToNextStep, caseUploadValidationResultQuery.data, store, tableStore]);
+  }, [goToNextStep, caseUploadValidationResultQuery.data, store]);
+
+  const onProceedButtonClick = useCallback(async () => {
+    if (caseUploadValidationResultQuery.data.some(row => tableStore.getState().selectedIds.includes(row.generatedId) && (row.data_issues.some(issue => issue.data_issue_type === CaseDbDataIssueType.INVALID) || row.status === CaseDbEtlStatus.FAILED))) {
+      continueWithoutFixingConfirmationRef.current?.open();
+      return;
+    }
+
+    if (caseUploadValidationResultQuery.data.some(row => !tableStore.getState().selectedIds.includes(row.generatedId) && !row.data_issues.some(issue => issue.data_issue_type === CaseDbDataIssueType.INVALID))) {
+      continueWithoutSelectingAllCasesRef.current?.open();
+      return;
+    }
+
+    await onProceed();
+  }, [caseUploadValidationResultQuery.data, onProceed, tableStore]);
 
   const onGoBackButtonClick = useCallback(() => {
     goToPreviousStep();
@@ -303,9 +313,17 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
         body={t`Some of the selected cases contain issues. If you proceed, these cases will be excluded. Are you sure you want to proceed without them?`}
         cancelLabel={t`Cancel`}
         confirmLabel={t`Proceed`}
-        onConfirm={onProceedWithOutFixing}
+        onConfirm={onProceedWithoutFixingIssues}
         ref={continueWithoutFixingConfirmationRef}
         title={t`Issues found with selected cases`}
+      />
+      <Confirmation
+        body={t`Not all cases are selected. Do you want to proceed without them?`}
+        cancelLabel={t`Cancel`}
+        confirmLabel={t`Proceed`}
+        onConfirm={onProceed}
+        ref={continueWithoutSelectingAllCasesRef}
+        title={t`Not all cases are selected.`}
       />
     </Box>
   );

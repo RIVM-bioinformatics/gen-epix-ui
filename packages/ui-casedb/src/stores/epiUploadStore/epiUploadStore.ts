@@ -184,14 +184,14 @@ export const createEpiUploadStore = (kwArgs: CreateEpiUploadStoreKwArgs) => {
         let nextStep = get().findNextStep(activeStep);
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_COLUMNS) {
-          if (shouldResetColumnMapping && mappedColumns) {
+          if (shouldResetColumnMapping && mappedColumns.length > 0) {
             NotificationManager.getInstance().showNotification({
               isLoading: false,
               message: t`Column mappings have been reset due to changes in the selected case type or file.`,
               severity: 'info',
             });
           }
-          if ((shouldResetColumnMapping && mappedColumns) || !mappedColumns) {
+          if ((shouldResetColumnMapping && mappedColumns.length > 0) || mappedColumns.length === 0) {
             await setMappedColumns(EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData));
           }
         }

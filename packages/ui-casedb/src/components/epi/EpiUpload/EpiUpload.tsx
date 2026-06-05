@@ -33,7 +33,7 @@ export const EpiUpload = () => {
 
   const stepLabels = useMemo<Record<EPI_UPLOAD_STEP, string>>(() => {
     return {
-      [EPI_UPLOAD_STEP.CREATE_CASES]: t`Upload`,
+      [EPI_UPLOAD_STEP.CREATE_CASES]: t`Submit`,
       [EPI_UPLOAD_STEP.MAP_COLUMNS]: t`Map columns`,
       [EPI_UPLOAD_STEP.MAP_SEQUENCES]: t`Map sequences`,
       [EPI_UPLOAD_STEP.PREVIEW]: t`Preview`,

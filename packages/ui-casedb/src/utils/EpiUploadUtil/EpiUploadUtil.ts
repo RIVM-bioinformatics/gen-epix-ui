@@ -754,17 +754,18 @@ export class EpiUploadUtil {
       }
     }
 
-    const results = await Promise.all(
-      Array.from(groupedCases.entries()).map(async ([dataCollectionId, cases]) =>
-        CaseDbCaseApi.getInstance().uploadCases({
-          ...uploadCasesCommand,
-          case_batch: {
-            ...uploadCasesCommand.case_batch,
-            cases,
-          },
-          created_in_data_collection_id: dataCollectionId,
-        }, options)),
-    );
+    // !FIXME this is done sequentially to avoid overloading the server with multiple simultaneous upload requests, but it would be better to do in parallel if there are many groups
+    const results = [];
+    for (const [dataCollectionId, cases] of groupedCases.entries()) {
+      results.push(await CaseDbCaseApi.getInstance().uploadCases({
+        ...uploadCasesCommand,
+        case_batch: {
+          ...uploadCasesCommand.case_batch,
+          cases,
+        },
+        created_in_data_collection_id: dataCollectionId,
+      }, options));
+    }
 
     return {
       ...results[0].data,

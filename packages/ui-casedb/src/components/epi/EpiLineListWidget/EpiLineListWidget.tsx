@@ -45,6 +45,8 @@ import {
   TABLE_COLUMN_FROZEN,
   TableUtil,
 } from '@gen-epix/ui';
+import EditIcon from '@mui/icons-material/Edit';
+import ShareIcon from '@mui/icons-material/Share';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { EpiWidget } from '../EpiWidget';
@@ -67,6 +69,7 @@ import { CaseUtil } from '../../../utils/CaseUtil';
 import type { CaseDbConfig } from '../../../models/config';
 import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
 import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
+import { EPI_CASE_INFO_DIALOG_TAB_NAME } from '../EpiCaseInfoDialog';
 
 import { EpiLineListWidgetTitle } from './EpiLineListWidgetTitle';
 import { EpiLineListWidgetPrimaryMenu } from './EpiLineListWidgetPrimaryMenu';
@@ -104,15 +107,16 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     };
   }, [lineListRangeSubject]);
 
-  const openCaseInfoDialog = useCallback((caseId: string) => {
+  const openCaseInfoDialog = useCallback((caseId: string, tabName: EPI_CASE_INFO_DIALOG_TAB_NAME) => {
     EpiEventBusManager.getInstance().emit('openCaseInfoDialog', {
       caseId,
       caseTypeId: completeCaseType.id,
+      initialTab: tabName,
     });
   }, [completeCaseType.id]);
 
   const onIndexCellClick = useCallback((row: CaseDbCase) => {
-    openCaseInfoDialog(row.id);
+    openCaseInfoDialog(row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.INFO);
   }, [openCaseInfoDialog]);
 
   const getColumnWidth = useCallback((col: CaseDbCol, label: string) => {
@@ -352,13 +356,41 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
             <MenuItem
               key={'showCaseInformation'}
               // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-              onClick={() => openCaseInfoDialog(params.row.id)}
+              onClick={() => openCaseInfoDialog(params.row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.INFO)}
             >
               <ListItemIcon>
                 <ArrowCircleRightIcon />
               </ListItemIcon>
               <ListItemText>
                 {t`Show case information`}
+              </ListItemText>
+            </MenuItem>,
+          );
+          actions.push(
+            <MenuItem
+              key={'editCaseInformation'}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onClick={() => openCaseInfoDialog(params.row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.EDIT)}
+            >
+              <ListItemIcon>
+                <EditIcon />
+              </ListItemIcon>
+              <ListItemText>
+                {t`Edit information`}
+              </ListItemText>
+            </MenuItem>,
+          );
+          actions.push(
+            <MenuItem
+              key={'shareCase'}
+              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+              onClick={() => openCaseInfoDialog(params.row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.SHARING)}
+            >
+              <ListItemIcon>
+                <ShareIcon />
+              </ListItemIcon>
+              <ListItemText>
+                {t`Share case`}
               </ListItemText>
             </MenuItem>,
           );
