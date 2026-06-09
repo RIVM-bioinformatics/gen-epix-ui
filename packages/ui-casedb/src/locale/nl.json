@@ -455,6 +455,7 @@
     "Schema definition": "Schema definitie",
     "Schema URI": "Schema URI",
     "Search": "Zoeken",
+    "Search again": "Opnieuw zoeken",
     "Searched {{numberOfInputCases}} cases for similar cases.": "{{numberOfInputCases}} casussen doorzocht op vergelijkbare casussen.",
     "Select a tree and maximum distance to find similar cases for the {{count}} selected cases.": "Selecteer een boom en maximale afstand om vergelijkbare casussen te vinden voor de {{count}} geselecteerde casussen.",
     "Select an organization or data collection to show the visualization.": "Selecteer een organisatie of data collectie om de visualisatie te tonen.",
