@@ -57,13 +57,7 @@ export class EpiFilterUtil {
         options,
       });
     }
-    return new TextFilter({
-      filterDimensionId: dimId,
-      filterMode: FILTER_MODE.BACKEND,
-      filterPriority: DEFAULT_FILTER_GROUP,
-      id: col.id,
-      label: col.label,
-    });
+    return EpiFilterUtil.createTextFilter(col, dimId);
   }
 
   public static createFilterDimensions(completeCaseType: CaseDbCompleteCaseType): FilterDimension[] {
@@ -221,6 +215,16 @@ export class EpiFilterUtil {
       });
     });
     return filters;
+  }
+
+  public static createTextFilter(col: CaseDbCol, dimId: string): TextFilter {
+    return new TextFilter({
+      filterDimensionId: dimId,
+      filterMode: FILTER_MODE.BACKEND,
+      filterPriority: DEFAULT_FILTER_GROUP,
+      id: col.id,
+      label: col.label,
+    });
   }
 
   public static getDateParser(refCol: CaseDbRefCol): (date: string) => Date {

@@ -110,6 +110,7 @@ export * from './components/ui/CopyToClipboardButton';
 export * from './components/ui/ConsentDialog';
 export * from './components/ui/Confirmation';
 export * from './components/ui/Breadcrumbs';
+export * from './components/ui/BackdropSpinner';
 export * from './components/ui/ApplicationFooter';
 export * from './components/ui/ApplicationBar';
 export * from './components/form/helpers/GenericForm';

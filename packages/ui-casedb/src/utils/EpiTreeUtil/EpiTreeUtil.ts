@@ -243,8 +243,8 @@ export class EpiTreeUtil {
    * Renders the pre-assembled tree shapes onto a canvas using the 2D context.
    *
    * Applies a transform for zoom and scroll, then draws in order:
-   * vertical ancestor lines → horizontal ancestor lines → (linked) support lines
-   * → (highlighted) distance labels → ancestor dots → leaf branch lines → leaf dots.
+   * vertical ancestor lines -> horizontal ancestor lines -> (linked) support lines
+   * -> (highlighted) distance labels -> ancestor dots -> leaf branch lines -> leaf dots.
    *
    * When nodes are highlighted, non-highlighted shapes are dimmed via the
    * theme's `dimFn`. Leaf dot colours come from the stratification's `caseIdColors`
@@ -565,8 +565,8 @@ export class EpiTreeUtil {
    * Performs a hit-test against the tree assembly's path maps to find the
    * tree node or line segment under the mouse cursor.
    *
-   * Checks in priority order: node dots (via `isPointInPath`) → horizontal
-   * branch lines (with ±1 px vertical tolerance) → vertical connector lines
+   * Checks in priority order: node dots (via `isPointInPath`) -> horizontal
+   * branch lines (with ±1 px vertical tolerance) -> vertical connector lines
    * (with ±1 px horizontal tolerance).
    *
    * @param params.canvas - The canvas element that received the mouse event.

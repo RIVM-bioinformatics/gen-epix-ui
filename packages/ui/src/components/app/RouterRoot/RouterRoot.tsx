@@ -69,7 +69,7 @@ export const RouterRoot = () => {
             provider,
           });
         } catch (error: unknown) {
-          console.log(`Identity provider ${provider.name} is not available`, error);
+          console.error(`Identity provider ${provider.name} is not available`, error);
           if (oidcConfiguration?.name === provider.name) {
             AuthenticationManager.getInstance().next(undefined);
           }

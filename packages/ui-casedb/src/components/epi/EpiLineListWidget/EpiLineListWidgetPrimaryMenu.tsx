@@ -24,6 +24,7 @@ import {
   AuthorizationManager,
   useColumnsMenu,
 } from '@gen-epix/ui';
+import last from 'lodash/last';
 
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
@@ -93,7 +94,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
     const shouldShowAddToEventMenuItem = AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
     const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
     // !TODO
-    // const shouldShowBulkEditCaseMenuItem = true;
+    const shouldShowBulkEditCaseMenuItem = true;
 
     const actionsColumnMenuItem: MenuItemData = {
       items: [
@@ -174,16 +175,16 @@ export const EpiLineListWidgetPrimaryMenu = ({
       actionsColumnMenuItem.items[3].divider = true;
     }
 
-    // last(actionsColumnMenuItem.items).divider = true;
-    // if (shouldShowBulkEditCaseMenuItem) {
-    //   actionsColumnMenuItem.items.push(
-    //     {
-    //       disabled: !selectedRowCaseIds?.length,
-    //       label: t`Bulk edit selected cases`,
-    //       callback: () => EpiEventBusManager.getInstance().emit('openBulkEditCaseDialog', { rows: selectedRows }),
-    //     },
-    //   );
-    // }
+    last(actionsColumnMenuItem.items).divider = true;
+    if (shouldShowBulkEditCaseMenuItem) {
+      actionsColumnMenuItem.items.push(
+        {
+          callback: () => EpiEventBusManager.getInstance().emit('openEditCases', selectedRows),
+          disabled: !selectedIds?.length,
+          label: t`Edit selected cases`,
+        },
+      );
+    }
 
     const menus: MenuItemData[] = [
       columnsMenuItem,

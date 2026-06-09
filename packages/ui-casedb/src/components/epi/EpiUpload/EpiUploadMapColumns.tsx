@@ -63,7 +63,6 @@ export const EpiUploadMapColumns = () => {
   ]);
 
   const columnMappingFormId = useId();
-  // const identifierIssuerMappingFormId = useId();
 
   const schema = useMemo(() => {
     return EpiUploadUtil.getColumnMappingSchema(rawData, completeCaseType);

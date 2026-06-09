@@ -147,7 +147,7 @@ describe('EpiTreeUtil', () => {
       // treeCanvasHeight = 600, scrollPosition = 0, treeSize = 10, treeHeight = 300
       // scaledItemHeight = 30, scrolledByItems = 0, maxItemsInView = 20
       // lastItemInView = min(20, 10) = 10, average = 5
-      // candidate = 5 * 30 - 300 = -150 → clamped to 0
+      // candidate = 5 * 30 - 300 = -150 -> clamped to 0
       expect(EpiTreeUtil.getScrollPositionFromTreeVisibility({
         itemHeight: TABLE_ROW_HEIGHT,
         treeCanvasHeight: 600,
@@ -194,8 +194,8 @@ describe('EpiTreeUtil', () => {
 
     it('returns [2, minGeneticScaleUnit, minGeneticScaleUnit] when geneticTree fits only 2 lines (maxNumLines clamped to 2, minNumLines > maxNumLines)', () => {
       // geneticTreeWidth=0.8, minGeneticScaleUnit=1:
-      // 0.8/1 + 1 = 1.8 < maxNumLines(26) → maxNumLines = max(ceil(0.8), 2) = 2
-      // minNumLines(9) > 2 → minNumLines = 2 → maxNumLines === 2 → [2, 1, 1]
+      // 0.8/1 + 1 = 1.8 < maxNumLines(26) -> maxNumLines = max(ceil(0.8), 2) = 2
+      // minNumLines(9) > 2 -> minNumLines = 2 -> maxNumLines === 2 -> [2, 1, 1]
       expect(EpiTreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(0.8),
         minGeneticScaleUnit: 1,
@@ -206,9 +206,9 @@ describe('EpiTreeUtil', () => {
 
     it('clamps maxNumLines and sets minNumLines = maxNumLines when geneticTree has few divisions', () => {
       // geneticTreeWidth=4, minGeneticScaleUnit=1:
-      // 4/1 + 1 = 5 < maxNumLines(26) → maxNumLines = max(ceil(4), 2) = 4
-      // minNumLines(9) > 4 → minNumLines = 4, maxNumLines = 4
-      // numLines=4, increment=1: product=4, leftover=0 → [5, 1, 1]
+      // 4/1 + 1 = 5 < maxNumLines(26) -> maxNumLines = max(ceil(4), 2) = 4
+      // minNumLines(9) > 4 -> minNumLines = 4, maxNumLines = 4
+      // numLines=4, increment=1: product=4, leftover=0 -> [5, 1, 1]
       expect(EpiTreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(4),
         minGeneticScaleUnit: 1,
@@ -219,7 +219,7 @@ describe('EpiTreeUtil', () => {
 
     it('skips increments smaller than minGeneticScaleUnit', () => {
       // minGeneticScaleUnit=5 causes increments [1, 2] to be skipped
-      // numLines=16, increment=5: product=80, leftover=0 → [17, 5, 5]
+      // numLines=16, increment=5: product=80, leftover=0 -> [17, 5, 5]
       expect(EpiTreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(80),
         minGeneticScaleUnit: 5,
@@ -229,8 +229,8 @@ describe('EpiTreeUtil', () => {
     });
 
     it('accounts for zoom level by reducing effective width', () => {
-      // zoomLevel=2: width=600 → minNumLines=5, maxNumLines=14
-      // numLines=8, increment=10: product=80, leftover=0 → [9, 10, 1]
+      // zoomLevel=2: width=600 -> minNumLines=5, maxNumLines=14
+      // numLines=8, increment=10: product=80, leftover=0 -> [9, 10, 1]
       expect(EpiTreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(80),
         minGeneticScaleUnit: 1,
@@ -283,7 +283,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('does not modify children when all branch lengths are positive', () => {
-      // Inner has branchLength=1: nodesToMove=[] → splice is a no-op
+      // Inner has branchLength=1: nodesToMove=[] -> splice is a no-op
       const a = makeLeaf('A');
       const b = makeLeaf('B');
       const inner = makeNode('Inner', 1, [b, makeLeaf('C')]);
@@ -331,7 +331,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('treats a node with undefined branchLength as zero-branch (uses ?? 0 fallback)', () => {
-      // inner has no branchLength property → branchLength?.toNumber() ?? 0 === 0 → treated as zero-branch
+      // inner has no branchLength property -> branchLength?.toNumber() ?? 0 === 0 -> treated as zero-branch
       const inner = {
         children: [makeLeaf('B'), makeLeaf('C')],
         name: 'Inner',
@@ -343,7 +343,7 @@ describe('EpiTreeUtil', () => {
 
       EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
 
-      // inner treated as zero-branch → its children B,C hoisted to root
+      // inner treated as zero-branch -> its children B,C hoisted to root
       expect(root.children?.map(n => n.name)).toEqual(['A', 'B', 'C']);
     });
 
@@ -375,8 +375,8 @@ describe('EpiTreeUtil', () => {
 
     it('collapses deeply nested zero-branch nodes level by level', () => {
       // Outer(bl=0) -> [Inner(bl=0) -> [B, C], D]
-      // Inner first collapsed into Outer → Outer.children=[B,C,D]
-      // Then Outer collapsed into Root → Root.children=[A,B,C,D]
+      // Inner first collapsed into Outer -> Outer.children=[B,C,D]
+      // Then Outer collapsed into Root -> Root.children=[A,B,C,D]
       const b = makeLeaf('B');
       const c = makeLeaf('C');
       const inner = makeNode('Inner', 0, [b, c]);
@@ -408,7 +408,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('does not apply fallbackDistance when only some root children have zero branch length', () => {
-      // Only some children have bl=0 → edge case should NOT apply
+      // Only some children have bl=0 -> edge case should NOT apply
       const root = makeNode('Root', 0, [makeLeaf('A', 1), makeLeaf('B', 0)]);
 
       EpiTreeUtil.sanitizeTree(root, FALLBACK_DISTANCE);
@@ -418,7 +418,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('applies fallbackDistance to all root children when ALL have zero branch length', () => {
-      // All children have bl=0 → edge case applies
+      // All children have bl=0 -> edge case applies
       const a = makeLeaf('A', 0);
       const b = makeLeaf('B', 0);
       const c = makeLeaf('C', 0);
@@ -439,7 +439,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('applies fallbackDistance to all root children when ALL have undefined branch length', () => {
-      // All children have undefined bl → treated as bl=0 → edge case applies
+      // All children have undefined bl -> treated as bl=0 -> edge case applies
       const a = { name: 'A', size: 1, subTreeLeaveNames: ['A'], subTreeNames: [] } as TreeNode;
       const b = { name: 'B', size: 1, subTreeLeaveNames: ['B'], subTreeNames: [] } as TreeNode;
       const root = makeNode('Root', 0, [a, b]);
@@ -487,7 +487,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('treats a child with undefined branchLength as zero-branch (uses ?? 0 fallback)', () => {
-      // child has no branchLength → (child.branchLength?.toNumber() ?? 0) === 0 → assigned index 1
+      // child has no branchLength -> (child.branchLength?.toNumber() ?? 0) === 0 -> assigned index 1
       const zeroBLChild = { name: 'z', size: 1, subTreeLeaveNames: ['z'], subTreeNames: [] } as TreeNode;
       const root = makeNode('root', 0, [zeroBLChild, makeLeaf('a', 1)]);
       const addresses = EpiTreeUtil.createTreeAddresses(root);
@@ -496,7 +496,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('assigns "" to the root and "1","2" to two positive-branch children', () => {
-      // No zero-branch children → index starts at 1
+      // No zero-branch children -> index starts at 1
       const root = makeNode('root', 0, [makeLeaf('a'), makeLeaf('b')]);
       expect(EpiTreeUtil.createTreeAddresses(root)).toEqual({
         a: '1',
@@ -506,7 +506,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('increments index for each additional positive-branch child', () => {
-      // Three positive-branch children → "1", "2", "3"
+      // Three positive-branch children -> "1", "2", "3"
       const root = makeNode('root', 0, [makeLeaf('a'), makeLeaf('b'), makeLeaf('c')]);
       expect(EpiTreeUtil.createTreeAddresses(root)).toEqual({
         a: '1',
@@ -517,7 +517,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('assigns address "1" to a single zero-branch child', () => {
-      // hasZeroBranchLength=true → zero-branch children always get index 1
+      // hasZeroBranchLength=true -> zero-branch children always get index 1
       const root = makeNode('root', 0, [makeLeaf('a', 0)]);
       expect(EpiTreeUtil.createTreeAddresses(root)).toEqual({
         a: '1',
@@ -526,7 +526,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('assigns "1" to zero-branch child and "2" to following positive-branch child', () => {
-      // hasZeroBranchLength=true → index starts at 2 for non-zero; zero child gets 1
+      // hasZeroBranchLength=true -> index starts at 2 for non-zero; zero child gets 1
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 1)]);
       expect(EpiTreeUtil.createTreeAddresses(root)).toEqual({
         a: '1',
@@ -536,7 +536,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('assigns "2" to a positive-branch child that appears before a zero-branch child', () => {
-      // hasZeroBranchLength=true → non-zero children start at index 2, zero gets 1
+      // hasZeroBranchLength=true -> non-zero children start at index 2, zero gets 1
       const root = makeNode('root', 0, [makeLeaf('a', 1), makeLeaf('b', 0)]);
       expect(EpiTreeUtil.createTreeAddresses(root)).toEqual({
         a: '2',
@@ -557,7 +557,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('builds dot-notation addresses recursively for a two-level tree', () => {
-      // root → [left(bl=1) → [a(bl=1), b(bl=1)], right(bl=1)]
+      // root -> [left(bl=1) -> [a(bl=1), b(bl=1)], right(bl=1)]
       // root: "", left: "1", a: "1.1", b: "1.2", right: "2"
       const left = makeNode('left', 1, [makeLeaf('a'), makeLeaf('b')]);
       const root = makeNode('root', 0, [left, makeLeaf('right')]);
@@ -571,9 +571,9 @@ describe('EpiTreeUtil', () => {
     });
 
     it('correctly addresses a zero-branch inner node and its children', () => {
-      // root → [inner(bl=0) → [a(bl=1), b(bl=1)], c(bl=1)]
-      // hasZero=true at root level → inner: "1", c: "2"
-      // At inner level, no zero-branch → a: "1.1", b: "1.2"
+      // root -> [inner(bl=0) -> [a(bl=1), b(bl=1)], c(bl=1)]
+      // hasZero=true at root level -> inner: "1", c: "2"
+      // At inner level, no zero-branch -> a: "1.1", b: "1.2"
       const inner = makeNode('inner', 0, [makeLeaf('a'), makeLeaf('b')]);
       const root = makeNode('root', 0, [inner, makeLeaf('c')]);
       expect(EpiTreeUtil.createTreeAddresses(root)).toEqual({
@@ -586,10 +586,10 @@ describe('EpiTreeUtil', () => {
     });
 
     it('correctly addresses a three-level deep tree with mixed branch lengths', () => {
-      // root → [x(bl=0) → [y(bl=1) → [p(bl=1), q(bl=1)]], z(bl=1)]
-      // root level: hasZero=true → x: "1", z: "2"
-      // x level: no zero-branch → y: "1.1"
-      // y level: no zero-branch → p: "1.1.1", q: "1.1.2"
+      // root -> [x(bl=0) -> [y(bl=1) -> [p(bl=1), q(bl=1)]], z(bl=1)]
+      // root level: hasZero=true -> x: "1", z: "2"
+      // x level: no zero-branch -> y: "1.1"
+      // y level: no zero-branch -> p: "1.1.1", q: "1.1.2"
       const y = makeNode('y', 1, [makeLeaf('p'), makeLeaf('q')]);
       const x = makeNode('x', 0, [y]);
       const root = makeNode('root', 0, [x, makeLeaf('z')]);
@@ -620,7 +620,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it("selector 'node': adjusts maxBranchLength by subtracting the original branchLength", () => {
-      // maxBranchLength=10, branchLength=3 → result maxBranchLength = 7
+      // maxBranchLength=10, branchLength=3 -> result maxBranchLength = 7
       const target = { ...makeLeaf('target', 3), maxBranchLength: new Decimal(10) };
       const root = makeNode('root', 0, [target]);
       const result = EpiTreeUtil.findNewTreeRoot(root, 'target', 'node');
@@ -720,7 +720,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it("selector 'node': when branchLength equals maxBranchLength the adjusted maxBranchLength is 0", () => {
-      // branchLength=5, maxBranchLength=5 → maxBranchLength result = 0
+      // branchLength=5, maxBranchLength=5 -> maxBranchLength result = 0
       const target = { ...makeLeaf('target', 5), maxBranchLength: new Decimal(5) };
       const root = makeNode('root', 0, [target]);
       const result = EpiTreeUtil.findNewTreeRoot(root, 'target', 'node');
@@ -748,13 +748,13 @@ describe('EpiTreeUtil', () => {
     });
 
     it('returns the minimum among multiple leaf children', () => {
-      // leaves: 3, 1, 7 → min = 1
+      // leaves: 3, 1, 7 -> min = 1
       const root = makeNode('root', 0, [makeLeaf('a', 3), makeLeaf('b', 1), makeLeaf('c', 7)]);
       expect(EpiTreeUtil.getMinGeneticScaleUnit(root)).toBe(1);
     });
 
     it('ignores internal (non-leaf) node branch lengths when finding the minimum', () => {
-      // inner branchLength=0.5 (very small) but it has children → should be ignored
+      // inner branchLength=0.5 (very small) but it has children -> should be ignored
       // leaf b branchLength=2 is the true minimum
       const inner = makeNode('inner', 0.5, [makeLeaf('b', 2), makeLeaf('c', 5)]);
       const root = makeNode('root', 0, [makeLeaf('a', 3), inner]);
@@ -762,7 +762,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('skips zero-branch leaves and returns the minimum positive one', () => {
-      // leaf a=0 (skipped), leaf b=4, leaf c=2 → min = 2
+      // leaf a=0 (skipped), leaf b=4, leaf c=2 -> min = 2
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 4), makeLeaf('c', 2)]);
       expect(EpiTreeUtil.getMinGeneticScaleUnit(root)).toBe(2);
     });
@@ -773,7 +773,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('traverses deeply nested leaves correctly', () => {
-      // root → inner → deep leaf with branchLength=0.1 (smallest)
+      // root -> inner -> deep leaf with branchLength=0.1 (smallest)
       // other leaves: 5, 3
       const deep = makeLeaf('deep', 0.1);
       const inner = makeNode('inner', 2, [deep, makeLeaf('sibling', 3)]);
@@ -817,7 +817,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('returns an assembly with empty arrays for a single leaf (no ancestors)', () => {
-      // leaf a: distance=0, bl=2 → leafXPxEnd=210, leafYPx=15, leafXPxStart=10
+      // leaf a: distance=0, bl=2 -> leafXPxEnd=210, leafYPx=15, leafXPxStart=10
       const tree = makeLeaf('a', 2);
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, treeCanvasWidth });
 
@@ -840,7 +840,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('produces one entry per leaf in leafNodes, leafTreeLines, and supportLines for a two-leaf tree', () => {
-      // root(bl=0) → [a(bl=2), b(bl=3)]
+      // root(bl=0) -> [a(bl=2), b(bl=3)]
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, treeCanvasWidth });
 
@@ -850,7 +850,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('DFS leaf ordering is reflected in support line Y positions', () => {
-      // root(bl=0) → [a(bl=2), b(bl=3)]
+      // root(bl=0) -> [a(bl=2), b(bl=3)]
       // a at leafIndex=0: y=15; b at leafIndex=1: y=45
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, treeCanvasWidth });
@@ -890,7 +890,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('adds an ancestor dot when all children have positive branch lengths', () => {
-      // both a and b have bl > 0 → ancestor dot
+      // both a and b have bl > 0 -> ancestor dot
       const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, treeCanvasWidth });
 
@@ -899,7 +899,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('does NOT add an ancestor dot when a child has zero branch length', () => {
-      // leaf 'a' has bl=0 → root.children.every(bl > 0) is false → no dot
+      // leaf 'a' has bl=0 -> root.children.every(bl > 0) is false -> no dot
       const tree = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 2)]);
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, treeCanvasWidth });
 
@@ -939,7 +939,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('correctly assembles a three-leaf tree with two levels', () => {
-      // root(bl=0) → [left(bl=1) → [a(bl=1), b(bl=1)], c(bl=2)]
+      // root(bl=0) -> [left(bl=1) -> [a(bl=1), b(bl=1)], c(bl=2)]
       // leaf a: distance=1, y=15; leaf b: distance=1, y=45; leaf c: distance=0, y=75
       const tree = makeNode('root', 0, [
         makeNode('left', 1, [makeLeaf('a', 1), makeLeaf('b', 1)]),
@@ -956,7 +956,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('produces correct support lines for a three-leaf tree in DFS order', () => {
-      // root(bl=0) → [left(bl=1) → [a(bl=1), b(bl=1)], c(bl=2)]
+      // root(bl=0) -> [left(bl=1) -> [a(bl=1), b(bl=1)], c(bl=2)]
       // a: leafXPxEnd=(1+1)*100+10=210, y=15
       // b: leafXPxEnd=210, y=45
       // c: leafXPxEnd=(0+2)*100+10=210, y=75
@@ -984,7 +984,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('produces distance label texts when rootNode.maxBranchLength is set and branches are significant', () => {
-      // root.maxBranchLength=10; a.bl=5 → 5/10*100=50% >= 5% → label; b.bl=10 → 100% → label
+      // root.maxBranchLength=10; a.bl=5 -> 5/10*100=50% >= 5% -> label; b.bl=10 -> 100% -> label
       // labelPrecision = max(1, 4 - len('10')) = max(1, 2) = 2
       // round(5, 2)='5', round(10, 2)='10'
       const rootNode: TreeNode = {
@@ -1001,7 +1001,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('suppresses distance labels for branches below MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL', () => {
-      // root.maxBranchLength=100; a.bl=4 → 4% < 5% → no label; b.bl=10 → 10% → label
+      // root.maxBranchLength=100; a.bl=4 -> 4% < 5% -> no label; b.bl=10 -> 10% -> label
       const rootNode: TreeNode = {
         ...makeNode('root', 0, [makeLeaf('a', 4), makeLeaf('b', 10)]),
         maxBranchLength: new Decimal(100),
@@ -1013,7 +1013,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('produces no distance texts when rootNode has no maxBranchLength', () => {
-      // makeNode does not set maxBranchLength → all labels suppressed
+      // makeNode does not set maxBranchLength -> all labels suppressed
       const tree = makeNode('root', 0, [makeLeaf('a', 5), makeLeaf('b', 10)]);
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, treeCanvasWidth });
 
@@ -1027,7 +1027,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('handles a leaf node with undefined branchLength gracefully (uses ?? 0 fallback)', () => {
-      // leaf without branchLength → branchLength?.toNumber() ?? 0 === 0
+      // leaf without branchLength -> branchLength?.toNumber() ?? 0 === 0
       const leafNoBL = { name: 'x', size: 1, subTreeLeaveNames: ['x'], subTreeNames: [] } as TreeNode;
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: leafNoBL, treeCanvasWidth });
       expect(asm.leafNodes).toHaveLength(1);
@@ -1036,7 +1036,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('handles a child with undefined branchLength via ?? 0 fallback in the every() check', () => {
-      // childNoBL has branchLength: undefined → every(bl > 0) uses ?? 0 → 0 > 0 = false → no dot
+      // childNoBL has branchLength: undefined -> every(bl > 0) uses ?? 0 -> 0 > 0 = false -> no dot
       const childNoBL = { name: 'a', size: 1, subTreeLeaveNames: ['a'], subTreeNames: [] } as TreeNode;
       const root = makeNode('root', 0, [childNoBL, makeLeaf('b', 0)]);
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: root, treeCanvasWidth });
@@ -1062,8 +1062,8 @@ describe('EpiTreeUtil', () => {
 
     it('invokes sort comparators when multiple children fall on the same side of the ancestor midpoint', () => {
       // 4 leaves at y=[15,45,75,105]; ancestorYPx=(15+105)/2=60
-      // top group: a(15<60), b(45<60) → 2 elements → sort(a,b) => comparator invoked
-      // bottom group: c(75>60), d(105>60) → 2 elements → sort(c,d) => comparator invoked
+      // top group: a(15<60), b(45<60) -> 2 elements -> sort(a,b) => comparator invoked
+      // bottom group: c(75>60), d(105>60) -> 2 elements -> sort(c,d) => comparator invoked
       const tree = makeNode('root', 0, [
         makeLeaf('a', 1),
         makeLeaf('b', 1),
@@ -1178,7 +1178,7 @@ describe('EpiTreeUtil', () => {
     });
 
     it('clamps positionY to [0, treeHeight - treeCanvasHeight] when linked at zoom=1', () => {
-      // treeHeight=600, treeCanvasHeight=300, devicePixelRatio=1 → max=300
+      // treeHeight=600, treeCanvasHeight=300, devicePixelRatio=1 -> max=300
       const clamped = EpiTreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
         internalZoomLevel: 1,
@@ -1287,8 +1287,8 @@ describe('EpiTreeUtil', () => {
     });
 
     it('uses divePixelRatioOffset=0 via the ?? fallback when devicePixelRatio exceeds all thresholds', () => {
-      // With dpr=4 > 3 (max threshold), thresholds.find returns undefined → ?? 0 fires
-      // positionYMax = (600*4) - (300*4) - 0 = 1200; positionY=999 < 1200 → no clamping
+      // With dpr=4 > 3 (max threshold), thresholds.find returns undefined -> ?? 0 fires
+      // positionYMax = (600*4) - (300*4) - 0 = 1200; positionY=999 < 1200 -> no clamping
       const result = EpiTreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 4,
         internalZoomLevel: 1,
@@ -1409,7 +1409,7 @@ describe('EpiTreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      // tickerMarkScale=[3,...] → 3 iterations → 3 beginPath/moveTo/lineTo/stroke/closePath calls
+      // tickerMarkScale=[3,...] -> 3 iterations -> 3 beginPath/moveTo/lineTo/stroke/closePath calls
       EpiTreeUtil.drawGuides({
         canvas,
         devicePixelRatio: 1,
@@ -1516,7 +1516,7 @@ describe('EpiTreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      // tickerMarkScale=[3,5,1] → 3 fillText calls
+      // tickerMarkScale=[3,5,1] -> 3 fillText calls
       EpiTreeUtil.drawScale({
         canvas,
         devicePixelRatio: 1,
@@ -1539,8 +1539,8 @@ describe('EpiTreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      // tickerMarkScale=[3,5,1], labels: i=0→10, i=1→5, i=2→0
-      // x positions: i=0→10, i=1→510, i=2→1010
+      // tickerMarkScale=[3,5,1], labels: i=0->10, i=1->5, i=2->0
+      // x positions: i=0->10, i=1->510, i=2->1010
       // y = HEADER_HEIGHT * 0.61 = 40 * 0.61 = 24.4
       EpiTreeUtil.drawScale({
         canvas,
@@ -1978,7 +1978,7 @@ describe('EpiTreeUtil', () => {
         verticalAncestorTreeLines: [],
         verticalLinePathPropertiesMap: new Map(),
       };
-      // none of the shapes match → isPointInStroke always returns false
+      // none of the shapes match -> isPointInStroke always returns false
       const ctx = makeHitTestCtx(null, null, null);
       const canvas = {
         getContext: vi.fn().mockReturnValue(ctx),
@@ -2130,7 +2130,7 @@ describe('EpiTreeUtil', () => {
 
     it('sorts algorithms according to EpiDataManager.getInstance().data.treeAlgorithms order', () => {
       // EpiDataManager order: [mockAlgo1(NJ), mockAlgo2(UPGMA)]
-      // col specifies UPGMA first, then NJ → result should be sorted to NJ then UPGMA
+      // col specifies UPGMA first, then NJ -> result should be sorted to NJ then UPGMA
       const completeCaseType = {
         cols: {
           col1: { id: 'col1', ref_col_id: 'rc1', tree_algorithm_codes: ['UPGMA', 'NJ'] },
@@ -2604,7 +2604,7 @@ describe('EpiTreeUtil', () => {
     it('draws support lines extending to toX plus the horizontal scroll offset', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
-      // toX=800, horizontalScrollPosition=40, devicePixelRatio=2 → lineTo(820, 15)
+      // toX=800, horizontalScrollPosition=40, devicePixelRatio=2 -> lineTo(820, 15)
       assembly.supportLines = [{ fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 15 }];
       EpiTreeUtil.drawTree({
         canvas: makeCanvas(ctx),
@@ -2655,7 +2655,7 @@ describe('EpiTreeUtil', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
       // fromY=1500 is far below the canvas body (height 300), so not visible
-      // toY=1500 → externalSortingIndex=50 (itemHeight=30), outside range [0,9]
+      // toY=1500 -> externalSortingIndex=50 (itemHeight=30), outside range [0,9]
       assembly.supportLines = [{ fromX: 100, fromY: 1500, nodeName: 'a', toX: 800, toY: 1500 }];
       EpiTreeUtil.drawTree({
         canvas: makeCanvas(ctx),
@@ -2680,7 +2680,7 @@ describe('EpiTreeUtil', () => {
     it('draws a support line when the leaf is visible in the viewport even if out of external range', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
-      // fromY=15 is visible (canvas height 300), toY=1500 → externalSortingIndex=50 outside range [0,9]
+      // fromY=15 is visible (canvas height 300), toY=1500 -> externalSortingIndex=50 outside range [0,9]
       assembly.supportLines = [{ fromX: 100, fromY: 15, nodeName: 'a', toX: 800, toY: 1500 }];
       EpiTreeUtil.drawTree({
         canvas: makeCanvas(ctx),
@@ -2704,7 +2704,7 @@ describe('EpiTreeUtil', () => {
     it('draws a support line when the end position is within the external range even if leaf is out of viewport', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
-      // fromY=1500 is outside viewport (canvas height 300), toY=45 → externalSortingIndex=1 (itemHeight=30), inside range [0,9]
+      // fromY=1500 is outside viewport (canvas height 300), toY=45 -> externalSortingIndex=1 (itemHeight=30), inside range [0,9]
       assembly.supportLines = [{ fromX: 100, fromY: 1500, nodeName: 'a', toX: 800, toY: 45 }];
       EpiTreeUtil.drawTree({
         canvas: makeCanvas(ctx),
@@ -2804,7 +2804,7 @@ describe('EpiTreeUtil', () => {
     it('dims non-highlighted shapes when highlightedNodeNames is non-empty', () => {
       const { ctx, drawCalls } = makeTrackedCtx();
       const assembly = makeAssembly();
-      // leaf 'a' is highlighted; leaf 'b' is not → its line and dot should be dimmed
+      // leaf 'a' is highlighted; leaf 'b' is not -> its line and dot should be dimmed
       assembly.leafTreeLines = [
         { nodeName: 'a', shape: p2d() },
         { nodeName: 'b', shape: p2d() },
@@ -2896,7 +2896,7 @@ describe('EpiTreeUtil', () => {
       const { ctx, drawCalls } = makeTrackedCtx();
       const assembly = makeAssembly();
       // verticalAncestorTreeLines use nodeNames: string[], not nodeName: string
-      // 'a' is highlighted; ['b','c'] is NOT highlighted → should be dimmed via Array.isArray path
+      // 'a' is highlighted; ['b','c'] is NOT highlighted -> should be dimmed via Array.isArray path
       assembly.verticalAncestorTreeLines = [
         { nodeNames: ['a'], shape: p2d() },
         { nodeNames: ['b', 'c'], shape: p2d() },

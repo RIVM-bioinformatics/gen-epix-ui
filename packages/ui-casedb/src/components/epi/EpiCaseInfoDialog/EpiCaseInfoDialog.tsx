@@ -39,6 +39,7 @@ import {
   useQueryMemo,
   withDialog,
 } from '@gen-epix/ui';
+import { Typography } from '@mui/material';
 
 import type { CaseAbacContext } from '../../../context/caseAbac';
 import { CaseAbacContextProvider } from '../../../context/caseAbac';
@@ -52,16 +53,23 @@ import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 import { EpiCaseCaseSetInfo } from './EpiCaseCaseSetInfo';
-import { EpiCaseForm } from './EpiCaseForm';
+import { EpiCaseInfoForm } from './EpiCaseInfoForm';
 import { EpiReadOnlyCaseContent } from './EpiReadOnlyCaseContent';
 import { EpiCaseContent } from './EpiCaseContent';
 import { EpiCaseSharingInfo } from './EpiCaseSharingInfo';
 import { EpiCaseSharingForm } from './EpiCaseSharingForm';
 
 
+export enum EPI_CASE_INFO_DIALOG_TAB_NAME {
+  EDIT = 'EDIT',
+  INFO = 'INFO',
+  SHARING = 'SHARING',
+}
+
 export interface EpiCaseInfoDialogOpenProps {
   caseId: string;
   caseTypeId: string;
+  initialTab?: EPI_CASE_INFO_DIALOG_TAB_NAME;
 }
 
 export interface EpiCaseInfoDialogProps extends WithDialogRenderProps<EpiCaseInfoDialogOpenProps> {
@@ -86,8 +94,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
 
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
-  const [isEditingCaseContent, setIsEditingCaseContent] = useState(false);
-  const [isEditingDataCollections, setIsEditingDataCollections] = useState(false);
+  const [currentTab, setCurrentTab] = useState<EPI_CASE_INFO_DIALOG_TAB_NAME>(openProps.initialTab ?? EPI_CASE_INFO_DIALOG_TAB_NAME.INFO);
   const [isEpiCaseFormSaving, setIsEpiCaseFormSaving] = useState(false);
   const [isEpiCaseDataCollectionFormSaving, setIsEpiCaseDataCollectionFormSaving] = useState(false);
   const [isRefreshingData, setIsRefreshingData] = useState(false);
@@ -99,8 +106,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     setIsEpiCaseFormSaving(false);
     setIsEpiCaseDataCollectionFormSaving(false);
     setIsRefreshingData(true);
-    setIsEditingCaseContent(false);
-    setIsEditingDataCollections(false);
+    setCurrentTab(EPI_CASE_INFO_DIALOG_TAB_NAME.INFO);
     await fetchData();
     setIsRefreshingData(false);
   }, [fetchData]);
@@ -171,16 +177,15 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   }, [caseRightsQuery]);
 
   const onEditButtonClick = useCallback(() => {
-    setIsEditingCaseContent(true);
+    setCurrentTab(EPI_CASE_INFO_DIALOG_TAB_NAME.EDIT);
   }, []);
 
   const onShareButtonClick = useCallback(() => {
-    setIsEditingDataCollections(true);
+    setCurrentTab(EPI_CASE_INFO_DIALOG_TAB_NAME.SHARING);
   }, []);
 
   const onGoBackButtonClick = useCallback(() => {
-    setIsEditingCaseContent(false);
-    setIsEditingDataCollections(false);
+    setCurrentTab(EPI_CASE_INFO_DIALOG_TAB_NAME.INFO);
   }, []);
 
 
@@ -203,19 +208,19 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   const isSaving = isEpiCaseFormSaving || isEpiCaseDataCollectionFormSaving;
 
   useEffect(() => {
-    if (isEditingCaseContent) {
+    if (currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.EDIT) {
       onTitleChange(t`Case information - Edit`);
-    } else if (isEditingDataCollections) {
+    } else if (currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.SHARING) {
       onTitleChange(t`Case information - Share`);
     } else {
       onTitleChange(t`Case information`);
     }
-  }, [isEditingDataCollections, isEditingCaseContent, onTitleChange, t]);
+  }, [currentTab, onTitleChange, t]);
 
   useEffect(() => {
     const actions: DialogAction[] = [];
 
-    if (isEditingCaseContent || isEditingDataCollections) {
+    if (currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.EDIT || currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.SHARING) {
       actions.push({
         ...TestIdUtil.createAttributes('EpiCaseInfoDialog-goBackButton'),
         color: 'primary',
@@ -227,7 +232,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
       });
     }
 
-    if (isEditingCaseContent) {
+    if (currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.EDIT && canEdit) {
       actions.push(
         {
           ...TestIdUtil.createAttributes('EpiCaseInfoDialog-saveButton'),
@@ -240,7 +245,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
           variant: 'contained',
         },
       );
-    } else if (isEditingDataCollections) {
+    } else if (currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.SHARING && canShare) {
       actions.push(
         {
           ...TestIdUtil.createAttributes('EpiCaseInfoDialog-saveButton'),
@@ -253,7 +258,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
           variant: 'contained',
         },
       );
-    } else {
+    } else if (currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.INFO) {
       actions.push(
         {
           ...TestIdUtil.createAttributes('EpiCaseSetInfoDialog-deleteButton'),
@@ -289,7 +294,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
       );
     }
     onActionsChange(actions);
-  }, [onActionsChange, onEditButtonClick, t, isEditingCaseContent, onGoBackButtonClick, onShareButtonClick, isEditingDataCollections, valuesFormId, dataCollectionsFormId, onClose, isSaving, canShare, onDeleteEventButtonClick, canDelete, canEdit]);
+  }, [onActionsChange, onEditButtonClick, t, currentTab, onGoBackButtonClick, onShareButtonClick, valuesFormId, dataCollectionsFormId, onClose, isSaving, canShare, onDeleteEventButtonClick, canDelete, canEdit]);
 
   const caseAbacContextValue = useMemo<CaseAbacContext>(() => {
     return {
@@ -327,7 +332,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
               marginBottom: 2,
             }}
           />
-          {!isEditingCaseContent && !isEditingDataCollections && (
+          {currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.INFO && (
             <>
               <EpiCaseSharingInfo
                 sx={{
@@ -348,21 +353,32 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
               />
             </>
           )}
-          {isEditingCaseContent && (
-            <EpiCaseForm
+          {currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.EDIT && canEdit && (
+            <EpiCaseInfoForm
+              caseRights={caseRightsQuery.data?.[0]}
               epiCase={epiCase}
               formId={valuesFormId}
               onFinish={onFinish}
               onIsSavingChange={onEpiCaseFormIsSavingChange}
             />
           )}
-          {isEditingDataCollections && (
+          {currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.EDIT && !canEdit && (
+            <Typography variant={'body1'}>
+              {t`You do not have permissions to edit this case.`}
+            </Typography>
+          )}
+          {currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.SHARING && canShare && (
             <EpiCaseSharingForm
               epiCase={epiCase}
               formId={dataCollectionsFormId}
               onFinish={onFinish}
               onIsSavingChange={onEpiCaseDataCollectionFormIsSavingChange}
             />
+          )}
+          {currentTab === EPI_CASE_INFO_DIALOG_TAB_NAME.SHARING && !canShare && (
+            <Typography variant={'body1'}>
+              {t`You do not have permissions to share this case.`}
+            </Typography>
           )}
         </CaseAbacContextProvider>
       </ResponseHandler>

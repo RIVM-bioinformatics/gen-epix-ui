@@ -39,7 +39,7 @@ export const useRegionNameFactory = (): UseNameFactory<CaseDbRegion> => {
 
   return useMemo(() => {
     const getName = (item: CaseDbRegion) => {
-      return `${regionSetsMapQuery.map.get(item.region_set_id)?.name ?? item.region_set_id} → ${item.name}`;
+      return `${regionSetsMapQuery.map.get(item.region_set_id)?.name ?? item.region_set_id} -> ${item.name}`;
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [regionSetsMapQuery]);
   }, [regionSetsMapQuery]);

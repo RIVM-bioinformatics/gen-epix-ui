@@ -125,7 +125,7 @@ export const EpiMapWidget = () => {
     return {
       invert: false,
       key: 'region_set_id',
-      members: EpiDataManager.getInstance().getRegionSetIds(completeCaseType),
+      members: CaseTypeUtil.getRegionSetIds(completeCaseType),
       type: 'UUID_SET',
     };
   }, [completeCaseType]);

@@ -16,6 +16,7 @@ import {
   WindowManager,
 } from '@gen-epix/ui';
 
+
 export const SELECTION_FILTER_GROUP = 'selection';
 export const TREE_FILTER_GROUP = 'tree';
 
@@ -138,14 +139,25 @@ export class CaseTypeUtil {
     return visibleColumnIds;
   }
 
-
   public static getPreferredColInDimHavingHighestRank(cols: CaseDbCol[], completeCaseType: CaseDbCompleteCaseType): CaseDbCol {
     return cols.find(col => completeCaseType.ref_cols[col.ref_col_id].rank === 1) ?? cols?.[0];
   }
 
-
   public static getPreferredGEOCol(cols: CaseDbCol[]): CaseDbCol {
     return cols[Math.min(cols.length - 1, Math.floor((cols.length - 1) / 2))];
+  }
+
+
+  public static getRegionSetIds(completeCaseType: CaseDbCompleteCaseType): string[] {
+    const regionSetIds: string[] = [];
+    const cols = CaseTypeUtil.getCols(completeCaseType);
+    cols.forEach(col => {
+      const refCol = completeCaseType.ref_cols[col.ref_col_id];
+      if (refCol.region_set_id && !regionSetIds.includes(refCol.region_set_id)) {
+        regionSetIds.push(refCol.region_set_id);
+      }
+    });
+    return regionSetIds;
   }
 
 
@@ -156,6 +168,7 @@ export class CaseTypeUtil {
     });
     return uniq(writableColIds);
   }
+
 
   public static getWritableImportExportColIds(completeCaseType: CaseDbCompleteCaseType): string[] {
     const writableColIds = CaseTypeUtil.getWritableColIds(completeCaseType);
@@ -175,5 +188,4 @@ export class CaseTypeUtil {
   public static isGeneticDistanceDim(refDim: CaseDbRefDim, refCols: CaseDbRefCol[]): boolean {
     return refDim.dim_type === CaseDbDimType.OTHER && refCols.find(refCol => refCol.col_type === CaseDbColType.GENETIC_DISTANCE) !== undefined;
   }
-
 }

@@ -83,6 +83,24 @@ const TableSortLabelIconButton = styled(IconButton, {
   };
 });
 
+const TableCustomHeaderIconButton = styled(IconButton, {
+  name: 'GENEPIX-TableCustomHeaderIcon',
+})(({ theme }) => {
+  return {
+    '&:hover': {
+      color: theme.palette.primary.main,
+      opacity: '1 !important',
+    },
+    display: 'none',
+    fontSize: iconSize,
+    height: `${iconSize}px`,
+    opacity: 0,
+    padding: 0,
+    userSelect: 'none',
+    width: `${iconSize}px`,
+  };
+});
+
 const TableFilterLabelIconButton = styled(IconButton, {
   name: 'GENEPIX-TableFilterLabelIcon',
 })(({ theme }) => {
@@ -203,6 +221,10 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
     return !!filter && !filter.isInitialFilterValue();
   }, [filter]);
 
+  const onCustomHeaderIconClick = useCallback(() => {
+    column.customHeaderIcon?.onClick({ column, dataContext });
+  }, [column, dataContext]);
+
   const onFilterPopOverClose = useCallback(() => {
     setFilterAnchorElement(null);
     // Focus back to the header cell and filter icon button after closing the popover. This must be done in a setTimeout to ensure the popover has closed before focusing.
@@ -227,9 +249,10 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
     [`${tableHeaderCellClassNames.filterLabelIcon}--active`]: hasActiveFilter,
   });
 
+  const shouldShowCustomHeaderIcon = !!column.customHeaderIcon;
   const shouldShowSortIcon = !!column.comparatorFactory;
   const shouldShowFilterIcon = !!filter;
-  const tabIndex = shouldShowSortIcon || shouldShowFilterIcon ? 0 : -1;
+  const tabIndex = shouldShowSortIcon || shouldShowFilterIcon || shouldShowCustomHeaderIcon ? 0 : -1;
 
   const iconSpacing = +theme.spacing(2).replace('px', '');
 
@@ -270,7 +293,7 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
           [`.${tableHeaderCellClassNames.columnDivider}`]: {
             opacity: 1,
           },
-          [`.${tableHeaderCellClassNames.sortLabelIcon}, .${tableHeaderCellClassNames.filterLabelIcon}`]: {
+          [`.${tableHeaderCellClassNames.sortLabelIcon}, .${tableHeaderCellClassNames.filterLabelIcon}, .${tableHeaderCellClassNames.customHeaderIcon}`]: {
             display: 'inline-block',
             opacity: 0.5,
           },
@@ -297,7 +320,7 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
         <Box
           sx={{
             [`&:hover .${tableHeaderCellClassNames.content}`]: {
-              maxWidth: `calc(100% + 16px - ${sum([shouldShowFilterIcon ? iconSpacing : 0, shouldShowSortIcon ? iconSpacing : 0, iconSpacing])}px)`,
+              maxWidth: `calc(100% + 16px - ${sum([shouldShowCustomHeaderIcon ? iconSpacing : 0, shouldShowFilterIcon ? iconSpacing : 0, shouldShowSortIcon ? iconSpacing : 0, iconSpacing])}px)`,
             },
             alignItems: 'center',
             display: 'inline-flex',
@@ -339,6 +362,16 @@ export const TableHeaderCell = <TRowData, TDataContext = null>(props: TableHeade
                   : column.headerName ?? ''}
               </Box>
             </Tooltip>
+          )}
+          {shouldShowCustomHeaderIcon && (
+            <TableCustomHeaderIconButton
+              className={tableHeaderCellClassNames.customHeaderIcon}
+              onClick={onCustomHeaderIconClick}
+              tabIndex={0}
+              title={column.customHeaderIcon?.label}
+            >
+              {column.customHeaderIcon?.iconElement}
+            </TableCustomHeaderIconButton>
           )}
           {shouldShowFilterIcon && (
             <>

@@ -7,46 +7,58 @@ import {
 import { useStore } from 'zustand';
 import { t } from 'i18next';
 import { useShallow } from 'zustand/shallow';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
 import {
   Box,
   Typography,
 } from '@mui/material';
 import type { BoxProps } from '@mui/material';
-import type { CaseDbCase } from '@gen-epix/api-casedb';
-import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type {
+  CaseDbCase,
+  CaseDbCaseRights,
+} from '@gen-epix/api-casedb';
 import {
-  FormUtil,
-  GenericForm,
+  CaseDbEtlStatus,
+  CaseDbUploadAction,
+} from '@gen-epix/api-casedb';
+import {
   NotificationManager,
-  ObjectUtil,
   QueryClientManager,
   Spinner,
-  useOrganizationsQuery,
 } from '@gen-epix/ui';
 
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { CaseUtil } from '../../../utils/CaseUtil';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { EpiCaseContentForm } from '../EpiCaseContentForm';
+import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
-export type EpiCaseFormProps = {
+export type EpiCaseInfoFormProps = {
+  readonly caseRights: CaseDbCaseRights;
   readonly epiCase: CaseDbCase;
   readonly formId: string;
   readonly onFinish: () => void;
   readonly onIsSavingChange: (isSaving: boolean) => void;
 } & BoxProps;
 
-export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...boxProps }: EpiCaseFormProps) => {
-  const organizationsQuery = useOrganizationsQuery();
+export const EpiCaseInfoForm = ({ caseRights, epiCase, formId, onFinish, onIsSavingChange, ...boxProps }: EpiCaseInfoFormProps) => {
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
-  const schema = useMemo(() => CaseUtil.createYupSchema(completeCaseType), [completeCaseType]);
-  const formFieldDefinitions = useMemo(() => CaseUtil.createFormFieldDefinitions(completeCaseType, organizationsQuery), [completeCaseType, organizationsQuery]);
+
   const mutateCachedCase = useStore(epiDashboardStore, useShallow((state) => state.mutateCachedCase));
   const [isSaving, setIsSaving] = useState(false);
 
-  const onFormSubmit = useCallback((content: CaseDbCase['content']) => {
+  const enabledColIds = useMemo(() => {
+    const colIds: string[] = [];
+
+    caseRights.read_col_ids.forEach(colId => {
+      if (caseRights.write_col_ids.includes(colId)) {
+        colIds.push(colId);
+      }
+    });
+    return colIds;
+  }, [caseRights]);
+
+  const onFormSubmit = useCallback((caseId: string, content: CaseDbCase['content']) => {
+    console.log(caseId, content);
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
@@ -58,12 +70,28 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
       });
       try {
         await QueryClientManager.getInstance().cancelQueries(queryKeys);
-        const item = {
-          ...epiCase,
-          content: ObjectUtil.mergeWithUndefined(epiCase.content, content),
-        };
-        await CaseDbCaseApi.getInstance().casesPutOne(item.id, item);
-        mutateCachedCase(item.id, item);
+        const uploadResult = (await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds({
+          case_batch: {
+            cases: [
+              {
+                case: {
+                  case_type_id: completeCaseType.id,
+                  content,
+                  created_in_data_collection_id: epiCase.created_in_data_collection_id,
+                  id: caseId,
+                },
+              },
+            ],
+          },
+          case_type_id: completeCaseType.id,
+          created_in_data_collection_id: epiCase.created_in_data_collection_id,
+          on_exists: CaseDbUploadAction.UPDATE,
+        }));
+        if (uploadResult.status !== CaseDbEtlStatus.SKIPPED && uploadResult.status !== CaseDbEtlStatus.SUCCESS && uploadResult.status !== CaseDbEtlStatus.UPDATED) {
+          throw new Error('Case upload failed');
+        }
+        // await CaseDbCaseApi.getInstance().casesPutOne(item.id, item);
+        mutateCachedCase(epiCase.id, epiCase);
         NotificationManager.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
       } catch (_error) {
         NotificationManager.getInstance().fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
@@ -76,14 +104,7 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();
-  }, [epiCase, mutateCachedCase, onFinish, onIsSavingChange]);
-
-  const values = useMemo<CaseDbCase['content']>(() => FormUtil.createFormValues(formFieldDefinitions, epiCase.content), [formFieldDefinitions, epiCase.content]);
-  const formMethods = useForm<CaseDbCase['content']>({
-    resolver: yupResolver(schema),
-    values,
-  });
-  const { handleSubmit } = formMethods;
+  }, [completeCaseType.id, epiCase, mutateCachedCase, onFinish, onIsSavingChange]);
 
   return (
     <Box {...boxProps}>
@@ -98,12 +119,13 @@ export const EpiCaseForm = ({ epiCase, formId, onFinish, onIsSavingChange, ...bo
           />
         )}
         {!isSaving && (
-          <GenericForm<CaseDbCase['content']>
-            formFieldDefinitions={formFieldDefinitions}
+          <EpiCaseContentForm
+            caseContent={epiCase.content}
+            caseId={epiCase.id}
+            completeCaseType={completeCaseType}
+            enabledColIds={enabledColIds}
             formId={formId}
-            formMethods={formMethods}
-            onSubmit={handleSubmit(onFormSubmit)}
-            schema={schema}
+            onSubmit={onFormSubmit}
           />
         )}
       </Box>

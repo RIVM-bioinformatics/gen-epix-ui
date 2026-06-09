@@ -1,7 +1,7 @@
 import { createStore } from 'zustand';
 import { t } from 'i18next';
 import type {
-  CaseDbCaseUploadResult,
+  CaseDbCaseBatchUploadResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
@@ -16,6 +16,7 @@ import {
 } from '@gen-epix/ui';
 
 import type {
+  CaseForUploadWithGeneratedId,
   CaseUploadResultWithGeneratedId,
   EpiUploadMappedColumn,
   EpiUploadSequenceMapping,
@@ -24,17 +25,35 @@ import { EPI_UPLOAD_STEP } from '../../models/epi';
 import { EpiUploadUtil } from '../../utils/EpiUploadUtil';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 
-export const STEP_ORDER = [
+export const STEP_ORDER_UPLOAD = [
   EPI_UPLOAD_STEP.SELECT_FILE,
   EPI_UPLOAD_STEP.MAP_COLUMNS,
-  EPI_UPLOAD_STEP.VALIDATE,
+  EPI_UPLOAD_STEP.PREVIEW,
   EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES,
   EPI_UPLOAD_STEP.MAP_SEQUENCES,
   EPI_UPLOAD_STEP.CREATE_CASES,
 ];
 
-export type EpiUploadStore = EpiUploadStoreActions & EpiUploadStoreState;
+export const STEP_ORDER_BULK_EDIT = [
+  EPI_UPLOAD_STEP.PREVIEW,
+  EPI_UPLOAD_STEP.CREATE_CASES,
+];
 
+export interface CreateEpiUploadStoreInitialStateKwArg {
+  caseRightsColMap?: { [colId: string]: string[] };
+  casesForVerificationFromSourceData?: CaseForUploadWithGeneratedId[];
+  completeCaseType?: CaseDbCompleteCaseType;
+  goBackFromFirstStepCallback?: () => void;
+  goBackFromFirstStepLabel?: string;
+  onUploadComplete?: (result: CaseDbCaseBatchUploadResult) => Promise<void> | void;
+  stepOrder: EPI_UPLOAD_STEP[];
+  uploadCompleteButtonCallback?: () => void;
+  uploadCompleteButtonLabel?: string;
+}
+
+export type CreateEpiUploadStoreKwArgs = CreateEpiUploadStoreInitialStateKwArg;
+
+export type EpiUploadStore = EpiUploadStoreActions & EpiUploadStoreState;
 export interface EpiUploadStoreActions {
   destroy: () => Promise<void>;
   findNextStep: (currentStep: EPI_UPLOAD_STEP) => EPI_UPLOAD_STEP;
@@ -56,12 +75,13 @@ export interface EpiUploadStoreActions {
   setSequenceMapping: (sequenceMapping: EpiUploadSequenceMapping) => void;
   setSheet: (sheet: string) => Promise<void>;
   setSheetOptions: (sheetOptions: AutoCompleteOption<string>[]) => Promise<void>;
-  setValidatedCases: (validatedCases: CaseDbCaseUploadResult[]) => void;
 }
 
 export interface EpiUploadStoreState {
   activeStep: EPI_UPLOAD_STEP;
   assemblyProtocolId: string;
+  caseRightsColMap: { [colId: string]: string[] };
+  casesForVerificationFromSourceData: CaseForUploadWithGeneratedId[];
   caseTypeId: string;
   cols: CaseDbCol[];
   completeCaseType: CaseDbCompleteCaseType;
@@ -71,11 +91,15 @@ export interface EpiUploadStoreState {
   fileList: FileList;
   fileName: string;
   fileParsingError: string;
+  goBackFromFirstStepCallback: () => void;
+  goBackFromFirstStepLabel: string;
   initError: unknown;
   isInitLoading: boolean;
   mappedColumns: EpiUploadMappedColumn[];
+  onUploadComplete: (result: CaseDbCaseBatchUploadResult) => Promise<void> | void;
   rawData: string[][];
   sampleIdColId: string;
+  selectedGeneratedIdsForUpload: string[];
   sequenceFilesDataTransfer: DataTransfer;
   sequenceMapping: EpiUploadSequenceMapping;
   sequencingProtocolId: string;
@@ -83,45 +107,59 @@ export interface EpiUploadStoreState {
   sheetOptions: AutoCompleteOption<string>[];
   shouldResetColumnMapping: boolean;
   shouldResetSequenceMapping: boolean;
+  stepOrder: EPI_UPLOAD_STEP[];
+  uploadCompleteButtonCallback: () => void;
+  uploadCompleteButtonLabel: string;
   validateCasesQueryKey: string[];
-  validatedCases: CaseDbCaseUploadResult[];
   validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
 }
 
 
-const createEpiUploadStoreDefaultState: () => EpiUploadStoreState = () => ({
-  activeStep: STEP_ORDER[0],
+const createEpiUploadStoreInitialState: (kwArgs: CreateEpiUploadStoreKwArgs) => EpiUploadStoreState = (kwArgs) => ({
+  activeStep: kwArgs.stepOrder[0],
   assemblyProtocolId: null,
+  caseRightsColMap: kwArgs.caseRightsColMap ?? {},
+  casesForVerificationFromSourceData: kwArgs.casesForVerificationFromSourceData ?? [],
   caseTypeId: null,
-  cols: null,
-  completeCaseType: null,
+  cols: [],
+  completeCaseType: kwArgs.completeCaseType ?? null,
   createdInDataCollectionId: null,
   createdInDataCollectionOptions: [],
   dataCollectionOptions: [],
   fileList: null,
   fileName: null,
   fileParsingError: null,
+  goBackFromFirstStepCallback: kwArgs.goBackFromFirstStepCallback ?? null,
+  goBackFromFirstStepLabel: kwArgs.goBackFromFirstStepLabel ?? null,
   initError: null,
   isInitLoading: true,
-  mappedColumns: null,
+  mappedColumns: [],
+  onUploadComplete: kwArgs.onUploadComplete ?? null,
   rawData: null,
   sampleIdColId: null,
+  selectedGeneratedIdsForUpload: [],
   sequenceFilesDataTransfer: new DataTransfer(),
-  sequenceMapping: null,
+  sequenceMapping: {},
   sequencingProtocolId: null,
   sheet: null,
   sheetOptions: [],
   shouldResetColumnMapping: false,
   shouldResetSequenceMapping: false,
+  stepOrder: kwArgs.stepOrder,
+  uploadCompleteButtonCallback: kwArgs.uploadCompleteButtonCallback ?? null,
+  uploadCompleteButtonLabel: kwArgs.uploadCompleteButtonLabel ?? null,
   validateCasesQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
-  validatedCases: [],
   validatedCasesWithGeneratedId: [],
 });
 
-export const createEpiUploadStore = () => {
+export const createEpiUploadStore = (kwArgs: CreateEpiUploadStoreKwArgs) => {
+  const initialStateParams = { ...kwArgs };
+  const initialState = createEpiUploadStoreInitialState(initialStateParams);
+  const STEP_ORDER = kwArgs.stepOrder;
+
   return createStore<EpiUploadStore>()((set, get) => {
     return {
-      ...createEpiUploadStoreDefaultState(),
+      ...initialState,
       destroy: async () => {
         const { invalidateCaseValidationQuery } = get();
         await invalidateCaseValidationQuery();
@@ -144,25 +182,36 @@ export const createEpiUploadStore = () => {
       },
 
       goToNextStep: async () => {
-        const { activeStep, completeCaseType, mappedColumns, rawData, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCasesWithGeneratedId } = get();
+        const { activeStep, completeCaseType, createdInDataCollectionId, mappedColumns, rawData, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCasesWithGeneratedId } = get();
 
         let nextStep = get().findNextStep(activeStep);
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_COLUMNS) {
-          if (shouldResetColumnMapping && mappedColumns) {
+          if (shouldResetColumnMapping && mappedColumns.length > 0) {
             NotificationManager.getInstance().showNotification({
               isLoading: false,
               message: t`Column mappings have been reset due to changes in the selected case type or file.`,
               severity: 'info',
             });
           }
-          if ((shouldResetColumnMapping && mappedColumns) || !mappedColumns) {
+          if ((shouldResetColumnMapping && mappedColumns.length > 0) || mappedColumns.length === 0) {
             await setMappedColumns(EpiUploadUtil.getInitialMappedColumns(completeCaseType, rawData));
           }
         }
 
+        if (nextStep === EPI_UPLOAD_STEP.PREVIEW) {
+          set({
+            casesForVerificationFromSourceData: EpiUploadUtil.getCasesForUpload({
+              caseTypeId: completeCaseType.id,
+              createdInDataCollectionId,
+              mappedColumns,
+              rawData,
+            }),
+          });
+        }
+
         if (nextStep === EPI_UPLOAD_STEP.MAP_SEQUENCES) {
-          if (shouldResetSequenceMapping && sequenceMapping) {
+          if (shouldResetSequenceMapping && Object.keys(sequenceMapping).length > 0) {
             NotificationManager.getInstance().showNotification({
               isLoading: false,
               message: t`Sequence mappings have been reset due to changes in the selected uploaded files.`,
@@ -204,7 +253,7 @@ export const createEpiUploadStore = () => {
       reset: async () => {
         const { invalidateCaseValidationQuery } = get();
         await invalidateCaseValidationQuery();
-        set(createEpiUploadStoreDefaultState());
+        set(createEpiUploadStoreInitialState(initialStateParams));
       },
 
       setCaseTypeId: (caseTypeId: string) => {
@@ -324,7 +373,7 @@ export const createEpiUploadStore = () => {
           // Call the callback with parsed data
           await setRawData(await EpiUploadUtil.readRawData(fileList, sheet));
         } catch (error) {
-          console.log('Error reading sheet', error);
+          console.error('Error reading sheet', error);
           set({ sheet: null });
           set({ fileParsingError: t('Error reading sheet') });
           await setRawData(null);
@@ -338,15 +387,6 @@ export const createEpiUploadStore = () => {
         if (sheetOptions.length === 1) {
           await setSheet(sheetOptions[0].value);
         }
-      },
-
-      setValidatedCases: (validatedCases: CaseDbCaseUploadResult[]) => {
-        set({
-          validatedCases, validatedCasesWithGeneratedId: (validatedCases || []).map((vc, index) => ({
-            ...vc,
-            generatedId: index.toString(),
-          })),
-        });
       },
     };
   });

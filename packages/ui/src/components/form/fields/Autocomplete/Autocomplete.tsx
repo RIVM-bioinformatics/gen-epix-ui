@@ -112,6 +112,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
   const getIsOptionEqualToValue = useCallback((optionValue: AutoCompleteOption['value'], value: AutoCompleteOption['value']) => optionValue === value, []);
   const getIsOptionDisabled = useCallback((value: AutoCompleteOption['value']): boolean => mappedOptions.get(value)?.disabled, [mappedOptions]);
   const groupBy = useCallback((value: AutoCompleteOption['value']): string => mappedOptions.get(value)?.groupByValue, [mappedOptions]);
+  const getOptionKey = useCallback((value: AutoCompleteOption['value']): string => String(mappedOptions.get(value)?.value), [mappedOptions]);
 
   const renderOption = useCallback((props: HTMLAttributes<HTMLLIElement>, option: TFieldValues[TName], state: AutocompleteRenderOptionState): ReactNode => {
     return (
@@ -122,7 +123,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         className={props.className}
         data-option-index={(props as { 'data-option-index': string })['data-option-index']}
         id={props.id}
-        key={option}
+        key={getOptionKey(option)}
         onClick={props.onClick}
         onMouseMove={props.onMouseMove}
         onTouchStart={props.onTouchStart}
@@ -142,7 +143,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         {getOptionLabel(option)}
       </li>
     );
-  }, [getOptionLabel]);
+  }, [getOptionKey, getOptionLabel]);
 
   const onMuiAutocompleteInputChange = useCallback((_event: SyntheticEvent, value: string) => {
     setInputValue(value);
@@ -159,6 +160,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
 
     return (
       <TextField
+        disabled={disabled || loading}
         error={hasError}
         fullWidth={params.fullWidth}
         helperText={helperText}
@@ -186,7 +188,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         variant={'outlined'}
       />
     );
-  }, [disabled, errorMessage, hasError, hasWarning, infoMessage, label, required, warningMessage]);
+  }, [disabled, errorMessage, hasError, hasWarning, infoMessage, label, loading, required, warningMessage]);
 
   const renderValue = useCallback((values: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>, getItemProps: AutocompleteRenderValueGetItemProps<TMultiple>) => {
     const selectedValues = (Array.isArray(values) ? values : [values]) as Value[];
@@ -249,6 +251,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         disabled={disabled || loading}
         filterOptions={filterOptions}
         getOptionDisabled={getIsOptionDisabled}
+        getOptionKey={getOptionKey}
         getOptionLabel={getOptionLabel}
         groupBy={groupValues ? groupBy : undefined}
         inputValue={multiple ? inputValue : undefined}
@@ -265,7 +268,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         value={value}
       />
     );
-  }, [required, multiple, disabled, loading, filterOptions, getIsOptionDisabled, getOptionLabel, groupValues, groupBy, inputValue, getIsOptionEqualToValue, t, onMuiAutocompleteChange, onMuiAutocompleteInputChange, optionValues, renderInput, renderOption, renderValue]);
+  }, [required, multiple, disabled, loading, filterOptions, getIsOptionDisabled, getOptionKey, getOptionLabel, groupValues, groupBy, inputValue, getIsOptionEqualToValue, t, onMuiAutocompleteChange, onMuiAutocompleteInputChange, optionValues, renderInput, renderOption, renderValue]);
 
   return (
     <FormControl

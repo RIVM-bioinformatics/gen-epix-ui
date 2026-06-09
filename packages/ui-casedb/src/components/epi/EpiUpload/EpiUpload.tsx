@@ -12,15 +12,12 @@ import { useStore } from 'zustand';
 import { Stepper } from '@gen-epix/ui';
 import type { Step } from '@gen-epix/ui';
 
-import {
-  EpiUploadStoreContext,
-  STEP_ORDER,
-} from '../../../stores/epiUploadStore';
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import { EPI_UPLOAD_STEP } from '../../../models/epi';
 
 import { EpiUploadSelectFile } from './EpiUploadSelectFile';
 import { EpiUploadMapColumns } from './EpiUploadMapColumns';
-import { EpiUploadValidate } from './EpiUploadValidate';
+import { EpiUploadPreview } from './EpiUploadPreview';
 import { EpiUploadCreateCases } from './EpiUploadCreateCases';
 import { EpiUploadSelectSequenceFiles } from './EpiUploadSelectSequenceFiles';
 import { EpiUploadMapSequences } from './EpiUploadMapSequences';
@@ -30,16 +27,18 @@ export const EpiUpload = () => {
   const theme = useTheme();
 
   const store = use(EpiUploadStoreContext);
+  const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const activeStep = useStore(store, (state) => state.activeStep);
+  const stepOrder = useStore(store, (state) => state.stepOrder);
 
   const stepLabels = useMemo<Record<EPI_UPLOAD_STEP, string>>(() => {
     return {
-      [EPI_UPLOAD_STEP.CREATE_CASES]: t`Upload`,
+      [EPI_UPLOAD_STEP.CREATE_CASES]: t`Submit`,
       [EPI_UPLOAD_STEP.MAP_COLUMNS]: t`Map columns`,
       [EPI_UPLOAD_STEP.MAP_SEQUENCES]: t`Map sequences`,
+      [EPI_UPLOAD_STEP.PREVIEW]: t`Preview`,
       [EPI_UPLOAD_STEP.SELECT_FILE]: t`Select file`,
       [EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES]: t`Select sequence files`,
-      [EPI_UPLOAD_STEP.VALIDATE]: t`Validate`,
     };
   }, [t]);
 
@@ -51,12 +50,12 @@ export const EpiUpload = () => {
   }, []);
 
   const steps = useMemo<Step[]>(() => {
-    return STEP_ORDER.map((step) => ({
+    return stepOrder.map((step) => ({
       key: String(step),
       label: stepLabels[step],
       optional: optionalSteps.includes(step),
     }));
-  }, [optionalSteps, stepLabels]);
+  }, [optionalSteps, stepLabels, stepOrder]);
 
   return (
     <Box
@@ -91,8 +90,10 @@ export const EpiUpload = () => {
         {activeStep === EPI_UPLOAD_STEP.MAP_COLUMNS && (
           <EpiUploadMapColumns />
         )}
-        {activeStep === EPI_UPLOAD_STEP.VALIDATE && (
-          <EpiUploadValidate />
+        {activeStep === EPI_UPLOAD_STEP.PREVIEW && (
+          <EpiUploadPreview
+            caseTypeId={completeCaseType.id}
+          />
         )}
         {activeStep === EPI_UPLOAD_STEP.SELECT_SEQUENCE_FILES && (
           <EpiUploadSelectSequenceFiles />

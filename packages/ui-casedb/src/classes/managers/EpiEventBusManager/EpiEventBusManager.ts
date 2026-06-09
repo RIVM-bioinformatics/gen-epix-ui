@@ -3,9 +3,9 @@ import {
   EventBusAbstract,
   HmrUtil,
 } from '@gen-epix/ui';
+import type { CaseDbCase } from '@gen-epix/api-casedb';
 
 import type { EpiAddCasesToEventDialogOpenProps } from '../../../components/epi/EpiAddCasesToEventDialog';
-import type { EpiBulkEditCaseDialogOpenProps } from '../../../components/epi/EpiBulkEditCaseDialog';
 import type { EpiCaseInfoDialogOpenProps } from '../../../components/epi/EpiCaseInfoDialog';
 import type { EpiCreateEventDialogOpenProps } from '../../../components/epi/EpiCreateEventDialog';
 import type { EpiFindSimilarCasesDialogOpenProps } from '../../../components/epi/EpiFindSimilarCasesDialog';
@@ -40,10 +40,10 @@ type EpiEvent = {
   onDownloadOptionsRequested: void;
   onEventCreated: void;
   openAddCasesToEventDialog: EpiAddCasesToEventDialogOpenProps;
-  openBulkEditCaseDialog: EpiBulkEditCaseDialogOpenProps;
   openCaseInfoDialog: EpiCaseInfoDialogOpenProps;
   openContactDetailsDialog: EpiContactDetailsDialogOpenProps;
   openCreateEventDialog: EpiCreateEventDialogOpenProps;
+  openEditCases: CaseDbCase[];
   openFiltersMenu: void;
   openFindSimilarCasesDialog: EpiFindSimilarCasesDialogOpenProps;
   openRemoveCasesFromEventDialog: EpiRemoveCasesFromEventDialogOpenProps;

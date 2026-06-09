@@ -50,18 +50,6 @@ export class EpiDataManager {
     return EpiDataManager.__instance;
   }
 
-  public getRegionSetIds(completeCaseType: CaseDbCompleteCaseType): string[] {
-    const regionSetIds: string[] = [];
-    const cols = CaseTypeUtil.getCols(completeCaseType);
-    cols.forEach(col => {
-      const refCol = completeCaseType.ref_cols[col.ref_col_id];
-      if (refCol.region_set_id && !regionSetIds.includes(refCol.region_set_id)) {
-        regionSetIds.push(refCol.region_set_id);
-      }
-    });
-    return regionSetIds;
-  }
-
   public async loadConcepts(signal: AbortSignal): Promise<void> {
     const queryClient = QueryClientManager.getInstance().queryClient;
 
@@ -191,7 +179,7 @@ export class EpiDataManager {
   }
 
   private getMissingRegionSetIds(completeCaseType: CaseDbCompleteCaseType): string[] {
-    const regionSetIds = this.getRegionSetIds(completeCaseType);
+    const regionSetIds = CaseTypeUtil.getRegionSetIds(completeCaseType);
     const currentRegionSetsIds = (QueryClientManager.getInstance().getValidQueryData<CaseDbRegionSet[]>(QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY)) ?? []).map(x => x.id);
     return regionSetIds.filter(regionSetId => !currentRegionSetsIds.includes(regionSetId));
   }

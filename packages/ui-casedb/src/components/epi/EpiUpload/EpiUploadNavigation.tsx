@@ -3,7 +3,11 @@ import {
   Box,
   Button,
 } from '@mui/material';
+import { use } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useStore } from 'zustand';
+
+import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 
 export type EpiUploadNavigationProps = {
   readonly backLabel?: string;
@@ -14,8 +18,23 @@ export type EpiUploadNavigationProps = {
   readonly proceedLabel?: string;
 };
 
-export const EpiUploadNavigation = ({ backLabel, onGoBackButtonClick: onGoBack, onProceedButtonClick: onProceedButtonClick, proceedDisabled, proceedLabel }: EpiUploadNavigationProps) => {
+export const EpiUploadNavigation = ({
+  backLabel,
+  onGoBackButtonClick: onGoBack,
+  onProceedButtonClick: onProceedButtonClick,
+  proceedDisabled,
+  proceedLabel,
+}: EpiUploadNavigationProps) => {
   const { t } = useTranslation();
+  const store = use(EpiUploadStoreContext);
+  const stepOrder = useStore(store, (state) => state.stepOrder);
+  const activeStep = useStore(store, (state) => state.activeStep);
+  const goBackFromFirstStepCallback = useStore(store, (state) => state.goBackFromFirstStepCallback);
+  const goBackFromFirstStepLabel = useStore(store, (state) => state.goBackFromFirstStepLabel);
+
+  const isFirstStep = activeStep === stepOrder[0];
+  const onClickGoBack = isFirstStep ? (goBackFromFirstStepCallback ?? onGoBack) : onGoBack;
+  const effectiveBackLabel = isFirstStep ? (goBackFromFirstStepLabel ?? backLabel) : backLabel;
 
   return (
     <Box
@@ -28,12 +47,12 @@ export const EpiUploadNavigation = ({ backLabel, onGoBackButtonClick: onGoBack, 
         paddingTop: 1,
       }}
     >
-      {onGoBack && (
+      {onClickGoBack && (
         <Button
-          onClick={onGoBack}
+          onClick={onClickGoBack}
           variant={'outlined'}
         >
-          {backLabel ?? t`Go back`}
+          {effectiveBackLabel ?? t`Go back`}
         </Button>
       )}
       {onProceedButtonClick && (

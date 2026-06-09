@@ -158,6 +158,11 @@ interface TableColumnBase<TRowData, TValue, TDataContext = null, TColumnContext 
   cellColorGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   cellTitleGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   columnContext?: TColumnContext;
+  customHeaderIcon?: {
+    iconElement: ReactElement;
+    label: string;
+    onClick: (params: TableColumnParams<TRowData, TDataContext>) => void;
+  };
   disableEllipsis?: boolean;
   displayValueGetter?: (params: TableRowAndColumnParams<TRowData, TDataContext>) => string;
   filterLabel?: string;
