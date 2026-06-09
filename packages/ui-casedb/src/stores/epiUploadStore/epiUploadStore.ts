@@ -40,6 +40,7 @@ export const STEP_ORDER_BULK_EDIT = [
 ];
 
 export interface CreateEpiUploadStoreInitialStateKwArg {
+  caseRightsColMap?: { [colId: string]: string[] };
   casesForVerificationFromSourceData?: CaseForUploadWithGeneratedId[];
   completeCaseType?: CaseDbCompleteCaseType;
   goBackFromFirstStepCallback?: () => void;
@@ -79,6 +80,7 @@ export interface EpiUploadStoreActions {
 export interface EpiUploadStoreState {
   activeStep: EPI_UPLOAD_STEP;
   assemblyProtocolId: string;
+  caseRightsColMap: { [colId: string]: string[] };
   casesForVerificationFromSourceData: CaseForUploadWithGeneratedId[];
   caseTypeId: string;
   cols: CaseDbCol[];
@@ -116,6 +118,7 @@ export interface EpiUploadStoreState {
 const createEpiUploadStoreInitialState: (kwArgs: CreateEpiUploadStoreKwArgs) => EpiUploadStoreState = (kwArgs) => ({
   activeStep: kwArgs.stepOrder[0],
   assemblyProtocolId: null,
+  caseRightsColMap: kwArgs.caseRightsColMap ?? {},
   casesForVerificationFromSourceData: kwArgs.casesForVerificationFromSourceData ?? [],
   caseTypeId: null,
   cols: [],

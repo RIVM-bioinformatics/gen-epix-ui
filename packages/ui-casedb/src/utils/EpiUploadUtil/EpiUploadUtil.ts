@@ -107,7 +107,7 @@ export class EpiUploadUtil {
       signal,
     } = kwArgs;
 
-    const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col.id === sampleIdColId) ?? {};
+    const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col?.id === sampleIdColId) ?? {};
 
     return (await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds({
       case_batch: {

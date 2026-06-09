@@ -8,6 +8,10 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useTranslation } from 'react-i18next';
+import {
+  ResponseHandler,
+  useArray,
+} from '@gen-epix/ui';
 
 import {
   createEpiUploadStore,
@@ -17,6 +21,7 @@ import {
 import { EpiUpload } from '../EpiUpload';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import type { CaseForUploadWithGeneratedId } from '../../../models/epi';
+import { useCaseRightsQuery } from '../../../dataHooks/useCaseRightsQuery';
 
 export type EpiDashboardEditCasesProps = {
   cases: CaseDbCase[];
@@ -28,6 +33,42 @@ export const EpiDashboardEditCases = ({ cases, onClose }: EpiDashboardEditCasesP
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
   const fetchData = useStore(epiDashboardStore, (state) => state.fetchData);
   const { t } = useTranslation();
+
+  const caseRightsQuery = useCaseRightsQuery(cases.map(c => c.id), completeCaseType.id, cases.length > 0);
+
+  const loadables = useArray([caseRightsQuery]);
+
+  const caseRightsColMap = useMemo(() => {
+    const map: { [colId: string]: string[] } = {};
+    completeCaseType.ordered_col_ids.forEach(colId => {
+      map[colId] = [];
+    });
+
+    if (!caseRightsQuery.data) {
+      // build from completeCaseType (allow all cols) if caseRights not provided
+      completeCaseType.ordered_col_ids.forEach(colId => {
+        cases.forEach((caseItem) => {
+          map[colId].push(caseItem.id);
+        });
+      });
+    } else {
+      // build from caseRights if provided
+      caseRightsQuery.data.forEach((caseRight) => {
+        if (caseRight.is_full_access) {
+          completeCaseType.ordered_col_ids.forEach(colId => {
+            map[colId].push(caseRight.case_id);
+          });
+        } else {
+          caseRight.write_col_ids.forEach(colId => {
+            if (!map[colId].includes(caseRight.case_id)) {
+              map[colId].push(caseRight.case_id);
+            }
+          });
+        }
+      });
+    }
+    return map;
+  }, [caseRightsQuery.data, cases, completeCaseType]);
 
   const casesForVerificationFromSourceData = useMemo<CaseForUploadWithGeneratedId[]>(() => {
     return cases.map<CaseForUploadWithGeneratedId>((caseItem) => ({
@@ -44,6 +85,7 @@ export const EpiDashboardEditCases = ({ cases, onClose }: EpiDashboardEditCasesP
   }, [fetchData]);
 
   const epiUploadStore = useMemo(() => createEpiUploadStore({
+    caseRightsColMap,
     casesForVerificationFromSourceData,
     completeCaseType,
     goBackFromFirstStepCallback: onClose,
@@ -52,7 +94,7 @@ export const EpiDashboardEditCases = ({ cases, onClose }: EpiDashboardEditCasesP
     stepOrder: STEP_ORDER_BULK_EDIT,
     uploadCompleteButtonCallback: onClose,
     uploadCompleteButtonLabel: t`Back to line list`,
-  }), [casesForVerificationFromSourceData, completeCaseType, onClose, onUploadComplete, t]);
+  }), [caseRightsColMap, casesForVerificationFromSourceData, completeCaseType, onClose, onUploadComplete, t]);
 
   useEffect(() => {
     return () => {
@@ -61,8 +103,10 @@ export const EpiDashboardEditCases = ({ cases, onClose }: EpiDashboardEditCasesP
   }, [epiUploadStore]);
 
   return (
-    <EpiUploadStoreContext value={epiUploadStore}>
-      <EpiUpload />
-    </EpiUploadStoreContext>
+    <ResponseHandler loadables={loadables}>
+      <EpiUploadStoreContext value={epiUploadStore}>
+        <EpiUpload />
+      </EpiUploadStoreContext>
+    </ResponseHandler>
   );
 };

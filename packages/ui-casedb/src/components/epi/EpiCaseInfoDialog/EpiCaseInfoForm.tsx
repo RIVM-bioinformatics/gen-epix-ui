@@ -58,6 +58,7 @@ export const EpiCaseInfoForm = ({ caseRights, epiCase, formId, onFinish, onIsSav
   }, [caseRights]);
 
   const onFormSubmit = useCallback((caseId: string, content: CaseDbCase['content']) => {
+    console.log(caseId, content);
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {

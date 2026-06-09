@@ -363,6 +363,7 @@
     "Number of columns: {{columnCount}}": "Number of columns: {{columnCount}}",
     "Number of data rows: {{rowCount}}": "Number of data rows: {{rowCount}}",
     "Occurrence": "Occurrence",
+    "Only the cases that you have write access to for this column will be updated. Please review the changes carefully before submitting.": "Only the cases that you have write access to for this column will be updated. Please review the changes carefully before submitting.",
     "Open case type information for {{name}}": "Open case type information for {{name}}",
     "Open event information for {{name}}": "Open event information for {{name}}",
     "Open filters": "Open filters",
@@ -604,6 +605,7 @@
     "You can proceed to the next step.": "You can proceed to the next step.",
     "You do not have permissions to edit this case.": "You do not have permissions to edit this case.",
     "You do not have permissions to share this case.": "You do not have permissions to share this case.",
+    "You do not have the necessary rights to edit all rows in this column.": "You do not have the necessary rights to edit all rows in this column.",
     "You do not have the required permissions to create an event. Contact your organization administrator for assistance.": "You do not have the required permissions to create an event. Contact your organization administrator for assistance.",
     "You have exceeded the maximum number of {{maxCases}} cases for this case type. Please reduce the number of selected cases before proceeding.": "You have exceeded the maximum number of {{maxCases}} cases for this case type. Please reduce the number of selected cases before proceeding."
   }

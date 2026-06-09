@@ -23,6 +23,11 @@ import {
 } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+} from '@mui/material';
 
 import { CaseTypeFormUtil } from '../../../utils/CaseTypeFormUtil';
 
@@ -30,6 +35,7 @@ import { CaseTypeFormUtil } from '../../../utils/CaseTypeFormUtil';
 export interface EpiUploadEditColumnValuesDialogOpenProps {
   colId: string;
   completeCaseType: CaseDbCompleteCaseType;
+  shouldShowRightsWarning?: boolean;
 }
 
 export interface EpiUploadEditColumnValuesDialogProps extends WithDialogRenderProps<EpiUploadEditColumnValuesDialogOpenProps> {
@@ -96,16 +102,29 @@ export const EpiUploadEditColumnValuesDialog = withDialog<EpiUploadEditColumnVal
   }, [formId, onActionsChange, t]);
 
   return (
-    <GenericForm<CaseDbCase['content']>
-      formFieldDefinitions={fieldDefinitions}
-      formId={formId}
-      formMethods={formMethods}
-      onSubmit={handleSubmit(onFormSubmit)}
-      schema={schema}
-    />
+    <Box>
+      {openProps.shouldShowRightsWarning && (
+        <Box sx={{ marginBottom: 2 }}>
+          <Alert severity={'warning'}>
+            <AlertTitle>
+              {t`You do not have the necessary rights to edit all rows in this column.`}
+            </AlertTitle>
+            {t`Only the cases that you have write access to for this column will be updated. Please review the changes carefully before submitting.`}
+          </Alert>
+        </Box>
+      )}
+      <GenericForm<CaseDbCase['content']>
+        formFieldDefinitions={fieldDefinitions}
+        formId={formId}
+        formMethods={formMethods}
+        onSubmit={handleSubmit(onFormSubmit)}
+        schema={schema}
+      />
+    </Box>
   );
 }, {
   defaultTitle: '',
+  fullWidth: true,
   maxWidth: 'md',
   testId: 'EpiUploadEditColumnValuesDialog',
 });

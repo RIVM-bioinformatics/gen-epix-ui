@@ -63,6 +63,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const casesForVerificationFromSourceData = useStore(store, (state) => state.casesForVerificationFromSourceData);
   const createdInDataCollectionId = useStore(store, (state) => state.createdInDataCollectionId);
   const validateCasesQueryKey = useStore(store, (state) => state.validateCasesQueryKey);
+  const caseRightsColMap = useStore(store, (state) => state.caseRightsColMap);
   const [exceedsMaxNumCases, setExceedsMaxNumCases] = useState(false);
   const [isRevalidatingCases, setIsRevalidatingCases] = useState(false);
   const [revalidationError, setRevalidationError] = useState<Error | null>(null);
@@ -179,13 +180,14 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
 
   }, [caseTypeId, caseUploadValidationResultQuery.data, casesForVerificationFromSourceData, completeCaseType, createdInDataCollectionId, setSelectedIds, tableStore, validateCasesQueryKey]);
 
-  const onColContentEditSubmit = useCallback(async (colContent: CaseDbCase['content']) => {
+  const onColContentEditSubmit = useCallback(async (contentPerCaseId: { [caseId: string]: CaseDbCase['content'] }) => {
+    console.log(contentPerCaseId);
     const selectedIds = tableStore.getState().selectedIds;
     await revalidateCases(
       caseUploadValidationResultQuery.data
         .filter(row => selectedIds.includes(row.generatedId))
         .map(row => ({
-          content: { ...row.validated_content, ...colContent },
+          content: { ...row.validated_content, ...contentPerCaseId[row.generatedId] },
           row,
         })),
     );
@@ -231,6 +233,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   }, [caseUploadValidationResultQuery.data, goToNextStep, store, tableStore]);
 
   const onProceed = useCallback(async () => {
+    console.log(caseUploadValidationResultQuery.data);
     store.setState((state) => ({
       ...state,
       selectedGeneratedIdsForUpload: selectedIdsRef.current,
@@ -292,6 +295,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
             </Box>
           )}
           <EpiUploadCaseResultTable
+            caseRightsColMap={caseRightsColMap}
             caseUploadResults={caseUploadValidationResultQuery.data || []}
             completeCaseType={completeCaseType}
             getOriginalCellValue={getOriginalCellValue}

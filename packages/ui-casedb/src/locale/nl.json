@@ -363,6 +363,7 @@
     "Number of columns: {{columnCount}}": "Aantal kolommen: {{columnCount}}",
     "Number of data rows: {{rowCount}}": "Aantal data rijen: {{rowCount}}",
     "Occurrence": "Voorkomen",
+    "Only the cases that you have write access to for this column will be updated. Please review the changes carefully before submitting.": "Alleen de casussen waarvoor u schrijftoegang heeft voor deze kolom worden bijgewerkt. Controleer de wijzigingen zorgvuldig voordat u ze indient.",
     "Open case type information for {{name}}": "Open casus type informatie voor {{name}}",
     "Open event information for {{name}}": "Open event informatie voor {{name}}",
     "Open filters": "Open filters",
@@ -604,6 +605,7 @@
     "You can proceed to the next step.": "U kunt doorgaan naar de volgende stap.",
     "You do not have permissions to edit this case.": "U heeft geen rechten om dit geval te bewerken.",
     "You do not have permissions to share this case.": "U heeft geen rechten om dit geval te delen.",
+    "You do not have the necessary rights to edit all rows in this column.": "U heeft niet de benodigde rechten om alle rijen in deze kolom te bewerken.",
     "You do not have the required permissions to create an event. Contact your organization administrator for assistance.": "U heeft niet de vereiste rechten om een event aan te maken. Neem contact op met uw organisatiebeheerder voor hulp.",
     "You have exceeded the maximum number of {{maxCases}} cases for this case type. Please reduce the number of selected cases before proceeding.": "U heeft het maximale aantal van {{maxCases}} casussen voor dit casus type overschreden. Verminder het aantal geselecteerde casussen voordat u doorgaat."
   }
