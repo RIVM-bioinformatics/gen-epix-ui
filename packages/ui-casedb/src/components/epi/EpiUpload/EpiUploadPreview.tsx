@@ -181,7 +181,6 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   }, [caseTypeId, caseUploadValidationResultQuery.data, casesForVerificationFromSourceData, completeCaseType, createdInDataCollectionId, setSelectedIds, tableStore, validateCasesQueryKey]);
 
   const onColContentEditSubmit = useCallback(async (contentPerCaseId: { [caseId: string]: CaseDbCase['content'] }) => {
-    console.log(contentPerCaseId);
     const selectedIds = tableStore.getState().selectedIds;
     await revalidateCases(
       caseUploadValidationResultQuery.data
@@ -233,7 +232,6 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   }, [caseUploadValidationResultQuery.data, goToNextStep, store, tableStore]);
 
   const onProceed = useCallback(async () => {
-    console.log(caseUploadValidationResultQuery.data);
     store.setState((state) => ({
       ...state,
       selectedGeneratedIdsForUpload: selectedIdsRef.current,

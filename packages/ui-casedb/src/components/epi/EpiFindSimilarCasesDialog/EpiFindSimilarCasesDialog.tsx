@@ -22,6 +22,8 @@ import {
   Alert,
   AlertTitle,
   Box,
+  Button,
+  Divider,
   Typography,
 } from '@mui/material';
 import { useStore } from 'zustand';
@@ -151,14 +153,6 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     ];
   }, [formValues.treeColId, t, treeConfigurations, treeOptions]);
 
-  // Note: keeping track of dirty against submitted value, not the form dirty state.
-  const isDirty = useMemo(() => {
-    if (!formData) {
-      return false;
-    }
-    return formValues.treeColId !== formData.treeColId || formValues.maxDistance !== formData.maxDistance;
-  }, [formData, formValues]);
-
   useEffect(() => {
     onTitleChange(t`Find similar cases`);
   }, [t, onTitleChange]);
@@ -222,15 +216,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       onClick: onClose,
       variant: 'outlined',
     });
-    actions.push({
-      ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-findSimilarCasesButton'),
-      color: 'secondary',
-      form: formId,
-      label: t`Search`,
-      type: 'submit',
-      variant: 'contained',
-    });
-    if (similarCaseIdsNotInView.length > 0 && !isDirty) {
+    if (similarCaseIdsNotInView.length > 0) {
       actions.push({
         ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-addSimilarCasesButton'),
         color: 'secondary',
@@ -240,7 +226,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       });
     }
     onActionsChange(actions);
-  }, [formId, isDirty, onActionsChange, onAddToLineListButtonClick, onClose, similarCaseIdsNotInView.length, t]);
+  }, [formId, onActionsChange, onAddToLineListButtonClick, onClose, similarCaseIdsNotInView.length, t]);
 
   return (
     <Box>
@@ -253,18 +239,37 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
           {t('Select a tree and maximum distance to find similar cases for the {{count}} selected cases.', { count: openProps.selectedRows.length })}
         </Typography>
       </Box>
-      <GenericForm<FormFields>
-        formFieldDefinitions={formFieldDefinitions}
-        formId={formId}
-        formMethods={formMethods}
-        onSubmit={handleSubmit(onFormSubmit)}
-        schema={schema}
-      />
+      <Box>
+        <GenericForm<FormFields>
+          formFieldDefinitions={formFieldDefinitions}
+          formId={formId}
+          formMethods={formMethods}
+          onSubmit={handleSubmit(onFormSubmit)}
+          schema={schema}
+        />
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginTop: 2,
+        }}
+      >
+        <Button
+          color={'secondary'}
+          form={formId}
+          type={'submit'}
+          variant={'contained'}
+        >
+          {formData ? t`Search again` : t`Search`}
+        </Button>
+      </Box>
+      <Divider sx={{ marginY: 2 }} />
       <ResponseHandler
         inlineSpinner
         loadables={query}
       >
-        {query.data && !isDirty && (
+        {query.data && (
           <>
             <Box
               sx={{
