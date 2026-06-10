@@ -17,11 +17,13 @@ import type {
 
 export type TableCheckboxCellProps<TRowData, TDataContext = null> = {
   readonly cell: TableRowParams<TRowData, TDataContext>;
+  readonly onCheckBoxClick: (event: ReactMouseEvent, id: string) => void;
   readonly tableColumn: TableColumnSelectable<TRowData, TDataContext>;
 };
 
 export const TableCheckboxCell = <TRowData, TDataContext = null>({
   cell,
+  onCheckBoxClick,
   tableColumn,
 }: TableCheckboxCellProps<TRowData, TDataContext>) => {
   const { t } = useTranslation();
@@ -33,14 +35,18 @@ export const TableCheckboxCell = <TRowData, TDataContext = null>({
   const id = idSelectorCallback(cell.row);
   const onClick = useCallback((event: ReactMouseEvent) => {
     event.stopPropagation();
-  }, []);
+    if (event.shiftKey) {
+      event.preventDefault();
+    }
+    onCheckBoxClick(event, id);
+  }, [onCheckBoxClick, id]);
 
   const onChange = useCallback((event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
     const rowId = event.target.getAttribute('name');
     if (checked && !selectedIds.includes(rowId)) {
       setSelectedIds([...selectedIds, rowId]);
     } else if (!checked) {
-      setSelectedIds([...selectedIds].filter(x => x !== rowId));
+      setSelectedIds(selectedIds.filter(x => x !== rowId));
     }
   }, [selectedIds, setSelectedIds]);
 
