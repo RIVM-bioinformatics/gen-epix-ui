@@ -213,10 +213,11 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           ...initialState,
           ...tableStoreActions,
           addTreeFilter: async (nodeId: string) => {
-            const { filters, resetTreeAddresses, setFilterValue } = get();
+            const { filters, reloadSelectedIds, resetTreeAddresses, setFilterValue } = get();
             resetTreeAddresses();
             const treeFilter = filters.find(filter => filter instanceof TreeFilter);
             await setFilterValue(treeFilter.id, nodeId);
+            reloadSelectedIds();
           },
           destroy: () => {
             EpiHighlightingManager.getInstance().reset();
