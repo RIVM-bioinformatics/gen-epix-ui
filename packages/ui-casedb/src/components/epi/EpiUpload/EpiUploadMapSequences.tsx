@@ -16,7 +16,11 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import type { CaseDbCol } from '@gen-epix/api-casedb';
+import { useShallow } from 'zustand/react/shallow';
+import type {
+  CaseDbCaseUploadResult,
+  CaseDbCol,
+} from '@gen-epix/api-casedb';
 import type {
   TableColumn,
   TableRowParams,
@@ -31,7 +35,6 @@ import {
 
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
@@ -46,10 +49,10 @@ export const EpiUploadMapSequences = () => {
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const sampleIdColId = useStore(store, (state) => state.sampleIdColId);
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
-  const selectedValidatedCasesWithGeneratedId = useStore(store, (state) => {
-    const selectedGeneratedIdsForUpload = state.selectedGeneratedIdsForUpload;
-    return state.validatedCasesWithGeneratedId.filter(vc => selectedGeneratedIdsForUpload.includes(vc.generatedId));
-  });
+  const selectedvalidatedCases = useStore(store, useShallow((state) => {
+    const selectedIdsForUpload = state.selectedIdsForUpload;
+    return state.validatedCases.filter(vc => selectedIdsForUpload.includes(vc.id));
+  }));
   const setSequenceMapping = useStore(store, (state) => state.setSequenceMapping);
 
   const completeCaseTypeColStats = useMemo(() => {
@@ -92,11 +95,11 @@ export const EpiUploadMapSequences = () => {
     updateAlert();
   }, [updateAlert]);
 
-  const tableStore = useMemo(() => createTableStore<CaseUploadResultWithGeneratedId>({
-    idSelectorCallback: (row) => row.generatedId,
+  const tableStore = useMemo(() => createTableStore<CaseDbCaseUploadResult>({
+    idSelectorCallback: (row) => row.id,
   }), []);
 
-  const caseHasColumnContent = useCallback((rows: CaseUploadResultWithGeneratedId[], col: CaseDbCol): boolean => {
+  const caseHasColumnContent = useCallback((rows: CaseDbCaseUploadResult[], col: CaseDbCol): boolean => {
     return rows.some((row) => {
       const value = CaseUtil.getRowValue(row.validated_content, col, completeCaseType);
       return value && !value?.isMissing;
@@ -141,11 +144,11 @@ export const EpiUploadMapSequences = () => {
     );
   }, [setSequenceMapping, updateAlert]);
 
-  const renderSequenceCell = useCallback((tableRowParams: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+  const renderSequenceCell = useCallback((tableRowParams: TableRowParams<CaseDbCaseUploadResult>) => {
     const col = completeCaseType.cols[tableRowParams.id];
 
-    const id = tableRowParams.row.generatedId;
-    const dropDownValue = epiUploadSequenceMappingRef.current?.[tableRowParams.row.generatedId]?.sequenceFileNames[col.id] || '';
+    const id = tableRowParams.row.id;
+    const dropDownValue = epiUploadSequenceMappingRef.current?.[tableRowParams.row.id]?.sequenceFileNames[col.id] || '';
     const onChange = (newValue: string) => {
       if (!newValue) {
         delete epiUploadSequenceMappingRef.current?.[id]?.sequenceFileNames[col.id];
@@ -175,13 +178,13 @@ export const EpiUploadMapSequences = () => {
   }, [completeCaseType, createDropDown, sequenceDropDownOptions]);
 
 
-  const renderReadsCell = useCallback((tableRowParams: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+  const renderReadsCell = useCallback((tableRowParams: TableRowParams<CaseDbCaseUploadResult>) => {
     const col = completeCaseType.cols[tableRowParams.id];
     const isSequenceColumn = completeCaseTypeColStats.sequenceColumns.includes(col);
 
-    const id = tableRowParams.row.generatedId;
-    const dropDownValueFwd = epiUploadSequenceMappingRef.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.fwd || '';
-    const dropDownValueRev = epiUploadSequenceMappingRef.current?.[tableRowParams.row.generatedId]?.readsFileNames?.[col.id]?.rev || '';
+    const id = tableRowParams.row.id;
+    const dropDownValueFwd = epiUploadSequenceMappingRef.current?.[id]?.readsFileNames?.[col.id]?.fwd || '';
+    const dropDownValueRev = epiUploadSequenceMappingRef.current?.[id]?.readsFileNames?.[col.id]?.rev || '';
     const onChangeFwd = (newValue: string) => {
       if (!newValue) {
 
@@ -227,8 +230,8 @@ export const EpiUploadMapSequences = () => {
   }, [completeCaseType, completeCaseTypeColStats.sequenceColumns, createDropDown, sequenceDropDownOptions, readsDropDownOptions]);
 
 
-  const tableColumns = useMemo<TableColumn<CaseUploadResultWithGeneratedId>[]>(() => {
-    const tableCols: TableColumn<CaseUploadResultWithGeneratedId>[] = [];
+  const tableColumns = useMemo<TableColumn<CaseDbCaseUploadResult>[]>(() => {
+    const tableCols: TableColumn<CaseDbCaseUploadResult>[] = [];
     tableCols.push(
       TableUtil.createReadableIndexColumn(),
     );
@@ -240,7 +243,7 @@ export const EpiUploadMapSequences = () => {
     ];
 
     const sampleIdCol = completeCaseTypeColStats.sampleIdColumns.find(x => x.id === sampleIdColId);
-    if (sampleIdCol && caseHasColumnContent(selectedValidatedCasesWithGeneratedId, sampleIdCol)) {
+    if (sampleIdCol && caseHasColumnContent(selectedvalidatedCases, sampleIdCol)) {
       tableCols.push({
         headerName: sampleIdCol.label,
         hideInFilter: true,
@@ -283,7 +286,7 @@ export const EpiUploadMapSequences = () => {
     });
 
     const uniqueColIds: Set<string> = new Set();
-    selectedValidatedCasesWithGeneratedId.forEach((vc) => {
+    selectedvalidatedCases.forEach((vc) => {
       Object.keys(vc.validated_content || {}).forEach((colId) => uniqueColIds.add(colId));
     });
 
@@ -304,14 +307,14 @@ export const EpiUploadMapSequences = () => {
           type: 'text',
           valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
           widthPx: 250,
-        } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
+        } satisfies TableColumn<CaseDbCaseUploadResult>);
       }
     });
 
     return tableCols;
-  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColStats.readsColumns, completeCaseTypeColStats.sampleIdColumns, completeCaseTypeColStats.sequenceColumns, renderReadsCell, renderSequenceCell, sampleIdColId, selectedValidatedCasesWithGeneratedId]);
+  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColStats.readsColumns, completeCaseTypeColStats.sampleIdColumns, completeCaseTypeColStats.sequenceColumns, renderReadsCell, renderSequenceCell, sampleIdColId, selectedvalidatedCases]);
 
-  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: selectedValidatedCasesWithGeneratedId, store: tableStore });
+  useInitializeTableStore<CaseDbCaseUploadResult>({ columns: tableColumns, createFiltersFromColumns: true, rows: selectedvalidatedCases, store: tableStore });
 
   return (
     <Box

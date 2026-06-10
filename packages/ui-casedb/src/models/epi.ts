@@ -1,6 +1,4 @@
 import type {
-  CaseDbCaseForUpload,
-  CaseDbCaseUploadResult,
   CaseDbCol,
   CaseDbColType,
   CaseDbConcept,
@@ -49,8 +47,6 @@ export enum STRATIFICATION_SELECTED {
   UNSELECTED = 'UNSELECTED',
 }
 
-export type CaseForUploadWithGeneratedId = { generatedId: string } & CaseDbCaseForUpload;
-
 export type CaseTypeRowValue = {
   full: string;
   isMissing?: boolean;
@@ -58,7 +54,6 @@ export type CaseTypeRowValue = {
   raw: string;
   short: string;
 };
-export type CaseUploadResultWithGeneratedId = { generatedId: string } & CaseDbCaseUploadResult;
 
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
 

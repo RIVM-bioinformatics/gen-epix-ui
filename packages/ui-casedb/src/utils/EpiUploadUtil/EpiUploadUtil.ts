@@ -22,6 +22,7 @@ import type {
   CaseDbCaseBatchUploadResult,
   CaseDbCaseForUpload,
   CaseDbCaseType,
+  CaseDbCaseUploadResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
   CaseDbReadSetForUpload,
@@ -46,14 +47,13 @@ import {
   FORM_FIELD_DEFINITION_TYPE,
   ObjectUtil,
   QueryClientManager,
+  StringUtil,
   ValidationUtil,
 } from '@gen-epix/ui';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
 import type {
-  CaseForUploadWithGeneratedId,
-  CaseUploadResultWithGeneratedId,
   EpiUploadCompleteColStats,
   EpiUploadMappedColumn,
   EpiUploadMappedColumnsFormFields,
@@ -84,12 +84,12 @@ export class EpiUploadUtil {
 
   public static async createCases(kwArgs: {
     assemblyProtocolId: string;
-    casesForVerificationFromSourceData: CaseForUploadWithGeneratedId[];
+    casesForVerificationFromSourceData: CaseDbCaseForUpload[];
     completeCaseType: CaseDbCompleteCaseType;
     createdInDataCollectionId: string;
     mappedColumns: EpiUploadMappedColumn[];
     sampleIdColId: string;
-    selectedValidatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
+    selectedvalidatedCases: CaseDbCaseUploadResult[];
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
     signal: AbortSignal;
@@ -101,7 +101,7 @@ export class EpiUploadUtil {
       createdInDataCollectionId,
       mappedColumns,
       sampleIdColId,
-      selectedValidatedCasesWithGeneratedId: validatedCasesWithGeneratedId,
+      selectedvalidatedCases: validatedCases,
       sequenceMapping,
       sequencingProtocolId,
       signal,
@@ -111,7 +111,7 @@ export class EpiUploadUtil {
 
     return (await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds({
       case_batch: {
-        cases: validatedCasesWithGeneratedId.map((vc) => {
+        cases: validatedCases.map((vc) => {
           const caseId = vc.id;
           const readSetsForUpload: CaseDbReadSetForUpload[] = [];
           const seqsForUpload: CaseDbSeqForUpload[] = [];
@@ -120,14 +120,14 @@ export class EpiUploadUtil {
             mappedSampleIdCol,
             completeCaseType,
           )?.raw : null;
-          const caseFromSourceData = casesForVerificationFromSourceData.find(c => c.generatedId === vc.generatedId);
+          const caseFromSourceData = casesForVerificationFromSourceData.find(c => c.id === vc.id);
 
           if (externalSampleId) {
-            if (sequenceMapping[vc.generatedId]?.sequenceFileNames) {
-              Object.entries(sequenceMapping[vc.generatedId].sequenceFileNames).forEach(([colId, fileName]) => {
+            if (sequenceMapping[vc.id]?.sequenceFileNames) {
+              Object.entries(sequenceMapping[vc.id].sequenceFileNames).forEach(([colId, fileName]) => {
                 if (fileName) {
                   seqsForUpload.push({
-                    case_id: caseId,
+                    case_id: caseId ?? undefined,
                     col_id: colId,
                     other_sample_identifier: {
                       external_id: externalSampleId,
@@ -138,11 +138,11 @@ export class EpiUploadUtil {
                 }
               });
             }
-            if (sequenceMapping[vc.generatedId]?.readsFileNames) {
-              Object.entries(sequenceMapping[vc.generatedId].readsFileNames).forEach(([colId, fileNames]) => {
+            if (sequenceMapping[vc.id]?.readsFileNames) {
+              Object.entries(sequenceMapping[vc.id].readsFileNames).forEach(([colId, fileNames]) => {
                 if (fileNames.fwd || fileNames.rev) {
                   readSetsForUpload.push({
-                    case_id: caseId,
+                    case_id: caseId ?? undefined,
                     col_id: colId,
                     other_sample_identifier: {
                       external_id: externalSampleId,
@@ -160,7 +160,7 @@ export class EpiUploadUtil {
               case_type_id: completeCaseType.id,
               content: vc.validated_content,
               created_in_data_collection_id: caseFromSourceData?.case?.created_in_data_collection_id ?? createdInDataCollectionId,
-              id: caseId,
+              id: caseId ?? undefined,
             },
             read_sets: readSetsForUpload,
             seqs: seqsForUpload,
@@ -175,7 +175,7 @@ export class EpiUploadUtil {
 
   public static async createCasesAndUploadFiles(kwArgs: {
     assemblyProtocolId: string;
-    casesForVerificationFromSourceData: CaseForUploadWithGeneratedId[];
+    casesForVerificationFromSourceData: CaseDbCaseForUpload[];
     completeCaseType: CaseDbCompleteCaseType;
     createdInDataCollectionId: string;
     mappedColumns: EpiUploadMappedColumn[];
@@ -183,7 +183,7 @@ export class EpiUploadUtil {
     onError: (error: Error) => void;
     onProgress: (progress: number, message: string) => void;
     sampleIdColId: string;
-    selectedValidatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
+    selectedvalidatedCases: CaseDbCaseUploadResult[];
     sequenceFilesDataTransfer: DataTransfer;
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
@@ -215,25 +215,30 @@ export class EpiUploadUtil {
     }
   }
 
-  public static getCasesForUpload(kwArgs: { caseTypeId: string; createdInDataCollectionId: string; mappedColumns: EpiUploadMappedColumn[]; rawData: string[][] }): CaseForUploadWithGeneratedId[] {
+  public static getCasesForUpload(kwArgs: { caseTypeId: string; createdInDataCollectionId: string; mappedColumns: EpiUploadMappedColumn[]; rawData: string[][] }): CaseDbCaseForUpload[] {
     const { caseTypeId, createdInDataCollectionId, mappedColumns, rawData } = kwArgs;
-    return rawData.slice(1).map((row, index) => {
-      const caseIdColumn = mappedColumns.find((mappedColumn) => mappedColumn.isCaseIdColumn)?.originalIndex;
+    return rawData.slice(1).map((rawDataRow) => {
+      const rawDataCaseIdColumnIndex = mappedColumns.find((mappedColumn) => mappedColumn.isCaseIdColumn)?.originalIndex;
       const content: { [key: string]: string } = {};
 
       mappedColumns.forEach((mappedColumn) => {
         if (mappedColumn.col) {
-          content[mappedColumn.col.id] = row[mappedColumn.originalIndex];
+          content[mappedColumn.col.id] = rawDataRow[mappedColumn.originalIndex];
         }
       });
-      const id = caseIdColumn !== undefined ? row[caseIdColumn] : undefined;
-      const caseForCreateUpdate: CaseForUploadWithGeneratedId = {
+      let id: string;
+      if (!isNaN(rawDataCaseIdColumnIndex) && rawDataRow[rawDataCaseIdColumnIndex]) {
+        id = rawDataRow[rawDataCaseIdColumnIndex];
+      } else {
+        id = StringUtil.createUuid();
+      }
+
+      const caseForCreateUpdate: CaseDbCaseForUpload = {
         case: {
           case_type_id: caseTypeId,
           content: ObjectUtil.deepRemoveEmptyStrings(content),
           created_in_data_collection_id: createdInDataCollectionId,
         },
-        generatedId: id ?? index.toString(), // Use original case ID if available, otherwise use the index as a temporary ID
         id,
       };
 
@@ -345,7 +350,7 @@ export class EpiUploadUtil {
               return true;
             }
             const values = rawData.slice(1).map(row => row[fieldIndex]);
-            return values.every(value => ValidationUtil.validate('UUID4', value));
+            return values.every(value => !value || ValidationUtil.validate('UUID4', value));
           });
       }));
     });
@@ -382,7 +387,7 @@ export class EpiUploadUtil {
     return defaultFormValues;
   }
 
-  public static getEpiUploadSequenceMapping(completeCaseType: CaseDbCompleteCaseType, validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[], sequenceFilesDataTransfer: DataTransfer): EpiUploadSequenceMapping {
+  public static getEpiUploadSequenceMapping(completeCaseType: CaseDbCompleteCaseType, validatedCases: CaseDbCaseUploadResult[], sequenceFilesDataTransfer: DataTransfer): EpiUploadSequenceMapping {
     if (!sequenceFilesDataTransfer || sequenceFilesDataTransfer.files.length === 0) {
       return {};
     }
@@ -390,14 +395,14 @@ export class EpiUploadUtil {
     const stats = EpiUploadUtil.getCompleteCaseTypeColStats(completeCaseType);
     const result: EpiUploadSequenceMapping = {};
 
-    (JSON.parse(JSON.stringify(validatedCasesWithGeneratedId)) as CaseUploadResultWithGeneratedId[]).forEach((vc) => {
+    (JSON.parse(JSON.stringify(validatedCases)) as CaseDbCaseUploadResult[]).forEach((vc) => {
       const caseSequenceMapping: EpiUploadSequenceMappingForCaseId = {
         readsFileNames: {},
         sequenceFileNames: {},
       };
 
       // modify by reference
-      result[vc.generatedId] = caseSequenceMapping;
+      result[vc.id] = caseSequenceMapping;
 
       if (stats.sequenceColumns.length !== 1 && stats.readsColumns.length !== 1) {
         return;
@@ -788,7 +793,7 @@ export class EpiUploadUtil {
     onError: (error: Error) => void;
     onProgress: (progress: number, message: string) => void;
     sampleIdColId: string;
-    selectedValidatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
+    selectedvalidatedCases: CaseDbCaseUploadResult[];
     sequenceFilesDataTransfer: DataTransfer;
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
@@ -810,10 +815,10 @@ export class EpiUploadUtil {
     let totalFileSizeToUpload = 0;
 
     for (const [index, caseUploadResult] of caseBatchUploadResult.cases.entries()) {
-      const { generatedId } = kwArgs.selectedValidatedCasesWithGeneratedId[index];
-      if (sequenceMapping[generatedId]) {
+      const { id } = kwArgs.selectedvalidatedCases[index];
+      if (sequenceMapping[id]) {
         const caseId = caseUploadResult.id;
-        for (const [colId, fileName] of Object.entries(sequenceMapping[generatedId].sequenceFileNames)) {
+        for (const [colId, fileName] of Object.entries(sequenceMapping[id].sequenceFileNames)) {
           if (fileName) {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileName);
             if (file) {
@@ -822,7 +827,7 @@ export class EpiUploadUtil {
             }
           }
         }
-        for (const [colId, fileNames] of Object.entries(sequenceMapping[generatedId].readsFileNames)) {
+        for (const [colId, fileNames] of Object.entries(sequenceMapping[id].readsFileNames)) {
           if (fileNames.fwd) {
             const file = Array.from(sequenceFilesDataTransfer.files).find(f => f.name === fileNames.fwd);
             if (file) {
