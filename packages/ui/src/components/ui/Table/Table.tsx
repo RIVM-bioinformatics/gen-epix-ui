@@ -140,6 +140,7 @@ export const Table = <TRowData, TDataContext = null>({
   const addTableEventListener = useStore(tableStore, useShallow((state) => state.addEventListener));
   const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
   const isCondensed = useStore(tableStore, useShallow((state) => state.isCondensed));
+  const setSelectedIds = useStore(tableStore, useShallow((state) => state.setSelectedIds));
   const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
   const tableColumnVisualSettingsRef = useRef<TableColumnVisualSettings[]>(null);
   const eventListenersCleanerRef = useRef<() => void>(noop);
@@ -152,6 +153,7 @@ export const Table = <TRowData, TDataContext = null>({
   const tableRangeRef = useRef<ListRange>(null);
   const [container, setContainer] = useState<HTMLDivElement>();
   const tableColumnsEditorDialogRef = useRef<TableColumnsEditorDialogRefMethods<TRowData, TDataContext>>(null);
+  const lastClickedRowIdRef = useRef<string>(null);
 
   const dragConfigRef = useRef<{ clonedElement: HTMLDivElement; elementOffsetX: number; scrollPosition: number }>(null);
 
@@ -220,17 +222,46 @@ export const Table = <TRowData, TDataContext = null>({
     );
   }, []);
 
+  useEffect(() => {
+    // reset the last clicked row id when the data changes, to prevent unexpected selection behavior when shift-clicking after the data has changed (e.g. due to filtering or sorting)
+    lastClickedRowIdRef.current = null;
+  }, [sortedData]);
+
+  // Facilitate shift-click selection in the table by keeping track of the last clicked row id, and when a shift-click happens, select all rows between the last clicked row and the currently clicked row
+  const onCheckBoxClick = useCallback((event: ReactMouseEvent, rowId: string) => {
+    if (!event.shiftKey || !lastClickedRowIdRef.current) {
+      lastClickedRowIdRef.current = rowId;
+      return;
+    }
+    // select all rows between the last clicked row and the currently clicked row
+    const lastClickedRowIndex = sortedData.findIndex(r => idSelectorCallback(r) === lastClickedRowIdRef.current);
+    const currentClickedRowIndex = sortedData.findIndex(r => idSelectorCallback(r) === rowId);
+    if (lastClickedRowIndex === -1 || currentClickedRowIndex === -1) {
+      return;
+    }
+    const [start, end] = lastClickedRowIndex < currentClickedRowIndex ? [lastClickedRowIndex, currentClickedRowIndex] : [currentClickedRowIndex, lastClickedRowIndex];
+    const rowIdsInRange = sortedData.slice(start, end + 1).map(r => idSelectorCallback(r));
+    const selectedIds = tableStore.getState().selectedIds;
+    // If the row that was just shift-clicked is not selected, we want to select all rows in the range. If it is already selected, we want to deselect all rows in the range. This allows for selecting and deselecting multiple rows with shift-click in an intuitive way.
+    const newSelectedIds = tableStore.getState().selectedIds.includes(rowId)
+      ? selectedIds.filter(id => !rowIdsInRange.includes(id))
+      : Array.from(new Set([...selectedIds, ...rowIdsInRange]));
+    setSelectedIds(newSelectedIds);
+    lastClickedRowIdRef.current = rowId;
+  }, [idSelectorCallback, setSelectedIds, sortedData, tableStore]);
+
   const renderSelectableCell = useCallback((tableColumn: TableColumnSelectable<TRowData, TDataContext>, cell: TableRowParams<TRowData, TDataContext>) => {
     const id = idSelectorCallback(cell.row);
 
     return (
-      <TableCheckboxCell
+      <TableCheckboxCell<TRowData, TDataContext>
         cell={cell}
         key={id}
+        onCheckBoxClick={onCheckBoxClick}
         tableColumn={tableColumn}
       />
     );
-  }, [idSelectorCallback]);
+  }, [idSelectorCallback, onCheckBoxClick]);
 
   const updateColumnSizesInVisualSettings = useCallback(() => {
     if (!tableColumns.length || !container) {
