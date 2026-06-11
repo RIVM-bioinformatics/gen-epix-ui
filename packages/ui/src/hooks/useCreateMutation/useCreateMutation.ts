@@ -37,7 +37,7 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
 
   const createMutation = useMutation<TData, Error, TVariables, MutationContextCreate<TData>>({
     mutationFn: async (item) => {
-      return queryFn(ObjectUtil.deepRemoveEmptyStrings(item));
+      return queryFn(ObjectUtil.deepNullifyEmptyStrings(item));
     },
     onError: async (error, variables, context) => {
       if (resourceQueryKey) {

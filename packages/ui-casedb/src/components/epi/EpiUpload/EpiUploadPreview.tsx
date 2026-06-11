@@ -79,7 +79,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
     enabled: casesForVerificationFromSourceData.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const response = await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds(ObjectUtil.deepRemoveEmptyStrings({
+      const response = await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds(ObjectUtil.deepNullifyEmptyStrings({
         case_batch: {
           cases: casesForVerificationFromSourceData,
         },
@@ -111,7 +111,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const revalidateCases = useCallback(async (casesToValidate: Array<{ content: CaseDbCase['content']; row: CaseDbCaseUploadResult }>) => {
     setIsRevalidatingCases(true);
     try {
-      const batchValidationResult = (await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds(ObjectUtil.deepRemoveEmptyStrings({
+      const batchValidationResult = (await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds(ObjectUtil.deepNullifyEmptyStrings({
         case_batch: {
           cases: casesToValidate.map(({ content, row }, index) => {
             const caseFromSourceData = casesForVerificationFromSourceData.find(c => c.id === row.id);

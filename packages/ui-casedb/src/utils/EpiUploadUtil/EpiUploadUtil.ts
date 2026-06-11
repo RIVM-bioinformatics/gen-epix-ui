@@ -155,7 +155,7 @@ export class EpiUploadUtil {
             }
           }
 
-          return ObjectUtil.deepRemoveEmptyStrings({
+          return ObjectUtil.deepNullifyEmptyStrings({
             case: {
               case_type_id: completeCaseType.id,
               content: vc.validated_content,
@@ -236,7 +236,7 @@ export class EpiUploadUtil {
       const caseForCreateUpdate: CaseDbCaseForUpload = {
         case: {
           case_type_id: caseTypeId,
-          content: ObjectUtil.deepRemoveEmptyStrings(content),
+          content: ObjectUtil.deepNullifyEmptyStrings(content),
           created_in_data_collection_id: createdInDataCollectionId,
         },
         id,

@@ -49,7 +49,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
   }, []);
 
   const mutationFn = useCallback(async (variables: TVariables) => {
-    return queryFn(ObjectUtil.deepRemoveEmptyStrings(variables), previousItemRef.current);
+    return queryFn(ObjectUtil.deepNullifyEmptyStrings(variables), previousItemRef.current);
   }, [previousItemRef, queryFn]);
 
   const editMutation = useMutation<TData, Error, TVariables, MutationContextEdit<TData>>({
