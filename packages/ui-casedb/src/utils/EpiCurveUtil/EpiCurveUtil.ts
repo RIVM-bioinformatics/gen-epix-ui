@@ -18,15 +18,13 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import {
-  ConfigManager,
-  DATE_FORMAT,
-} from '@gen-epix/ui';
+import { DATE_FORMAT } from '@gen-epix/ui';
+import type { Theme } from '@mui/material';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { EpiFilterUtil } from '../EpiFilterUtil';
-import type { CaseDbConfig } from '../../models/config';
 import type { Stratification } from '../../models/epi';
+import { StratificationUtil } from '../StratificationUtil';
 
 export interface EpiCurveChartItem {
   date: Date;
@@ -60,7 +58,8 @@ export class EpiCurveUtil {
     xAxisIntervals: Date[],
     getXAxisLabel: (value: Date) => string,
     includeMissingValues: boolean,
-    stratification?: Stratification,
+    stratification: Stratification,
+    theme: Theme,
   ): { max: number; series: (null | unknown[]) } {
     if (!items || !stratification?.legendaItems?.length) {
       return {
@@ -68,6 +67,8 @@ export class EpiCurveUtil {
         series: null,
       };
     }
+
+    const colors = StratificationUtil.getEchartsColors(stratification, theme);
 
     const visibleLegendaItems = includeMissingValues
       ? stratification.legendaItems
@@ -103,10 +104,10 @@ export class EpiCurveUtil {
     // Step 2: Output series for ECharts (each series: [x, y, caseIds])
     const seriesNames = visibleLegendaItems.map(item => item.rowValue.full);
     const xAxisLabels = xAxisIntervals.map(interval => getXAxisLabel(interval));
-    const areaSeries: unknown[] = seriesNames.map((seriesName, seriesIdx) => {
+    const areaSeries: unknown[] = seriesNames.map((seriesName, seriesIndex) => {
       return {
         areaStyle: {},
-        color: visibleLegendaItems[seriesIdx].color,
+        color: colors[seriesIndex],
         data: normalizedDataPoints.map((point, pointIdx) => [
           xAxisLabels[pointIdx],
           point.values[seriesName],
@@ -156,7 +157,8 @@ export class EpiCurveUtil {
     items: EpiCurveChartItem[],
     xAxisIntervals: Date[],
     getXAxisLabel: (value: Date) => string,
-    stratification?: Stratification,
+    stratification: Stratification,
+    theme: Theme,
   ): { max: number; series: (null | unknown[]) } {
     if (!items) {
       return {
@@ -164,6 +166,8 @@ export class EpiCurveUtil {
         series: null,
       };
     }
+
+    const colors = StratificationUtil.getEchartsColors(stratification, theme);
 
     let max = 0;
     const barSerieOptionsBase = {
@@ -181,7 +185,7 @@ export class EpiCurveUtil {
     if (!hasStratification) {
       (barSeries).push({
         ...barSerieOptionsBase,
-        color: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS[0],
+        color: colors[0],
         data: [],
         name: '',
       });
@@ -431,14 +435,6 @@ export class EpiCurveUtil {
       }
       return 0;
     });
-  }
-
-  /**
-   * Gets stratification colors from config
-   * @returns Array of colors for stratification
-   */
-  public static getStratificationColors(): string[] {
-    return ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS;
   }
 
   public static getXAxisIntervals(colType: CaseDbColType, items: EpiCurveChartItem[]): Date[] {

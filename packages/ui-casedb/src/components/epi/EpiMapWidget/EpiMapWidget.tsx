@@ -3,6 +3,7 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
+  useTheme,
 } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import type { EChartsReactProps } from 'echarts-for-react';
@@ -54,7 +55,6 @@ import type {
   UnwrapArray,
 } from '@gen-epix/ui';
 import {
-  ConfigManager,
   QueryClientManager,
   useDimensions,
   useQueryMemo,
@@ -73,8 +73,8 @@ import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import type { CaseDbConfig } from '../../../models/config';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { StratificationUtil } from '../../../utils/StratificationUtil';
 
 const echartsCore = {
   dispose,
@@ -102,6 +102,7 @@ type GeoJSON = { features: unknown[] };
 
 export const EpiMapWidget = () => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const [col, setCol] = useState<CaseDbCol>(null);
   const colLabel = col?.label ?? '';
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
@@ -315,7 +316,7 @@ export const EpiMapWidget = () => {
     const aspectScale = EpiMapUtil.getGeoJsonAspectScale(regionSetShape.geo_json);
 
     return {
-      color: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS,
+      color: StratificationUtil.getEchartsColors(stratification, theme),
       geo: {
         aspectScale,
         emphasis: {
@@ -343,7 +344,7 @@ export const EpiMapWidget = () => {
       series: series as unknown,
       tooltip: {},
     } satisfies EChartsOption;
-  }, [regionSetShape, series]);
+  }, [regionSetShape, series, stratification, theme]);
 
   const onChartReady = useCallback((chart: EChartsType) => {
     const dom = chart.getDom();

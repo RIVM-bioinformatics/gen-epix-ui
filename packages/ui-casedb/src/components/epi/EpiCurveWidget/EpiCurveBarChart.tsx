@@ -13,6 +13,7 @@ import {
 import type { Ref } from 'react';
 import isString from 'lodash/isString';
 import intersection from 'lodash/intersection';
+import { useTheme } from '@mui/material';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
@@ -43,10 +44,11 @@ export const EpiCurveBarChart = ({
   stratification,
   xAxisIntervals,
 }: EpiCurveBarChartProps) => {
+  const theme = useTheme();
   const chartInstanceRef = useRef<EChartsType | null>(null);
 
   // Calculate series data only when rendering
-  const seriesData = useMemo(() => EpiCurveUtil.getBarChartSeriesData(items, xAxisIntervals, getXAxisLabel, stratification), [items, xAxisIntervals, getXAxisLabel, stratification]);
+  const seriesData = useMemo(() => EpiCurveUtil.getBarChartSeriesData(items, xAxisIntervals, getXAxisLabel, stratification, theme), [items, xAxisIntervals, getXAxisLabel, stratification, theme]);
 
   useEffect(() => {
     const instance = chartInstanceRef.current;
@@ -95,7 +97,6 @@ export const EpiCurveBarChart = ({
 
   const getOptions = useCallback(() => {
     return {
-      color: EpiCurveUtil.getStratificationColors(),
       grid: {
         bottom: 64,
         left: 48,
@@ -136,7 +137,7 @@ export const EpiCurveBarChart = ({
         type: 'value',
       },
     } satisfies EChartsOption;
-  }, [seriesData, xAxisIntervals, getXAxisLabel, stratification]);
+  }, [stratification, seriesData.series, seriesData.max, xAxisIntervals, getXAxisLabel]);
 
   const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
     const getCaseIdsFromEvent = (event: unknown): string[] => {

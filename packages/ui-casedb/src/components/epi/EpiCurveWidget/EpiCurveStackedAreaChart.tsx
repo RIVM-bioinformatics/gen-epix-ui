@@ -13,10 +13,12 @@ import {
 import type { Ref } from 'react';
 import isString from 'lodash/isString';
 import intersection from 'lodash/intersection';
+import { useTheme } from '@mui/material';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
 import type { Stratification } from '../../../models/epi';
+import { StratificationUtil } from '../../../utils/StratificationUtil';
 
 export interface EpiCurveStackedAreaChartProps {
   chartRef: Ref<EChartsReact>;
@@ -45,11 +47,12 @@ export const EpiCurveStackedAreaChart = ({
   stratification,
   xAxisIntervals,
 }: EpiCurveStackedAreaChartProps) => {
+  const theme = useTheme();
   const hoveredSeriesIndexRef = useRef<null | number>(null);
   const chartInstanceRef = useRef<EChartsType | null>(null);
 
   // Calculate series data only when rendering
-  const seriesData = useMemo(() => EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification), [items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification]);
+  const seriesData = useMemo(() => EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification, theme), [items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification, theme]);
 
   // Fast lookup table: color -> all caseIds having that stratification color.
   const caseIdsByColor = useMemo(() => {
@@ -111,7 +114,7 @@ export const EpiCurveStackedAreaChart = ({
 
   const getOptions = useCallback(() => {
     return {
-      color: EpiCurveUtil.getStratificationColors(),
+      color: StratificationUtil.getEchartsColors(stratification, theme),
       grid: {
         bottom: 64,
         left: 48,
@@ -160,7 +163,7 @@ export const EpiCurveStackedAreaChart = ({
         type: 'value',
       },
     } satisfies EChartsOption;
-  }, [seriesData, xAxisIntervals, getXAxisLabel]);
+  }, [stratification, theme, seriesData.series, seriesData.max, xAxisIntervals, getXAxisLabel]);
 
   const setHighlightedSeries = useCallback((seriesIndex: null | number) => {
     const instance = chartInstanceRef.current;

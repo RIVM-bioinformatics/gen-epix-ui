@@ -1,6 +1,5 @@
 import {
   afterAll,
-  beforeAll,
   describe,
   expect,
   it,
@@ -12,10 +11,8 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import { ConfigManager } from '@gen-epix/ui';
 
 import { STRATIFICATION_MODE } from '../../models/epi';
-import type { CaseDbConfig } from '../../models/config';
 
 import type { EpiCurveChartItem } from './EpiCurveUtil';
 import { EpiCurveUtil } from './EpiCurveUtil';
@@ -52,22 +49,8 @@ const makeCompleteCaseType = (refCols: Array<{ colType: CaseDbColType; id: strin
 };
 
 describe('EpiCurveUtil', () => {
-  beforeAll(() => {
-    vi.spyOn(ConfigManager.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
-      epi: {
-        STRATIFICATION_COLORS: ['#ff0000', '#00ff00', '#0000ff'],
-      },
-    } as CaseDbConfig);
-  });
-
   afterAll(() => {
     vi.restoreAllMocks();
-  });
-
-  describe('getStratificationColors', () => {
-    it('returns stratification colors from ConfigManager', () => {
-      expect(EpiCurveUtil.getStratificationColors()).toEqual(['#ff0000', '#00ff00', '#0000ff']);
-    });
   });
 
   describe('getBarChartItemsWithinInterval', () => {

@@ -65,7 +65,9 @@ export const EpiStratification = () => {
         label: 'Selected rows',
       }],
       label,
-      tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', { max_stratification_unique_values: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS.length }),
+      tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', {
+        max_stratification_unique_values: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS.length,
+      }),
     }, draft => {
       stratifyableColumns
         .forEach(stratifyableCol => {

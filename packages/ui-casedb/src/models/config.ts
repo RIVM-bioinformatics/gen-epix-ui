@@ -14,6 +14,10 @@ export interface CaseDbConfig extends ConfigBase {
     DOWNLOAD_SECTION_ORDER: EPI_ZONE[];
     INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY: number;
     SEQDB_MAX_STORED_DISTANCE_FALLBACK: number;
+    STRATIFICATION: {
+      BASE_COLORS: string[];
+      GRADIENT_COLORS: Partial<Record<CaseDbColType, [string, string]>>;
+    };
     STRATIFICATION_COLOR_ITEM_MISSING: string;
     STRATIFICATION_COLORS: string[];
   };
