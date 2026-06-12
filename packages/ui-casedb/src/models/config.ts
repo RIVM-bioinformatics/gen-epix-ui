@@ -1,6 +1,7 @@
 import type { TFunction } from 'i18next';
 import type { CaseDbColType } from '@gen-epix/api-casedb';
 import type { ConfigBase } from '@gen-epix/ui';
+import type { Range } from 'colorjs.io';
 
 import type {
   EPI_ZONE,
@@ -9,13 +10,20 @@ import type {
 
 export interface CaseDbConfig extends ConfigBase {
   epi: {
-    ALLOWED_COL_TYPES_FOR_STRATIFICATION: CaseDbColType[];
     DATA_MISSING_CHARACTER: string;
     DOWNLOAD_SECTION_ORDER: EPI_ZONE[];
     INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY: number;
     SEQDB_MAX_STORED_DISTANCE_FALLBACK: number;
-    STRATIFICATION_COLOR_ITEM_MISSING: string;
-    STRATIFICATION_COLORS: string[];
+    STRATIFICATION: {
+      ALLOWED_COL_TYPES: CaseDbColType[];
+      BASE_COLORS: string[];
+      BASE_ORDERED_GRADIENT: Range;
+      BASE_UNORDERED_GRADIENT: Range;
+      EXTRA_GRADIENTS: [Range, ...Range[]];
+      GRADIENT_COL_TYPES: CaseDbColType[];
+      ITEM_MISSING_COLOR: string;
+      MAX_ALLOWED_UNIQUE_VALUES: number;
+    };
   };
   epiDashboard: {
     LAYOUTS: EpiDashboardLayoutConfig[];

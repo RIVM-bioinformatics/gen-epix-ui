@@ -11,7 +11,7 @@ import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager
 import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
+import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
 
 export const useEpiLineListWidgetEmitDownloadOptions = () => {
   const { t } = useTranslation();
@@ -54,11 +54,11 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
             disabled: selectedIds.length === 0,
             items: [
               {
-                callback: async () => CaseDbDownloadUtil.downloadAsExcel(EpiLineListUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+                callback: async () => CaseDbDownloadUtil.downloadAsExcel(EpiDashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
                 label: t`Download as Excel`,
               },
               {
-                callback: () => CaseDbDownloadUtil.downloadAsCsv(EpiLineListUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+                callback: () => CaseDbDownloadUtil.downloadAsCsv(EpiDashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
                 label: t`Download as CSV`,
               },
               {

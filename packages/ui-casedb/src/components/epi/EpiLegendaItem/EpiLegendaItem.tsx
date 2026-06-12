@@ -155,6 +155,7 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
             marginRight: theme.spacing(1),
             minHeight: theme.spacing(2),
             minWidth: theme.spacing(2),
+            outline: `1px solid ${theme.palette.background.paper}`,
             width: theme.spacing(2),
           }}
         />

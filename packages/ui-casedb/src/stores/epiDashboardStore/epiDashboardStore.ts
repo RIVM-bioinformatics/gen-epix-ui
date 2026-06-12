@@ -37,6 +37,7 @@ import type {
 import type {
   EPI_ZONE,
   FindSimilarCasesResult,
+  StratifiableColumn,
   Stratification,
   TreeConfiguration,
 } from '../../models/epi';
@@ -47,8 +48,6 @@ import {
   TREE_FILTER_GROUP,
 } from '../../utils/CaseTypeUtil';
 import { EpiFilterUtil } from '../../utils/EpiFilterUtil';
-import { EpiLineListUtil } from '../../utils/EpiLineListUtil';
-import type { StratifiableColumn } from '../../utils/EpiLineListUtil';
 import { NewickUtil } from '../../utils/NewickUtil';
 import { EpiTreeUtil } from '../../utils/EpiTreeUtil';
 import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingManager';
@@ -56,6 +55,7 @@ import type { CaseDbConfig } from '../../models/config';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
 import { TreeFilter } from '../../classes/filters/TreeFilter';
+import { StratificationUtil } from '../../utils/StratificationUtil';
 
 export interface CreateEpiDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;
@@ -368,7 +368,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             const { filteredData, frontendFilterPriorities } = get();
 
             const data = filteredData[last(frontendFilterPriorities)];
-            const stratifyableColumns = EpiLineListUtil.getStratifyableColumns({
+            const stratifyableColumns = StratificationUtil.getStratifyableColumns({
               completeCaseType,
               data,
             });
@@ -500,7 +500,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
           stratify: (mode: STRATIFICATION_MODE, col?: CaseDbCol) => {
             const { selectedIds, sortedData } = get();
             set({
-              stratification: EpiLineListUtil.getStratification({
+              stratification: StratificationUtil.getStratification({
                 col,
                 completeCaseType,
                 mode,

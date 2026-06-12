@@ -3,6 +3,7 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
+  useTheme,
 } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import type { EChartsReactProps } from 'echarts-for-react';
@@ -33,7 +34,6 @@ import {
 import type {
   EChartsOption,
   EChartsType,
-  PieSeriesOption,
 } from 'echarts';
 import { useTranslation } from 'react-i18next';
 import intersection from 'lodash/intersection';
@@ -49,12 +49,8 @@ import {
   CaseDbDimType,
   CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
-import type {
-  MenuItemData,
-  UnwrapArray,
-} from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui';
 import {
-  ConfigManager,
   QueryClientManager,
   useDimensions,
   useQueryMemo,
@@ -66,15 +62,16 @@ import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightin
 import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
-import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
+import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
 import { EpiMapUtil } from '../../../utils/EpiMapUtil';
+import type { GenEpixPieSeriesOptionEventData } from '../../../utils/EpiMapUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import type { CaseDbConfig } from '../../../models/config';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { StratificationUtil } from '../../../utils/StratificationUtil';
 
 const echartsCore = {
   dispose,
@@ -91,17 +88,11 @@ type GenEpixEchartsEvent = {
   };
 };
 
-type GenEpixPieSeriesOptionData = Array<GenEpixPieSeriesOptionEventData & UnwrapArray<PieSeriesOption['data']>>;
-type GenEpixPieSeriesOptionEventData = {
-  genEpixData?: {
-    caseIds: string[];
-    regionId: string;
-  };
-};
 type GeoJSON = { features: unknown[] };
 
 export const EpiMapWidget = () => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const [col, setCol] = useState<CaseDbCol>(null);
   const colLabel = col?.label ?? '';
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
@@ -164,7 +155,7 @@ export const EpiMapWidget = () => {
   }, [col, completeCaseType.ref_cols]);
 
   const lineListCaseCount = useMemo(() => {
-    return EpiLineListUtil.getCaseCount(sortedData);
+    return EpiDashboardUtil.getCaseCount(sortedData);
   }, [sortedData]);
 
   const onEpiContextMenuClose = useCallback(() => {
@@ -194,117 +185,17 @@ export const EpiMapWidget = () => {
     }
   }, [regionSetShape]);
 
-  const maxPieChartArea = useMemo(() => {
-    if (!width || !height || !numZones) {
-      return 0;
-    }
-    const smallestDimension = Math.min(width, height);
-    const mapArea = smallestDimension ** 2;
-    const zoneArea = mapArea / numZones;
-    const zoneDimension = Math.sqrt(zoneArea);
-    const normalizedZoneDimension = zoneDimension / 4;
-    const zonePieArea = ((normalizedZoneDimension / 2) ** 2) * Math.PI;
-
-    return zonePieArea;
-  }, [height, numZones, width]);
+  const maxPieChartArea = useMemo(() => EpiMapUtil.getMaxPieChartArea(width, height, numZones), [height, numZones, width]);
 
   const lineListRegionStatistics = useMemo(() => EpiMapUtil.getRegionStatistics(sortedData, col?.id, regions), [col, sortedData, regions]);
   const getPieChartRadius = useCallback((numCases: number): number => {
     return EpiMapUtil.getPieChartRadius(numCases, maxPieChartArea, lineListRegionStatistics);
   }, [lineListRegionStatistics, maxPieChartArea]);
 
-  const { epiMapCaseCount, series } = useMemo<{ epiMapCaseCount: number; series: PieSeriesOption[] }>(() => {
-    if (!col || !regions) {
-      return {
-        epiMapCaseCount: undefined,
-        series: [],
-      };
-    }
-
-    const pieSeriesOptions: PieSeriesOption[] = [];
-
-    const { numCases: totalNumCases, statisticsPerRegion } = EpiMapUtil.getRegionStatistics(sortedData, col.id, regions);
-
-    const pieChartOptionsBase: Partial<PieSeriesOption> = {
-      animation: false,
-      coordinateSystem: 'geo',
-      label: {
-        show: false,
-        silent: true,
-      },
-      labelLine: {
-        show: true,
-        smooth: true,
-      },
-      type: 'pie',
-    };
-
-    Object.entries(statisticsPerRegion).forEach(([regionId, regionData]) => {
-      const data: GenEpixPieSeriesOptionData = [];
-
-      if (!stratification) {
-        const caseIds = regionData.rows.map(row => row.id);
-        if (caseIds.length === 0) {
-          return;
-        }
-        data.push({
-          emphasis: {
-            focus: 'self',
-          },
-          genEpixData: {
-            caseIds,
-            regionId,
-          },
-          label: {
-            formatter: () => regionData.region.name,
-          },
-          name: 'num-cases',
-          value: regionData.numCases,
-        });
-      } else {
-        stratification.legendaItems.forEach(legendaItem => {
-          const rows = regionData.rows.filter(row => legendaItem.caseIds.includes(row.id));
-          const caseIds = rows.map(row => row.id);
-          const numCases = EpiLineListUtil.getCaseCount(rows);
-          data.push({
-            emphasis: {
-              focus: 'self',
-            },
-            genEpixData: {
-              caseIds,
-              regionId,
-            },
-            label: {
-              formatter: () => regionData.region.name,
-            },
-            name: legendaItem.rowValue.full,
-            value: numCases,
-          });
-        });
-      }
-
-      pieSeriesOptions.push({
-        ...pieChartOptionsBase,
-        center: [regionData.region.center_lon, regionData.region.center_lat],
-        data,
-        radius: getPieChartRadius(regionData.numCases),
-        tooltip: {
-          formatter: (callbackParams) => {
-            const d = (callbackParams as { data: { name: string; value: number } }).data;
-            if (stratification) {
-              return `${regionData.region.name} - ${d.name} (n=${d.value}, ${Math.round(d.value / regionData.numCases * 100)}%)`;
-            }
-            return `${regionData.region.name} (n=${regionData.numCases}, ${Math.round(regionData.numCases / totalNumCases * 100)}%)`;
-          },
-        },
-      });
-    });
-
-    return {
-      epiMapCaseCount: totalNumCases,
-      series: pieSeriesOptions,
-    };
-  }, [col, getPieChartRadius, sortedData, regions, stratification]);
+  const { epiMapCaseCount, series } = useMemo(
+    () => EpiMapUtil.getMapSeries(col, regions, sortedData, stratification, getPieChartRadius),
+    [col, getPieChartRadius, sortedData, regions, stratification],
+  );
 
   const getOptions = useCallback(() => {
     if (!regionSetShape) {
@@ -315,7 +206,7 @@ export const EpiMapWidget = () => {
     const aspectScale = EpiMapUtil.getGeoJsonAspectScale(regionSetShape.geo_json);
 
     return {
-      color: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS,
+      color: StratificationUtil.getEchartsColors(stratification, theme),
       geo: {
         aspectScale,
         emphasis: {
@@ -343,7 +234,7 @@ export const EpiMapWidget = () => {
       series: series as unknown,
       tooltip: {},
     } satisfies EChartsOption;
-  }, [regionSetShape, series]);
+  }, [regionSetShape, series, stratification, theme]);
 
   const onChartReady = useCallback((chart: EChartsType) => {
     const dom = chart.getDom();

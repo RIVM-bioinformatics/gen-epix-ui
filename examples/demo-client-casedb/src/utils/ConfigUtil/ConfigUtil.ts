@@ -16,6 +16,8 @@ import {
   createCaseDbDemoTheme,
   EPI_ZONE,
 } from '@gen-epix/ui-casedb';
+import Color from 'colorjs.io';
+import type { Range } from 'colorjs.io';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
 import { ConsentDialogContent } from '../../components/ConsentDialogContent';
@@ -102,50 +104,84 @@ export class ConfigUtil {
       defaultRequestTimeout: 30000,
       enablePageEvents: true,
       epi: {
-        ALLOWED_COL_TYPES_FOR_STRATIFICATION: [
-          CaseDbColType.NOMINAL,
-          CaseDbColType.TEXT,
-          CaseDbColType.ORDINAL,
-          CaseDbColType.GEO_REGION,
-          CaseDbColType.ORGANIZATION,
-        ],
         DATA_MISSING_CHARACTER: '·',
         DOWNLOAD_SECTION_ORDER: [EPI_ZONE.LINE_LIST, EPI_ZONE.TREE, EPI_ZONE.EPI_CURVE, EPI_ZONE.MAP],
         INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY: 5,
         SEQDB_MAX_STORED_DISTANCE_FALLBACK: 20,
-        STRATIFICATION_COLOR_ITEM_MISSING: '#aaa',
-        STRATIFICATION_COLORS: [
-          '#1B7BFF',
-          '#FF0000',
-          '#1BFF2A',
-          '#FF8C1B',
-          '#E317FD',
-          '#FDFF17',
-          '#8DBDFF',
-          '#FF8080',
-          '#8DFF95',
-          '#FFC68D',
-          '#F18BFE',
-          '#FEFF8B',
-          '#0E3E80',
-          '#800000',
-          '#0E8015',
-          '#80460E',
-          '#720C7F',
-          '#7F800C',
-          '#C6DFFF',
-          '#FFBFBF',
-          '#C6FFCA',
-          '#FFE2C6',
-          '#F8C5FF',
-          '#FFFFC5',
-          '#071F40',
-          '#400000',
-          '#07400B',
-          '#402307',
-          '#39063F',
-          '#3F4006',
-        ],
+        STRATIFICATION: {
+          ALLOWED_COL_TYPES: [
+            CaseDbColType.DECIMAL_0,
+            CaseDbColType.DECIMAL_1,
+            CaseDbColType.DECIMAL_2,
+            CaseDbColType.DECIMAL_3,
+            CaseDbColType.DECIMAL_4,
+            CaseDbColType.DECIMAL_5,
+            CaseDbColType.DECIMAL_6,
+            CaseDbColType.GEO_REGION,
+            CaseDbColType.INTERVAL,
+            CaseDbColType.NOMINAL,
+            CaseDbColType.ORDINAL,
+            CaseDbColType.ORGANIZATION,
+            CaseDbColType.TEXT,
+            CaseDbColType.TIME_WEEK,
+            CaseDbColType.TIME_MONTH,
+            CaseDbColType.TIME_QUARTER,
+            CaseDbColType.TIME_YEAR,
+          ],
+          BASE_COLORS: [
+            '#1B7BFF',
+            '#FF0000',
+            '#1BFF2A',
+            '#FF8C1B',
+            '#E317FD',
+            '#FDFF17',
+            '#8DBDFF',
+            '#FF8080',
+            '#8DFF95',
+            '#FFC68D',
+            '#F18BFE',
+            '#FEFF8B',
+            '#0E3E80',
+            '#800000',
+            '#0E8015',
+            '#80460E',
+            '#720C7F',
+            '#7F800C',
+            '#C6DFFF',
+            '#FFBFBF',
+            '#C6FFCA',
+            '#FFE2C6',
+            '#F8C5FF',
+            '#FFFFC5',
+            '#071F40',
+            '#400000',
+            '#07400B',
+            '#402307',
+            '#39063F',
+            '#3F4006',
+          ],
+          BASE_ORDERED_GRADIENT: ConfigUtil.createStratificationBaseOrderedGradient(),
+          BASE_UNORDERED_GRADIENT: ConfigUtil.createStratificationBaseUnorderedGradient(),
+          EXTRA_GRADIENTS: ConfigUtil.createStratificationExtraGradients(),
+          GRADIENT_COL_TYPES: [
+            CaseDbColType.ORDINAL,
+            CaseDbColType.INTERVAL,
+            CaseDbColType.DECIMAL_0,
+            CaseDbColType.DECIMAL_1,
+            CaseDbColType.DECIMAL_2,
+            CaseDbColType.DECIMAL_3,
+            CaseDbColType.DECIMAL_4,
+            CaseDbColType.DECIMAL_5,
+            CaseDbColType.DECIMAL_6,
+            CaseDbColType.TIME_DAY,
+            CaseDbColType.TIME_WEEK,
+            CaseDbColType.TIME_MONTH,
+            CaseDbColType.TIME_QUARTER,
+            CaseDbColType.TIME_YEAR,
+          ],
+          ITEM_MISSING_COLOR: '#aaa',
+          MAX_ALLOWED_UNIQUE_VALUES: 50,
+        },
       },
       epiDashboard: {
         LAYOUTS: [
@@ -470,5 +506,34 @@ export class ConfigUtil {
       },
     };
     return config;
+  }
+
+
+  private static createStratificationBaseOrderedGradient(): Range {
+    const color1 = new Color('rebeccapurple');
+    const color2 = new Color('lch', [95, 95, 95 + 720]);
+    return color1.range(color2, {
+      outputSpace: 'srgb',
+      space: 'lch', // interpolation space
+    });
+  }
+
+  private static createStratificationBaseUnorderedGradient(): Range {
+    const color1 = new Color('rebeccapurple');
+    const color2 = new Color('lch', [95, 95, 95 + 720]);
+    return color1.range(color2, { hue: 'raw', outputSpace: 'srgb', space: 'lch' });
+  }
+
+  private static createStratificationExtraGradients(): [Range, ...Range[]] {
+    const gradients: Range[] = [];
+
+    const color1 = new Color('rebeccapurple');
+    const color2 = new Color('lch', [85, 85, 85 + 720]);
+    gradients.push(color1.range(color2, { hue: 'longer', outputSpace: 'srgb', space: 'lch' }));
+    gradients.push(color1.range(color2, { hue: 'shorter', outputSpace: 'srgb', space: 'lch' }));
+    gradients.push(color1.range(color2, { hue: 'increasing', outputSpace: 'srgb', space: 'lch' }));
+    gradients.push(color1.range(color2, { hue: 'decreasing', outputSpace: 'srgb', space: 'lch' }));
+
+    return gradients as [Range, ...Range[]];
   }
 }
