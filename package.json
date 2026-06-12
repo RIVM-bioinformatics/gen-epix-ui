@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@gen-epix/generate-common-api": "0.0.1",
-    "concurrently": "9.2.1",
+    "concurrently": "10.0.3",
     "lerna": "9.0.7",
     "typescript": "6.0.3"
   }
