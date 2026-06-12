@@ -3,7 +3,7 @@ packages:
   - examples/*
 
 overrides:
-  '@openapitools/openapi-generator-cli>axios': 1.16.0
+  '@openapitools/openapi-generator-cli>axios': 1.17.0
 
 onlyBuiltDependencies:
   - '@nestjs/core'

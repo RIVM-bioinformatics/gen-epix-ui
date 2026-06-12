@@ -508,7 +508,6 @@ export class ConfigUtil {
     return config;
   }
 
-
   private static createStratificationBaseOrderedGradient(): Range {
     const color1 = new Color('rebeccapurple');
     const color2 = new Color('lch', [95, 95, 95 + 720]);
