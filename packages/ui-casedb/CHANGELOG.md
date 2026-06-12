@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.3.0...ui-casedb-v2.4.0) (2026-06-12)
+
+
+### Features
+
+* add info-message to form elements ([775cbe4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/775cbe4d3aa572d4ec0ffc556623b51ef7584a64))
+* implement frozen left- and right table columns ([#138](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/138)) ([2ab2912](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2ab2912ba361fc896df3d89ca936705b0d101a4a))
+* stratification gradients ([#141](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/141)) ([f0b167f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f0b167fb62b4c6fd23bcd491060b786b683f7256))
+* update to latest API ([c3a06a4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c3a06a4f438506b54cc45783c7d4c1acbfc2fb76))
+* use case upload logic to update individual and bulk cases from line list ([#140](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/140)) ([03cf612](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/03cf61272ad7224b1485d21158d9be0f969edd30))
+
+
+### Bug Fixes
+
+* add missing translation ([1be7885](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1be78858f90d08ea6d33a245f7263d544968d0c6))
+* fix find similar cases dirty state ([0177050](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/017705003bdb91ad1452313a2caf8b76f638e9f1))
+* fix refresh data when deleting a case ([41bfb73](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/41bfb73fb996e4bff7faf5c7d5bb9003c8e223d3))
+* fix sorting of case type cols ([db500e7](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/db500e7b6cbdc60c2706402d5ccc0da850a88ead))
+* reload selected id's after adding a tree filter ([9e1e9e0](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9e1e9e0abcf209ed74ce105318da886be65b4707))
+
 ## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.2.3...ui-casedb-v2.3.0) (2026-05-20)
 
 
