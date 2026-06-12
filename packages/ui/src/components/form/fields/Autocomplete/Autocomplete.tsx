@@ -6,6 +6,7 @@ import type {
 } from 'react';
 import {
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -40,11 +41,17 @@ import {
 import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
-import type { AutoCompleteOption } from '../../../../models/form';
+import type {
+  AutoCompleteOption,
+  AutocompleteSelectAllContextData,
+} from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
+
+import { AutocompleteSelectAllPaper } from './AutocompleteSelectAllPaper';
+import { AutocompleteSelectAllContext } from './AutocompleteSelectAllContext';
 
 
 export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
@@ -80,10 +87,15 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
   warningMessage,
 }: AutocompleteProps<TFieldValues, TName, TMultiple>): ReactElement => {
   const { t } = useTranslation();
-  const { control, formState: { errors } } = useFormContext<TFieldValues>();
+  const { control, formState: { errors }, setValue, watch } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState('');
+
+  const onChangePropRef = useRef(onChangeProp);
+  useEffect(() => {
+    onChangePropRef.current = onChangeProp;
+  }, [onChangeProp]);
 
   const hasError = !!errorMessage;
   const hasWarning = !!warningMessage && !hasError;
@@ -198,7 +210,6 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         direction={'row'}
         sx={{
           flexWrap: 'wrap',
-          gap: 1,
         }}
       >
         {selectedValues.map((value: Value, index: number) => {
@@ -236,6 +247,30 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
     return sortedOptions.map((option) => option.value) as TFieldValues[TName][];
   }, [sortedOptions]);
 
+  const enabledOptionValues = useMemo(() =>
+    optionValues.filter(v => !mappedOptions.get(v)?.disabled)
+  , [optionValues, mappedOptions]);
+
+  const watchedValue = watch(name);
+  const currentValues = useMemo(() =>
+    multiple && Array.isArray(watchedValue) ? watchedValue as Value[] : []
+  , [multiple, watchedValue]);
+
+  const handleSelectAll = useCallback((isCurrentlyAll: boolean, curValues: Value[]) => {
+    const newValue = isCurrentlyAll
+      ? curValues.filter(v => mappedOptions.get(v)?.disabled)
+      : [...new Set([...curValues, ...enabledOptionValues])];
+    onChangePropRef.current?.(newValue as unknown as AutocompleteValue<TFieldValues[TName], TMultiple, false, false>);
+    setValue(name, newValue as TFieldValues[TName], { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+  }, [enabledOptionValues, mappedOptions, name, setValue]);
+
+  const selectAllContextValue = useMemo<AutocompleteSelectAllContextData>(() => ({
+    currentValues,
+    enabledOptionValues,
+    handleSelectAll,
+    selectAllLabel: t`Select all`,
+  }), [currentValues, enabledOptionValues, handleSelectAll, t]);
+
   const renderController = useCallback(({ field: { onBlur, onChange, ref, value } }: UseControllerReturn<TFieldValues, TName>) => {
     ref({
       focus: () => {
@@ -265,23 +300,26 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         renderInput={renderInput}
         renderOption={multiple ? renderOption : undefined}
         renderValue={multiple ? renderValue : undefined}
+        slots={multiple ? { paper: AutocompleteSelectAllPaper } : undefined}
         value={value}
       />
     );
   }, [required, multiple, disabled, loading, filterOptions, getIsOptionDisabled, getOptionKey, getOptionLabel, groupValues, groupBy, inputValue, getIsOptionEqualToValue, t, onMuiAutocompleteChange, onMuiAutocompleteInputChange, optionValues, renderInput, renderOption, renderValue]);
 
   return (
-    <FormControl
-      {...TestIdUtil.createAttributes('Autocomplete', { label, name })}
-      fullWidth
-    >
-      <Controller
-        control={control}
-        defaultValue={null}
-        name={name}
-        render={renderController}
-      />
-      {!!loading && <FormFieldLoadingIndicator />}
-    </FormControl>
+    <AutocompleteSelectAllContext value={multiple ? selectAllContextValue : null}>
+      <FormControl
+        {...TestIdUtil.createAttributes('Autocomplete', { label, name })}
+        fullWidth
+      >
+        <Controller
+          control={control}
+          defaultValue={null}
+          name={name}
+          render={renderController}
+        />
+        {!!loading && <FormFieldLoadingIndicator />}
+      </FormControl>
+    </AutocompleteSelectAllContext>
   );
 };
