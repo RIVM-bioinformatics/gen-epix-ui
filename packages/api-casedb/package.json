@@ -26,7 +26,7 @@
     "generate-api": "generate-api CASEDB https://127.0.0.1:8000/openapi.json ./src"
   },
   "peerDependencies": {
-    "axios": "1.16.1"
+    "axios": "1.17.0"
   },
   "devDependencies": {
     "@gen-epix/eslint-config": "0.3.3",

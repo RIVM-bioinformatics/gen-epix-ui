@@ -36,7 +36,7 @@
     "build-publish": "pnpm build && pnpm publish --access=public"
   },
   "peerDependencies": {
-    "axios": "1.16.1"
+    "axios": "1.17.0"
   },
   "devDependencies": {
     "@gen-epix/eslint-config": "0.3.3",

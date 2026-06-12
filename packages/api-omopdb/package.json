@@ -37,7 +37,7 @@
     "generate-api": "generate-api OMOPDB https://127.0.0.1:8002/openapi.json ./src"
   },
   "peerDependencies": {
-    "axios": "1.16.1"
+    "axios": "1.17.0"
   },
   "devDependencies": {
     "@gen-epix/eslint-config": "0.3.3",
