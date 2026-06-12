@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.4.1...ui-v2.4.2) (2026-06-12)
+
+
+### Bug Fixes
+
+* correctly set peer dependencies ([5745966](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5745966003e6bca7ec1599a0a0979efc2c6c3b82))
+
 ## [2.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.4.0...ui-v2.4.1) (2026-06-12)
 
 
