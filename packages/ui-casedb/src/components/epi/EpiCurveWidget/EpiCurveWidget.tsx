@@ -65,7 +65,7 @@ import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import { EpiLineListUtil } from '../../../utils/EpiLineListUtil';
+import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
 import { userProfileStore } from '../../../stores/userProfileStore';
 
 import { EpiCurveBarChart } from './EpiCurveBarChart';
@@ -110,7 +110,7 @@ export const EpiCurveWidget = () => {
   }, []);
 
   const lineListCaseCount = useMemo(() => {
-    return EpiLineListUtil.getCaseCount(sortedData);
+    return EpiDashboardUtil.getCaseCount(sortedData);
   }, [sortedData]);
 
 

@@ -1,14 +1,26 @@
 import max from 'lodash/max';
 import min from 'lodash/min';
 import round from 'lodash/round';
+import type { PieSeriesOption } from 'echarts';
 import type {
   CaseDbCase,
+  CaseDbCol,
   CaseDbRegion,
 } from '@gen-epix/api-casedb';
 import { ConfigManager } from '@gen-epix/ui';
+import type { UnwrapArray } from '@gen-epix/ui';
 
 import type { CaseDbConfig } from '../../models/config';
+import type { Stratification } from '../../models/epi';
+import { EpiDashboardUtil } from '../EpiDashboardUtil';
 
+
+export type GenEpixPieSeriesOptionEventData = {
+  genEpixData?: {
+    caseIds: string[];
+    regionId: string;
+  };
+};
 
 export type RegionStatistics = {
   maxNumCases: number;
@@ -16,6 +28,8 @@ export type RegionStatistics = {
   numCases: number;
   statisticsPerRegion: Record<string, { numCases: number; region: CaseDbRegion; rows: CaseDbCase[] }>;
 };
+
+type GenEpixPieSeriesOptionData = Array<GenEpixPieSeriesOptionEventData & UnwrapArray<PieSeriesOption['data']>>;
 
 type GeoJsonBounds = [number, number, number, number];
 type GeoJsonFeature = {
@@ -49,6 +63,118 @@ export class EpiMapUtil {
 
     const aspectScale = Math.cos(centerLatitude * Math.PI / 180);
     return Number.isFinite(aspectScale) && aspectScale > 0 ? aspectScale : 1;
+  }
+
+  public static getMapSeries(
+    col: CaseDbCol | null,
+    regions: CaseDbRegion[],
+    sortedData: CaseDbCase[],
+    stratification: null | Stratification,
+    getPieChartRadius: (numCases: number) => number,
+  ): { epiMapCaseCount: number; series: PieSeriesOption[] } {
+    if (!col || !regions) {
+      return {
+        epiMapCaseCount: undefined,
+        series: [],
+      };
+    }
+
+    const pieSeriesOptions: PieSeriesOption[] = [];
+
+    const { numCases: totalNumCases, statisticsPerRegion } = EpiMapUtil.getRegionStatistics(sortedData, col.id, regions);
+
+    const pieChartOptionsBase: Partial<PieSeriesOption> = {
+      animation: false,
+      coordinateSystem: 'geo',
+      label: {
+        show: false,
+        silent: true,
+      },
+      labelLine: {
+        show: true,
+        smooth: true,
+      },
+      type: 'pie',
+    };
+
+    Object.entries(statisticsPerRegion).forEach(([regionId, regionData]) => {
+      const data: GenEpixPieSeriesOptionData = [];
+
+      if (!stratification) {
+        const caseIds = regionData.rows.map(row => row.id);
+        if (caseIds.length === 0) {
+          return;
+        }
+        data.push({
+          emphasis: {
+            focus: 'self',
+          },
+          genEpixData: {
+            caseIds,
+            regionId,
+          },
+          label: {
+            formatter: () => regionData.region.name,
+          },
+          name: 'num-cases',
+          value: regionData.numCases,
+        });
+      } else {
+        stratification.legendaItems.forEach(legendaItem => {
+          const rows = regionData.rows.filter(row => legendaItem.caseIds.includes(row.id));
+          const caseIds = rows.map(row => row.id);
+          const numCases = EpiDashboardUtil.getCaseCount(rows);
+          data.push({
+            emphasis: {
+              focus: 'self',
+            },
+            genEpixData: {
+              caseIds,
+              regionId,
+            },
+            label: {
+              formatter: () => regionData.region.name,
+            },
+            name: legendaItem.rowValue.full,
+            value: numCases,
+          });
+        });
+      }
+
+      pieSeriesOptions.push({
+        ...pieChartOptionsBase,
+        center: [regionData.region.center_lon, regionData.region.center_lat],
+        data,
+        radius: getPieChartRadius(regionData.numCases),
+        tooltip: {
+          formatter: (callbackParams) => {
+            const d = (callbackParams as { data: { name: string; value: number } }).data;
+            if (stratification) {
+              return `${regionData.region.name} - ${d.name} (n=${d.value}, ${Math.round(d.value / regionData.numCases * 100)}%)`;
+            }
+            return `${regionData.region.name} (n=${regionData.numCases}, ${Math.round(regionData.numCases / totalNumCases * 100)}%)`;
+          },
+        },
+      });
+    });
+
+    return {
+      epiMapCaseCount: totalNumCases,
+      series: pieSeriesOptions,
+    };
+  }
+
+  public static getMaxPieChartArea(width: number, height: number, numZones: number): number {
+    if (!width || !height || !numZones) {
+      return 0;
+    }
+    const smallestDimension = Math.min(width, height);
+    const mapArea = smallestDimension ** 2;
+    const zoneArea = mapArea / numZones;
+    const zoneDimension = Math.sqrt(zoneArea);
+    const normalizedZoneDimension = zoneDimension / 4;
+    const zonePieArea = ((normalizedZoneDimension / 2) ** 2) * Math.PI;
+    return zonePieArea;
   }
 
   public static getPieChartRadius(numCases: number, maxPieChartArea: number, statistics: RegionStatistics) {

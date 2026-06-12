@@ -164,6 +164,11 @@ export type Highlighting = {
   origin: EPI_ZONE;
 };
 
+export interface StratifiableColumn {
+  col: CaseDbCol;
+  enabled: boolean;
+}
+
 export type Stratification = {
   caseIdColors: { [key: string]: string };
   col?: CaseDbCol;
@@ -174,13 +179,13 @@ export type Stratification = {
   mode: STRATIFICATION_MODE;
 };
 
+
 export type StratificationLegendaItem = {
   caseIds: string[];
   color: string;
   columnType?: CaseDbColType;
   rowValue: CaseTypeRowValue;
 };
-
 
 export type TreeConfiguration = {
   col: CaseDbCol;

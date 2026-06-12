@@ -24,7 +24,6 @@ import type { Theme } from '@mui/material';
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { EpiFilterUtil } from '../EpiFilterUtil';
 import type { Stratification } from '../../models/epi';
-import { StratificationUtil } from '../StratificationUtil';
 
 export interface EpiCurveChartItem {
   date: Date;
@@ -59,16 +58,15 @@ export class EpiCurveUtil {
     getXAxisLabel: (value: Date) => string,
     includeMissingValues: boolean,
     stratification: Stratification,
-    theme: Theme,
   ): { max: number; series: (null | unknown[]) } {
+    // Note: an area chart will always have stratification, as it doesn't make sense without it.
+
     if (!items || !stratification?.legendaItems?.length) {
       return {
         max: 100,
         series: null,
       };
     }
-
-    const colors = StratificationUtil.getEchartsColors(stratification, theme);
 
     const visibleLegendaItems = includeMissingValues
       ? stratification.legendaItems
@@ -107,7 +105,7 @@ export class EpiCurveUtil {
     const areaSeries: unknown[] = seriesNames.map((seriesName, seriesIndex) => {
       return {
         areaStyle: {},
-        color: colors[seriesIndex],
+        color: stratification.legendaItems[seriesIndex].color,
         data: normalizedDataPoints.map((point, pointIdx) => [
           xAxisLabels[pointIdx],
           point.values[seriesName],
@@ -167,8 +165,6 @@ export class EpiCurveUtil {
       };
     }
 
-    const colors = StratificationUtil.getEchartsColors(stratification, theme);
-
     let max = 0;
     const barSerieOptionsBase = {
       emphasis: {
@@ -185,7 +181,7 @@ export class EpiCurveUtil {
     if (!hasStratification) {
       (barSeries).push({
         ...barSerieOptionsBase,
-        color: colors[0],
+        color: theme.palette.primary.main,
         data: [],
         name: '',
       });

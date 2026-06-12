@@ -45,7 +45,6 @@ export const EpiStratification = () => {
       }
     }
 
-
     return produce<MenuItemData>({
       disabled: stratifyableColumns.length === 0,
       items: [{
@@ -66,7 +65,7 @@ export const EpiStratification = () => {
       }],
       label,
       tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', {
-        max_stratification_unique_values: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION_COLORS.length,
+        max_stratification_unique_values: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES,
       }),
     }, draft => {
       stratifyableColumns

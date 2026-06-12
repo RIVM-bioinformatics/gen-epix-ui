@@ -1,6 +1,29 @@
 import type { Theme } from '@mui/material';
+import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
+import type {
+  CaseDbCase,
+  CaseDbCol,
+  CaseDbCompleteCaseType,
+} from '@gen-epix/api-casedb';
+import { ConfigManager } from '@gen-epix/ui';
+import { t } from 'i18next';
+import type { Range } from 'colorjs.io';
 
-import type { Stratification } from '../../models/epi';
+import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import type { CaseDbConfig } from '../../models/config';
+import type {
+  CaseTypeRowValue,
+  StratifiableColumn,
+  Stratification,
+  StratificationLegendaItem,
+} from '../../models/epi';
+import {
+  STRATIFICATION_MODE,
+  STRATIFICATION_SELECTED,
+} from '../../models/epi';
+import { CaseTypeUtil } from '../CaseTypeUtil';
+import { CaseUtil } from '../CaseUtil';
 
 export class StratificationUtil {
   public static getEchartsColors(stratification: Stratification, theme: Theme): string[] {
@@ -8,5 +31,256 @@ export class StratificationUtil {
       return [theme.palette.primary.main];
     }
     return stratification.legendaItems?.map(item => item.color) ?? [];
+  }
+
+
+  public static getStratification(
+    kwArgs: {
+      col?: CaseDbCol;
+      completeCaseType: CaseDbCompleteCaseType;
+      mode: STRATIFICATION_MODE;
+      selectedIds?: string[];
+      sortedData: CaseDbCase[];
+      useExtraGradients?: boolean;
+    },
+  ): Stratification {
+    const { col, completeCaseType, mode, selectedIds, sortedData } = kwArgs;
+    if (!mode) {
+      return null;
+    }
+
+    if (mode === STRATIFICATION_MODE.SELECTION && !selectedIds) {
+      return null;
+    }
+
+    if (mode === STRATIFICATION_MODE.FIELD) {
+      return StratificationUtil.getFieldStratification({ col, completeCaseType, sortedData, useExtraGradients: kwArgs.useExtraGradients });
+    }
+
+    if (mode === STRATIFICATION_MODE.SELECTION) {
+      return StratificationUtil.getSelectionStratification({ col, selectedIds, sortedData });
+    }
+
+    return null;
+  }
+
+  public static getStratifyableColumns(
+    kwArgs: {
+      completeCaseType: CaseDbCompleteCaseType;
+      data: CaseDbCase[];
+    },
+  ): StratifiableColumn[] {
+    const { completeCaseType, data } = kwArgs;
+    const { STRATIFICATION } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+
+    const filteredCols = CaseTypeUtil.getCols(completeCaseType).filter(col => {
+      const column = completeCaseType.ref_cols[col.ref_col_id];
+      return STRATIFICATION.ALLOWED_COL_TYPES.includes(column.col_type);
+    });
+
+    return filteredCols.map<StratifiableColumn>(col => {
+      const numUniqueValues = uniq(data.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType).raw).filter(x => !!x)).length;
+      const enabled = numUniqueValues > 1 && numUniqueValues <= STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES;
+      return {
+        col,
+        enabled,
+      };
+    }).sort((a, b) => a.col.label.localeCompare(b.col.label));
+  }
+
+  private static getFieldStratification(
+    kwArgs: {
+      col?: CaseDbCol;
+      completeCaseType: CaseDbCompleteCaseType;
+      sortedData: CaseDbCase[];
+      useExtraGradients?: boolean;
+    },
+  ): Stratification {
+    const { STRATIFICATION } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { col, completeCaseType, sortedData, useExtraGradients } = kwArgs;
+    if (!col) {
+      return null;
+    }
+
+    const caseIdColors: { [key: string]: string } = {};
+    const legendaItems: StratificationLegendaItem[] = [];
+    const legendaItemsByColor: { [key: string]: StratificationLegendaItem } = {};
+    const legendaItemsByValue: { [key: string]: StratificationLegendaItem } = {};
+
+    const refCol = completeCaseType.ref_cols[col.ref_col_id];
+
+    const uniqueRowValues = StratificationUtil.getUniqueRowValues({ col, completeCaseType, sortedData });
+    const legendaItemMissingData: StratificationLegendaItem = {
+      caseIds: [],
+      color: STRATIFICATION.ITEM_MISSING_COLOR,
+      columnType: refCol.col_type,
+      rowValue: CaseUtil.getMissingRowValue(''),
+    };
+    const colors: string[] = [];
+
+    // when to use a gradient
+    if (STRATIFICATION.GRADIENT_COL_TYPES.includes(refCol.col_type) || uniqueRowValues.length > STRATIFICATION.BASE_COLORS.length) {
+      let gradient: Range;
+      if (STRATIFICATION.GRADIENT_COL_TYPES.includes(refCol.col_type)) {
+        gradient = STRATIFICATION.BASE_ORDERED_GRADIENT;
+      } else {
+        if (useExtraGradients) {
+          const numExtraGradients = STRATIFICATION.EXTRA_GRADIENTS.length;
+          const colIndexInCompleteCaseType = completeCaseType.ordered_col_ids.indexOf(col.id);
+          gradient = STRATIFICATION.EXTRA_GRADIENTS[colIndexInCompleteCaseType % numExtraGradients];
+        } else {
+          gradient = STRATIFICATION.BASE_UNORDERED_GRADIENT;
+        }
+      }
+
+      uniqueRowValues.forEach((_, index) => {
+        colors.push(gradient(index / uniqueRowValues.length).toString({ format: 'hex' }));
+      });
+    } else {
+      colors.push(...STRATIFICATION.BASE_COLORS);
+    }
+
+    uniqueRowValues.forEach((rowValue, index) => {
+      const color = colors[index];
+      const legendaItem: StratificationLegendaItem = {
+        caseIds: [],
+        color,
+        columnType: refCol.col_type,
+        rowValue,
+      };
+      legendaItemsByColor[color] = legendaItem;
+      legendaItemsByValue[rowValue.raw] = legendaItem;
+      legendaItems.push(legendaItem);
+    });
+
+    sortedData.forEach(row => {
+      const rowValue = CaseUtil.getRowValue(row.content, col, completeCaseType);
+      if (rowValue.isMissing) {
+        legendaItemMissingData.caseIds.push(row.id);
+        caseIdColors[row.id] = legendaItemMissingData.color;
+        return;
+      }
+      const legendaItem = legendaItemsByValue[rowValue.raw];
+      legendaItem.caseIds.push(row.id);
+      caseIdColors[row.id] = legendaItem.color;
+    });
+
+    if (legendaItemMissingData.caseIds.length > 0) {
+      legendaItemsByColor[STRATIFICATION.ITEM_MISSING_COLOR] = legendaItemMissingData;
+      legendaItemsByValue[''] = legendaItemMissingData;
+      legendaItems.push(legendaItemMissingData);
+    }
+
+    return {
+      caseIdColors,
+      col,
+      colorForIsMissing: STRATIFICATION.ITEM_MISSING_COLOR,
+      legendaItems,
+      legendaItemsByColor,
+      legendaItemsByValue,
+      mode: STRATIFICATION_MODE.FIELD,
+    };
+  }
+
+  private static getSelectionStratification(
+    kwArgs: {
+      col?: CaseDbCol;
+      selectedIds: string[];
+      sortedData: CaseDbCase[];
+    },
+  ): Stratification {
+    const { STRATIFICATION } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { col, selectedIds, sortedData } = kwArgs;
+    const caseIdColors: { [key: string]: string } = {};
+    const legendaItems: StratificationLegendaItem[] = [];
+    const legendaItemsByColor: { [key: string]: StratificationLegendaItem } = {};
+    const legendaItemsByValue: { [key: string]: StratificationLegendaItem } = {};
+
+    const rawValues: STRATIFICATION_SELECTED[] = [STRATIFICATION_SELECTED.SELECTED, STRATIFICATION_SELECTED.UNSELECTED];
+
+    rawValues.forEach(rawValue => {
+      const color = rawValue === STRATIFICATION_SELECTED.SELECTED ? STRATIFICATION.BASE_COLORS[0] : STRATIFICATION.BASE_COLORS[1];
+      const presentationValue = rawValue === STRATIFICATION_SELECTED.SELECTED ? t`Selected` : t`Unselected`;
+      const legendaItem: StratificationLegendaItem = {
+        caseIds: [],
+        color,
+        rowValue: {
+          full: presentationValue,
+          isMissing: false,
+          long: presentationValue,
+          raw: rawValue,
+          short: presentationValue,
+        },
+      };
+      legendaItemsByColor[color] = legendaItem;
+      legendaItemsByValue[rawValue] = legendaItem;
+      legendaItems.push(legendaItem);
+    });
+
+    sortedData.forEach(row => {
+      const legendaItem = selectedIds.includes(row.id) ? legendaItemsByValue[STRATIFICATION_SELECTED.SELECTED] : legendaItemsByValue[STRATIFICATION_SELECTED.UNSELECTED];
+      legendaItem.caseIds.push(row.id);
+      caseIdColors[row.id] = legendaItem.color;
+    });
+
+    return {
+      caseIdColors,
+      col,
+      colorForIsMissing: STRATIFICATION.ITEM_MISSING_COLOR,
+      legendaItems,
+      legendaItemsByColor,
+      legendaItemsByValue,
+      mode: STRATIFICATION_MODE.SELECTION,
+    };
+  }
+
+  private static getUniqueRowValues(
+    kwArgs: {
+      col?: CaseDbCol;
+      completeCaseType: CaseDbCompleteCaseType;
+      sortedData: CaseDbCase[];
+    },
+  ): CaseTypeRowValue[] {
+    const { STRATIFICATION } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { col, completeCaseType, sortedData } = kwArgs;
+    const refCol = completeCaseType.ref_cols[col.ref_col_id];
+    const conceptSetConceptIds = EpiDataManager.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+
+    if (conceptSetConceptIds) {
+      const uniqueRowValues: CaseTypeRowValue[] = [];
+      conceptSetConceptIds.map(conceptId => EpiDataManager.getInstance().data.conceptsById[conceptId]).sort((a, b) => {
+        if (STRATIFICATION.GRADIENT_COL_TYPES.includes(refCol.col_type) && a.rank !== b.rank) {
+          return a.rank - b.rank;
+        }
+        return a.code.localeCompare(b.code);
+      }).forEach((concept) => {
+        uniqueRowValues.push({
+          full: `${concept.code} (${concept.name})`,
+          isMissing: false,
+          long: concept.name,
+          raw: concept.id,
+          short: concept.code,
+        });
+      });
+      return uniqueRowValues;
+    }
+    const rowValues = sortedData.map(row => CaseUtil.getRowValue(row.content, col, completeCaseType)).filter(x => !x.isMissing);
+    const uniqueRowValues = uniqBy(rowValues, (rowValue => rowValue.raw)).sort((a, b) => {
+      return StratificationUtil.rowValueComperator(a, b);
+    });
+    return uniqueRowValues;
+  }
+
+  private static rowValueComperator(a: CaseTypeRowValue, b: CaseTypeRowValue): number {
+    if (a.raw === b.raw) {
+      return 0;
+    }
+    if (a.isMissing) {
+      return 1;
+    }
+    if (b.isMissing) {
+      return -1;
+    }
+    return a.short.localeCompare(b.short);
   }
 }

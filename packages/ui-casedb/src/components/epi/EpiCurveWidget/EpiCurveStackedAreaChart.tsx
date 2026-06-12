@@ -52,7 +52,9 @@ export const EpiCurveStackedAreaChart = ({
   const chartInstanceRef = useRef<EChartsType | null>(null);
 
   // Calculate series data only when rendering
-  const seriesData = useMemo(() => EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification, theme), [items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification, theme]);
+  const seriesData = useMemo(() =>
+    EpiCurveUtil.getAreaChartSeriesData(items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification),
+  [items, xAxisIntervals, getXAxisLabel, includeMissingValues, stratification]);
 
   // Fast lookup table: color -> all caseIds having that stratification color.
   const caseIdsByColor = useMemo(() => {
