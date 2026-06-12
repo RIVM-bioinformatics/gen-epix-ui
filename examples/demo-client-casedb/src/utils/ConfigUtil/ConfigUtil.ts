@@ -123,6 +123,10 @@ export class ConfigUtil {
             CaseDbColType.ORDINAL,
             CaseDbColType.ORGANIZATION,
             CaseDbColType.TEXT,
+            CaseDbColType.TIME_WEEK,
+            CaseDbColType.TIME_MONTH,
+            CaseDbColType.TIME_QUARTER,
+            CaseDbColType.TIME_YEAR,
           ],
           BASE_COLORS: [
             '#1B7BFF',
@@ -169,6 +173,11 @@ export class ConfigUtil {
             CaseDbColType.DECIMAL_4,
             CaseDbColType.DECIMAL_5,
             CaseDbColType.DECIMAL_6,
+            CaseDbColType.TIME_DAY,
+            CaseDbColType.TIME_WEEK,
+            CaseDbColType.TIME_MONTH,
+            CaseDbColType.TIME_QUARTER,
+            CaseDbColType.TIME_YEAR,
           ],
           ITEM_MISSING_COLOR: '#aaa',
           MAX_ALLOWED_UNIQUE_VALUES: 50,
@@ -501,8 +510,8 @@ export class ConfigUtil {
 
 
   private static createStratificationBaseOrderedGradient(): Range {
-    const color1 = new Color('p3', [0, 1, 0]);
-    const color2 = new Color('p3', [1, 0, 0]);
+    const color1 = new Color('rebeccapurple');
+    const color2 = new Color('lch', [95, 95, 95 + 720]);
     return color1.range(color2, {
       outputSpace: 'srgb',
       space: 'lch', // interpolation space
@@ -511,22 +520,19 @@ export class ConfigUtil {
 
   private static createStratificationBaseUnorderedGradient(): Range {
     const color1 = new Color('rebeccapurple');
-    const color2 = new Color('lch', [85, 85, 85 + 720]);
+    const color2 = new Color('lch', [95, 95, 95 + 720]);
     return color1.range(color2, { hue: 'raw', outputSpace: 'srgb', space: 'lch' });
   }
 
   private static createStratificationExtraGradients(): [Range, ...Range[]] {
     const gradients: Range[] = [];
 
-    (() => {
-      const color1 = new Color('rebeccapurple');
-      const color2 = new Color('lch', [85, 85, 85 + 720]);
-      gradients.push(color1.range(color2, { hue: 'longer', outputSpace: 'srgb', space: 'lch' }));
-      gradients.push(color1.range(color2, { hue: 'shorter', outputSpace: 'srgb', space: 'lch' }));
-      gradients.push(color1.range(color2, { hue: 'increasing', outputSpace: 'srgb', space: 'lch' }));
-      gradients.push(color1.range(color2, { hue: 'decreasing', outputSpace: 'srgb', space: 'lch' }));
-      gradients.push(color1.range(color2, { hue: 'raw', outputSpace: 'srgb', space: 'lch' }));
-    })();
+    const color1 = new Color('rebeccapurple');
+    const color2 = new Color('lch', [85, 85, 85 + 720]);
+    gradients.push(color1.range(color2, { hue: 'longer', outputSpace: 'srgb', space: 'lch' }));
+    gradients.push(color1.range(color2, { hue: 'shorter', outputSpace: 'srgb', space: 'lch' }));
+    gradients.push(color1.range(color2, { hue: 'increasing', outputSpace: 'srgb', space: 'lch' }));
+    gradients.push(color1.range(color2, { hue: 'decreasing', outputSpace: 'srgb', space: 'lch' }));
 
     return gradients as [Range, ...Range[]];
   }

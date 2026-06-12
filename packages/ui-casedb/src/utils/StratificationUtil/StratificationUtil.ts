@@ -14,6 +14,7 @@ import { EpiDataManager } from '../../classes/managers/EpiDataManager';
 import type { CaseDbConfig } from '../../models/config';
 import type {
   CaseTypeRowValue,
+  EpiConceptBoundaryProps,
   StratifiableColumn,
   Stratification,
   StratificationLegendaItem,
@@ -118,7 +119,6 @@ export class StratificationUtil {
     };
     const colors: string[] = [];
 
-    // when to use a gradient
     if (STRATIFICATION.GRADIENT_COL_TYPES.includes(refCol.col_type) || uniqueRowValues.length > STRATIFICATION.BASE_COLORS.length) {
       let gradient: Range;
       if (STRATIFICATION.GRADIENT_COL_TYPES.includes(refCol.col_type)) {
@@ -126,16 +126,40 @@ export class StratificationUtil {
       } else {
         if (useExtraGradients) {
           const numExtraGradients = STRATIFICATION.EXTRA_GRADIENTS.length;
-          const colIndexInCompleteCaseType = completeCaseType.ordered_col_ids.indexOf(col.id);
+          const dim = completeCaseType.dims[col.dim_id];
+          const dims = Object.values(completeCaseType.dims).map(d => d.id);
+          const colIndexInCompleteCaseType = dims.indexOf(dim.id);
           gradient = STRATIFICATION.EXTRA_GRADIENTS[colIndexInCompleteCaseType % numExtraGradients];
         } else {
           gradient = STRATIFICATION.BASE_UNORDERED_GRADIENT;
         }
       }
+      const conceptSetConceptIds = EpiDataManager.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+      if (conceptSetConceptIds?.length) {
+        const concepts = conceptSetConceptIds.map(conceptId => EpiDataManager.getInstance().data.conceptsById[conceptId]).sort((a, b) => a.rank - b.rank);
+        if (concepts.every(concept => StratificationUtil.isEpiConceptBoundaryProps(concept.props))) {
+          const boundaryProps = concepts.map(concept => concept.props as EpiConceptBoundaryProps);
+          const finiteLbs = boundaryProps.map(bp => bp.lb).filter(v => isFinite(v));
+          const finiteUbs = boundaryProps.map(bp => bp.ub).filter(v => isFinite(v));
+          const globalMin = Math.min(...finiteLbs, ...finiteUbs);
+          const globalMax = Math.max(...finiteLbs, ...finiteUbs);
+          if (isFinite(globalMin) && isFinite(globalMax) && globalMax > globalMin) {
+            boundaryProps.forEach((bp) => {
+              const lb = isFinite(bp.lb) ? bp.lb : globalMin;
+              const ub = isFinite(bp.ub) ? bp.ub : globalMax;
+              const midpoint = (lb + ub) / 2;
+              const gradientPosition = Math.max(0, Math.min(1, (midpoint - globalMin) / (globalMax - globalMin)));
+              colors.push(gradient(gradientPosition).toString({ format: 'hex' }));
+            });
+          }
+        }
+      }
 
-      uniqueRowValues.forEach((_, index) => {
-        colors.push(gradient(index / uniqueRowValues.length).toString({ format: 'hex' }));
-      });
+      if (colors.length === 0) {
+        uniqueRowValues.forEach((_, index) => {
+          colors.push(gradient(index / uniqueRowValues.length).toString({ format: 'hex' }));
+        });
+      }
     } else {
       colors.push(...STRATIFICATION.BASE_COLORS);
     }
@@ -269,6 +293,14 @@ export class StratificationUtil {
       return StratificationUtil.rowValueComperator(a, b);
     });
     return uniqueRowValues;
+  }
+
+  private static isEpiConceptBoundaryProps(prop: unknown): prop is EpiConceptBoundaryProps {
+    if (typeof prop !== 'object' || prop === null) {
+      return false;
+    }
+    const propAsEpiConceptBoundaryProps = prop as EpiConceptBoundaryProps;
+    return ['lb', 'lb_in', 'ub', 'ub_in', 'unit'].every(key => key in propAsEpiConceptBoundaryProps);
   }
 
   private static rowValueComperator(a: CaseTypeRowValue, b: CaseTypeRowValue): number {
