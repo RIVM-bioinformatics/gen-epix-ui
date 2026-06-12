@@ -5,6 +5,7 @@ import {
   it,
   vi,
 } from 'vitest';
+import type { Theme } from '@mui/material';
 import type {
   CaseDbCase,
   CaseDbCol,
@@ -87,6 +88,14 @@ describe('EpiCurveUtil', () => {
   });
 
   describe('getBarChartSeriesData', () => {
+    const mockTheme = {
+      palette: {
+        primary: {
+          main: '#ff0000',
+        },
+      },
+    } as unknown as Theme;
+
     it('creates a single non-stratified bar series and computes max', () => {
       const items: EpiCurveChartItem[] = [
         { date: new Date('2024-01-01T00:00:00Z'), row: { id: 'a' } as CaseDbCase, value: 2 },
@@ -98,7 +107,7 @@ describe('EpiCurveUtil', () => {
         new Date('2024-01-02T00:00:00Z'),
       ];
 
-      const result = EpiCurveUtil.getBarChartSeriesData(items, intervals, d => d.toISOString().slice(0, 10), null);
+      const result = EpiCurveUtil.getBarChartSeriesData(items, intervals, d => d.toISOString().slice(0, 10), null, mockTheme);
 
       expect(result.max).toBe(5);
       expect(result.series).toHaveLength(1);
@@ -144,7 +153,7 @@ describe('EpiCurveUtil', () => {
         mode: STRATIFICATION_MODE.FIELD,
       };
 
-      const result = EpiCurveUtil.getBarChartSeriesData(items, intervals, d => d.toISOString().slice(0, 10), stratification);
+      const result = EpiCurveUtil.getBarChartSeriesData(items, intervals, d => d.toISOString().slice(0, 10), stratification, mockTheme);
 
       expect(result.max).toBe(3);
       const series = result.series as Array<{ data: Array<[string, number, string]>; name: string }>;
