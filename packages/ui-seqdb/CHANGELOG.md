@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.4.0...ui-seqdb-v2.4.1) (2026-06-12)
+
+
+### Bug Fixes
+
+* upgrade all dependencies to latest ([b1e01aa](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b1e01aa0fc369405a620a38a964690d121e695b7))
+
 ## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.3.0...ui-seqdb-v2.4.0) (2026-06-12)
 
 
