@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-omopdb-v2.3.1...api-omopdb-v2.3.2) (2026-06-12)
+
+
+### Bug Fixes
+
+* correctly set peer dependencies ([5745966](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5745966003e6bca7ec1599a0a0979efc2c6c3b82))
+
 ## [2.3.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-omopdb-v2.3.0...api-omopdb-v2.3.1) (2026-06-12)
 
 
