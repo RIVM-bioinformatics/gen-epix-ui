@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.4.1...ui-v2.4.2) (2026-06-12)
+
+
+### Bug Fixes
+
+* correctly set peer dependencies ([5745966](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5745966003e6bca7ec1599a0a0979efc2c6c3b82))
+
+## [2.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.4.0...ui-v2.4.1) (2026-06-12)
+
+
+### Bug Fixes
+
+* upgrade all dependencies to latest ([b1e01aa](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b1e01aa0fc369405a620a38a964690d121e695b7))
+
+## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.3.0...ui-v2.4.0) (2026-06-12)
+
+
+### Features
+
+* add info-message to form elements ([775cbe4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/775cbe4d3aa572d4ec0ffc556623b51ef7584a64))
+* allow selecting multimpe rows by holding shift-key ([a84d6ea](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a84d6ea7a2fedcd5a940be590d980bd76d67370e))
+* implement frozen left- and right table columns ([#138](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/138)) ([2ab2912](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2ab2912ba361fc896df3d89ca936705b0d101a4a))
+* update to latest API ([c3a06a4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c3a06a4f438506b54cc45783c7d4c1acbfc2fb76))
+* use case upload logic to update individual and bulk cases from line list ([#140](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/140)) ([03cf612](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/03cf61272ad7224b1485d21158d9be0f969edd30))
+
 ## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.4...ui-v2.3.0) (2026-05-20)
 
 

@@ -57,8 +57,15 @@ export type CaseTypeRowValue = {
 
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
 
-export type EpiDashboardLayout = [EpiDashboardLayoutPanelOrientation, ...EpiDashboardLayoutFirstAxisPanel[]];
+export type EpiConceptBoundaryProps = {
+  lb: number;
+  lb_in: boolean;
+  ub: number;
+  ub_in: boolean;
+  unit: string;
+};
 
+export type EpiDashboardLayout = [EpiDashboardLayoutPanelOrientation, ...EpiDashboardLayoutFirstAxisPanel[]];
 export type EpiDashboardLayoutConfig = { layouts: EpiDashboardLayout[]; zones: EPI_ZONE[] };
 export type EpiDashboardLayoutFirstAxisPanel = [100 | 30 | 50 | 70, ...EpiDashboardLayoutSecondAxisPanel[]];
 export type EpiDashboardLayoutPanelOrientation = 'horizontal' | 'vertical';
@@ -72,6 +79,7 @@ export type EpiDashboardLayoutUserConfig = {
     [EPI_ZONE.TREE]: boolean;
   };
 };
+
 export type EpiData = {
   conceptsById: { [id: string]: CaseDbConcept };
   conceptsBySetId: { [id: string]: CaseDbConcept[] };
@@ -159,6 +167,12 @@ export type Highlighting = {
   origin: EPI_ZONE;
 };
 
+export interface StratifiableColumn {
+  col: CaseDbCol;
+  enabled: boolean;
+}
+
+
 export type Stratification = {
   caseIdColors: { [key: string]: string };
   col?: CaseDbCol;
@@ -175,7 +189,6 @@ export type StratificationLegendaItem = {
   columnType?: CaseDbColType;
   rowValue: CaseTypeRowValue;
 };
-
 
 export type TreeConfiguration = {
   col: CaseDbCol;

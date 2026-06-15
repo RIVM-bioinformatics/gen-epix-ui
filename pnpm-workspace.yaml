@@ -3,7 +3,7 @@ packages:
   - examples/*
 
 overrides:
-  '@openapitools/openapi-generator-cli>axios': 1.16.0
+  '@openapitools/openapi-generator-cli>axios': 1.17.0
 
 onlyBuiltDependencies:
   - '@nestjs/core'
@@ -21,3 +21,21 @@ allowBuilds:
   unrs-resolver: true
 
 lockfile: true
+
+minimumReleaseAgeExclude:
+  - '@eslint-react/ast@5.8.19'
+  - '@eslint-react/core@5.8.19'
+  - '@eslint-react/eslint-plugin@5.8.19'
+  - '@eslint-react/eslint@5.8.19'
+  - '@eslint-react/jsx@5.8.19'
+  - '@eslint-react/kit@5.8.19'
+  - '@eslint-react/shared@5.8.19'
+  - '@eslint-react/var@5.8.19'
+  - '@gen-epix/eslint-config@0.3.3'
+  - eslint-plugin-react-dom@5.8.19
+  - eslint-plugin-react-jsx@5.8.19
+  - eslint-plugin-react-naming-convention@5.8.19
+  - eslint-plugin-react-rsc@5.8.19
+  - eslint-plugin-react-web-api@5.8.19
+  - eslint-plugin-react-x@5.8.19
+  - '@gen-epix/oidc-mock-server@0.1.2'

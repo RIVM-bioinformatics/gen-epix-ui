@@ -67,6 +67,14 @@ export class EpiDataManager {
 
     if (concepts === null) {
       concepts = (await CaseDbOntologyApi.getInstance().conceptsGetAll({ signal })).data;
+      concepts.forEach(concept => {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          concept.props = JSON.parse(concept.props as unknown as string);
+        } catch (_e) {
+          //
+        }
+      });
       queryClient.setQueryData(QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPTS), concepts);
     }
 

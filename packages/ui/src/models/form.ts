@@ -13,7 +13,6 @@ import type { UploadButtonProps } from '../components/form/fields/UploadButton/U
 import type { RadioGroupProps } from '../components/form/fields/RadioGroup';
 import type { NumberFieldProps } from '../components/form/fields/NumberField';
 
-
 export enum FORM_FIELD_DEFINITION_TYPE {
   AUTOCOMPLETE = 'AUTOCOMPLETE',
   BOOLEAN = 'BOOLEAN',
@@ -32,6 +31,14 @@ export interface AutoCompleteOption<TValue = void> extends OptionBase<TValue ext
   groupBySortOrderValue?: number;
   groupByValue?: string;
 }
+
+export type AutocompleteSelectAllContextData = {
+  currentValues: AutocompleteValue[];
+  enabledOptionValues: AutocompleteValue[];
+  handleSelectAll: (isCurrentlyAll: boolean, currentValues: AutocompleteValue[]) => void;
+  selectAllLabel: string;
+};
+export type AutocompleteValue = number | string;
 export type CheckboxOption = OptionBase<number | string>;
 
 export type FormFieldDefinition<TFormFields extends FieldValues> =

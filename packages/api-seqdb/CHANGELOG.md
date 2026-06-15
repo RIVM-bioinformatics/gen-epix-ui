@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.3.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v2.3.1...api-seqdb-v2.3.2) (2026-06-12)
+
+
+### Bug Fixes
+
+* correctly set peer dependencies ([5745966](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5745966003e6bca7ec1599a0a0979efc2c6c3b82))
+
+## [2.3.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v2.3.0...api-seqdb-v2.3.1) (2026-06-12)
+
+
+### Bug Fixes
+
+* upgrade all dependencies to latest ([b1e01aa](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b1e01aa0fc369405a620a38a964690d121e695b7))
+
+## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v2.2.1...api-seqdb-v2.3.0) (2026-06-12)
+
+
+### Features
+
+* update to latest API ([c3a06a4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c3a06a4f438506b54cc45783c7d4c1acbfc2fb76))
+
 ## [2.2.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v2.2.0...api-seqdb-v2.2.1) (2026-05-14)
 
 
