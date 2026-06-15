@@ -102,6 +102,7 @@ export const CaseSetStatusAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Case set status`}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.CASE_SET_STATUSES}
       schema={schema}
       tableColumns={tableColumns}

@@ -148,6 +148,7 @@ export const RefDimsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Reference dimension`}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.REF_DIMS}
       schema={schema}
       subPages={subPages}

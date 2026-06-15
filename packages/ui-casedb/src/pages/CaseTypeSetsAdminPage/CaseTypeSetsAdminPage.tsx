@@ -193,6 +193,7 @@ export const CaseTypeSetsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Case type set`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.CASE_TYPE_SETS}
       schema={schema}

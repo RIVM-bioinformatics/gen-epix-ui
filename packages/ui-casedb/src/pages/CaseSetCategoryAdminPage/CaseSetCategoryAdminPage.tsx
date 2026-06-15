@@ -102,6 +102,7 @@ export const CaseSetCategoryAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Case set category`}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.CASE_SET_CATEGORIES}
       schema={schema}
       tableColumns={tableColumns}

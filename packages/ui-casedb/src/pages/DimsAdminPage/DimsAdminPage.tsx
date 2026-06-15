@@ -202,6 +202,7 @@ export const DimsAdminPage = () => {
       fetchAllSelect={fetchAllSelect}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Dimension`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.DIMS}
       schema={schema}

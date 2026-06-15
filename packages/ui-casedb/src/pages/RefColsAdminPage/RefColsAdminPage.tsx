@@ -310,6 +310,7 @@ export const RefColsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      itemName={t`Reference column`}
       loadables={loadables}
       onFormChange={onFormChange}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.REF_COLS}

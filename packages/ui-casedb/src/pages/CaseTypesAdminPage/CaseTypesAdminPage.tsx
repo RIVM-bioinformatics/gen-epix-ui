@@ -292,6 +292,7 @@ export const CaseTypesAdminPage = () => {
       getFormValuesFromItem={getFormValuesFromItem}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getIntermediateItem}
+      itemName={t`Case type`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.CASE_TYPES}
       schema={schema}

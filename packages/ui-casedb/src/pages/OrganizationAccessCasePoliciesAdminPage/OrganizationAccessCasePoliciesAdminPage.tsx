@@ -198,6 +198,7 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Organization access case policy`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.ORGANIZATION_ACCESS_CASE_POLICIES}
       schema={schema}

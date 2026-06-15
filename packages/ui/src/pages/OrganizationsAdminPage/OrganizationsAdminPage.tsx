@@ -185,6 +185,7 @@ export const OrganizationsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Organization`}
       loadables={loadables}
       resourceQueryKeyBase={COMMON_QUERY_KEY.ORGANIZATIONS}
       schema={schema}

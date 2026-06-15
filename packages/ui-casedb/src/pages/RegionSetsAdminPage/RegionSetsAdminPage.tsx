@@ -143,6 +143,7 @@ export const RegionSetsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Region set`}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.REGION_SETS}
       schema={schema}
       subPages={subPages}

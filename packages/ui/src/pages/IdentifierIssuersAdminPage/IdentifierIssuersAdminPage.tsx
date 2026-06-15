@@ -92,6 +92,7 @@ export const IdentifierIssuersAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Identifier issuer`}
       resourceQueryKeyBase={COMMON_QUERY_KEY.IDENTIFIER_ISSUERS}
       schema={schema}
       tableColumns={tableColumns}

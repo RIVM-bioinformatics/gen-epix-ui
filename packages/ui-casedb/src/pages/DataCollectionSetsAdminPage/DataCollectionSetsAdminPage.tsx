@@ -152,6 +152,7 @@ export const DataCollectionSetsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Data collection set`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.DATA_COLLECTION_SETS}
       schema={schema}

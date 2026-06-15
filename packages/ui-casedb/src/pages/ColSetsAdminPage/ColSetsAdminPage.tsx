@@ -169,6 +169,7 @@ export const ColSetsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Column set`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.COL_SETS}
       schema={schema}
