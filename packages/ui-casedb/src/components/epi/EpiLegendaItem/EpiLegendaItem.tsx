@@ -32,6 +32,7 @@ import type { StratificationLegendaItem } from '../../../models/epi';
 import {
   EPI_ZONE,
   STRATIFICATION_MODE,
+  STRATIFICATION_SELECTED,
 } from '../../../models/epi';
 import { EpiContextMenu } from '../EpiContextMenu';
 import type { EpiContextMenuConfigWithAnchor } from '../EpiContextMenu';
@@ -48,6 +49,7 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
   const { t } = useTranslation();
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const stratification = useStore(epiDashboardStore, (state) => state.stratification);
+  const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
   const setFilterValue = useStore(epiDashboardStore, (state) => state.setFilterValue);
   const filters = useStoreWithEqualityFn(epiDashboardStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
   const [focussedLegendaItem, setFocussedLegendaItem] = useState<StratificationLegendaItem>(null);
@@ -100,23 +102,46 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
   }, []);
 
   const onShowOnlySelectedLegendaItemMenuItemClick = useCallback(async (onMenuClose: () => void) => {
-    const filter = filters.find(f => f.id === stratification.col.id);
-    if (!filter) {
-      return;
-    }
-    const filterValue = isArray(filter.initialFilterValue) ? [focussedLegendaItem.rowValue.raw] : focussedLegendaItem.rowValue.raw;
+    if (stratification?.mode === STRATIFICATION_MODE.SELECTION) {
+      if (focussedLegendaItem.rowValue.raw === STRATIFICATION_SELECTED.SELECTED.toString()) {
+        await setFilterValue('selected', focussedLegendaItem.caseIds);
+      } else {
+        await setFilterValue('selected', focussedLegendaItem.caseIds);
+      }
+    } else {
+      const filter = filters.find(f => f.id === stratification.col.id);
+      if (!filter) {
+        return;
+      }
+      const filterValue = isArray(filter.initialFilterValue) ? [focussedLegendaItem.rowValue.raw] : focussedLegendaItem.rowValue.raw;
 
-    await setFilterValue(stratification.col.id, filterValue);
+      await setFilterValue(stratification.col.id, filterValue);
+    }
+
+
     onMenuClose();
-  }, [focussedLegendaItem, setFilterValue, stratification, filters]);
+  }, [filters, focussedLegendaItem, setFilterValue, stratification]);
 
   const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
-    if (!focussedLegendaItem || focussedLegendaItem?.rowValue?.isMissing || !stratification?.col?.id) {
+    if (!focussedLegendaItem) {
       return null;
     }
-    const filter = filters.find(f => f.id === stratification.col.id);
-    if (!filter) {
-      return null;
+    let label: string;
+
+    if (stratification?.mode === STRATIFICATION_MODE.SELECTION) {
+      if (!focussedLegendaItem.caseIds?.length || focussedLegendaItem.caseIds?.length === sortedData.length) {
+        return null;
+      }
+      label = t('Filter (show only {{label}})', { label: focussedLegendaItem?.rowValue?.raw === STRATIFICATION_SELECTED.SELECTED.toString() ? t('selected rows') : t('unselected rows') });
+    } else {
+      if (!focussedLegendaItem || focussedLegendaItem?.rowValue?.isMissing || !stratification?.col?.id) {
+        return null;
+      }
+      const filter = filters.find(f => f.id === stratification.col.id);
+      if (!filter) {
+        return null;
+      }
+      label = t('Filter (show only {{label}})', { label: focussedLegendaItem.rowValue.short });
     }
 
     return (
@@ -129,11 +154,11 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
           <FilterAltIcon fontSize={'small'} />
         </ListItemIcon>
         <ListItemText>
-          {t('Filter (show only {{label}})', { label: focussedLegendaItem.rowValue.short })}
+          {label}
         </ListItemText>
       </MenuItem>
     );
-  }, [filters, focussedLegendaItem, onShowOnlySelectedLegendaItemMenuItemClick, stratification, t]);
+  }, [filters, focussedLegendaItem, onShowOnlySelectedLegendaItemMenuItemClick, stratification, t, sortedData]);
 
   const disabled = stratification?.mode === STRATIFICATION_MODE.FIELD && item.caseIds.length === 0;
 
