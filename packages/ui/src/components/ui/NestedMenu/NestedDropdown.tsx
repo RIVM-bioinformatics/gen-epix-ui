@@ -15,6 +15,7 @@ import {
 import type { BoxProps } from '@mui/material';
 import {
   Box,
+  ClickAwayListener,
   Tooltip,
   useTheme,
 } from '@mui/material';
@@ -55,6 +56,9 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
+  const onClickAway = useCallback(() => {
+    handleClose();
+  }, [handleClose]);
   const onMenuClose = useCallback(() => {
     handleClose();
   }, [handleClose]);
@@ -95,39 +99,47 @@ export const NestedDropdown = ({ ref, ...props }: NestedDropdownProps) => {
   );
 
   return (
-    <Box
-      ref={ref}
-      sx={{
-        maxWidth: '100%',
-      }}
-      {...ContainerProps}
-      {...rest}
-    >
-      {(ButtonProps.disabled || !showTopLevelTooltip) && buttonElement}
-      {(!ButtonProps.disabled && showTopLevelTooltip) && (
-        <Tooltip
-          arrow
-          placement={'right'}
-          slotProps={{
-            tooltip: {
-              sx: {
-                marginLeft: `${theme.spacing(0)} !important`,
-              },
-            },
-          }}
-          title={data?.tooltip ?? data?.label ?? t`Menu`}
-        >
-          {buttonElement}
-        </Tooltip>
-      )}
-      <Menu
-        anchorEl={anchorEl}
-        onClose={onMenuClose}
-        open={open}
-        {...MenuProps}
+    <ClickAwayListener onClickAway={onClickAway}>
+      <Box
+        ref={ref}
+        sx={{
+          maxWidth: '100%',
+        }}
+        {...ContainerProps}
+        {...rest}
       >
-        {menuItems}
-      </Menu>
-    </Box>
+        {(ButtonProps.disabled || !showTopLevelTooltip) && buttonElement}
+        {(!ButtonProps.disabled && showTopLevelTooltip) && (
+          <Tooltip
+            arrow
+            placement={'right'}
+            slotProps={{
+              tooltip: {
+                sx: {
+                  marginLeft: `${theme.spacing(0)} !important`,
+                },
+              },
+            }}
+            title={data?.tooltip ?? data?.label ?? t`Menu`}
+          >
+            {buttonElement}
+          </Tooltip>
+        )}
+        <Menu
+          anchorEl={anchorEl}
+          hideBackdrop
+          onClose={onMenuClose}
+          open={open}
+          slotProps={{
+            paper: { style: { pointerEvents: 'auto' } },
+            root: { style: { pointerEvents: 'none' } },
+          }}
+          {...MenuProps}
+        >
+          {menuItems}
+        </Menu>
+      </Box>
+    </ClickAwayListener>
+
   );
 };
