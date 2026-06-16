@@ -252,6 +252,14 @@ export const PhylogeneticTreeComponent = ({
     }
   }, [canvasScrollSubject, devicePixelRatio, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, updateExternalScrollSubjectDebounced]);
 
+  useEffect(() => {
+    updateScrollPosition({
+      internalZoomLevel: zoomLevelSubject.data,
+      positionX: canvasScrollSubject.data.x,
+      positionY: canvasScrollSubject.data.y,
+    });
+  }, [canvasScrollSubject, updateScrollPosition, zoomLevelSubject]);
+
   const link = useCallback((verticalPosition?: number) => {
     const nextVerticalPosition = verticalPosition ?? externalScrollSubject?.data?.position ?? 0;
 
