@@ -116,6 +116,14 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     });
   }, [completeCaseType.id]);
 
+  const onAddToEventClick = useCallback((row: CaseDbCase) => {
+    EpiEventBusManager.getInstance().emit('openAddCasesToEventDialog', {
+      currentCaseSet: caseSet,
+      rows: [row],
+    });
+  }, [caseSet]);
+
+
   const onIndexCellClick = useCallback((row: CaseDbCase) => {
     openCaseInfoDialog(row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.INFO);
   }, [openCaseInfoDialog]);
@@ -352,55 +360,70 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
       TableUtil.createActionsColumn({
         columnContext: null,
         getActions: (params: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
-          const actions: ReactElement[] = [];
-          actions.push(
-            <MenuItem
-              key={'showCaseInformation'}
-              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-              onClick={() => openCaseInfoDialog(params.row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.INFO)}
-            >
-              <ListItemIcon>
-                <ArrowCircleRightIcon />
-              </ListItemIcon>
-              <ListItemText>
-                {t`Show case information`}
-              </ListItemText>
-            </MenuItem>,
-          );
-          actions.push(
-            <MenuItem
-              key={'editCaseInformation'}
-              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-              onClick={() => openCaseInfoDialog(params.row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.EDIT)}
-            >
-              <ListItemIcon>
-                <EditIcon />
-              </ListItemIcon>
-              <ListItemText>
-                {t`Edit information`}
-              </ListItemText>
-            </MenuItem>,
-          );
-          actions.push(
-            <MenuItem
-              key={'shareCase'}
-              // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-              onClick={() => openCaseInfoDialog(params.row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.SHARING)}
-            >
-              <ListItemIcon>
-                <ShareIcon />
-              </ListItemIcon>
-              <ListItemText>
-                {t`Share case`}
-              </ListItemText>
-            </MenuItem>,
-          );
+          const actions: ReactElement[] = [
+            (
+              <MenuItem
+                key={'showInformation'}
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                onClick={() => openCaseInfoDialog(params.row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.INFO)}
+              >
+                <ListItemIcon>
+                  <ArrowCircleRightIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {t`Show information`}
+                </ListItemText>
+              </MenuItem>
+            ),
+            (
+              <MenuItem
+                key={'editInformation'}
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                onClick={() => openCaseInfoDialog(params.row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.EDIT)}
+              >
+                <ListItemIcon>
+                  <EditIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {t`Edit information`}
+                </ListItemText>
+              </MenuItem>
+            ),
+            (
+              <MenuItem
+                key={'share'}
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                onClick={() => openCaseInfoDialog(params.row.id, EPI_CASE_INFO_DIALOG_TAB_NAME.SHARING)}
+              >
+                <ListItemIcon>
+                  <ShareIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {t`Share`}
+                </ListItemText>
+              </MenuItem>
+            ),
+            (
+              <MenuItem
+                key={'addToEvent'}
+                // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+                onClick={() => onAddToEventClick(params.row)}
+              >
+                <ListItemIcon>
+                  <CollectionIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  {t`Add to event`}
+                </ListItemText>
+              </MenuItem>
+            ),
+          ];
           return actions;
         },
         t,
       }),
     ];
-  }, [openCaseInfoDialog, t]);
+  }, [onAddToEventClick, openCaseInfoDialog, t]);
 
 
   const columnStratificationCache = useMemo(() => {

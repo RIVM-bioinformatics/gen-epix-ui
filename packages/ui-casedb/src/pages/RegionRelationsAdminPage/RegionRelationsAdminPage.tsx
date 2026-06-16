@@ -128,6 +128,7 @@ export const RegionRelationsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Region relation`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.REGION_RELATIONS}
       schema={schema}

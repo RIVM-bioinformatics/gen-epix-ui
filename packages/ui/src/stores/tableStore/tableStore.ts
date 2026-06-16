@@ -435,7 +435,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       await setFilterValues(filterValues);
     },
     setFilterValues: async (filterValues: FilterValues) => {
-      const { fetchData, filters, frontendFilterPriorities, navigateFunction, reloadFilterData, updateUrl } = get();
+      const { fetchData, filters, frontendFilterPriorities, navigateFunction, reloadFilterData, reloadSelectedIds, updateUrl } = get();
 
       const backendFilterValues: FilterValues = {};
       const frontendFilterValues: { [key: string]: FilterValues } = {};
@@ -499,8 +499,8 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         }
         return null;
       });
-
       reloadFilterData(fistFilterPriorityToFilterFrom);
+      reloadSelectedIds();
     },
     setIsCondensed: (isCondensed: boolean) => {
       const { columns } = get();

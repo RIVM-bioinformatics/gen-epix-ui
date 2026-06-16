@@ -105,6 +105,7 @@ export type CrudPageProps<
   readonly getFormValuesFromItem?: (item: TData) => Partial<TFormFields>;
   readonly getName: (item: TData | TFormFields) => string;
   readonly getOptimisticUpdateIntermediateItem?: (variables: TFormFields, previousItem: TData) => TData;
+  readonly itemName: string;
   readonly loadables?: Loadable[];
   readonly onCreateError?: (error: unknown, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void> | void;
   readonly onCreateSuccess?: (item: TData, variables: TFormFields, context: MutationContextCreate<TData>) => Promise<void> | void;
@@ -170,6 +171,7 @@ export const CrudPage = <
   getFormValuesFromItem,
   getName,
   getOptimisticUpdateIntermediateItem,
+  itemName,
   loadables,
   onCreateError,
   onCreateSuccess,
@@ -328,48 +330,48 @@ export const CrudPage = <
 
   const getEditProgressNotificationMessage = useCallback((data: TData) => {
     const name = tryToGetName(data);
-    return name ? t('Item "{{name}}" is being saved...', { name }) : t`Item is being saved.`;
-  }, [t, tryToGetName]);
+    return name ? t('{{itemName}} "{{name}}" is being saved...', { itemName, name }) : t('{{itemName}} is being saved...', { itemName });
+  }, [t, tryToGetName, itemName]);
 
   const getCreateProgressNotificationMessage = useCallback((data: TFormFields) => {
     const name = tryToGetName(data);
-    return name ? t('Item "{{name}}" is being saved...', { name }) : t`Item is being saved.`;
-  }, [t, tryToGetName]);
+    return name ? t('{{itemName}} "{{name}}" is being saved...', { itemName, name }) : t('{{itemName}} is being saved...', { itemName });
+  }, [t, tryToGetName, itemName]);
 
   const getDeleteProgressNotificationMessage = useCallback((data: TData) => {
     const name = tryToGetName(data);
-    return name ? t('Item "{{name}}" is being deleted...', { name }) : t`Item is being deleted.`;
-  }, [t, tryToGetName]);
+    return name ? t('{{itemName}} "{{name}}" is being deleted...', { itemName, name }) : t('{{itemName}} is being deleted...', { itemName });
+  }, [t, tryToGetName, itemName]);
 
   const getEditSuccessNotificationMessage = useCallback((data: TData) => {
     const name = tryToGetName(data);
-    return name ? t('Item "{{name}}" has been saved.', { name }) : t`Item has been saved.`;
-  }, [t, tryToGetName]);
+    return name ? t('{{itemName}} "{{name}}" has been saved.', { itemName, name }) : t('{{itemName}} has been saved.', { itemName });
+  }, [t, tryToGetName, itemName]);
 
   const getCreateSuccessNotificationMessage = useCallback((data: TData) => {
     const name = tryToGetName(data);
-    return name ? t('Item "{{name}}" has been created.', { name }) : t`Item has been created.`;
-  }, [t, tryToGetName]);
+    return name ? t('{{itemName}} "{{name}}" has been created.', { itemName, name }) : t('{{itemName}} has been created.', { itemName });
+  }, [t, tryToGetName, itemName]);
 
   const getDeleteSuccessNotificationMessage = useCallback((data: TData) => {
     const name = tryToGetName(data);
-    return name ? t('Item "{{name}}" has been deleted.', { name }) : t`Item has been deleted.`;
-  }, [t, tryToGetName]);
+    return name ? t('{{itemName}} "{{name}}" has been deleted.', { itemName, name }) : t('{{itemName}} has been deleted.', { itemName });
+  }, [t, tryToGetName, itemName]);
 
   const getEditErrorNotificationMessage = useCallback((data: TData) => {
     const name = tryToGetName(data);
-    return name ? t('Item "{{name}}" could not be saved.', { name }) : t`Item could not be saved.`;
-  }, [t, tryToGetName]);
+    return name ? t('{{itemName}} "{{name}}" could not be saved.', { itemName, name }) : t('{{itemName}} could not be saved.', { itemName });
+  }, [t, tryToGetName, itemName]);
 
   const getCreateErrorNotificationMessage = useCallback((data: TFormFields) => {
     const name = tryToGetName(data);
-    return name ? t('Item "{{name}}" could not be created.', { name }) : t`Item could not be created.`;
-  }, [t, tryToGetName]);
+    return name ? t('{{itemName}} "{{name}}" could not be created.', { itemName, name }) : t('{{itemName}} could not be created.', { itemName });
+  }, [t, tryToGetName, itemName]);
 
   const getDeleteErrorNotificationMessage = useCallback((data: TData) => {
     const name = tryToGetName(data);
-    return name ? t('Item "{{name}}" could not be deleted.', { name }) : t`Item could not be deleted.`;
-  }, [t, tryToGetName]);
+    return name ? t('{{itemName}} "{{name}}" could not be deleted.', { itemName, name }) : t('{{itemName}} could not be deleted.', { itemName });
+  }, [t, tryToGetName, itemName]);
 
   const calculatedAssociationQueryKeys = useMemo<string[][]>(() => {
     const keys = associationQueryKeys ?? [];

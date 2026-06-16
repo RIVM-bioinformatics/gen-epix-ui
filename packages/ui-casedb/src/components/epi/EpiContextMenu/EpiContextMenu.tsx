@@ -108,6 +108,7 @@ export const EpiContextMenu = ({ config, getExtraItems, onMenuClose }: EpiContex
     >
       {extraItems}
       <MenuItem
+        disabled={componentCaseIds.length === 0}
         onClick={onMenuSelectClick}
       >
         <ListItemIcon>

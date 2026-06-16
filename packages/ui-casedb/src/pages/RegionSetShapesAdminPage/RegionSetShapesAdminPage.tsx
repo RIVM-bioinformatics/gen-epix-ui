@@ -128,6 +128,7 @@ export const RegionSetShapesAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      itemName={t`Region set shape`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.REGION_SET_SHAPES}
       schema={schema}

@@ -168,6 +168,7 @@ export const UserShareCasePoliciesAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`User share case policy`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.USER_SHARE_CASE_POLICIES}
       schema={schema}

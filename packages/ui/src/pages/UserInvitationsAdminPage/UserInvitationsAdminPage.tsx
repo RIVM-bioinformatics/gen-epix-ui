@@ -213,6 +213,7 @@ export const UserInvitationsAdminPage = () => {
         schema={schema}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UserInvitationsAdminPage')}
+        itemName={t`User invitation`}
         title={t`User invitations`}
       />
       <UserInvitationShareDialog ref={userInvitationShareDialogRef} />

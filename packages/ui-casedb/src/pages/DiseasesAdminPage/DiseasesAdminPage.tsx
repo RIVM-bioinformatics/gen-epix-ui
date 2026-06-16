@@ -96,6 +96,7 @@ export const DiseasesAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Disease`}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.DISEASES}
       schema={schema}
       tableColumns={tableColumns}

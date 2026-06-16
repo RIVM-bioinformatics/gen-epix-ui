@@ -86,7 +86,7 @@ export class StratificationUtil {
         col,
         enabled,
       };
-    }).sort((a, b) => a.col.label.localeCompare(b.col.label));
+    }).sort((a, b) => completeCaseType.ordered_col_ids.indexOf(a.col.id) - completeCaseType.ordered_col_ids.indexOf(b.col.id));
   }
 
   private static getFieldStratification(

@@ -131,6 +131,7 @@ export const ConceptSetsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Concept set`}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.CONCEPT_SETS}
       schema={schema}
       subPages={subPages}

@@ -130,6 +130,7 @@ export const ConceptRelationsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Concept relation`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.CONCEPT_RELATIONS}
       schema={schema}

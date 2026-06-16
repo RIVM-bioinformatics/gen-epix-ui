@@ -401,6 +401,7 @@ export const ColsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      itemName={t`Column`}
       loadables={loadables}
       onFormChange={onFormChange}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.COLS}

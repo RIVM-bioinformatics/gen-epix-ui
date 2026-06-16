@@ -106,6 +106,7 @@ export const EtiologiesAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Etiology`}
       loadables={loadables}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.ETIOLOGIES}
       schema={schema}

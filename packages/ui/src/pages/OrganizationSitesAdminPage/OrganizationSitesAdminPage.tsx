@@ -124,6 +124,7 @@ export const OrganizationSitesAdminPage = () => {
       subPages={subPages}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OrganizationSitesAdminPage')}
+      itemName={t`Organization site`}
       title={t`Organization Sites`}
       updateOne={updateOne}
     />

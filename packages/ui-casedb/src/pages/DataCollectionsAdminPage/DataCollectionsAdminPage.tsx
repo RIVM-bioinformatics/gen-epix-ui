@@ -92,6 +92,7 @@ export const DataCollectionsAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Data collection`}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.DATA_COLLECTIONS}
       schema={schema}
       tableColumns={tableColumns}

@@ -133,6 +133,7 @@ export const ConceptsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      itemName={t`Concept`}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.CONCEPTS}
       schema={schema}
       tableColumns={tableColumns}

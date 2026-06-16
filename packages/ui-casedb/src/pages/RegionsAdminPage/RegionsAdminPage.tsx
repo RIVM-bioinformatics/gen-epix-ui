@@ -146,6 +146,7 @@ export const RegionsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      itemName={t`Region`}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.REGIONS}
       schema={schema}
       tableColumns={tableColumns}

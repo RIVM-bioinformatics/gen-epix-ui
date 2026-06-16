@@ -222,6 +222,7 @@ export const UsersAdminPage = ({
         subPages={subPages}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UsersAdminPage')}
+        itemName={t`User`}
         title={t`Users`}
         updateOne={updateOne}
       />

@@ -117,6 +117,7 @@ export const OrganizationContactsAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      itemName={t`Site contact`}
       resourceQueryKeyBase={COMMON_QUERY_KEY.CONTACTS}
       schema={schema}
       tableColumns={tableColumns}

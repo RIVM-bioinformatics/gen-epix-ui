@@ -151,6 +151,7 @@ export const OutagesAdminPage = () => {
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OutagesAdminPage')}
+      itemName={t`Outage`}
       title={t`Outages`}
       updateOne={updateOne}
     />

@@ -106,6 +106,7 @@ export const OrganizationAdminPoliciesAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Organization admin policy`}
       loadables={loadables}
       resourceQueryKeyBase={COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES}
       schema={schema}
