@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {
   Box,
   Button,
@@ -417,7 +418,7 @@ export const CrudPage = <
   });
 
   const onEditDialogSave = useCallback((formValues: TFormFields, item: TData) => {
-    if (item) {
+    if (item?.id) {
       mutateEditSetPreviousItem(item);
       mutateEdit(formValues);
     } else {
@@ -469,8 +470,28 @@ export const CrudPage = <
       ));
     });
 
+    if (userCanCreate) {
+      actions.push((
+        <MenuItem
+          key={'clone'}
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+          onClick={() => editDialogRef.current.open({
+            canSave: true,
+            item: { ...params.row, id: null },
+          })}
+        >
+          <ListItemIcon>
+            <ContentCopyIcon />
+          </ListItemIcon>
+          <ListItemText>
+            {t`Clone`}
+          </ListItemText>
+        </MenuItem>
+      ));
+    }
+
     return actions;
-  }, [extraActionsFactory, subPages]);
+  }, [extraActionsFactory, subPages, userCanCreate, t]);
 
   const columns = useMemo<TableColumn<TTableData, null>[]>(() => {
     const internalColumns: TableColumn<TTableData, null>[] = [

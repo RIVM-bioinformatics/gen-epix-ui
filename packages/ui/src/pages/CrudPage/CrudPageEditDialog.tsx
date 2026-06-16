@@ -100,7 +100,7 @@ export const CrudPageEditDialog = withDialog<CrudPageEditDialogProps<any, any>, 
   }, [defaultNewItem, resolvedFormFieldDefinitions, getFormValuesFromItem, openProps.item]);
 
   useEffect(() => {
-    if (openProps.item) {
+    if (openProps.item?.id) {
       onTitleChange(`Edit item: ${getName({ ...defaultNewItem as TFormFields, ...(getFormValuesFromItem ? getFormValuesFromItem(openProps.item) : (openProps.item ?? {})) })}`);
     } else {
       onTitleChange(createItemDialogTitle ?? t`Create new item`);
