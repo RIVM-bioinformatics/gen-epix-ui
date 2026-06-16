@@ -68,7 +68,7 @@ export const UserInvitationsAdminPage = () => {
       return [];
     }
     return inviteUserConstraintsQuery.data.roles.map(role => ({
-      label: `ROLE_${role}`,
+      label: role,
       value: role,
     }));
   }, [inviteUserConstraintsQuery.data]);
@@ -207,13 +207,13 @@ export const UserInvitationsAdminPage = () => {
         fetchAll={fetchAll}
         formFieldDefinitions={formFieldDefinitions}
         getName={getName}
+        itemName={t`User invitation`}
         loadables={loadables}
         onCreateSuccess={onCreateSuccess}
         resourceQueryKeyBase={COMMON_QUERY_KEY.USER_INVITATIONS}
         schema={schema}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UserInvitationsAdminPage')}
-        itemName={t`User invitation`}
         title={t`User invitations`}
       />
       <UserInvitationShareDialog ref={userInvitationShareDialogRef} />
