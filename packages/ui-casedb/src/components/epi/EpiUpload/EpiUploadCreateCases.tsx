@@ -57,7 +57,7 @@ export const EpiUploadCreateCases = () => {
     return EpiUploadUtil.getSequenceMappingStats(sequenceMapping, sequenceFilesDataTransfer);
   }, [sequenceFilesDataTransfer, sequenceMapping]);
 
-  const selectedvalidatedCases = useMemo(() => {
+  const selectedValidatedCases = useMemo(() => {
     return validatedCases.filter(vc => selectedIdsForUpload.includes(vc.id));
   }, [validatedCases, selectedIdsForUpload]);
 
@@ -93,7 +93,7 @@ export const EpiUploadCreateCases = () => {
           setProgressMessage(message);
         },
         sampleIdColId: store.getState().sampleIdColId,
-        selectedvalidatedCases,
+        selectedValidatedCases,
         sequenceFilesDataTransfer,
         sequenceMapping,
         sequencingProtocolId: store.getState().sequencingProtocolId,
@@ -112,7 +112,7 @@ export const EpiUploadCreateCases = () => {
 
 
     return abort;
-  }, [isUploadStarted, sequenceFilesDataTransfer, sequenceMapping, store, t, selectedvalidatedCases, casesForVerificationFromSourceData, onUploadComplete]);
+  }, [isUploadStarted, sequenceFilesDataTransfer, sequenceMapping, store, t, selectedValidatedCases, casesForVerificationFromSourceData, onUploadComplete]);
 
 
   const onStartOverButtonClick = useCallback(async () => {
@@ -237,7 +237,7 @@ export const EpiUploadCreateCases = () => {
           >
             <Alert severity={'info'}>
               <AlertTitle>
-                {t('{{numCases}} cases are ready to be uploaded.', { numCases: selectedvalidatedCases.length })}
+                {t('{{numCases}} cases are ready to be uploaded.', { numCases: selectedValidatedCases.length })}
               </AlertTitle>
             </Alert>
           </Box>
@@ -267,7 +267,7 @@ export const EpiUploadCreateCases = () => {
               </Alert>
             </Box>
           )}
-          {validatedCases.length - selectedvalidatedCases.length > 0 && (
+          {validatedCases.length - selectedValidatedCases.length > 0 && (
             <Box
               sx={{
                 marginY: 2,
@@ -275,7 +275,7 @@ export const EpiUploadCreateCases = () => {
             >
               <Alert severity={'warning'}>
                 <AlertTitle>
-                  {t('{{numCases}} cases were not selected and will not be uploaded.', { numCases: validatedCases.length - selectedvalidatedCases.length })}
+                  {t('{{numCases}} cases were not selected and will not be uploaded.', { numCases: validatedCases.length - selectedValidatedCases.length })}
                 </AlertTitle>
               </Alert>
             </Box>

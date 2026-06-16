@@ -1,4 +1,3 @@
-import type { RawAxiosRequestConfig } from 'axios';
 import readXlsxFile, { readSheet } from 'read-excel-file/browser';
 import type {
   CellValue,
@@ -27,7 +26,6 @@ import type {
   CaseDbCompleteCaseType,
   CaseDbReadSetForUpload,
   CaseDbSeqForUpload,
-  CaseDbUploadCasesCommand,
 } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
@@ -89,7 +87,7 @@ export class EpiUploadUtil {
     createdInDataCollectionId: string;
     mappedColumns: EpiUploadMappedColumn[];
     sampleIdColId: string;
-    selectedvalidatedCases: CaseDbCaseUploadResult[];
+    selectedValidatedCases: CaseDbCaseUploadResult[];
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
     signal: AbortSignal;
@@ -101,7 +99,7 @@ export class EpiUploadUtil {
       createdInDataCollectionId,
       mappedColumns,
       sampleIdColId,
-      selectedvalidatedCases: validatedCases,
+      selectedValidatedCases: validatedCases,
       sequenceMapping,
       sequencingProtocolId,
       signal,
@@ -109,7 +107,7 @@ export class EpiUploadUtil {
 
     const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col?.id === sampleIdColId) ?? {};
 
-    return (await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds({
+    return (await CaseDbCaseApi.getInstance().uploadCases({
       case_batch: {
         cases: validatedCases.map((vc) => {
           const caseId = vc.id;
@@ -168,9 +166,8 @@ export class EpiUploadUtil {
         }),
       },
       case_type_id: completeCaseType.id,
-      created_in_data_collection_id: createdInDataCollectionId,
       on_exists: CaseDbUploadAction.UPDATE,
-    }, { signal }));
+    }, { signal })).data;
   }
 
   public static async createCasesAndUploadFiles(kwArgs: {
@@ -183,7 +180,7 @@ export class EpiUploadUtil {
     onError: (error: Error) => void;
     onProgress: (progress: number, message: string) => void;
     sampleIdColId: string;
-    selectedvalidatedCases: CaseDbCaseUploadResult[];
+    selectedValidatedCases: CaseDbCaseUploadResult[];
     sequenceFilesDataTransfer: DataTransfer;
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
@@ -742,46 +739,6 @@ export class EpiUploadUtil {
     onProgress(overallProgress, message);
   }
 
-  public static async uploadCasesWithMultipleCreatedInDataCollectionIds(
-    uploadCasesCommand: CaseDbUploadCasesCommand,
-    options?: RawAxiosRequestConfig,
-  ): Promise<CaseDbCaseBatchUploadResult> {
-    const groupedCases = new Map<string, CaseDbCaseForUpload[]>();
-
-    for (const caseForUpload of uploadCasesCommand.case_batch.cases) {
-      const dataCollectionId = caseForUpload.case?.created_in_data_collection_id ?? uploadCasesCommand.created_in_data_collection_id;
-      const group = groupedCases.get(dataCollectionId);
-
-      if (group) {
-        group.push(caseForUpload);
-      } else {
-        groupedCases.set(dataCollectionId, [caseForUpload]);
-      }
-    }
-
-    // !FIXME this is done sequentially to avoid overloading the server with multiple simultaneous upload requests, but it would be better to do in parallel if there are many groups
-    const results = [];
-    for (const [dataCollectionId, cases] of groupedCases.entries()) {
-      results.push(await CaseDbCaseApi.getInstance().uploadCases({
-        ...uploadCasesCommand,
-        case_batch: {
-          ...uploadCasesCommand.case_batch,
-          cases,
-        },
-        created_in_data_collection_id: dataCollectionId,
-      }, options));
-    }
-
-    return {
-      ...results[0].data,
-      cases: results.flatMap((r) => r.data.cases),
-      logs: results.flatMap((r) => r.data.logs ?? []),
-      status: results.some((r) => r.data.status === CaseDbEtlStatus.FAILED)
-        ? CaseDbEtlStatus.FAILED
-        : results[0].data.status,
-    };
-  }
-
   public static async uploadFilesForCases(kwArgs: {
     assemblyProtocolId: string;
     caseBatchUploadResult: CaseDbCaseBatchUploadResult;
@@ -793,7 +750,7 @@ export class EpiUploadUtil {
     onError: (error: Error) => void;
     onProgress: (progress: number, message: string) => void;
     sampleIdColId: string;
-    selectedvalidatedCases: CaseDbCaseUploadResult[];
+    selectedValidatedCases: CaseDbCaseUploadResult[];
     sequenceFilesDataTransfer: DataTransfer;
     sequenceMapping: EpiUploadSequenceMapping;
     sequencingProtocolId: string;
@@ -815,7 +772,7 @@ export class EpiUploadUtil {
     let totalFileSizeToUpload = 0;
 
     for (const [index, caseUploadResult] of caseBatchUploadResult.cases.entries()) {
-      const { id } = kwArgs.selectedvalidatedCases[index];
+      const { id } = kwArgs.selectedValidatedCases[index];
       if (sequenceMapping[id]) {
         const caseId = caseUploadResult.id;
         for (const [colId, fileName] of Object.entries(sequenceMapping[id].sequenceFileNames)) {

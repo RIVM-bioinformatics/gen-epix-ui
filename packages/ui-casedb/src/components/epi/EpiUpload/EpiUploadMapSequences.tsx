@@ -49,7 +49,7 @@ export const EpiUploadMapSequences = () => {
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const sampleIdColId = useStore(store, (state) => state.sampleIdColId);
   const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
-  const selectedvalidatedCases = useStore(store, useShallow((state) => {
+  const selectedValidatedCases = useStore(store, useShallow((state) => {
     const selectedIdsForUpload = state.selectedIdsForUpload;
     return state.validatedCases.filter(vc => selectedIdsForUpload.includes(vc.id));
   }));
@@ -243,7 +243,7 @@ export const EpiUploadMapSequences = () => {
     ];
 
     const sampleIdCol = completeCaseTypeColStats.sampleIdColumns.find(x => x.id === sampleIdColId);
-    if (sampleIdCol && caseHasColumnContent(selectedvalidatedCases, sampleIdCol)) {
+    if (sampleIdCol && caseHasColumnContent(selectedValidatedCases, sampleIdCol)) {
       tableCols.push({
         headerName: sampleIdCol.label,
         hideInFilter: true,
@@ -286,7 +286,7 @@ export const EpiUploadMapSequences = () => {
     });
 
     const uniqueColIds: Set<string> = new Set();
-    selectedvalidatedCases.forEach((vc) => {
+    selectedValidatedCases.forEach((vc) => {
       Object.keys(vc.validated_content || {}).forEach((colId) => uniqueColIds.add(colId));
     });
 
@@ -312,9 +312,9 @@ export const EpiUploadMapSequences = () => {
     });
 
     return tableCols;
-  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColStats.readsColumns, completeCaseTypeColStats.sampleIdColumns, completeCaseTypeColStats.sequenceColumns, renderReadsCell, renderSequenceCell, sampleIdColId, selectedvalidatedCases]);
+  }, [caseHasColumnContent, completeCaseType, completeCaseTypeColStats.readsColumns, completeCaseTypeColStats.sampleIdColumns, completeCaseTypeColStats.sequenceColumns, renderReadsCell, renderSequenceCell, sampleIdColId, selectedValidatedCases]);
 
-  useInitializeTableStore<CaseDbCaseUploadResult>({ columns: tableColumns, createFiltersFromColumns: true, rows: selectedvalidatedCases, store: tableStore });
+  useInitializeTableStore<CaseDbCaseUploadResult>({ columns: tableColumns, createFiltersFromColumns: true, rows: selectedValidatedCases, store: tableStore });
 
   return (
     <Box

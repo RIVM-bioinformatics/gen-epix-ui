@@ -21,6 +21,7 @@ import type {
   CaseDbCol,
 } from '@gen-epix/api-casedb';
 import {
+  CaseDbCaseApi,
   CaseDbDataIssueType,
   CaseDbEtlStatus,
   CaseDbUploadAction,
@@ -44,7 +45,6 @@ import {
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
 import { withEpiCompleteCaseTypeLoader } from '../EpiCompletCaseTypeLoader/withEpiCompleteCaseTypeLoader';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 import { EpiUploadCaseResultTable } from './EpiUploadCaseResultTable';
 import { EpiUploadPreviewNavigation } from './EpiUploadPreviewNavigation';
@@ -79,7 +79,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
     enabled: casesForVerificationFromSourceData.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const response = await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds(ObjectUtil.deepNullifyEmptyStrings({
+      const response = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepNullifyEmptyStrings({
         case_batch: {
           cases: casesForVerificationFromSourceData,
         },
@@ -87,7 +87,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
         created_in_data_collection_id: createdInDataCollectionId,
         on_exists: CaseDbUploadAction.UPDATE,
         verify_only: true,
-      }), { signal });
+      }), { signal })).data;
       return response;
     },
     queryKey: validateCasesQueryKey,
@@ -111,7 +111,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const revalidateCases = useCallback(async (casesToValidate: Array<{ content: CaseDbCase['content']; row: CaseDbCaseUploadResult }>) => {
     setIsRevalidatingCases(true);
     try {
-      const batchValidationResult = (await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds(ObjectUtil.deepNullifyEmptyStrings({
+      const batchValidationResult = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepNullifyEmptyStrings({
         case_batch: {
           cases: casesToValidate.map(({ content, row }, index) => {
             const caseFromSourceData = casesForVerificationFromSourceData.find(c => c.id === row.id);
@@ -138,7 +138,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
         created_in_data_collection_id: createdInDataCollectionId,
         on_exists: CaseDbUploadAction.UPDATE,
         verify_only: true,
-      })));
+      }))).data;
 
       const resultById = new Map(
         casesToValidate.map(({ row }, index) => [row.id, batchValidationResult.cases[index]]),
