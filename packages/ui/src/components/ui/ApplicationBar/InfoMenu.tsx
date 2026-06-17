@@ -3,6 +3,7 @@ import {
   useCallback,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import {
   List,
@@ -13,6 +14,8 @@ import {
   Popover,
 } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DoneIcon from '@mui/icons-material/Done';
 import { useTranslation } from 'react-i18next';
 
 import type { LicensesDialogRefMethods } from '../LicensesDialog';
@@ -32,8 +35,16 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
   const licensesDialogRef = useRef<LicensesDialogRefMethods>(null);
   const isInfoMenuOpen = !!anchorElement;
   const { t } = useTranslation();
+  const [isCopied, setIsCopied] = useState(false);
   const onShowLicenseInformationButtonClick = useCallback(() => {
     licensesDialogRef.current.open();
+  }, []);
+
+  const onCopyVersionInformationButtonClick = useCallback(async () => {
+    const versionInformation = `Frontend version: ${ConfigManager.getInstance().config.getSoftwareVersion()}\nBackend version: ${BackendVersionManager.getInstance().version}\nURL: ${window.location.href}\nDate/time: ${new Date().toISOString()}`;
+    await navigator.clipboard.writeText(versionInformation);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   }, []);
 
   return (
@@ -91,6 +102,28 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
             }}
           />
         </ListItem>
+        <ListItem
+          divider
+        >
+          <ListItemButton
+            onClick={onCopyVersionInformationButtonClick}
+          >
+            <ListItemIcon>
+              {isCopied ? <DoneIcon color={'success'} /> : <ContentCopyIcon color={'secondary'} />}
+            </ListItemIcon>
+            <ListItemText
+              primary={t`Copy version information to clipboard`}
+              slotProps={{
+                primary: {
+                  sx: {
+                    color: 'secondary.main',
+                    fontWeight: 'bold',
+                  },
+                },
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
         <ListItem>
           <ListItemButton
             onClick={onShowLicenseInformationButtonClick}
@@ -114,6 +147,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
             ref={licensesDialogRef}
           />
         </ListItem>
+
       </List>
     </Popover>
   );
