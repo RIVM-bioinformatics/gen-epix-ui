@@ -50,7 +50,7 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbOrganizationAccessCasePolicy) => {

@@ -34,7 +34,7 @@ export const CaseSetStatusAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().caseSetStatusesGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().caseSetStatusesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseSetStatus) => {

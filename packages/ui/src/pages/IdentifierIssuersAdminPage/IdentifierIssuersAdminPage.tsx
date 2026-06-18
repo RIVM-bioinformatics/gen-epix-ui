@@ -25,7 +25,7 @@ export const IdentifierIssuersAdminPage = () => {
 
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().organizationApi.identifierIssuersGetAll({ signal }))?.data;
+    return (await ApiManager.getInstance().organizationApi.identifierIssuersGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbIdentifierIssuer) => {

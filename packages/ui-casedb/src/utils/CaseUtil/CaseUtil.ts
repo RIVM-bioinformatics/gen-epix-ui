@@ -50,7 +50,7 @@ export class CaseUtil {
           key: 'case_set_id',
           members: [caseSetId],
           type: 'UUID_SET',
-        })).data.map(x => x.case_id);
+        }, null, null)).data.map(x => x.case_id);
       }
 
       if (!normalizedCaseIds.length) {

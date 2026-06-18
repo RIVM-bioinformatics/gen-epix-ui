@@ -17,7 +17,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useDiseasesQuery = (): UseQueryResult<CaseDbDisease[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbOntologyApi.getInstance().diseasesGetAll({ signal });
+      const response = await CaseDbOntologyApi.getInstance().diseasesGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.DISEASES),

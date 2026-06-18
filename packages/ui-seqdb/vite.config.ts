@@ -151,6 +151,11 @@ export default defineConfig({
             'src/**/*.test.ts',
           ],
           name: 'unit',
+          server: {
+            deps: {
+              inline: [/^@gen-epix\//, '@mui/material', 'react-transition-group'],
+            },
+          },
           setupFiles: ['./src/test/setup/setup-jsdom.ts'],
           testTimeout: 5000,
         },

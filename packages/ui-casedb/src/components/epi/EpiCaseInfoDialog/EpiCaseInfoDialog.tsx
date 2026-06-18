@@ -157,7 +157,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   const { data: caseDataCollectionLinks, error: caseDataCollectionLinksError, isLoading: isCaseDataCollectionLinksLoading } = useQueryMemo({
     enabled: !!epiCase,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostQuery(caseDataCollectionLinksFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostQuery(caseDataCollectionLinksFilter, null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),

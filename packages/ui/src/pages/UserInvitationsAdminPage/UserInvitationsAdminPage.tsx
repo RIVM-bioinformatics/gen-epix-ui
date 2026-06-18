@@ -79,7 +79,7 @@ export const UserInvitationsAdminPage = () => {
   const userInvitationConsumeDialogRef = useRef<UserInvitationConsumeDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().organizationApi.userInvitationsGetAll({ signal }))?.data;
+    return (await ApiManager.getInstance().organizationApi.userInvitationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbUserInvitation) => {

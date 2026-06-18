@@ -16,7 +16,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
 export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Promise<CaseDbCaseType[]> => {
-  const response = await CaseDbCaseApi.getInstance().caseTypesGetAll({ signal });
+  const response = await CaseDbCaseApi.getInstance().caseTypesGetAll(null, null, { signal });
   const items = response.data;
   items.sort((a, b) => a.name.localeCompare(b.name));
   return items;

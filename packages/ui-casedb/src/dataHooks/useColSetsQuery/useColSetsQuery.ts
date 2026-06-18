@@ -18,7 +18,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useColSetsQuery = (): UseQueryResult<CaseDbColSet[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().colSetsGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().colSetsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.COL_SETS),

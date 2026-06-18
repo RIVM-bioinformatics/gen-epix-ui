@@ -52,7 +52,7 @@ export const ConceptRelationsAdminPage = () => {
   const loadables = useArray([conceptOptionsQuery, conceptMapQuery, conceptRelationTypeOptionsQuery, nameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().conceptRelationsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.getInstance().conceptRelationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbConceptRelation) => {

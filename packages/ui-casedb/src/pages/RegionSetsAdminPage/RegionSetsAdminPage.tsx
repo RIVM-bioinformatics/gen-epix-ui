@@ -40,7 +40,7 @@ export const RegionSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.getInstance().regionSetsGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.getInstance().regionSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRegionSet) => {

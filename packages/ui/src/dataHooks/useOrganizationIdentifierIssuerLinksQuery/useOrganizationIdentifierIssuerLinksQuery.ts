@@ -10,7 +10,7 @@ import { ApiManager } from '../../classes/managers/ApiManager';
 export const useOrganizationIdentifierIssuerLinksQuery = (): UseQueryResult<CommonDbOrganizationIdentifierIssuerLink[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiManager.getInstance().organizationApi.organizationIdentifierIssuerLinksGetAll({ signal });
+      const response = await ApiManager.getInstance().organizationApi.organizationIdentifierIssuerLinksGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUER_LINKS),

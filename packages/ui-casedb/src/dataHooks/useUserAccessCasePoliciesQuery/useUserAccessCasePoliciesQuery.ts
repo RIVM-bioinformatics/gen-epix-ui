@@ -11,7 +11,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useUserAccessCasePoliciesQuery = (select?: (data: CaseDbUserAccessCasePolicy[]) => CaseDbUserAccessCasePolicy[]): UseQueryResult<CaseDbUserAccessCasePolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbAbacApi.getInstance().userAccessCasePoliciesGetAll({ signal });
+      const response = await CaseDbAbacApi.getInstance().userAccessCasePoliciesGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.USER_ACCESS_CASE_POLICIES),

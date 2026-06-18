@@ -66,7 +66,7 @@ export const RefColsAdminPage = () => {
   const loadables = useArray([refDimMapQuery, refDimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().refColsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().refColsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((refCols: CaseDbRefCol[]) => {

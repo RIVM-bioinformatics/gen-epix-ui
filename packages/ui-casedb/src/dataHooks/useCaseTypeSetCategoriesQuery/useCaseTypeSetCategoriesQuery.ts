@@ -19,7 +19,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useCaseTypeSetCategoriesQuery = (): UseQueryResult<CaseDbCaseTypeSetCategory[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseTypeSetCategoriesGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().caseTypeSetCategoriesGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_CATEGORIES),

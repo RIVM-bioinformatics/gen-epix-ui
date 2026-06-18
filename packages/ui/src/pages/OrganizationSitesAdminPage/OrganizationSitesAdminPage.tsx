@@ -31,7 +31,7 @@ export const OrganizationSitesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().organizationApi.sitesGetAll({ signal })).data;
+    return (await ApiManager.getInstance().organizationApi.sitesGetAll(null, null, { signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((sites: CommonDbSite[]) => {
@@ -119,12 +119,12 @@ export const OrganizationSitesAdminPage = () => {
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
       getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+      itemName={t`Organization site`}
       resourceQueryKeyBase={COMMON_QUERY_KEY.SITES}
       schema={schema}
       subPages={subPages}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OrganizationSitesAdminPage')}
-      itemName={t`Organization site`}
       title={t`Organization Sites`}
       updateOne={updateOne}
     />

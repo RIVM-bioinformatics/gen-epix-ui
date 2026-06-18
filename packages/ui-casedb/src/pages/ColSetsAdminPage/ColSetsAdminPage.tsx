@@ -50,7 +50,7 @@ export const ColSetsAdminPage = () => {
   const loadables = useArray([colOptionsQuery, colSetMembersQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().colSetsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().colSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbColSet) => {

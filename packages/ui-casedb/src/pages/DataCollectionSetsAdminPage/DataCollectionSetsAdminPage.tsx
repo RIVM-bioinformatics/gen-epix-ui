@@ -49,7 +49,7 @@ export const DataCollectionSetsAdminPage = () => {
   const loadables = useArray([dataCollectionSetMembersQuery, dataCollectionOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.getInstance().dataCollectionSetsGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.getInstance().dataCollectionSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbDataCollectionSet) => {

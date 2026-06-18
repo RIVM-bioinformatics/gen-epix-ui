@@ -42,7 +42,7 @@ export const EtiologiesAdminPage = () => {
   const loadables = useArray([diseaseOptionsQuery, etiologicalAgentOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().etiologiesGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.getInstance().etiologiesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbEtiology) => {

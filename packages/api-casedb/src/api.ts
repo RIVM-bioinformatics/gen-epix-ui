@@ -57,13 +57,17 @@ export interface CaseDbCase {
      */
     'created_in_data_collection_id': string;
     'created_in_data_collection'?: CaseDbDataCollection;
+    /**
+     * The cohort(s) that this case belongs to, as {cohort_id: cohort_definition_id}. This is used for traceability of the case to any omopdb cohorts (typically one) that it was derived from. None content values are allowed to support deletion of keys but will be removed upon serialization.
+     */
+    'cohort'?: { [key: string]: string | null; };
     'count'?: number | null;
     /**
      * The datetime of the case used for sorting results, limiting results and statistics such as first and last case date. Normally re-calculated from the case content variables upon persisting. Default is the current datetime.
      */
     'case_date'?: string;
     /**
-     * The data content of the case as {col_id: str_value | None}. Only columns defined for the CaseDbCaseType of the case should be present here, and if no value is present, the key should be omitted. None content values are allowed but will be removed upon serialization.
+     * The data content of the case as {col_id: str_value | None}. Only columns defined for the CaseDbCaseType of the case should be present here, and if no value is present, the key should be omitted. None content values are allowed to support deletion of keys but will be removed upon serialization.
      */
     'content': { [key: string]: string | null; };
 }
@@ -119,7 +123,7 @@ export const CaseDbCaseClassification = {
 export type CaseDbCaseClassification = typeof CaseDbCaseClassification[keyof typeof CaseDbCaseClassification];
 
 
-export interface CaseDbCaseCohortIds {
+export interface CaseDbCaseCohortLink {
     'created_at'?: string | null;
     'modified_at'?: string | null;
     'modified_by'?: string | null;
@@ -129,9 +133,13 @@ export interface CaseDbCaseCohortIds {
      */
     'case_id': string;
     /**
-     * The IDs of the cohorts linked to this case.
+     * The ID of the omopdb cohort linked to this case.
      */
-    'cohort_ids': Array<string>;
+    'cohort_id': string;
+    /**
+     * The ID of the omopdb cohort definition linked to this case.
+     */
+    'cohort_definition_id': string;
 }
 export interface CaseDbCaseDataCollectionLink {
     'created_at'?: string | null;
@@ -783,94 +791,94 @@ export type CaseDbColType = typeof CaseDbColType[keyof typeof CaseDbColType];
 
 
 export const CaseDbCommandName = {
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    RetrieveCaseCohortIdsByCaseTypeCommand: 'RetrieveCaseCohortIdsByCaseTypeCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
     DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
     EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
     OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
     RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
     SiteCrudCommand: 'SiteCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    ColCrudCommand: 'ColCrudCommand',
 } as const;
 
 export type CaseDbCommandName = typeof CaseDbCommandName[keyof typeof CaseDbCommandName];
@@ -2038,7 +2046,7 @@ export interface CaseDbRegionSetShape {
      */
     'geo_json': string;
 }
-export interface CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody {
+export interface CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody {
     /**
      * The CaseDbCaseType ID to retrieve pairs for.
      */
@@ -2822,10 +2830,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAccessCasePoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAccessCasePoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_access_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2837,6 +2847,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -2923,10 +2941,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAccessCasePoliciesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAccessCasePoliciesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_access_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2938,6 +2958,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3060,10 +3088,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAccessCasePoliciesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAccessCasePoliciesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationAccessCasePoliciesPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_access_case_policies/query`;
@@ -3077,6 +3107,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -3095,10 +3133,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAccessCasePoliciesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAccessCasePoliciesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationAccessCasePoliciesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_access_case_policies/query/ids`;
@@ -3112,6 +3152,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -3238,10 +3286,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary CaseDbOrganization Admin Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_admin_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3253,6 +3303,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3339,10 +3397,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary CaseDbOrganization Admin Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_admin_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3354,6 +3414,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3476,10 +3544,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary CaseDbOrganization Admin Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationAdminPoliciesPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_admin_policies/query`;
@@ -3493,6 +3563,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -3511,10 +3589,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary CaseDbOrganization Admin Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationAdminPoliciesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_admin_policies/query/ids`;
@@ -3528,6 +3608,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -3654,10 +3742,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationShareCasePoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationShareCasePoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_share_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3669,6 +3759,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3755,10 +3853,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationShareCasePoliciesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationShareCasePoliciesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_share_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3770,6 +3870,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3892,10 +4000,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationShareCasePoliciesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationShareCasePoliciesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationShareCasePoliciesPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_share_case_policies/query`;
@@ -3909,6 +4019,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -3927,10 +4045,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationShareCasePoliciesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationShareCasePoliciesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationShareCasePoliciesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_share_case_policies/query/ids`;
@@ -3944,6 +4064,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4100,10 +4228,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userAccessCasePoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userAccessCasePoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_access_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4115,6 +4245,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4201,10 +4339,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userAccessCasePoliciesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userAccessCasePoliciesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_access_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4216,6 +4356,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4338,10 +4486,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userAccessCasePoliciesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userAccessCasePoliciesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('userAccessCasePoliciesPostQuery', 'filter', filter)
             const localVarPath = `/v1/user_access_case_policies/query`;
@@ -4355,6 +4505,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4373,10 +4531,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userAccessCasePoliciesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userAccessCasePoliciesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('userAccessCasePoliciesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/user_access_case_policies/query/ids`;
@@ -4390,6 +4550,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4516,10 +4684,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userShareCasePoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userShareCasePoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_share_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4531,6 +4701,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4617,10 +4795,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userShareCasePoliciesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userShareCasePoliciesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_share_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4632,6 +4812,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4754,10 +4942,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userShareCasePoliciesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userShareCasePoliciesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('userShareCasePoliciesPostQuery', 'filter', filter)
             const localVarPath = `/v1/user_share_case_policies/query`;
@@ -4771,6 +4961,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4789,10 +4987,12 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userShareCasePoliciesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userShareCasePoliciesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('userShareCasePoliciesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/user_share_case_policies/query/ids`;
@@ -4806,6 +5006,14 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4941,11 +5149,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAccessCasePoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesDeleteAll(options);
+        async organizationAccessCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAccessCasePoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4979,11 +5189,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAccessCasePoliciesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationAccessCasePolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesGetAll(options);
+        async organizationAccessCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationAccessCasePolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAccessCasePoliciesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5031,11 +5243,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAccessCasePoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationAccessCasePolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesPostQuery(filter, options);
+        async organizationAccessCasePoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationAccessCasePolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAccessCasePoliciesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5044,11 +5258,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAccessCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesPostQueryIds(filter, options);
+        async organizationAccessCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAccessCasePoliciesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5096,11 +5312,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary CaseDbOrganization Admin Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(options);
+        async organizationAdminPoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5134,11 +5352,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary CaseDbOrganization Admin Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationAdminPolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetAll(options);
+        async organizationAdminPoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5186,11 +5406,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary CaseDbOrganization Admin Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationAdminPolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQuery(filter, options);
+        async organizationAdminPoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5199,11 +5421,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary CaseDbOrganization Admin Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQueryIds(filter, options);
+        async organizationAdminPoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5251,11 +5475,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationShareCasePoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesDeleteAll(options);
+        async organizationShareCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationShareCasePoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5289,11 +5515,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationShareCasePoliciesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationShareCasePolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesGetAll(options);
+        async organizationShareCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationShareCasePolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationShareCasePoliciesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5341,11 +5569,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationShareCasePoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationShareCasePolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesPostQuery(filter, options);
+        async organizationShareCasePoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationShareCasePolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationShareCasePoliciesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5354,11 +5584,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationShareCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesPostQueryIds(filter, options);
+        async organizationShareCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationShareCasePoliciesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5418,11 +5650,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userAccessCasePoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesDeleteAll(options);
+        async userAccessCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userAccessCasePoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5456,11 +5690,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userAccessCasePoliciesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserAccessCasePolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesGetAll(options);
+        async userAccessCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserAccessCasePolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userAccessCasePoliciesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5508,11 +5744,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userAccessCasePoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserAccessCasePolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesPostQuery(filter, options);
+        async userAccessCasePoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserAccessCasePolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userAccessCasePoliciesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5521,11 +5759,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userAccessCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesPostQueryIds(filter, options);
+        async userAccessCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userAccessCasePoliciesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5573,11 +5813,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userShareCasePoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesDeleteAll(options);
+        async userShareCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userShareCasePoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5611,11 +5853,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userShareCasePoliciesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserShareCasePolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesGetAll(options);
+        async userShareCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserShareCasePolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userShareCasePoliciesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5663,11 +5907,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userShareCasePoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserShareCasePolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesPostQuery(filter, options);
+        async userShareCasePoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserShareCasePolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userShareCasePoliciesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5676,11 +5922,13 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
          * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userShareCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesPostQueryIds(filter, options);
+        async userShareCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userShareCasePoliciesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5753,11 +6001,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary CaseDbOrganization Access CaseDbCase Policies  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAccessCasePoliciesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAccessCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -5785,11 +6035,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary CaseDbOrganization Access CaseDbCase Policies  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAccessCasePoliciesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAccessCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -5829,22 +6081,26 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary CaseDbOrganization Access CaseDbCase Policies  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAccessCasePoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAccessCasePoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage organization-level access policies to cases and case sets in a data collection, scoped by case-type and read/write column sets.
      * @summary CaseDbOrganization Access CaseDbCase Policies  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAccessCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAccessCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -5884,11 +6140,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary CaseDbOrganization Admin Policies  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -5916,11 +6174,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary CaseDbOrganization Admin Policies  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -5960,22 +6220,26 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary CaseDbOrganization Admin Policies  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary CaseDbOrganization Admin Policies  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6015,11 +6279,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary CaseDbOrganization Share CaseDbCase Policies  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationShareCasePoliciesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationShareCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6047,11 +6313,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary CaseDbOrganization Share CaseDbCase Policies  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationShareCasePoliciesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationShareCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6091,22 +6359,26 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary CaseDbOrganization Share CaseDbCase Policies  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationShareCasePoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationShareCasePoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage which cases or case sets an organization may share from one data collection into another for specific case-type sets.
      * @summary CaseDbOrganization Share CaseDbCase Policies  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationShareCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationShareCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6156,11 +6428,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary CaseDbUser Access CaseDbCase Policies  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userAccessCasePoliciesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userAccessCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6188,11 +6462,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary CaseDbUser Access CaseDbCase Policies  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userAccessCasePoliciesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userAccessCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6232,22 +6508,26 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary CaseDbUser Access CaseDbCase Policies  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userAccessCasePoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userAccessCasePoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage per-user maximum access policies to cases and case sets in a data collection; effective rights intersect with the organization policy.
      * @summary CaseDbUser Access CaseDbCase Policies  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userAccessCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userAccessCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6287,11 +6567,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary CaseDbUser Share CaseDbCase Policies  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userShareCasePoliciesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userShareCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6319,11 +6601,13 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary CaseDbUser Share CaseDbCase Policies  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userShareCasePoliciesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userShareCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6363,22 +6647,26 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary CaseDbUser Share CaseDbCase Policies  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userShareCasePoliciesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userShareCasePoliciesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage per-user share permissions for moving cases or case sets between data collections, bounded by the organization\'s share policy.
      * @summary CaseDbUser Share CaseDbCase Policies  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userShareCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userShareCasePoliciesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6520,10 +6808,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary CaseDbCase Data Collection Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseDataCollectionLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseDataCollectionLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_data_collection_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6535,6 +6825,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6621,10 +6919,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary CaseDbCase Data Collection Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseDataCollectionLinksGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseDataCollectionLinksGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_data_collection_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6636,6 +6936,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6758,10 +7066,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary CaseDbCase Data Collection Links  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseDataCollectionLinksPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseDataCollectionLinksPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseDataCollectionLinksPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_data_collection_links/query`;
@@ -6775,6 +7085,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -6793,10 +7111,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary CaseDbCase Data Collection Links  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseDataCollectionLinksPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseDataCollectionLinksPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseDataCollectionLinksPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_data_collection_links/query/ids`;
@@ -6810,6 +7130,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -6936,10 +7264,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
          * @summary CaseDbCase Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6951,6 +7281,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7037,10 +7375,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
          * @summary CaseDbCase Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseIdentifiersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseIdentifiersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7052,6 +7392,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7174,10 +7522,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
          * @summary CaseDbCase Identifiers  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseIdentifiersPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseIdentifiersPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseIdentifiersPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_identifiers/query`;
@@ -7191,6 +7541,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7209,10 +7567,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
          * @summary CaseDbCase Identifiers  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseIdentifiersPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseIdentifiersPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseIdentifiersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_identifiers/query/ids`;
@@ -7226,6 +7586,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7352,10 +7720,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary CaseDbCase Set Categories  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetCategoriesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetCategoriesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7367,6 +7737,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7453,10 +7831,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary CaseDbCase Set Categories  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetCategoriesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetCategoriesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7468,6 +7848,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7590,10 +7978,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary CaseDbCase Set Categories  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetCategoriesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetCategoriesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetCategoriesPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_set_categories/query`;
@@ -7607,6 +7997,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7625,10 +8023,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary CaseDbCase Set Categories  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetCategoriesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetCategoriesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetCategoriesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_set_categories/query/ids`;
@@ -7642,6 +8042,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7768,10 +8176,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary CaseDbCase Set Data Collection Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetDataCollectionLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetDataCollectionLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_data_collection_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7783,6 +8193,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7869,10 +8287,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary CaseDbCase Set Data Collection Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetDataCollectionLinksGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetDataCollectionLinksGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_data_collection_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7884,6 +8304,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8006,10 +8434,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary CaseDbCase Set Data Collection Links  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetDataCollectionLinksPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetDataCollectionLinksPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetDataCollectionLinksPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_set_data_collection_links/query`;
@@ -8023,6 +8453,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8041,10 +8479,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary CaseDbCase Set Data Collection Links  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetDataCollectionLinksPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetDataCollectionLinksPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetDataCollectionLinksPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_set_data_collection_links/query/ids`;
@@ -8058,6 +8498,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8184,10 +8632,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage membership of cases in a case set, including per-member classification when present.
          * @summary CaseDbCase Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8199,6 +8649,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8285,10 +8743,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage membership of cases in a case set, including per-member classification when present.
          * @summary CaseDbCase Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetMembersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8300,6 +8760,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8422,10 +8890,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage membership of cases in a case set, including per-member classification when present.
          * @summary CaseDbCase Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetMembersPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetMembersPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetMembersPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_set_members/query`;
@@ -8439,6 +8909,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8457,10 +8935,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage membership of cases in a case set, including per-member classification when present.
          * @summary CaseDbCase Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetMembersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_set_members/query/ids`;
@@ -8474,6 +8954,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8600,10 +9088,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary CaseDbCase Set Statuses  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetStatusesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetStatusesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_statuses`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8615,6 +9105,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8701,10 +9199,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary CaseDbCase Set Statuses  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetStatusesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetStatusesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_statuses`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8716,6 +9216,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8838,10 +9346,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary CaseDbCase Set Statuses  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetStatusesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetStatusesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetStatusesPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_set_statuses/query`;
@@ -8855,6 +9365,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8873,10 +9391,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary CaseDbCase Set Statuses  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetStatusesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetStatusesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetStatusesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_set_statuses/query/ids`;
@@ -8890,6 +9410,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9016,10 +9544,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary CaseDbCase Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9031,6 +9561,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9117,10 +9655,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary CaseDbCase Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9132,6 +9672,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9254,10 +9802,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary CaseDbCase Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_sets/query`;
@@ -9271,6 +9821,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9289,10 +9847,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary CaseDbCase Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_sets/query/ids`;
@@ -9306,6 +9866,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9432,10 +10000,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary CaseDbCase Type Set Categories  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetCategoriesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetCategoriesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_type_set_categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9447,6 +10017,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9533,10 +10111,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary CaseDbCase Type Set Categories  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetCategoriesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetCategoriesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_type_set_categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9548,6 +10128,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9670,10 +10258,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary CaseDbCase Type Set Categories  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetCategoriesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetCategoriesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseTypeSetCategoriesPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_type_set_categories/query`;
@@ -9687,6 +10277,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9705,10 +10303,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary CaseDbCase Type Set Categories  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetCategoriesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetCategoriesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseTypeSetCategoriesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_type_set_categories/query/ids`;
@@ -9722,6 +10322,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9848,10 +10456,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage which CaseTypes belong to a case-type set.
          * @summary CaseDbCase Type Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_type_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9863,6 +10473,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9949,10 +10567,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage which CaseTypes belong to a case-type set.
          * @summary CaseDbCase Type Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetMembersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_type_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9964,6 +10584,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10086,10 +10714,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage which CaseTypes belong to a case-type set.
          * @summary CaseDbCase Type Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetMembersPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetMembersPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseTypeSetMembersPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_type_set_members/query`;
@@ -10103,6 +10733,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -10121,10 +10759,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage which CaseTypes belong to a case-type set.
          * @summary CaseDbCase Type Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseTypeSetMembersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_type_set_members/query/ids`;
@@ -10138,6 +10778,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -10264,10 +10912,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary CaseDbCase Type Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_type_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10279,6 +10929,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10365,10 +11023,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary CaseDbCase Type Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_type_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10380,6 +11040,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10502,10 +11170,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary CaseDbCase Type Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseTypeSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_type_sets/query`;
@@ -10519,6 +11189,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -10537,10 +11215,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary CaseDbCase Type Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseTypeSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_type_sets/query/ids`;
@@ -10554,6 +11234,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -10719,10 +11407,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary CaseDbCase Types  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_types`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10734,6 +11424,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10820,10 +11518,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary CaseDbCase Types  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_types`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10835,6 +11535,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10957,10 +11665,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary CaseDbCase Types  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseTypesPostQuery', 'filter', filter)
             const localVarPath = `/v1/case_types/query`;
@@ -10974,6 +11684,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -10992,10 +11710,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary CaseDbCase Types  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('caseTypesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/case_types/query/ids`;
@@ -11009,6 +11729,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -11135,10 +11863,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
          * @summary Cases  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        casesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        casesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/cases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11150,6 +11880,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -11236,10 +11974,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
          * @summary Cases  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        casesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        casesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/cases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11251,6 +11991,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -11373,10 +12121,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
          * @summary Cases  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        casesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        casesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('casesPostQuery', 'filter', filter)
             const localVarPath = `/v1/cases/query`;
@@ -11390,6 +12140,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -11408,10 +12166,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
          * @summary Cases  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        casesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        casesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('casesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/cases/query/ids`;
@@ -11425,6 +12185,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -11551,10 +12319,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage which columns belong to a column set used in policies or UI presets.
          * @summary CaseDbCol Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/col_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11566,6 +12336,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -11652,10 +12430,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage which columns belong to a column set used in policies or UI presets.
          * @summary CaseDbCol Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetMembersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/col_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11667,6 +12447,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -11789,10 +12577,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage which columns belong to a column set used in policies or UI presets.
          * @summary CaseDbCol Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetMembersPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetMembersPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('colSetMembersPostQuery', 'filter', filter)
             const localVarPath = `/v1/col_set_members/query`;
@@ -11806,6 +12596,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -11824,10 +12622,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage which columns belong to a column set used in policies or UI presets.
          * @summary CaseDbCol Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('colSetMembersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/col_set_members/query/ids`;
@@ -11841,6 +12641,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -11967,10 +12775,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage column sets used for read/write scopes and default column groupings.
          * @summary CaseDbCol Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/col_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11982,6 +12792,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -12068,10 +12886,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage column sets used for read/write scopes and default column groupings.
          * @summary CaseDbCol Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/col_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12083,6 +12903,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -12205,10 +13033,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage column sets used for read/write scopes and default column groupings.
          * @summary CaseDbCol Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('colSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/col_sets/query`;
@@ -12222,6 +13052,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -12240,10 +13078,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage column sets used for read/write scopes and default column groupings.
          * @summary CaseDbCol Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('colSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/col_sets/query/ids`;
@@ -12257,6 +13097,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -12422,10 +13270,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/cols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12437,6 +13287,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -12523,10 +13381,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/cols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12538,6 +13398,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -12660,10 +13528,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('colsPostQuery', 'filter', filter)
             const localVarPath = `/v1/cols/query`;
@@ -12677,6 +13547,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -12695,10 +13573,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('colsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/cols/query/ids`;
@@ -12712,6 +13592,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -12996,10 +13884,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dimsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dimsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/dims`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13011,6 +13901,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13097,10 +13995,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dimsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dimsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/dims`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13112,6 +14012,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13234,10 +14142,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dimsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dimsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dimsPostQuery', 'filter', filter)
             const localVarPath = `/v1/dims/query`;
@@ -13251,6 +14161,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -13269,10 +14187,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dimsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dimsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dimsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/dims/query/ids`;
@@ -13286,6 +14206,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -13412,10 +14340,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        geneticDistanceProtocolsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        geneticDistanceProtocolsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/genetic_distance_protocols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13427,6 +14357,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13513,10 +14451,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        geneticDistanceProtocolsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        geneticDistanceProtocolsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/genetic_distance_protocols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13528,6 +14468,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13650,10 +14598,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        geneticDistanceProtocolsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        geneticDistanceProtocolsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('geneticDistanceProtocolsPostQuery', 'filter', filter)
             const localVarPath = `/v1/genetic_distance_protocols/query`;
@@ -13667,6 +14617,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -13685,10 +14643,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        geneticDistanceProtocolsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        geneticDistanceProtocolsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('geneticDistanceProtocolsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/genetic_distance_protocols/query/ids`;
@@ -13702,6 +14662,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -13828,10 +14796,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Ref Cols  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refColsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refColsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_cols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13843,6 +14813,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13929,10 +14907,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Ref Cols  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refColsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refColsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_cols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13944,6 +14924,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14066,10 +15054,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Ref Cols  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refColsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refColsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('refColsPostQuery', 'filter', filter)
             const localVarPath = `/v1/ref_cols/query`;
@@ -14083,6 +15073,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14101,10 +15099,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Ref Cols  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refColsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refColsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('refColsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/ref_cols/query/ids`;
@@ -14118,6 +15118,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14274,10 +15282,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
          * @summary Ref Dims  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refDimsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refDimsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_dims`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14289,6 +15299,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14375,10 +15393,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
          * @summary Ref Dims  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refDimsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refDimsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_dims`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14390,6 +15410,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14512,10 +15540,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
          * @summary Ref Dims  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refDimsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refDimsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('refDimsPostQuery', 'filter', filter)
             const localVarPath = `/v1/ref_dims/query`;
@@ -14529,6 +15559,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14547,10 +15585,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
          * @summary Ref Dims  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refDimsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refDimsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('refDimsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/ref_dims/query/ids`;
@@ -14564,6 +15604,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14718,16 +15766,16 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN. Today cohort_id == case_id; in the future a case may have multiple linked cohort IDs.
+         * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN.
          * @summary Retrieve CaseDbCase Cohort Ids By CaseDbCase Type
-         * @param {CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody} retrieveCaseCohortIdsByCaseTypeRequestBody 
+         * @param {CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody} retrieveCaseCohortLinksByCaseTypeRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveCaseCohortIdsByCaseType: async (retrieveCaseCohortIdsByCaseTypeRequestBody: CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'retrieveCaseCohortIdsByCaseTypeRequestBody' is not null or undefined
-            assertParamExists('retrieveCaseCohortIdsByCaseType', 'retrieveCaseCohortIdsByCaseTypeRequestBody', retrieveCaseCohortIdsByCaseTypeRequestBody)
-            const localVarPath = `/v1/retrieve/case_cohort_ids_by_case_type`;
+        retrieveCaseCohortLinksByCaseType: async (retrieveCaseCohortLinksByCaseTypeRequestBody: CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveCaseCohortLinksByCaseTypeRequestBody' is not null or undefined
+            assertParamExists('retrieveCaseCohortLinksByCaseType', 'retrieveCaseCohortLinksByCaseTypeRequestBody', retrieveCaseCohortLinksByCaseTypeRequestBody)
+            const localVarPath = `/v1/retrieve/case_cohort_links_by_case_type`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -14745,7 +15793,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(retrieveCaseCohortIdsByCaseTypeRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveCaseCohortLinksByCaseTypeRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -15133,10 +16181,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithm_classes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15148,6 +16198,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15234,10 +16292,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithm_classes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15249,6 +16309,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15371,10 +16439,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('treeAlgorithmClassesPostQuery', 'filter', filter)
             const localVarPath = `/v1/tree_algorithm_classes/query`;
@@ -15388,6 +16458,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15406,10 +16484,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('treeAlgorithmClassesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/tree_algorithm_classes/query/ids`;
@@ -15423,6 +16503,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15549,10 +16637,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithms`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15564,6 +16654,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15650,10 +16748,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithms`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15665,6 +16765,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15787,10 +16895,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('treeAlgorithmsPostQuery', 'filter', filter)
             const localVarPath = `/v1/tree_algorithms/query`;
@@ -15804,6 +16914,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15822,10 +16940,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('treeAlgorithmsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/tree_algorithms/query/ids`;
@@ -15839,6 +16959,14 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -16009,11 +17137,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary CaseDbCase Data Collection Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksDeleteAll(options);
+        async caseDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseDataCollectionLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16047,11 +17177,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary CaseDbCase Data Collection Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseDataCollectionLinksGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseDataCollectionLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksGetAll(options);
+        async caseDataCollectionLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseDataCollectionLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseDataCollectionLinksGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16099,11 +17231,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary CaseDbCase Data Collection Links  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseDataCollectionLinksPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseDataCollectionLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksPostQuery(filter, options);
+        async caseDataCollectionLinksPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseDataCollectionLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseDataCollectionLinksPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16112,11 +17246,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
          * @summary CaseDbCase Data Collection Links  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseDataCollectionLinksPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksPostQueryIds(filter, options);
+        async caseDataCollectionLinksPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseDataCollectionLinksPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16164,11 +17300,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
          * @summary CaseDbCase Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersDeleteAll(options);
+        async caseIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16202,11 +17340,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
          * @summary CaseDbCase Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseIdentifiersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersGetAll(options);
+        async caseIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16254,11 +17394,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
          * @summary CaseDbCase Identifiers  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseIdentifiersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPostQuery(filter, options);
+        async caseIdentifiersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16267,11 +17409,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
          * @summary CaseDbCase Identifiers  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseIdentifiersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPostQueryIds(filter, options);
+        async caseIdentifiersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16319,11 +17463,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary CaseDbCase Set Categories  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetCategoriesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesDeleteAll(options);
+        async caseSetCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetCategoriesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16357,11 +17503,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary CaseDbCase Set Categories  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetCategoriesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetCategory>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesGetAll(options);
+        async caseSetCategoriesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetCategory>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetCategoriesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16409,11 +17557,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary CaseDbCase Set Categories  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetCategoriesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetCategory>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesPostQuery(filter, options);
+        async caseSetCategoriesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetCategory>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetCategoriesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16422,11 +17572,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
          * @summary CaseDbCase Set Categories  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetCategoriesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesPostQueryIds(filter, options);
+        async caseSetCategoriesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetCategoriesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16474,11 +17626,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary CaseDbCase Set Data Collection Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksDeleteAll(options);
+        async caseSetDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetDataCollectionLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16512,11 +17666,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary CaseDbCase Set Data Collection Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetDataCollectionLinksGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetDataCollectionLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksGetAll(options);
+        async caseSetDataCollectionLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetDataCollectionLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetDataCollectionLinksGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16564,11 +17720,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary CaseDbCase Set Data Collection Links  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetDataCollectionLinksPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetDataCollectionLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksPostQuery(filter, options);
+        async caseSetDataCollectionLinksPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetDataCollectionLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetDataCollectionLinksPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16577,11 +17735,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage links that share case sets into additional data collections for cross-group collaboration.
          * @summary CaseDbCase Set Data Collection Links  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetDataCollectionLinksPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksPostQueryIds(filter, options);
+        async caseSetDataCollectionLinksPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetDataCollectionLinksPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16629,11 +17789,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage membership of cases in a case set, including per-member classification when present.
          * @summary CaseDbCase Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersDeleteAll(options);
+        async caseSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16667,11 +17829,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage membership of cases in a case set, including per-member classification when present.
          * @summary CaseDbCase Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersGetAll(options);
+        async caseSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16719,11 +17883,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage membership of cases in a case set, including per-member classification when present.
          * @summary CaseDbCase Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersPostQuery(filter, options);
+        async caseSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16732,11 +17898,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage membership of cases in a case set, including per-member classification when present.
          * @summary CaseDbCase Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersPostQueryIds(filter, options);
+        async caseSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16784,11 +17952,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary CaseDbCase Set Statuses  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetStatusesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesDeleteAll(options);
+        async caseSetStatusesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetStatusesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16822,11 +17992,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary CaseDbCase Set Statuses  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetStatusesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetStatus>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesGetAll(options);
+        async caseSetStatusesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetStatus>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetStatusesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16874,11 +18046,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary CaseDbCase Set Statuses  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetStatusesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetStatus>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesPostQuery(filter, options);
+        async caseSetStatusesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetStatus>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetStatusesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16887,11 +18061,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
          * @summary CaseDbCase Set Statuses  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetStatusesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesPostQueryIds(filter, options);
+        async caseSetStatusesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetStatusesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16939,11 +18115,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary CaseDbCase Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsDeleteAll(options);
+        async caseSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -16977,11 +18155,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary CaseDbCase Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsGetAll(options);
+        async caseSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17029,11 +18209,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary CaseDbCase Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsPostQuery(filter, options);
+        async caseSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17042,11 +18224,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
          * @summary CaseDbCase Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsPostQueryIds(filter, options);
+        async caseSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17094,11 +18278,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary CaseDbCase Type Set Categories  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetCategoriesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesDeleteAll(options);
+        async caseTypeSetCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetCategoriesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17132,11 +18318,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary CaseDbCase Type Set Categories  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetCategoriesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSetCategory>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesGetAll(options);
+        async caseTypeSetCategoriesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSetCategory>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetCategoriesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17184,11 +18372,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary CaseDbCase Type Set Categories  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetCategoriesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSetCategory>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesPostQuery(filter, options);
+        async caseTypeSetCategoriesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSetCategory>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetCategoriesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17197,11 +18387,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Maintain categories used to organize case-type sets for policy scoping.
          * @summary CaseDbCase Type Set Categories  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetCategoriesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesPostQueryIds(filter, options);
+        async caseTypeSetCategoriesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetCategoriesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17249,11 +18441,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage which CaseTypes belong to a case-type set.
          * @summary CaseDbCase Type Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersDeleteAll(options);
+        async caseTypeSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17287,11 +18481,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage which CaseTypes belong to a case-type set.
          * @summary CaseDbCase Type Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersGetAll(options);
+        async caseTypeSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17339,11 +18535,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage which CaseTypes belong to a case-type set.
          * @summary CaseDbCase Type Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersPostQuery(filter, options);
+        async caseTypeSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17352,11 +18550,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage which CaseTypes belong to a case-type set.
          * @summary CaseDbCase Type Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersPostQueryIds(filter, options);
+        async caseTypeSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17404,11 +18604,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary CaseDbCase Type Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsDeleteAll(options);
+        async caseTypeSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17442,11 +18644,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary CaseDbCase Type Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsGetAll(options);
+        async caseTypeSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17494,11 +18698,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary CaseDbCase Type Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsPostQuery(filter, options);
+        async caseTypeSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17507,11 +18713,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage sets of related CaseTypes reused in access policies and presets.
          * @summary CaseDbCase Type Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsPostQueryIds(filter, options);
+        async caseTypeSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17573,11 +18781,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary CaseDbCase Types  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesDeleteAll(options);
+        async caseTypesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17611,11 +18821,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary CaseDbCase Types  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseType>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesGetAll(options);
+        async caseTypesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseType>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17663,11 +18875,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary CaseDbCase Types  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseType>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesPostQuery(filter, options);
+        async caseTypesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseType>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17676,11 +18890,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage CaseTypes—the structural and default definitions cases must follow.
          * @summary CaseDbCase Types  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesPostQueryIds(filter, options);
+        async caseTypesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17728,11 +18944,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
          * @summary Cases  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async casesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.casesDeleteAll(options);
+        async casesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.casesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.casesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17766,11 +18984,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
          * @summary Cases  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async casesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCase>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.casesGetAll(options);
+        async casesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCase>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.casesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.casesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17818,11 +19038,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
          * @summary Cases  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async casesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCase>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.casesPostQuery(filter, options);
+        async casesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCase>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.casesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.casesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17831,11 +19053,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
          * @summary Cases  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async casesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.casesPostQueryIds(filter, options);
+        async casesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.casesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.casesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17883,11 +19107,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage which columns belong to a column set used in policies or UI presets.
          * @summary CaseDbCol Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersDeleteAll(options);
+        async colSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17921,11 +19147,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage which columns belong to a column set used in policies or UI presets.
          * @summary CaseDbCol Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersGetAll(options);
+        async colSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17973,11 +19201,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage which columns belong to a column set used in policies or UI presets.
          * @summary CaseDbCol Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPostQuery(filter, options);
+        async colSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17986,11 +19216,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage which columns belong to a column set used in policies or UI presets.
          * @summary CaseDbCol Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPostQueryIds(filter, options);
+        async colSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18038,11 +19270,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage column sets used for read/write scopes and default column groupings.
          * @summary CaseDbCol Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsDeleteAll(options);
+        async colSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18076,11 +19310,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage column sets used for read/write scopes and default column groupings.
          * @summary CaseDbCol Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsGetAll(options);
+        async colSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18128,11 +19364,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage column sets used for read/write scopes and default column groupings.
          * @summary CaseDbCol Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPostQuery(filter, options);
+        async colSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18141,11 +19379,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage column sets used for read/write scopes and default column groupings.
          * @summary CaseDbCol Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPostQueryIds(filter, options);
+        async colSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18207,11 +19447,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colsDeleteAll(options);
+        async colsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18245,11 +19487,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colsGetAll(options);
+        async colsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18297,11 +19541,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colsPostQuery(filter, options);
+        async colsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18310,11 +19556,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
          * @summary Cols  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colsPostQueryIds(filter, options);
+        async colsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18418,11 +19666,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dimsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsDeleteAll(options);
+        async dimsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.dimsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18456,11 +19706,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dimsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDim>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsGetAll(options);
+        async dimsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.dimsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18508,11 +19760,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dimsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDim>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsPostQuery(filter, options);
+        async dimsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.dimsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18521,11 +19775,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
          * @summary Dims  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dimsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsPostQueryIds(filter, options);
+        async dimsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.dimsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18573,11 +19829,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async geneticDistanceProtocolsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsDeleteAll(options);
+        async geneticDistanceProtocolsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18611,11 +19869,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async geneticDistanceProtocolsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbGeneticDistanceProtocol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsGetAll(options);
+        async geneticDistanceProtocolsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbGeneticDistanceProtocol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18663,11 +19923,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async geneticDistanceProtocolsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbGeneticDistanceProtocol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsPostQuery(filter, options);
+        async geneticDistanceProtocolsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbGeneticDistanceProtocol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18676,11 +19938,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
          * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async geneticDistanceProtocolsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsPostQueryIds(filter, options);
+        async geneticDistanceProtocolsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18728,11 +19992,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Ref Cols  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refColsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsDeleteAll(options);
+        async refColsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18766,11 +20032,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Ref Cols  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refColsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRefCol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsGetAll(options);
+        async refColsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRefCol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18818,11 +20086,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Ref Cols  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refColsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRefCol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPostQuery(filter, options);
+        async refColsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRefCol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18831,11 +20101,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
          * @summary Ref Cols  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refColsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPostQueryIds(filter, options);
+        async refColsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18895,11 +20167,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
          * @summary Ref Dims  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refDimsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsDeleteAll(options);
+        async refDimsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18933,11 +20207,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
          * @summary Ref Dims  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refDimsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRefDim>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsGetAll(options);
+        async refDimsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRefDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18985,11 +20261,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
          * @summary Ref Dims  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refDimsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRefDim>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPostQuery(filter, options);
+        async refDimsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRefDim>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18998,11 +20276,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
          * @summary Ref Dims  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refDimsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPostQueryIds(filter, options);
+        async refDimsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19060,16 +20340,16 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN. Today cohort_id == case_id; in the future a case may have multiple linked cohort IDs.
+         * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN.
          * @summary Retrieve CaseDbCase Cohort Ids By CaseDbCase Type
-         * @param {CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody} retrieveCaseCohortIdsByCaseTypeRequestBody 
+         * @param {CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody} retrieveCaseCohortLinksByCaseTypeRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveCaseCohortIdsByCaseType(retrieveCaseCohortIdsByCaseTypeRequestBody: CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseCohortIds>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveCaseCohortIdsByCaseType(retrieveCaseCohortIdsByCaseTypeRequestBody, options);
+        async retrieveCaseCohortLinksByCaseType(retrieveCaseCohortLinksByCaseTypeRequestBody: CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseCohortLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveCaseCohortLinksByCaseType(retrieveCaseCohortLinksByCaseTypeRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveCaseCohortIdsByCaseType']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveCaseCohortLinksByCaseType']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -19208,11 +20488,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteAll(options);
+        async treeAlgorithmClassesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmClassesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19246,11 +20528,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbTreeAlgorithmClass>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetAll(options);
+        async treeAlgorithmClassesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbTreeAlgorithmClass>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmClassesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19298,11 +20582,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbTreeAlgorithmClass>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesPostQuery(filter, options);
+        async treeAlgorithmClassesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbTreeAlgorithmClass>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmClassesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19311,11 +20597,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesPostQueryIds(filter, options);
+        async treeAlgorithmClassesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmClassesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19363,11 +20651,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteAll(options);
+        async treeAlgorithmsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19401,11 +20691,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbTreeAlgorithm>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetAll(options);
+        async treeAlgorithmsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbTreeAlgorithm>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19453,11 +20745,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbTreeAlgorithm>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsPostQuery(filter, options);
+        async treeAlgorithmsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbTreeAlgorithm>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19466,11 +20760,13 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
          * @summary Tree Algorithms  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsPostQueryIds(filter, options);
+        async treeAlgorithmsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19556,11 +20852,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary CaseDbCase Data Collection Links  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19588,11 +20886,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary CaseDbCase Data Collection Links  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseDataCollectionLinksGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseDataCollectionLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19632,22 +20932,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary CaseDbCase Data Collection Links  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseDataCollectionLinksPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseDataCollectionLinksPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage links that associate cases with additional data collections to widen or restrict sharing beyond their origin.
      * @summary CaseDbCase Data Collection Links  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseDataCollectionLinksPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseDataCollectionLinksPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19687,11 +20991,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
      * @summary CaseDbCase Identifiers  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19719,11 +21025,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
      * @summary CaseDbCase Identifiers  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseIdentifiersGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseIdentifiersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19763,22 +21071,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
      * @summary CaseDbCase Identifiers  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseIdentifiersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseIdentifiersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseIdentifiersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseIdentifiersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage case identifiers that link cases to external systems or provide alternate lookup keys.
      * @summary CaseDbCase Identifiers  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseIdentifiersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseIdentifiersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseIdentifiersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseIdentifiersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19818,11 +21130,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary CaseDbCase Set Categories  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetCategoriesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19850,11 +21164,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary CaseDbCase Set Categories  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetCategoriesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetCategoriesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19894,22 +21210,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary CaseDbCase Set Categories  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetCategoriesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetCategoriesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Maintain the categories used to tag case sets (e.g., outbreak, surveillance, QA).
      * @summary CaseDbCase Set Categories  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetCategoriesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetCategoriesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19949,11 +21269,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary CaseDbCase Set Data Collection Links  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -19981,11 +21303,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary CaseDbCase Set Data Collection Links  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetDataCollectionLinksGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetDataCollectionLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20025,22 +21349,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary CaseDbCase Set Data Collection Links  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetDataCollectionLinksPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetDataCollectionLinksPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage links that share case sets into additional data collections for cross-group collaboration.
      * @summary CaseDbCase Set Data Collection Links  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetDataCollectionLinksPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetDataCollectionLinksPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20080,11 +21408,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage membership of cases in a case set, including per-member classification when present.
      * @summary CaseDbCase Set Members  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20112,11 +21442,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage membership of cases in a case set, including per-member classification when present.
      * @summary CaseDbCase Set Members  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20156,22 +21488,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage membership of cases in a case set, including per-member classification when present.
      * @summary CaseDbCase Set Members  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetMembersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage membership of cases in a case set, including per-member classification when present.
      * @summary CaseDbCase Set Members  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetMembersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20211,11 +21547,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary CaseDbCase Set Statuses  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetStatusesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetStatusesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetStatusesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetStatusesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20243,11 +21581,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary CaseDbCase Set Statuses  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetStatusesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetStatusesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetStatusesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetStatusesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20287,22 +21627,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary CaseDbCase Set Statuses  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetStatusesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetStatusesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetStatusesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetStatusesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Maintain lifecycle/status values for case sets (e.g., draft, active, closed).
      * @summary CaseDbCase Set Statuses  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetStatusesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetStatusesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetStatusesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetStatusesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20342,11 +21686,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary CaseDbCase Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20374,11 +21720,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary CaseDbCase Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20418,22 +21766,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary CaseDbCase Sets  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage case sets (list/get/create/update/delete) including type, category, status, and data-collection context.
      * @summary CaseDbCase Sets  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20473,11 +21825,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Maintain categories used to organize case-type sets for policy scoping.
      * @summary CaseDbCase Type Set Categories  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetCategoriesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20505,11 +21859,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Maintain categories used to organize case-type sets for policy scoping.
      * @summary CaseDbCase Type Set Categories  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetCategoriesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetCategoriesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20549,22 +21905,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Maintain categories used to organize case-type sets for policy scoping.
      * @summary CaseDbCase Type Set Categories  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetCategoriesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetCategoriesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Maintain categories used to organize case-type sets for policy scoping.
      * @summary CaseDbCase Type Set Categories  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetCategoriesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetCategoriesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20604,11 +21964,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage which CaseTypes belong to a case-type set.
      * @summary CaseDbCase Type Set Members  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20636,11 +21998,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage which CaseTypes belong to a case-type set.
      * @summary CaseDbCase Type Set Members  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20680,22 +22044,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage which CaseTypes belong to a case-type set.
      * @summary CaseDbCase Type Set Members  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage which CaseTypes belong to a case-type set.
      * @summary CaseDbCase Type Set Members  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20735,11 +22103,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary CaseDbCase Type Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20767,11 +22137,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary CaseDbCase Type Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20811,22 +22183,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary CaseDbCase Type Sets  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage sets of related CaseTypes reused in access policies and presets.
      * @summary CaseDbCase Type Sets  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20878,11 +22254,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary CaseDbCase Types  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20910,11 +22288,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary CaseDbCase Types  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -20954,22 +22334,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary CaseDbCase Types  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage CaseTypes—the structural and default definitions cases must follow.
      * @summary CaseDbCase Types  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21009,11 +22393,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
      * @summary Cases  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public casesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).casesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public casesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).casesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21041,11 +22427,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
      * @summary Cases  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public casesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).casesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public casesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).casesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21085,22 +22473,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
      * @summary Cases  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public casesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).casesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public casesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).casesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage cases (list/get/create/update/delete) with typed content tied to a CaseDbCaseType and data collection.
      * @summary Cases  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public casesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).casesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public casesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).casesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21140,11 +22532,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage which columns belong to a column set used in policies or UI presets.
      * @summary CaseDbCol Set Members  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21172,11 +22566,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage which columns belong to a column set used in policies or UI presets.
      * @summary CaseDbCol Set Members  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21216,22 +22612,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage which columns belong to a column set used in policies or UI presets.
      * @summary CaseDbCol Set Members  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetMembersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage which columns belong to a column set used in policies or UI presets.
      * @summary CaseDbCol Set Members  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetMembersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21271,11 +22671,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage column sets used for read/write scopes and default column groupings.
      * @summary CaseDbCol Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21303,11 +22705,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage column sets used for read/write scopes and default column groupings.
      * @summary CaseDbCol Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21347,22 +22751,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage column sets used for read/write scopes and default column groupings.
      * @summary CaseDbCol Sets  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage column sets used for read/write scopes and default column groupings.
      * @summary CaseDbCol Sets  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21414,11 +22822,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21446,11 +22856,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21490,22 +22902,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage case-type columns: datatype, vocab/region bindings, and genetic-distance settings.
      * @summary Cols  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21593,11 +23009,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dimsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).dimsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dimsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).dimsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21625,11 +23043,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dimsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).dimsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dimsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).dimsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21669,22 +23089,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dimsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).dimsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dimsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).dimsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage dimensions that group case-type columns (e.g., demographics, sample, sequencing).
      * @summary Dims  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dimsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).dimsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dimsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).dimsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21724,11 +23148,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public geneticDistanceProtocolsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public geneticDistanceProtocolsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21756,11 +23182,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public geneticDistanceProtocolsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public geneticDistanceProtocolsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21800,22 +23228,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public geneticDistanceProtocolsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public geneticDistanceProtocolsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage genetic distance protocols available for sequence comparisons in phylogenetic analyses.
      * @summary Genetic Distance Protocols  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public geneticDistanceProtocolsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public geneticDistanceProtocolsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21855,11 +23287,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Ref Cols  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refColsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refColsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refColsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refColsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21887,11 +23321,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Ref Cols  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refColsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refColsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refColsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refColsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21931,22 +23367,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Ref Cols  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refColsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refColsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refColsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refColsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage reusable column definitions (code/label/type) referenced by case-type columns and vocabularies.
      * @summary Ref Cols  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refColsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refColsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refColsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refColsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21996,11 +23436,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
      * @summary Ref Dims  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refDimsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refDimsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refDimsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refDimsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22028,11 +23470,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
      * @summary Ref Dims  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refDimsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refDimsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refDimsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refDimsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22072,22 +23516,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
      * @summary Ref Dims  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refDimsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refDimsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refDimsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refDimsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage column dimensions, including code prefixes and ordering, reused across CaseTypes.
      * @summary Ref Dims  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refDimsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refDimsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refDimsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refDimsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22135,14 +23583,14 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN. Today cohort_id == case_id; in the future a case may have multiple linked cohort IDs.
+     * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN.
      * @summary Retrieve CaseDbCase Cohort Ids By CaseDbCase Type
-     * @param {CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody} retrieveCaseCohortIdsByCaseTypeRequestBody 
+     * @param {CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody} retrieveCaseCohortLinksByCaseTypeRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public retrieveCaseCohortIdsByCaseType(retrieveCaseCohortIdsByCaseTypeRequestBody: CaseDbRetrieveCaseCohortIdsByCaseTypeRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).retrieveCaseCohortIdsByCaseType(retrieveCaseCohortIdsByCaseTypeRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public retrieveCaseCohortLinksByCaseType(retrieveCaseCohortLinksByCaseTypeRequestBody: CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).retrieveCaseCohortLinksByCaseType(retrieveCaseCohortLinksByCaseTypeRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22261,11 +23709,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22293,11 +23743,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22337,22 +23789,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage categories of phylogenetic algorithms and whether they require sequences vs. distance matrices.
      * @summary Tree Algorithm Classes  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22392,11 +23848,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22424,11 +23882,13 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22468,22 +23928,26 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage specific phylogenetic tree algorithms linked to seqdb implementations and parameters.
      * @summary Tree Algorithms  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22636,10 +24100,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Relations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionRelationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionRelationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/region_relations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22651,6 +24117,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -22737,10 +24211,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Relations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionRelationsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionRelationsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/region_relations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22752,6 +24228,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -22874,10 +24358,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Relations  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionRelationsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionRelationsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('regionRelationsPostQuery', 'filter', filter)
             const localVarPath = `/v1/region_relations/query`;
@@ -22891,6 +24377,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -22909,10 +24403,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Relations  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionRelationsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionRelationsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('regionRelationsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/region_relations/query/ids`;
@@ -22926,6 +24422,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23052,10 +24556,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Set Shapes  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetShapesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetShapesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/region_set_shapes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23067,6 +24573,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23153,10 +24667,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Set Shapes  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetShapesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetShapesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/region_set_shapes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23168,6 +24684,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23290,10 +24814,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Set Shapes  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetShapesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetShapesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('regionSetShapesPostQuery', 'filter', filter)
             const localVarPath = `/v1/region_set_shapes/query`;
@@ -23307,6 +24833,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23325,10 +24859,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Set Shapes  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetShapesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetShapesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('regionSetShapesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/region_set_shapes/query/ids`;
@@ -23342,6 +24878,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23468,10 +25012,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/region_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23483,6 +25029,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23569,10 +25123,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/region_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23584,6 +25140,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23706,10 +25270,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('regionSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/region_sets/query`;
@@ -23723,6 +25289,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23741,10 +25315,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('regionSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/region_sets/query/ids`;
@@ -23758,6 +25334,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23884,10 +25468,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Regions  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/regions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23899,6 +25485,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23985,10 +25579,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Regions  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/regions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24000,6 +25596,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -24122,10 +25726,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Regions  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('regionsPostQuery', 'filter', filter)
             const localVarPath = `/v1/regions/query`;
@@ -24139,6 +25745,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24157,10 +25771,12 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Regions  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('regionsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/regions/query/ids`;
@@ -24174,6 +25790,14 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24309,11 +25933,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Relations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionRelationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsDeleteAll(options);
+        async regionRelationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionRelationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24347,11 +25973,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Relations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionRelationsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionRelation>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsGetAll(options);
+        async regionRelationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionRelation>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionRelationsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24399,11 +26027,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Relations  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionRelationsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionRelation>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsPostQuery(filter, options);
+        async regionRelationsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionRelation>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionRelationsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24412,11 +26042,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Relations  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionRelationsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsPostQueryIds(filter, options);
+        async regionRelationsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionRelationsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24464,11 +26096,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Set Shapes  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetShapesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesDeleteAll(options);
+        async regionSetShapesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetShapesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24502,11 +26136,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Set Shapes  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetShapesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionSetShape>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesGetAll(options);
+        async regionSetShapesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionSetShape>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetShapesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24554,11 +26190,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Set Shapes  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetShapesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionSetShape>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesPostQuery(filter, options);
+        async regionSetShapesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionSetShape>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetShapesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24567,11 +26205,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Set Shapes  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetShapesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesPostQueryIds(filter, options);
+        async regionSetShapesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetShapesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24619,11 +26259,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsDeleteAll(options);
+        async regionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24657,11 +26299,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbRegion Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsGetAll(options);
+        async regionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24709,11 +26353,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsPostQuery(filter, options);
+        async regionSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegionSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24722,11 +26368,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbRegion Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsPostQueryIds(filter, options);
+        async regionSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24774,11 +26422,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Regions  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsDeleteAll(options);
+        async regionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24812,11 +26462,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Regions  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegion>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsGetAll(options);
+        async regionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegion>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24864,11 +26516,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
          * 
          * @summary Regions  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegion>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsPostQuery(filter, options);
+        async regionsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbRegion>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24877,11 +26531,13 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
          * 
          * @summary Regions  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsPostQueryIds(filter, options);
+        async regionsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -24954,11 +26610,13 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbRegion Relations  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionRelationsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionRelationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionRelationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionRelationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -24986,11 +26644,13 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbRegion Relations  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionRelationsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionRelationsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionRelationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionRelationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25030,22 +26690,26 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
      * 
      * @summary CaseDbRegion Relations  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionRelationsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionRelationsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionRelationsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionRelationsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary CaseDbRegion Relations  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionRelationsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionRelationsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionRelationsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionRelationsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25085,11 +26749,13 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbRegion Set Shapes  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetShapesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetShapesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetShapesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetShapesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25117,11 +26783,13 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbRegion Set Shapes  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetShapesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetShapesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetShapesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetShapesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25161,22 +26829,26 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
      * 
      * @summary CaseDbRegion Set Shapes  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetShapesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetShapesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetShapesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetShapesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary CaseDbRegion Set Shapes  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetShapesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetShapesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetShapesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetShapesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25216,11 +26888,13 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbRegion Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25248,11 +26922,13 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbRegion Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25292,22 +26968,26 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
      * 
      * @summary CaseDbRegion Sets  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary CaseDbRegion Sets  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25347,11 +27027,13 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Regions  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25379,11 +27061,13 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Regions  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25423,22 +27107,26 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
      * 
      * @summary Regions  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Regions  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -25486,10 +27174,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary CaseDbConcept Relations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptRelationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptRelationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/concept_relations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25501,6 +27191,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25587,10 +27285,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary CaseDbConcept Relations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptRelationsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptRelationsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/concept_relations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25602,6 +27302,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25724,10 +27432,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary CaseDbConcept Relations  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptRelationsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptRelationsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('conceptRelationsPostQuery', 'filter', filter)
             const localVarPath = `/v1/concept_relations/query`;
@@ -25741,6 +27451,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25759,10 +27477,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary CaseDbConcept Relations  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptRelationsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptRelationsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('conceptRelationsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/concept_relations/query/ids`;
@@ -25776,6 +27496,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25902,10 +27630,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary CaseDbConcept Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/concept_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25917,6 +27647,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26003,10 +27741,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary CaseDbConcept Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/concept_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26018,6 +27758,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26140,10 +27888,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary CaseDbConcept Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptSetsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptSetsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('conceptSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/concept_sets/query`;
@@ -26157,6 +27907,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26175,10 +27933,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary CaseDbConcept Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptSetsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptSetsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('conceptSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/concept_sets/query/ids`;
@@ -26192,6 +27952,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26318,10 +28086,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/concepts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26333,6 +28103,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26419,10 +28197,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/concepts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26434,6 +28214,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26556,10 +28344,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('conceptsPostQuery', 'filter', filter)
             const localVarPath = `/v1/concepts/query`;
@@ -26573,6 +28363,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26591,10 +28389,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('conceptsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/concepts/query/ids`;
@@ -26608,6 +28408,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26734,10 +28542,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        diseasesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        diseasesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/diseases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26749,6 +28559,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26835,10 +28653,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        diseasesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        diseasesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/diseases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26850,6 +28670,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26972,10 +28800,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        diseasesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        diseasesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('diseasesPostQuery', 'filter', filter)
             const localVarPath = `/v1/diseases/query`;
@@ -26989,6 +28819,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -27007,10 +28845,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        diseasesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        diseasesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('diseasesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/diseases/query/ids`;
@@ -27024,6 +28864,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -27189,10 +29037,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologicalAgentsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologicalAgentsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/etiological_agents`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27204,6 +29054,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -27290,10 +29148,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologicalAgentsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologicalAgentsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/etiological_agents`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27305,6 +29165,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -27427,10 +29295,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologicalAgentsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologicalAgentsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('etiologicalAgentsPostQuery', 'filter', filter)
             const localVarPath = `/v1/etiological_agents/query`;
@@ -27444,6 +29314,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -27462,10 +29340,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologicalAgentsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologicalAgentsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('etiologicalAgentsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/etiological_agents/query/ids`;
@@ -27479,6 +29359,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -27605,10 +29493,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologiesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologiesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/etiologies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27620,6 +29510,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -27706,10 +29604,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologiesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologiesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/etiologies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27721,6 +29621,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -27843,10 +29751,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologiesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologiesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('etiologiesPostQuery', 'filter', filter)
             const localVarPath = `/v1/etiologies/query`;
@@ -27860,6 +29770,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -27878,10 +29796,12 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologiesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologiesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('etiologiesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/etiologies/query/ids`;
@@ -27895,6 +29815,14 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -28030,11 +29958,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary CaseDbConcept Relations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptRelationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsDeleteAll(options);
+        async conceptRelationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptRelationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28068,11 +29998,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary CaseDbConcept Relations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptRelationsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConceptRelation>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsGetAll(options);
+        async conceptRelationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConceptRelation>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptRelationsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28120,11 +30052,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary CaseDbConcept Relations  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptRelationsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConceptRelation>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsPostQuery(filter, options);
+        async conceptRelationsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConceptRelation>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptRelationsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28133,11 +30067,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
          * @summary CaseDbConcept Relations  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptRelationsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsPostQueryIds(filter, options);
+        async conceptRelationsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptRelationsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28185,11 +30121,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary CaseDbConcept Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsDeleteAll(options);
+        async conceptSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28223,11 +30161,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary CaseDbConcept Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConceptSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsGetAll(options);
+        async conceptSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConceptSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28275,11 +30215,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary CaseDbConcept Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConceptSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsPostQuery(filter, options);
+        async conceptSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConceptSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28288,11 +30230,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
          * @summary CaseDbConcept Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsPostQueryIds(filter, options);
+        async conceptSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28340,11 +30284,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsDeleteAll(options);
+        async conceptsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28378,11 +30324,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConcept>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsGetAll(options);
+        async conceptsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConcept>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28430,11 +30378,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConcept>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsPostQuery(filter, options);
+        async conceptsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbConcept>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28443,11 +30393,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage concepts within a concept set, including codes, labels, and ordering.
          * @summary Concepts  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsPostQueryIds(filter, options);
+        async conceptsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28495,11 +30447,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async diseasesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesDeleteAll(options);
+        async diseasesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28533,11 +30487,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async diseasesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDisease>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesGetAll(options);
+        async diseasesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDisease>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28585,11 +30541,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async diseasesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDisease>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesPostQuery(filter, options);
+        async diseasesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDisease>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28598,11 +30556,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
          * @summary Diseases  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async diseasesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesPostQueryIds(filter, options);
+        async diseasesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28664,11 +30624,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologicalAgentsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsDeleteAll(options);
+        async etiologicalAgentsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologicalAgentsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28702,11 +30664,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologicalAgentsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiologicalAgent>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsGetAll(options);
+        async etiologicalAgentsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiologicalAgent>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologicalAgentsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28754,11 +30718,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologicalAgentsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiologicalAgent>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsPostQuery(filter, options);
+        async etiologicalAgentsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiologicalAgent>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologicalAgentsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28767,11 +30733,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
          * @summary Etiological Agents  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologicalAgentsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsPostQueryIds(filter, options);
+        async etiologicalAgentsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologicalAgentsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28819,11 +30787,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologiesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesDeleteAll(options);
+        async etiologiesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologiesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28857,11 +30827,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologiesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiology>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesGetAll(options);
+        async etiologiesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiology>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologiesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28909,11 +30881,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologiesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiology>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesPostQuery(filter, options);
+        async etiologiesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiology>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologiesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28922,11 +30896,13 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Manage disease–etiological agent links defining valid disease–pathogen combinations.
          * @summary Etiologies  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologiesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesPostQueryIds(filter, options);
+        async etiologiesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologiesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28999,11 +30975,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary CaseDbConcept Relations  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptRelationsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptRelationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptRelationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptRelationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29031,11 +31009,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary CaseDbConcept Relations  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptRelationsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptRelationsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptRelationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptRelationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29075,22 +31055,26 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary CaseDbConcept Relations  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptRelationsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptRelationsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptRelationsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptRelationsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage hierarchical or semantic relationships between concepts (e.g., parent/child, broader/narrower).
      * @summary CaseDbConcept Relations  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptRelationsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptRelationsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptRelationsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptRelationsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29130,11 +31114,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary CaseDbConcept Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29162,11 +31148,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary CaseDbConcept Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptSetsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29206,22 +31194,26 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary CaseDbConcept Sets  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage controlled vocabularies and value sets (coded lists, regex/grammar-based) used by case variables.
      * @summary CaseDbConcept Sets  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29261,11 +31253,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29293,11 +31287,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29337,22 +31333,26 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage concepts within a concept set, including codes, labels, and ordering.
      * @summary Concepts  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29392,11 +31392,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public diseasesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).diseasesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public diseasesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).diseasesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29424,11 +31426,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public diseasesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).diseasesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public diseasesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).diseasesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29468,22 +31472,26 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public diseasesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).diseasesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public diseasesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).diseasesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage diseases (ICD-coded when available) to anchor CaseTypes and etiologies to specific conditions.
      * @summary Diseases  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public diseasesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).diseasesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public diseasesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).diseasesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29535,11 +31543,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologicalAgentsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologicalAgentsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29567,11 +31577,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologicalAgentsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologicalAgentsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29611,22 +31623,26 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologicalAgentsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologicalAgentsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage etiological agents (pathogens/causative organisms) used in disease etiologies and sequencing metadata.
      * @summary Etiological Agents  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologicalAgentsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologicalAgentsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29666,11 +31682,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologiesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologiesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologiesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologiesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29698,11 +31716,13 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologiesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologiesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologiesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologiesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29742,22 +31762,26 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologiesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologiesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologiesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologiesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage disease–etiological agent links defining valid disease–pathogen combinations.
      * @summary Etiologies  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologiesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologiesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologiesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologiesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29805,10 +31829,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Contacts  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/contacts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29820,6 +31846,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -29906,10 +31940,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Contacts  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/contacts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29921,6 +31957,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -30043,10 +32087,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Contacts  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('contactsPostQuery', 'filter', filter)
             const localVarPath = `/v1/contacts/query`;
@@ -30060,6 +32106,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -30078,10 +32132,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Contacts  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('contactsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/contacts/query/ids`;
@@ -30095,6 +32151,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -30221,10 +32285,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Data Collection Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30236,6 +32302,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -30322,10 +32396,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Data Collection Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30337,6 +32413,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -30459,10 +32543,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Data Collection Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionSetMembersPostQuery', 'filter', filter)
             const localVarPath = `/v1/data_collection_set_members/query`;
@@ -30476,6 +32562,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -30494,10 +32588,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Data Collection Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionSetMembersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/data_collection_set_members/query/ids`;
@@ -30511,6 +32607,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -30637,10 +32741,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Data Collection Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30652,6 +32758,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -30738,10 +32852,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Data Collection Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -30753,6 +32869,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -30875,10 +32999,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Data Collection Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/data_collection_sets/query`;
@@ -30892,6 +33018,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -30910,10 +33044,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Data Collection Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/data_collection_sets/query/ids`;
@@ -30927,6 +33063,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -31092,10 +33236,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Data Collections  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collections`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31107,6 +33253,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -31193,10 +33347,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Data Collections  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collections`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31208,6 +33364,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -31330,10 +33494,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Data Collections  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionsPostQuery', 'filter', filter)
             const localVarPath = `/v1/data_collections/query`;
@@ -31347,6 +33513,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -31365,10 +33539,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Data Collections  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/data_collections/query/ids`;
@@ -31382,6 +33558,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -31508,10 +33692,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Identifier Issuers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/identifier_issuers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31523,6 +33709,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -31609,10 +33803,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Identifier Issuers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/identifier_issuers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -31624,6 +33820,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -31746,10 +33950,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Identifier Issuers  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('identifierIssuersPostQuery', 'filter', filter)
             const localVarPath = `/v1/identifier_issuers/query`;
@@ -31763,6 +33969,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -31781,10 +33995,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Identifier Issuers  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('identifierIssuersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/identifier_issuers/query/ids`;
@@ -31798,6 +34014,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -31989,10 +34213,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary CaseDbOrganization Identifier Issuer Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_identifier_issuer_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32004,6 +34230,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -32090,10 +34324,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary CaseDbOrganization Identifier Issuer Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_identifier_issuer_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32105,6 +34341,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -32227,10 +34471,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary CaseDbOrganization Identifier Issuer Links  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationIdentifierIssuerLinksPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_identifier_issuer_links/query`;
@@ -32244,6 +34490,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -32262,10 +34516,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary CaseDbOrganization Identifier Issuer Links  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationIdentifierIssuerLinksPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_identifier_issuer_links/query/ids`;
@@ -32279,6 +34535,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -32405,10 +34669,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary CaseDbOrganization Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32420,6 +34686,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -32506,10 +34780,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary CaseDbOrganization Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32521,6 +34797,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -32643,10 +34927,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary CaseDbOrganization Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationSetMembersPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_set_members/query`;
@@ -32660,6 +34946,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -32678,10 +34972,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary CaseDbOrganization Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationSetMembersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_set_members/query/ids`;
@@ -32695,6 +34991,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -32821,10 +35125,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary CaseDbOrganization Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32836,6 +35142,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -32922,10 +35236,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary CaseDbOrganization Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32937,6 +35253,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -33059,10 +35383,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary CaseDbOrganization Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_sets/query`;
@@ -33076,6 +35402,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -33094,10 +35428,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary CaseDbOrganization Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_sets/query/ids`;
@@ -33111,6 +35447,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -33276,10 +35620,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Organizations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organizations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33291,6 +35637,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -33377,10 +35731,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Organizations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organizations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33392,6 +35748,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -33514,10 +35878,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Organizations  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationsPostQuery', 'filter', filter)
             const localVarPath = `/v1/organizations/query`;
@@ -33531,6 +35897,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -33549,10 +35923,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Organizations  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organizations/query/ids`;
@@ -33566,6 +35942,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -33766,10 +36150,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Sites  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sites`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33781,6 +36167,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -33867,10 +36261,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Sites  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sites`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33882,6 +36278,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -34004,10 +36408,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Sites  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('sitesPostQuery', 'filter', filter)
             const localVarPath = `/v1/sites/query`;
@@ -34021,6 +36427,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -34039,10 +36453,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Sites  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('sitesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/sites/query/ids`;
@@ -34056,6 +36472,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -34256,10 +36680,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary CaseDbUser Invitations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_invitations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34271,6 +36697,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -34357,10 +36791,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary CaseDbUser Invitations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_invitations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34372,6 +36808,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -34494,10 +36938,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary CaseDbUser Invitations  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('userInvitationsPostQuery', 'filter', filter)
             const localVarPath = `/v1/user_invitations/query`;
@@ -34511,6 +36957,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -34529,10 +36983,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary CaseDbUser Invitations  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('userInvitationsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/user_invitations/query/ids`;
@@ -34546,6 +37002,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -34766,10 +37230,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Users  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34781,6 +37247,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -34867,10 +37341,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * 
          * @summary Users  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34882,6 +37358,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -35004,10 +37488,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Users  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('usersPostQuery', 'filter', filter)
             const localVarPath = `/v1/users/query`;
@@ -35021,6 +37507,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -35039,10 +37533,12 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Users  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('usersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/users/query/ids`;
@@ -35056,6 +37552,14 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -35191,11 +37695,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Contacts  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteAll(options);
+        async contactsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35229,11 +37735,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Contacts  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbContact>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetAll(options);
+        async contactsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbContact>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35281,11 +37789,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Contacts  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbContact>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsPostQuery(filter, options);
+        async contactsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbContact>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35294,11 +37804,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Contacts  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsPostQueryIds(filter, options);
+        async contactsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35346,11 +37858,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collection Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteAll(options);
+        async dataCollectionSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35384,11 +37898,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collection Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetAll(options);
+        async dataCollectionSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35436,11 +37952,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collection Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersPostQuery(filter, options);
+        async dataCollectionSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35449,11 +37967,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collection Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersPostQueryIds(filter, options);
+        async dataCollectionSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35501,11 +38021,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collection Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteAll(options);
+        async dataCollectionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35539,11 +38061,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collection Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetAll(options);
+        async dataCollectionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35591,11 +38115,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collection Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPostQuery(filter, options);
+        async dataCollectionSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35604,11 +38130,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collection Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPostQueryIds(filter, options);
+        async dataCollectionSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35670,11 +38198,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collections  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteAll(options);
+        async dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35708,11 +38238,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collections  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollection>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetAll(options);
+        async dataCollectionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollection>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35760,11 +38292,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collections  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollection>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsPostQuery(filter, options);
+        async dataCollectionsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollection>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35773,11 +38307,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collections  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsPostQueryIds(filter, options);
+        async dataCollectionsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35825,11 +38361,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Identifier Issuers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteAll(options);
+        async identifierIssuersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35863,11 +38401,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Identifier Issuers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbIdentifierIssuer>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetAll(options);
+        async identifierIssuersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbIdentifierIssuer>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35915,11 +38455,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Identifier Issuers  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbIdentifierIssuer>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersPostQuery(filter, options);
+        async identifierIssuersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbIdentifierIssuer>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -35928,11 +38470,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Identifier Issuers  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersPostQueryIds(filter, options);
+        async identifierIssuersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36005,11 +38549,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbOrganization Identifier Issuer Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteAll(options);
+        async organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36043,11 +38589,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbOrganization Identifier Issuer Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationIdentifierIssuerLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetAll(options);
+        async organizationIdentifierIssuerLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36095,11 +38643,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbOrganization Identifier Issuer Links  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationIdentifierIssuerLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQuery(filter, options);
+        async organizationIdentifierIssuerLinksPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36108,11 +38658,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbOrganization Identifier Issuer Links  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQueryIds(filter, options);
+        async organizationIdentifierIssuerLinksPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36160,11 +38712,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbOrganization Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteAll(options);
+        async organizationSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36198,11 +38752,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbOrganization Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetAll(options);
+        async organizationSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36250,11 +38806,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbOrganization Set Members  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersPostQuery(filter, options);
+        async organizationSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36263,11 +38821,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbOrganization Set Members  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersPostQueryIds(filter, options);
+        async organizationSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36315,11 +38875,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbOrganization Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteAll(options);
+        async organizationSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36353,11 +38915,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbOrganization Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetAll(options);
+        async organizationSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36405,11 +38969,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbOrganization Sets  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPostQuery(filter, options);
+        async organizationSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36418,11 +38984,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbOrganization Sets  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPostQueryIds(filter, options);
+        async organizationSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36484,11 +39052,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Organizations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteAll(options);
+        async organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36522,11 +39092,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Organizations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganization>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetAll(options);
+        async organizationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganization>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36574,11 +39146,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Organizations  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganization>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPostQuery(filter, options);
+        async organizationsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganization>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36587,11 +39161,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Organizations  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPostQueryIds(filter, options);
+        async organizationsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36666,11 +39242,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Sites  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteAll(options);
+        async sitesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36704,11 +39282,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Sites  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbSite>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetAll(options);
+        async sitesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbSite>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36756,11 +39336,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Sites  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbSite>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesPostQuery(filter, options);
+        async sitesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbSite>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36769,11 +39351,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Sites  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesPostQueryIds(filter, options);
+        async sitesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36848,11 +39432,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbUser Invitations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteAll(options);
+        async userInvitationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36886,11 +39472,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary CaseDbUser Invitations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserInvitation>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetAll(options);
+        async userInvitationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserInvitation>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36938,11 +39526,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbUser Invitations  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserInvitation>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsPostQuery(filter, options);
+        async userInvitationsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUserInvitation>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36951,11 +39541,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary CaseDbUser Invitations  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsPostQueryIds(filter, options);
+        async userInvitationsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -37040,11 +39632,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Users  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteAll(options);
+        async usersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -37078,11 +39672,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Users  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUser>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetAll(options);
+        async usersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUser>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -37130,11 +39726,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Users  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUser>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPostQuery(filter, options);
+        async usersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbUser>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -37143,11 +39741,13 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Users  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPostQueryIds(filter, options);
+        async usersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -37220,11 +39820,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Contacts  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).contactsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).contactsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37252,11 +39854,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Contacts  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).contactsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).contactsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37296,22 +39900,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary Contacts  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).contactsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).contactsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Contacts  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).contactsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).contactsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37351,11 +39959,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Data Collection Set Members  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37383,11 +39993,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Data Collection Set Members  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37427,22 +40039,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary Data Collection Set Members  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Data Collection Set Members  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37482,11 +40098,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Data Collection Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37514,11 +40132,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Data Collection Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37558,22 +40178,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary Data Collection Sets  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Data Collection Sets  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37625,11 +40249,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Data Collections  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37657,11 +40283,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Data Collections  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37701,22 +40329,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary Data Collections  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Data Collections  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37756,11 +40388,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Identifier Issuers  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37788,11 +40422,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Identifier Issuers  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37832,22 +40468,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary Identifier Issuers  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Identifier Issuers  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37908,11 +40548,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbOrganization Identifier Issuer Links  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37940,11 +40582,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbOrganization Identifier Issuer Links  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -37984,22 +40628,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary CaseDbOrganization Identifier Issuer Links  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary CaseDbOrganization Identifier Issuer Links  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38039,11 +40687,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbOrganization Set Members  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38071,11 +40721,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbOrganization Set Members  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38115,22 +40767,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary CaseDbOrganization Set Members  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary CaseDbOrganization Set Members  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38170,11 +40826,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbOrganization Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38202,11 +40860,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbOrganization Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38246,22 +40906,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary CaseDbOrganization Sets  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary CaseDbOrganization Sets  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38313,11 +40977,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Organizations  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38345,11 +41011,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Organizations  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38389,22 +41057,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary Organizations  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Organizations  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38467,11 +41139,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Sites  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).sitesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).sitesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38499,11 +41173,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Sites  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).sitesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).sitesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38543,22 +41219,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary Sites  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).sitesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).sitesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Sites  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).sitesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).sitesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38621,11 +41301,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbUser Invitations  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).userInvitationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).userInvitationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38653,11 +41335,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary CaseDbUser Invitations  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).userInvitationsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).userInvitationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38697,22 +41381,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary CaseDbUser Invitations  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).userInvitationsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).userInvitationsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary CaseDbUser Invitations  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).userInvitationsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).userInvitationsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38783,11 +41471,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Users  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).usersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).usersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38815,11 +41505,13 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Users  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).usersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).usersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38859,22 +41551,26 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * 
      * @summary Users  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).usersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).usersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Users  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).usersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).usersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -38987,10 +41683,12 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Outages  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/outages`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -39002,6 +41700,14 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -39088,10 +41794,12 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Outages  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/outages`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -39103,6 +41811,14 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -39225,10 +41941,12 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
          * 
          * @summary Outages  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesPostQuery: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesPostQuery: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('outagesPostQuery', 'filter', filter)
             const localVarPath = `/v1/outages/query`;
@@ -39242,6 +41960,14 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -39260,10 +41986,12 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
          * 
          * @summary Outages  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesPostQueryIds: async (filter: CaseDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesPostQueryIds: async (filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('outagesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/outages/query/ids`;
@@ -39277,6 +42005,14 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -39527,11 +42263,13 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Outages  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteAll(options);
+        async outagesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39565,11 +42303,13 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Outages  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOutage>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesGetAll(options);
+        async outagesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOutage>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39617,11 +42357,13 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
          * 
          * @summary Outages  Post Query
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOutage>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesPostQuery(filter, options);
+        async outagesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOutage>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39630,11 +42372,13 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
          * 
          * @summary Outages  Post Query  Ids
          * @param {CaseDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesPostQueryIds(filter, options);
+        async outagesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39764,11 +42508,13 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Outages  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesDeleteAll(options?: RawAxiosRequestConfig) {
-        return CaseDbSystemApiFp(this.configuration).outagesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbSystemApiFp(this.configuration).outagesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -39796,11 +42542,13 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     /**
      * 
      * @summary Outages  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesGetAll(options?: RawAxiosRequestConfig) {
-        return CaseDbSystemApiFp(this.configuration).outagesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbSystemApiFp(this.configuration).outagesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -39840,22 +42588,26 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
      * 
      * @summary Outages  Post Query
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesPostQuery(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbSystemApiFp(this.configuration).outagesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesPostQuery(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbSystemApiFp(this.configuration).outagesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Outages  Post Query  Ids
      * @param {CaseDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesPostQueryIds(filter: CaseDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return CaseDbSystemApiFp(this.configuration).outagesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesPostQueryIds(filter: CaseDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return CaseDbSystemApiFp(this.configuration).outagesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**

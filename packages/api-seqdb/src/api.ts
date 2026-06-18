@@ -23,7 +23,7 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, SeqDbBaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
- * An allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq:  Base class for a sequence. The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model.
+ * An allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq:  Base class for a sequence. The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.
  */
 export interface SeqDbAllele {
     'created_at'?: string | null;
@@ -48,7 +48,7 @@ export interface SeqDbAllele {
 
 
 /**
- * An allele intended for upload. Equal to an SeqDbAllele, with additional variables.    PARENT CLASS DOCUMENTATION   SeqDbAllele: An allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq:  Base class for a sequence. The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model.
+ * An allele intended for upload. Equal to an SeqDbAllele, with additional variables.    PARENT CLASS DOCUMENTATION   SeqDbAllele: An allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq:  Base class for a sequence. The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.
  */
 export interface SeqDbAlleleForUpload {
     'created_at'?: string | null;
@@ -195,82 +195,82 @@ export interface SeqDbCalculateSeqDistancesResult {
 
 
 export const SeqDbCommandName = {
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ReadSetCrudCommand: 'ReadSetCrudCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
-    FileCrudCommand: 'FileCrudCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
-    ProtocolCrudCommand: 'ProtocolCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
-    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
-    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
-    CreateFileCommand: 'CreateFileCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
     DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    LocusSetCrudCommand: 'LocusSetCrudCommand',
-    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
-    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
-    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
-    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
-    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
-    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
     RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    TaxonCrudCommand: 'TaxonCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
     PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
     RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
-    LocusCrudCommand: 'LocusCrudCommand',
-    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
     RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    UploadSamplesCommand: 'UploadSamplesCommand',
-    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
     RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
+    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
+    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    FileCrudCommand: 'FileCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    LocusSetCrudCommand: 'LocusSetCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
+    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
     DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
     AlleleCrudCommand: 'AlleleCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    CreateFileCommand: 'CreateFileCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    UploadSamplesCommand: 'UploadSamplesCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
+    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
+    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
+    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
+    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    ReadSetCrudCommand: 'ReadSetCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    LocusCrudCommand: 'LocusCrudCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
+    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
+    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
+    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
+    TaxonCrudCommand: 'TaxonCrudCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -1228,7 +1228,7 @@ export type SeqDbReadsFileFormat = typeof SeqDbReadsFileFormat[keyof typeof SeqD
 
 
 /**
- * A reference allele for a locus. This can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other alleles for the locus or for reducing storage requirements of alleles.  A reference allele is immutable: once created, it cannot be deleted or updated. As such, reference allele IDs can safely be referenced in other models and outside of the application.  The ID of the reference allele is equal to the hash of the sequence. As such, the ID of the reference allele can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq:  Base class for a sequence. The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model.
+ * A reference allele for a locus. This can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other alleles for the locus or for reducing storage requirements of alleles.  A reference allele is immutable: once created, it cannot be deleted or updated. As such, reference allele IDs can safely be referenced in other models and outside of the application.  The ID of the reference allele is equal to the hash of the sequence. As such, the ID of the reference allele can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq:  Base class for a sequence. The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.
  */
 export interface SeqDbRefAllele {
     'created_at'?: string | null;
@@ -1257,7 +1257,7 @@ export interface SeqDbRefAllele {
 
 
 /**
- * A reference sequence for a single chromosome, viral segment, plasmid or other contiguous DNA molecule belonging to a particular taxon. This can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other sequences or for optimising storage requirements of sequences. Any IUPAC ambiguity codes are allowed in the sequence.  A reference sequence is immutable: once created, it cannot be deleted or updated. As such, reference sequence IDs can safely be referenced in other models and outside of the application.  The ID of the reference sequence is equal to the hash of the sequence. As such, the ID of the reference sequence can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq:  Base class for a sequence. The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model.
+ * A reference sequence for a single chromosome, viral segment, plasmid or other contiguous DNA molecule belonging to a particular taxon. This can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other sequences or for optimising storage requirements of sequences. Any IUPAC ambiguity codes are allowed in the sequence.  A reference sequence is immutable: once created, it cannot be deleted or updated. As such, reference sequence IDs can safely be referenced in other models and outside of the application.  The ID of the reference sequence is equal to the hash of the sequence. As such, the ID of the reference sequence can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq:  Base class for a sequence. The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.
  */
 export interface SeqDbRefSeq {
     'created_at'?: string | null;
@@ -1795,6 +1795,7 @@ export const SeqDbSeqFormat = {
     HASH_ONLY: 1,
     STR_DNA: 2,
     STR_DNA_INCL_GAP: 3,
+    NEXTCLADE: 4,
 } as const;
 
 export type SeqDbSeqFormat = typeof SeqDbSeqFormat[keyof typeof SeqDbSeqFormat];
@@ -2384,7 +2385,13 @@ export interface SeqDbUpdateOrganizationSetOrganizationRequestBody {
     'organization_set_members': Array<SeqDbOrganizationSetMember>;
 }
 export interface SeqDbUpdateSeqDistancesRequestBody {
+    /**
+     * The ID of the seq distance protocol to update distances for.
+     */
     'protocol_id': string;
+    'max_new_profiles'?: number | null;
+    'limit'?: number | null;
+    'existing_chunk_size'?: number | null;
 }
 export interface SeqDbUpdateUserOwnOrganizationRequestBody {
     /**
@@ -2443,7 +2450,12 @@ export interface SeqDbUploadSamplesRequestBody {
     'created_at'?: string;
     'props'?: { [key: string]: any; };
     'sample_batch': SeqDbSampleBatchForUpload;
+    /**
+     * If False, skip distance calculation for newly uploaded profiles. Callers uploading many batches in bulk should set this to False and call UpdateSeqDistancesCommand once at the end.
+     */
+    'calculate_distances'?: boolean;
     'seq_distance_last_modified_at'?: string | null;
+    'existing_chunk_size'?: number | null;
 }
 
 
@@ -2561,10 +2573,12 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary SeqDbOrganization Admin Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_admin_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2576,6 +2590,14 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -2662,10 +2684,12 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary SeqDbOrganization Admin Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_admin_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2677,6 +2701,14 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -2799,10 +2831,12 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary SeqDbOrganization Admin Policies  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationAdminPoliciesPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_admin_policies/query`;
@@ -2816,6 +2850,14 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -2834,10 +2876,12 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary SeqDbOrganization Admin Policies  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationAdminPoliciesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_admin_policies/query/ids`;
@@ -2851,6 +2895,14 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -3016,11 +3068,13 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary SeqDbOrganization Admin Policies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(options);
+        async organizationAdminPoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3054,11 +3108,13 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary SeqDbOrganization Admin Policies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationAdminPolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetAll(options);
+        async organizationAdminPoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3106,11 +3162,13 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary SeqDbOrganization Admin Policies  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationAdminPolicy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQuery(filter, options);
+        async organizationAdminPoliciesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationAdminPolicy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3119,11 +3177,13 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
          * Manage policies that define which organizations an administrator can manage across the platform.
          * @summary SeqDbOrganization Admin Policies  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQueryIds(filter, options);
+        async organizationAdminPoliciesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3208,11 +3268,13 @@ export class SeqDbAbacApi extends SeqDbBaseAPI {
     /**
      * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary SeqDbOrganization Admin Policies  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -3240,11 +3302,13 @@ export class SeqDbAbacApi extends SeqDbBaseAPI {
     /**
      * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary SeqDbOrganization Admin Policies  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -3284,22 +3348,26 @@ export class SeqDbAbacApi extends SeqDbBaseAPI {
      * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary SeqDbOrganization Admin Policies  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * Manage policies that define which organizations an administrator can manage across the platform.
      * @summary SeqDbOrganization Admin Policies  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -3580,10 +3648,12 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Files  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        filesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        filesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/files`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3595,6 +3665,14 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3681,10 +3759,12 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Files  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        filesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        filesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/files`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3696,6 +3776,14 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3818,10 +3906,12 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Files  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        filesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        filesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('filesPostQuery', 'filter', filter)
             const localVarPath = `/v1/files/query`;
@@ -3835,6 +3925,14 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -3853,10 +3951,12 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Files  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        filesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        filesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('filesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/files/query/ids`;
@@ -3870,6 +3970,14 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4018,11 +4126,13 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Files  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async filesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.filesDeleteAll(options);
+        async filesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.filesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FileApi.filesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4056,11 +4166,13 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Files  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async filesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<any>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.filesGetAll(options);
+        async filesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<any>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.filesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FileApi.filesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4108,11 +4220,13 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
          * 
          * @summary Files  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async filesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<any>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.filesPostQuery(filter, options);
+        async filesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<any>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.filesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FileApi.filesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4121,11 +4235,13 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
          * 
          * @summary Files  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async filesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.filesPostQueryIds(filter, options);
+        async filesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.filesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FileApi.filesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4209,11 +4325,13 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Files  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public filesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbFileApiFp(this.configuration).filesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public filesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbFileApiFp(this.configuration).filesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -4241,11 +4359,13 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Files  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public filesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbFileApiFp(this.configuration).filesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public filesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbFileApiFp(this.configuration).filesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -4285,22 +4405,26 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
      * 
      * @summary Files  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public filesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbFileApiFp(this.configuration).filesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public filesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbFileApiFp(this.configuration).filesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Files  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public filesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbFileApiFp(this.configuration).filesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public filesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbFileApiFp(this.configuration).filesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -4348,10 +4472,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Contacts  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/contacts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4363,6 +4489,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4449,10 +4583,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Contacts  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/contacts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4464,6 +4600,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4586,10 +4730,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Contacts  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('contactsPostQuery', 'filter', filter)
             const localVarPath = `/v1/contacts/query`;
@@ -4603,6 +4749,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4621,10 +4775,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Contacts  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('contactsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/contacts/query/ids`;
@@ -4638,6 +4794,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4764,10 +4928,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Data Collection Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4779,6 +4945,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4865,10 +5039,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Data Collection Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4880,6 +5056,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -5002,10 +5186,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Data Collection Set Members  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionSetMembersPostQuery', 'filter', filter)
             const localVarPath = `/v1/data_collection_set_members/query`;
@@ -5019,6 +5205,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -5037,10 +5231,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Data Collection Set Members  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionSetMembersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/data_collection_set_members/query/ids`;
@@ -5054,6 +5250,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -5180,10 +5384,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Data Collection Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5195,6 +5401,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -5281,10 +5495,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Data Collection Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5296,6 +5512,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -5418,10 +5642,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Data Collection Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/data_collection_sets/query`;
@@ -5435,6 +5661,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -5453,10 +5687,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Data Collection Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/data_collection_sets/query/ids`;
@@ -5470,6 +5706,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -5635,10 +5879,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Data Collections  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collections`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5650,6 +5896,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -5736,10 +5990,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Data Collections  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collections`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5751,6 +6007,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -5873,10 +6137,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Data Collections  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionsPostQuery', 'filter', filter)
             const localVarPath = `/v1/data_collections/query`;
@@ -5890,6 +6156,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -5908,10 +6182,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Data Collections  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('dataCollectionsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/data_collections/query/ids`;
@@ -5925,6 +6201,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -6051,10 +6335,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Identifier Issuers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/identifier_issuers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6066,6 +6352,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6152,10 +6446,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Identifier Issuers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/identifier_issuers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6167,6 +6463,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6289,10 +6593,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Identifier Issuers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('identifierIssuersPostQuery', 'filter', filter)
             const localVarPath = `/v1/identifier_issuers/query`;
@@ -6306,6 +6612,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -6324,10 +6638,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Identifier Issuers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('identifierIssuersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/identifier_issuers/query/ids`;
@@ -6341,6 +6657,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -6532,10 +6856,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary SeqDbOrganization Identifier Issuer Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_identifier_issuer_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6547,6 +6873,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6633,10 +6967,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary SeqDbOrganization Identifier Issuer Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_identifier_issuer_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6648,6 +6984,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -6770,10 +7114,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary SeqDbOrganization Identifier Issuer Links  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationIdentifierIssuerLinksPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_identifier_issuer_links/query`;
@@ -6787,6 +7133,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -6805,10 +7159,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary SeqDbOrganization Identifier Issuer Links  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationIdentifierIssuerLinksPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_identifier_issuer_links/query/ids`;
@@ -6822,6 +7178,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -6948,10 +7312,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary SeqDbOrganization Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6963,6 +7329,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7049,10 +7423,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary SeqDbOrganization Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7064,6 +7440,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7186,10 +7570,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary SeqDbOrganization Set Members  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationSetMembersPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_set_members/query`;
@@ -7203,6 +7589,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7221,10 +7615,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary SeqDbOrganization Set Members  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationSetMembersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_set_members/query/ids`;
@@ -7238,6 +7634,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7364,10 +7768,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary SeqDbOrganization Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7379,6 +7785,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7465,10 +7879,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary SeqDbOrganization Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7480,6 +7896,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7602,10 +8026,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary SeqDbOrganization Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/organization_sets/query`;
@@ -7619,6 +8045,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7637,10 +8071,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary SeqDbOrganization Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organization_sets/query/ids`;
@@ -7654,6 +8090,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7819,10 +8263,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Organizations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organizations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7834,6 +8280,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7920,10 +8374,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Organizations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organizations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7935,6 +8391,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8057,10 +8521,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Organizations  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationsPostQuery', 'filter', filter)
             const localVarPath = `/v1/organizations/query`;
@@ -8074,6 +8540,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8092,10 +8566,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Organizations  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('organizationsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/organizations/query/ids`;
@@ -8109,6 +8585,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8309,10 +8793,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Sites  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sites`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8324,6 +8810,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8410,10 +8904,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Sites  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sites`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8425,6 +8921,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8547,10 +9051,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Sites  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('sitesPostQuery', 'filter', filter)
             const localVarPath = `/v1/sites/query`;
@@ -8564,6 +9070,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8582,10 +9096,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Sites  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('sitesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/sites/query/ids`;
@@ -8599,6 +9115,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8799,10 +9323,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary SeqDbUser Invitations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_invitations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8814,6 +9340,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8900,10 +9434,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary SeqDbUser Invitations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_invitations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8915,6 +9451,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9037,10 +9581,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary SeqDbUser Invitations  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('userInvitationsPostQuery', 'filter', filter)
             const localVarPath = `/v1/user_invitations/query`;
@@ -9054,6 +9600,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9072,10 +9626,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary SeqDbUser Invitations  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('userInvitationsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/user_invitations/query/ids`;
@@ -9089,6 +9645,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9309,10 +9873,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Users  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9324,6 +9890,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9410,10 +9984,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * 
          * @summary Users  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9425,6 +10001,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9547,10 +10131,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Users  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('usersPostQuery', 'filter', filter)
             const localVarPath = `/v1/users/query`;
@@ -9564,6 +10150,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9582,10 +10176,12 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Users  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('usersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/users/query/ids`;
@@ -9599,6 +10195,14 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9734,11 +10338,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Contacts  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteAll(options);
+        async contactsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -9772,11 +10378,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Contacts  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbContact>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetAll(options);
+        async contactsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbContact>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -9824,11 +10432,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Contacts  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbContact>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsPostQuery(filter, options);
+        async contactsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbContact>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -9837,11 +10447,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Contacts  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsPostQueryIds(filter, options);
+        async contactsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -9889,11 +10501,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collection Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteAll(options);
+        async dataCollectionSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -9927,11 +10541,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collection Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetAll(options);
+        async dataCollectionSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -9979,11 +10595,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collection Set Members  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersPostQuery(filter, options);
+        async dataCollectionSetMembersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -9992,11 +10610,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collection Set Members  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersPostQueryIds(filter, options);
+        async dataCollectionSetMembersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10044,11 +10664,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collection Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteAll(options);
+        async dataCollectionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10082,11 +10704,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collection Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetAll(options);
+        async dataCollectionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10134,11 +10758,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collection Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPostQuery(filter, options);
+        async dataCollectionSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10147,11 +10773,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collection Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPostQueryIds(filter, options);
+        async dataCollectionSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10213,11 +10841,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collections  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteAll(options);
+        async dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10251,11 +10881,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Data Collections  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollection>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetAll(options);
+        async dataCollectionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollection>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10303,11 +10935,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collections  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollection>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsPostQuery(filter, options);
+        async dataCollectionsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollection>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10316,11 +10950,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Data Collections  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsPostQueryIds(filter, options);
+        async dataCollectionsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10368,11 +11004,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Identifier Issuers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteAll(options);
+        async identifierIssuersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10406,11 +11044,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Identifier Issuers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbIdentifierIssuer>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetAll(options);
+        async identifierIssuersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbIdentifierIssuer>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10458,11 +11098,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Identifier Issuers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbIdentifierIssuer>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersPostQuery(filter, options);
+        async identifierIssuersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbIdentifierIssuer>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10471,11 +11113,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Identifier Issuers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersPostQueryIds(filter, options);
+        async identifierIssuersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10548,11 +11192,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbOrganization Identifier Issuer Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteAll(options);
+        async organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10586,11 +11232,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbOrganization Identifier Issuer Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationIdentifierIssuerLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetAll(options);
+        async organizationIdentifierIssuerLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10638,11 +11286,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbOrganization Identifier Issuer Links  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationIdentifierIssuerLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQuery(filter, options);
+        async organizationIdentifierIssuerLinksPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10651,11 +11301,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbOrganization Identifier Issuer Links  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQueryIds(filter, options);
+        async organizationIdentifierIssuerLinksPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10703,11 +11355,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbOrganization Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteAll(options);
+        async organizationSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10741,11 +11395,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbOrganization Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetAll(options);
+        async organizationSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10793,11 +11449,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbOrganization Set Members  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersPostQuery(filter, options);
+        async organizationSetMembersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10806,11 +11464,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbOrganization Set Members  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersPostQueryIds(filter, options);
+        async organizationSetMembersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10858,11 +11518,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbOrganization Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteAll(options);
+        async organizationSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10896,11 +11558,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbOrganization Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetAll(options);
+        async organizationSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10948,11 +11612,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbOrganization Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPostQuery(filter, options);
+        async organizationSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -10961,11 +11627,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbOrganization Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPostQueryIds(filter, options);
+        async organizationSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11027,11 +11695,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Organizations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteAll(options);
+        async organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11065,11 +11735,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Organizations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganization>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetAll(options);
+        async organizationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganization>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11117,11 +11789,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Organizations  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganization>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPostQuery(filter, options);
+        async organizationsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganization>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11130,11 +11804,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Organizations  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPostQueryIds(filter, options);
+        async organizationsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11209,11 +11885,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Sites  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteAll(options);
+        async sitesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11247,11 +11925,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Sites  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSite>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetAll(options);
+        async sitesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSite>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11299,11 +11979,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Sites  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSite>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesPostQuery(filter, options);
+        async sitesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSite>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11312,11 +11994,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Sites  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesPostQueryIds(filter, options);
+        async sitesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11391,11 +12075,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbUser Invitations  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteAll(options);
+        async userInvitationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11429,11 +12115,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbUser Invitations  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUserInvitation>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetAll(options);
+        async userInvitationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUserInvitation>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11481,11 +12169,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbUser Invitations  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUserInvitation>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsPostQuery(filter, options);
+        async userInvitationsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUserInvitation>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11494,11 +12184,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbUser Invitations  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsPostQueryIds(filter, options);
+        async userInvitationsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11583,11 +12275,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Users  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteAll(options);
+        async usersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11621,11 +12315,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Users  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUser>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetAll(options);
+        async usersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUser>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11673,11 +12369,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Users  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUser>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPostQuery(filter, options);
+        async usersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUser>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11686,11 +12384,13 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * 
          * @summary Users  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPostQueryIds(filter, options);
+        async usersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11763,11 +12463,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Contacts  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).contactsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).contactsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -11795,11 +12497,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Contacts  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).contactsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).contactsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -11839,22 +12543,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary Contacts  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).contactsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).contactsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Contacts  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).contactsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).contactsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -11894,11 +12602,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Data Collection Set Members  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -11926,11 +12636,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Data Collection Set Members  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -11970,22 +12682,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary Data Collection Set Members  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Data Collection Set Members  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12025,11 +12741,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Data Collection Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12057,11 +12775,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Data Collection Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12101,22 +12821,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary Data Collection Sets  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Data Collection Sets  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12168,11 +12892,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Data Collections  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12200,11 +12926,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Data Collections  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12244,22 +12972,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary Data Collections  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Data Collections  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12299,11 +13031,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Identifier Issuers  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12331,11 +13065,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Identifier Issuers  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12375,22 +13111,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary Identifier Issuers  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Identifier Issuers  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).identifierIssuersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12451,11 +13191,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbOrganization Identifier Issuer Links  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12483,11 +13225,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbOrganization Identifier Issuer Links  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12527,22 +13271,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbOrganization Identifier Issuer Links  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbOrganization Identifier Issuer Links  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12582,11 +13330,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbOrganization Set Members  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12614,11 +13364,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbOrganization Set Members  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12658,22 +13410,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbOrganization Set Members  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbOrganization Set Members  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12713,11 +13469,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbOrganization Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12745,11 +13503,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbOrganization Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12789,22 +13549,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbOrganization Sets  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbOrganization Sets  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12856,11 +13620,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Organizations  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12888,11 +13654,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Organizations  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -12932,22 +13700,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary Organizations  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Organizations  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13010,11 +13782,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Sites  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).sitesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).sitesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13042,11 +13816,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Sites  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).sitesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).sitesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13086,22 +13862,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary Sites  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).sitesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).sitesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Sites  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).sitesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).sitesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13164,11 +13944,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbUser Invitations  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).userInvitationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).userInvitationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13196,11 +13978,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbUser Invitations  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).userInvitationsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).userInvitationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13240,22 +14024,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbUser Invitations  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).userInvitationsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).userInvitationsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbUser Invitations  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).userInvitationsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).userInvitationsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13326,11 +14114,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Users  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).usersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).usersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13358,11 +14148,13 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Users  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).usersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).usersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13402,22 +14194,26 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * 
      * @summary Users  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).usersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).usersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Users  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).usersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).usersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13465,10 +14261,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Alleles  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        allelesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        allelesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/alleles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13480,6 +14278,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13566,10 +14372,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Alleles  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        allelesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        allelesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/alleles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13581,6 +14389,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13703,10 +14519,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Alleles  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        allelesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        allelesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('allelesPostQuery', 'filter', filter)
             const localVarPath = `/v1/alleles/query`;
@@ -13720,6 +14538,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -13738,10 +14564,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Alleles  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        allelesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        allelesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('allelesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/alleles/query/ids`;
@@ -13755,6 +14583,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -13881,10 +14717,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Ast Measurements  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astMeasurementsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astMeasurementsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ast_measurements`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13896,6 +14734,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13982,10 +14828,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Ast Measurements  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astMeasurementsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astMeasurementsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ast_measurements`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13997,6 +14845,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14119,10 +14975,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Ast Measurements  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astMeasurementsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astMeasurementsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('astMeasurementsPostQuery', 'filter', filter)
             const localVarPath = `/v1/ast_measurements/query`;
@@ -14136,6 +14994,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14154,10 +15020,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Ast Measurements  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astMeasurementsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astMeasurementsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('astMeasurementsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/ast_measurements/query/ids`;
@@ -14171,6 +15039,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14297,10 +15173,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Ast Predictions  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astPredictionsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astPredictionsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ast_predictions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14312,6 +15190,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14398,10 +15284,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Ast Predictions  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astPredictionsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astPredictionsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ast_predictions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14413,6 +15301,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14535,10 +15431,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Ast Predictions  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astPredictionsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astPredictionsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('astPredictionsPostQuery', 'filter', filter)
             const localVarPath = `/v1/ast_predictions/query`;
@@ -14552,6 +15450,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14570,10 +15476,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Ast Predictions  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astPredictionsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astPredictionsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('astPredictionsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/ast_predictions/query/ids`;
@@ -14587,6 +15495,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14713,10 +15629,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Loci  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lociDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        lociDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/loci`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14728,6 +15646,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14814,10 +15740,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Loci  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lociGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        lociGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/loci`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14829,6 +15757,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14951,10 +15887,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Loci  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lociPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        lociPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('lociPostQuery', 'filter', filter)
             const localVarPath = `/v1/loci/query`;
@@ -14968,6 +15906,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14986,10 +15932,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Loci  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lociPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        lociPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('lociPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/loci/query/ids`;
@@ -15003,6 +15951,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15129,10 +16085,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbLocus Code Maps  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusCodeMapsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusCodeMapsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/locus_code_maps`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15144,6 +16102,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15230,10 +16196,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbLocus Code Maps  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusCodeMapsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusCodeMapsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/locus_code_maps`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15245,6 +16213,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15367,10 +16343,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbLocus Code Maps  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusCodeMapsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusCodeMapsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('locusCodeMapsPostQuery', 'filter', filter)
             const localVarPath = `/v1/locus_code_maps/query`;
@@ -15384,6 +16362,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15402,10 +16388,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbLocus Code Maps  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusCodeMapsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusCodeMapsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('locusCodeMapsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/locus_code_maps/query/ids`;
@@ -15419,6 +16407,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15545,10 +16541,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbLocus Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/locus_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15560,6 +16558,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15646,10 +16652,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbLocus Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/locus_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15661,6 +16669,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15783,10 +16799,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbLocus Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusSetsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusSetsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('locusSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/locus_sets/query`;
@@ -15800,6 +16818,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15818,10 +16844,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbLocus Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusSetsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusSetsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('locusSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/locus_sets/query/ids`;
@@ -15835,6 +16863,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15961,10 +16997,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Pcr Measurements  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pcrMeasurementsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pcrMeasurementsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/pcr_measurements`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15976,6 +17014,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16062,10 +17108,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Pcr Measurements  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pcrMeasurementsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pcrMeasurementsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/pcr_measurements`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16077,6 +17125,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16199,10 +17255,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Pcr Measurements  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pcrMeasurementsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pcrMeasurementsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('pcrMeasurementsPostQuery', 'filter', filter)
             const localVarPath = `/v1/pcr_measurements/query`;
@@ -16216,6 +17274,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -16234,10 +17300,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Pcr Measurements  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pcrMeasurementsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pcrMeasurementsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('pcrMeasurementsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/pcr_measurements/query/ids`;
@@ -16251,6 +17319,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -16377,10 +17453,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbProtocol Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/protocol_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16392,6 +17470,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16478,10 +17564,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbProtocol Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetMembersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/protocol_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16493,6 +17581,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16615,10 +17711,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbProtocol Set Members  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetMembersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetMembersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('protocolSetMembersPostQuery', 'filter', filter)
             const localVarPath = `/v1/protocol_set_members/query`;
@@ -16632,6 +17730,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -16650,10 +17756,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbProtocol Set Members  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetMembersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetMembersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('protocolSetMembersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/protocol_set_members/query/ids`;
@@ -16667,6 +17775,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -16793,10 +17909,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbProtocol Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/protocol_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16808,6 +17926,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16894,10 +18020,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbProtocol Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/protocol_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16909,6 +18037,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17031,10 +18167,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbProtocol Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('protocolSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/protocol_sets/query`;
@@ -17048,6 +18186,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -17066,10 +18212,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbProtocol Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('protocolSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/protocol_sets/query/ids`;
@@ -17083,6 +18231,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -17209,10 +18365,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Protocols  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/protocols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -17224,6 +18382,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17310,10 +18476,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Protocols  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/protocols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -17325,6 +18493,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17447,10 +18623,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Protocols  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('protocolsPostQuery', 'filter', filter)
             const localVarPath = `/v1/protocols/query`;
@@ -17464,6 +18642,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -17482,10 +18668,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Protocols  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('protocolsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/protocols/query/ids`;
@@ -17499,6 +18687,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -17625,10 +18821,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Read Set Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/read_set_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -17640,6 +18838,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17726,10 +18932,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Read Set Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetIdentifiersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetIdentifiersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/read_set_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -17741,6 +18949,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17863,10 +19079,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Read Set Identifiers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetIdentifiersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetIdentifiersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('readSetIdentifiersPostQuery', 'filter', filter)
             const localVarPath = `/v1/read_set_identifiers/query`;
@@ -17880,6 +19098,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -17898,10 +19124,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Read Set Identifiers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetIdentifiersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetIdentifiersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('readSetIdentifiersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/read_set_identifiers/query/ids`;
@@ -17915,6 +19143,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -18041,10 +19277,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Read Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/read_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -18056,6 +19294,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -18142,10 +19388,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Read Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/read_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -18157,6 +19405,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -18279,10 +19535,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Read Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('readSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/read_sets/query`;
@@ -18296,6 +19554,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -18314,10 +19580,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Read Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('readSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/read_sets/query/ids`;
@@ -18331,6 +19599,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -18457,10 +19733,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Ref Alleles  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refAllelesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refAllelesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_alleles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -18472,6 +19750,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -18558,10 +19844,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Ref Alleles  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refAllelesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refAllelesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_alleles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -18573,6 +19861,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -18695,10 +19991,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Ref Alleles  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refAllelesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refAllelesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('refAllelesPostQuery', 'filter', filter)
             const localVarPath = `/v1/ref_alleles/query`;
@@ -18712,6 +20010,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -18730,10 +20036,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Ref Alleles  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refAllelesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refAllelesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('refAllelesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/ref_alleles/query/ids`;
@@ -18747,6 +20055,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -18873,10 +20189,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Ref Seqs  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refSeqsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refSeqsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_seqs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -18888,6 +20206,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -18974,10 +20300,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Ref Seqs  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refSeqsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refSeqsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_seqs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -18989,6 +20317,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -19111,10 +20447,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Ref Seqs  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refSeqsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refSeqsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('refSeqsPostQuery', 'filter', filter)
             const localVarPath = `/v1/ref_seqs/query`;
@@ -19128,6 +20466,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -19146,10 +20492,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Ref Seqs  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refSeqsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refSeqsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('refSeqsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/ref_seqs/query/ids`;
@@ -19163,6 +20511,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -19603,10 +20959,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSample Data Collection Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleDataCollectionLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleDataCollectionLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sample_data_collection_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -19618,6 +20976,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -19704,10 +21070,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSample Data Collection Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleDataCollectionLinksGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleDataCollectionLinksGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sample_data_collection_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -19719,6 +21087,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -19841,10 +21217,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSample Data Collection Links  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleDataCollectionLinksPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleDataCollectionLinksPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('sampleDataCollectionLinksPostQuery', 'filter', filter)
             const localVarPath = `/v1/sample_data_collection_links/query`;
@@ -19858,6 +21236,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -19876,10 +21262,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSample Data Collection Links  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleDataCollectionLinksPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleDataCollectionLinksPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('sampleDataCollectionLinksPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/sample_data_collection_links/query/ids`;
@@ -19893,6 +21281,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -20019,10 +21415,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSample Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sample_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -20034,6 +21432,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -20120,10 +21526,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSample Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleIdentifiersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleIdentifiersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sample_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -20135,6 +21543,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -20257,10 +21673,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSample Identifiers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleIdentifiersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleIdentifiersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('sampleIdentifiersPostQuery', 'filter', filter)
             const localVarPath = `/v1/sample_identifiers/query`;
@@ -20274,6 +21692,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -20292,10 +21718,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSample Identifiers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleIdentifiersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleIdentifiersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('sampleIdentifiersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/sample_identifiers/query/ids`;
@@ -20309,6 +21737,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -20435,10 +21871,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Samples  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        samplesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        samplesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/samples`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -20450,6 +21888,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -20536,10 +21982,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Samples  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        samplesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        samplesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/samples`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -20551,6 +21999,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -20673,10 +22129,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Samples  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        samplesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        samplesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('samplesPostQuery', 'filter', filter)
             const localVarPath = `/v1/samples/query`;
@@ -20690,6 +22148,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -20708,10 +22174,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Samples  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        samplesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        samplesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('samplesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/samples/query/ids`;
@@ -20725,6 +22193,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -20851,10 +22327,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Categories  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategoriesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategoriesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -20866,6 +22344,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -20952,10 +22438,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Categories  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategoriesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategoriesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -20967,6 +22455,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -21089,10 +22585,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Categories  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategoriesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategoriesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqCategoriesPostQuery', 'filter', filter)
             const localVarPath = `/v1/seq_categories/query`;
@@ -21106,6 +22604,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -21124,10 +22630,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Categories  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategoriesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategoriesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqCategoriesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/seq_categories/query/ids`;
@@ -21141,6 +22649,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -21267,10 +22783,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Category Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategorySetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategorySetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_category_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -21282,6 +22800,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -21368,10 +22894,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Category Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategorySetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategorySetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_category_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -21383,6 +22911,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -21505,10 +23041,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Category Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategorySetsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategorySetsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqCategorySetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/seq_category_sets/query`;
@@ -21522,6 +23060,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -21540,10 +23086,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Category Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategorySetsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategorySetsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqCategorySetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/seq_category_sets/query/ids`;
@@ -21557,6 +23105,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -21683,10 +23239,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Classifications  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqClassificationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqClassificationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_classifications`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -21698,6 +23256,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -21784,10 +23350,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Classifications  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqClassificationsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqClassificationsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_classifications`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -21799,6 +23367,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -21921,10 +23497,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Classifications  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqClassificationsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqClassificationsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqClassificationsPostQuery', 'filter', filter)
             const localVarPath = `/v1/seq_classifications/query`;
@@ -21938,6 +23516,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -21956,10 +23542,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Classifications  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqClassificationsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqClassificationsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqClassificationsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/seq_classifications/query/ids`;
@@ -21973,6 +23561,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -22099,10 +23695,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Distances  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqDistancesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqDistancesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_distances`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22114,6 +23712,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -22200,10 +23806,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Distances  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqDistancesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqDistancesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_distances`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22215,6 +23823,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -22337,10 +23953,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Distances  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqDistancesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqDistancesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqDistancesPostQuery', 'filter', filter)
             const localVarPath = `/v1/seq_distances/query`;
@@ -22354,6 +23972,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -22372,10 +23998,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Distances  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqDistancesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqDistancesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqDistancesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/seq_distances/query/ids`;
@@ -22389,6 +24017,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -22515,10 +24151,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22530,6 +24168,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -22616,10 +24262,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqIdentifiersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqIdentifiersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22631,6 +24279,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -22753,10 +24409,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Identifiers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqIdentifiersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqIdentifiersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqIdentifiersPostQuery', 'filter', filter)
             const localVarPath = `/v1/seq_identifiers/query`;
@@ -22770,6 +24428,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -22788,10 +24454,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Identifiers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqIdentifiersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqIdentifiersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqIdentifiersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/seq_identifiers/query/ids`;
@@ -22805,6 +24473,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -22931,10 +24607,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Profile Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfileIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfileIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_profile_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -22946,6 +24624,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23032,10 +24718,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Profile Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfileIdentifiersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfileIdentifiersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_profile_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23047,6 +24735,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23169,10 +24865,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Profile Identifiers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfileIdentifiersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfileIdentifiersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqProfileIdentifiersPostQuery', 'filter', filter)
             const localVarPath = `/v1/seq_profile_identifiers/query`;
@@ -23186,6 +24884,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23204,10 +24910,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Profile Identifiers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfileIdentifiersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfileIdentifiersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqProfileIdentifiersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/seq_profile_identifiers/query/ids`;
@@ -23221,6 +24929,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23347,10 +25063,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Profiles  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfilesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfilesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_profiles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23362,6 +25080,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23448,10 +25174,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Profiles  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfilesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfilesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_profiles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23463,6 +25191,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23585,10 +25321,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Profiles  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfilesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfilesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqProfilesPostQuery', 'filter', filter)
             const localVarPath = `/v1/seq_profiles/query`;
@@ -23602,6 +25340,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23620,10 +25366,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Profiles  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfilesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfilesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqProfilesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/seq_profiles/query/ids`;
@@ -23637,6 +25385,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -23763,10 +25519,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Taxonomies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqTaxonomiesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqTaxonomiesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_taxonomies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23778,6 +25536,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -23864,10 +25630,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Taxonomies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqTaxonomiesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqTaxonomiesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seq_taxonomies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -23879,6 +25647,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -24001,10 +25777,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Taxonomies  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqTaxonomiesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqTaxonomiesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqTaxonomiesPostQuery', 'filter', filter)
             const localVarPath = `/v1/seq_taxonomies/query`;
@@ -24018,6 +25796,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24036,10 +25822,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Taxonomies  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqTaxonomiesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqTaxonomiesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqTaxonomiesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/seq_taxonomies/query/ids`;
@@ -24053,6 +25841,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24179,10 +25975,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Seqs  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seqs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24194,6 +25992,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -24280,10 +26086,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Seqs  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/seqs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24295,6 +26103,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -24417,10 +26233,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Seqs  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqsPostQuery', 'filter', filter)
             const localVarPath = `/v1/seqs/query`;
@@ -24434,6 +26252,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24452,10 +26278,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Seqs  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('seqsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/seqs/query/ids`;
@@ -24469,6 +26297,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24595,10 +26431,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Taxa  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxaDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxaDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/taxa`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24610,6 +26448,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -24696,10 +26542,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Taxa  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxaGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxaGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/taxa`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24711,6 +26559,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -24833,10 +26689,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Taxa  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxaPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxaPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('taxaPostQuery', 'filter', filter)
             const localVarPath = `/v1/taxa/query`;
@@ -24850,6 +26708,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24868,10 +26734,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Taxa  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxaPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxaPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('taxaPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/taxa/query/ids`;
@@ -24885,6 +26753,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25011,10 +26887,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbTaxon Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/taxon_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25026,6 +26904,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25112,10 +26998,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbTaxon Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetMembersGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetMembersGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/taxon_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25127,6 +27015,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25249,10 +27145,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbTaxon Set Members  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetMembersPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetMembersPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('taxonSetMembersPostQuery', 'filter', filter)
             const localVarPath = `/v1/taxon_set_members/query`;
@@ -25266,6 +27164,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25284,10 +27190,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbTaxon Set Members  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetMembersPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetMembersPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('taxonSetMembersPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/taxon_set_members/query/ids`;
@@ -25301,6 +27209,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25427,10 +27343,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbTaxon Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/taxon_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25442,6 +27360,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25528,10 +27454,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbTaxon Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/taxon_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25543,6 +27471,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25665,10 +27601,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbTaxon Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('taxonSetsPostQuery', 'filter', filter)
             const localVarPath = `/v1/taxon_sets/query`;
@@ -25682,6 +27620,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25700,10 +27646,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary SeqDbTaxon Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('taxonSetsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/taxon_sets/query/ids`;
@@ -25717,6 +27665,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25843,10 +27799,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Tree Algorithm Classes  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithm_classes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25858,6 +27816,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25944,10 +27910,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Tree Algorithm Classes  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithm_classes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25959,6 +27927,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26081,10 +28057,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Tree Algorithm Classes  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('treeAlgorithmClassesPostQuery', 'filter', filter)
             const localVarPath = `/v1/tree_algorithm_classes/query`;
@@ -26098,6 +28076,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26116,10 +28102,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('treeAlgorithmClassesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/tree_algorithm_classes/query/ids`;
@@ -26133,6 +28121,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26259,10 +28255,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Tree Algorithms  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithms`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26274,6 +28272,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26360,10 +28366,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * 
          * @summary Tree Algorithms  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithms`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -26375,6 +28383,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26497,10 +28513,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Tree Algorithms  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('treeAlgorithmsPostQuery', 'filter', filter)
             const localVarPath = `/v1/tree_algorithms/query`;
@@ -26514,6 +28532,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26532,10 +28558,12 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
          * 
          * @summary Tree Algorithms  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('treeAlgorithmsPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/tree_algorithms/query/ids`;
@@ -26549,6 +28577,14 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26754,11 +28790,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Alleles  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async allelesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesDeleteAll(options);
+        async allelesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.allelesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26792,11 +28830,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Alleles  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async allelesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAllele>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesGetAll(options);
+        async allelesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAllele>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.allelesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26844,11 +28884,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Alleles  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async allelesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAllele>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesPostQuery(filter, options);
+        async allelesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAllele>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.allelesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26857,11 +28899,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Alleles  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async allelesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesPostQueryIds(filter, options);
+        async allelesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.allelesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.allelesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26909,11 +28953,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Ast Measurements  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astMeasurementsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsDeleteAll(options);
+        async astMeasurementsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astMeasurementsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26947,11 +28993,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Ast Measurements  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astMeasurementsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAstMeasurement>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsGetAll(options);
+        async astMeasurementsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAstMeasurement>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astMeasurementsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26999,11 +29047,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Ast Measurements  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astMeasurementsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAstMeasurement>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsPostQuery(filter, options);
+        async astMeasurementsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAstMeasurement>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astMeasurementsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27012,11 +29062,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Ast Measurements  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astMeasurementsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsPostQueryIds(filter, options);
+        async astMeasurementsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astMeasurementsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27064,11 +29116,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Ast Predictions  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astPredictionsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsDeleteAll(options);
+        async astPredictionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astPredictionsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27102,11 +29156,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Ast Predictions  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astPredictionsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAstPrediction>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsGetAll(options);
+        async astPredictionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAstPrediction>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astPredictionsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27154,11 +29210,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Ast Predictions  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astPredictionsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAstPrediction>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsPostQuery(filter, options);
+        async astPredictionsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbAstPrediction>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astPredictionsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27167,11 +29225,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Ast Predictions  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astPredictionsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsPostQueryIds(filter, options);
+        async astPredictionsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astPredictionsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27219,11 +29279,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Loci  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lociDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.lociDeleteAll(options);
+        async lociDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.lociDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.lociDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27257,11 +29319,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Loci  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lociGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocus>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.lociGetAll(options);
+        async lociGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocus>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.lociGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.lociGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27309,11 +29373,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Loci  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lociPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocus>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.lociPostQuery(filter, options);
+        async lociPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocus>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.lociPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.lociPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27322,11 +29388,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Loci  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lociPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.lociPostQueryIds(filter, options);
+        async lociPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.lociPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.lociPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27374,11 +29442,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbLocus Code Maps  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusCodeMapsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsDeleteAll(options);
+        async locusCodeMapsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusCodeMapsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27412,11 +29482,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbLocus Code Maps  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusCodeMapsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocusCodeMap>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsGetAll(options);
+        async locusCodeMapsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocusCodeMap>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusCodeMapsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27464,11 +29536,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbLocus Code Maps  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusCodeMapsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocusCodeMap>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsPostQuery(filter, options);
+        async locusCodeMapsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocusCodeMap>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusCodeMapsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27477,11 +29551,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbLocus Code Maps  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusCodeMapsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsPostQueryIds(filter, options);
+        async locusCodeMapsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusCodeMapsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27529,11 +29605,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbLocus Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsDeleteAll(options);
+        async locusSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27567,11 +29645,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbLocus Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocusSetInput>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsGetAll(options);
+        async locusSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocusSetInput>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27619,11 +29699,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbLocus Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocusSetInput>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsPostQuery(filter, options);
+        async locusSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbLocusSetInput>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27632,11 +29714,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbLocus Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsPostQueryIds(filter, options);
+        async locusSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27684,11 +29768,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Pcr Measurements  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pcrMeasurementsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsDeleteAll(options);
+        async pcrMeasurementsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.pcrMeasurementsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27722,11 +29808,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Pcr Measurements  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pcrMeasurementsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbPcrMeasurement>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsGetAll(options);
+        async pcrMeasurementsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbPcrMeasurement>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.pcrMeasurementsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27774,11 +29862,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Pcr Measurements  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pcrMeasurementsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbPcrMeasurement>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsPostQuery(filter, options);
+        async pcrMeasurementsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbPcrMeasurement>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.pcrMeasurementsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27787,11 +29877,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Pcr Measurements  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pcrMeasurementsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsPostQueryIds(filter, options);
+        async pcrMeasurementsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.pcrMeasurementsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27839,11 +29931,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbProtocol Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersDeleteAll(options);
+        async protocolSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27877,11 +29971,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbProtocol Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocolSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersGetAll(options);
+        async protocolSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocolSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27929,11 +30025,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbProtocol Set Members  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetMembersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocolSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersPostQuery(filter, options);
+        async protocolSetMembersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocolSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27942,11 +30040,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbProtocol Set Members  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetMembersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersPostQueryIds(filter, options);
+        async protocolSetMembersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -27994,11 +30094,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbProtocol Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsDeleteAll(options);
+        async protocolSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28032,11 +30134,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbProtocol Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocolSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsGetAll(options);
+        async protocolSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocolSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28084,11 +30188,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbProtocol Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocolSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsPostQuery(filter, options);
+        async protocolSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocolSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28097,11 +30203,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbProtocol Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsPostQueryIds(filter, options);
+        async protocolSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28149,11 +30257,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Protocols  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsDeleteAll(options);
+        async protocolsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28187,11 +30297,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Protocols  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsGetAll(options);
+        async protocolsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28239,11 +30351,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Protocols  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocol>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsPostQuery(filter, options);
+        async protocolsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbProtocol>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28252,11 +30366,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Protocols  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsPostQueryIds(filter, options);
+        async protocolsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28304,11 +30420,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Read Set Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersDeleteAll(options);
+        async readSetIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28342,11 +30460,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Read Set Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetIdentifiersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbReadSetIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersGetAll(options);
+        async readSetIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbReadSetIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28394,11 +30514,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Read Set Identifiers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetIdentifiersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbReadSetIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersPostQuery(filter, options);
+        async readSetIdentifiersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbReadSetIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetIdentifiersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28407,11 +30529,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Read Set Identifiers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetIdentifiersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersPostQueryIds(filter, options);
+        async readSetIdentifiersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetIdentifiersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28459,11 +30583,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Read Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsDeleteAll(options);
+        async readSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28497,11 +30623,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Read Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbReadSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsGetAll(options);
+        async readSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbReadSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28549,11 +30677,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Read Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbReadSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsPostQuery(filter, options);
+        async readSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbReadSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28562,11 +30692,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Read Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsPostQueryIds(filter, options);
+        async readSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28614,11 +30746,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Ref Alleles  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refAllelesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesDeleteAll(options);
+        async refAllelesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refAllelesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28652,11 +30786,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Ref Alleles  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refAllelesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbRefAllele>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesGetAll(options);
+        async refAllelesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbRefAllele>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refAllelesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28704,11 +30840,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Ref Alleles  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refAllelesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbRefAllele>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesPostQuery(filter, options);
+        async refAllelesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbRefAllele>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refAllelesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28717,11 +30855,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Ref Alleles  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refAllelesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesPostQueryIds(filter, options);
+        async refAllelesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refAllelesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28769,11 +30909,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Ref Seqs  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refSeqsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsDeleteAll(options);
+        async refSeqsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refSeqsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28807,11 +30949,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Ref Seqs  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refSeqsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbRefSeq>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsGetAll(options);
+        async refSeqsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbRefSeq>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refSeqsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28859,11 +31003,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Ref Seqs  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refSeqsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbRefSeq>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsPostQuery(filter, options);
+        async refSeqsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbRefSeq>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refSeqsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -28872,11 +31018,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Ref Seqs  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refSeqsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsPostQueryIds(filter, options);
+        async refSeqsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refSeqsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29041,11 +31189,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSample Data Collection Links  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksDeleteAll(options);
+        async sampleDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleDataCollectionLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29079,11 +31229,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSample Data Collection Links  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleDataCollectionLinksGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSampleDataCollectionLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksGetAll(options);
+        async sampleDataCollectionLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSampleDataCollectionLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleDataCollectionLinksGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29131,11 +31283,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSample Data Collection Links  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleDataCollectionLinksPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSampleDataCollectionLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksPostQuery(filter, options);
+        async sampleDataCollectionLinksPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSampleDataCollectionLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleDataCollectionLinksPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29144,11 +31298,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSample Data Collection Links  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleDataCollectionLinksPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksPostQueryIds(filter, options);
+        async sampleDataCollectionLinksPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleDataCollectionLinksPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29196,11 +31352,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSample Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersDeleteAll(options);
+        async sampleIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29234,11 +31392,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSample Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleIdentifiersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSampleIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersGetAll(options);
+        async sampleIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSampleIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29286,11 +31446,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSample Identifiers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleIdentifiersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSampleIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersPostQuery(filter, options);
+        async sampleIdentifiersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSampleIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleIdentifiersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29299,11 +31461,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSample Identifiers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleIdentifiersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersPostQueryIds(filter, options);
+        async sampleIdentifiersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleIdentifiersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29351,11 +31515,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Samples  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async samplesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesDeleteAll(options);
+        async samplesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.samplesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29389,11 +31555,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Samples  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async samplesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSample>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesGetAll(options);
+        async samplesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSample>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.samplesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29441,11 +31609,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Samples  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async samplesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSample>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesPostQuery(filter, options);
+        async samplesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSample>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.samplesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29454,11 +31624,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Samples  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async samplesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesPostQueryIds(filter, options);
+        async samplesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.samplesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.samplesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29506,11 +31678,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Categories  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategoriesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesDeleteAll(options);
+        async seqCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategoriesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29544,11 +31718,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Categories  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategoriesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqCategory>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesGetAll(options);
+        async seqCategoriesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqCategory>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategoriesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29596,11 +31772,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Categories  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategoriesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqCategory>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesPostQuery(filter, options);
+        async seqCategoriesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqCategory>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategoriesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29609,11 +31787,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Categories  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategoriesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesPostQueryIds(filter, options);
+        async seqCategoriesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategoriesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29661,11 +31841,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Category Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategorySetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsDeleteAll(options);
+        async seqCategorySetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategorySetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29699,11 +31881,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Category Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategorySetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqCategorySet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsGetAll(options);
+        async seqCategorySetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqCategorySet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategorySetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29751,11 +31935,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Category Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategorySetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqCategorySet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsPostQuery(filter, options);
+        async seqCategorySetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqCategorySet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategorySetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29764,11 +31950,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Category Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategorySetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsPostQueryIds(filter, options);
+        async seqCategorySetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategorySetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29816,11 +32004,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Classifications  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqClassificationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsDeleteAll(options);
+        async seqClassificationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqClassificationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29854,11 +32044,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Classifications  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqClassificationsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqClassification>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsGetAll(options);
+        async seqClassificationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqClassification>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqClassificationsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29906,11 +32098,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Classifications  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqClassificationsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqClassification>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsPostQuery(filter, options);
+        async seqClassificationsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqClassification>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqClassificationsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29919,11 +32113,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Classifications  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqClassificationsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsPostQueryIds(filter, options);
+        async seqClassificationsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqClassificationsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -29971,11 +32167,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Distances  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqDistancesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesDeleteAll(options);
+        async seqDistancesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqDistancesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30009,11 +32207,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Distances  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqDistancesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqDistance>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesGetAll(options);
+        async seqDistancesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqDistance>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqDistancesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30061,11 +32261,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Distances  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqDistancesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqDistance>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesPostQuery(filter, options);
+        async seqDistancesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqDistance>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqDistancesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30074,11 +32276,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Distances  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqDistancesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesPostQueryIds(filter, options);
+        async seqDistancesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqDistancesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30126,11 +32330,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersDeleteAll(options);
+        async seqIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30164,11 +32370,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqIdentifiersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersGetAll(options);
+        async seqIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30216,11 +32424,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Identifiers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqIdentifiersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersPostQuery(filter, options);
+        async seqIdentifiersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqIdentifiersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30229,11 +32439,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Identifiers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqIdentifiersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersPostQueryIds(filter, options);
+        async seqIdentifiersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqIdentifiersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30281,11 +32493,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Profile Identifiers  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfileIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersDeleteAll(options);
+        async seqProfileIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfileIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30319,11 +32533,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Profile Identifiers  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfileIdentifiersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqProfileIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersGetAll(options);
+        async seqProfileIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqProfileIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfileIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30371,11 +32587,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Profile Identifiers  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfileIdentifiersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqProfileIdentifier>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersPostQuery(filter, options);
+        async seqProfileIdentifiersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqProfileIdentifier>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfileIdentifiersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30384,11 +32602,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Profile Identifiers  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfileIdentifiersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersPostQueryIds(filter, options);
+        async seqProfileIdentifiersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfileIdentifiersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30436,11 +32656,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Profiles  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfilesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesDeleteAll(options);
+        async seqProfilesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfilesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30474,11 +32696,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Profiles  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfilesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqProfile>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesGetAll(options);
+        async seqProfilesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqProfile>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfilesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30526,11 +32750,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Profiles  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfilesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqProfile>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesPostQuery(filter, options);
+        async seqProfilesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqProfile>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfilesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30539,11 +32765,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Profiles  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfilesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesPostQueryIds(filter, options);
+        async seqProfilesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfilesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30591,11 +32819,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Taxonomies  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqTaxonomiesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesDeleteAll(options);
+        async seqTaxonomiesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqTaxonomiesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30629,11 +32859,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbSeq Taxonomies  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqTaxonomiesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqTaxonomy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesGetAll(options);
+        async seqTaxonomiesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqTaxonomy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqTaxonomiesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30681,11 +32913,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Taxonomies  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqTaxonomiesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqTaxonomy>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesPostQuery(filter, options);
+        async seqTaxonomiesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeqTaxonomy>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqTaxonomiesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30694,11 +32928,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbSeq Taxonomies  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqTaxonomiesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesPostQueryIds(filter, options);
+        async seqTaxonomiesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqTaxonomiesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30746,11 +32982,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Seqs  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsDeleteAll(options);
+        async seqsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30784,11 +33022,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Seqs  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeq>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsGetAll(options);
+        async seqsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeq>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30836,11 +33076,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Seqs  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeq>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsPostQuery(filter, options);
+        async seqsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbSeq>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30849,11 +33091,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Seqs  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsPostQueryIds(filter, options);
+        async seqsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.seqsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30901,11 +33145,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Taxa  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxaDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaDeleteAll(options);
+        async taxaDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxaDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30939,11 +33185,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Taxa  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxaGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxon>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaGetAll(options);
+        async taxaGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxon>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxaGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30991,11 +33239,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Taxa  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxaPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxon>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaPostQuery(filter, options);
+        async taxaPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxon>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxaPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31004,11 +33254,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Taxa  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxaPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaPostQueryIds(filter, options);
+        async taxaPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxaPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxaPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31056,11 +33308,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbTaxon Set Members  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersDeleteAll(options);
+        async taxonSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31094,11 +33348,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbTaxon Set Members  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetMembersGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxonSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersGetAll(options);
+        async taxonSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxonSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31146,11 +33402,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbTaxon Set Members  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetMembersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxonSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersPostQuery(filter, options);
+        async taxonSetMembersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxonSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetMembersPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31159,11 +33417,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbTaxon Set Members  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetMembersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersPostQueryIds(filter, options);
+        async taxonSetMembersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetMembersPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31211,11 +33471,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbTaxon Sets  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsDeleteAll(options);
+        async taxonSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31249,11 +33511,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary SeqDbTaxon Sets  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxonSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsGetAll(options);
+        async taxonSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxonSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31301,11 +33565,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbTaxon Sets  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxonSet>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsPostQuery(filter, options);
+        async taxonSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTaxonSet>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31314,11 +33580,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary SeqDbTaxon Sets  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsPostQueryIds(filter, options);
+        async taxonSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31366,11 +33634,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Tree Algorithm Classes  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteAll(options);
+        async treeAlgorithmClassesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmClassesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31404,11 +33674,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Tree Algorithm Classes  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTreeAlgorithmClass>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetAll(options);
+        async treeAlgorithmClassesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTreeAlgorithmClass>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmClassesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31456,11 +33728,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Tree Algorithm Classes  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTreeAlgorithmClass>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesPostQuery(filter, options);
+        async treeAlgorithmClassesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbTreeAlgorithmClass>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmClassesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31469,11 +33743,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesPostQueryIds(filter, options);
+        async treeAlgorithmClassesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmClassesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31521,11 +33797,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Tree Algorithms  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteAll(options);
+        async treeAlgorithmsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31559,11 +33837,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Tree Algorithms  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetAll(options);
+        async treeAlgorithmsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmsGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31611,11 +33891,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Tree Algorithms  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsPostQuery(filter, options);
+        async treeAlgorithmsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmsPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31624,11 +33906,13 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
          * 
          * @summary Tree Algorithms  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsPostQueryIds(filter, options);
+        async treeAlgorithmsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmsPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31727,11 +34011,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Alleles  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public allelesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).allelesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public allelesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).allelesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31759,11 +34045,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Alleles  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public allelesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).allelesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public allelesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).allelesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31803,22 +34091,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Alleles  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public allelesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).allelesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public allelesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).allelesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Alleles  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public allelesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).allelesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public allelesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).allelesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31858,11 +34150,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Ast Measurements  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astMeasurementsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astMeasurementsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astMeasurementsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astMeasurementsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31890,11 +34184,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Ast Measurements  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astMeasurementsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astMeasurementsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astMeasurementsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astMeasurementsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31934,22 +34230,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Ast Measurements  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astMeasurementsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astMeasurementsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astMeasurementsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astMeasurementsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Ast Measurements  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astMeasurementsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astMeasurementsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astMeasurementsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astMeasurementsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31989,11 +34289,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Ast Predictions  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astPredictionsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astPredictionsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astPredictionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astPredictionsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32021,11 +34323,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Ast Predictions  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astPredictionsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astPredictionsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astPredictionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astPredictionsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32065,22 +34369,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Ast Predictions  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astPredictionsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astPredictionsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astPredictionsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astPredictionsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Ast Predictions  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astPredictionsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).astPredictionsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public astPredictionsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).astPredictionsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32120,11 +34428,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Loci  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public lociDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).lociDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public lociDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).lociDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32152,11 +34462,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Loci  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public lociGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).lociGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public lociGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).lociGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32196,22 +34508,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Loci  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public lociPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).lociPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public lociPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).lociPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Loci  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public lociPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).lociPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public lociPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).lociPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32251,11 +34567,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbLocus Code Maps  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusCodeMapsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusCodeMapsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusCodeMapsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusCodeMapsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32283,11 +34601,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbLocus Code Maps  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusCodeMapsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusCodeMapsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusCodeMapsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusCodeMapsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32327,22 +34647,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbLocus Code Maps  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusCodeMapsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusCodeMapsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusCodeMapsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusCodeMapsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbLocus Code Maps  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusCodeMapsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusCodeMapsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusCodeMapsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusCodeMapsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32382,11 +34706,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbLocus Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32414,11 +34740,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbLocus Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusSetsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32458,22 +34786,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbLocus Sets  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbLocus Sets  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).locusSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public locusSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).locusSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32513,11 +34845,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Pcr Measurements  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public pcrMeasurementsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public pcrMeasurementsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32545,11 +34879,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Pcr Measurements  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public pcrMeasurementsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public pcrMeasurementsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32589,22 +34925,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Pcr Measurements  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public pcrMeasurementsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public pcrMeasurementsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Pcr Measurements  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public pcrMeasurementsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public pcrMeasurementsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).pcrMeasurementsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32644,11 +34984,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbProtocol Set Members  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32676,11 +35018,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbProtocol Set Members  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32720,22 +35064,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbProtocol Set Members  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetMembersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetMembersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetMembersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbProtocol Set Members  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetMembersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetMembersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetMembersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32775,11 +35123,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbProtocol Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32807,11 +35157,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbProtocol Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32851,22 +35203,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbProtocol Sets  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbProtocol Sets  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32906,11 +35262,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Protocols  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32938,11 +35296,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Protocols  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32982,22 +35342,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Protocols  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Protocols  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).protocolsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public protocolsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).protocolsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33037,11 +35401,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Read Set Identifiers  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33069,11 +35435,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Read Set Identifiers  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetIdentifiersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33113,22 +35481,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Read Set Identifiers  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetIdentifiersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetIdentifiersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Read Set Identifiers  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetIdentifiersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetIdentifiersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetIdentifiersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33168,11 +35540,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Read Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33200,11 +35574,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Read Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33244,22 +35620,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Read Sets  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Read Sets  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).readSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public readSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).readSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33299,11 +35679,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Ref Alleles  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refAllelesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refAllelesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refAllelesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refAllelesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33331,11 +35713,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Ref Alleles  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refAllelesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refAllelesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refAllelesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refAllelesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33375,22 +35759,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Ref Alleles  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refAllelesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refAllelesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refAllelesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refAllelesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Ref Alleles  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refAllelesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refAllelesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refAllelesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refAllelesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33430,11 +35818,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Ref Seqs  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refSeqsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refSeqsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refSeqsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refSeqsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33462,11 +35852,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Ref Seqs  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refSeqsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refSeqsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refSeqsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refSeqsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33506,22 +35898,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Ref Seqs  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refSeqsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refSeqsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refSeqsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refSeqsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Ref Seqs  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refSeqsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).refSeqsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refSeqsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).refSeqsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33660,11 +36056,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSample Data Collection Links  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33692,11 +36090,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSample Data Collection Links  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleDataCollectionLinksGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleDataCollectionLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33736,22 +36136,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSample Data Collection Links  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleDataCollectionLinksPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleDataCollectionLinksPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSample Data Collection Links  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleDataCollectionLinksPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleDataCollectionLinksPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33791,11 +36195,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSample Identifiers  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33823,11 +36229,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSample Identifiers  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleIdentifiersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33867,22 +36275,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSample Identifiers  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleIdentifiersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleIdentifiersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSample Identifiers  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleIdentifiersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sampleIdentifiersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).sampleIdentifiersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33922,11 +36334,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Samples  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public samplesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).samplesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public samplesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).samplesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33954,11 +36368,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Samples  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public samplesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).samplesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public samplesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).samplesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33998,22 +36414,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Samples  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public samplesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).samplesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public samplesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).samplesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Samples  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public samplesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).samplesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public samplesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).samplesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34053,11 +36473,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Categories  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategoriesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategoriesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategoriesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34085,11 +36507,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Categories  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategoriesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategoriesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategoriesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategoriesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34129,22 +36553,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSeq Categories  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategoriesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategoriesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategoriesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategoriesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSeq Categories  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategoriesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategoriesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategoriesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategoriesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34184,11 +36612,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Category Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategorySetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategorySetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategorySetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategorySetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34216,11 +36646,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Category Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategorySetsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategorySetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategorySetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategorySetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34260,22 +36692,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSeq Category Sets  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategorySetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategorySetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategorySetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategorySetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSeq Category Sets  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategorySetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqCategorySetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqCategorySetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqCategorySetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34315,11 +36751,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Classifications  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqClassificationsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqClassificationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqClassificationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqClassificationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34347,11 +36785,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Classifications  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqClassificationsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqClassificationsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqClassificationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqClassificationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34391,22 +36831,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSeq Classifications  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqClassificationsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqClassificationsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqClassificationsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqClassificationsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSeq Classifications  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqClassificationsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqClassificationsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqClassificationsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqClassificationsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34446,11 +36890,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Distances  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqDistancesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqDistancesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqDistancesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqDistancesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34478,11 +36924,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Distances  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqDistancesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqDistancesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqDistancesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqDistancesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34522,22 +36970,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSeq Distances  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqDistancesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqDistancesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqDistancesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqDistancesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSeq Distances  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqDistancesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqDistancesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqDistancesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqDistancesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34577,11 +37029,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Identifiers  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34609,11 +37063,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Identifiers  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqIdentifiersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqIdentifiersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34653,22 +37109,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSeq Identifiers  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqIdentifiersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqIdentifiersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqIdentifiersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqIdentifiersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSeq Identifiers  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqIdentifiersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqIdentifiersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqIdentifiersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqIdentifiersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34708,11 +37168,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Profile Identifiers  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfileIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfileIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34740,11 +37202,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Profile Identifiers  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfileIdentifiersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfileIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34784,22 +37248,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSeq Profile Identifiers  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfileIdentifiersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfileIdentifiersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSeq Profile Identifiers  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfileIdentifiersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfileIdentifiersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34839,11 +37307,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Profiles  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfilesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfilesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfilesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfilesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34871,11 +37341,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Profiles  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfilesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfilesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfilesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfilesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34915,22 +37387,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSeq Profiles  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfilesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfilesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfilesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfilesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSeq Profiles  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfilesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqProfilesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqProfilesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqProfilesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -34970,11 +37446,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Taxonomies  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqTaxonomiesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqTaxonomiesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35002,11 +37480,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbSeq Taxonomies  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqTaxonomiesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqTaxonomiesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35046,22 +37526,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbSeq Taxonomies  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqTaxonomiesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqTaxonomiesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbSeq Taxonomies  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqTaxonomiesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqTaxonomiesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqTaxonomiesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35101,11 +37585,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Seqs  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35133,11 +37619,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Seqs  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35177,22 +37665,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Seqs  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Seqs  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).seqsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public seqsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).seqsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35232,11 +37724,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Taxa  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxaDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxaDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxaDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxaDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35264,11 +37758,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Taxa  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxaGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxaGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxaGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxaGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35308,22 +37804,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Taxa  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxaPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxaPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxaPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxaPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Taxa  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxaPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxaPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxaPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxaPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35363,11 +37863,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbTaxon Set Members  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35395,11 +37897,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbTaxon Set Members  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetMembersGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetMembersGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35439,22 +37943,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbTaxon Set Members  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetMembersPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetMembersPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetMembersPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetMembersPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbTaxon Set Members  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetMembersPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetMembersPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetMembersPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetMembersPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35494,11 +38002,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbTaxon Sets  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35526,11 +38036,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary SeqDbTaxon Sets  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35570,22 +38082,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary SeqDbTaxon Sets  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary SeqDbTaxon Sets  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).taxonSetsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public taxonSetsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).taxonSetsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35625,11 +38141,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Tree Algorithm Classes  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35657,11 +38175,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Tree Algorithm Classes  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35701,22 +38221,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Tree Algorithm Classes  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Tree Algorithm Classes  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35756,11 +38280,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Tree Algorithms  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35788,11 +38314,13 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Tree Algorithms  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35832,22 +38360,26 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      * 
      * @summary Tree Algorithms  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Tree Algorithms  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).treeAlgorithmsPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -35982,10 +38514,12 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * 
          * @summary Outages  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/outages`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35997,6 +38531,14 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -36083,10 +38625,12 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * 
          * @summary Outages  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesGetAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesGetAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/outages`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36098,6 +38642,14 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -36220,10 +38772,12 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Outages  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesPostQuery: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesPostQuery: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('outagesPostQuery', 'filter', filter)
             const localVarPath = `/v1/outages/query`;
@@ -36237,6 +38791,14 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -36255,10 +38817,12 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Outages  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesPostQueryIds: async (filter: SeqDbEpiFilter, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesPostQueryIds: async (filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'filter' is not null or undefined
             assertParamExists('outagesPostQueryIds', 'filter', filter)
             const localVarPath = `/v1/outages/query/ids`;
@@ -36272,6 +38836,14 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
+
+            if (offset !== undefined) {
+                localVarQueryParameter['offset'] = offset;
+            }
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -36522,11 +39094,13 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Outages  Delete All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteAll(options);
+        async outagesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36560,11 +39134,13 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Outages  Get All
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesGetAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOutage>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesGetAll(options);
+        async outagesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOutage>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesGetAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36612,11 +39188,13 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
          * 
          * @summary Outages  Post Query
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOutage>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesPostQuery(filter, options);
+        async outagesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOutage>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesPostQuery(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesPostQuery']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36625,11 +39203,13 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
          * 
          * @summary Outages  Post Query  Ids
          * @param {SeqDbEpiFilter} filter 
+         * @param {number | null} [limit] 
+         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesPostQueryIds(filter, options);
+        async outagesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesPostQueryIds(filter, limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesPostQueryIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -36759,11 +39339,13 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Outages  Delete All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesDeleteAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSystemApiFp(this.configuration).outagesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSystemApiFp(this.configuration).outagesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36791,11 +39373,13 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     /**
      * 
      * @summary Outages  Get All
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesGetAll(options?: RawAxiosRequestConfig) {
-        return SeqDbSystemApiFp(this.configuration).outagesGetAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSystemApiFp(this.configuration).outagesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -36835,22 +39419,26 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
      * 
      * @summary Outages  Post Query
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesPostQuery(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSystemApiFp(this.configuration).outagesPostQuery(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesPostQuery(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSystemApiFp(this.configuration).outagesPostQuery(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
      * 
      * @summary Outages  Post Query  Ids
      * @param {SeqDbEpiFilter} filter 
+     * @param {number | null} [limit] 
+     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesPostQueryIds(filter: SeqDbEpiFilter, options?: RawAxiosRequestConfig) {
-        return SeqDbSystemApiFp(this.configuration).outagesPostQueryIds(filter, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesPostQueryIds(filter: SeqDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
+        return SeqDbSystemApiFp(this.configuration).outagesPostQueryIds(filter, limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**

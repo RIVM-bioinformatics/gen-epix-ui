@@ -61,12 +61,12 @@ export class EpiDataManager {
     }
 
     if (conceptSets === null) {
-      conceptSets = (await CaseDbOntologyApi.getInstance().conceptSetsGetAll({ signal })).data;
+      conceptSets = (await CaseDbOntologyApi.getInstance().conceptSetsGetAll(null, null, { signal })).data;
       queryClient.setQueryData(QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS), conceptSets);
     }
 
     if (concepts === null) {
-      concepts = (await CaseDbOntologyApi.getInstance().conceptsGetAll({ signal })).data;
+      concepts = (await CaseDbOntologyApi.getInstance().conceptsGetAll(null, null, { signal })).data;
       concepts.forEach(concept => {
         try {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -115,7 +115,7 @@ export class EpiDataManager {
       key: 'id',
       members: regionSetIds,
       type: 'UUID_SET',
-    }, { signal })).data;
+    }, null, null, { signal })).data;
     const regionSets = [...regionSetsResult, ...currentRegionSets];
     queryClient.setQueryData(QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY), regionSets);
 
@@ -124,7 +124,7 @@ export class EpiDataManager {
       key: 'region_set_id',
       members: regionSetIds,
       type: 'UUID_SET',
-    }, { signal })).data;
+    }, null, null, { signal })).data;
     const regions = [...regionsResult, ...currentRegions];
     queryClient.setQueryData(QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGIONS_LAZY), regions);
 
@@ -154,7 +154,7 @@ export class EpiDataManager {
     if (organizations !== null) {
       return;
     }
-    organizations = (await CaseDbOrganizationApi.getInstance().organizationsGetAll({ signal })).data;
+    organizations = (await CaseDbOrganizationApi.getInstance().organizationsGetAll(null, null, { signal })).data;
     queryClient.setQueryData(QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS), organizations);
 
     // Rebuild the cache
@@ -176,7 +176,7 @@ export class EpiDataManager {
     if (currentTreeAlgorithms) {
       return;
     }
-    const treeAlgorithms = (await CaseDbCaseApi.getInstance().treeAlgorithmsGetAll({ signal })).data.sort((a, b) => {
+    const treeAlgorithms = (await CaseDbCaseApi.getInstance().treeAlgorithmsGetAll(null, null, { signal })).data.sort((a, b) => {
       if (a.rank === b.rank) {
         return a.name.localeCompare(b.name);
       }

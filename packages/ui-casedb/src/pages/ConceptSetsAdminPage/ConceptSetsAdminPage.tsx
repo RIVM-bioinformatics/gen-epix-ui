@@ -43,7 +43,7 @@ export const ConceptSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().conceptSetsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.getInstance().conceptSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbConceptSet) => {

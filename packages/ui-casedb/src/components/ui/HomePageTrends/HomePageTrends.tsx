@@ -103,7 +103,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
 
   const { data: caseSetsThenData, ...caseSetsThenQuery } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetQueryFilter, { signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetQueryFilter, null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetQueryFilter),

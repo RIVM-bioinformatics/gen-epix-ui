@@ -12,7 +12,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useUserShareCasePoliciesQuery = (select?: (data: CaseDbUserShareCasePolicy[]) => CaseDbUserShareCasePolicy[]): UseQueryResult<CaseDbUserShareCasePolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbAbacApi.getInstance().userShareCasePoliciesGetAll({ signal });
+      const response = await CaseDbAbacApi.getInstance().userShareCasePoliciesGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.USER_SHARE_CASE_POLICIES),

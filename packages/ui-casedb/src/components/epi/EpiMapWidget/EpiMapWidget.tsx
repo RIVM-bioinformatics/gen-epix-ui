@@ -123,7 +123,7 @@ export const EpiMapWidget = () => {
 
   const { data: regionSetShapes, error: regionSetShapesError, isLoading: isRegionSetShapesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      return (await CaseDbGeoApi.getInstance().regionSetShapesPostQuery(regionSetShapesFilter, { signal })).data;
+      return (await CaseDbGeoApi.getInstance().regionSetShapesPostQuery(regionSetShapesFilter, null, null, { signal })).data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,
