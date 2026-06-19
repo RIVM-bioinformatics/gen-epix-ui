@@ -46,7 +46,7 @@ export const OrganizationsAdminPage = () => {
   const loadables = useArray([identifierIssuerOptionsQuery, organizationIdentifierIssuerLinksQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().organizationApi.organizationsGetAll({ signal }))?.data;
+    return (await ApiManager.getInstance().organizationApi.organizationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganization) => {

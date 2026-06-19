@@ -30,7 +30,7 @@ export const OrganizationContactsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().organizationApi.contactsGetAll({ signal })).data;
+    return (await ApiManager.getInstance().organizationApi.contactsGetAll(null, null, { signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((contacts: CommonDbContact[]) => {

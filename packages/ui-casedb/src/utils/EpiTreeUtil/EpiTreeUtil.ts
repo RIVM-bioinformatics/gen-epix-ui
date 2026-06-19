@@ -677,8 +677,8 @@ export class EpiTreeUtil {
     }
     const newPositionY = Math.max(Math.min(positionYMax, positionY), positionYMin);
 
-    const positionXMin = -treeCanvasWidth + (2 * relativeTreePadding);
-    const positionXMax = ((treeCanvasWidth / internalZoomLevel) * devicePixelRatio) - (2 * relativeTreePadding);
+    const positionXMin = Math.min(0, -treeCanvasWidth + (2 * relativeTreePadding));
+    const positionXMax = Math.max(0, ((treeCanvasWidth / internalZoomLevel) * devicePixelRatio) - (2 * relativeTreePadding));
     const newPositionX = Math.max(Math.min(positionXMax, positionX), positionXMin);
 
     return {

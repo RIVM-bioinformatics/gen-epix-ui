@@ -50,7 +50,7 @@ export const RegionRelationsAdminPage = () => {
   const loadables = useArray([regionOptionsQuery, regionMapQuery, regionRelationTypeOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.getInstance().regionRelationsGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.getInstance().regionRelationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRegionRelation) => {

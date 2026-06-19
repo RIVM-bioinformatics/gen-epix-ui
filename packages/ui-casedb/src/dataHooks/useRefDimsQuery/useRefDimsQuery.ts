@@ -18,7 +18,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useRefDimsQuery = (): UseQueryResult<CaseDbRefDim[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().refDimsGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().refDimsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_DIMS),

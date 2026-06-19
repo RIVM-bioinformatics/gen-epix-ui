@@ -50,7 +50,7 @@ export const UserShareCasePoliciesAdminPage = () => {
   const loadables = useArray([userOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.getInstance().userShareCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.getInstance().userShareCasePoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbUserShareCasePolicy) => {

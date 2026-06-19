@@ -37,7 +37,7 @@ export const RegionsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.getInstance().regionsGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.getInstance().regionsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((regions: CaseDbRegion[]) => {

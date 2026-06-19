@@ -50,7 +50,7 @@ export const UserAccessCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, userOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.getInstance().userAccessCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.getInstance().userAccessCasePoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbUserAccessCasePolicy) => {

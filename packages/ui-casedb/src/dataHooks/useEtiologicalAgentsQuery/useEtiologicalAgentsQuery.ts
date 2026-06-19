@@ -17,7 +17,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useEtiologicalAgentsQuery = (): UseQueryResult<CaseDbEtiologicalAgent[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbOntologyApi.getInstance().etiologicalAgentsGetAll({ signal });
+      const response = await CaseDbOntologyApi.getInstance().etiologicalAgentsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.ETIOLOGICAL_AGENTS),

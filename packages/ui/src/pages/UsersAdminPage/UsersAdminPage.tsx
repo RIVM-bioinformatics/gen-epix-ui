@@ -95,7 +95,7 @@ export const UsersAdminPage = ({
   }, [inviteUserConstraintsQuery.data, userRoles]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    const users = (await ApiManager.getInstance().organizationApi.usersGetAll({ signal }))?.data;
+    const users = (await ApiManager.getInstance().organizationApi.usersGetAll(null, null, { signal }))?.data;
 
     return users;
   }, []);
@@ -215,6 +215,7 @@ export const UsersAdminPage = ({
         formFieldDefinitions={formFieldDefinitions}
         getName={getName}
         getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+        itemName={t`User`}
         loadables={loadables}
         onRowsChange={onRowsChange}
         resourceQueryKeyBase={COMMON_QUERY_KEY.USERS}
@@ -222,7 +223,6 @@ export const UsersAdminPage = ({
         subPages={subPages}
         tableColumns={tableColumns}
         testIdAttributes={TestIdUtil.createAttributes('UsersAdminPage')}
-        itemName={t`User`}
         title={t`Users`}
         updateOne={updateOne}
       />

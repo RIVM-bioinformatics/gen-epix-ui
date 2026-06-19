@@ -16,7 +16,7 @@ import { ApiManager } from '../../classes/managers/ApiManager';
 export const useOrganizationsQuery = (): UseQueryResult<CommonDbOrganization[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiManager.getInstance().organizationApi.organizationsGetAll({ signal });
+      const response = await ApiManager.getInstance().organizationApi.organizationsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS),

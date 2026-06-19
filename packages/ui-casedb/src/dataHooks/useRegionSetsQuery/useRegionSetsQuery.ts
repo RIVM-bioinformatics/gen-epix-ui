@@ -17,7 +17,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useRegionSetsQuery = (): UseQueryResult<CaseDbRegionSet[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbGeoApi.getInstance().regionSetsGetAll({ signal });
+      const response = await CaseDbGeoApi.getInstance().regionSetsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS),

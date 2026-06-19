@@ -242,12 +242,14 @@ export const PhylogeneticTreeComponent = ({
       treeHeight,
     });
 
+    const positionYChanged = newPositionY !== canvasScrollSubject.data.y;
+
     canvasScrollSubject.next({
       x: newPositionX,
       y: newPositionY,
     });
 
-    if (isLinked && internalZoomLevel === 1) {
+    if (isLinked && internalZoomLevel === 1 && positionYChanged) {
       updateExternalScrollSubjectDebounced(newPositionY);
     }
   }, [canvasScrollSubject, devicePixelRatio, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, updateExternalScrollSubjectDebounced]);

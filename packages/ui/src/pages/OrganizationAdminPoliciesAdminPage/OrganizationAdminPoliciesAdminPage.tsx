@@ -36,7 +36,7 @@ export const OrganizationAdminPoliciesAdminPage = () => {
   const loadables = useArray([organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().abacApi.organizationAdminPoliciesGetAll({ signal }))?.data;
+    return (await ApiManager.getInstance().abacApi.organizationAdminPoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOrganizationAdminPolicy) => {

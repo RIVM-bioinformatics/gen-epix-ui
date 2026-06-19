@@ -50,7 +50,7 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.getInstance().organizationShareCasePoliciesGetAll({ signal }))?.data;
+    return (await CaseDbAbacApi.getInstance().organizationShareCasePoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbOrganizationShareCasePolicy) => {

@@ -52,7 +52,7 @@ export const CaseTypeSetsAdminPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal): Promise<CaseDbCaseTypeSet[]> => {
-    const caseTypesSets = (await CaseDbCaseApi.getInstance().caseTypeSetsGetAll({ signal }))?.data;
+    const caseTypesSets = (await CaseDbCaseApi.getInstance().caseTypeSetsGetAll(null, null, { signal }))?.data;
     return caseTypesSets;
   }, []);
 

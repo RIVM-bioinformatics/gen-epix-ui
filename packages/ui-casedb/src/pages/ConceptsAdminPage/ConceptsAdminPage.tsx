@@ -36,7 +36,7 @@ export const ConceptsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().conceptsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.getInstance().conceptsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((concepts: CaseDbConcept[]) => {

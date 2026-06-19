@@ -44,7 +44,7 @@ export const RegionSetShapesAdminPage = () => {
   const loadables = useArray([regionSetsMapQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.getInstance().regionSetShapesGetAll({ signal }))?.data;
+    return (await CaseDbGeoApi.getInstance().regionSetShapesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((regionSetShapes: CaseDbRegionSetShape[]) => {

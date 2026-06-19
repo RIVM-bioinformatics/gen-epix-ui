@@ -53,7 +53,7 @@ export const DimsAdminPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, refDimOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().dimsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().dimsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((dims: CaseDbDim[]) => {

@@ -20,7 +20,7 @@ import { ApiManager } from '../../classes/managers/ApiManager';
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrganizationAdminPolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiManager.getInstance().abacApi.organizationAdminPoliciesGetAll({ signal });
+      const response = await ApiManager.getInstance().abacApi.organizationAdminPoliciesGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
