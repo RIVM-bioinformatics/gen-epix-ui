@@ -29,6 +29,10 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { produce } from 'immer';
+import {
+  format,
+  parseISO,
+} from 'date-fns';
 import type {
   CaseDbCase,
   CaseDbCaseIdAndDate,
@@ -45,6 +49,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   ConfigManager,
+  DATE_FORMAT,
   FORM_FIELD_DEFINITION_TYPE,
   GenericForm,
   QueryClientManager,
@@ -59,9 +64,9 @@ import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+import type { FindSimilarCasesChartDataPoint } from '../../../models/epi';
 
-import type { SimilarCasesDateRangeChartDataPoint } from './SimilarCasesDateRangeChart';
-import { SimilarCasesDateRangeChart } from './SimilarCasesDateRangeChart';
+import { EpiFindSimilarCasesDialogDateRangeChart } from './EpiFindSimilarCasesDialogDateRangeChart';
 
 
 export interface EpiFindSimilarCasesDialogOpenProps {
@@ -184,7 +189,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     queryKey: [QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
-  const chartData = useMemo<SimilarCasesDateRangeChartDataPoint[]>(() => {
+  const chartData = useMemo<FindSimilarCasesChartDataPoint[]>(() => {
     if (!query.data) {
       return [];
     }
@@ -212,11 +217,12 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       if (!c.case_date) {
         return false;
       }
-      return c.case_date >= startDate && c.case_date <= endDate;
+      const caseDateOnly = format(parseISO(c.case_date), DATE_FORMAT.DATE);
+      return caseDateOnly >= startDate && caseDateOnly <= endDate;
     });
   }, [query.data, formValues.dateRange]);
 
-  const similarCaseIdsNotInView = useMemo<string[]>(() => {
+  const similarCaseIdsNotInLineListWithDateFilter = useMemo<string[]>(() => {
     const allRowIds = openProps.allRows.map(x => x.id);
     return filteredCases.reduce<string[]>((acc, caseIdAndDate) => {
       const caseId = caseIdAndDate.id;
@@ -227,7 +233,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     }, []);
   }, [filteredCases, openProps.allRows]);
 
-  const similarCaseIdsAlreadyInView = useMemo<string[]>(() => {
+  const similarCaseIdsAlreadyInLineListWithDateFilter = useMemo<string[]>(() => {
     const allRowIds = openProps.allRows.map(x => x.id);
     return filteredCases.reduce<string[]>((acc, caseIdAndDate) => {
       const caseId = caseIdAndDate.id;
@@ -246,13 +252,13 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         distance: formData?.maxDistance,
         key: findSimilarCasesResults.length.toString(),
         originalCaseIds: openProps.allRows.map(x => x.id),
-        similarCaseIds: similarCaseIdsNotInView,
+        similarCaseIds: similarCaseIdsNotInLineListWithDateFilter,
       });
       return draft;
     }));
 
     onClose();
-  }, [setFindSimilarCasesResults, findSimilarCasesResults, onClose, similarCaseIdsNotInView, formData?.maxDistance, formData?.treeColId, openProps.allRows]);
+  }, [setFindSimilarCasesResults, findSimilarCasesResults, onClose, similarCaseIdsNotInLineListWithDateFilter, formData?.maxDistance, formData?.treeColId, openProps.allRows]);
 
   useEffect(() => {
     const actions: DialogAction[] = [];
@@ -263,17 +269,16 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       onClick: onClose,
       variant: 'outlined',
     });
-    if (similarCaseIdsNotInView.length > 0) {
-      actions.push({
-        ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-addSimilarCasesButton'),
-        color: 'secondary',
-        label: t('Add {{count}} similar cases to line list', { count: similarCaseIdsNotInView.length }),
-        onClick: onAddToLineListButtonClick,
-        variant: 'contained',
-      });
-    }
+    actions.push({
+      ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-addSimilarCasesButton'),
+      color: 'secondary',
+      disabled: similarCaseIdsNotInLineListWithDateFilter.length === 0,
+      label: t('Add {{count}} similar cases to line list', { count: similarCaseIdsNotInLineListWithDateFilter.length }),
+      onClick: onAddToLineListButtonClick,
+      variant: 'contained',
+    });
     onActionsChange(actions);
-  }, [formId, onActionsChange, onAddToLineListButtonClick, onClose, similarCaseIdsNotInView.length, t]);
+  }, [formId, onActionsChange, onAddToLineListButtonClick, onClose, similarCaseIdsNotInLineListWithDateFilter.length, t]);
 
   return (
     <Box>
@@ -337,34 +342,32 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
                   marginY: 2,
                 }}
               >
-                <SimilarCasesDateRangeChart<FormFields>
+                <EpiFindSimilarCasesDialogDateRangeChart<FormFields>
                   control={control}
                   data={chartData}
                   name={'dateRange'}
                 />
               </Box>
             )}
-            {similarCaseIdsNotInView.length !== query.data.cases.length && (
-              <Box
-                sx={{
-                  marginY: 2,
-                }}
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
+              <Alert
+                severity={'info'}
               >
-                <Alert
-                  severity={'info'}
-                >
-                  <AlertTitle>
-                    {t('{{count}} similar cases can be added to the line list.', { count: similarCaseIdsNotInView.length })}
-                  </AlertTitle>
-                </Alert>
-              </Box>
-            )}
-            {similarCaseIdsAlreadyInView.length > 0 && (
+                <AlertTitle>
+                  {t('{{count}} similar cases can be added to the line list.', { count: similarCaseIdsNotInLineListWithDateFilter.length })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+            {similarCaseIdsAlreadyInLineListWithDateFilter.length > 0 && (
               <Alert
                 severity={'warning'}
               >
                 <AlertTitle>
-                  {t('{{count}} similar cases found that are already in the line list.', { count: similarCaseIdsAlreadyInView.length })}
+                  {t('{{count}} similar cases found that are already in the line list.', { count: similarCaseIdsAlreadyInLineListWithDateFilter.length })}
                 </AlertTitle>
               </Alert>
             )}
