@@ -173,6 +173,7 @@ export default defineConfig({
               { browser: 'chromium' },
             ],
             provider: playwright(),
+            screenshotDirectory: join(__dirname, '__screenshots__'),
             viewport: {
               height: 1080,
               width: 1920,

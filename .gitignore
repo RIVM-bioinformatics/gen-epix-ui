@@ -6,3 +6,4 @@ cert/*
 oidc-mock-server.config.json
 .npmrc
 .vitest-attachments
+__screenshots__

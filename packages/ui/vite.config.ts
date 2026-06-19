@@ -153,11 +153,6 @@ export default defineConfig({
             'src/**/*.test.ts',
           ],
           name: 'unit',
-          server: {
-            deps: {
-              inline: ['@mui/material', 'react-transition-group'],
-            },
-          },
           setupFiles: ['./src/test/setup/setup-jsdom.ts'],
           testTimeout: 5000,
         },
@@ -175,6 +170,7 @@ export default defineConfig({
               { browser: 'chromium' },
             ],
             provider: playwright(),
+            screenshotDirectory: join(__dirname, '__screenshots__'),
             viewport: {
               height: 1080,
               width: 1920,
