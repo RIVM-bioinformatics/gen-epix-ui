@@ -8,6 +8,7 @@ export * from './utils/FileUtil';
 export * from './utils/EpiUploadUtil';
 export * from './utils/EpiTreeUtil';
 export * from './utils/EpiMapUtil';
+export * from './utils/EpiFindSimilarCasesUtil';
 export * from './utils/EpiFilterUtil';
 export * from './utils/EpiDashboardUtil';
 export * from './utils/EpiCurveUtil';
