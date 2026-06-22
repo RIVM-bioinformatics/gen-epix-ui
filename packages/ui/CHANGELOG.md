@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.4.2...ui-v2.5.0) (2026-06-22)
+
+
+### Features
+
+* add add-to-event button directly in linelist ([37ce9eb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/37ce9eb2e1a307ca7337ec04f779081717c688a9))
+* add copy version information to clipboard button ([4b8d758](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4b8d7584c1e83625f607eb2dff56a1b2af2de0fb))
+* add select all to auto complete ([24133e5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/24133e525269e69875ce844db09e8ede61cbaa51))
+* add singular item name to crud page items ([b2da758](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b2da758ecc770bd07b2ceb71ba183be1ee473afe))
+* allow filtering on selecting cases through legend ([af1cf56](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af1cf56747cef89f5dd31303b4c23bff9b83f854))
+* implement clone button to items on the admin pages ([33358eb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/33358eb020a94f1044522a44855acfc4125cd33d))
+* update all dependencies to latest, fix all tests, add null pagination ([7d99f59](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7d99f599eb40a42d38b6bf7d5439c46ce0925cac))
+
+
+### Bug Fixes
+
+* add @microsoft/api-extractor as dependency ([26f2a2e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/26f2a2ee48b4e40318cc1e2ecdca295ce2770285))
+* disable backdrop for menu's and implement custom click away ([2bf060f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2bf060f13a0dcf0d165832a72947ab3c65f9bde3))
+* fix publish config in api-* packages and fix bug in unplug-dts path calculation ([27c21af](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/27c21af720e64633d912ebafae8a346785012316))
+* fix test runner and update tests ([87c0c17](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/87c0c17dd8ff808fe2d549d56f2ad65d96b5d8c3))
+* remove ROLE_ prefix in user invitations ([8bfc909](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8bfc909eaca138f9ee0520cc1e18fcb5aa862d99))
+* update dependencies react-hook-form and uuid ([e73eadc](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e73eadc5eebacce2f5335b5a378ace2d735308a7))
+
 ## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.4.1...ui-v2.4.2) (2026-06-12)
 
 

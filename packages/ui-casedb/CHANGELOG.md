@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.4.2...ui-casedb-v2.5.0) (2026-06-22)
+
+
+### Features
+
+* add add-to-event button directly in linelist ([37ce9eb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/37ce9eb2e1a307ca7337ec04f779081717c688a9))
+* add select all to auto complete ([24133e5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/24133e525269e69875ce844db09e8ede61cbaa51))
+* add singular item name to crud page items ([b2da758](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b2da758ecc770bd07b2ceb71ba183be1ee473afe))
+* allow filtering on selecting cases through legend ([af1cf56](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af1cf56747cef89f5dd31303b4c23bff9b83f854))
+* filter similar cases by case date ([#145](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/145)) ([72451eb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/72451eb6d8d6070d6222e26005b069759a600077))
+* update all dependencies to latest, fix all tests, add null pagination ([7d99f59](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7d99f599eb40a42d38b6bf7d5439c46ce0925cac))
+
+
+### Bug Fixes
+
+* add @microsoft/api-extractor as dependency ([26f2a2e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/26f2a2ee48b4e40318cc1e2ecdca295ce2770285))
+* fix multiple export of same types ([80aaded](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/80aaded81106af60887423c3d3fc9a188fd8a173))
+* fix publish config in api-* packages and fix bug in unplug-dts path calculation ([27c21af](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/27c21af720e64633d912ebafae8a346785012316))
+* fix test runner and update tests ([87c0c17](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/87c0c17dd8ff808fe2d549d56f2ad65d96b5d8c3))
+* groupable columns now adhere to correct soring order as defined in complete case type ([8234961](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8234961386d090521993ace8c200ce28fdff6e67))
+* pylogenetic tree is now clamped to the edges even when the width of the canvas changes ([dfb5597](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/dfb559759f736ecf5c1e0aa411db9de7e32671f5))
+* update dependencies react-hook-form and uuid ([e73eadc](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e73eadc5eebacce2f5335b5a378ace2d735308a7))
+
 ## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.4.1...ui-casedb-v2.4.2) (2026-06-12)
 
 
