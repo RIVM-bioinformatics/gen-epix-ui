@@ -79,6 +79,7 @@
     "@gen-epix/eslint-config": "0.4.0",
     "@gen-epix/translation-util": "0.1.1",
     "@gen-epix/ui": "workspace:^",
+    "@microsoft/api-extractor": "7.58.9",
     "@mui/icons-material": "9.1.1",
     "@mui/material": "9.0.1",
     "@mui/styled-engine": "9.1.1",
