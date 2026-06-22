@@ -55,6 +55,7 @@ export const createIndex = () => {
 };
 
 // https://vitejs.dev/config/
+// eslint-disable-next-line import-x/no-default-export
 export default defineConfig({
   build: {
     copyPublicDir: false,
@@ -93,7 +94,9 @@ export default defineConfig({
           filePath,
         };
       },
-      bundleTypes: true,
+      bundleTypes: {
+        extractorConfig: { mainEntryPointFilePath: '<projectFolder>/dist/src/index.d.ts' },
+      } as unknown,
       insertTypesEntry: true,
       tsconfigPath: './tsconfig.build.json',
     }),
