@@ -4,7 +4,8 @@ import {
   it,
 } from 'vitest';
 
-import type { FindSimilarCasesChartDataPoint } from './EpiFindSimilarCasesUtil';
+import type { FindSimilarCasesChartDataPoint } from '../../models/epi';
+
 import { EpiFindSimilarCasesUtil } from './EpiFindSimilarCasesUtil';
 
 const pt = (date: string, count: number): FindSimilarCasesChartDataPoint => ({ count, date });

@@ -23,12 +23,6 @@ import type {
   FindSimilarCasesChartInterval,
 } from '../../models/epi';
 
-export type {
-  FindSimilarCasesChartDataPoint,
-  FindSimilarCasesChartGranularity,
-  FindSimilarCasesChartInterval,
-};
-
 export class EpiFindSimilarCasesUtil {
   public static buildChartIntervals(data: FindSimilarCasesChartDataPoint[]): FindSimilarCasesChartInterval[] {
     if (data.length === 0) {
