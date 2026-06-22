@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.4.2...ui-seqdb-v2.5.0) (2026-06-22)
+
+
+### Features
+
+* update all dependencies to latest, fix all tests, add null pagination ([7d99f59](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7d99f599eb40a42d38b6bf7d5439c46ce0925cac))
+
+
+### Bug Fixes
+
+* add @microsoft/api-extractor as dependency ([26f2a2e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/26f2a2ee48b4e40318cc1e2ecdca295ce2770285))
+* fix publish config in api-* packages and fix bug in unplug-dts path calculation ([27c21af](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/27c21af720e64633d912ebafae8a346785012316))
+* fix test runner and update tests ([87c0c17](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/87c0c17dd8ff808fe2d549d56f2ad65d96b5d8c3))
+
 ## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.4.1...ui-seqdb-v2.4.2) (2026-06-12)
 
 
