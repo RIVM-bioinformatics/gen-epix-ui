@@ -3,6 +3,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import type { ReactElement } from 'react';
 import {
@@ -25,7 +26,10 @@ import type {
   Path,
 } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
-import { useTheme } from '@mui/material';
+import {
+  Box,
+  useTheme,
+} from '@mui/material';
 
 import { EpiFindSimilarCasesUtil } from '../../../utils/EpiFindSimilarCasesUtil';
 import type { FindSimilarCasesChartDataPoint } from '../../../models/epi';
@@ -57,6 +61,7 @@ export const EpiFindSimilarCasesDialogDateRangeChart = <
 }: EpiFindSimilarCasesDialogDateRangeChartProps<TFieldValues, TName>): ReactElement => {
   const intervals = useMemo(() => EpiFindSimilarCasesUtil.buildChartIntervals(data), [data]);
   const theme = useTheme();
+  const [tooltipState, setTooltipState] = useState<{ content: string; x: number; y: number } | null>(null);
 
   const intervalsRef = useRef(intervals);
   useEffect(() => {
@@ -112,7 +117,7 @@ export const EpiFindSimilarCasesDialogDateRangeChart = <
     }],
     grid: { bottom: 110, left: 80, right: 80, top: 0 },
     series: [{ data: intervals.map(i => i.count), type: 'bar' }],
-    tooltip: { trigger: 'axis' },
+    tooltip: { show: false },
     xAxis: { axisLabel: {
       height: 100,
       rotate: 45,
@@ -126,6 +131,16 @@ export const EpiFindSimilarCasesDialogDateRangeChart = <
 
   const onEvents = useMemo(() => ({
     datazoom: onDataZoom,
+    mouseout: () => {
+      setTooltipState(null);
+    },
+    mouseover: (event: unknown) => {
+      const e = event as { event?: { event?: MouseEvent }; name?: string; value?: number };
+      const mouseEvent = e.event?.event;
+      if (mouseEvent && e.name !== null && e.name !== undefined) {
+        setTooltipState({ content: `${e.name} (n=${e.value ?? 0})`, x: mouseEvent.clientX + 12, y: mouseEvent.clientY + 12 });
+      }
+    },
   }), [onDataZoom]);
 
   const renderChart = useCallback(({ field: { onChange } }: { field: { onChange: (value: [string, string] | null) => void } }) => {
@@ -142,10 +157,32 @@ export const EpiFindSimilarCasesDialogDateRangeChart = <
   }, [onEvents, option]);
 
   return (
-    <Controller
-      control={control}
-      name={name}
-      render={renderChart}
-    />
+    <>
+      <Controller
+        control={control}
+        name={name}
+        render={renderChart}
+      />
+      {tooltipState && (
+        <Box
+          sx={{
+            bgcolor: 'background.paper',
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 1,
+            fontSize: 12,
+            left: tooltipState.x,
+            pointerEvents: 'none',
+            position: 'fixed',
+            px: 1,
+            py: 0.5,
+            top: tooltipState.y,
+            zIndex: 'tooltip',
+          }}
+        >
+          {tooltipState.content}
+        </Box>
+      )}
+    </>
   );
 };
