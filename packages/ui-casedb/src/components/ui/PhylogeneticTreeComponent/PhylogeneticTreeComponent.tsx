@@ -650,7 +650,7 @@ export const PhylogeneticTreeComponent = ({
     treeCanvas.addEventListener('mousedown', onMouseDown);
     treeCanvas.addEventListener('mouseup', onMouseUp);
     treeCanvas.addEventListener('mouseout', onMouseOut);
-    treeCanvas.addEventListener('wheel', onMouseWheel);
+    treeCanvas.addEventListener('wheel', onMouseWheel, { passive: false });
 
     return () => {
       treeCanvas.removeEventListener('mousemove', onMouseMove);
