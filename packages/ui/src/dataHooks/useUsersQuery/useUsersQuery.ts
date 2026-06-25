@@ -17,7 +17,7 @@ import { ApiManager } from '../../classes/managers/ApiManager';
 export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiManager.getInstance().organizationApi.usersGetAll({ signal });
+      const response = await ApiManager.getInstance().organizationApi.usersGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.USERS),

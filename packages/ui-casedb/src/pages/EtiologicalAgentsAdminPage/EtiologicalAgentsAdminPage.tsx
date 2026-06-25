@@ -37,7 +37,7 @@ export const EtiologicalAgentsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().etiologicalAgentsGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.getInstance().etiologicalAgentsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbEtiologicalAgent) => {

@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v2.3.2...api-commondb-v2.4.0) (2026-06-22)
+
+
+### Features
+
+* filter similar cases by case date ([#145](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/145)) ([72451eb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/72451eb6d8d6070d6222e26005b069759a600077))
+* update all dependencies to latest, fix all tests, add null pagination ([7d99f59](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7d99f599eb40a42d38b6bf7d5439c46ce0925cac))
+
+
+### Bug Fixes
+
+* add @microsoft/api-extractor as dependency ([26f2a2e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/26f2a2ee48b4e40318cc1e2ecdca295ce2770285))
+* fix multiple export of same types ([80aaded](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/80aaded81106af60887423c3d3fc9a188fd8a173))
+* fix publish config in api-* packages and fix bug in unplug-dts path calculation ([27c21af](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/27c21af720e64633d912ebafae8a346785012316))
+
 ## [2.3.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v2.3.1...api-commondb-v2.3.2) (2026-06-12)
 
 

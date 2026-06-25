@@ -34,7 +34,7 @@ export const DataCollectionsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.getInstance().dataCollectionsGetAll({ signal }))?.data;
+    return (await CaseDbOrganizationApi.getInstance().dataCollectionsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbDataCollection) => {

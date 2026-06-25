@@ -12,7 +12,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useDataCollectionSetMembersQuery = (): UseQueryResult<CaseDbDataCollectionSetMember[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbOrganizationApi.getInstance().dataCollectionSetMembersGetAll({ signal });
+      const response = await CaseDbOrganizationApi.getInstance().dataCollectionSetMembersGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS),

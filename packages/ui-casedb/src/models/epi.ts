@@ -154,6 +154,20 @@ export type EpiUploadTableRow = {
   [key: string]: string;
 };
 
+export type FindSimilarCasesChartDataPoint = {
+  count: number;
+  date: string;
+};
+
+export type FindSimilarCasesChartGranularity = 'day' | 'month' | 'quarter' | 'year';
+
+export type FindSimilarCasesChartInterval = {
+  count: number;
+  endDate: string;
+  label: string;
+  startDate: string;
+};
+
 export type FindSimilarCasesResult = {
   colId: string;
   distance: number;

@@ -95,7 +95,9 @@ export default defineConfig({
           filePath,
         };
       },
-      bundleTypes: true,
+      bundleTypes: {
+        extractorConfig: { mainEntryPointFilePath: '<projectFolder>/dist/src/index.d.ts' },
+      } as unknown,
       insertTypesEntry: true,
       tsconfigPath: './tsconfig.build.json',
     }),
@@ -170,6 +172,7 @@ export default defineConfig({
               { browser: 'chromium' },
             ],
             provider: playwright(),
+            screenshotDirectory: join(__dirname, '__screenshots__'),
             viewport: {
               height: 1080,
               width: 1920,

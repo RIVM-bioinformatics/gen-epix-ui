@@ -38,7 +38,7 @@ const makeCompleteCaseType = (
   dims: CaseDbCompleteCaseType['dims'] = { dim1: { id: 'dim1' } } as unknown as CaseDbCompleteCaseType['dims'],
 ): CaseDbCompleteCaseType => {
   const colsMap = Object.fromEntries(cols.map(c => [c.id, c]));
-  const orderedColIds = Object.fromEntries(cols.map((c, i) => [String(i), c.id]));
+  const orderedColIds = cols.map(c => c.id);
   return { cols: colsMap, dims, ordered_col_ids: orderedColIds, ref_cols: refCols } as unknown as CaseDbCompleteCaseType;
 };
 
@@ -208,7 +208,7 @@ describe('StratificationUtil', () => {
       expect(result.enabled).toBe(false);
     });
 
-    it('sorts columns alphabetically by label', () => {
+    it('preserves the ordered_col_ids ordering', () => {
       const colA = makeCol('ca', 'rca', 'Zebra');
       const colB = makeCol('cb', 'rcb', 'Apple');
       const cct = makeCompleteCaseType(
@@ -217,7 +217,7 @@ describe('StratificationUtil', () => {
       );
       const data = [makeCase('r1', 'ca', 'v1'), makeCase('r2', 'ca', 'v2'), makeCase('r1', 'cb', 'x1'), makeCase('r2', 'cb', 'x2')];
       const result = StratificationUtil.getStratifyableColumns({ completeCaseType: cct, data });
-      expect(result.map(r => r.col.label)).toEqual(['Apple', 'Zebra']);
+      expect(result.map(r => r.col.label)).toEqual(['Zebra', 'Apple']);
     });
   });
 

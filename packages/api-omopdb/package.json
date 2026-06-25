@@ -1,6 +1,6 @@
 {
   "name": "@gen-epix/api-omopdb",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "license": "EUPL-1.2",
   "repository": {
     "type": "git",
@@ -9,8 +9,8 @@
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
   "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "files": [
     "dist"
   ],
@@ -37,15 +37,16 @@
     "generate-api": "generate-api OMOPDB https://127.0.0.1:8002/openapi.json ./src"
   },
   "peerDependencies": {
-    "axios": "1.17.0"
+    "axios": "1.18.0"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.3.3",
+    "@gen-epix/eslint-config": "0.4.0",
     "@gen-epix/generate-api": "0.3.2",
     "@openapitools/openapi-generator-cli": "2.38.0",
     "@types/node": "25.9.3",
-    "axios": "1.17.0",
-    "eslint": "10.4.1",
+    "@microsoft/api-extractor": "7.58.9",
+    "axios": "1.18.0",
+    "eslint": "10.5.0",
     "typescript": "6.0.3",
     "vite": "8.0.16",
     "vite-plugin-dts": "5.0.2",

@@ -18,7 +18,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useConceptSetsQuery = (): UseQueryResult<CaseDbConceptSet[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbOntologyApi.getInstance().conceptSetsGetAll({ signal });
+      const response = await CaseDbOntologyApi.getInstance().conceptSetsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS),

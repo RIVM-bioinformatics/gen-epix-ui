@@ -1,4 +1,7 @@
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
+
 import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
+import { LogManager } from '../../classes/managers/LogManager';
 
 export class DownloadUtil {
   public static arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -50,6 +53,14 @@ export class DownloadUtil {
     formElement.appendChild(input);
 
     document.body.appendChild(formElement);
+
+    LogManager.getInstance().log([{
+      detail: kwArgs,
+      level: CommonDbLogLevel.INFO,
+      topic: 'MULTI_PART_FORM_DOWNLOAD',
+    }]);
+    console.log('Initiating multi-part form download with data:', kwArgs.data);
+
     formElement.submit();
     document.body.removeChild(formElement);
   }

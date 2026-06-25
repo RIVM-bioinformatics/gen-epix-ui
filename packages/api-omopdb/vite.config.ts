@@ -1,3 +1,4 @@
+/* eslint-disable import-x/no-default-export */
 import {
   defineConfig,
   esmExternalRequirePlugin,

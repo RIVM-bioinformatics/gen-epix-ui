@@ -64,7 +64,7 @@ export class EpiLineListCaseSetMembersManager {
         key: 'case_id',
         members: caseIdsToFetch,
         type: 'UUID_SET',
-      })).data;
+      }, null, null)).data;
 
       caseSetMembersResult.forEach((caseSetMember: CaseDbCaseSetMember) => {
         newCache[caseSetMember.case_id] = true;

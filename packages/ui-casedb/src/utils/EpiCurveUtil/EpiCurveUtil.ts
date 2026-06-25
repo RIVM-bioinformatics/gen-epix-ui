@@ -244,14 +244,6 @@ export class EpiCurveUtil {
   }
 
   /**
-   * Alias for backward compatibility
-   * @deprecated Use getBarChartItemsWithinInterval instead
-   */
-  public static getItemsWithinInterval(items: EpiCurveChartItem[], intervals: Date[], index: number): EpiCurveChartItem[] {
-    return EpiCurveUtil.getBarChartItemsWithinInterval(items, intervals, index);
-  }
-
-  /**
    * Creates normalized stacked area chart data (0-100%) with linear interpolation
    * @param items
    * @param xAxisIntervals

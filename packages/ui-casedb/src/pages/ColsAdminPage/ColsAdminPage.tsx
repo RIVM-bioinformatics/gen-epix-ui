@@ -92,7 +92,7 @@ export const ColsAdminPage = () => {
   }, [dimId, dimMapQuery.map, caseTypeId]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().colsGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().colsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((cols: CaseDbCol[]) => {

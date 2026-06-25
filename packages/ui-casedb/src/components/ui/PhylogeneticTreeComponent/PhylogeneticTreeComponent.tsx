@@ -242,12 +242,14 @@ export const PhylogeneticTreeComponent = ({
       treeHeight,
     });
 
+    const positionYChanged = newPositionY !== canvasScrollSubject.data.y;
+
     canvasScrollSubject.next({
       x: newPositionX,
       y: newPositionY,
     });
 
-    if (isLinked && internalZoomLevel === 1) {
+    if (isLinked && internalZoomLevel === 1 && positionYChanged) {
       updateExternalScrollSubjectDebounced(newPositionY);
     }
   }, [canvasScrollSubject, devicePixelRatio, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, updateExternalScrollSubjectDebounced]);
@@ -648,7 +650,7 @@ export const PhylogeneticTreeComponent = ({
     treeCanvas.addEventListener('mousedown', onMouseDown);
     treeCanvas.addEventListener('mouseup', onMouseUp);
     treeCanvas.addEventListener('mouseout', onMouseOut);
-    treeCanvas.addEventListener('wheel', onMouseWheel);
+    treeCanvas.addEventListener('wheel', onMouseWheel, { passive: false });
 
     return () => {
       treeCanvas.removeEventListener('mousemove', onMouseMove);

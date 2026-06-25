@@ -17,7 +17,7 @@ type Select = (data: CommonDbIdentifierIssuer[]) => CommonDbIdentifierIssuer[];
 export const useIdentifierIssuersQuery = (select?: Select): UseQueryResult<CommonDbIdentifierIssuer[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiManager.getInstance().organizationApi.identifierIssuersGetAll({ signal });
+      const response = await ApiManager.getInstance().organizationApi.identifierIssuersGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS),

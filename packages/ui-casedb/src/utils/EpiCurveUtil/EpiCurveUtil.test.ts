@@ -74,19 +74,6 @@ describe('EpiCurveUtil', () => {
     });
   });
 
-  describe('getItemsWithinInterval', () => {
-    it('matches getBarChartItemsWithinInterval for backward compatibility', () => {
-      const items: EpiCurveChartItem[] = [
-        { date: new Date('2024-01-01T00:00:00Z'), row: { id: 'a' } as CaseDbCase, value: 1 },
-      ];
-      const intervals = [new Date('2024-01-01T00:00:00Z')];
-
-      expect(EpiCurveUtil.getItemsWithinInterval(items, intervals, 0)).toEqual(
-        EpiCurveUtil.getBarChartItemsWithinInterval(items, intervals, 0),
-      );
-    });
-  });
-
   describe('getBarChartSeriesData', () => {
     const mockTheme = {
       palette: {

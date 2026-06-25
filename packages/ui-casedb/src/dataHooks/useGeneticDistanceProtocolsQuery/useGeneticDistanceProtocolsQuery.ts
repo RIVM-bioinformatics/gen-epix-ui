@@ -15,7 +15,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 export const useGeneticDistanceProtocolsQuery = (): UseQueryResult<CaseDbGeneticDistanceProtocol[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().geneticDistanceProtocolsGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().geneticDistanceProtocolsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.GENETIC_DISTANCE_PROTOCOLS),

@@ -9,6 +9,7 @@ import {
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  mixed,
   object,
   string,
 } from 'yup';
@@ -28,8 +29,13 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { produce } from 'immer';
+import {
+  format,
+  parseISO,
+} from 'date-fns';
 import type {
   CaseDbCase,
+  CaseDbCaseIdAndDate,
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
@@ -43,6 +49,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   ConfigManager,
+  DATE_FORMAT,
   FORM_FIELD_DEFINITION_TYPE,
   GenericForm,
   QueryClientManager,
@@ -57,6 +64,9 @@ import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+import type { FindSimilarCasesChartDataPoint } from '../../../models/epi';
+
+import { EpiFindSimilarCasesDialogDateRangeChart } from './EpiFindSimilarCasesDialogDateRangeChart';
 
 
 export interface EpiFindSimilarCasesDialogOpenProps {
@@ -73,6 +83,7 @@ export type EpiFindSimilarCasesDialogRefMethods = WithDialogRefMethods<EpiFindSi
 
 
 type FormFields = {
+  dateRange: [string, string] | null;
   maxDistance: number;
   treeColId: string;
 };
@@ -95,6 +106,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const [formData, setFormData] = useState<FormFields>(null);
 
   const schema = useMemo(() => object<FormFields>().shape({
+    dateRange: mixed<[string, string] | null>().nullable().default(null),
     maxDistance: SchemaUtil.number.required().positive().when('treeColId', ([treeColId], s) => {
       const currentTreeConfiguration = treeConfigurations.find(x => x.col.id === treeColId);
       if (!currentTreeConfiguration) {
@@ -123,6 +135,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema, undefined, { raw: true }) as Resolver<FormFields>,
     values: {
+      dateRange: null,
       maxDistance: 0,
       treeColId: treeConfiguration ? treeConfiguration.col.id : null,
     },
@@ -158,8 +171,9 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
   }, [t, onTitleChange]);
 
   const onFormSubmit = useCallback((data: FormFields) => {
-    setFormData(data);
-  }, []);
+    formMethods.setValue('dateRange', null);
+    setFormData({ ...data, dateRange: null });
+  }, [formMethods]);
 
   const query = useQueryMemo({
     enabled: !!formData,
@@ -175,21 +189,60 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
     queryKey: [QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
-  const similarCaseIdsNotInView = useMemo(() => {
+  const chartData = useMemo<FindSimilarCasesChartDataPoint[]>(() => {
     if (!query.data) {
       return [];
     }
-    const allRowIds = openProps.allRows.map(x => x.id);
-    return query.data.filter(x => !allRowIds.includes(x));
-  }, [query.data, openProps.allRows]);
+    const counts = new Map<string, number>();
+    for (const { case_date } of query.data.cases) {
+      if (case_date) {
+        counts.set(case_date, (counts.get(case_date) ?? 0) + 1);
+      }
+    }
+    return Array.from(counts.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, count]) => ({ count, date }));
+  }, [query.data]);
 
-  const similarCaseIdsAlreadyInView = useMemo(() => {
+  const filteredCases = useMemo<CaseDbCaseIdAndDate[]>(() => {
     if (!query.data) {
       return [];
     }
+    const dateRange = formValues.dateRange;
+    if (!dateRange) {
+      return query.data.cases;
+    }
+    const [startDate, endDate] = dateRange;
+    return query.data.cases.filter(c => {
+      if (!c.case_date) {
+        return false;
+      }
+      const caseDateOnly = format(parseISO(c.case_date), DATE_FORMAT.DATE);
+      return caseDateOnly >= startDate && caseDateOnly <= endDate;
+    });
+  }, [query.data, formValues.dateRange]);
+
+  const similarCaseIdsNotInLineListWithDateFilter = useMemo<string[]>(() => {
     const allRowIds = openProps.allRows.map(x => x.id);
-    return query.data.filter(x => allRowIds.includes(x));
-  }, [query.data, openProps.allRows]);
+    return filteredCases.reduce<string[]>((acc, caseIdAndDate) => {
+      const caseId = caseIdAndDate.id;
+      if (!allRowIds.includes(caseId)) {
+        acc.push(caseId);
+      }
+      return acc;
+    }, []);
+  }, [filteredCases, openProps.allRows]);
+
+  const similarCaseIdsAlreadyInLineListWithDateFilter = useMemo<string[]>(() => {
+    const allRowIds = openProps.allRows.map(x => x.id);
+    return filteredCases.reduce<string[]>((acc, caseIdAndDate) => {
+      const caseId = caseIdAndDate.id;
+      if (allRowIds.includes(caseId)) {
+        acc.push(caseId);
+      }
+      return acc;
+    }, []);
+  }, [filteredCases, openProps.allRows]);
 
   const onAddToLineListButtonClick = useCallback(async () => {
 
@@ -199,13 +252,13 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         distance: formData?.maxDistance,
         key: findSimilarCasesResults.length.toString(),
         originalCaseIds: openProps.allRows.map(x => x.id),
-        similarCaseIds: similarCaseIdsNotInView,
+        similarCaseIds: similarCaseIdsNotInLineListWithDateFilter,
       });
       return draft;
     }));
 
     onClose();
-  }, [setFindSimilarCasesResults, findSimilarCasesResults, onClose, similarCaseIdsNotInView, formData?.maxDistance, formData?.treeColId, openProps.allRows]);
+  }, [setFindSimilarCasesResults, findSimilarCasesResults, onClose, similarCaseIdsNotInLineListWithDateFilter, formData?.maxDistance, formData?.treeColId, openProps.allRows]);
 
   useEffect(() => {
     const actions: DialogAction[] = [];
@@ -216,17 +269,16 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       onClick: onClose,
       variant: 'outlined',
     });
-    if (similarCaseIdsNotInView.length > 0) {
-      actions.push({
-        ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-addSimilarCasesButton'),
-        color: 'secondary',
-        label: t('Add {{count}} similar cases to line list', { count: similarCaseIdsNotInView.length }),
-        onClick: onAddToLineListButtonClick,
-        variant: 'contained',
-      });
-    }
+    actions.push({
+      ...TestIdUtil.createAttributes('EpiFindSimilarCasesDialog-addSimilarCasesButton'),
+      color: 'secondary',
+      disabled: similarCaseIdsNotInLineListWithDateFilter.length === 0,
+      label: t('Add {{count}} similar cases to line list', { count: similarCaseIdsNotInLineListWithDateFilter.length }),
+      onClick: onAddToLineListButtonClick,
+      variant: 'contained',
+    });
     onActionsChange(actions);
-  }, [formId, onActionsChange, onAddToLineListButtonClick, onClose, similarCaseIdsNotInView.length, t]);
+  }, [formId, onActionsChange, onAddToLineListButtonClick, onClose, similarCaseIdsNotInLineListWithDateFilter.length, t]);
 
   return (
     <Box>
@@ -277,34 +329,45 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
               }}
             >
               <Alert
-                severity={query.data.length > 0 ? 'success' : 'warning'}
+                severity={query.data.cases.length > 0 ? 'success' : 'warning'}
               >
                 <AlertTitle>
-                  {t('Found {{count}} similar cases with a distance of {{distance}}.', { count: query.data.length, distance: formData?.maxDistance })}
+                  {t('Found {{count}} similar cases with a distance of {{distance}}.', { count: query.data.cases.length, distance: formData?.maxDistance })}
                 </AlertTitle>
               </Alert>
             </Box>
-            {similarCaseIdsNotInView.length !== query.data.length && (
+            {chartData.length > 0 && (
               <Box
                 sx={{
                   marginY: 2,
                 }}
               >
-                <Alert
-                  severity={'info'}
-                >
-                  <AlertTitle>
-                    {t('{{count}} similar cases can be added to the line list.', { count: similarCaseIdsNotInView.length })}
-                  </AlertTitle>
-                </Alert>
+                <EpiFindSimilarCasesDialogDateRangeChart<FormFields>
+                  control={control}
+                  data={chartData}
+                  name={'dateRange'}
+                />
               </Box>
             )}
-            {similarCaseIdsAlreadyInView.length > 0 && (
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
+              <Alert
+                severity={'info'}
+              >
+                <AlertTitle>
+                  {t('{{count}} similar cases can be added to the line list.', { count: similarCaseIdsNotInLineListWithDateFilter.length })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+            {similarCaseIdsAlreadyInLineListWithDateFilter.length > 0 && (
               <Alert
                 severity={'warning'}
               >
                 <AlertTitle>
-                  {t('{{count}} similar cases found that are already in the line list.', { count: similarCaseIdsAlreadyInView.length })}
+                  {t('{{count}} similar cases found that are already in the line list.', { count: similarCaseIdsAlreadyInLineListWithDateFilter.length })}
                 </AlertTitle>
               </Alert>
             )}

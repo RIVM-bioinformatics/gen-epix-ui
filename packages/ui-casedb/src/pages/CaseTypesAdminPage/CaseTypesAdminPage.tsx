@@ -62,7 +62,7 @@ export const CaseTypesAdminPage = () => {
   }, []);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().caseTypesGetAll({ signal }))?.data;
+    return (await CaseDbCaseApi.getInstance().caseTypesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseType) => {

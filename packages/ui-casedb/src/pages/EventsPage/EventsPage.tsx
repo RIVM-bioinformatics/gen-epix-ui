@@ -70,7 +70,7 @@ export const EventsPage = () => {
 
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetsGetAll({ signal });
+      const response = await CaseDbCaseApi.getInstance().caseSetsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),

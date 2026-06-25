@@ -37,7 +37,7 @@ export const DiseasesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().diseasesGetAll({ signal }))?.data;
+    return (await CaseDbOntologyApi.getInstance().diseasesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbDisease) => {

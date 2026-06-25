@@ -55,6 +55,7 @@ export const createIndex = () => {
 };
 
 // https://vitejs.dev/config/
+// eslint-disable-next-line import-x/no-default-export
 export default defineConfig({
   build: {
     copyPublicDir: false,
@@ -93,7 +94,9 @@ export default defineConfig({
           filePath,
         };
       },
-      bundleTypes: true,
+      bundleTypes: {
+        extractorConfig: { mainEntryPointFilePath: '<projectFolder>/dist/src/index.d.ts' },
+      } as unknown,
       insertTypesEntry: true,
       tsconfigPath: './tsconfig.build.json',
     }),
@@ -151,6 +154,11 @@ export default defineConfig({
             'src/**/*.test.ts',
           ],
           name: 'unit',
+          server: {
+            deps: {
+              inline: ['@mui/material', 'react-transition-group'],
+            },
+          },
           setupFiles: ['./src/test/setup/setup-jsdom.ts'],
           testTimeout: 5000,
         },
@@ -168,6 +176,7 @@ export default defineConfig({
               { browser: 'chromium' },
             ],
             provider: playwright(),
+            screenshotDirectory: join(__dirname, '__screenshots__'),
             viewport: {
               height: 1080,
               width: 1920,

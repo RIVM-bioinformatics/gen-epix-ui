@@ -34,7 +34,7 @@ export const OutagesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().systemApi.outagesGetAll({ signal }))?.data;
+    return (await ApiManager.getInstance().systemApi.outagesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOutage) => {
@@ -147,11 +147,11 @@ export const OutagesAdminPage = () => {
       fetchAll={fetchAll}
       formFieldDefinitions={formFieldDefinitions}
       getName={getName}
+      itemName={t`Outage`}
       resourceQueryKeyBase={COMMON_QUERY_KEY.OUTAGES}
       schema={schema}
       tableColumns={tableColumns}
       testIdAttributes={TestIdUtil.createAttributes('OutagesAdminPage')}
-      itemName={t`Outage`}
       title={t`Outages`}
       updateOne={updateOne}
     />
