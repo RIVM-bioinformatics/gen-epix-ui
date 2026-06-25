@@ -2,6 +2,8 @@ import { createStore } from 'zustand';
 import { t } from 'i18next';
 import type {
   CaseDbCaseBatchUploadResult,
+  CaseDbCaseForUpload,
+  CaseDbCaseUploadResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
@@ -16,8 +18,6 @@ import {
 } from '@gen-epix/ui';
 
 import type {
-  CaseForUploadWithGeneratedId,
-  CaseUploadResultWithGeneratedId,
   EpiUploadMappedColumn,
   EpiUploadSequenceMapping,
 } from '../../models/epi';
@@ -41,7 +41,7 @@ export const STEP_ORDER_BULK_EDIT = [
 
 export interface CreateEpiUploadStoreInitialStateKwArg {
   caseRightsColMap?: { [colId: string]: string[] };
-  casesForVerificationFromSourceData?: CaseForUploadWithGeneratedId[];
+  casesForVerificationFromSourceData?: CaseDbCaseForUpload[];
   completeCaseType?: CaseDbCompleteCaseType;
   goBackFromFirstStepCallback?: () => void;
   goBackFromFirstStepLabel?: string;
@@ -81,7 +81,7 @@ export interface EpiUploadStoreState {
   activeStep: EPI_UPLOAD_STEP;
   assemblyProtocolId: string;
   caseRightsColMap: { [colId: string]: string[] };
-  casesForVerificationFromSourceData: CaseForUploadWithGeneratedId[];
+  casesForVerificationFromSourceData: CaseDbCaseForUpload[];
   caseTypeId: string;
   cols: CaseDbCol[];
   completeCaseType: CaseDbCompleteCaseType;
@@ -99,7 +99,7 @@ export interface EpiUploadStoreState {
   onUploadComplete: (result: CaseDbCaseBatchUploadResult) => Promise<void> | void;
   rawData: string[][];
   sampleIdColId: string;
-  selectedGeneratedIdsForUpload: string[];
+  selectedIdsForUpload: string[];
   sequenceFilesDataTransfer: DataTransfer;
   sequenceMapping: EpiUploadSequenceMapping;
   sequencingProtocolId: string;
@@ -111,7 +111,7 @@ export interface EpiUploadStoreState {
   uploadCompleteButtonCallback: () => void;
   uploadCompleteButtonLabel: string;
   validateCasesQueryKey: string[];
-  validatedCasesWithGeneratedId: CaseUploadResultWithGeneratedId[];
+  validatedCases: CaseDbCaseUploadResult[];
 }
 
 
@@ -137,7 +137,7 @@ const createEpiUploadStoreInitialState: (kwArgs: CreateEpiUploadStoreKwArgs) => 
   onUploadComplete: kwArgs.onUploadComplete ?? null,
   rawData: null,
   sampleIdColId: null,
-  selectedGeneratedIdsForUpload: [],
+  selectedIdsForUpload: [],
   sequenceFilesDataTransfer: new DataTransfer(),
   sequenceMapping: {},
   sequencingProtocolId: null,
@@ -149,7 +149,7 @@ const createEpiUploadStoreInitialState: (kwArgs: CreateEpiUploadStoreKwArgs) => 
   uploadCompleteButtonCallback: kwArgs.uploadCompleteButtonCallback ?? null,
   uploadCompleteButtonLabel: kwArgs.uploadCompleteButtonLabel ?? null,
   validateCasesQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
-  validatedCasesWithGeneratedId: [],
+  validatedCases: [],
 });
 
 export const createEpiUploadStore = (kwArgs: CreateEpiUploadStoreKwArgs) => {
@@ -182,7 +182,7 @@ export const createEpiUploadStore = (kwArgs: CreateEpiUploadStoreKwArgs) => {
       },
 
       goToNextStep: async () => {
-        const { activeStep, completeCaseType, createdInDataCollectionId, mappedColumns, rawData, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCasesWithGeneratedId } = get();
+        const { activeStep, completeCaseType, createdInDataCollectionId, mappedColumns, rawData, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCases } = get();
 
         let nextStep = get().findNextStep(activeStep);
 
@@ -219,7 +219,7 @@ export const createEpiUploadStore = (kwArgs: CreateEpiUploadStoreKwArgs) => {
             });
           }
           if ((shouldResetSequenceMapping && sequenceMapping) || !sequenceMapping) {
-            set({ sequenceMapping: EpiUploadUtil.getEpiUploadSequenceMapping(completeCaseType, validatedCasesWithGeneratedId, sequenceFilesDataTransfer) });
+            set({ sequenceMapping: EpiUploadUtil.getEpiUploadSequenceMapping(completeCaseType, validatedCases, sequenceFilesDataTransfer) });
           }
           if (EpiUploadUtil.getSequenceMappingStats(get().sequenceMapping, sequenceFilesDataTransfer).numberOfFilesToMap === 0) {
             nextStep = get().findNextStep(nextStep);

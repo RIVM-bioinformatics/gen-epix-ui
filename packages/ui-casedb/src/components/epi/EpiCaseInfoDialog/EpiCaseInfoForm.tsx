@@ -17,6 +17,7 @@ import type {
   CaseDbCaseRights,
 } from '@gen-epix/api-casedb';
 import {
+  CaseDbCaseApi,
   CaseDbEtlStatus,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
@@ -29,7 +30,6 @@ import {
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import { EpiCaseContentForm } from '../EpiCaseContentForm';
-import { EpiUploadUtil } from '../../../utils/EpiUploadUtil';
 
 export type EpiCaseInfoFormProps = {
   readonly caseRights: CaseDbCaseRights;
@@ -69,7 +69,7 @@ export const EpiCaseInfoForm = ({ caseRights, epiCase, formId, onFinish, onIsSav
       });
       try {
         await QueryClientManager.getInstance().cancelQueries(queryKeys);
-        const uploadResult = (await EpiUploadUtil.uploadCasesWithMultipleCreatedInDataCollectionIds({
+        const uploadResult = (await CaseDbCaseApi.getInstance().uploadCases({
           case_batch: {
             cases: [
               {
@@ -83,9 +83,8 @@ export const EpiCaseInfoForm = ({ caseRights, epiCase, formId, onFinish, onIsSav
             ],
           },
           case_type_id: completeCaseType.id,
-          created_in_data_collection_id: epiCase.created_in_data_collection_id,
           on_exists: CaseDbUploadAction.UPDATE,
-        }));
+        })).data;
         if (uploadResult.status !== CaseDbEtlStatus.SKIPPED && uploadResult.status !== CaseDbEtlStatus.SUCCESS && uploadResult.status !== CaseDbEtlStatus.UPDATED) {
           throw new Error('Case upload failed');
         }

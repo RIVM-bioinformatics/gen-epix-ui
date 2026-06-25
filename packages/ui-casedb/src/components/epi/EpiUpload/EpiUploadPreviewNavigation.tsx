@@ -2,9 +2,9 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { use } from 'react';
 import { useTableStoreContext } from '@gen-epix/ui';
+import type { CaseDbCaseUploadResult } from '@gen-epix/api-casedb';
 
 import { EpiUploadStoreContext } from '../../../stores/epiUploadStore';
-import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 
 import { EpiUploadNavigation } from './EpiUploadNavigation';
 
@@ -15,7 +15,7 @@ export type EpiUploadPreviewNavigationProps = {
 
 export const EpiUploadPreviewNavigation = ({ onGoBackButtonClick, onProceedButtonClick }: EpiUploadPreviewNavigationProps) => {
   const { t } = useTranslation();
-  const tableStore = useTableStoreContext<CaseUploadResultWithGeneratedId>();
+  const tableStore = useTableStoreContext<CaseDbCaseUploadResult>();
   const uploadStore = use(EpiUploadStoreContext);
 
   const completeCaseType = useStore(uploadStore, (state) => state.completeCaseType);

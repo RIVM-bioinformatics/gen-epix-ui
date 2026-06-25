@@ -87,7 +87,7 @@ export class FormUtil {
           break;
       }
     });
-    return ObjectUtil.deepRemoveEmptyStrings(content);
+    return ObjectUtil.deepNullifyEmptyStrings(content);
   }
 
   public static getFieldErrorMessage<TFormFields extends FieldValues>(fieldErrors: Partial<FieldErrorsImpl<DeepRequired<TFormFields>>>, fieldName: string): string {

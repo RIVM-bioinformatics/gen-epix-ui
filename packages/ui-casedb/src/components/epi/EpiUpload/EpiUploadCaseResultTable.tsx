@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import type {
   CaseDbCase,
   CaseDbCaseDataIssue,
+  CaseDbCaseUploadResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
@@ -39,7 +40,6 @@ import {
   useInitializeTableStore,
 } from '@gen-epix/ui';
 
-import type { CaseUploadResultWithGeneratedId } from '../../../models/epi';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import type { EpiCaseContentFormDialogRefMethods } from '../EpiCaseContentFormDialog';
 import { EpiCaseContentFormDialog } from '../EpiCaseContentFormDialog';
@@ -50,12 +50,12 @@ import { EpiUploadEditColumnValuesDialog } from './EpiUploadEditColumnValuesDial
 
 export type EpiUploadCaseResultTableProps = {
   readonly caseRightsColMap?: { [colId: string]: string[] };
-  readonly caseUploadResults?: CaseUploadResultWithGeneratedId[];
+  readonly caseUploadResults?: CaseDbCaseUploadResult[];
   readonly completeCaseType: CaseDbCompleteCaseType;
-  readonly getOriginalCellValue: (col: CaseDbCol, cellParams: TableRowAndColumnParams<CaseUploadResultWithGeneratedId, null>, issue: CaseDbCaseDataIssue) => string;
+  readonly getOriginalCellValue: (col: CaseDbCol, cellParams: TableRowAndColumnParams<CaseDbCaseUploadResult, null>, issue: CaseDbCaseDataIssue) => string;
   readonly onCaseContentEditSubmit: (caseId: string, content: CaseDbCase['content']) => void;
   readonly onColContentEditSubmit: (contentPerCaseId: { [caseId: string]: CaseDbCase['content'] }) => void;
-  readonly tableStore: StoreApi<TableStore<CaseUploadResultWithGeneratedId>>;
+  readonly tableStore: StoreApi<TableStore<CaseDbCaseUploadResult>>;
 };
 
 export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, completeCaseType, getOriginalCellValue, onCaseContentEditSubmit, onColContentEditSubmit, tableStore }: EpiUploadCaseResultTableProps) => {
@@ -63,13 +63,6 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
   const { t } = useTranslation();
   const epiCaseFormDialogRef = useRef<EpiCaseContentFormDialogRefMethods>(null);
   const epiUploadEditColumnValuesDialogRef = useRef<EpiUploadEditColumnValuesDialogRefMethods>(null);
-
-  const rowsWithGeneratedId = useMemo<CaseUploadResultWithGeneratedId[]>(() => {
-    return (caseUploadResults || []).map((vc, index) => ({
-      ...vc,
-      generatedId: vc.id || index.toString(),
-    }));
-  }, [caseUploadResults]);
 
   const dataRulePriority: CaseDbDataIssueType[] = useMemo(() => [
     CaseDbDataIssueType.UNAUTHORIZED,
@@ -90,11 +83,11 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
     CaseDbDataIssueType.CONFLICT,
   ], []);
 
-  const onTableCustomHeaderIconClick = useCallback((params: TableColumnParams<CaseUploadResultWithGeneratedId, null>) => {
+  const onTableCustomHeaderIconClick = useCallback((params: TableColumnParams<CaseDbCaseUploadResult, null>) => {
     epiUploadEditColumnValuesDialogRef.current?.open({
       colId: params.column.id,
       completeCaseType,
-      shouldShowRightsWarning: caseRightsColMap?.[params.column.id]?.length !== caseUploadResults.length,
+      shouldShowRightsWarning: caseRightsColMap?.[params.column.id]?.length !== caseUploadResults?.length,
     });
   }, [completeCaseType, caseRightsColMap, caseUploadResults]);
 
@@ -176,7 +169,7 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
     );
   }, [t]);
 
-  const renderHasIssueCell = useCallback(({ row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+  const renderHasIssueCell = useCallback(({ row }: TableRowParams<CaseDbCaseUploadResult>) => {
     const errorIssues = row.data_issues.filter(i => i.data_issue_type === CaseDbDataIssueType.INVALID || i.data_issue_type === CaseDbDataIssueType.UNAUTHORIZED);
     if (errorIssues.length > 0) {
       return (
@@ -212,7 +205,7 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
     );
   }, [t]);
 
-  const renderIsNewCell = useCallback(({ row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+  const renderIsNewCell = useCallback(({ row }: TableRowParams<CaseDbCaseUploadResult>) => {
     return row.id ? null : (
       <AddIcon
         aria-hidden={false}
@@ -226,7 +219,7 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
     );
   }, [t]);
 
-  const renderCell = useCallback(({ id, row }: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+  const renderCell = useCallback(({ id, row }: TableRowParams<CaseDbCaseUploadResult>) => {
     const rowValue = CaseUtil.getRowValue(row.validated_content, completeCaseType.cols[id], completeCaseType);
     const value = rowValue.long;
     const issues = getFilteredIssueTypes(id, row.data_issues, value);
@@ -312,8 +305,8 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
     );
   }, [completeCaseType, errorIssueTypes, getFilteredIssueTypes, getIssueTooltipContent, theme, warningIssueTypes]);
 
-  const tableColumns = useMemo<TableColumn<CaseUploadResultWithGeneratedId>[]>(() => {
-    const tableCols: TableColumn<CaseUploadResultWithGeneratedId>[] = [];
+  const tableColumns = useMemo<TableColumn<CaseDbCaseUploadResult>[]>(() => {
+    const tableCols: TableColumn<CaseDbCaseUploadResult>[] = [];
     if (!caseUploadResults?.length) {
       return tableCols;
     }
@@ -392,7 +385,7 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
           type: 'text',
           valueGetter: (params) => CaseUtil.getRowValue(params.row.validated_content, col, completeCaseType).short,
           widthPx: 250,
-        } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
+        } satisfies TableColumn<CaseDbCaseUploadResult>);
       }
     });
 
@@ -405,11 +398,11 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
         type: 'text',
         valueGetter: (params) => params.row.id || '',
         widthPx: 250,
-      } satisfies TableColumn<CaseUploadResultWithGeneratedId>);
+      } satisfies TableColumn<CaseDbCaseUploadResult>);
     }
 
     tableCols.push(TableUtil.createActionsColumn({
-      getActions: (params: TableRowParams<CaseUploadResultWithGeneratedId>) => {
+      getActions: (params: TableRowParams<CaseDbCaseUploadResult>) => {
         const actions: ReactElement[] = [];
         actions.push(
           <MenuItem
@@ -418,7 +411,7 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
             onClick={() => {
               epiCaseFormDialogRef.current?.open({
                 caseContent: params.row.validated_content,
-                caseId: params.row.generatedId,
+                caseId: params.row.id,
                 completeCaseType,
                 enabledColIds: completeCaseType.ordered_col_ids,
                 formId: `edit-case-form`,
@@ -440,7 +433,7 @@ export const EpiUploadCaseResultTable = ({ caseRightsColMap, caseUploadResults, 
     return tableCols;
   }, [caseUploadResults, renderHasIssueCell, renderHasIssueHeader, renderIsNewCell, renderIsNewHeader, completeCaseType, t, caseRightsColMap, onTableCustomHeaderIconClick, renderCell, getOriginalCellValue]);
 
-  useInitializeTableStore<CaseUploadResultWithGeneratedId>({ columns: tableColumns, createFiltersFromColumns: true, rows: rowsWithGeneratedId, store: tableStore });
+  useInitializeTableStore<CaseDbCaseUploadResult>({ columns: tableColumns, createFiltersFromColumns: true, rows: caseUploadResults, store: tableStore });
 
   return (
     <>

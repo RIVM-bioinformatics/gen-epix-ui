@@ -75,7 +75,7 @@ export const EpiUploadSelectSequenceFiles = () => {
   const store = use(EpiUploadStoreContext);
   const completeCaseType = useStore(store, (state) => state.completeCaseType);
   const mappedColumns = useStore(store, (state) => state.mappedColumns);
-  const validatedCasesWithGeneratedId = useStore(store, (state) => state.validatedCasesWithGeneratedId);
+  const validatedCases = useStore(store, (state) => state.validatedCases);
   const goToNextStep = useStore(store, (state) => state.goToNextStep);
   const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
   const setSequenceFilesDataTransfer = useStore(store, (state) => state.setSequenceFilesDataTransfer);
@@ -204,10 +204,10 @@ export const EpiUploadSelectSequenceFiles = () => {
     if (!sampleIdColId) {
       return false;
     }
-    return validatedCasesWithGeneratedId.some(vc => {
+    return validatedCases.some(vc => {
       return vc.validated_content[sampleIdColId]?.trim().length > 0;
     });
-  }, [sampleIdColId, validatedCasesWithGeneratedId]);
+  }, [sampleIdColId, validatedCases]);
 
   const completeCaseTypeColStats = useMemo(() => {
     return EpiUploadUtil.getCompleteCaseTypeColStats(completeCaseType);
