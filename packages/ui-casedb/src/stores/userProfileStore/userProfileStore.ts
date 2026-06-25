@@ -4,7 +4,7 @@ import {
   persist,
 } from 'zustand/middleware';
 
-import type { EpiDashboardLayoutUserConfig } from '../../models/epi';
+import type { EpiDashboardArrangementConfig } from '../../models/epi';
 import { DashboardUtil } from '../../utils/DashboardUtil';
 
 export type EpiDashboardEpiCurveSettings = {
@@ -27,17 +27,17 @@ export interface UserProfileStoreActions {
   resetEpiDashboardGeneralSettings: () => void;
   resetEpiDashboardLayout: () => void;
   resetEpiDashboardTreeSettings: () => void;
+  setEpiDashboardArrangementConfig: (config: EpiDashboardArrangementConfig) => void;
   setEpiDashboardEpiCurveSettings: (settings: EpiDashboardEpiCurveSettings) => void;
   setEpiDashboardGeneralSettings: (settings: EpiDashboardGeneralSettings) => void;
-  setEpiDashboardLayoutUserConfig: (config: EpiDashboardLayoutUserConfig) => void;
   setEpiDashboardPanelConfiguration: (id: string, configuration: string) => void;
   setEpiDashboardTreeSettings: (settings: EpiDashboardTreeSettings) => void;
 }
 
 export interface UserProfileStoreState {
+  epiDashboardArrangementConfig: EpiDashboardArrangementConfig;
   epiDashboardEpiCurveSettings: EpiDashboardEpiCurveSettings;
   epiDashboardGeneralSettings: EpiDashboardGeneralSettings;
-  epiDashboardLayoutUserConfig: EpiDashboardLayoutUserConfig;
   epiDashboardPanels: {
     [key: string]: string;
   };
@@ -45,13 +45,13 @@ export interface UserProfileStoreState {
 }
 
 export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => ({
+  epiDashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
   epiDashboardEpiCurveSettings: {
     isIncludeMissingValuesInAreaChartEnabled: false,
   },
   epiDashboardGeneralSettings: {
     isHighlightingEnabled: true,
   },
-  epiDashboardLayoutUserConfig: DashboardUtil.createDashboardLayoutUserConfigInitialState(),
   epiDashboardPanels: {},
   epiDashboardTreeSettings: {
     isShowDistancesEnabled: true,
@@ -81,7 +81,7 @@ export const userProfileStore = createStore<UserProfileStore>()(
         },
         resetEpiDashboardLayout: () => {
           set({
-            epiDashboardLayoutUserConfig: DashboardUtil.createDashboardLayoutUserConfigInitialState(),
+            epiDashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
             epiDashboardPanels: {},
           });
         },
@@ -93,15 +93,15 @@ export const userProfileStore = createStore<UserProfileStore>()(
             },
           });
         },
+        setEpiDashboardArrangementConfig: (config: EpiDashboardArrangementConfig) => {
+          set({ epiDashboardArrangementConfig: config });
+        },
         setEpiDashboardEpiCurveSettings: (settings: EpiDashboardEpiCurveSettings) => {
           set({ epiDashboardEpiCurveSettings: settings });
         },
+
         setEpiDashboardGeneralSettings: (settings: EpiDashboardGeneralSettings) => {
           set({ epiDashboardGeneralSettings: settings });
-        },
-
-        setEpiDashboardLayoutUserConfig: (config: EpiDashboardLayoutUserConfig) => {
-          set({ epiDashboardLayoutUserConfig: config });
         },
         setEpiDashboardPanelConfiguration: (id: string, configuration: string) => {
           const epiDashboardPanels = get().epiDashboardPanels;
@@ -120,8 +120,8 @@ export const userProfileStore = createStore<UserProfileStore>()(
     {
       name: 'GENEPIX-User-Profile',
       partialize: (state) => ({
+        epiDashboardArrangementConfig: state.epiDashboardArrangementConfig,
         epiDashboardGeneralSettings: state.epiDashboardGeneralSettings,
-        epiDashboardLayoutUserConfig: state.epiDashboardLayoutUserConfig,
         epiDashboardPanels: state.epiDashboardPanels,
         epiDashboardTreeSettings: state.epiDashboardTreeSettings,
       }),

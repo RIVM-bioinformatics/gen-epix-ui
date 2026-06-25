@@ -1,47 +1,42 @@
-import intersection from 'lodash/intersection';
 import { ConfigManager } from '@gen-epix/ui';
 
 import type {
-  EpiDashboardLayout,
-  EpiDashboardLayoutConfig,
-  EpiDashboardLayoutUserConfig,
+  EpiDashboardArrangement,
+  EpiDashboardArrangementConfig,
 } from '../../models/epi';
-import { EPI_ZONE } from '../../models/epi';
 import type { CaseDbConfig } from '../../models/config';
 
 
 export class DashboardUtil {
   public static readonly dashboardLayoutStorageKey = 'GENEPIX-EpiDashboard-Layout-v1.3';
 
-  public static createDashboardLayoutUserConfigInitialState(): EpiDashboardLayoutUserConfig {
+  public static createDashboardArrangementConfigInitialState(): EpiDashboardArrangementConfig {
+    const arrangementOptions = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS;
+    const defaultArrangementKey = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_ARRANGEMENT_KEY;
+
     return {
-      arrangement: 0,
-      zones: {
-        [EPI_ZONE.EPI_CURVE]: true,
-        [EPI_ZONE.LINE_LIST]: true,
-        [EPI_ZONE.MAP]: true,
-        [EPI_ZONE.TREE]: true,
-      },
+      arrangement: arrangementOptions[defaultArrangementKey],
+      arrangementWidgetAssignments: {},
     };
   }
 
-  public static getDashboardLayout(userConfig: EpiDashboardLayoutUserConfig): EpiDashboardLayout {
-    const layoutConfig = DashboardUtil.getDashboardLayoutConfig(userConfig);
-
-    return layoutConfig?.layouts?.[userConfig.arrangement] ?? layoutConfig?.layouts?.[0];
+  public static getArrangementWidgetAssignments(arrangement: EpiDashboardArrangement, arrangementWidgetAssignments?: { [key: string]: string }): { [key: string]: string } {
+    // traverse the arrangement and create an object with all zones set to empty string
+    const emptyAssignments: { [key: string]: string } = {};
+    const traverseArrangement = (arr: EpiDashboardArrangement) => {
+      arr.forEach((item) => {
+        if (Array.isArray(item)) {
+          traverseArrangement(item);
+        } else {
+          emptyAssignments[item] = arrangementWidgetAssignments?.[item] || null;
+        }
+      });
+    };
+    traverseArrangement(arrangement);
+    return emptyAssignments;
   }
 
-  public static getDashboardLayoutConfig(userConfig: EpiDashboardLayoutUserConfig): EpiDashboardLayoutConfig {
-    const enabledZones = DashboardUtil.getEnabledZones(userConfig);
-    return ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.LAYOUTS.find(epiDashboardLayout => epiDashboardLayout.zones.length === enabledZones.length && intersection(enabledZones, epiDashboardLayout.zones).length === enabledZones.length);
-  }
-
-  public static getEnabledZones(userConfig: EpiDashboardLayoutUserConfig): EPI_ZONE[] {
-    return Object.entries(userConfig.zones).filter(([_name, value]) => value).map(([name]) => name) as EPI_ZONE[];
-  }
-
-  public static isSingleWidget(userConfig: EpiDashboardLayoutUserConfig, zone: EPI_ZONE): boolean {
-    const enabledZones = DashboardUtil.getEnabledZones(userConfig);
-    return enabledZones.length === 1 && enabledZones[0] === zone;
+  public static isSingleWidget(arrangementConfig: EpiDashboardArrangementConfig, widgetName: string): boolean {
+    return arrangementConfig.arrangementWidgetAssignments?.[widgetName] && Object.keys(arrangementConfig.arrangementWidgetAssignments).length === 1;
   }
 }

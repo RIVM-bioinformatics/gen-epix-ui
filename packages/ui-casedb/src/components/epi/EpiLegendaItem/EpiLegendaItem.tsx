@@ -30,12 +30,12 @@ import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightin
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import type { StratificationLegendaItem } from '../../../models/epi';
 import {
-  EPI_ZONE,
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
 } from '../../../models/epi';
 import { EpiContextMenu } from '../EpiContextMenu';
 import type { EpiContextMenuConfigWithAnchor } from '../EpiContextMenu';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 export type EpiLegendaItemProps = {
   readonly children?: ReactNode;
@@ -86,14 +86,14 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
   const onMouseOver = useCallback(() => {
     highlightingManager.highlight({
       caseIds: Object.entries(stratification?.caseIdColors).filter(([_itemId, itemColor]) => itemColor === item.color).map(([itemId]) => itemId),
-      origin: EPI_ZONE.LEGENDA,
+      origin: EPI_WIDGET_NAME.LEGENDA,
     });
   }, [item.color, highlightingManager, stratification]);
 
   const onMouseLeave = useCallback(() => {
     highlightingManager.highlight({
       caseIds: [],
-      origin: EPI_ZONE.LEGENDA,
+      origin: EPI_WIDGET_NAME.LEGENDA,
     });
   }, [highlightingManager]);
 

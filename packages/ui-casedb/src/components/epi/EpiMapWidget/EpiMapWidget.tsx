@@ -59,7 +59,6 @@ import {
 import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
-import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
@@ -67,11 +66,12 @@ import { EpiMapUtil } from '../../../utils/EpiMapUtil';
 import type { GenEpixPieSeriesOptionEventData } from '../../../utils/EpiMapUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
-import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
+import { EpiDashboardWidget } from '../EpiDashboard';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 const echartsCore = {
   dispose,
@@ -247,14 +247,14 @@ export const EpiMapWidget = () => {
       mouseout: () => {
         highlightingManager.highlight({
           caseIds: [],
-          origin: EPI_ZONE.MAP,
+          origin: EPI_WIDGET_NAME.MAP,
         });
       },
       mouseover: (event: unknown) => {
         try {
           highlightingManager.highlight({
             caseIds: (event as GenEpixEchartsEvent).data.genEpixData.caseIds,
-            origin: EPI_ZONE.MAP,
+            origin: EPI_WIDGET_NAME.MAP,
           });
         } catch (_error) {
           // ignore
@@ -390,7 +390,7 @@ export const EpiMapWidget = () => {
             label: t`Save as JPEG`,
           },
         ],
-        zone: EPI_ZONE.MAP,
+        zone: EPI_WIDGET_NAME.MAP,
         zoneLabel: t`Map`,
       });
     };
@@ -402,7 +402,7 @@ export const EpiMapWidget = () => {
     return () => {
       EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
         items: null,
-        zone: EPI_ZONE.MAP,
+        zone: EPI_WIDGET_NAME.MAP,
         zoneLabel: t`Map`,
       });
       epiEventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
@@ -410,12 +410,12 @@ export const EpiMapWidget = () => {
   }, [completeCaseType, shouldShowMap, t]);
 
   return (
-    <EpiWidget
+    <EpiDashboardWidget
       expandDisabled={!shouldShowMap}
       isLoading={shouldShowLoading}
       title={titleMenu}
       warningMessage={shouldShowMap && epiMapCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
-      zone={EPI_ZONE.MAP}
+      zone={EPI_WIDGET_NAME.MAP}
     >
       <Box
         ref={containerRef}
@@ -427,8 +427,8 @@ export const EpiMapWidget = () => {
         {!shouldShowLoading && !shouldShowMap && (
           <Box sx={{ position: 'absolute' }}>
             <EpiWidgetUnavailable
-              epiZone={EPI_ZONE.MAP}
-              widgetName={t`map`}
+              widgetName={EPI_WIDGET_NAME.MAP}
+              widgetLabel={t`map`}
             />
           </Box>
         )}
@@ -453,6 +453,6 @@ export const EpiMapWidget = () => {
           onMenuClose={onEpiContextMenuClose}
         />
       </Box>
-    </EpiWidget>
+    </EpiDashboardWidget>
   );
 };

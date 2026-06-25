@@ -49,7 +49,6 @@ import type {
   EpiLineListRangeSubjectValue,
   EpiLinkedScrollSubjectValue,
 } from '../../../models/epi';
-import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
@@ -66,6 +65,7 @@ import { EpiRemoveFindSimilarCasesResultDialog } from '../EpiRemoveFindSimilarCa
 import type { EpiRemoveFindSimilarCasesResultDialogRefMethods } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import type { CaseDbConfig } from '../../../models/config';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 import {
   EpiDashboardSettingsSidebarItem,
@@ -313,8 +313,8 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
               <ErrorBoundary
                 fallback={(
                   <EpiWidgetUnavailable
-                    epiZone={EPI_ZONE.EPI_CURVE}
-                    widgetName={t`epi curve`}
+                    widgetLabel={t`epi curve`}
+                    widgetName={EPI_WIDGET_NAME.EPI_CURVE}
                   />
                 )}
               >
@@ -333,8 +333,8 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
               <ErrorBoundary
                 fallback={(
                   <EpiWidgetUnavailable
-                    epiZone={EPI_ZONE.MAP}
-                    widgetName={t`map`}
+                    widgetLabel={t`map`}
+                    widgetName={EPI_WIDGET_NAME.MAP}
                   />
                 )}
               >

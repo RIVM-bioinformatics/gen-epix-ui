@@ -27,7 +27,6 @@ import type {
   Highlighting,
   Stratification,
 } from '../../../models/epi';
-import { EPI_ZONE } from '../../../models/epi';
 import type {
   TreeAssembly,
   TreeNode,
@@ -35,6 +34,7 @@ import type {
 } from '../../../models/tree';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 import type { CaseDbConfig } from '../../../models/config';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 // NOTE: this component has the Component suffix in order to prevent a name collision with the PhylogeneticTree model in the api package.
 
@@ -518,7 +518,7 @@ export const PhylogeneticTreeComponent = ({
       if (effectiveHighlightingSubject.data?.caseIds?.length) {
         effectiveHighlightingSubject.next({
           caseIds: [],
-          origin: EPI_ZONE.TREE,
+          origin: EPI_WIDGET_NAME.TREE,
         });
       }
     };
@@ -569,7 +569,7 @@ export const PhylogeneticTreeComponent = ({
         treeCanvas.style.cursor = 'pointer';
         effectiveHighlightingSubject.next({
           caseIds: pathProperties.subTreeLeaveNames,
-          origin: EPI_ZONE.TREE,
+          origin: EPI_WIDGET_NAME.TREE,
         });
       } else {
         treeCanvas.style.cursor = 'default';

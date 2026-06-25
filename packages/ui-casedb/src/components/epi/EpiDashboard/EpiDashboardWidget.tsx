@@ -28,7 +28,6 @@ import {
   TestIdUtil,
 } from '@gen-epix/ui';
 
-import type { EPI_ZONE } from '../../../models/epi';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
 import { WidgetHeaderIconButton } from '../EpiWidgetHeaderIconButton';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
@@ -37,14 +36,14 @@ import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EpiWarning } from '../EpiWarning';
 
 
-export type WidgetProps = PropsWithChildren<{
+export type EpiDashboardWidgetProps = PropsWithChildren<{
   readonly expandDisabled?: boolean;
   readonly isLoading?: boolean;
   readonly primaryMenu?: MenuItemData[] | ReactNode;
   readonly secondaryMenu?: MenuItemData[] | ReactNode;
   readonly title: MenuItemData | ReactNode | string;
   readonly warningMessage?: string;
-  readonly zone: EPI_ZONE;
+  readonly zone: string;
 }>;
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
@@ -52,7 +51,7 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   marginTop: theme.spacing(0.5),
 }));
 
-export const EpiWidget = ({ children, expandDisabled, isLoading, primaryMenu, secondaryMenu, title, warningMessage, zone }: WidgetProps) => {
+export const EpiDashboardWidget = ({ children, expandDisabled, isLoading, primaryMenu, secondaryMenu, title, warningMessage, zone }: EpiDashboardWidgetProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -144,7 +143,7 @@ export const EpiWidget = ({ children, expandDisabled, isLoading, primaryMenu, se
 
   return (
     <Box
-      {...TestIdUtil.createAttributes('EpiWidget', { zone })}
+      {...TestIdUtil.createAttributes('EpiDashboardWidget', { zone })}
       sx={{
         height: '100%',
       }}

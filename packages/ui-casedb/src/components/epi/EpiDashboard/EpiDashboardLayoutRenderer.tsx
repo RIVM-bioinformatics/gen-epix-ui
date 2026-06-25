@@ -28,7 +28,6 @@ import {
 } from '@gen-epix/ui';
 
 import type { EpiDashboardLayoutPanelOrientation } from '../../../models/epi';
-import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
@@ -37,6 +36,7 @@ import {
   PanelSeparatorHorizontal,
   PanelSeparatorVertical,
 } from '../../ui/PanelSeparator';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 export type EpiDashboardLayoutRendererProps = {
   readonly disabled?: boolean;
@@ -150,10 +150,10 @@ export const EpiDashboardLayoutRenderer = ({
 
   const panelMap = useMemo(() => {
     return {
-      [EPI_ZONE.EPI_CURVE]: epiCurveWidget,
-      [EPI_ZONE.LINE_LIST]: lineListWidget,
-      [EPI_ZONE.MAP]: mapWidget,
-      [EPI_ZONE.TREE]: phylogeneticTreeWidget,
+      [EPI_WIDGET_NAME.EPI_CURVE]: epiCurveWidget,
+      [EPI_WIDGET_NAME.LINE_LIST]: lineListWidget,
+      [EPI_WIDGET_NAME.MAP]: mapWidget,
+      [EPI_WIDGET_NAME.TREE]: phylogeneticTreeWidget,
     };
   }, [epiCurveWidget, lineListWidget, mapWidget, phylogeneticTreeWidget]);
 
@@ -182,6 +182,8 @@ export const EpiDashboardLayoutRenderer = ({
   if (enabledLayoutZones.length === 1) {
     return panelMap[enabledLayoutZones[0] as keyof typeof panelMap];
   }
+
+  console.log({ enabledLayoutZones, layout, panels });
 
   return (
     <Group

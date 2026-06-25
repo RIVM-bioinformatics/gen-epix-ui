@@ -8,20 +8,20 @@ import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
 
 import type { EpiDashboardLayoutConfig } from '../../models/epi';
-import { EPI_ZONE } from '../../models/epi';
 import type { CaseDbConfig } from '../../models/config';
 import { createCaseDbDemoTheme } from '../../theme/demoTheme';
+import { EPI_WIDGET_NAME } from '../../data/epi';
 
 export class CaseDbDemoConfigUtil {
   public static createConfig(): CaseDbConfig {
 
-    const PANEL_ZONES = [EPI_ZONE.EPI_CURVE, EPI_ZONE.LINE_LIST, EPI_ZONE.MAP, EPI_ZONE.TREE];
+    const PANEL_ZONES = [EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.MAP, EPI_WIDGET_NAME.TREE];
     const config: CaseDbConfig = {
       ...DemoConfigUtil.createConfig(),
       applicationName: 'Gen-EpiX',
       epi: {
         DATA_MISSING_CHARACTER: '·',
-        DOWNLOAD_SECTION_ORDER: [EPI_ZONE.LINE_LIST, EPI_ZONE.TREE, EPI_ZONE.EPI_CURVE, EPI_ZONE.MAP],
+        DOWNLOAD_SECTION_ORDER: [EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.TREE, EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP],
         INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY: 5,
         SEQDB_MAX_STORED_DISTANCE_FALLBACK: 20,
         STRATIFICATION: {
@@ -90,145 +90,145 @@ export class CaseDbDemoConfigUtil {
             layouts: [
               [
                 'horizontal',
-                [50, [100, EPI_ZONE.TREE]],
-                [50, [100, EPI_ZONE.LINE_LIST]],
+                [50, [100, EPI_WIDGET_NAME.TREE]],
+                [50, [100, EPI_WIDGET_NAME.LINE_LIST]],
               ],
             ],
-            zones: [EPI_ZONE.LINE_LIST, EPI_ZONE.TREE],
+            zones: [EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.TREE],
           },
-          ...[EPI_ZONE.EPI_CURVE, EPI_ZONE.MAP].map<EpiDashboardLayoutConfig>(zone => ({
+          ...[EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP].map<EpiDashboardLayoutConfig>(zone => ({
             layouts: [
               [
                 'vertical',
-                [70, [100, EPI_ZONE.LINE_LIST]],
+                [70, [100, EPI_WIDGET_NAME.LINE_LIST]],
                 [30, [100, zone]],
               ],
               [
                 'vertical',
                 [30, [100, zone]],
-                [70, [100, EPI_ZONE.LINE_LIST]],
+                [70, [100, EPI_WIDGET_NAME.LINE_LIST]],
               ],
               [
                 'horizontal',
-                [70, [100, EPI_ZONE.LINE_LIST]],
+                [70, [100, EPI_WIDGET_NAME.LINE_LIST]],
                 [30, [100, zone]],
               ],
               [
                 'horizontal',
                 [30, [100, zone]],
-                [70, [100, EPI_ZONE.LINE_LIST]],
+                [70, [100, EPI_WIDGET_NAME.LINE_LIST]],
               ],
             ],
-            zones: [EPI_ZONE.LINE_LIST, zone],
+            zones: [EPI_WIDGET_NAME.LINE_LIST, zone],
           })),
-          ...[EPI_ZONE.EPI_CURVE, EPI_ZONE.MAP].map<EpiDashboardLayoutConfig>(zone => ({
+          ...[EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP].map<EpiDashboardLayoutConfig>(zone => ({
             layouts: [
               [
                 'vertical',
-                [70, [100, EPI_ZONE.TREE]],
+                [70, [100, EPI_WIDGET_NAME.TREE]],
                 [30, [100, zone]],
               ],
               [
                 'vertical',
                 [30, [100, zone]],
-                [70, [100, EPI_ZONE.TREE]],
+                [70, [100, EPI_WIDGET_NAME.TREE]],
               ],
               [
                 'horizontal',
-                [70, [100, EPI_ZONE.TREE]],
+                [70, [100, EPI_WIDGET_NAME.TREE]],
                 [30, [100, zone]],
               ],
               [
                 'horizontal',
                 [30, [100, zone]],
-                [70, [100, EPI_ZONE.TREE]],
+                [70, [100, EPI_WIDGET_NAME.TREE]],
               ],
             ],
-            zones: [EPI_ZONE.TREE, zone],
+            zones: [EPI_WIDGET_NAME.TREE, zone],
           })),
           {
             layouts: [
               [
                 'vertical',
-                [70, [100, EPI_ZONE.MAP]],
-                [30, [100, EPI_ZONE.EPI_CURVE]],
+                [70, [100, EPI_WIDGET_NAME.MAP]],
+                [30, [100, EPI_WIDGET_NAME.EPI_CURVE]],
               ],
               [
                 'vertical',
-                [30, [100, EPI_ZONE.EPI_CURVE]],
-                [70, [100, EPI_ZONE.MAP]],
+                [30, [100, EPI_WIDGET_NAME.EPI_CURVE]],
+                [70, [100, EPI_WIDGET_NAME.MAP]],
               ],
               [
                 'horizontal',
-                [50, [100, EPI_ZONE.EPI_CURVE]],
-                [50, [100, EPI_ZONE.MAP]],
+                [50, [100, EPI_WIDGET_NAME.EPI_CURVE]],
+                [50, [100, EPI_WIDGET_NAME.MAP]],
               ],
               [
                 'horizontal',
-                [50, [100, EPI_ZONE.MAP]],
-                [50, [100, EPI_ZONE.EPI_CURVE]],
+                [50, [100, EPI_WIDGET_NAME.MAP]],
+                [50, [100, EPI_WIDGET_NAME.EPI_CURVE]],
               ],
             ],
-            zones: [EPI_ZONE.MAP, EPI_ZONE.EPI_CURVE],
+            zones: [EPI_WIDGET_NAME.MAP, EPI_WIDGET_NAME.EPI_CURVE],
           },
 
-          // 3 ZONES: TREE, LINE_LIST, [EPI_ZONE.MAP / EPI_ZONE.EPI_CURVE]
-          ...[EPI_ZONE.MAP, EPI_ZONE.EPI_CURVE].map<EpiDashboardLayoutConfig>(zone => ({
+          // 3 ZONES: TREE, LINE_LIST, [EPI_WIDGET_NAME.MAP / EPI_WIDGET_NAME.EPI_CURVE]
+          ...[EPI_WIDGET_NAME.MAP, EPI_WIDGET_NAME.EPI_CURVE].map<EpiDashboardLayoutConfig>(zone => ({
             layouts: [
               [
                 'vertical',
-                [70, [50, EPI_ZONE.TREE], [50, EPI_ZONE.LINE_LIST]],
+                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
                 [30, [100, zone]],
               ],
               [
                 'vertical',
                 [30, [100, zone]],
-                [70, [50, EPI_ZONE.TREE], [50, EPI_ZONE.LINE_LIST]],
+                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
               ],
             ],
-            zones: [EPI_ZONE.TREE, EPI_ZONE.LINE_LIST, zone],
+            zones: [EPI_WIDGET_NAME.TREE, EPI_WIDGET_NAME.LINE_LIST, zone],
           })),
           // 3 ZONES: TREE, LINE_LIST, EPI_CURVE
           {
             layouts: [
               [
                 'vertical',
-                [70, [50, EPI_ZONE.TREE], [50, EPI_ZONE.LINE_LIST]],
-                [30, [100, EPI_ZONE.EPI_CURVE]],
+                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
+                [30, [100, EPI_WIDGET_NAME.EPI_CURVE]],
               ],
               [
                 'vertical',
-                [30, [100, EPI_ZONE.EPI_CURVE]],
-                [70, [50, EPI_ZONE.TREE], [50, EPI_ZONE.LINE_LIST]],
+                [30, [100, EPI_WIDGET_NAME.EPI_CURVE]],
+                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
               ],
             ],
-            zones: [EPI_ZONE.TREE, EPI_ZONE.LINE_LIST, EPI_ZONE.EPI_CURVE],
+            zones: [EPI_WIDGET_NAME.TREE, EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.EPI_CURVE],
           },
-          // 3 ZONES:  MAP, EPI_CURVE, [EPI_ZONE.LINE_LIST / EPI_ZONE.TREE]
-          ...[EPI_ZONE.LINE_LIST, EPI_ZONE.TREE].map<EpiDashboardLayoutConfig>(zone => ({
+          // 3 ZONES:  MAP, EPI_CURVE, [EPI_WIDGET_NAME.LINE_LIST / EPI_WIDGET_NAME.TREE]
+          ...[EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.TREE].map<EpiDashboardLayoutConfig>(zone => ({
             layouts: [
               [
                 'vertical',
                 [70, [100, zone]],
-                [30, [50, EPI_ZONE.MAP], [50, EPI_ZONE.EPI_CURVE]],
+                [30, [50, EPI_WIDGET_NAME.MAP], [50, EPI_WIDGET_NAME.EPI_CURVE]],
               ],
               [
                 'vertical',
                 [70, [100, zone]],
-                [30, [50, EPI_ZONE.EPI_CURVE], [50, EPI_ZONE.MAP]],
+                [30, [50, EPI_WIDGET_NAME.EPI_CURVE], [50, EPI_WIDGET_NAME.MAP]],
               ],
               [
                 'horizontal',
                 [70, [100, zone]],
-                [30, [50, EPI_ZONE.MAP], [50, EPI_ZONE.EPI_CURVE]],
+                [30, [50, EPI_WIDGET_NAME.MAP], [50, EPI_WIDGET_NAME.EPI_CURVE]],
               ],
               [
                 'horizontal',
                 [70, [100, zone]],
-                [30, [50, EPI_ZONE.EPI_CURVE], [50, EPI_ZONE.MAP]],
+                [30, [50, EPI_WIDGET_NAME.EPI_CURVE], [50, EPI_WIDGET_NAME.MAP]],
               ],
             ],
-            zones: [zone, EPI_ZONE.EPI_CURVE, EPI_ZONE.MAP],
+            zones: [zone, EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP],
           })),
 
           // 4 ZONES
@@ -236,26 +236,26 @@ export class CaseDbDemoConfigUtil {
             layouts: [
               [
                 'vertical',
-                [70, [50, EPI_ZONE.TREE], [50, EPI_ZONE.LINE_LIST]],
-                [30, [50, EPI_ZONE.MAP], [50, EPI_ZONE.EPI_CURVE]],
+                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
+                [30, [50, EPI_WIDGET_NAME.MAP], [50, EPI_WIDGET_NAME.EPI_CURVE]],
               ],
               [
                 'vertical',
-                [70, [50, EPI_ZONE.TREE], [50, EPI_ZONE.LINE_LIST]],
-                [30, [50, EPI_ZONE.EPI_CURVE], [50, EPI_ZONE.MAP]],
+                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
+                [30, [50, EPI_WIDGET_NAME.EPI_CURVE], [50, EPI_WIDGET_NAME.MAP]],
               ],
               [
                 'vertical',
-                [30, [50, EPI_ZONE.MAP], [50, EPI_ZONE.EPI_CURVE]],
-                [70, [50, EPI_ZONE.TREE], [50, EPI_ZONE.LINE_LIST]],
+                [30, [50, EPI_WIDGET_NAME.MAP], [50, EPI_WIDGET_NAME.EPI_CURVE]],
+                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
               ],
               [
                 'vertical',
-                [30, [50, EPI_ZONE.EPI_CURVE], [50, EPI_ZONE.MAP]],
-                [70, [50, EPI_ZONE.TREE], [50, EPI_ZONE.LINE_LIST]],
+                [30, [50, EPI_WIDGET_NAME.EPI_CURVE], [50, EPI_WIDGET_NAME.MAP]],
+                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
               ],
             ],
-            zones: [EPI_ZONE.LINE_LIST, EPI_ZONE.TREE, EPI_ZONE.EPI_CURVE, EPI_ZONE.MAP],
+            zones: [EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.TREE, EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP],
           },
         ],
         MIN_PANEL_HEIGHT: 30,

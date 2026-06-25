@@ -47,7 +47,6 @@ import type {
   Highlighting,
   TreeConfiguration,
 } from '../../../models/epi';
-import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
@@ -56,7 +55,6 @@ import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiTreeDescription } from '../EpiTreeDescription';
-import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { PhylogeneticTreeComponent } from '../../ui/PhylogeneticTreeComponent';
 import type {
@@ -67,6 +65,8 @@ import type {
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
+import { EpiDashboardWidget } from '../EpiDashboard';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 export interface EpiTreeWidgetRef {
   link: () => void;
@@ -149,13 +149,13 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
 
   useEffect(() => {
     const unsubscribeHighlightingManager = highlightingManager.subscribe((highlighting) => {
-      if (highlighting.origin === EPI_ZONE.TREE) {
+      if (highlighting.origin === EPI_WIDGET_NAME.TREE) {
         return;
       }
       treeHighlightingSubject.next(highlighting);
     });
     const unsubscribeTreeHighlightingSubject = treeHighlightingSubject.subscribe((highlighting) => {
-      if (highlighting.origin !== EPI_ZONE.TREE) {
+      if (highlighting.origin !== EPI_WIDGET_NAME.TREE) {
         return;
       }
       highlightingManager.highlight(highlighting);
@@ -464,7 +464,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
             label: t`Save as PNG`,
           },
         ],
-        zone: EPI_ZONE.TREE,
+        zone: EPI_WIDGET_NAME.TREE,
         zoneLabel: t`Phylogenetic Tree`,
       });
     };
@@ -477,7 +477,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
     return () => {
       epiEventBusManager.emit('onDownloadOptionsChanged', {
         items: null,
-        zone: EPI_ZONE.TREE,
+        zone: EPI_WIDGET_NAME.TREE,
         zoneLabel: t`Tree`,
       });
       epiEventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
@@ -498,11 +498,11 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   }));
 
   return (
-    <EpiWidget
+    <EpiDashboardWidget
       expandDisabled={isTreeUnavailable}
       primaryMenu={primaryMenu}
       title={titleMenu}
-      zone={EPI_ZONE.TREE}
+      zone={EPI_WIDGET_NAME.TREE}
     >
       <Box
         sx={{
@@ -548,8 +548,8 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
                 }}
               >
                 <EpiWidgetUnavailable
-                  epiZone={EPI_ZONE.TREE}
-                  widgetName={t`phylogenetic tree`}
+                  widgetName={EPI_WIDGET_NAME.TREE}
+                  widgetLabel={t`phylogenetic tree`}
                 />
               </Box>
             )}
@@ -587,6 +587,6 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
         getExtraItems={getEpiContextMenuExtraItems}
         onMenuClose={onEpiContextMenuClose}
       />
-    </EpiWidget>
+    </EpiDashboardWidget>
   );
 };

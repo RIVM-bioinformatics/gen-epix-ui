@@ -49,7 +49,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
-import { EpiWidget } from '../EpiWidget';
 import { EpiLegendaItem } from '../EpiLegendaItem';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiLineListCaseSetMembersManager } from '../../../classes/managers/EpiLineListCaseSetMembersManager';
@@ -60,10 +59,7 @@ import type {
   Stratification,
   StratificationLegendaItem,
 } from '../../../models/epi';
-import {
-  EPI_ZONE,
-  STRATIFICATION_MODE,
-} from '../../../models/epi';
+import { STRATIFICATION_MODE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
@@ -71,6 +67,8 @@ import type { CaseDbConfig } from '../../../models/config';
 import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
 import { EPI_CASE_INFO_DIALOG_TAB_NAME } from '../EpiCaseInfoDialog';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
+import { EpiDashboardWidget } from '../EpiDashboard';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 import { EpiLineListWidgetTitle } from './EpiLineListWidgetTitle';
 import { EpiLineListWidgetPrimaryMenu } from './EpiLineListWidgetPrimaryMenu';
@@ -524,14 +522,14 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
     highlightingManager.highlight({
       caseIds: [row.id],
-      origin: EPI_ZONE.LINE_LIST,
+      origin: EPI_WIDGET_NAME.LINE_LIST,
     });
   }, [highlightingManager]);
 
   const onRowMouseLeave = useCallback(() => {
     highlightingManager.highlight({
       caseIds: [],
-      origin: EPI_ZONE.LINE_LIST,
+      origin: EPI_WIDGET_NAME.LINE_LIST,
     });
   }, [highlightingManager]);
 
@@ -541,7 +539,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
 
   useEffect(() => {
     const unsubscribe = highlightingManager.subscribe((highlighting) => {
-      if (highlighting?.origin === EPI_ZONE.LINE_LIST) {
+      if (highlighting?.origin === EPI_WIDGET_NAME.LINE_LIST) {
         return;
       }
       rowHighlightingSubject.next(highlighting.caseIds);
@@ -609,12 +607,12 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, []);
 
   return (
-    <EpiWidget
+    <EpiDashboardWidget
       isLoading={isDataLoading}
       primaryMenu={<EpiLineListWidgetPrimaryMenu caseSet={caseSet} />}
       secondaryMenu={<EpiLineListWidgetSecondaryMenu onLink={onLink} />}
       title={<EpiLineListWidgetTitle />}
-      zone={EPI_ZONE.LINE_LIST}
+      zone={EPI_WIDGET_NAME.LINE_LIST}
     >
       <Box
         ref={containerRef}
@@ -639,6 +637,6 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
           rowHighlightingSubject={rowHighlightingSubject}
         />
       </Box>
-    </EpiWidget>
+    </EpiDashboardWidget>
   );
 };

@@ -23,14 +23,6 @@ export enum EPI_UPLOAD_STEP {
   CREATE_CASES = 5,
 }
 
-export enum EPI_ZONE {
-  EPI_CURVE = 'EPI_CURVE',
-  LEGENDA = 'LEGENDA',
-  LINE_LIST = 'LINE_LIST',
-  MAP = 'MAP',
-  TREE = 'TREE',
-}
-
 export enum FILTER_TYPE {
   DATE = 'DATE',
   GEO = 'GEO',
@@ -70,20 +62,15 @@ export type EpiConceptBoundaryProps = {
   unit: string;
 };
 
-export type EpiDashboardLayout = [EpiDashboardLayoutPanelOrientation, ...EpiDashboardLayoutFirstAxisPanel[]];
-export type EpiDashboardLayoutConfig = { layouts: EpiDashboardLayout[]; zones: EPI_ZONE[] };
-export type EpiDashboardLayoutFirstAxisPanel = [100 | 30 | 50 | 70, ...EpiDashboardLayoutSecondAxisPanel[]];
-export type EpiDashboardLayoutPanelOrientation = 'horizontal' | 'vertical';
-export type EpiDashboardLayoutSecondAxisPanel = [100 | 30 | 50 | 70, EPI_ZONE];
-export type EpiDashboardLayoutUserConfig = {
-  arrangement: number;
-  zones: {
-    [EPI_ZONE.EPI_CURVE]: boolean;
-    [EPI_ZONE.LINE_LIST]: boolean;
-    [EPI_ZONE.MAP]: boolean;
-    [EPI_ZONE.TREE]: boolean;
-  };
+export type EpiDashboardArrangement = Array<Array<Array<string> | string> | string>;
+
+export type EpiDashboardArrangementConfig = {
+  arrangement: EpiDashboardArrangement;
+  arrangementWidgetAssignments: EpiDashboardArrangementWidgetAssignments;
 };
+export type EpiDashboardArrangementWidgetAssignments = { [arrangementZone: string]: string };
+
+export type EpiDashboardZoneElements = { [elementName: string]: string };
 
 export type EpiData = {
   conceptsById: { [id: string]: CaseDbConcept };
@@ -183,7 +170,7 @@ export type FindSimilarCasesResult = {
 
 export type Highlighting = {
   caseIds: string[];
-  origin: EPI_ZONE;
+  origin: string;
 };
 
 export interface StratifiableColumn {

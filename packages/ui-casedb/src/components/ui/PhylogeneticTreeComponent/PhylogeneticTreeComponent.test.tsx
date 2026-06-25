@@ -16,7 +16,7 @@ import type {
   Stratification,
 } from '../../../models/epi';
 import {
-  EPI_ZONE,
+  EPI_WIDGET_NAME,
   STRATIFICATION_MODE,
 } from '../../../models/epi';
 import type { TreeNode } from '../../../models/tree';
@@ -465,7 +465,7 @@ describe('PhylogeneticTreeComponent', () => {
   test('draws highlighted distance labels only when enabled', async () => {
     const highlightingSubject = new Subject<Highlighting>({
       caseIds: ['LeafA'],
-      origin: EPI_ZONE.TREE,
+      origin: EPI_WIDGET_NAME.TREE,
     });
     const { ariaLabel, canvas, layout, renderResult, resolvedOptions } = await renderTree({
       highlightingSubject,
@@ -634,7 +634,7 @@ describe('PhylogeneticTreeComponent', () => {
     await waitForAssertion(() => {
       expect(highlightingSubject.data.caseIds).toHaveLength(1);
       expect(['LeafA', 'LeafB', 'LeafC']).toContain(highlightingSubject.data.caseIds[0]);
-      expect(highlightingSubject.data.origin).toBe(EPI_ZONE.TREE);
+      expect(highlightingSubject.data.origin).toBe(EPI_WIDGET_NAME.TREE);
       expect(canvas.style.cursor).toBe('pointer');
     });
 
@@ -643,7 +643,7 @@ describe('PhylogeneticTreeComponent', () => {
 
     await waitForAssertion(() => {
       expect(highlightingSubject.data.caseIds).toEqual([]);
-      expect(highlightingSubject.data.origin).toBe(EPI_ZONE.TREE);
+      expect(highlightingSubject.data.origin).toBe(EPI_WIDGET_NAME.TREE);
       expect(canvas.style.cursor).toBe('default');
     });
 
@@ -667,7 +667,7 @@ describe('PhylogeneticTreeComponent', () => {
 
     await waitForAssertion(() => {
       expect(highlightingSubject.data.caseIds).toEqual([]);
-      expect(highlightingSubject.data.origin).toBe(EPI_ZONE.TREE);
+      expect(highlightingSubject.data.origin).toBe(EPI_WIDGET_NAME.TREE);
     });
   });
 

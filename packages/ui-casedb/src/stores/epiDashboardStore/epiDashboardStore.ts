@@ -35,7 +35,6 @@ import type {
 } from '@gen-epix/ui';
 
 import type {
-  EPI_ZONE,
   FindSimilarCasesResult,
   StratifiableColumn,
   Stratification,
@@ -75,7 +74,7 @@ interface EpiCurveWidgetData extends WidgetData {
 interface EpiDashboardStoreActions extends TableStoreActions<CaseDbCase, CaseDbCompleteCaseType> {
   addTreeFilter: (nodeId: string) => Promise<void>;
   destroy: () => void;
-  expandZone: (zone: EPI_ZONE) => void;
+  expandZone: (zone: string) => void;
   mutateCachedCase: (caseId: string, item: CaseDbCase) => void;
   // Private
   reloadStratification: () => void;
@@ -101,7 +100,7 @@ interface EpiDashboardStoreState extends TableStoreState<CaseDbCase, CaseDbCompl
   epiListWidgetData: EpiListWidgetData;
   epiMapWidgetData: EpiMapWidgetData;
   epiTreeWidgetData: EpiTreeWidgetData;
-  expandedZone: EPI_ZONE;
+  expandedZone: string;
   findSimilarCasesResults: FindSimilarCasesResult[];
   isMaxResultsExceeded: boolean;
   isMaxResultsExceededDismissed: boolean;
@@ -223,7 +222,7 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             EpiHighlightingManager.getInstance().reset();
             tableStoreActions.destroy();
           },
-          expandZone: (expandedZone: EPI_ZONE) => {
+          expandZone: (expandedZone: string) => {
             set({ expandedZone });
           },
           fetchData: async () => {

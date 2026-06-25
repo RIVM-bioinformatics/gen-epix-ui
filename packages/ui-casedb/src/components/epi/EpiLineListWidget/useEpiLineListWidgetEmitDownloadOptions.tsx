@@ -8,10 +8,10 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 export const useEpiLineListWidgetEmitDownloadOptions = () => {
   const { t } = useTranslation();
@@ -74,7 +74,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
             label: t`Selected rows`,
           },
         ],
-        zone: EPI_ZONE.LINE_LIST,
+        zone: EPI_WIDGET_NAME.LINE_LIST,
         zoneLabel: t`Line list`,
       });
     };
@@ -93,7 +93,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
     return () => {
       epiEventBusManager.emit('onDownloadOptionsChanged', {
         items: null,
-        zone: EPI_ZONE.LINE_LIST,
+        zone: EPI_WIDGET_NAME.LINE_LIST,
         zoneLabel: t`Line list`,
       });
       epiEventBusManager.removeEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);

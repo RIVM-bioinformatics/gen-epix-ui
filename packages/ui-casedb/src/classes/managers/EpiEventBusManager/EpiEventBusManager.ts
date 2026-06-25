@@ -12,12 +12,11 @@ import type { EpiFindSimilarCasesDialogOpenProps } from '../../../components/epi
 import type { EpiRemoveCasesFromEventDialogOpenProps } from '../../../components/epi/EpiRemoveCasesFromEventDialog';
 import type { EpiRemoveFindSimilarCasesResultDialogOpenProps } from '../../../components/epi/EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import type { EpiSequenceDownloadDialogOpenProps } from '../../../components/epi/EpiSequenceDownloadDialog';
-import type { EPI_ZONE } from '../../../models/epi';
 
 export type DownloadConfig = {
   disabled?: boolean;
   items: DownloadConfigItems[];
-  zone: EPI_ZONE;
+  zone: string;
   zoneLabel: string;
 };
 

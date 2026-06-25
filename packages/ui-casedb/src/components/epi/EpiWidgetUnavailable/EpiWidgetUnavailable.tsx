@@ -8,26 +8,25 @@ import { useCallback } from 'react';
 import { useStore } from 'zustand';
 import { produce } from 'immer';
 
-import type { EPI_ZONE } from '../../../models/epi';
 import { userProfileStore } from '../../../stores/userProfileStore';
 
 export type EpiWidgetUnavailableProps = {
-  readonly epiZone: EPI_ZONE;
+  readonly widgetLabel: string;
   readonly widgetName: string;
 };
 
-export const EpiWidgetUnavailable = ({ epiZone, widgetName }: EpiWidgetUnavailableProps) => {
+export const EpiWidgetUnavailable = ({ widgetLabel, widgetName }: EpiWidgetUnavailableProps) => {
   const { t } = useTranslation();
   const epiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
-  const setEpiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.setEpiDashboardLayoutUserConfig);
+  const setEpiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.setEpiDashboardArrangementConfig);
 
   const onDisableButtonClick = useCallback(() => {
     setEpiDashboardLayoutUserConfig(produce(epiDashboardLayoutUserConfig, (draft => {
       draft.arrangement = 0;
-      draft.zones[epiZone as keyof typeof draft.zones] = false;
+      draft.zones[widgetName as keyof typeof draft.zones] = false;
       return draft;
     })));
-  }, [epiDashboardLayoutUserConfig, epiZone, setEpiDashboardLayoutUserConfig]);
+  }, [epiDashboardLayoutUserConfig, widgetName, setEpiDashboardLayoutUserConfig]);
 
   return (
     <Box
@@ -41,7 +40,7 @@ export const EpiWidgetUnavailable = ({ epiZone, widgetName }: EpiWidgetUnavailab
         }}
       >
         <Typography>
-          {t('The {{widgetName}} cannot be shown.', { widgetName })}
+          {t('The {{widgetLabel}} cannot be shown.', { widgetLabel })}
         </Typography>
       </Box>
       <Box
@@ -55,7 +54,7 @@ export const EpiWidgetUnavailable = ({ epiZone, widgetName }: EpiWidgetUnavailab
           size={'small'}
           variant={'outlined'}
         >
-          {t('Hide {{widgetName}}', { widgetName })}
+          {t('Hide {{widgetLabel}}', { widgetLabel })}
         </Button>
       </Box>
     </Box>

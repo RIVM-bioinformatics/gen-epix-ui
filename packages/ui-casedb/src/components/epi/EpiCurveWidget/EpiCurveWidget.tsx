@@ -55,18 +55,18 @@ import type { MenuItemData } from '@gen-epix/ui';
 import { DATE_FORMAT } from '@gen-epix/ui';
 
 import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
-import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
-import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
 import { userProfileStore } from '../../../stores/userProfileStore';
+import { EpiDashboardWidget } from '../EpiDashboard';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 import { EpiCurveBarChart } from './EpiCurveBarChart';
 import { EpiCurveStackedAreaChart } from './EpiCurveStackedAreaChart';
@@ -230,7 +230,7 @@ export const EpiCurveWidget = () => {
   const onChartCaseIdsChange = useCallback((caseIds: string[]) => {
     highlightingManager.highlight({
       caseIds,
-      origin: EPI_ZONE.EPI_CURVE,
+      origin: EPI_WIDGET_NAME.EPI_CURVE,
     });
   }, [highlightingManager]);
 
@@ -254,7 +254,7 @@ export const EpiCurveWidget = () => {
 
   useEffect(() => {
     const unsubscribe = highlightingManager.subscribe((highlighting) => {
-      if (highlighting.origin === EPI_ZONE.EPI_CURVE) {
+      if (highlighting.origin === EPI_WIDGET_NAME.EPI_CURVE) {
         return;
       }
       setHighlightedCaseIds(highlighting.caseIds);
@@ -351,7 +351,7 @@ export const EpiCurveWidget = () => {
             label: t`Save as JPEG`,
           },
         ],
-        zone: EPI_ZONE.EPI_CURVE,
+        zone: EPI_WIDGET_NAME.EPI_CURVE,
         zoneLabel: t`Epi curve`,
       });
     };
@@ -361,7 +361,7 @@ export const EpiCurveWidget = () => {
     return () => {
       eventBusManager.emit('onDownloadOptionsChanged', {
         items: null,
-        zone: EPI_ZONE.EPI_CURVE,
+        zone: EPI_WIDGET_NAME.EPI_CURVE,
         zoneLabel: t`Epi curve`,
       });
       eventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
@@ -369,18 +369,18 @@ export const EpiCurveWidget = () => {
   }, [completeCaseType, shouldShowEpiCurve, t]);
 
   return (
-    <EpiWidget
+    <EpiDashboardWidget
       expandDisabled={!shouldShowEpiCurve}
       isLoading={isDataLoading}
       primaryMenu={primaryMenu}
       title={titleMenu}
       warningMessage={shouldShowEpiCurve && epiCurveCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
-      zone={EPI_ZONE.EPI_CURVE}
+      zone={EPI_WIDGET_NAME.EPI_CURVE}
     >
       {!shouldShowEpiCurve && (
         <EpiWidgetUnavailable
-          epiZone={EPI_ZONE.EPI_CURVE}
-          widgetName={t`epi curve`}
+          widgetLabel={t`epi curve`}
+          widgetName={EPI_WIDGET_NAME.EPI_CURVE}
         />
       )}
       {shouldShowEpiCurve && (
@@ -426,6 +426,6 @@ export const EpiCurveWidget = () => {
           />
         </Box>
       )}
-    </EpiWidget>
+    </EpiDashboardWidget>
   );
 };
