@@ -19,6 +19,7 @@ import type {
   CaseDbCaseDataIssue,
   CaseDbCaseUploadResult,
   CaseDbCol,
+  CaseDbUploadCasesCommand,
 } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
@@ -79,12 +80,12 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
     enabled: casesForVerificationFromSourceData.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const response = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepNullifyEmptyStrings({
+      const response = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
         case_batch: {
           cases: casesForVerificationFromSourceData,
         },
         case_type_id: caseTypeId,
-        created_in_data_collection_id: createdInDataCollectionId,
+        default_created_in_data_collection_id: createdInDataCollectionId ?? undefined,
         on_exists: CaseDbUploadAction.UPDATE,
         verify_only: true,
       }), { signal })).data;
@@ -111,7 +112,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
   const revalidateCases = useCallback(async (casesToValidate: Array<{ content: CaseDbCase['content']; row: CaseDbCaseUploadResult }>) => {
     setIsRevalidatingCases(true);
     try {
-      const batchValidationResult = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepNullifyEmptyStrings({
+      const batchValidationResult = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
         case_batch: {
           cases: casesToValidate.map(({ content, row }, index) => {
             const caseFromSourceData = casesForVerificationFromSourceData.find(c => c.id === row.id);
@@ -135,7 +136,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
           }),
         },
         case_type_id: caseTypeId,
-        created_in_data_collection_id: createdInDataCollectionId,
+        default_created_in_data_collection_id: createdInDataCollectionId ?? undefined,
         on_exists: CaseDbUploadAction.UPDATE,
         verify_only: true,
       }))).data;

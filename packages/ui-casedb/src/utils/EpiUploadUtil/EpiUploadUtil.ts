@@ -153,7 +153,7 @@ export class EpiUploadUtil {
             }
           }
 
-          return ObjectUtil.deepNullifyEmptyStrings({
+          return ObjectUtil.deepNullifyEmptyStrings<CaseDbCaseForUpload>({
             case: {
               case_type_id: completeCaseType.id,
               content: vc.validated_content,
@@ -162,10 +162,11 @@ export class EpiUploadUtil {
             },
             read_sets: readSetsForUpload,
             seqs: seqsForUpload,
-          } satisfies CaseDbCaseForUpload);
+          });
         }),
       },
       case_type_id: completeCaseType.id,
+      default_created_in_data_collection_id: createdInDataCollectionId ?? undefined,
       on_exists: CaseDbUploadAction.UPDATE,
     }, { signal })).data;
   }
