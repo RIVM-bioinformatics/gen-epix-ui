@@ -6,7 +6,7 @@ import type { Range } from 'colorjs.io';
 import type {
   EpiDashboardArrangement,
   EpiDashboardArrangementWidgetAssignments,
-  EpiDashboardZoneElements,
+  EpiWidgetConfig,
 } from './epi';
 
 export interface CaseDbConfig extends ConfigBase {
@@ -32,7 +32,7 @@ export interface CaseDbConfig extends ConfigBase {
     DEFAULT_ARRANGEMENT_WIDGET_ASSIGNMENTS: EpiDashboardArrangementWidgetAssignments;
     MIN_PANEL_HEIGHT: number;
     MIN_PANEL_WIDTH: number;
-    ZONE_ELEMENTS: EpiDashboardZoneElements;
+    WIDGETS: EpiWidgetConfig;
   };
   epiLineList: {
     CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS: number;

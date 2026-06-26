@@ -27,9 +27,7 @@ import {
   StringUtil,
 } from '@gen-epix/ui';
 
-import type { EpiDashboardLayoutPanelOrientation } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import type { CaseDbConfig } from '../../../models/config';
 import {
@@ -37,6 +35,8 @@ import {
   PanelSeparatorVertical,
 } from '../../ui/PanelSeparator';
 import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
+import type { UserProfileStore } from '../../../stores/userProfileStore';
 
 export type EpiDashboardLayoutRendererProps = {
   readonly disabled?: boolean;
@@ -47,7 +47,7 @@ export type EpiDashboardLayoutRendererProps = {
   readonly ref?: Ref<ForwardRefEpiDashboardLayoutRendererRefMethods>;
 };
 
-const panelStorageFactory = (panelNamePrefix: string): LayoutStorage => ({
+const panelStorageFactory = (userProfileStore: UserProfileStore, panelNamePrefix: string): LayoutStorage => ({
   getItem: (name: string) => {
     return userProfileStore.getState().epiDashboardPanels[`${panelNamePrefix}-${name}`];
   },
@@ -60,19 +60,21 @@ export type ForwardRefEpiDashboardLayoutRendererRefMethods = {
   reset: () => void;
 };
 
-const createOuterGroupId = (orientation: EpiDashboardLayoutPanelOrientation): string => {
+type Orientation = 'horizontal' | 'vertical';
+
+const createOuterGroupId = (orientation: Orientation): string => {
   return `outer-${orientation}`;
 };
 
-const createOuterPanelId = (orientation: EpiDashboardLayoutPanelOrientation, index: number): string => {
+const createOuterPanelId = (orientation: Orientation, index: number): string => {
   return `outer-${orientation}-panel-${index}`;
 };
 
-const createInnerGroupId = (orientation: EpiDashboardLayoutPanelOrientation, index: number): string => {
+const createInnerGroupId = (orientation: Orientation, index: number): string => {
   return `inner-${orientation}-${index}`;
 };
 
-const createInnerPanelId = (orientation: EpiDashboardLayoutPanelOrientation, outerIndex: number, innerIndex: number): string => {
+const createInnerPanelId = (orientation: Orientation, outerIndex: number, innerIndex: number): string => {
   return `${createInnerGroupId(orientation, outerIndex)}-panel-${innerIndex}`;
 };
 
@@ -90,6 +92,7 @@ export const EpiDashboardLayoutRenderer = ({
   ref,
 }: EpiDashboardLayoutRendererProps) => {
   const { t } = useTranslation();
+  const userProfileStore = use(UserProfileStoreContext);
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const dashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
   const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);

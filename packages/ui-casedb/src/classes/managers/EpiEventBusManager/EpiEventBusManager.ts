@@ -38,6 +38,7 @@ type EpiEvent = {
   onDownloadOptionsChanged: DownloadConfig;
   onDownloadOptionsRequested: void;
   onEventCreated: void;
+  onLinkLineListAndTree: void;
   openAddCasesToEventDialog: EpiAddCasesToEventDialogOpenProps;
   openCaseInfoDialog: EpiCaseInfoDialogOpenProps;
   openContactDetailsDialog: EpiContactDetailsDialogOpenProps;

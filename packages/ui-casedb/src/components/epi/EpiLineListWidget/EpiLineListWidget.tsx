@@ -24,7 +24,6 @@ import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import type {
   CaseDbCase,
-  CaseDbCaseSet,
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
@@ -52,10 +51,7 @@ import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { EpiLegendaItem } from '../EpiLegendaItem';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiLineListCaseSetMembersManager } from '../../../classes/managers/EpiLineListCaseSetMembersManager';
-import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import type {
-  EpiLineListRangeSubjectValue,
-  EpiLinkedScrollSubjectValue,
   Stratification,
   StratificationLegendaItem,
 } from '../../../models/epi';
@@ -69,24 +65,19 @@ import { EPI_CASE_INFO_DIALOG_TAB_NAME } from '../EpiCaseInfoDialog';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { EpiDashboardWidget } from '../EpiDashboard';
 import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { EpiDashboardContext } from '../EpiDashboard/context/EpiDashboardContext';
 
 import { EpiLineListWidgetTitle } from './EpiLineListWidgetTitle';
 import { EpiLineListWidgetPrimaryMenu } from './EpiLineListWidgetPrimaryMenu';
 import { EpiLineListWidgetSecondaryMenu } from './EpiLineListWidgetSecondaryMenu';
 import { useEpiLineListWidgetEmitDownloadOptions } from './useEpiLineListWidgetEmitDownloadOptions';
 
-export type EpiLineListWidgetProps = {
-  readonly caseSet?: CaseDbCaseSet;
-  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
-  readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
-  readonly onLink: () => void;
-};
-
-export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollSubject, onLink }: EpiLineListWidgetProps) => {
+export const EpiLineListWidget = () => {
+  const { caseSet } = use(EpiDashboardContext);
+  const epiDashboardContext = use(EpiDashboardContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const theme = useTheme();
-  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
 
@@ -102,9 +93,9 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
 
   useEffect(() => {
     return () => {
-      lineListRangeSubject.next(undefined);
+      epiDashboardContext.lineListRangeSubject.next(undefined);
     };
-  }, [lineListRangeSubject]);
+  }, [epiDashboardContext]);
 
   const openCaseInfoDialog = useCallback((caseId: string, tabName: EPI_CASE_INFO_DIALOG_TAB_NAME) => {
     EpiEventBusManager.getInstance().emit('openCaseInfoDialog', {
@@ -520,25 +511,26 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   }, [completeCaseType, frozenTableColumnsLeft, frozenTableColumnsRight, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
 
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
-    highlightingManager.highlight({
+    epiDashboardContext.highlight({
       caseIds: [row.id],
       origin: EPI_WIDGET_NAME.LINE_LIST,
     });
-  }, [highlightingManager]);
+  }, [epiDashboardContext]);
+
 
   const onRowMouseLeave = useCallback(() => {
-    highlightingManager.highlight({
+    epiDashboardContext.highlight({
       caseIds: [],
       origin: EPI_WIDGET_NAME.LINE_LIST,
     });
-  }, [highlightingManager]);
+  }, [epiDashboardContext]);
 
   useEffect(() => {
     setTableColumns(tableColumns);
   }, [setTableColumns, tableColumns]);
 
   useEffect(() => {
-    const unsubscribe = highlightingManager.subscribe((highlighting) => {
+    const unsubscribe = epiDashboardContext.highlightSubject.subscribe((highlighting) => {
       if (highlighting?.origin === EPI_WIDGET_NAME.LINE_LIST) {
         return;
       }
@@ -547,7 +539,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     return () => {
       unsubscribe();
     };
-  }, [highlightingManager, rowHighlightingSubject]);
+  }, [epiDashboardContext, rowHighlightingSubject]);
 
   useEpiLineListWidgetEmitDownloadOptions();
 
@@ -569,9 +561,9 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
   });
 
   const onRangeChanged = useCallback((range: ListRange) => {
-    lineListRangeSubject.next(range);
+    epiDashboardContext.lineListRangeSubject.next(range);
     void onRangeChangedDebounced(range);
-  }, [lineListRangeSubject, onRangeChangedDebounced]);
+  }, [epiDashboardContext, onRangeChangedDebounced]);
 
   useEffect(() => {
     return () => {
@@ -583,14 +575,14 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     if (isNaN(position)) {
       return;
     }
-    linkedScrollSubject.next({
+    epiDashboardContext.linkedScrollSubject.next({
       origin: containerRef.current,
       position,
     });
-  }, [linkedScrollSubject]);
+  }, [epiDashboardContext]);
 
   useEffect(() => {
-    const unsubscribe = linkedScrollSubject.subscribe((data) => {
+    const unsubscribe = epiDashboardContext.linkedScrollSubject.subscribe((data) => {
       if (data.origin === containerRef.current) {
         return;
       }
@@ -600,7 +592,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     return () => {
       unsubscribe();
     };
-  }, [linkedScrollSubject]);
+  }, [epiDashboardContext]);
 
   const getRowName = useCallback((row: CaseDbCase): string => {
     return row.id;
@@ -610,7 +602,7 @@ export const EpiLineListWidget = ({ caseSet, lineListRangeSubject, linkedScrollS
     <EpiDashboardWidget
       isLoading={isDataLoading}
       primaryMenu={<EpiLineListWidgetPrimaryMenu caseSet={caseSet} />}
-      secondaryMenu={<EpiLineListWidgetSecondaryMenu onLink={onLink} />}
+      secondaryMenu={<EpiLineListWidgetSecondaryMenu />}
       title={<EpiLineListWidgetTitle />}
       zone={EPI_WIDGET_NAME.LINE_LIST}
     >

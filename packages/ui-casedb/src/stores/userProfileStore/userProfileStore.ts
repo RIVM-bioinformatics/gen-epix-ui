@@ -60,7 +60,7 @@ export const createUserProfileStoreInitialState: () => UserProfileStoreState = (
   tableSettings: {},
 });
 
-export const userProfileStore = createStore<UserProfileStore>()(
+export const createUserProfileStore = () => createStore<UserProfileStore>()(
   persist(
     (set, get) => {
       return {

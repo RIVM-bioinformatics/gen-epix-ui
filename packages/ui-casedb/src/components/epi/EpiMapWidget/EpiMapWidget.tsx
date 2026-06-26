@@ -58,10 +58,9 @@ import {
 
 import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
-import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
+import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EpiMapUtil } from '../../../utils/EpiMapUtil';
 import type { GenEpixPieSeriesOptionEventData } from '../../../utils/EpiMapUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
@@ -72,6 +71,7 @@ import { CASEDB_QUERY_KEY } from '../../../data/query';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { EpiDashboardWidget } from '../EpiDashboard';
 import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { EpiDashboardContext } from '../EpiDashboard/context/EpiDashboardContext';
 
 const echartsCore = {
   dispose,
@@ -99,8 +99,8 @@ export const EpiMapWidget = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<EChartsReact>(null);
   const { dimensions: { height, width } } = useDimensions(containerRef);
-  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
 
+  const epiDashboardContext = use(EpiDashboardContext);
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const stratification = useStore(epiDashboardStore, (state) => state.stratification);
   const isDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
@@ -155,7 +155,7 @@ export const EpiMapWidget = () => {
   }, [col, completeCaseType.ref_cols]);
 
   const lineListCaseCount = useMemo(() => {
-    return EpiDashboardUtil.getCaseCount(sortedData);
+    return DashboardUtil.getCaseCount(sortedData);
   }, [sortedData]);
 
   const onEpiContextMenuClose = useCallback(() => {
@@ -245,14 +245,14 @@ export const EpiMapWidget = () => {
   const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
     return {
       mouseout: () => {
-        highlightingManager.highlight({
+        epiDashboardContext.highlight({
           caseIds: [],
           origin: EPI_WIDGET_NAME.MAP,
         });
       },
       mouseover: (event: unknown) => {
         try {
-          highlightingManager.highlight({
+          epiDashboardContext.highlight({
             caseIds: (event as GenEpixEchartsEvent).data.genEpixData.caseIds,
             origin: EPI_WIDGET_NAME.MAP,
           });
@@ -275,10 +275,10 @@ export const EpiMapWidget = () => {
         setFocussedRegion(region);
       },
     };
-  }, [highlightingManager, regions]);
+  }, [regions]);
 
   useEffect(() => {
-    const unsubscribe = highlightingManager.subscribe((highlighting) => {
+    const unsubscribe = epiDashboardContext.highlightSubject.subscribe((highlighting) => {
       const foundSerieIndexes: number[] = [];
       const foundDataIndexes: number[] = [];
       series.forEach((serie, serieIndex) => {
@@ -313,7 +313,7 @@ export const EpiMapWidget = () => {
     return () => {
       unsubscribe();
     };
-  }, [chartRef, highlightingManager, series]);
+  }, [chartRef, series]);
 
   const titleMenu = useMemo<MenuItemData>(() => {
     const menu: MenuItemData = {
@@ -427,8 +427,8 @@ export const EpiMapWidget = () => {
         {!shouldShowLoading && !shouldShowMap && (
           <Box sx={{ position: 'absolute' }}>
             <EpiWidgetUnavailable
-              widgetName={EPI_WIDGET_NAME.MAP}
               widgetLabel={t`map`}
+              widgetName={EPI_WIDGET_NAME.MAP}
             />
           </Box>
         )}

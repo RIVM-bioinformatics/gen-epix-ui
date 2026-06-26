@@ -11,6 +11,7 @@ import {
   useWatch,
 } from 'react-hook-form';
 import {
+  use,
   useCallback,
   useEffect,
 } from 'react';
@@ -19,7 +20,7 @@ import { useShallow } from 'zustand/shallow';
 import { Switch } from '@gen-epix/ui';
 
 import type { EpiDashboardEpiCurveSettings } from '../../../stores/userProfileStore';
-import { userProfileStore } from '../../../stores/userProfileStore';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
 export type EpiDashboardEpiCurveSettingsFormProps = {
   readonly onReset: () => void;
@@ -27,6 +28,7 @@ export type EpiDashboardEpiCurveSettingsFormProps = {
 
 export const EpiDashboardEpiCurveSettingsForm = ({ onReset }: EpiDashboardEpiCurveSettingsFormProps) => {
   const { t } = useTranslation();
+  const userProfileStore = use(UserProfileStoreContext);
 
   const resetEpiDashboardEpiCurveSettings = useStore(userProfileStore, useShallow((state) => state.resetEpiDashboardEpiCurveSettings));
   const epiDashboardEpiCurveSettings = useStore(userProfileStore, useShallow((state) => state.epiDashboardEpiCurveSettings));
@@ -49,7 +51,7 @@ export const EpiDashboardEpiCurveSettingsForm = ({ onReset }: EpiDashboardEpiCur
   }, [onReset, resetEpiDashboardEpiCurveSettings]);
 
   useEffect(() => {
-    setEpiDashboardEpiCurveSettings(formValues as EpiDashboardEpiCurveSettings);
+    setEpiDashboardEpiCurveSettings(formValues);
   }, [formValues, setEpiDashboardEpiCurveSettings]);
 
   const onSubmit = useCallback(() => {

@@ -25,7 +25,6 @@ import {
   KeyboardShortcutManager,
   SidebarMenu,
   SidebarMenuItem,
-  Subject,
   TableFiltersSidebarItem,
   TableFiltersSidebarItemIcon,
 } from '@gen-epix/ui';
@@ -45,18 +44,11 @@ import { EpiRemoveCasesFromEventDialog } from '../EpiRemoveCasesFromEventDialog'
 import type { EpiRemoveCasesFromEventDialogRefMethods } from '../EpiRemoveCasesFromEventDialog';
 import { EpiSequenceDownloadDialog } from '../EpiSequenceDownloadDialog';
 import type { EpiSequenceDownloadDialogRefMethods } from '../EpiSequenceDownloadDialog';
-import type {
-  EpiLineListRangeSubjectValue,
-  EpiLinkedScrollSubjectValue,
-} from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { userProfileStore } from '../../../stores/userProfileStore';
-import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EpiCurveWidget } from '../EpiCurveWidget';
 import { EpiLineListWidget } from '../EpiLineListWidget';
 import { EpiMapWidget } from '../EpiMapWidget';
 import { EpiStratification } from '../EpiStratification';
-import type { EpiTreeWidgetRef } from '../EpiTreeWidget';
 import { EpiTreeWidget } from '../EpiTreeWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { EpiFindSimilarCasesDialog } from '../EpiFindSimilarCasesDialog';
@@ -64,7 +56,6 @@ import type { EpiFindSimilarCasesDialogRefMethods } from '../EpiFindSimilarCases
 import { EpiRemoveFindSimilarCasesResultDialog } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import type { EpiRemoveFindSimilarCasesResultDialogRefMethods } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import type { CaseDbConfig } from '../../../models/config';
 import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 import {
@@ -77,6 +68,7 @@ import {
   EpiDashboardDownloadSidebarItem,
   EpiDashboardDownloadSidebarItemIcon,
 } from './EpiDashboardDownloadSidebarItem';
+import { EpiDashboardContext } from './context/EpiDashboardContext';
 
 type EpiDashboardProps = {
   readonly caseSet?: CaseDbCaseSet;
@@ -85,6 +77,7 @@ type EpiDashboardProps = {
 export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const epiDashboardContext = use(EpiDashboardContext);
   const epiDashboardLayoutRendererRef = useRef<ForwardRefEpiDashboardLayoutRendererRefMethods>(null);
   const epiCaseSetInfoDialogRef = useRef<EpiCaseSetInfoDialogRefMethods>(null);
   const epiCaseTypeInfoDialogRef = useRef<EpiCaseTypeInfoDialogRefMethods>(null);
@@ -99,26 +92,20 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
   const [isFilterSidebarOpen, setIsFilterSidebarOpen] = useState(false);
   const [isSettingsSidebarOpen, setIsSettingsSidebarOpen] = useState(false);
   const [isDownloadSidebarOpen, setIsDownloadSidebarOpen] = useState(false);
-  const epiTreeRef = useRef<EpiTreeWidgetRef>(null);
-  const linkedScrollSubject = useMemo(() => {
-    return new Subject<EpiLinkedScrollSubjectValue>();
-  }, []);
-  const lineListRangeSubject = useMemo(() => {
-    return new Subject<EpiLineListRangeSubjectValue>();
-  }, []);
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const fetchData = useStore(epiDashboardStore, useShallow((state) => state.fetchData));
   const completeCaseType = useStore(epiDashboardStore, (state) => state.completeCaseType);
   const activeFiltersCount = useStore(epiDashboardStore, (state) => state.filters.filter(f => !f.isInitialFilterValue()).length);
-  const numLayoutZones = useStore(userProfileStore, (state) => Object.keys(state.epiDashboardLayoutUserConfig.zones).length);
-  const numVisibleLayoutZones = useStore(userProfileStore, (state) => DashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);
-  const numHiddenLayoutZones = numLayoutZones - numVisibleLayoutZones;
   const isMaxResultsExceeded = useStore(epiDashboardStore, (state) => state.isMaxResultsExceeded);
   const isMaxResultsExceededDismissed = useStore(epiDashboardStore, (state) => state.isMaxResultsExceededDismissed);
 
   const onMaxResultsExceededButtonClose = useCallback(() => {
     epiDashboardStore.setState({ isMaxResultsExceededDismissed: true });
   }, [epiDashboardStore]);
+
+  useEffect(() => {
+    epiDashboardContext.reset();
+  }, [epiDashboardContext]);
 
   useEffect(() => {
     const eventBus = EpiEventBusManager.getInstance();
@@ -208,10 +195,6 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
     epiDashboardLayoutRendererRef.current?.reset();
   }, []);
 
-  const onEpiListLink = useCallback(() => {
-    epiTreeRef.current?.link();
-  }, []);
-
   const shouldShowMaxResultsExceededAlert = useMemo(() => {
     return !!isMaxResultsExceeded && !isMaxResultsExceededDismissed;
   }, [isMaxResultsExceededDismissed, isMaxResultsExceeded]);
@@ -230,12 +213,11 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
           title={t`Open filters`}
         />
         <SidebarMenuItem
-          badgeColor={numHiddenLayoutZones === numLayoutZones ? 'error' : 'secondary'}
-          badgeContent={numHiddenLayoutZones === numLayoutZones ? '!' : numHiddenLayoutZones}
+          badgeColor={'secondary'}
           icon={<EpiDashboardSettingsSidebarItemIcon />}
           onClick={onEpiDashboardLayoutSelectorSidebarButtonClick}
           testIdAttributes={{ name: 'dashboard' }}
-          title={t('Change dashboard layout (hidden zones: {{numHiddenLayoutZones}})', { numHiddenLayoutZones })}
+          title={t`Change dashboard layout`}
         />
         <SidebarMenuItem
           icon={<InfoIcon />}
@@ -322,12 +304,7 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
               </ErrorBoundary>
             )}
             lineListWidget={(
-              <EpiLineListWidget
-                caseSet={caseSet}
-                lineListRangeSubject={lineListRangeSubject}
-                linkedScrollSubject={linkedScrollSubject}
-                onLink={onEpiListLink}
-              />
+              <EpiLineListWidget />
             )}
             mapWidget={(
               <ErrorBoundary
@@ -342,12 +319,7 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
               </ErrorBoundary>
             )}
             phylogeneticTreeWidget={(
-              <EpiTreeWidget
-                itemHeight={ConfigManager.getInstance<CaseDbConfig>().config.epiLineList.TABLE_ROW_HEIGHT}
-                lineListRangeSubject={lineListRangeSubject}
-                linkedScrollSubject={linkedScrollSubject}
-                ref={epiTreeRef}
-              />
+              <EpiTreeWidget />
             )}
             ref={epiDashboardLayoutRendererRef}
           />

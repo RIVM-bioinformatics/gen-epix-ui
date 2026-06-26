@@ -18,6 +18,7 @@ import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager
 import { EpiDashboardEditCases } from '../EpiDashboardEditCases';
 
 import { EpiDashboardContent } from './EpiDashboardContent';
+import { EpiDashboardContextProvider } from './context/EpiDashboardContextProvider';
 
 type EpiDashboardProps = {
   readonly caseSet?: CaseDbCaseSet;
@@ -46,26 +47,28 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   }, []);
 
   return (
-    <Box
-      sx={{
-        height: '100%',
-        position: 'relative',
-        width: '100%',
-      }}
-    >
-      <ResponseHandler
-        error={dataError}
-        isLoading={false}
+    <EpiDashboardContextProvider caseSet={caseSet}>
+      <Box
+        sx={{
+          height: '100%',
+          position: 'relative',
+          width: '100%',
+        }}
       >
-        {casesToEdit ? (
-          <EpiDashboardEditCases
-            cases={casesToEdit}
-            onClose={onEpiDashboardEditCasesClose}
-          />
-        ) : (
-          <EpiDashboardContent caseSet={caseSet} />
-        )}
-      </ResponseHandler>
-    </Box>
+        <ResponseHandler
+          error={dataError}
+          isLoading={false}
+        >
+          {casesToEdit ? (
+            <EpiDashboardEditCases
+              cases={casesToEdit}
+              onClose={onEpiDashboardEditCasesClose}
+            />
+          ) : (
+            <EpiDashboardContent caseSet={caseSet} />
+          )}
+        </ResponseHandler>
+      </Box>
+    </EpiDashboardContextProvider>
   );
 });

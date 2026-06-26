@@ -1,10 +1,12 @@
 import { createRoot } from 'react-dom/client';
 import {
-  App,
   ConfigManager,
   I18nManager,
 } from '@gen-epix/ui';
-import { setupCaseDb } from '@gen-epix/ui-casedb';
+import {
+  CaseDbApp,
+  setupCaseDb,
+} from '@gen-epix/ui-casedb';
 import type { CaseDbConfig } from '@gen-epix/ui-casedb';
 
 import { ConfigUtil } from './utils/ConfigUtil';
@@ -15,7 +17,7 @@ I18nManager.getInstance().init()
     setupCaseDb();
 
     createRoot(document.getElementById('root')).render(
-      <App />,
+      <CaseDbApp />,
     );
   })
   .catch((error) => {

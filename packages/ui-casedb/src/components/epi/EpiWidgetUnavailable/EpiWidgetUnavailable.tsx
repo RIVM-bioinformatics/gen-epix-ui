@@ -4,11 +4,15 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useCallback } from 'react';
+import {
+  use,
+  useCallback,
+} from 'react';
 import { useStore } from 'zustand';
 import { produce } from 'immer';
 
-import { userProfileStore } from '../../../stores/userProfileStore';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
+
 
 export type EpiWidgetUnavailableProps = {
   readonly widgetLabel: string;
@@ -17,6 +21,7 @@ export type EpiWidgetUnavailableProps = {
 
 export const EpiWidgetUnavailable = ({ widgetLabel, widgetName }: EpiWidgetUnavailableProps) => {
   const { t } = useTranslation();
+  const userProfileStore = use(UserProfileStoreContext);
   const epiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
   const setEpiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.setEpiDashboardArrangementConfig);
 

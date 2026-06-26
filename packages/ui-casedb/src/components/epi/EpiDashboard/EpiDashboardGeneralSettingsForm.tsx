@@ -11,6 +11,7 @@ import {
   useWatch,
 } from 'react-hook-form';
 import {
+  use,
   useCallback,
   useEffect,
 } from 'react';
@@ -19,7 +20,7 @@ import { useShallow } from 'zustand/shallow';
 import { Switch } from '@gen-epix/ui';
 
 import type { EpiDashboardGeneralSettings } from '../../../stores/userProfileStore';
-import { userProfileStore } from '../../../stores/userProfileStore';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
 export type EpiDashboardGeneralSettingsFormProps = {
   readonly onReset: () => void;
@@ -27,6 +28,7 @@ export type EpiDashboardGeneralSettingsFormProps = {
 
 export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneralSettingsFormProps) => {
   const { t } = useTranslation();
+  const userProfileStore = use(UserProfileStoreContext);
 
   const resetEpiDashboardGeneralSettings = useStore(userProfileStore, useShallow((state) => state.resetEpiDashboardGeneralSettings));
   const epiDashboardGeneralSettings = useStore(userProfileStore, useShallow((state) => state.epiDashboardGeneralSettings));
@@ -48,7 +50,7 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
   }, [onReset, resetEpiDashboardGeneralSettings]);
 
   useEffect(() => {
-    setEpiDashboardGeneralSettings(formValues as EpiDashboardGeneralSettings);
+    setEpiDashboardGeneralSettings(formValues);
   }, [formValues, setEpiDashboardGeneralSettings]);
 
   const onSubmit = useCallback(() => {

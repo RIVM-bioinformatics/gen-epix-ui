@@ -1,10 +1,12 @@
 import { createRoot } from 'react-dom/client';
 import {
-  App,
   ConfigManager,
   I18nManager,
 } from '@gen-epix/ui';
-import { setupSeqDb } from '@gen-epix/ui-seqdb';
+import {
+  SeqDbApp,
+  setupSeqDb,
+} from '@gen-epix/ui-seqdb';
 import type { SeqDbConfig } from '@gen-epix/ui-seqdb';
 
 import { ConfigUtil } from './utils/ConfigUtil';
@@ -15,7 +17,7 @@ I18nManager.getInstance().init()
     setupSeqDb();
 
     createRoot(document.getElementById('root')).render(
-      <App />,
+      <SeqDbApp />,
     );
   })
   .catch((error) => {

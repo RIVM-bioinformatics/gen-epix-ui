@@ -54,7 +54,6 @@ import { CaseDbDimType } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui';
 import { DATE_FORMAT } from '@gen-epix/ui';
 
-import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
@@ -63,10 +62,11 @@ import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
-import { userProfileStore } from '../../../stores/userProfileStore';
+import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EpiDashboardWidget } from '../EpiDashboard';
 import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
+import { EpiDashboardContext } from '../EpiDashboard/context/EpiDashboardContext';
 
 import { EpiCurveBarChart } from './EpiCurveBarChart';
 import { EpiCurveStackedAreaChart } from './EpiCurveStackedAreaChart';
@@ -85,9 +85,10 @@ export const EpiCurveWidget = () => {
   const { t } = useTranslation();
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [chartType, setChartType] = useState<ChartType>('bar');
-  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
   const chartRef = useRef<EChartsReact>(null);
   const [highlightedCaseIds, setHighlightedCaseIds] = useState<string[]>([]);
+  const epiDashboardContext = use(EpiDashboardContext);
+  const userProfileStore = use(UserProfileStoreContext);
 
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const stratification = useStore(epiDashboardStore, (state) => state.stratification);
@@ -110,7 +111,7 @@ export const EpiCurveWidget = () => {
   }, []);
 
   const lineListCaseCount = useMemo(() => {
-    return EpiDashboardUtil.getCaseCount(sortedData);
+    return DashboardUtil.getCaseCount(sortedData);
   }, [sortedData]);
 
 
@@ -228,11 +229,11 @@ export const EpiCurveWidget = () => {
   }, [col, completeCaseType.ref_cols, items]);
 
   const onChartCaseIdsChange = useCallback((caseIds: string[]) => {
-    highlightingManager.highlight({
+    epiDashboardContext.highlight({
       caseIds,
       origin: EPI_WIDGET_NAME.EPI_CURVE,
     });
-  }, [highlightingManager]);
+  }, [epiDashboardContext]);
 
   const onChartPointMouseUp = useCallback((payload: { caseIds: string[]; focussedDate: string; mouseEvent: MouseEvent }) => {
     setFocussedDate(payload.focussedDate);
@@ -253,7 +254,7 @@ export const EpiCurveWidget = () => {
   }, [colLabel, t]);
 
   useEffect(() => {
-    const unsubscribe = highlightingManager.subscribe((highlighting) => {
+    const unsubscribe = epiDashboardContext.highlightSubject.subscribe((highlighting) => {
       if (highlighting.origin === EPI_WIDGET_NAME.EPI_CURVE) {
         return;
       }
@@ -263,7 +264,7 @@ export const EpiCurveWidget = () => {
     return () => {
       unsubscribe();
     };
-  }, [highlightingManager]);
+  }, [epiDashboardContext]);
 
   const onShowOnlySelectedDateMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     if (!isString(focussedDate) || !col?.id) {

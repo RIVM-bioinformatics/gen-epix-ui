@@ -11,6 +11,7 @@ import {
   useWatch,
 } from 'react-hook-form';
 import {
+  use,
   useCallback,
   useEffect,
 } from 'react';
@@ -19,7 +20,7 @@ import { useShallow } from 'zustand/shallow';
 import { Switch } from '@gen-epix/ui';
 
 import type { EpiDashboardTreeSettings } from '../../../stores/userProfileStore';
-import { userProfileStore } from '../../../stores/userProfileStore';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
 export type EpiDashboardTreeSettingsFormProps = {
   readonly onReset: () => void;
@@ -27,6 +28,7 @@ export type EpiDashboardTreeSettingsFormProps = {
 
 export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettingsFormProps) => {
   const { t } = useTranslation();
+  const userProfileStore = use(UserProfileStoreContext);
 
   const resetEpiDashboardTreeSettings = useStore(userProfileStore, useShallow((state) => state.resetEpiDashboardTreeSettings));
   const epiDashboardTreeSettings = useStore(userProfileStore, useShallow((state) => state.epiDashboardTreeSettings));
@@ -49,7 +51,7 @@ export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettin
   }, [onReset, resetEpiDashboardTreeSettings]);
 
   useEffect(() => {
-    setEpiDashboardTreeSettings(formValues as EpiDashboardTreeSettings);
+    setEpiDashboardTreeSettings(formValues);
   }, [formValues, setEpiDashboardTreeSettings]);
 
   const onSubmit = useCallback(() => {

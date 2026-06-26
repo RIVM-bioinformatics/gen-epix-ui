@@ -1,10 +1,12 @@
 import { createRoot } from 'react-dom/client';
 import {
-  App,
   ConfigManager,
   I18nManager,
 } from '@gen-epix/ui';
-import { setupOmopDb } from '@gen-epix/ui-omopdb';
+import {
+  OmopDbApp,
+  setupOmopDb,
+} from '@gen-epix/ui-omopdb';
 import type { OmopDbConfig } from '@gen-epix/ui-omopdb';
 
 import { ConfigUtil } from './utils/ConfigUtil';
@@ -15,7 +17,7 @@ I18nManager.getInstance().init()
     setupOmopDb();
 
     createRoot(document.getElementById('root')).render(
-      <App />,
+      <OmopDbApp />,
     );
   })
   .catch((error) => {

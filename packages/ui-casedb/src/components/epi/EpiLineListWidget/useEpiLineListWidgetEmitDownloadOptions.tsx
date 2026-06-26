@@ -10,7 +10,7 @@ import { useShallow } from 'zustand/shallow';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import { EpiDashboardUtil } from '../../../utils/EpiDashboardUtil';
+import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 export const useEpiLineListWidgetEmitDownloadOptions = () => {
@@ -54,11 +54,11 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
             disabled: selectedIds.length === 0,
             items: [
               {
-                callback: async () => CaseDbDownloadUtil.downloadAsExcel(EpiDashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+                callback: async () => CaseDbDownloadUtil.downloadAsExcel(DashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
                 label: t`Download as Excel`,
               },
               {
-                callback: () => CaseDbDownloadUtil.downloadAsCsv(EpiDashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+                callback: () => CaseDbDownloadUtil.downloadAsCsv(DashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
                 label: t`Download as CSV`,
               },
               {

@@ -13,15 +13,11 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LinkIcon from '@mui/icons-material/Link';
-import type {
-  ReactElement,
-  Ref,
-} from 'react';
+import type { ReactElement } from 'react';
 import {
   use,
   useCallback,
   useEffect,
-  useImperativeHandle,
   useMemo,
   useRef,
   useState,
@@ -40,15 +36,11 @@ import {
 } from '@gen-epix/ui';
 
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import type {
-  EpiLineListRangeSubjectValue,
-  EpiLinkedScrollSubjectValue,
   Highlighting,
   TreeConfiguration,
 } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
@@ -67,31 +59,23 @@ import type { CaseDbConfig } from '../../../models/config';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import { EpiDashboardWidget } from '../EpiDashboard';
 import { EPI_WIDGET_NAME } from '../../../data/epi';
-
-export interface EpiTreeWidgetRef {
-  link: () => void;
-}
-
-type EpiTreeWidgetProps = {
-  readonly itemHeight: number;
-  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
-  readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
-  readonly ref: Ref<EpiTreeWidgetRef>;
-};
+import { EpiDashboardContext } from '../EpiDashboard/context/EpiDashboardContext';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
 type ZoomInMenuItemConfig = {
   caseIds?: string[];
   rootId?: string;
 };
 
-export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSubject, ref }: EpiTreeWidgetProps) => {
+export const EpiTreeWidget = () => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [isTreeLinked, setIsTreeLinked] = useState(true);
   const treeRef = useRef<PhylogeneticTreeComponentRef>(null);
-  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
   const epiDashboardStore = use(EpiDashboardStoreContext);
+  const epiDashboardContext = use(EpiDashboardContext);
+  const userProfileStore = use(UserProfileStoreContext);
   const setPhylogeneticTreeResponse = useStore(epiDashboardStore, (state) => state.setPhylogeneticTreeResponse);
   const baseData = useStore(epiDashboardStore, (state) => state.baseData);
   const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
@@ -148,7 +132,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   }, [treeConfiguration, t]);
 
   useEffect(() => {
-    const unsubscribeHighlightingManager = highlightingManager.subscribe((highlighting) => {
+    const unsubscribeHighlightingManager = epiDashboardContext.highlightSubject.subscribe((highlighting) => {
       if (highlighting.origin === EPI_WIDGET_NAME.TREE) {
         return;
       }
@@ -158,14 +142,14 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
       if (highlighting.origin !== EPI_WIDGET_NAME.TREE) {
         return;
       }
-      highlightingManager.highlight(highlighting);
+      epiDashboardContext.highlight(highlighting);
     });
 
     return () => {
       unsubscribeHighlightingManager();
       unsubscribeTreeHighlightingSubject();
     };
-  }, [highlightingManager, treeHighlightingSubject]);
+  }, [epiDashboardContext, treeHighlightingSubject]);
 
   const caseIds = useMemo(() => filteredCases.map(c => c.id).sort(), [filteredCases]);
 
@@ -485,17 +469,18 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   }, [completeCaseType, isTreeLinked, isTreeUnavailable, newick, t, treeCanvas, treeConfiguration?.geneticDistanceProtocol.name, treeConfiguration?.treeAlgorithm.name]);
 
 
-  const link = useCallback(() => {
-    treeRef.current?.link();
+  useEffect(() => {
+    // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
+    const removeEventListener = EpiEventBusManager.getInstance().addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
+    return () => {
+      removeEventListener();
+    };
   }, []);
+
 
   const onLinkStateChange = useCallback((linked: boolean) => {
     setIsTreeLinked(linked);
   }, [setIsTreeLinked]);
-
-  useImperativeHandle(ref, () => ({
-    link,
-  }));
 
   return (
     <EpiDashboardWidget
@@ -548,8 +533,8 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
                 }}
               >
                 <EpiWidgetUnavailable
-                  widgetName={EPI_WIDGET_NAME.TREE}
                   widgetLabel={t`phylogenetic tree`}
+                  widgetName={EPI_WIDGET_NAME.TREE}
                 />
               </Box>
             )}
@@ -564,11 +549,11 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
         {!isTreeUnavailable && shouldShowTree && (
           <PhylogeneticTreeComponent
             ariaLabel={treeCanvasAriaLabel}
-            externalScrollSubject={linkedScrollSubject}
-            externalVisibleRangeSubject={lineListRangeSubject}
-            highlightingSubject={treeHighlightingSubject}
+            externalScrollSubject={epiDashboardContext.linkedScrollSubject}
+            externalVisibleRangeSubject={epiDashboardContext.lineListRangeSubject}
+            highlightingSubject={epiDashboardContext.highlightSubject}
             initialViewState={initialTreeViewState}
-            itemHeight={itemHeight}
+            itemHeight={ConfigManager.getInstance<CaseDbConfig>().config.epiLineList.TABLE_ROW_HEIGHT}
             leafOrder={sortedLeafNames}
             onCanvasChange={onTreeCanvasChange}
             onLinkStateChange={onLinkStateChange}

@@ -31,9 +31,9 @@ import {
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
 import { WidgetHeaderIconButton } from '../EpiWidgetHeaderIconButton';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { userProfileStore } from '../../../stores/userProfileStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EpiWarning } from '../EpiWarning';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
 
 export type EpiDashboardWidgetProps = PropsWithChildren<{
@@ -55,6 +55,7 @@ export const EpiDashboardWidget = ({ children, expandDisabled, isLoading, primar
   const theme = useTheme();
   const { t } = useTranslation();
 
+  const userProfileStore = use(UserProfileStoreContext);
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const expandZone = useStore(epiDashboardStore, (state) => state.expandZone);
   const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);

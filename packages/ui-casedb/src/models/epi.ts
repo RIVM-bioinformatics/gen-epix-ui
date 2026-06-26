@@ -13,6 +13,7 @@ import type {
   CaseDbRegionSet,
   CaseDbTreeAlgorithm,
 } from '@gen-epix/api-casedb';
+import type { FunctionComponent } from 'react';
 
 export enum EPI_UPLOAD_STEP {
   SELECT_FILE = 0,
@@ -69,8 +70,6 @@ export type EpiDashboardArrangementConfig = {
   arrangementWidgetAssignments: EpiDashboardArrangementWidgetAssignments;
 };
 export type EpiDashboardArrangementWidgetAssignments = { [arrangementZone: string]: string };
-
-export type EpiDashboardZoneElements = { [elementName: string]: string };
 
 export type EpiData = {
   conceptsById: { [id: string]: CaseDbConcept };
@@ -144,6 +143,13 @@ export type EpiUploadSequenceMappingForCaseId = {
 
 export type EpiUploadTableRow = {
   [key: string]: string;
+};
+
+export type EpiWidgetConfig = {
+  [widgetName: string]: {
+    component: FunctionComponent;
+    widgetLabel: string;
+  };
 };
 
 export type FindSimilarCasesChartDataPoint = {

@@ -8,13 +8,14 @@ import {
   I18nManager,
   WindowManager,
 } from '@gen-epix/ui';
-import type {
-  CaseDbConfig,
-  EpiDashboardLayoutConfig,
-} from '@gen-epix/ui-casedb';
+import type { CaseDbConfig } from '@gen-epix/ui-casedb';
 import {
   createCaseDbDemoTheme,
   EPI_WIDGET_NAME,
+  EpiCurveWidget,
+  EpiLineListWidget,
+  EpiMapWidget,
+  EpiTreeWidget,
 } from '@gen-epix/ui-casedb';
 import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
@@ -211,8 +212,23 @@ export class ConfigUtil {
         },
         MIN_PANEL_HEIGHT: 30,
         MIN_PANEL_WIDTH: 30,
-        ZONE_ELEMENTS: {
-          [EPI_WIDGET_NAME.EPI_CURVE]: '',
+        WIDGETS: {
+          [EPI_WIDGET_NAME.EPI_CURVE]: {
+            component: EpiCurveWidget,
+            widgetLabel: 'Epi Curve',
+          },
+          [EPI_WIDGET_NAME.LINE_LIST]: {
+            component: EpiLineListWidget,
+            widgetLabel: 'Line List',
+          },
+          [EPI_WIDGET_NAME.MAP]: {
+            component: EpiMapWidget,
+            widgetLabel: 'Map',
+          },
+          [EPI_WIDGET_NAME.TREE]: {
+            component: EpiTreeWidget,
+            widgetLabel: 'Phylogenetic Tree',
+          },
         },
       },
       epiLineList: {

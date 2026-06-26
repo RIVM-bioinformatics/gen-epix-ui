@@ -11,6 +11,7 @@ import {
   useWatch,
 } from 'react-hook-form';
 import {
+  use,
   useCallback,
   useEffect,
   useMemo,
@@ -20,10 +21,10 @@ import { useShallow } from 'zustand/shallow';
 import { ConfigManager } from '@gen-epix/ui';
 
 import type { EpiDashboardArrangementConfig } from '../../../models/epi';
-import { userProfileStore } from '../../../stores/userProfileStore';
 import { ArrangementEditor } from '../../forms/fields/ArrangementEditor';
 import type { CaseDbConfig } from '../../../models/config';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
 export type EpiDashboardLayoutSettingsFormProps = {
   readonly onReset: () => void;
@@ -33,6 +34,7 @@ type FormValues = Pick<EpiDashboardArrangementConfig, 'arrangement'>;
 
 export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSettingsFormProps) => {
   const { t } = useTranslation();
+  const userProfileStore = use(UserProfileStoreContext);
 
   const resetEpiDashboardLayout = useStore(userProfileStore, useShallow((state) => state.resetEpiDashboardLayout));
   const epiDashboardArrangementConfig = useStore(userProfileStore, useShallow((state) => state.epiDashboardArrangementConfig));

@@ -49,7 +49,6 @@ import {
 import { EpiFilterUtil } from '../../utils/EpiFilterUtil';
 import { NewickUtil } from '../../utils/NewickUtil';
 import { EpiTreeUtil } from '../../utils/EpiTreeUtil';
-import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingManager';
 import type { CaseDbConfig } from '../../models/config';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
@@ -219,7 +218,6 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             reloadSelectedIds();
           },
           destroy: () => {
-            EpiHighlightingManager.getInstance().reset();
             tableStoreActions.destroy();
           },
           expandZone: (expandedZone: string) => {
