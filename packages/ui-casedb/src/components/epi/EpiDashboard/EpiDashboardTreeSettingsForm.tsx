@@ -51,7 +51,7 @@ export const EpiDashboardTreeSettingsForm = ({ onReset }: EpiDashboardTreeSettin
   }, [onReset, resetEpiDashboardTreeSettings]);
 
   useEffect(() => {
-    setEpiDashboardTreeSettings(formValues);
+    setEpiDashboardTreeSettings(formValues as EpiDashboardTreeSettings);
   }, [formValues, setEpiDashboardTreeSettings]);
 
   const onSubmit = useCallback(() => {

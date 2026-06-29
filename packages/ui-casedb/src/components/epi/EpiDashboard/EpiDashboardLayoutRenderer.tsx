@@ -3,11 +3,13 @@ import type {
   Ref,
 } from 'react';
 import {
+  createElement,
   Fragment,
   use,
   useImperativeHandle,
   useMemo,
 } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import type { LayoutStorage } from 'react-resizable-panels';
 import {
   Group,
@@ -15,13 +17,8 @@ import {
   useDefaultLayout,
   useGroupRef,
 } from 'react-resizable-panels';
+import type { StoreApi } from 'zustand';
 import { useStore } from 'zustand';
-import {
-  Alert,
-  AlertTitle,
-  Box,
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import {
   ConfigManager,
   StringUtil,
@@ -34,20 +31,22 @@ import {
   PanelSeparatorHorizontal,
   PanelSeparatorVertical,
 } from '../../ui/PanelSeparator';
-import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import type { UserProfileStore } from '../../../stores/userProfileStore';
+import type { EpiDashboardArrangement } from '../../../models/epi';
 
+import { EpiDashboardZoneContext } from './EpiDashboardZoneContext';
+
+// Maximum number of resizable groups supported simultaneously = 16.
+// With a 9-widget maximum, the DFS group tree has at most 9 internal nodes;
+// 16 gives headroom for any configuration.
 export type EpiDashboardLayoutRendererProps = {
   readonly disabled?: boolean;
-  readonly epiCurveWidget: ReactElement;
-  readonly lineListWidget: ReactElement;
-  readonly mapWidget: ReactElement;
-  readonly phylogeneticTreeWidget: ReactElement;
   readonly ref?: Ref<ForwardRefEpiDashboardLayoutRendererRefMethods>;
 };
 
-const panelStorageFactory = (userProfileStore: UserProfileStore, panelNamePrefix: string): LayoutStorage => ({
+const panelStorageFactory = (userProfileStore: StoreApi<UserProfileStore>, panelNamePrefix: string): LayoutStorage => ({
   getItem: (name: string) => {
     return userProfileStore.getState().epiDashboardPanels[`${panelNamePrefix}-${name}`];
   },
@@ -60,196 +59,179 @@ export type ForwardRefEpiDashboardLayoutRendererRefMethods = {
   reset: () => void;
 };
 
-type Orientation = 'horizontal' | 'vertical';
-
-const createOuterGroupId = (orientation: Orientation): string => {
-  return `outer-${orientation}`;
-};
-
-const createOuterPanelId = (orientation: Orientation, index: number): string => {
-  return `outer-${orientation}-panel-${index}`;
-};
-
-const createInnerGroupId = (orientation: Orientation, index: number): string => {
-  return `inner-${orientation}-${index}`;
-};
-
-const createInnerPanelId = (orientation: Orientation, outerIndex: number, innerIndex: number): string => {
-  return `${createInnerGroupId(orientation, outerIndex)}-panel-${innerIndex}`;
-};
-
-const getIndexFromId = (id: string): number => {
-  const match = id.match(/(\d+)(?!.*\d)/);
-  return match ? parseInt(match[1], 10) : -1;
-};
-
 export const EpiDashboardLayoutRenderer = ({
   disabled,
-  epiCurveWidget,
-  lineListWidget,
-  mapWidget,
-  phylogeneticTreeWidget,
   ref,
 }: EpiDashboardLayoutRendererProps) => {
-  const { t } = useTranslation();
   const userProfileStore = use(UserProfileStoreContext);
   const epiDashboardStore = use(EpiDashboardStoreContext);
-  const dashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
+  const epiDashboardArrangementConfig = useStore(userProfileStore, (state) => state.epiDashboardArrangementConfig);
   const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);
-  const layout = DashboardUtil.getDashboardLayout(dashboardLayoutUserConfig);
-  const enabledLayoutZones = DashboardUtil.getEnabledZones(dashboardLayoutUserConfig);
-
-  const storagePrefix = useMemo(() => `${StringUtil.createHash(JSON.stringify(layout ?? ''))}-v2-`, [layout]);
-  const [outerOrientation, ...panels] = layout ?? [];
-  const innerOrientation: EpiDashboardLayoutPanelOrientation = outerOrientation === 'horizontal' ? 'vertical' : 'horizontal';
-
-  const { defaultLayout: defaultLayoutOuter, onLayoutChanged: onLayoutChangedOuter } = useDefaultLayout({
-    groupId: createOuterGroupId(outerOrientation),
-    storage: panelStorageFactory(`${storagePrefix}-outer`),
-  });
-
-  const { defaultLayout: defaultLayoutInner0, onLayoutChanged: onLayoutChangedInner0 } = useDefaultLayout({
-    groupId: createInnerGroupId(innerOrientation, 0),
-    storage: panelStorageFactory(`${storagePrefix}-inner-0-${innerOrientation}`),
-  });
-
-  const { defaultLayout: defaultLayoutInner1, onLayoutChanged: onLayoutChangedInner1 } = useDefaultLayout({
-    groupId: createInnerGroupId(innerOrientation, 1),
-    storage: panelStorageFactory(`${storagePrefix}-inner-1-${innerOrientation}`),
-  });
-
-  const groupRefOuter = useGroupRef();
-  const groupRefInner0 = useGroupRef();
-  const groupRefInner1 = useGroupRef();
-
   const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard;
+
+  const { arrangement, arrangementWidgetAssignments } = epiDashboardArrangementConfig;
+
+  const storagePrefix = useMemo(
+    () => StringUtil.createHash(JSON.stringify(arrangement ?? '')),
+    [arrangement],
+  );
+
+  const groupInfos = useMemo(
+    () => arrangement?.cells ? DashboardUtil.getArrangementGroupInfos(arrangement, storagePrefix) : [],
+    [arrangement, storagePrefix],
+  );
+
+  const storage = useMemo(
+    () => panelStorageFactory(userProfileStore, 'epi-dashboard'),
+    [userProfileStore],
+  );
+
+  // Pre-call MAX_GROUPS useDefaultLayout hooks (hooks must be called unconditionally).
+  // Each is indexed by DFS traversal order to match getArrangementGroupInfos.
+  const groupLayout0 = useDefaultLayout({ groupId: groupInfos[0]?.groupId ?? `${storagePrefix}-ph-0`, storage });
+  const groupLayout1 = useDefaultLayout({ groupId: groupInfos[1]?.groupId ?? `${storagePrefix}-ph-1`, storage });
+  const groupLayout2 = useDefaultLayout({ groupId: groupInfos[2]?.groupId ?? `${storagePrefix}-ph-2`, storage });
+  const groupLayout3 = useDefaultLayout({ groupId: groupInfos[3]?.groupId ?? `${storagePrefix}-ph-3`, storage });
+  const groupLayout4 = useDefaultLayout({ groupId: groupInfos[4]?.groupId ?? `${storagePrefix}-ph-4`, storage });
+  const groupLayout5 = useDefaultLayout({ groupId: groupInfos[5]?.groupId ?? `${storagePrefix}-ph-5`, storage });
+  const groupLayout6 = useDefaultLayout({ groupId: groupInfos[6]?.groupId ?? `${storagePrefix}-ph-6`, storage });
+  const groupLayout7 = useDefaultLayout({ groupId: groupInfos[7]?.groupId ?? `${storagePrefix}-ph-7`, storage });
+  const groupLayout8 = useDefaultLayout({ groupId: groupInfos[8]?.groupId ?? `${storagePrefix}-ph-8`, storage });
+  const groupLayout9 = useDefaultLayout({ groupId: groupInfos[9]?.groupId ?? `${storagePrefix}-ph-9`, storage });
+  const groupLayout10 = useDefaultLayout({ groupId: groupInfos[10]?.groupId ?? `${storagePrefix}-ph-10`, storage });
+  const groupLayout11 = useDefaultLayout({ groupId: groupInfos[11]?.groupId ?? `${storagePrefix}-ph-11`, storage });
+  const groupLayout12 = useDefaultLayout({ groupId: groupInfos[12]?.groupId ?? `${storagePrefix}-ph-12`, storage });
+  const groupLayout13 = useDefaultLayout({ groupId: groupInfos[13]?.groupId ?? `${storagePrefix}-ph-13`, storage });
+  const groupLayout14 = useDefaultLayout({ groupId: groupInfos[14]?.groupId ?? `${storagePrefix}-ph-14`, storage });
+  const groupLayout15 = useDefaultLayout({ groupId: groupInfos[15]?.groupId ?? `${storagePrefix}-ph-15`, storage });
+
+  // Pre-call MAX_GROUPS useGroupRef hooks for imperative reset support.
+  const groupRef0 = useGroupRef();
+  const groupRef1 = useGroupRef();
+  const groupRef2 = useGroupRef();
+  const groupRef3 = useGroupRef();
+  const groupRef4 = useGroupRef();
+  const groupRef5 = useGroupRef();
+  const groupRef6 = useGroupRef();
+  const groupRef7 = useGroupRef();
+  const groupRef8 = useGroupRef();
+  const groupRef9 = useGroupRef();
+  const groupRef10 = useGroupRef();
+  const groupRef11 = useGroupRef();
+  const groupRef12 = useGroupRef();
+  const groupRef13 = useGroupRef();
+  const groupRef14 = useGroupRef();
+  const groupRef15 = useGroupRef();
+
+  const allGroupLayouts = [
+    groupLayout0, groupLayout1, groupLayout2, groupLayout3,
+    groupLayout4, groupLayout5, groupLayout6, groupLayout7,
+    groupLayout8, groupLayout9, groupLayout10, groupLayout11,
+    groupLayout12, groupLayout13, groupLayout14, groupLayout15,
+  ];
+
+  const allGroupRefs = useMemo(() => [
+    groupRef0, groupRef1, groupRef2, groupRef3,
+    groupRef4, groupRef5, groupRef6, groupRef7,
+    groupRef8, groupRef9, groupRef10, groupRef11,
+    groupRef12, groupRef13, groupRef14, groupRef15,
+  ], [groupRef0, groupRef1, groupRef2, groupRef3, groupRef4, groupRef5, groupRef6, groupRef7, groupRef8, groupRef9, groupRef10, groupRef11, groupRef12, groupRef13, groupRef14, groupRef15]);
 
   useImperativeHandle(ref, () => ({
     reset: () => {
       try {
-        if (groupRefOuter.current) {
-          const newLayout = Object.fromEntries(Object.entries(groupRefOuter.current.getLayout()).map(([id, size]) => {
-            return [id, panels?.[getIndexFromId(id)]?.[0] ?? size] as [string, number];
-          }));
-          groupRefOuter.current.setLayout(newLayout);
-        }
-        if (groupRefInner0.current) {
-          const newLayout = Object.fromEntries(Object.entries(groupRefInner0.current.getLayout()).map(([id, size]) => {
-            return [id, (panels?.[0]?.[getIndexFromId(id) + 1] as Array<number>)?.[0] ?? size] as [string, number];
-          }));
-          groupRefInner0.current.setLayout(newLayout);
-        }
-        if (groupRefInner1.current) {
-          const newLayout = Object.fromEntries(Object.entries(groupRefInner1.current.getLayout()).map(([id, size]) => {
-            return [id, (panels?.[1]?.[getIndexFromId(id) + 1] as Array<number>)?.[0] ?? size] as [string, number];
-          }));
-          groupRefInner1.current.setLayout(newLayout);
-        }
+        allGroupRefs.forEach((groupRef) => {
+          if (groupRef.current) {
+            const layout = groupRef.current.getLayout();
+            const ids = Object.keys(layout);
+            if (ids.length > 0) {
+              const equalSize = 100 / ids.length;
+              groupRef.current.setLayout(Object.fromEntries(ids.map((id) => [id, equalSize])));
+            }
+          }
+        });
       } catch (_error) {
         // allow to fail (it doesn't change functionality)
       }
     },
-  }));
+  }), [allGroupRefs]);
 
   const panelMap = useMemo(() => {
-    return {
-      [EPI_WIDGET_NAME.EPI_CURVE]: epiCurveWidget,
-      [EPI_WIDGET_NAME.LINE_LIST]: lineListWidget,
-      [EPI_WIDGET_NAME.MAP]: mapWidget,
-      [EPI_WIDGET_NAME.TREE]: phylogeneticTreeWidget,
-    };
-  }, [epiCurveWidget, lineListWidget, mapWidget, phylogeneticTreeWidget]);
+    const widgetsConfig = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
+    return Object.fromEntries(
+      Object.entries(widgetsConfig).map(([widgetName, { component, widgetLabel }]) => [
+        widgetName,
+        <ErrorBoundary
+          fallback={<EpiWidgetUnavailable widgetLabel={widgetLabel} />}
+          key={widgetName}
+        >
+          {createElement(component)}
+        </ErrorBoundary>,
+      ]),
+    );
+  }, []);
 
   if (expandedZone) {
-    return panelMap[expandedZone as keyof typeof panelMap];
-  }
-
-  if (enabledLayoutZones.length === 0) {
+    const widgetName = arrangementWidgetAssignments[expandedZone];
     return (
-      <Box
-        sx={{
-          alignContent: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <Alert severity={'info'}>
-          <AlertTitle>
-            {t`No visible element has been configured. Use the layout menu in the sidebar to enable an element.`}
-          </AlertTitle>
-        </Alert>
-      </Box>
+      <EpiDashboardZoneContext value={expandedZone}>
+        {panelMap[widgetName as keyof typeof panelMap] ?? null}
+      </EpiDashboardZoneContext>
     );
   }
 
-  if (enabledLayoutZones.length === 1) {
-    return panelMap[enabledLayoutZones[0] as keyof typeof panelMap];
+  if (!arrangement?.cells) {
+    return null;
   }
 
-  console.log({ enabledLayoutZones, layout, panels });
+  // counter.value increments with each group visited in DFS pre-order,
+  // matching the order produced by DashboardUtil.getArrangementGroupInfos.
+  const counter = { value: 0 };
 
-  return (
-    <Group
-      defaultLayout={defaultLayoutOuter}
-      groupRef={groupRefOuter}
-      id={createOuterGroupId(outerOrientation)}
-      onLayoutChanged={onLayoutChangedOuter}
-      orientation={outerOrientation}
-      style={{
-        height: '100%',
-        width: '100%',
-      }}
-    >
-      {panels.map(([outerPanelSize, ...widgetPanels], index) => {
-        return (
-          <Fragment key={JSON.stringify(widgetPanels)}>
-            <Panel
-              defaultSize={outerPanelSize}
-              id={createOuterPanelId(outerOrientation, index)}
-              minSize={outerOrientation === 'vertical' ? MIN_PANEL_HEIGHT : MIN_PANEL_WIDTH}
-              style={{ overflow: 'hidden' }}
-            >
-              {widgetPanels.length === 1 && panelMap[widgetPanels[0][1] as keyof typeof panelMap]}
-              {widgetPanels.length > 1 && (
-                <Group
-                  defaultLayout={index === 0 ? defaultLayoutInner0 : defaultLayoutInner1}
-                  groupRef={index === 0 ? groupRefInner0 : groupRefInner1}
-                  id={createInnerGroupId(innerOrientation, index)}
-                  onLayoutChanged={index === 0 ? onLayoutChangedInner0 : onLayoutChangedInner1}
-                  orientation={innerOrientation}
-                >
-                  {widgetPanels.map(([widgetPanelSize, zone], innerIndex) => {
-                    return (
-                      <Fragment key={zone}>
-                        <Panel
-                          defaultSize={widgetPanelSize}
-                          id={createInnerPanelId(innerOrientation, index, innerIndex)}
-                          minSize={innerOrientation === 'vertical' ? MIN_PANEL_HEIGHT : MIN_PANEL_WIDTH}
-                          style={{ overflow: 'hidden' }}
-                        >
-                          {panelMap[zone as keyof typeof panelMap]}
-                        </Panel>
-                        {innerIndex < widgetPanels.length - 1 && innerOrientation === 'horizontal' && (
-                          <PanelSeparatorVertical disabled={disabled} />
-                        )}
-                        {innerIndex < widgetPanels.length - 1 && innerOrientation === 'vertical' && (
-                          <PanelSeparatorHorizontal disabled={disabled} />
-                        )}
-                      </Fragment>
-                    );
-                  })}
-                </Group>
-              )}
-            </Panel>
-            {index < panels.length - 1 && outerOrientation === 'horizontal' && (
-              <PanelSeparatorVertical disabled={disabled} />
-            )}
-            {index < panels.length - 1 && outerOrientation === 'vertical' && (
-              <PanelSeparatorHorizontal disabled={disabled} />
-            )}
-          </Fragment>
-        );
-      })}
-    </Group>
-  );
+  const renderArrangement = (arr: EpiDashboardArrangement): ReactElement => {
+    const index = counter.value++;
+    const groupId = groupInfos[index]?.groupId ?? `${storagePrefix}-group-${index}`;
+    const orientation = arr.orientation as 'horizontal' | 'vertical';
+    const { defaultLayout, onLayoutChanged } = allGroupLayouts[index] ?? {};
+    const groupRef = allGroupRefs[index];
+
+    return (
+      <Group
+        defaultLayout={defaultLayout}
+        groupRef={groupRef}
+        id={groupId}
+        onLayoutChanged={onLayoutChanged}
+        orientation={orientation}
+        style={{ height: '100%', width: '100%' }}
+      >
+        {arr.cells.map((cell, cellIndex) => {
+          const isLast = cellIndex === arr.cells.length - 1;
+          const panelId = `${groupId}-panel-${cellIndex}`;
+
+          return (
+            <Fragment key={'name' in cell ? cell.name : StringUtil.createHash(JSON.stringify(cell))}>
+              <Panel
+                defaultSize={cell.size}
+                id={panelId}
+                minSize={orientation === 'vertical' ? MIN_PANEL_HEIGHT : MIN_PANEL_WIDTH}
+                style={{ overflow: 'hidden' }}
+              >
+                {'name' in cell
+                  ? (
+                    <EpiDashboardZoneContext value={cell.name}>
+                      {panelMap[arrangementWidgetAssignments[cell.name] as keyof typeof panelMap]}
+                    </EpiDashboardZoneContext>
+                  )
+                  : renderArrangement(cell)}
+              </Panel>
+              {!isLast && orientation === 'horizontal' && <PanelSeparatorVertical disabled={disabled} />}
+              {!isLast && orientation === 'vertical' && <PanelSeparatorHorizontal disabled={disabled} />}
+            </Fragment>
+          );
+        })}
+      </Group>
+    );
+  };
+
+  return renderArrangement(arrangement);
 };

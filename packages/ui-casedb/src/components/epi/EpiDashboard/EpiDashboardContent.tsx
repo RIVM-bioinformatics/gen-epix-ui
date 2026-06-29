@@ -12,7 +12,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
@@ -45,18 +44,12 @@ import type { EpiRemoveCasesFromEventDialogRefMethods } from '../EpiRemoveCasesF
 import { EpiSequenceDownloadDialog } from '../EpiSequenceDownloadDialog';
 import type { EpiSequenceDownloadDialogRefMethods } from '../EpiSequenceDownloadDialog';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { EpiCurveWidget } from '../EpiCurveWidget';
-import { EpiLineListWidget } from '../EpiLineListWidget';
-import { EpiMapWidget } from '../EpiMapWidget';
 import { EpiStratification } from '../EpiStratification';
-import { EpiTreeWidget } from '../EpiTreeWidget';
-import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { EpiFindSimilarCasesDialog } from '../EpiFindSimilarCasesDialog';
 import type { EpiFindSimilarCasesDialogRefMethods } from '../EpiFindSimilarCasesDialog';
 import { EpiRemoveFindSimilarCasesResultDialog } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import type { EpiRemoveFindSimilarCasesResultDialogRefMethods } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 import {
   EpiDashboardSettingsSidebarItem,
@@ -68,7 +61,6 @@ import {
   EpiDashboardDownloadSidebarItem,
   EpiDashboardDownloadSidebarItemIcon,
 } from './EpiDashboardDownloadSidebarItem';
-import { EpiDashboardContext } from './context/EpiDashboardContext';
 
 type EpiDashboardProps = {
   readonly caseSet?: CaseDbCaseSet;
@@ -77,7 +69,6 @@ type EpiDashboardProps = {
 export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const epiDashboardContext = use(EpiDashboardContext);
   const epiDashboardLayoutRendererRef = useRef<ForwardRefEpiDashboardLayoutRendererRefMethods>(null);
   const epiCaseSetInfoDialogRef = useRef<EpiCaseSetInfoDialogRefMethods>(null);
   const epiCaseTypeInfoDialogRef = useRef<EpiCaseTypeInfoDialogRefMethods>(null);
@@ -102,10 +93,6 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
   const onMaxResultsExceededButtonClose = useCallback(() => {
     epiDashboardStore.setState({ isMaxResultsExceededDismissed: true });
   }, [epiDashboardStore]);
-
-  useEffect(() => {
-    epiDashboardContext.reset();
-  }, [epiDashboardContext]);
 
   useEffect(() => {
     const eventBus = EpiEventBusManager.getInstance();
@@ -291,36 +278,6 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
         <Box>
           <EpiDashboardLayoutRenderer
             disabled={isFilterSidebarOpen || isSettingsSidebarOpen}
-            epiCurveWidget={(
-              <ErrorBoundary
-                fallback={(
-                  <EpiWidgetUnavailable
-                    widgetLabel={t`epi curve`}
-                    widgetName={EPI_WIDGET_NAME.EPI_CURVE}
-                  />
-                )}
-              >
-                <EpiCurveWidget />
-              </ErrorBoundary>
-            )}
-            lineListWidget={(
-              <EpiLineListWidget />
-            )}
-            mapWidget={(
-              <ErrorBoundary
-                fallback={(
-                  <EpiWidgetUnavailable
-                    widgetLabel={t`map`}
-                    widgetName={EPI_WIDGET_NAME.MAP}
-                  />
-                )}
-              >
-                <EpiMapWidget />
-              </ErrorBoundary>
-            )}
-            phylogeneticTreeWidget={(
-              <EpiTreeWidget />
-            )}
             ref={epiDashboardLayoutRendererRef}
           />
         </Box>

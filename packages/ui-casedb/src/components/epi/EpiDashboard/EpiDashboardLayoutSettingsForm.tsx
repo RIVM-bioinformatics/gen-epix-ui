@@ -19,12 +19,16 @@ import {
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { ConfigManager } from '@gen-epix/ui';
+import noop from 'lodash/noop';
 
-import type { EpiDashboardArrangementConfig } from '../../../models/epi';
+import type {
+  EpiDashboardArrangement,
+  EpiDashboardArrangementConfig,
+} from '../../../models/epi';
 import { ArrangementEditor } from '../../forms/fields/ArrangementEditor';
 import type { CaseDbConfig } from '../../../models/config';
-import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
+import { DashboardUtil } from '../../../utils/DashboardUtil';
 
 export type EpiDashboardLayoutSettingsFormProps = {
   readonly onReset: () => void;
@@ -57,19 +61,19 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
   }, [onReset, resetEpiDashboardLayout]);
 
   useEffect(() => {
-    const arrangement = formValues.arrangement;
+    const arrangement = formValues.arrangement as EpiDashboardArrangement | undefined;
+    if (!arrangement?.cells) {
+      return;
+    }
 
     setEpiDashboardLayoutUserConfig({
       arrangement,
-      arrangementWidgetAssignments: DashboardUtil.getArrangementWidgetAssignments(arrangement, epiDashboardArrangementConfig.arrangementWidgetAssignments),
+      arrangementWidgetAssignments: DashboardUtil.getArrangementWidgetAssignments(arrangement, userProfileStore.getState().epiDashboardArrangementConfig.arrangementWidgetAssignments),
     });
-  }, [epiDashboardArrangementConfig.arrangementWidgetAssignments, formValues, setEpiDashboardLayoutUserConfig]);
-
-  const onSubmit = useCallback(() => {
-    // No submit action needed since changes are applied immediately
-  }, []);
+  }, [formValues, setEpiDashboardLayoutUserConfig, userProfileStore]);
 
   const arrangementEditorOptions = useMemo(() => Object.values(ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS), []);
+  const onSubmit = noop;
 
   return (
     <FormProvider {...formMethods}>

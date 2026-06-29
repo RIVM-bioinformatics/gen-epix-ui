@@ -8,6 +8,10 @@ import type {
 } from '../../models/epi';
 import type { CaseDbConfig } from '../../models/config';
 
+export type ArrangementGroupInfo = {
+  groupId: string;
+  orientation: 'horizontal' | 'vertical';
+};
 
 export class DashboardUtil {
   public static readonly dashboardLayoutStorageKey = 'GENEPIX-EpiDashboard-Layout-v1.3';
@@ -18,19 +22,32 @@ export class DashboardUtil {
 
     return {
       arrangement: arrangementOptions[defaultArrangementKey],
-      arrangementWidgetAssignments: {},
+      arrangementWidgetAssignments: ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_ARRANGEMENT_WIDGET_ASSIGNMENTS,
     };
+  }
+
+  public static getArrangementGroupInfos(arrangement: EpiDashboardArrangement, storagePrefix: string, path = 'root'): ArrangementGroupInfo[] {
+    const result: ArrangementGroupInfo[] = [{
+      groupId: `${storagePrefix}-${path}`,
+      orientation: arrangement.orientation,
+    }];
+    arrangement.cells.forEach((cell, index) => {
+      if ('cells' in cell) {
+        result.push(...DashboardUtil.getArrangementGroupInfos(cell, storagePrefix, `${path}-${index}`));
+      }
+    });
+    return result;
   }
 
   public static getArrangementWidgetAssignments(arrangement: EpiDashboardArrangement, arrangementWidgetAssignments?: { [key: string]: string }): { [key: string]: string } {
     // traverse the arrangement and create an object with all zones set to empty string
     const emptyAssignments: { [key: string]: string } = {};
     const traverseArrangement = (arr: EpiDashboardArrangement) => {
-      arr.forEach((item) => {
-        if (Array.isArray(item)) {
-          traverseArrangement(item);
+      arr.cells.forEach((item) => {
+        if ('name' in item) {
+          emptyAssignments[item.name] = arrangementWidgetAssignments?.[item.name] || null;
         } else {
-          emptyAssignments[item] = arrangementWidgetAssignments?.[item] || null;
+          traverseArrangement(item);
         }
       });
     };
@@ -43,11 +60,17 @@ export class DashboardUtil {
     return sumBy(cases, (row) => (row.count ?? 1));
   }
 
+  public static getEnabledWidgets(arrangementConfig: EpiDashboardArrangementConfig): string[] {
+    const arrangementWidgetAssignments = DashboardUtil.getArrangementWidgetAssignments(arrangementConfig.arrangement, arrangementConfig.arrangementWidgetAssignments);
+    return Object.keys(arrangementWidgetAssignments).filter(widgetName => arrangementWidgetAssignments[widgetName]);
+  }
+
   public static getSelectedRows(cases: CaseDbCase[], selectedIds: string[]): CaseDbCase[] {
     return cases.filter(row => selectedIds.includes(row.id));
   }
 
   public static isSingleWidget(arrangementConfig: EpiDashboardArrangementConfig, widgetName: string): boolean {
-    return arrangementConfig.arrangementWidgetAssignments?.[widgetName] && Object.keys(arrangementConfig.arrangementWidgetAssignments).length === 1;
+    const arrangementWidgetAssignments = DashboardUtil.getArrangementWidgetAssignments(arrangementConfig.arrangement, arrangementConfig.arrangementWidgetAssignments);
+    return arrangementWidgetAssignments?.[widgetName] && Object.keys(arrangementWidgetAssignments).length === 1;
   }
 }

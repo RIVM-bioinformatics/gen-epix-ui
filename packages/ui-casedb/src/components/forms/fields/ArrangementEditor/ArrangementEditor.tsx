@@ -37,6 +37,7 @@ import {
   TestIdUtil,
 } from '@gen-epix/ui';
 
+import { EPI_DASHBOARD_ARRANGEMENT_ORIENTATION } from '../../../../models/epi';
 import type { EpiDashboardArrangement } from '../../../../models/epi';
 
 export type ArrangementEditorProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
@@ -69,11 +70,9 @@ export const ArrangementEditor = <TFieldValues extends FieldValues, TName extend
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const hasError = !!errorMessage;
 
-  const renderArrangement = useCallback((option: EpiDashboardArrangement, depth = 0) => {
-    const direction: 'column' | 'row' = depth % 2 === 0 ? 'row' : 'column';
-    const gridTemplate = option
-      .map((subOption) => (Array.isArray(subOption) ? '1fr' : `${subOption}fr`))
-      .join(' ');
+  const renderArrangement = useCallback((option: EpiDashboardArrangement) => {
+    const direction: 'column' | 'row' = option.orientation === EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL ? 'row' : 'column';
+    const gridTemplate = option.cells.map((cell) => `${cell.size}fr`).join(' ');
 
     return (
       <Box
@@ -87,13 +86,12 @@ export const ArrangementEditor = <TFieldValues extends FieldValues, TName extend
           width: '100%',
         }}
       >
-        {option.map((subOption, subIndex) => (
+        {option.cells.map((subOption, subIndex) => (
           <Fragment
             key={StringUtil.createHash(JSON.stringify({ subIndex, subOption }))}
           >
-            {Array.isArray(subOption)
-              ? renderArrangement(subOption, depth + 1)
-              : (
+            {'name' in subOption
+              ? (
                 <Box
                   sx={{
                     backgroundColor: theme.palette.primary.main,
@@ -102,7 +100,8 @@ export const ArrangementEditor = <TFieldValues extends FieldValues, TName extend
                     width: '100%',
                   }}
                 />
-              )}
+              )
+              : renderArrangement(subOption)}
           </Fragment>
         ))}
       </Box>

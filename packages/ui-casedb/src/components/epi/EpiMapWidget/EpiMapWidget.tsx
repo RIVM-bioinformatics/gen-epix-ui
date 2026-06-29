@@ -275,7 +275,7 @@ export const EpiMapWidget = () => {
         setFocussedRegion(region);
       },
     };
-  }, [regions]);
+  }, [epiDashboardContext, regions]);
 
   useEffect(() => {
     const unsubscribe = epiDashboardContext.highlightSubject.subscribe((highlighting) => {
@@ -313,7 +313,7 @@ export const EpiMapWidget = () => {
     return () => {
       unsubscribe();
     };
-  }, [chartRef, series]);
+  }, [chartRef, epiDashboardContext.highlightSubject, series]);
 
   const titleMenu = useMemo<MenuItemData>(() => {
     const menu: MenuItemData = {
@@ -428,7 +428,6 @@ export const EpiMapWidget = () => {
           <Box sx={{ position: 'absolute' }}>
             <EpiWidgetUnavailable
               widgetLabel={t`map`}
-              widgetName={EPI_WIDGET_NAME.MAP}
             />
           </Box>
         )}

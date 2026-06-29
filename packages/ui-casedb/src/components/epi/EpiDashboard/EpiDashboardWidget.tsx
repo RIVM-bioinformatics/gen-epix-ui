@@ -6,8 +6,9 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
+import CloseIcon from '@mui/icons-material/Close';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
+import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import type {
@@ -35,6 +36,8 @@ import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EpiWarning } from '../EpiWarning';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
+import { EpiDashboardZoneContext } from './EpiDashboardZoneContext';
+
 
 export type EpiDashboardWidgetProps = PropsWithChildren<{
   readonly expandDisabled?: boolean;
@@ -57,15 +60,28 @@ export const EpiDashboardWidget = ({ children, expandDisabled, isLoading, primar
 
   const userProfileStore = use(UserProfileStoreContext);
   const epiDashboardStore = use(EpiDashboardStoreContext);
+  const zoneKey = use(EpiDashboardZoneContext) ?? zone;
   const expandZone = useStore(epiDashboardStore, (state) => state.expandZone);
   const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);
-  const enabledLayoutZoneCount = useStore(userProfileStore, (state) => DashboardUtil.getEnabledZones(state.epiDashboardLayoutUserConfig).length);
+  const enabledLayoutZoneCount = useStore(userProfileStore, (state) => DashboardUtil.getEnabledWidgets(state.epiDashboardArrangementConfig).length);
+  const setEpiDashboardArrangementConfig = useStore(userProfileStore, (state) => state.setEpiDashboardArrangementConfig);
 
-  const isExpanded = expandedZone === zone;
+  const isExpanded = expandedZone === zoneKey;
 
   const onExpandButtonClick = useCallback(() => {
-    expandZone(expandedZone === zone ? null : zone);
-  }, [expandZone, expandedZone, zone]);
+    expandZone(expandedZone === zoneKey ? null : zoneKey);
+  }, [expandZone, expandedZone, zoneKey]);
+
+  const onRemoveButtonClick = useCallback(() => {
+    const { epiDashboardArrangementConfig } = userProfileStore.getState();
+    setEpiDashboardArrangementConfig({
+      ...epiDashboardArrangementConfig,
+      arrangementWidgetAssignments: {
+        ...epiDashboardArrangementConfig.arrangementWidgetAssignments,
+        [zoneKey]: null,
+      },
+    });
+  }, [setEpiDashboardArrangementConfig, userProfileStore, zoneKey]);
 
 
   const titleInnerElement = useMemo(() => {
@@ -207,9 +223,6 @@ export const EpiDashboardWidget = ({ children, expandDisabled, isLoading, primar
                 disabled={expandDisabled}
                 label={isExpanded ? t`Collapse` : t`Expand`}
                 onClick={onExpandButtonClick}
-                sx={{
-                  marginRight: theme.spacing(-1),
-                }}
               >
                 {isExpanded && (
                   <ZoomInMapIcon />
@@ -219,6 +232,15 @@ export const EpiDashboardWidget = ({ children, expandDisabled, isLoading, primar
                 )}
               </WidgetHeaderIconButton>
             )}
+            <WidgetHeaderIconButton
+              label={t`Remove widget`}
+              onClick={onRemoveButtonClick}
+              sx={{
+                marginRight: theme.spacing(-1),
+              }}
+            >
+              <CloseIcon />
+            </WidgetHeaderIconButton>
           </Box>
         </Box>
 

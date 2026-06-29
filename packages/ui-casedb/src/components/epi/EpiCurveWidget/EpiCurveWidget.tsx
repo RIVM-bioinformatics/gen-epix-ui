@@ -381,7 +381,6 @@ export const EpiCurveWidget = () => {
       {!shouldShowEpiCurve && (
         <EpiWidgetUnavailable
           widgetLabel={t`epi curve`}
-          widgetName={EPI_WIDGET_NAME.EPI_CURVE}
         />
       )}
       {shouldShowEpiCurve && (

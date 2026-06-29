@@ -534,7 +534,6 @@ export const EpiTreeWidget = () => {
               >
                 <EpiWidgetUnavailable
                   widgetLabel={t`phylogenetic tree`}
-                  widgetName={EPI_WIDGET_NAME.TREE}
                 />
               </Box>
             )}

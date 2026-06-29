@@ -51,7 +51,7 @@ export const EpiDashboardEpiCurveSettingsForm = ({ onReset }: EpiDashboardEpiCur
   }, [onReset, resetEpiDashboardEpiCurveSettings]);
 
   useEffect(() => {
-    setEpiDashboardEpiCurveSettings(formValues);
+    setEpiDashboardEpiCurveSettings(formValues as EpiDashboardEpiCurveSettings);
   }, [formValues, setEpiDashboardEpiCurveSettings]);
 
   const onSubmit = useCallback(() => {

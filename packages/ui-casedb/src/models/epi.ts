@@ -15,6 +15,11 @@ import type {
 } from '@gen-epix/api-casedb';
 import type { FunctionComponent } from 'react';
 
+export enum EPI_DASHBOARD_ARRANGEMENT_ORIENTATION {
+  HORIZONTAL = 'horizontal',
+  VERTICAL = 'vertical',
+}
+
 export enum EPI_UPLOAD_STEP {
   SELECT_FILE = 0,
   MAP_COLUMNS = 1,
@@ -43,7 +48,6 @@ export enum STRATIFICATION_SELECTED {
 }
 
 export type CaseForUploadWithGeneratedId = { generatedId: string } & CaseDbCaseForUpload;
-
 export type CaseTypeRowValue = {
   full: string;
   isMissing?: boolean;
@@ -51,6 +55,7 @@ export type CaseTypeRowValue = {
   raw: string;
   short: string;
 };
+
 export type CaseUploadResultWithGeneratedId = { generatedId: string } & CaseDbCaseUploadResult;
 
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
@@ -62,9 +67,16 @@ export type EpiConceptBoundaryProps = {
   ub_in: boolean;
   unit: string;
 };
+export type EpiDashboardArrangement = {
+  cells: (EpiDashboardArrangement | EpiDashboardArrangementCell)[];
+  orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION;
+  size: number;
+};
 
-export type EpiDashboardArrangement = Array<Array<Array<string> | string> | string>;
-
+export type EpiDashboardArrangementCell = {
+  name: string;
+  size: number;
+};
 export type EpiDashboardArrangementConfig = {
   arrangement: EpiDashboardArrangement;
   arrangementWidgetAssignments: EpiDashboardArrangementWidgetAssignments;

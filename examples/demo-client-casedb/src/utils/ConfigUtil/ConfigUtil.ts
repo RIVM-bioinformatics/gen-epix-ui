@@ -11,6 +11,7 @@ import {
 import type { CaseDbConfig } from '@gen-epix/ui-casedb';
 import {
   createCaseDbDemoTheme,
+  EPI_DASHBOARD_ARRANGEMENT_ORIENTATION,
   EPI_WIDGET_NAME,
   EpiCurveWidget,
   EpiLineListWidget,
@@ -185,30 +186,72 @@ export class ConfigUtil {
       },
       epiDashboard: {
         ARRANGEMENT_OPTIONS: {
-          1: ['A', 'B'],
-          2: [
-            [
-              'A',
-              'B',
+          1: {
+            cells: [{
+              cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 70,
+            }, {
+              cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
+              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 30,
+            }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+            size: 100,
+          },
+          2: {
+            cells: [{
+              cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 70,
+            }, {
+              cells: [{ name: 'C', size: 34 }, { name: 'D', size: 33 }, { name: 'E', size: 33 }],
+              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 30,
+            }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+            size: 100,
+          },
+          3: {
+            cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+            size: 100,
+          },
+          4: {
+            cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+            size: 100,
+          },
+          5: {
+            cells: [
+              { name: 'A', size: 50 },
+              {
+                cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
+                orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+                size: 50,
+              }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+            size: 100,
+          },
+          6: {
+            cells: [
+              {
+                cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
+                orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+                size: 50,
+              },
+              { name: 'A', size: 50 },
             ],
-          ],
-          3: [
-            ['A', 'B'],
-            ['C', 'D'],
-          ],
-          4: [
-            [
-              ['A', 'B'],
-              ['C', 'D', 'E'],
-            ],
-          ],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+            size: 100,
+          },
         },
-        DEFAULT_ARRANGEMENT_KEY: '3',
+        DEFAULT_ARRANGEMENT_KEY: '1',
         DEFAULT_ARRANGEMENT_WIDGET_ASSIGNMENTS: {
-          A: EPI_WIDGET_NAME.EPI_CURVE,
+          A: EPI_WIDGET_NAME.TREE,
           B: EPI_WIDGET_NAME.LINE_LIST,
           C: EPI_WIDGET_NAME.MAP,
-          D: EPI_WIDGET_NAME.TREE,
+          D: EPI_WIDGET_NAME.EPI_CURVE,
         },
         MIN_PANEL_HEIGHT: 30,
         MIN_PANEL_WIDTH: 30,

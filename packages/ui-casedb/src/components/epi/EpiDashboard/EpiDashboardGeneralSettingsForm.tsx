@@ -50,7 +50,7 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
   }, [onReset, resetEpiDashboardGeneralSettings]);
 
   useEffect(() => {
-    setEpiDashboardGeneralSettings(formValues);
+    setEpiDashboardGeneralSettings(formValues as EpiDashboardGeneralSettings);
   }, [formValues, setEpiDashboardGeneralSettings]);
 
   const onSubmit = useCallback(() => {
