@@ -14,17 +14,12 @@ import {
   use,
   useCallback,
   useEffect,
-  useMemo,
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { ConfigManager } from '@gen-epix/ui';
 import noop from 'lodash/noop';
 
-import type {
-  EpiDashboardArrangement,
-  EpiDashboardArrangementConfig,
-} from '../../../models/epi';
 import { ArrangementEditor } from '../../forms/fields/ArrangementEditor';
 import type { CaseDbConfig } from '../../../models/config';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
@@ -34,7 +29,9 @@ export type EpiDashboardLayoutSettingsFormProps = {
   readonly onReset: () => void;
 };
 
-type FormValues = Pick<EpiDashboardArrangementConfig, 'arrangement'>;
+type FormValues = {
+  arrangementKey: string;
+};
 
 export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSettingsFormProps) => {
   const { t } = useTranslation();
@@ -46,7 +43,7 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
 
   const formMethods = useForm<FormValues>({
     values: {
-      arrangement: epiDashboardArrangementConfig.arrangement,
+      arrangementKey: epiDashboardArrangementConfig.arrangementKey,
     },
   });
   const { control } = formMethods;
@@ -61,18 +58,22 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
   }, [onReset, resetEpiDashboardLayout]);
 
   useEffect(() => {
-    const arrangement = formValues.arrangement as EpiDashboardArrangement | undefined;
-    if (!arrangement?.cells) {
+    const { arrangementKey } = formValues;
+    if (!arrangementKey) {
+      return;
+    }
+    const arrangementOptions = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS;
+    const arrangement = arrangementOptions[arrangementKey];
+    if (!arrangement) {
       return;
     }
 
     setEpiDashboardLayoutUserConfig({
-      arrangement,
-      arrangementWidgetAssignments: DashboardUtil.getArrangementWidgetAssignments(arrangement, userProfileStore.getState().epiDashboardArrangementConfig.arrangementWidgetAssignments),
+      arrangementKey,
+      arrangementWidgetAssignments: DashboardUtil.getArrangementWidgetAssignments(arrangement, ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_WIDGET_ASSIGNMENTS[arrangementKey]),
     });
-  }, [formValues, setEpiDashboardLayoutUserConfig, userProfileStore]);
+  }, [formValues, setEpiDashboardLayoutUserConfig]);
 
-  const arrangementEditorOptions = useMemo(() => Object.values(ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS), []);
   const onSubmit = noop;
 
   return (
@@ -89,8 +90,8 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
           <FormGroup>
             <ArrangementEditor
               label={t`Arrangement`}
-              name={'arrangement'}
-              options={arrangementEditorOptions}
+              name={'arrangementKey'}
+              options={ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS}
             />
           </FormGroup>
         </Box>

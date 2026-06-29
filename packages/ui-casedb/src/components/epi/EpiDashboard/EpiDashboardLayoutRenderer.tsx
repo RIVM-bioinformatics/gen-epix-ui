@@ -37,6 +37,7 @@ import type { UserProfileStore } from '../../../stores/userProfileStore';
 import type { EpiDashboardArrangement } from '../../../models/epi';
 
 import { EpiDashboardZoneContext } from './EpiDashboardZoneContext';
+import { EpiDashboardWidgetPlaceHolder } from './EpiDashboardWidgetPlaceHolder';
 
 // Maximum number of resizable groups supported simultaneously = 16.
 // With a 9-widget maximum, the DFS group tree has at most 9 internal nodes;
@@ -69,12 +70,10 @@ export const EpiDashboardLayoutRenderer = ({
   const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);
   const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard;
 
-  const { arrangement, arrangementWidgetAssignments } = epiDashboardArrangementConfig;
+  const { arrangementKey, arrangementWidgetAssignments } = epiDashboardArrangementConfig;
+  const arrangement = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS[arrangementKey];
 
-  const storagePrefix = useMemo(
-    () => StringUtil.createHash(JSON.stringify(arrangement ?? '')),
-    [arrangement],
-  );
+  const storagePrefix = arrangementKey;
 
   const groupInfos = useMemo(
     () => arrangement?.cells ? DashboardUtil.getArrangementGroupInfos(arrangement, storagePrefix) : [],
@@ -219,7 +218,7 @@ export const EpiDashboardLayoutRenderer = ({
                 {'name' in cell
                   ? (
                     <EpiDashboardZoneContext value={cell.name}>
-                      {panelMap[arrangementWidgetAssignments[cell.name] as keyof typeof panelMap]}
+                      {panelMap[arrangementWidgetAssignments[cell.name] as keyof typeof panelMap] ?? <EpiDashboardWidgetPlaceHolder />}
                     </EpiDashboardZoneContext>
                   )
                   : renderArrangement(cell)}

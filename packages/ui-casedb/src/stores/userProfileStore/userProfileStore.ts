@@ -119,6 +119,15 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
     },
     {
       name: 'GENEPIX-User-Profile',
+      onRehydrateStorage: () => (state) => {
+        if (!state) {
+          return;
+        }
+        const validatedConfig = DashboardUtil.validateAndMigrateArrangementConfig(state.epiDashboardArrangementConfig);
+        if (validatedConfig !== state.epiDashboardArrangementConfig) {
+          state.setEpiDashboardArrangementConfig(validatedConfig);
+        }
+      },
       partialize: (state) => ({
         epiDashboardArrangementConfig: state.epiDashboardArrangementConfig,
         epiDashboardGeneralSettings: state.epiDashboardGeneralSettings,

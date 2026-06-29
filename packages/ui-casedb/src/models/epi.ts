@@ -29,6 +29,13 @@ export enum EPI_UPLOAD_STEP {
   CREATE_CASES = 5,
 }
 
+export enum EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION {
+  EAST = 'EAST',
+  NORTH = 'NORTH',
+  SOUTH = 'SOUTH',
+  WEST = 'WEST',
+}
+
 export enum FILTER_TYPE {
   DATE = 'DATE',
   GEO = 'GEO',
@@ -46,8 +53,8 @@ export enum STRATIFICATION_SELECTED {
   SELECTED = 'SELECTED',
   UNSELECTED = 'UNSELECTED',
 }
-
 export type CaseForUploadWithGeneratedId = { generatedId: string } & CaseDbCaseForUpload;
+
 export type CaseTypeRowValue = {
   full: string;
   isMissing?: boolean;
@@ -59,7 +66,6 @@ export type CaseTypeRowValue = {
 export type CaseUploadResultWithGeneratedId = { generatedId: string } & CaseDbCaseUploadResult;
 
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
-
 export type EpiConceptBoundaryProps = {
   lb: number;
   lb_in: boolean;
@@ -67,20 +73,21 @@ export type EpiConceptBoundaryProps = {
   ub_in: boolean;
   unit: string;
 };
+
 export type EpiDashboardArrangement = {
   cells: (EpiDashboardArrangement | EpiDashboardArrangementCell)[];
   orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION;
   size: number;
 };
-
 export type EpiDashboardArrangementCell = {
   name: string;
   size: number;
 };
 export type EpiDashboardArrangementConfig = {
-  arrangement: EpiDashboardArrangement;
+  arrangementKey: string;
   arrangementWidgetAssignments: EpiDashboardArrangementWidgetAssignments;
 };
+
 export type EpiDashboardArrangementWidgetAssignments = { [arrangementZone: string]: string };
 
 export type EpiData = {
@@ -157,9 +164,17 @@ export type EpiUploadTableRow = {
   [key: string]: string;
 };
 
-export type EpiWidgetConfig = {
+export type EpiWidgetConstraint = {
+  require_adjacent: {
+    direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION;
+    widgetName: string;
+  };
+};
+
+export type EpiWidgetsConfig = {
   [widgetName: string]: {
     component: FunctionComponent;
+    constraints?: EpiWidgetConstraint[];
     widgetLabel: string;
   };
 };

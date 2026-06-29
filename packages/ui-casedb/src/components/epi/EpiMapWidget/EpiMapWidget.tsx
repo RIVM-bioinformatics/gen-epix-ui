@@ -415,7 +415,7 @@ export const EpiMapWidget = () => {
       isLoading={shouldShowLoading}
       title={titleMenu}
       warningMessage={shouldShowMap && epiMapCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
-      zone={EPI_WIDGET_NAME.MAP}
+      widgetName={EPI_WIDGET_NAME.MAP}
     >
       <Box
         ref={containerRef}

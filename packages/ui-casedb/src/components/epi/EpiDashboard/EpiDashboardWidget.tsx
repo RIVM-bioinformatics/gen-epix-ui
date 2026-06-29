@@ -46,7 +46,7 @@ export type EpiDashboardWidgetProps = PropsWithChildren<{
   readonly secondaryMenu?: MenuItemData[] | ReactNode;
   readonly title: MenuItemData | ReactNode | string;
   readonly warningMessage?: string;
-  readonly zone: string;
+  readonly widgetName?: string;
 }>;
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
@@ -54,13 +54,13 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   marginTop: theme.spacing(0.5),
 }));
 
-export const EpiDashboardWidget = ({ children, expandDisabled, isLoading, primaryMenu, secondaryMenu, title, warningMessage, zone }: EpiDashboardWidgetProps) => {
+export const EpiDashboardWidget = ({ children, expandDisabled, isLoading, primaryMenu, secondaryMenu, title, warningMessage, widgetName }: EpiDashboardWidgetProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
   const userProfileStore = use(UserProfileStoreContext);
   const epiDashboardStore = use(EpiDashboardStoreContext);
-  const zoneKey = use(EpiDashboardZoneContext) ?? zone;
+  const zoneKey = use(EpiDashboardZoneContext);
   const expandZone = useStore(epiDashboardStore, (state) => state.expandZone);
   const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);
   const enabledLayoutZoneCount = useStore(userProfileStore, (state) => DashboardUtil.getEnabledWidgets(state.epiDashboardArrangementConfig).length);
@@ -160,7 +160,7 @@ export const EpiDashboardWidget = ({ children, expandDisabled, isLoading, primar
 
   return (
     <Box
-      {...TestIdUtil.createAttributes('EpiDashboardWidget', { zone })}
+      {...TestIdUtil.createAttributes('EpiDashboardWidget', { 'widget-name': widgetName })}
       sx={{
         height: '100%',
       }}
@@ -232,15 +232,17 @@ export const EpiDashboardWidget = ({ children, expandDisabled, isLoading, primar
                 )}
               </WidgetHeaderIconButton>
             )}
-            <WidgetHeaderIconButton
-              label={t`Remove widget`}
-              onClick={onRemoveButtonClick}
-              sx={{
-                marginRight: theme.spacing(-1),
-              }}
-            >
-              <CloseIcon />
-            </WidgetHeaderIconButton>
+            {!isExpanded && (
+              <WidgetHeaderIconButton
+                label={t`Remove widget`}
+                onClick={onRemoveButtonClick}
+                sx={{
+                  marginRight: theme.spacing(-1),
+                }}
+              >
+                <CloseIcon />
+              </WidgetHeaderIconButton>
+            )}
           </Box>
         </Box>
 

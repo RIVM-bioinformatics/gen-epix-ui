@@ -12,6 +12,7 @@ import type { CaseDbConfig } from '@gen-epix/ui-casedb';
 import {
   createCaseDbDemoTheme,
   EPI_DASHBOARD_ARRANGEMENT_ORIENTATION,
+  EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
   EPI_WIDGET_NAME,
   EpiCurveWidget,
   EpiLineListWidget,
@@ -247,11 +248,38 @@ export class ConfigUtil {
           },
         },
         DEFAULT_ARRANGEMENT_KEY: '1',
-        DEFAULT_ARRANGEMENT_WIDGET_ASSIGNMENTS: {
-          A: EPI_WIDGET_NAME.TREE,
-          B: EPI_WIDGET_NAME.LINE_LIST,
-          C: EPI_WIDGET_NAME.MAP,
-          D: EPI_WIDGET_NAME.EPI_CURVE,
+        DEFAULT_WIDGET_ASSIGNMENTS: {
+          1: {
+            A: EPI_WIDGET_NAME.TREE,
+            B: EPI_WIDGET_NAME.LINE_LIST,
+            C: EPI_WIDGET_NAME.MAP,
+            D: EPI_WIDGET_NAME.EPI_CURVE,
+          },
+          2: {
+            A: EPI_WIDGET_NAME.TREE,
+            B: EPI_WIDGET_NAME.LINE_LIST,
+            C: EPI_WIDGET_NAME.MAP,
+            D: EPI_WIDGET_NAME.EPI_CURVE,
+            E: undefined,
+          },
+          3: {
+            A: EPI_WIDGET_NAME.TREE,
+            B: EPI_WIDGET_NAME.LINE_LIST,
+          },
+          4: {
+            A: EPI_WIDGET_NAME.LINE_LIST,
+            B: EPI_WIDGET_NAME.EPI_CURVE,
+          },
+          5: {
+            A: EPI_WIDGET_NAME.LINE_LIST,
+            B: EPI_WIDGET_NAME.EPI_CURVE,
+            C: EPI_WIDGET_NAME.MAP,
+          },
+          6: {
+            A: EPI_WIDGET_NAME.LINE_LIST,
+            B: EPI_WIDGET_NAME.EPI_CURVE,
+            C: EPI_WIDGET_NAME.MAP,
+          },
         },
         MIN_PANEL_HEIGHT: 30,
         MIN_PANEL_WIDTH: 30,
@@ -270,6 +298,12 @@ export class ConfigUtil {
           },
           [EPI_WIDGET_NAME.TREE]: {
             component: EpiTreeWidget,
+            constraints: [{
+              require_adjacent: {
+                direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST,
+                widgetName: EPI_WIDGET_NAME.LINE_LIST,
+              },
+            }],
             widgetLabel: 'Phylogenetic Tree',
           },
         },

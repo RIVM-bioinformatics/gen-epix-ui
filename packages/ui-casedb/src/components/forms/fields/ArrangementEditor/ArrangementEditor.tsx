@@ -46,8 +46,8 @@ export type ArrangementEditorProps<TFieldValues extends FieldValues, TName exten
   readonly label: string;
   readonly loading?: boolean;
   readonly name: TName;
-  readonly onChange?: (value: EpiDashboardArrangement) => void;
-  readonly options: EpiDashboardArrangement[];
+  readonly onChange?: (value: string) => void;
+  readonly options: { [key: string]: EpiDashboardArrangement };
   readonly required?: boolean;
   readonly warningMessage?: string;
 };
@@ -111,23 +111,17 @@ export const ArrangementEditor = <TFieldValues extends FieldValues, TName extend
   const onRadioGroupChange = useCallback(
     (onChange: UseControllerReturn<TFieldValues, TName>['field']['onChange']) =>
       (_event: ChangeEvent<HTMLInputElement>, newValue: string) => {
-        const index = parseInt(newValue, 10);
-        const selectedOption = options[index];
-        if (selectedOption !== undefined) {
+        if (options[newValue] !== undefined) {
           if (onChangeProp) {
-            onChangeProp(selectedOption);
+            onChangeProp(newValue);
           }
-          onChange(selectedOption);
+          onChange(newValue);
         }
       },
     [options, onChangeProp],
   );
 
   const renderController = useCallback(({ field: { onBlur, onChange, value } }: UseControllerReturn<TFieldValues, TName>) => {
-    const selectedIndex = options.findIndex(
-      (option) => JSON.stringify(option) === JSON.stringify(value),
-    );
-
     return (
       <FormControl
         component={'fieldset'}
@@ -157,7 +151,7 @@ export const ArrangementEditor = <TFieldValues extends FieldValues, TName extend
             onBlur={onBlur}
             onChange={onRadioGroupChange(onChange)}
             row
-            value={selectedIndex >= 0 ? String(selectedIndex) : ''}
+            value={typeof value === 'string' ? value : ''}
           >
             <Box
               sx={{
@@ -167,9 +161,9 @@ export const ArrangementEditor = <TFieldValues extends FieldValues, TName extend
                 marginTop: 1,
               }}
             >
-              {options.map((option, index) => (
+              {Object.entries(options).map(([key, option], index) => (
                 <Box
-                  key={StringUtil.createHash(JSON.stringify(option))}
+                  key={key}
                   sx={{
                     alignItems: 'center',
                     display: 'flex',
@@ -189,7 +183,7 @@ export const ArrangementEditor = <TFieldValues extends FieldValues, TName extend
                     control={<Radio />}
                     label={t('Option {{n}}', { n: index + 1 })}
                     sx={{ m: 0 }}
-                    value={String(index)}
+                    value={key}
                   />
                 </Box>
               ))}
