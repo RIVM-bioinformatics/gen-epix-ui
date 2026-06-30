@@ -15,14 +15,12 @@ import type {
   Highlighting,
   Stratification,
 } from '../../../models/epi';
-import {
-  EPI_WIDGET_NAME,
-  STRATIFICATION_MODE,
-} from '../../../models/epi';
+import { STRATIFICATION_MODE } from '../../../models/epi';
 import type { TreeNode } from '../../../models/tree';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 import { NewickUtil } from '../../../utils/NewickUtil';
 import type { CaseDbConfig } from '../../../models/config';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
 
 import type {
   PhylogeneticTreeComponentPathClickEvent,

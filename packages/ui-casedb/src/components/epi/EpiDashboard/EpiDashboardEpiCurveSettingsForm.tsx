@@ -19,8 +19,8 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { Switch } from '@gen-epix/ui';
 
-import type { EpiDashboardEpiCurveSettings } from '../../../stores/userProfileStore';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
+import type { EpiDashboardEpiCurveSettings } from '../../../models/epi';
 
 export type EpiDashboardEpiCurveSettingsFormProps = {
   readonly onReset: () => void;

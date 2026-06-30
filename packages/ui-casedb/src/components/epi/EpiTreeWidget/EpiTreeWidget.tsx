@@ -487,7 +487,7 @@ export const EpiTreeWidget = () => {
       expandDisabled={isTreeUnavailable}
       primaryMenu={primaryMenu}
       title={titleMenu}
-      zone={EPI_WIDGET_NAME.TREE}
+      widgetName={EPI_WIDGET_NAME.TREE}
     >
       <Box
         sx={{

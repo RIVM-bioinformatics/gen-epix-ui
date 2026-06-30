@@ -376,7 +376,7 @@ export const EpiCurveWidget = () => {
       primaryMenu={primaryMenu}
       title={titleMenu}
       warningMessage={shouldShowEpiCurve && epiCurveCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
-      zone={EPI_WIDGET_NAME.EPI_CURVE}
+      widgetName={EPI_WIDGET_NAME.EPI_CURVE}
     >
       {!shouldShowEpiCurve && (
         <EpiWidgetUnavailable

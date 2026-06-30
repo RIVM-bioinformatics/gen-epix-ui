@@ -7,15 +7,21 @@ import { DemoConfigUtil } from '@gen-epix/ui';
 import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
 
-import type { EpiDashboardLayoutConfig } from '../../models/epi';
 import type { CaseDbConfig } from '../../models/config';
 import { createCaseDbDemoTheme } from '../../theme/demoTheme';
 import { EPI_WIDGET_NAME } from '../../data/epi';
+import { EpiCurveWidget } from '../../components/epi/EpiCurveWidget';
+import { EpiLineListWidget } from '../../components/epi/EpiLineListWidget';
+import { EpiMapWidget } from '../../components/epi/EpiMapWidget';
+import { EpiTreeWidget } from '../../components/epi/EpiTreeWidget';
+import {
+  EPI_DASHBOARD_ARRANGEMENT_ORIENTATION,
+  EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
+} from '../../models/epi';
 
 export class CaseDbDemoConfigUtil {
   public static createConfig(): CaseDbConfig {
 
-    const PANEL_ZONES = [EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.MAP, EPI_WIDGET_NAME.TREE];
     const config: CaseDbConfig = {
       ...DemoConfigUtil.createConfig(),
       applicationName: 'Gen-EpiX',
@@ -73,193 +79,127 @@ export class CaseDbDemoConfigUtil {
         },
       },
       epiDashboard: {
-        LAYOUTS: [
-          // 1 ZONE
-          ...PANEL_ZONES.map<EpiDashboardLayoutConfig>(zone => ({
-            layouts: [
-              [
-                'vertical',
-                [100, [100, zone]],
-              ],
-            ],
-            zones: [zone],
-          })),
-
-          // 2 ZONES
-          {
-            layouts: [
-              [
-                'horizontal',
-                [50, [100, EPI_WIDGET_NAME.TREE]],
-                [50, [100, EPI_WIDGET_NAME.LINE_LIST]],
-              ],
-            ],
-            zones: [EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.TREE],
+        ARRANGEMENT_OPTIONS: {
+          1: {
+            cells: [{
+              cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 70,
+            }, {
+              cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
+              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 30,
+            }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+            size: 100,
           },
-          ...[EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP].map<EpiDashboardLayoutConfig>(zone => ({
-            layouts: [
-              [
-                'vertical',
-                [70, [100, EPI_WIDGET_NAME.LINE_LIST]],
-                [30, [100, zone]],
-              ],
-              [
-                'vertical',
-                [30, [100, zone]],
-                [70, [100, EPI_WIDGET_NAME.LINE_LIST]],
-              ],
-              [
-                'horizontal',
-                [70, [100, EPI_WIDGET_NAME.LINE_LIST]],
-                [30, [100, zone]],
-              ],
-              [
-                'horizontal',
-                [30, [100, zone]],
-                [70, [100, EPI_WIDGET_NAME.LINE_LIST]],
-              ],
-            ],
-            zones: [EPI_WIDGET_NAME.LINE_LIST, zone],
-          })),
-          ...[EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP].map<EpiDashboardLayoutConfig>(zone => ({
-            layouts: [
-              [
-                'vertical',
-                [70, [100, EPI_WIDGET_NAME.TREE]],
-                [30, [100, zone]],
-              ],
-              [
-                'vertical',
-                [30, [100, zone]],
-                [70, [100, EPI_WIDGET_NAME.TREE]],
-              ],
-              [
-                'horizontal',
-                [70, [100, EPI_WIDGET_NAME.TREE]],
-                [30, [100, zone]],
-              ],
-              [
-                'horizontal',
-                [30, [100, zone]],
-                [70, [100, EPI_WIDGET_NAME.TREE]],
-              ],
-            ],
-            zones: [EPI_WIDGET_NAME.TREE, zone],
-          })),
-          {
-            layouts: [
-              [
-                'vertical',
-                [70, [100, EPI_WIDGET_NAME.MAP]],
-                [30, [100, EPI_WIDGET_NAME.EPI_CURVE]],
-              ],
-              [
-                'vertical',
-                [30, [100, EPI_WIDGET_NAME.EPI_CURVE]],
-                [70, [100, EPI_WIDGET_NAME.MAP]],
-              ],
-              [
-                'horizontal',
-                [50, [100, EPI_WIDGET_NAME.EPI_CURVE]],
-                [50, [100, EPI_WIDGET_NAME.MAP]],
-              ],
-              [
-                'horizontal',
-                [50, [100, EPI_WIDGET_NAME.MAP]],
-                [50, [100, EPI_WIDGET_NAME.EPI_CURVE]],
-              ],
-            ],
-            zones: [EPI_WIDGET_NAME.MAP, EPI_WIDGET_NAME.EPI_CURVE],
+          2: {
+            cells: [{
+              cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 70,
+            }, {
+              cells: [{ name: 'C', size: 34 }, { name: 'D', size: 33 }, { name: 'E', size: 33 }],
+              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 30,
+            }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+            size: 100,
           },
-
-          // 3 ZONES: TREE, LINE_LIST, [EPI_WIDGET_NAME.MAP / EPI_WIDGET_NAME.EPI_CURVE]
-          ...[EPI_WIDGET_NAME.MAP, EPI_WIDGET_NAME.EPI_CURVE].map<EpiDashboardLayoutConfig>(zone => ({
-            layouts: [
-              [
-                'vertical',
-                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
-                [30, [100, zone]],
-              ],
-              [
-                'vertical',
-                [30, [100, zone]],
-                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
-              ],
-            ],
-            zones: [EPI_WIDGET_NAME.TREE, EPI_WIDGET_NAME.LINE_LIST, zone],
-          })),
-          // 3 ZONES: TREE, LINE_LIST, EPI_CURVE
-          {
-            layouts: [
-              [
-                'vertical',
-                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
-                [30, [100, EPI_WIDGET_NAME.EPI_CURVE]],
-              ],
-              [
-                'vertical',
-                [30, [100, EPI_WIDGET_NAME.EPI_CURVE]],
-                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
-              ],
-            ],
-            zones: [EPI_WIDGET_NAME.TREE, EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.EPI_CURVE],
+          3: {
+            cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+            size: 100,
           },
-          // 3 ZONES:  MAP, EPI_CURVE, [EPI_WIDGET_NAME.LINE_LIST / EPI_WIDGET_NAME.TREE]
-          ...[EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.TREE].map<EpiDashboardLayoutConfig>(zone => ({
-            layouts: [
-              [
-                'vertical',
-                [70, [100, zone]],
-                [30, [50, EPI_WIDGET_NAME.MAP], [50, EPI_WIDGET_NAME.EPI_CURVE]],
-              ],
-              [
-                'vertical',
-                [70, [100, zone]],
-                [30, [50, EPI_WIDGET_NAME.EPI_CURVE], [50, EPI_WIDGET_NAME.MAP]],
-              ],
-              [
-                'horizontal',
-                [70, [100, zone]],
-                [30, [50, EPI_WIDGET_NAME.MAP], [50, EPI_WIDGET_NAME.EPI_CURVE]],
-              ],
-              [
-                'horizontal',
-                [70, [100, zone]],
-                [30, [50, EPI_WIDGET_NAME.EPI_CURVE], [50, EPI_WIDGET_NAME.MAP]],
-              ],
-            ],
-            zones: [zone, EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP],
-          })),
-
-          // 4 ZONES
-          {
-            layouts: [
-              [
-                'vertical',
-                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
-                [30, [50, EPI_WIDGET_NAME.MAP], [50, EPI_WIDGET_NAME.EPI_CURVE]],
-              ],
-              [
-                'vertical',
-                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
-                [30, [50, EPI_WIDGET_NAME.EPI_CURVE], [50, EPI_WIDGET_NAME.MAP]],
-              ],
-              [
-                'vertical',
-                [30, [50, EPI_WIDGET_NAME.MAP], [50, EPI_WIDGET_NAME.EPI_CURVE]],
-                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
-              ],
-              [
-                'vertical',
-                [30, [50, EPI_WIDGET_NAME.EPI_CURVE], [50, EPI_WIDGET_NAME.MAP]],
-                [70, [50, EPI_WIDGET_NAME.TREE], [50, EPI_WIDGET_NAME.LINE_LIST]],
-              ],
-            ],
-            zones: [EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.TREE, EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP],
+          4: {
+            cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+            size: 100,
           },
-        ],
+          5: {
+            cells: [
+              { name: 'A', size: 50 },
+              {
+                cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
+                orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+                size: 50,
+              }],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+            size: 100,
+          },
+          6: {
+            cells: [
+              {
+                cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
+                orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+                size: 50,
+              },
+              { name: 'A', size: 50 },
+            ],
+            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+            size: 100,
+          },
+        },
+        DEFAULT_ARRANGEMENT_KEY: '1',
+        DEFAULT_WIDGET_ASSIGNMENTS: {
+          1: {
+            A: EPI_WIDGET_NAME.TREE,
+            B: EPI_WIDGET_NAME.LINE_LIST,
+            C: EPI_WIDGET_NAME.MAP,
+            D: EPI_WIDGET_NAME.EPI_CURVE,
+          },
+          2: {
+            A: EPI_WIDGET_NAME.TREE,
+            B: EPI_WIDGET_NAME.LINE_LIST,
+            C: EPI_WIDGET_NAME.MAP,
+            D: EPI_WIDGET_NAME.EPI_CURVE,
+            E: undefined,
+          },
+          3: {
+            A: EPI_WIDGET_NAME.TREE,
+            B: EPI_WIDGET_NAME.LINE_LIST,
+          },
+          4: {
+            A: EPI_WIDGET_NAME.LINE_LIST,
+            B: EPI_WIDGET_NAME.EPI_CURVE,
+          },
+          5: {
+            A: EPI_WIDGET_NAME.LINE_LIST,
+            B: EPI_WIDGET_NAME.EPI_CURVE,
+            C: EPI_WIDGET_NAME.MAP,
+          },
+          6: {
+            A: EPI_WIDGET_NAME.LINE_LIST,
+            B: EPI_WIDGET_NAME.EPI_CURVE,
+            C: EPI_WIDGET_NAME.MAP,
+          },
+        },
         MIN_PANEL_HEIGHT: 30,
         MIN_PANEL_WIDTH: 30,
+        WIDGETS: {
+          [EPI_WIDGET_NAME.EPI_CURVE]: {
+            component: EpiCurveWidget,
+            widgetLabel: 'Epi Curve',
+          },
+          [EPI_WIDGET_NAME.LINE_LIST]: {
+            component: EpiLineListWidget,
+            widgetLabel: 'Line List',
+          },
+          [EPI_WIDGET_NAME.MAP]: {
+            component: EpiMapWidget,
+            widgetLabel: 'Map',
+          },
+          [EPI_WIDGET_NAME.TREE]: {
+            component: EpiTreeWidget,
+            constraints: [{
+              require_adjacent: {
+                direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST,
+                widgetName: EPI_WIDGET_NAME.LINE_LIST,
+              },
+            }],
+            widgetLabel: 'Phylogenetic Tree',
+          },
+        },
       },
       epiLineList: {
         CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS: 1000,

@@ -4,21 +4,18 @@ import {
   persist,
 } from 'zustand/middleware';
 
-import type { EpiDashboardArrangementConfig } from '../../models/epi';
+import type {
+  EpiDashboardArrangementConfig,
+  EpiDashboardEpiCurveSettings,
+  EpiDashboardTreeSettings,
+} from '../../models/epi';
 import { DashboardUtil } from '../../utils/DashboardUtil';
 
-export type EpiDashboardEpiCurveSettings = {
-  isIncludeMissingValuesInAreaChartEnabled: boolean;
-};
 
 export type EpiDashboardGeneralSettings = {
   isHighlightingEnabled: boolean;
 };
 
-export type EpiDashboardTreeSettings = {
-  isShowDistancesEnabled: boolean;
-  isShowSupportLinesWhenUnlinkedEnabled?: boolean;
-};
 
 export type UserProfileStore = UserProfileStoreActions & UserProfileStoreState;
 
@@ -42,6 +39,9 @@ export interface UserProfileStoreState {
     [key: string]: string;
   };
   epiDashboardTreeSettings: EpiDashboardTreeSettings;
+  epiDashboardWidgetSettings: {
+    [key: string]: unknown;
+  };
 }
 
 export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => ({
@@ -57,6 +57,7 @@ export const createUserProfileStoreInitialState: () => UserProfileStoreState = (
     isShowDistancesEnabled: true,
     isShowSupportLinesWhenUnlinkedEnabled: true,
   },
+  epiDashboardWidgetSettings: {},
   tableSettings: {},
 });
 

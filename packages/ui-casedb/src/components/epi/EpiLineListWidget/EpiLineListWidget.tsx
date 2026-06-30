@@ -604,7 +604,7 @@ export const EpiLineListWidget = () => {
       primaryMenu={<EpiLineListWidgetPrimaryMenu caseSet={caseSet} />}
       secondaryMenu={<EpiLineListWidgetSecondaryMenu />}
       title={<EpiLineListWidgetTitle />}
-      zone={EPI_WIDGET_NAME.LINE_LIST}
+      widgetName={EPI_WIDGET_NAME.LINE_LIST}
     >
       <Box
         ref={containerRef}

@@ -19,8 +19,8 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { Switch } from '@gen-epix/ui';
 
-import type { EpiDashboardTreeSettings } from '../../../stores/userProfileStore';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
+import type { EpiDashboardTreeSettings } from '../../../models/epi';
 
 export type EpiDashboardTreeSettingsFormProps = {
   readonly onReset: () => void;

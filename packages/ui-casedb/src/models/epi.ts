@@ -90,6 +90,15 @@ export type EpiDashboardArrangementConfig = {
 
 export type EpiDashboardArrangementWidgetAssignments = { [arrangementZone: string]: string };
 
+export type EpiDashboardEpiCurveSettings = {
+  isIncludeMissingValuesInAreaChartEnabled: boolean;
+};
+
+export type EpiDashboardTreeSettings = {
+  isShowDistancesEnabled: boolean;
+  isShowSupportLinesWhenUnlinkedEnabled?: boolean;
+};
+
 export type EpiData = {
   conceptsById: { [id: string]: CaseDbConcept };
   conceptsBySetId: { [id: string]: CaseDbConcept[] };
@@ -210,7 +219,6 @@ export interface StratifiableColumn {
   col: CaseDbCol;
   enabled: boolean;
 }
-
 
 export type Stratification = {
   caseIdColors: { [key: string]: string };
