@@ -7,19 +7,8 @@ const ConsentDialogContent = (): ReturnType<ConfigBase['consentDialog']['Content
 const HomePageIntroduction = (): ReturnType<ConfigBase['HomePageIntroduction']> => null;
 const LicenseInformation = (): ReturnType<ConfigBase['LicenseInformation']> => null;
 
-let languageCode: string = 'en';
-
 export class DemoConfigUtil {
   public static createConfig(): ConfigBase {
-    const setNewLanguageCode = async (_code: string) => {
-      languageCode = _code;
-      return Promise.resolve();
-    };
-
-    const getCurrentLanguageCode = async () => {
-      return Promise.resolve(languageCode);
-    };
-
     const config: ConfigBase = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ApplicationHeader,
@@ -68,7 +57,7 @@ export class DemoConfigUtil {
       getAPIBaseUrl: () => {
         return 'development';
       },
-      getEnvironmentMessage: (_t) => {
+      getEnvironmentMessage: () => {
         return 'development';
       },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -79,26 +68,6 @@ export class DemoConfigUtil {
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       HomePageIntroduction,
-      i18n: {
-        getCurrentLanguageCode,
-        languages: [
-          {
-            bundles: [
-              '/locale/en.json',
-              '/locale/gen-epix-ui/en.json',
-            ],
-            code: 'en',
-          },
-          {
-            bundles: [
-              '/locale/nl.json',
-              '/locale/gen-epix-ui/nl.json',
-            ],
-            code: 'nl',
-          },
-        ],
-        setNewLanguageCode,
-      },
       layout: {
         MAIN_CONTENT_ID: 'main-content',
         SIDEBAR_MENU_WIDTH: 4,

@@ -21,6 +21,7 @@ export * from './utils/CaseSetUtil';
 export * from './utils/CaseSelectionUtil';
 export * from './utils/CaseDbTableUtil';
 export * from './utils/CaseDbDownloadUtil';
+export * from './utils/CaseDbDemoConfigUtil';
 export * from './utils/CaseDbDataUtil';
 export * from './utils/AbacUtil';
 export * from './theme/demoTheme';
