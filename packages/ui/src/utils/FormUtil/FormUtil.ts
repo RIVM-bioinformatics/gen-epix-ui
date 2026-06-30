@@ -9,6 +9,14 @@ import {
   parseISO,
 } from 'date-fns';
 import type { TFunction } from 'i18next';
+import type { ObjectSchema } from 'yup';
+import {
+  array,
+  boolean,
+  number,
+  object,
+  string,
+} from 'yup';
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
@@ -88,6 +96,61 @@ export class FormUtil {
       }
     });
     return ObjectUtil.deepRemoveEmptyStrings(content);
+  }
+
+  public static createYupSchemaFromFormFieldDefinitions<TFormFields extends FieldValues>(formFieldDefinitions: FormFieldDefinition<TFormFields>[]): ObjectSchema<{ [key: string]: string }> {
+    return formFieldDefinitions.reduce((s, fieldDefinition) => {
+      switch (fieldDefinition.definition) {
+        case FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE:
+          if (fieldDefinition.multiple) {
+            return s.concat(object().shape({
+              [fieldDefinition.name]: array().of(string().nullable()).nullable().transform((_val: unknown, orig: unknown[]) => orig?.length ? orig : null),
+            }));
+          }
+          return s.concat(object().shape({
+            [fieldDefinition.name]: string().nullable().transform((_val: unknown, orig: string) => orig || null),
+          }));
+        case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
+          return s.concat(object().shape({
+            [fieldDefinition.name]: boolean().nullable().transform((_val: unknown, orig: unknown) => orig ?? null),
+          }));
+        case FORM_FIELD_DEFINITION_TYPE.DATE:
+          return s.concat(object().shape({
+            [fieldDefinition.name]: string().nullable().transform((_val: unknown, orig: Date) => isValid(orig) ? orig.toISOString() : null),
+          }));
+        case FORM_FIELD_DEFINITION_TYPE.FILE:
+          return s;
+        case FORM_FIELD_DEFINITION_TYPE.HIDDEN:
+        case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
+        case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
+          return s.concat(object().shape({
+            [fieldDefinition.name]: string().nullable().transform((_val: unknown, orig: string) => orig || null),
+          }));
+        case FORM_FIELD_DEFINITION_TYPE.NUMBER:
+          return s.concat(object().shape({
+            [fieldDefinition.name]: number().nullable().transform((_val: unknown, orig: unknown) => orig ?? null),
+          }));
+        case FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP:
+          return s.concat(object().shape({
+            [fieldDefinition.name]: string().nullable().transform((_val: unknown, orig: string) => orig || null),
+          }));
+        case FORM_FIELD_DEFINITION_TYPE.SELECT:
+          if (fieldDefinition.multiple) {
+            return s.concat(object().shape({
+              [fieldDefinition.name]: array().of(string().nullable()).nullable().transform((_val: unknown, orig: unknown[]) => orig?.length ? orig : null),
+            }));
+          }
+          return s.concat(object().shape({
+            [fieldDefinition.name]: string().nullable().transform((_val: unknown, orig: string) => orig || null),
+          }));
+        case FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST:
+          return s.concat(object().shape({
+            [fieldDefinition.name]: array().of(string().nullable()).nullable().transform((_val: unknown, orig: unknown[]) => orig?.length ? orig : null),
+          }));
+        default:
+          return s;
+      }
+    }, object({}));
   }
 
   public static getFieldErrorMessage<TFormFields extends FieldValues>(fieldErrors: Partial<FieldErrorsImpl<DeepRequired<TFormFields>>>, fieldName: string): string {

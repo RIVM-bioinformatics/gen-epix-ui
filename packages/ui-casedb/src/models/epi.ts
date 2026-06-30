@@ -13,7 +13,9 @@ import type {
   CaseDbRegionSet,
   CaseDbTreeAlgorithm,
 } from '@gen-epix/api-casedb';
+import type { FormFieldDefinition } from '@gen-epix/ui';
 import type { FunctionComponent } from 'react';
+import type { FieldValues } from 'react-hook-form';
 
 export enum EPI_DASHBOARD_ARRANGEMENT_ORIENTATION {
   HORIZONTAL = 'horizontal',
@@ -180,9 +182,11 @@ export type EpiWidgetConstraint = {
   };
 };
 
-export type EpiWidgetsConfig = {
+export type EpiWidgetsConfig<TConfigFormValues extends FieldValues> = {
   [widgetName: string]: {
     component: FunctionComponent;
+    configDefaultValues?: TConfigFormValues;
+    configFormFieldsDefinitions?: FormFieldDefinition<TConfigFormValues>[];
     constraints?: EpiWidgetConstraint[];
     widgetLabel: string;
   };

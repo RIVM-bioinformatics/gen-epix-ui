@@ -2,6 +2,7 @@ import type { TFunction } from 'i18next';
 import type { CaseDbColType } from '@gen-epix/api-casedb';
 import type { ConfigBase } from '@gen-epix/ui';
 import type { Range } from 'colorjs.io';
+import type { FieldValues } from 'react-hook-form';
 
 import type {
   EpiDashboardArrangement,
@@ -32,7 +33,7 @@ export interface CaseDbConfig extends ConfigBase {
     DEFAULT_WIDGET_ASSIGNMENTS: { [key: string]: EpiDashboardArrangementWidgetAssignments };
     MIN_PANEL_HEIGHT: number;
     MIN_PANEL_WIDTH: number;
-    WIDGETS: EpiWidgetsConfig;
+    WIDGETS: EpiWidgetsConfig<FieldValues>;
   };
   epiLineList: {
     CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS: number;

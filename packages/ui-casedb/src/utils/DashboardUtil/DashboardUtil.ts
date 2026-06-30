@@ -1,5 +1,6 @@
 import { ConfigManager } from '@gen-epix/ui';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
+import type { FieldValues } from 'react-hook-form';
 import sumBy from 'lodash/sumBy';
 
 import {
@@ -105,7 +106,7 @@ export class DashboardUtil {
   public static getAvailableWidgets(
     arrangementConfig: EpiDashboardArrangementConfig,
     zoneName: string,
-    widgetsConfig: EpiWidgetsConfig,
+    widgetsConfig: EpiWidgetsConfig<FieldValues>,
   ): string[] {
     const assignments = DashboardUtil.getArrangementWidgetAssignments(
       DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey),
@@ -145,7 +146,7 @@ export class DashboardUtil {
 
   public static isArrangementWidgetAssignmentsValid(
     assignments: EpiDashboardArrangementWidgetAssignments,
-    widgets: EpiWidgetsConfig,
+    widgets: EpiWidgetsConfig<FieldValues>,
   ): boolean {
     return Object.values(assignments).every((widgetName) => !widgetName || widgetName in widgets);
   }

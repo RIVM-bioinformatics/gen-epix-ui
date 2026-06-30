@@ -37,6 +37,7 @@ import {
 
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
 import type {
+  EpiDashboardTreeSettings,
   Highlighting,
   TreeConfiguration,
 } from '../../../models/epi';
@@ -93,8 +94,8 @@ export const EpiTreeWidget = () => {
   const isCaseDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
   const newick = useStore(epiDashboardStore, (state) => state.newick);
   const resetTreeAddresses = useStore(epiDashboardStore, (state) => state.resetTreeAddresses);
-  const isShowDistancesEnabled = useStore(userProfileStore, (state) => state.epiDashboardTreeSettings.isShowDistancesEnabled);
-  const isShowSupportLinesWhenUnlinkedEnabled = useStore(userProfileStore, (state) => state.epiDashboardTreeSettings.isShowSupportLinesWhenUnlinkedEnabled);
+  const isShowDistancesEnabled = useStore(userProfileStore, (state) => (state.epiDashboardWidgetSettings[EPI_WIDGET_NAME.TREE] as EpiDashboardTreeSettings).isShowDistancesEnabled);
+  const isShowSupportLinesWhenUnlinkedEnabled = useStore(userProfileStore, (state) => (state.epiDashboardWidgetSettings[EPI_WIDGET_NAME.TREE] as EpiDashboardTreeSettings).isShowSupportLinesWhenUnlinkedEnabled);
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [zoomInMenuItemConfig, setZoomInMenuItemConfig] = useState<ZoomInMenuItemConfig>(null);
   const [extraLeafInfoId, setExtraLeafInfoId] = useState<string>(null);

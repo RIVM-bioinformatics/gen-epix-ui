@@ -22,11 +22,7 @@ import { Switch } from '@gen-epix/ui';
 import type { EpiDashboardGeneralSettings } from '../../../stores/userProfileStore';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
-export type EpiDashboardGeneralSettingsFormProps = {
-  readonly onReset: () => void;
-};
-
-export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneralSettingsFormProps) => {
+export const EpiDashboardGeneralSettingsForm = () => {
   const { t } = useTranslation();
   const userProfileStore = use(UserProfileStoreContext);
 
@@ -44,10 +40,7 @@ export const EpiDashboardGeneralSettingsForm = ({ onReset }: EpiDashboardGeneral
 
   const onResetButtonClick = useCallback(() => {
     resetEpiDashboardGeneralSettings();
-    if (onReset) {
-      onReset();
-    }
-  }, [onReset, resetEpiDashboardGeneralSettings]);
+  }, [resetEpiDashboardGeneralSettings]);
 
   useEffect(() => {
     setEpiDashboardGeneralSettings(formValues as EpiDashboardGeneralSettings);

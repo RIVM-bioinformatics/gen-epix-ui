@@ -3,12 +3,18 @@ import {
   subDays,
 } from 'date-fns';
 import { CaseDbColType } from '@gen-epix/api-casedb';
+import type { FormFieldDefinition } from '@gen-epix/ui';
 import {
   AxiosUtil,
+  FORM_FIELD_DEFINITION_TYPE,
   I18nManager,
   WindowManager,
 } from '@gen-epix/ui';
-import type { CaseDbConfig } from '@gen-epix/ui-casedb';
+import type {
+  CaseDbConfig,
+  EpiDashboardEpiCurveSettings,
+  EpiDashboardTreeSettings,
+} from '@gen-epix/ui-casedb';
 import {
   createCaseDbDemoTheme,
   EPI_DASHBOARD_ARRANGEMENT_ORIENTATION,
@@ -21,14 +27,13 @@ import {
 } from '@gen-epix/ui-casedb';
 import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
+import { t } from 'i18next';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
 import { ConsentDialogContent } from '../../components/ConsentDialogContent';
 import { HomePageIntroduction } from '../../components/HomePageIntroduction';
 import { LicenseInformation } from '../../components/LicenseInformation';
 
-
-const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 export class ConfigUtil {
   public static createConfig(): CaseDbConfig {
@@ -40,15 +45,6 @@ export class ConfigUtil {
       I18nManager.getInstance().emit('onUserLanguageChange', 'nl');
     };
 
-    const setNewLanguageCode = async (code: string) => {
-      return Promise.resolve(WindowManager.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code));
-    };
-
-    const getCurrentLanguageCode = async () => {
-      return Promise.resolve(WindowManager.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
-    };
-
-
     const config: CaseDbConfig = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ApplicationHeader,
@@ -56,11 +52,11 @@ export class ConfigUtil {
       consentDialog: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         Content: ConsentDialogContent,
-        getButtonLabel: (t) => t`I consent`,
+        getButtonLabel: () => t`I consent`,
         getShouldShow: () => !import.meta.env.DEV,
-        getTitle: (t) => t`Consent`,
+        getTitle: () => t`Consent`,
       },
-      createFooter: (t) => ({
+      createFooter: () => ({
         sections: [
           {
             header: t`Contact`,
@@ -286,25 +282,51 @@ export class ConfigUtil {
         WIDGETS: {
           [EPI_WIDGET_NAME.EPI_CURVE]: {
             component: EpiCurveWidget,
-            widgetLabel: 'Epi Curve',
+            configDefaultValues: {
+              isIncludeMissingValuesInAreaChartEnabled: false,
+            } satisfies EpiDashboardEpiCurveSettings,
+            configFormFieldsDefinitions: [
+              {
+                definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH,
+                label: t`Include missing values in area chart`,
+                name: 'isIncludeMissingValuesInAreaChartEnabled',
+              },
+            ] satisfies FormFieldDefinition<EpiDashboardEpiCurveSettings>[],
+            widgetLabel: t`Epi Curve`,
           },
           [EPI_WIDGET_NAME.LINE_LIST]: {
             component: EpiLineListWidget,
-            widgetLabel: 'Line List',
+            widgetLabel: t`Line List`,
           },
           [EPI_WIDGET_NAME.MAP]: {
             component: EpiMapWidget,
-            widgetLabel: 'Map',
+            widgetLabel: t`Map`,
           },
           [EPI_WIDGET_NAME.TREE]: {
             component: EpiTreeWidget,
+            configDefaultValues: {
+              isShowDistancesEnabled: true,
+              isShowSupportLinesWhenUnlinkedEnabled: true,
+            } satisfies EpiDashboardTreeSettings,
+            configFormFieldsDefinitions: [
+              {
+                definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH,
+                label: t`Show distances`,
+                name: 'isShowDistancesEnabled',
+              },
+              {
+                definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH,
+                label: t`Show support lines when unlinked`,
+                name: 'isShowSupportLinesWhenUnlinkedEnabled',
+              },
+            ] satisfies FormFieldDefinition<EpiDashboardTreeSettings>[],
             constraints: [{
               require_adjacent: {
                 direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST,
                 widgetName: EPI_WIDGET_NAME.LINE_LIST,
               },
             }],
-            widgetLabel: 'Phylogenetic Tree',
+            widgetLabel: t`Phylogenetic Tree`,
           },
         },
       },
@@ -348,7 +370,7 @@ export class ConfigUtil {
             return '';
         }
       },
-      getEnvironmentMessage: (_t) => {
+      getEnvironmentMessage: () => {
         const { location: { href } } = WindowManager.getInstance().window.document;
         const { hostname } = new URL(href);
         let environment: string;
@@ -369,28 +391,6 @@ export class ConfigUtil {
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       HomePageIntroduction,
-      i18n: {
-        getCurrentLanguageCode,
-        languages: [
-          {
-            bundles: [
-              '/locale/en.json',
-              '/locale/ui/en.json',
-              '/locale/ui-casedb/en.json',
-            ],
-            code: 'en',
-          },
-          {
-            bundles: [
-              '/locale/nl.json',
-              '/locale/ui/nl.json',
-              '/locale/ui-casedb/nl.json',
-            ],
-            code: 'nl',
-          },
-        ],
-        setNewLanguageCode,
-      },
       layout: {
         MAIN_CONTENT_ID: 'main-content',
         SIDEBAR_MENU_WIDTH: 4,
@@ -430,7 +430,7 @@ export class ConfigUtil {
       trends: {
         homePage: {
           getSinceDate: () => format(subDays(new Date().toISOString(), 365), 'yyyy-MM-dd'),
-          getSinceLabel: (t) => t`since last year`,
+          getSinceLabel: () => t`since last year`,
         },
       },
       userFeedback: {

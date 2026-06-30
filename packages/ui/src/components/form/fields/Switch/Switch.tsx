@@ -29,7 +29,7 @@ import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 
-export type SwitchPropsProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>> = {
+export type SwitchProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>> = {
   readonly disabled?: boolean;
   readonly infoMessage?: string;
   readonly label: string;
@@ -48,7 +48,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
   name,
   onChange: onChangeProp,
   warningMessage,
-}: SwitchPropsProps<TFieldValues, TName>): ReactElement => {
+}: SwitchProps<TFieldValues, TName>): ReactElement => {
   const { control, formState: { errors } } = useFormContext<TFieldValues>();
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const inputRef = useRef<HTMLInputElement>(null);

@@ -5,14 +5,13 @@ import {
 } from '@gen-epix/ui';
 import { createSeqDbDemoTheme } from '@gen-epix/ui-seqdb';
 import type { SeqDbConfig } from '@gen-epix/ui-seqdb';
+import { t } from 'i18next';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
 import { ConsentDialogContent } from '../../components/ConsentDialogContent';
 import { HomePageIntroduction } from '../../components/HomePageIntroduction';
 import { LicenseInformation } from '../../components/LicenseInformation';
 
-
-const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 export class ConfigUtil {
   public static createConfig(): SeqDbConfig {
@@ -24,15 +23,6 @@ export class ConfigUtil {
       I18nManager.getInstance().emit('onUserLanguageChange', 'nl');
     };
 
-    const setNewLanguageCode = async (code: string) => {
-      return Promise.resolve(WindowManager.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code));
-    };
-
-    const getCurrentLanguageCode = async () => {
-      return Promise.resolve(WindowManager.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
-    };
-
-
     const config: SeqDbConfig = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ApplicationHeader,
@@ -40,11 +30,11 @@ export class ConfigUtil {
       consentDialog: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         Content: ConsentDialogContent,
-        getButtonLabel: (t) => t`I consent`,
+        getButtonLabel: () => t`I consent`,
         getShouldShow: () => !import.meta.env.DEV,
-        getTitle: (t) => t`Consent`,
+        getTitle: () => t`Consent`,
       },
-      createFooter: (t) => ({
+      createFooter: () => ({
         sections: [
           {
             header: t`Contact`,
@@ -101,7 +91,7 @@ export class ConfigUtil {
             return '';
         }
       },
-      getEnvironmentMessage: (_t) => {
+      getEnvironmentMessage: () => {
         const { location: { href } } = WindowManager.getInstance().window.document;
         const { hostname } = new URL(href);
         let environment: string;
@@ -122,28 +112,6 @@ export class ConfigUtil {
       },
       // eslint-disable-next-line @typescript-eslint/naming-convention
       HomePageIntroduction,
-      i18n: {
-        getCurrentLanguageCode,
-        languages: [
-          {
-            bundles: [
-              '/locale/en.json',
-              '/locale/ui/en.json',
-              '/locale/ui-seqdb/en.json',
-            ],
-            code: 'en',
-          },
-          {
-            bundles: [
-              '/locale/nl.json',
-              '/locale/ui/nl.json',
-              '/locale/ui-seqdb/nl.json',
-            ],
-            code: 'nl',
-          },
-        ],
-        setNewLanguageCode,
-      },
       layout: {
         MAIN_CONTENT_ID: 'main-content',
         SIDEBAR_MENU_WIDTH: 4,

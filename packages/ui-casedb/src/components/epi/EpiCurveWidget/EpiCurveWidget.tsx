@@ -67,6 +67,7 @@ import { EpiDashboardWidget } from '../EpiDashboard';
 import { EPI_WIDGET_NAME } from '../../../data/epi';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import { EpiDashboardContext } from '../EpiDashboard/context/EpiDashboardContext';
+import type { EpiDashboardEpiCurveSettings } from '../../../models/epi';
 
 import { EpiCurveBarChart } from './EpiCurveBarChart';
 import { EpiCurveStackedAreaChart } from './EpiCurveStackedAreaChart';
@@ -100,7 +101,7 @@ export const EpiCurveWidget = () => {
   const setFilterValue = useStore(epiDashboardStore, (state) => state.setFilterValue);
   const filterDimensions = useStore(epiDashboardStore, (state) => state.filterDimensions);
   const timeDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [CaseDbDimType.TIME]), [completeCaseType]);
-  const isIncludeMissingValuesInAreaChartEnabled = useStore(userProfileStore, (state) => state.epiDashboardEpiCurveSettings.isIncludeMissingValuesInAreaChartEnabled);
+  const isIncludeMissingValuesInAreaChartEnabled = useStore(userProfileStore, (state) => (state.epiDashboardWidgetSettings[EPI_WIDGET_NAME.EPI_CURVE] as EpiDashboardEpiCurveSettings).isIncludeMissingValuesInAreaChartEnabled);
   const [focussedDate, setFocussedDate] = useState<string>(null);
   const [col, setCol] = useState<CaseDbCol>(null);
   const colLabel = col?.label ?? '';

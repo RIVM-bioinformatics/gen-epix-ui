@@ -3,7 +3,6 @@ import type {
   CircularProgressProps,
   Theme,
 } from '@mui/material';
-import type { TFunction } from 'i18next';
 
 export type ApplicationHeaderProps = {
   readonly fullHeight?: boolean;
@@ -20,24 +19,19 @@ export interface ConfigBase {
   consentDialog: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Content: () => ReactElement;
-    getButtonLabel: (t: TFunction<'translation', undefined>) => string;
+    getButtonLabel: () => string;
     getShouldShow: () => boolean;
-    getTitle: (t: TFunction<'translation', undefined>) => string;
+    getTitle: () => string;
   };
-  createFooter: (t: TFunction<'translation', undefined>) => FooterConfig;
+  createFooter: () => FooterConfig;
   defaultRequestTimeout: number;
   enablePageEvents: boolean;
   getAPIBaseUrl: () => string;
-  getEnvironmentMessage: (t: TFunction<'translation', undefined>) => string;
+  getEnvironmentMessage: () => string;
   getSoftwareVersion: () => string;
   getTouchIconUrl: () => string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   HomePageIntroduction: () => ReactElement;
-  i18n: {
-    getCurrentLanguageCode: () => Promise<string> | string;
-    languages: I18nConfig[];
-    setNewLanguageCode: (code: string) => Promise<void>;
-  };
   layout: {
     MAIN_CONTENT_ID: string;
     SIDEBAR_MENU_WIDTH: number;
@@ -96,9 +90,4 @@ export type FooterSectionItem = {
   readonly href?: string;
   readonly label: string;
   readonly onClick?: () => void;
-};
-
-export type I18nConfig = {
-  bundles: string[];
-  code: string;
 };

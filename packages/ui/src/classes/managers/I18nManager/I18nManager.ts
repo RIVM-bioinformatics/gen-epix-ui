@@ -4,10 +4,14 @@ import i18next, {
 } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import { ConfigManager } from '../ConfigManager';
 import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
 import { HmrUtil } from '../../../utils/HmrUtil';
 import { WindowManager } from '../WindowManager';
+
+export type LanguageConfig = {
+  bundles: string[];
+  code: string;
+};
 
 type Bundle = {
   translation: Record<string, string>;
@@ -20,9 +24,11 @@ type I18nEvent = {
 export class I18nManager extends EventBusAbstract<I18nEvent> {
   private static __instance: I18nManager;
 
+  private getCurrentLanguageCode: () => Promise<string> | string;
   private isInitialized = false;
-
+  private languageConfigs: LanguageConfig[];
   private languageLoaded: Record<string, boolean> = {};
+  private setNewLanguageCode: (code: string) => Promise<void> | void;
   private constructor() {
     super();
   }
@@ -32,13 +38,20 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
     return I18nManager.__instance;
   }
 
-  public async init(): Promise<void> {
+  public async init(kwArgs: {
+    getCurrentLanguageCode: () => Promise<string> | string;
+    languageConfigs: LanguageConfig[];
+    setNewLanguageCode: (code: string) => Promise<void> | void;
+  }): Promise<void> {
+    this.setNewLanguageCode = kwArgs.setNewLanguageCode;
+    this.getCurrentLanguageCode = kwArgs.getCurrentLanguageCode;
+    this.languageConfigs = kwArgs.languageConfigs;
     if (this.isInitialized) {
       console.warn('I18nManager is already initialized');
       return;
     }
-    const currentLanguageCode = await ConfigManager.getInstance().config.i18n.getCurrentLanguageCode();
-    const defaultLanguageConfig = ConfigManager.getInstance().config.i18n.languages.find(x => x.code === currentLanguageCode);
+    const currentLanguageCode = await this.getCurrentLanguageCode();
+    const defaultLanguageConfig = this.languageConfigs.find(x => x.code === currentLanguageCode);
 
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -70,7 +83,7 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
   }
 
   public async switchLanguageConfig(code: string): Promise<void> {
-    await ConfigManager.getInstance().config.i18n.setNewLanguageCode(code);
+    await this.setNewLanguageCode(code);
     this.updateLangAttribute(code);
   }
 
@@ -78,7 +91,7 @@ export class I18nManager extends EventBusAbstract<I18nEvent> {
     if (this.languageLoaded[code]) {
       return;
     }
-    const config = ConfigManager.getInstance().config.i18n.languages.find(x => x.code === code);
+    const config = this.languageConfigs.find(x => x.code === code);
     if (!config) {
       throw new Error(`No i18n config found for code: ${code}`);
     }
