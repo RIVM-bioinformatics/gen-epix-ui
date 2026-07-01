@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.6.0...ui-omopdb-v2.6.1) (2026-07-01)
+
+
+### Bug Fixes
+
+* fix build (after closing dts bug) ([eeee812](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/eeee812b5c021383ad9fd304d59c9478700bc01d))
+
 ## [2.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.5.0...ui-omopdb-v2.6.0) (2026-07-01)
 
 
