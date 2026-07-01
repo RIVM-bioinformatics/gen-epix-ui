@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 import { ConfigManager } from '@gen-epix/ui';
 
 import { setupOmopDb } from '../../setup';
-import { OmopDbStandardConfigUtil } from '../lib';
+import { OmopDbStandardConfigUtil } from '../../utils/OmopDbStandardConfigUtil';
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;

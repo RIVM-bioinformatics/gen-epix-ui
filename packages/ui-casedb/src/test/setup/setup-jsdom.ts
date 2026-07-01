@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 import { ConfigManager } from '@gen-epix/ui';
 
 import { setupCaseDb } from '../../setup';
-import { CaseDbStandardConfigUtil } from '../lib';
+import { CaseDbStandardConfigUtil } from '../../utils/CaseDbStandardConfigUtil';
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;

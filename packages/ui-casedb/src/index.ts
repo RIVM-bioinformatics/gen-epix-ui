@@ -25,7 +25,6 @@ export * from './utils/CaseDbDownloadUtil';
 export * from './utils/CaseDbDataUtil';
 export * from './utils/AbacUtil';
 export * from './theme/demoTheme';
-export * from './test/lib';
 export * from './stores/userProfileStore';
 export * from './stores/epiUploadStore';
 export * from './stores/epiDashboardStore';

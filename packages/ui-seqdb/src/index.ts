@@ -4,7 +4,6 @@
 
 export * from './utils/SeqDbStandardConfigUtil';
 export * from './theme/demoTheme';
-export * from './test/lib';
 export * from './setup';
 export * from './routes';
 export * from './pages/HomePage';

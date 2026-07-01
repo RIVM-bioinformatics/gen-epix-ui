@@ -30,7 +30,7 @@ export const ConsentDialog = withDialog<ConsentDialogProps, ConsentDialogOpenPro
   const { t } = useTranslation();
 
   useEffect(() => {
-    onTitleChange(ConfigManager.getInstance().config.consentDialog.getTitle(t));
+    onTitleChange(ConfigManager.getInstance().config.consentDialog.getTitle());
   }, [onTitleChange, t]);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const ConsentDialog = withDialog<ConsentDialogProps, ConsentDialogOpenPro
         ...TestIdUtil.createAttributes('ConsentDialog-agree'),
         autoFocus: true,
         color: 'secondary',
-        label: ConfigManager.getInstance().config.consentDialog.getButtonLabel(t),
+        label: ConfigManager.getInstance().config.consentDialog.getButtonLabel(),
         onClick: onConsent,
         variant: 'contained',
       },
