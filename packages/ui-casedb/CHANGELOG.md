@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.6.1...ui-casedb-v2.6.2) (2026-07-01)
+
+
+### Bug Fixes
+
+* prevent demo theme from unnecessary creation in demo config ([c713406](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c713406161567a13ee71467842ebc091d337e102))
+
 ## [2.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.6.0...ui-casedb-v2.6.1) (2026-07-01)
 
 
