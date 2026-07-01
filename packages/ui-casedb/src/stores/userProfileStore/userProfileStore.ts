@@ -3,7 +3,10 @@ import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware';
-import { ConfigManager } from '@gen-epix/ui';
+import {
+  ConfigManager,
+  FormUtil,
+} from '@gen-epix/ui';
 
 import type { EpiDashboardArrangementConfig } from '../../models/epi';
 import { DashboardUtil } from '../../utils/DashboardUtil';
@@ -118,6 +121,18 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
         const validatedConfig = DashboardUtil.validateAndMigrateArrangementConfig(state.epiDashboardArrangementConfig);
         if (validatedConfig !== state.epiDashboardArrangementConfig) {
           state.setEpiDashboardArrangementConfig(validatedConfig);
+        }
+
+        const widgets = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
+        const initialWidgetSettings = createUserProfileStoreInitialState().epiDashboardWidgetSettings;
+        for (const widgetName of Object.keys(state.epiDashboardWidgetSettings)) {
+          const fieldDefs = widgets[widgetName]?.configFormFieldsDefinitions;
+          if (!fieldDefs) {
+            continue;
+          }
+          if (!FormUtil.areFormValuesValid(fieldDefs, state.epiDashboardWidgetSettings[widgetName])) {
+            state.setWidgetSettings(widgetName, initialWidgetSettings[widgetName] ?? {});
+          }
         }
 
       },

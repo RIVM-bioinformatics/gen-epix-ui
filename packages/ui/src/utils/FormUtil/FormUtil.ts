@@ -24,6 +24,30 @@ import { ObjectUtil } from '../ObjectUtil';
 import { DATE_FORMAT } from '../../data/date';
 
 export class FormUtil {
+  public static areFormValuesValid<TFormFields extends FieldValues>(formFieldDefinitions: FormFieldDefinition<TFormFields>[], values: unknown): boolean {
+    if (typeof values !== 'object' || values === null) {
+      return false;
+    }
+    const record = values as Record<string, unknown>;
+    return formFieldDefinitions.every((fieldDef) => {
+      const value = record[fieldDef.name];
+      switch (fieldDef.definition) {
+        case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
+        case FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH:
+          return typeof value === 'boolean';
+        case FORM_FIELD_DEFINITION_TYPE.DATE:
+        case FORM_FIELD_DEFINITION_TYPE.HIDDEN:
+        case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
+        case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
+          return typeof value === 'string' || value === null;
+        case FORM_FIELD_DEFINITION_TYPE.NUMBER:
+          return typeof value === 'number' || value === null;
+        default:
+          return value !== undefined;
+      }
+    });
+  }
+
   public static createBooleanOptions(t: TFunction<'translation', undefined>): { label: string; value: boolean }[] {
     return [
       { label: t`Yes`, value: true }, // t`Yes`
