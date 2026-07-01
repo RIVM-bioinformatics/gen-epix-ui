@@ -1,1 +1,1 @@
-export * from '../../utils/CaseDbDemoConfigUtil/CaseDbDemoConfigUtil';
+export * from '../../utils/CaseDbStandardConfigUtil/CaseDbStandardConfigUtil';

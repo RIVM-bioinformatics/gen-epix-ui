@@ -1,15 +1,15 @@
 import {
-  DemoConfigUtil,
   I18nManager,
+  StandardConfigUtil,
   WindowManager,
 } from '@gen-epix/ui';
 import { t } from 'i18next';
 
-import type { SeqDbConfig } from '../../models/config';
-import { createSeqDbDemoTheme } from '../../theme/demoTheme';
+import type { OmopDbConfig } from '../../models/config';
+import { createOmopDbDemoTheme } from '../../theme/demoTheme';
 
-export class SeqDbDemoConfigUtil {
-  public static createConfig(): SeqDbConfig {
+export class OmopDbStandardConfigUtil {
+  public static createConfig(): OmopDbConfig {
     const onEnglishClick = () => {
       I18nManager.getInstance().emit('onUserLanguageChange', 'en');
     };
@@ -18,8 +18,8 @@ export class SeqDbDemoConfigUtil {
       I18nManager.getInstance().emit('onUserLanguageChange', 'nl');
     };
 
-    const config: SeqDbConfig = {
-      ...DemoConfigUtil.createConfig(),
+    const config: OmopDbConfig = {
+      ...StandardConfigUtil.createConfig(),
       createFooter: () => ({
         sections: [
           {
@@ -90,7 +90,7 @@ export class SeqDbDemoConfigUtil {
         }
         return environment;
       },
-      theme: createSeqDbDemoTheme('light'),
+      theme: createOmopDbDemoTheme('light'),
     };
     return config;
   }

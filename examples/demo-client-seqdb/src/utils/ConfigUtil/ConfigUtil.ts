@@ -1,5 +1,5 @@
 import type { SeqDbConfig } from '@gen-epix/ui-seqdb';
-import { SeqDbDemoConfigUtil } from '@gen-epix/ui-seqdb';
+import { SeqDbStandardConfigUtil } from '@gen-epix/ui-seqdb';
 import { t } from 'i18next';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
@@ -10,7 +10,7 @@ import { LicenseInformation } from '../../components/LicenseInformation';
 export class ConfigUtil {
   public static createConfig(): SeqDbConfig {
     const config: SeqDbConfig = {
-      ...SeqDbDemoConfigUtil.createConfig(),
+      ...SeqDbStandardConfigUtil.createConfig(),
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ApplicationHeader,
       applicationName: 'Gen-EpiX - SeqDB',

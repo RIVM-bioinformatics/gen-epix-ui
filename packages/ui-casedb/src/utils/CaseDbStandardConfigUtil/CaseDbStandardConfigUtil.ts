@@ -5,9 +5,9 @@ import {
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { FormFieldDefinition } from '@gen-epix/ui';
 import {
-  DemoConfigUtil,
   FORM_FIELD_DEFINITION_TYPE,
   I18nManager,
+  StandardConfigUtil,
   WindowManager,
 } from '@gen-epix/ui';
 import Color from 'colorjs.io';
@@ -30,7 +30,7 @@ import {
   EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
 } from '../../models/epi';
 
-export class CaseDbDemoConfigUtil {
+export class CaseDbStandardConfigUtil {
   public static createConfig(): CaseDbConfig {
     const onEnglishClick = () => {
       I18nManager.getInstance().emit('onUserLanguageChange', 'en');
@@ -41,7 +41,7 @@ export class CaseDbDemoConfigUtil {
     };
 
     const config: CaseDbConfig = {
-      ...DemoConfigUtil.createConfig(),
+      ...StandardConfigUtil.createConfig(),
       createFooter: () => ({
         sections: [
           {
@@ -142,9 +142,9 @@ export class CaseDbDemoConfigUtil {
             '#39063F',
             '#3F4006',
           ],
-          BASE_ORDERED_GRADIENT: CaseDbDemoConfigUtil.createStratificationBaseOrderedGradient(),
-          BASE_UNORDERED_GRADIENT: CaseDbDemoConfigUtil.createStratificationBaseUnorderedGradient(),
-          EXTRA_GRADIENTS: CaseDbDemoConfigUtil.createStratificationExtraGradients(),
+          BASE_ORDERED_GRADIENT: CaseDbStandardConfigUtil.createStratificationBaseOrderedGradient(),
+          BASE_UNORDERED_GRADIENT: CaseDbStandardConfigUtil.createStratificationBaseUnorderedGradient(),
+          EXTRA_GRADIENTS: CaseDbStandardConfigUtil.createStratificationExtraGradients(),
           GRADIENT_COL_TYPES: [
             CaseDbColType.ORDINAL,
             CaseDbColType.INTERVAL,

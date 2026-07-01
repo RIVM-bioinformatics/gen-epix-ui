@@ -1,10 +1,10 @@
 import { ConfigManager } from '@gen-epix/ui';
 
 import { setupOmopDb } from '../../setup';
-import { OmopDbDemoConfigUtil } from '../lib';
+import { OmopDbStandardConfigUtil } from '../lib';
 
 export const setupTestEnvironment = () => {
-  ConfigManager.getInstance().config = OmopDbDemoConfigUtil.createConfig();
+  ConfigManager.getInstance().config = OmopDbStandardConfigUtil.createConfig();
   setupOmopDb();
 };
 

@@ -5,13 +5,8 @@ import {
 } from 'zustand/middleware';
 import { ConfigManager } from '@gen-epix/ui';
 
-import type {
-  EpiDashboardArrangementConfig,
-  EpiDashboardEpiCurveSettings,
-  EpiDashboardTreeSettings,
-} from '../../models/epi';
+import type { EpiDashboardArrangementConfig } from '../../models/epi';
 import { DashboardUtil } from '../../utils/DashboardUtil';
-import { EPI_WIDGET_NAME } from '../../data/epi';
 import type { CaseDbConfig } from '../../models/config';
 
 
@@ -43,23 +38,23 @@ export interface UserProfileStoreState {
   };
 }
 
-export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => ({
-  epiDashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
-  epiDashboardGeneralSettings: {
-    isHighlightingEnabled: true,
-  },
-  epiDashboardPanels: {},
-  epiDashboardWidgetSettings: {
-    [EPI_WIDGET_NAME.EPI_CURVE]: {
-      isIncludeMissingValuesInAreaChartEnabled: false,
-    } satisfies EpiDashboardEpiCurveSettings,
-    [EPI_WIDGET_NAME.TREE]: {
-      isShowDistancesEnabled: true,
-      isShowSupportLinesWhenUnlinkedEnabled: true,
-    } satisfies EpiDashboardTreeSettings,
-  },
-  tableSettings: {},
-});
+export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => {
+  const widgets = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
+  const epiDashboardWidgetSettings: UserProfileStoreState['epiDashboardWidgetSettings'] = {};
+  for (const widgetName of Object.keys(widgets)) {
+    epiDashboardWidgetSettings[widgetName] = widgets[widgetName].configDefaultValues ?? {};
+  }
+
+  return {
+    epiDashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
+    epiDashboardGeneralSettings: {
+      isHighlightingEnabled: true,
+    },
+    epiDashboardPanels: {},
+    epiDashboardWidgetSettings,
+    tableSettings: {},
+  };
+};
 
 export const createUserProfileStore = () => createStore<UserProfileStore>()(
   persist(
@@ -124,6 +119,7 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
         if (validatedConfig !== state.epiDashboardArrangementConfig) {
           state.setEpiDashboardArrangementConfig(validatedConfig);
         }
+
       },
       partialize: (state) => ({
         epiDashboardArrangementConfig: state.epiDashboardArrangementConfig,
@@ -132,7 +128,7 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
         epiDashboardWidgetSettings: state.epiDashboardWidgetSettings,
       }),
       storage: createJSONStorage(() => localStorage),
-      version: 3,
+      version: 4,
     },
   ),
 );

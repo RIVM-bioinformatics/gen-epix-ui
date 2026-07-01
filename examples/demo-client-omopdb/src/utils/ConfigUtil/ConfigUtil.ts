@@ -1,5 +1,5 @@
 import type { OmopDbConfig } from '@gen-epix/ui-omopdb';
-import { OmopDbDemoConfigUtil } from '@gen-epix/ui-omopdb';
+import { OmopDbStandardConfigUtil } from '@gen-epix/ui-omopdb';
 import { t } from 'i18next';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
@@ -10,7 +10,7 @@ import { LicenseInformation } from '../../components/LicenseInformation';
 export class ConfigUtil {
   public static createConfig(): OmopDbConfig {
     const config: OmopDbConfig = {
-      ...OmopDbDemoConfigUtil.createConfig(),
+      ...OmopDbStandardConfigUtil.createConfig(),
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ApplicationHeader,
       applicationName: 'Gen-EpiX - OmopDB',

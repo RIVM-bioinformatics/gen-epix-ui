@@ -1,12 +1,12 @@
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { setup } from '../../setup/setup';
-import { DemoConfigUtil } from '../../utils/DemoConfigUtil';
+import { StandardConfigUtil } from '../../utils/StandardConfigUtil';
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 export const setupTestEnvironment = () => {
-  ConfigManager.getInstance().config = DemoConfigUtil.createConfig();
+  ConfigManager.getInstance().config = StandardConfigUtil.createConfig();
   setup();
 
   vi.setConfig({

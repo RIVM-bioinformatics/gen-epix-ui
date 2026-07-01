@@ -7,7 +7,7 @@ const ConsentDialogContent = (): ReturnType<ConfigBase['consentDialog']['Content
 const HomePageIntroduction = (): ReturnType<ConfigBase['HomePageIntroduction']> => null;
 const LicenseInformation = (): ReturnType<ConfigBase['LicenseInformation']> => null;
 
-export class DemoConfigUtil {
+export class StandardConfigUtil {
   public static createConfig(): ConfigBase {
     const config: ConfigBase = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
