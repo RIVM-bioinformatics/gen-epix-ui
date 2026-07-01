@@ -195,82 +195,82 @@ export interface SeqDbCalculateSeqDistancesResult {
 
 
 export const SeqDbCommandName = {
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
     SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
+    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
     ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    LocusSetCrudCommand: 'LocusSetCrudCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
     AlleleCrudCommand: 'AlleleCrudCommand',
     ContactCrudCommand: 'ContactCrudCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    TaxonCrudCommand: 'TaxonCrudCommand',
     RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    CreateFileCommand: 'CreateFileCommand',
-    LocusCrudCommand: 'LocusCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    FileCrudCommand: 'FileCrudCommand',
-    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
     RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
-    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    UploadSamplesCommand: 'UploadSamplesCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
-    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
-    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
-    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
     SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
-    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
     ProtocolCrudCommand: 'ProtocolCrudCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
+    CreateFileCommand: 'CreateFileCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    TaxonCrudCommand: 'TaxonCrudCommand',
+    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
+    LocusCrudCommand: 'LocusCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
+    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
     OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
-    ReadSetCrudCommand: 'ReadSetCrudCommand',
-    LocusSetCrudCommand: 'LocusSetCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    FileCrudCommand: 'FileCrudCommand',
     RefAlleleCrudCommand: 'RefAlleleCrudCommand',
+    UploadSamplesCommand: 'UploadSamplesCommand',
+    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
+    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
+    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    ReadSetCrudCommand: 'ReadSetCrudCommand',
+    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -1129,7 +1129,7 @@ export interface SeqDbReadSet {
     'protocol_id': string;
     'protocol'?: SeqDbProtocol;
     /**
-     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
+     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
      */
     'code'?: string;
     /**
@@ -1169,7 +1169,7 @@ export interface SeqDbReadSetForUpload {
     'protocol_id'?: string;
     'protocol'?: SeqDbProtocol;
     /**
-     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
+     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
      */
     'code'?: string;
     /**
@@ -1334,7 +1334,7 @@ export interface SeqDbRetrieveSimilarProfilesRequestBody {
  */
 export interface SeqDbSample {
     /**
-     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
+     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
      */
     'code'?: string;
     'created_at'?: string | null;
@@ -1527,7 +1527,7 @@ export interface SeqDbSeq {
     'qc_score'?: number | null;
     'qc_report'?: string | null;
     /**
-     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
+     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
      */
     'code'?: string;
     /**
@@ -1751,7 +1751,7 @@ export interface SeqDbSeqForUpload {
     'qc_score'?: number | null;
     'qc_report'?: string | null;
     /**
-     * A unique code for the instance, e.g. for external reference. Defaults to a UUID4.
+     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
      */
     'code'?: string;
     /**

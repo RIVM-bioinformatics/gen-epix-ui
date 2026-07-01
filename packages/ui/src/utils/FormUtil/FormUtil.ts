@@ -119,7 +119,7 @@ export class FormUtil {
           break;
       }
     });
-    return ObjectUtil.deepRemoveEmptyStrings(content);
+    return ObjectUtil.deepNullifyEmptyStrings(content);
   }
 
   public static createYupSchemaFromFormFieldDefinitions<TFormFields extends FieldValues>(formFieldDefinitions: FormFieldDefinition<TFormFields>[]): ObjectSchema<{ [key: string]: string }> {

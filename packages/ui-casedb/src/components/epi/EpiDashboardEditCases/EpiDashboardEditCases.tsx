@@ -1,4 +1,7 @@
-import type { CaseDbCase } from '@gen-epix/api-casedb';
+import type {
+  CaseDbCase,
+  CaseDbCaseForUpload,
+} from '@gen-epix/api-casedb';
 import noop from 'lodash/noop';
 import {
   use,
@@ -20,7 +23,6 @@ import {
 } from '../../../stores/epiUploadStore';
 import { EpiUpload } from '../EpiUpload';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import type { CaseForUploadWithGeneratedId } from '../../../models/epi';
 import { useCaseRightsQuery } from '../../../dataHooks/useCaseRightsQuery';
 
 export type EpiDashboardEditCasesProps = {
@@ -70,14 +72,13 @@ export const EpiDashboardEditCases = ({ cases, onClose }: EpiDashboardEditCasesP
     return map;
   }, [caseRightsQuery.data, cases, completeCaseType]);
 
-  const casesForVerificationFromSourceData = useMemo<CaseForUploadWithGeneratedId[]>(() => {
-    return cases.map<CaseForUploadWithGeneratedId>((caseItem) => ({
+  const casesForVerificationFromSourceData = useMemo<CaseDbCaseForUpload[]>(() => {
+    return cases.map<CaseDbCaseForUpload>((caseItem) => ({
       case: {
         ...caseItem,
       },
-      generatedId: caseItem.id,
       id: caseItem.id,
-    } satisfies CaseForUploadWithGeneratedId));
+    } satisfies CaseDbCaseForUpload));
   }, [cases]);
 
   const onUploadComplete = useCallback(async () => {

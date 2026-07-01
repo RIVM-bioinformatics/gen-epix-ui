@@ -1,19 +1,19 @@
 import isEqual from 'lodash/isEqual';
 
 export class ObjectUtil {
-  public static deepRemoveEmptyStrings<T>(inputObject: T): T {
+  public static deepNullifyEmptyStrings<T>(inputObject: T): T {
     const clonedObject = JSON.parse(JSON.stringify(inputObject)) as T;
 
     if (typeof clonedObject === 'string') {
       return clonedObject === '' ? null : clonedObject;
     }
     if (Array.isArray(clonedObject)) {
-      return clonedObject.map(item => ObjectUtil.deepRemoveEmptyStrings<T>(item as unknown as T)) as unknown as T;
+      return clonedObject.map(item => ObjectUtil.deepNullifyEmptyStrings<T>(item as unknown as T)) as unknown as T;
     }
     if (typeof clonedObject === 'object' && clonedObject !== null) {
       const newObj: { [key: string]: unknown } = {};
       Object.entries(clonedObject).forEach(([key, value]) => {
-        newObj[key] = ObjectUtil.deepRemoveEmptyStrings(value);
+        newObj[key] = ObjectUtil.deepNullifyEmptyStrings(value);
       });
       return newObj as T;
     }
