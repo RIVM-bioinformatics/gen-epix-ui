@@ -3,7 +3,7 @@ packages:
   - examples/*
 
 overrides:
-  '@openapitools/openapi-generator-cli>axios': 1.18.0
+  '@openapitools/openapi-generator-cli>axios': 1.18.1
 
 onlyBuiltDependencies:
   - '@nestjs/core'
@@ -84,3 +84,4 @@ minimumReleaseAgeExclude:
   - '@tiptap/pm@3.27.1'
   - '@tiptap/react@3.27.1'
   - react-router@8.0.1
+  - vite@8.1.2
