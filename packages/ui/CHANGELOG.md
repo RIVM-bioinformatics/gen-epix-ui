@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.6.2...ui-v2.6.3) (2026-07-01)
+
+
+### Bug Fixes
+
+* allo config.consentDialog to be undefined ([d2366b4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d2366b422f9304a6ec4ba320b883cb3187504ef9))
+
 ## [2.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.6.1...ui-v2.6.2) (2026-07-01)
 
 
