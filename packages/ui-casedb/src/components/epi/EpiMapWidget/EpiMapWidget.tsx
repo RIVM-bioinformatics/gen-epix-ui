@@ -427,7 +427,7 @@ export const EpiMapWidget = () => {
         {!shouldShowLoading && !shouldShowMap && (
           <Box sx={{ position: 'absolute' }}>
             <EpiWidgetUnavailable
-              widgetLabel={t`map`}
+              widgetLabel={t`Map`}
             />
           </Box>
         )}

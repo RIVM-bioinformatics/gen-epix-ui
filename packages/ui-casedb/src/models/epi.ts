@@ -176,7 +176,11 @@ export type EpiUploadTableRow = {
 };
 
 export type EpiWidgetConstraint = {
-  require_adjacent: {
+  require_adjacent?: {
+    direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION;
+    widgetName: string;
+  };
+  require_adjacent_direct_sibling?: {
     direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION;
     widgetName: string;
   };

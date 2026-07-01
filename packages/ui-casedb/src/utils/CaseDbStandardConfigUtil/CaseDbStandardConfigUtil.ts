@@ -305,7 +305,7 @@ export class CaseDbStandardConfigUtil {
               },
             ] satisfies FormFieldDefinition<EpiDashboardTreeSettings>[],
             constraints: [{
-              require_adjacent: {
+              require_adjacent_direct_sibling: {
                 direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST,
                 widgetName: EPI_WIDGET_NAME.LINE_LIST,
               },

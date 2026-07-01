@@ -123,9 +123,19 @@ export class DashboardUtil {
         return false;
       }
       const constraints = widgetsConfig[widgetName].constraints ?? [];
-      return constraints.every(({ require_adjacent: { direction, widgetName: requiredWidget } }) => {
-        const adjacentZones = DashboardUtil.getAdjacentZones(DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey), zoneName, direction);
-        return adjacentZones.some(zone => assignments[zone] === requiredWidget);
+      const arrangement = DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey);
+      return constraints.every((constraint) => {
+        if (constraint.require_adjacent) {
+          const { direction, widgetName: requiredWidget } = constraint.require_adjacent;
+          const adjacentZones = DashboardUtil.getAdjacentZones(arrangement, zoneName, direction);
+          return adjacentZones.some(zone => assignments[zone] === requiredWidget);
+        }
+        if (constraint.require_adjacent_direct_sibling) {
+          const { widgetName: requiredWidget } = constraint.require_adjacent_direct_sibling;
+          const siblingZones = DashboardUtil.getSiblingZonesInSameCellsArray(arrangement, zoneName);
+          return siblingZones.some(zone => assignments[zone] === requiredWidget);
+        }
+        return true;
       });
     });
   }
@@ -210,5 +220,29 @@ export class DashboardUtil {
     return isHorizontal
       ? cells.flatMap(c => DashboardUtil.getBoundaryLeafZones(c, direction))
       : DashboardUtil.getBoundaryLeafZones(cells[0], direction);
+  }
+
+  private static getSiblingZonesInSameCellsArray(
+    arrangement: EpiDashboardArrangement,
+    zoneName: string,
+  ): string[] {
+    const search = (arr: EpiDashboardArrangement): null | string[] => {
+      const directLeafNames = arr.cells
+        .filter((cell): cell is EpiDashboardArrangementCell => 'name' in cell)
+        .map(cell => cell.name);
+      if (directLeafNames.includes(zoneName)) {
+        return directLeafNames.filter(name => name !== zoneName);
+      }
+      for (const cell of arr.cells) {
+        if ('cells' in cell) {
+          const result = search(cell);
+          if (result !== null) {
+            return result;
+          }
+        }
+      }
+      return null;
+    };
+    return search(arrangement) ?? [];
   }
 }
