@@ -124,7 +124,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
       <FormControl
         component={'fieldset'}
         error={hasError}
-        {...TestIdUtil.createAttributes('CheckboxGroup', { label, name })}
+        {...TestIdUtil.createAttributes('RichTextEditor', { label, name })}
         fullWidth
         sx={{
           '&:hover legend button, &:focus-within legend button': {
@@ -156,7 +156,7 @@ export const RichTextEditor = <TFieldValues extends FieldValues, TName extends P
           {label}
           {!disabled && (
             <IconButton
-              {...TestIdUtil.createAttributes('DateRangePicker-reset')}
+              {...TestIdUtil.createAttributes('RichTextEditor-reset')}
               aria-label={t`Clear rich text editor content`}
               // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
               onClick={onResetButtonClick}

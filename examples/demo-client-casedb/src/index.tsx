@@ -1,23 +1,55 @@
 import { createRoot } from 'react-dom/client';
 import {
-  App,
   ConfigManager,
   I18nManager,
+  WindowManager,
 } from '@gen-epix/ui';
-import { setupCaseDb } from '@gen-epix/ui-casedb';
+import {
+  CaseDbApp,
+  setupCaseDb,
+} from '@gen-epix/ui-casedb';
 import type { CaseDbConfig } from '@gen-epix/ui-casedb';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 
-ConfigManager.getInstance<CaseDbConfig>().config = ConfigUtil.createConfig();
-I18nManager.getInstance().init()
-  .then(() => {
-    setupCaseDb();
+const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
-    createRoot(document.getElementById('root')).render(
-      <App />,
-    );
-  })
-  .catch((error) => {
-    console.error('Failed to initialize the application', error);
+const init = async () => {
+  await I18nManager.getInstance().init({
+    getCurrentLanguageCode: async () => {
+      return Promise.resolve(WindowManager.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
+    },
+    languageConfigs: [
+      {
+        bundles: [
+          '/locale/en.json',
+          '/locale/ui/en.json',
+          '/locale/ui-casedb/en.json',
+        ],
+        code: 'en',
+      },
+      {
+        bundles: [
+          '/locale/nl.json',
+          '/locale/ui/nl.json',
+          '/locale/ui-casedb/nl.json',
+        ],
+        code: 'nl',
+      },
+    ],
+    setNewLanguageCode: async (code: string) => {
+      return Promise.resolve(WindowManager.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code));
+    },
   });
+
+  ConfigManager.getInstance<CaseDbConfig>().config = ConfigUtil.createConfig();
+  setupCaseDb();
+
+  createRoot(document.getElementById('root')).render(
+    <CaseDbApp />,
+  );
+};
+
+init().catch((error) => {
+  console.error('Failed to initialize the application', error);
+});

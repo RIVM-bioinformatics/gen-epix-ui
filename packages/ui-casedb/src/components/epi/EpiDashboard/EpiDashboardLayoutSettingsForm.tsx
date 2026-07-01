@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   FormGroup,
-  Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -12,73 +11,42 @@ import {
   useWatch,
 } from 'react-hook-form';
 import {
+  use,
   useCallback,
   useEffect,
-  useMemo,
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import type { ToggleButtonOption } from '@gen-epix/ui';
-import {
-  Switch,
-  ToggleButtonGroup,
-} from '@gen-epix/ui';
+import { ConfigManager } from '@gen-epix/ui';
+import noop from 'lodash/noop';
 
-import type {
-  EpiDashboardLayoutConfig,
-  EpiDashboardLayoutUserConfig,
-} from '../../../models/epi';
-import { EPI_ZONE } from '../../../models/epi';
-import { userProfileStore } from '../../../stores/userProfileStore';
+import { ArrangementEditor } from '../../forms/fields/ArrangementEditor';
+import type { CaseDbConfig } from '../../../models/config';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 
 export type EpiDashboardLayoutSettingsFormProps = {
   readonly onReset: () => void;
 };
 
-type LayoutFormElements = Array<{ disabled?: boolean; epiZone: EPI_ZONE; label: string }>;
+type FormValues = {
+  arrangementKey: string;
+};
 
 export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSettingsFormProps) => {
   const { t } = useTranslation();
+  const userProfileStore = use(UserProfileStoreContext);
 
   const resetEpiDashboardLayout = useStore(userProfileStore, useShallow((state) => state.resetEpiDashboardLayout));
-  const epiDashboardLayoutUserConfig = useStore(userProfileStore, useShallow((state) => state.epiDashboardLayoutUserConfig));
-  const setEpiDashboardLayoutUserConfig = useStore(userProfileStore, useShallow((state) => state.setEpiDashboardLayoutUserConfig));
+  const epiDashboardArrangementConfig = useStore(userProfileStore, useShallow((state) => state.epiDashboardArrangementConfig));
+  const setEpiDashboardLayoutUserConfig = useStore(userProfileStore, useShallow((state) => state.setEpiDashboardArrangementConfig));
 
-  const layoutConfig: EpiDashboardLayoutConfig = DashboardUtil.getDashboardLayoutConfig(epiDashboardLayoutUserConfig) ?? { layouts: [], zones: [] };
-
-  const arrangementOptions = useMemo<ToggleButtonOption[]>(() => layoutConfig.layouts.map<ToggleButtonOption>((_layout, index) => ({
-    disabled: false,
-    label: index === 0 ? t`Default` : t('Alternative {{index}}', { index }),
-    value: index,
-  })), [layoutConfig.layouts, t]);
-
-  const layoutFormElements = useMemo<LayoutFormElements>(() => {
-    const elements: LayoutFormElements = [
-      {
-        epiZone: EPI_ZONE.LINE_LIST,
-        label: t`Show line list`,
-      },
-      {
-        epiZone: EPI_ZONE.TREE,
-        label: t`Show phylogenetic tree`,
-      },
-      {
-        epiZone: EPI_ZONE.EPI_CURVE,
-        label: t`Show epi curve`,
-      },
-      {
-        epiZone: EPI_ZONE.MAP,
-        label: t`Show map`,
-      },
-    ];
-    return elements;
-  }, [t]);
-
-  const formMethods = useForm<EpiDashboardLayoutUserConfig>({
-    values: epiDashboardLayoutUserConfig,
+  const formMethods = useForm<FormValues>({
+    values: {
+      arrangementKey: epiDashboardArrangementConfig.arrangementKey,
+    },
   });
-  const { control, setValue } = formMethods;
+  const { control } = formMethods;
 
   const formValues = useWatch({ control });
 
@@ -90,22 +58,23 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
   }, [onReset, resetEpiDashboardLayout]);
 
   useEffect(() => {
-    if (formValues.arrangement >= layoutConfig.layouts.length) {
-      setValue('arrangement', 0);
+    const { arrangementKey } = formValues;
+    if (!arrangementKey) {
+      return;
     }
-  }, [formValues.arrangement, layoutConfig.layouts.length, setValue]);
+    const arrangementOptions = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS;
+    const arrangement = arrangementOptions[arrangementKey];
+    if (!arrangement) {
+      return;
+    }
 
-  useEffect(() => {
-    setEpiDashboardLayoutUserConfig(formValues as EpiDashboardLayoutUserConfig);
-  }, [formValues, layoutFormElements, setEpiDashboardLayoutUserConfig]);
+    setEpiDashboardLayoutUserConfig({
+      arrangementKey,
+      arrangementWidgetAssignments: DashboardUtil.getArrangementWidgetAssignments(arrangement, ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_WIDGET_ASSIGNMENTS[arrangementKey]),
+    });
+  }, [formValues, setEpiDashboardLayoutUserConfig]);
 
-  const onLayoutChange = useCallback(() => {
-    setValue('arrangement', 0);
-  }, [setValue]);
-
-  const onSubmit = useCallback(() => {
-    // No submit action needed since changes are applied immediately
-  }, []);
+  const onSubmit = noop;
 
   return (
     <FormProvider {...formMethods}>
@@ -119,41 +88,13 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
           }}
         >
           <FormGroup>
-            {layoutFormElements.map(layoutFormElement => (
-              <Switch
-                key={layoutFormElement.epiZone}
-                label={layoutFormElement.label}
-                name={`zones.${layoutFormElement.epiZone}`}
-                onChange={onLayoutChange}
-              />
-            ))}
+            <ArrangementEditor
+              label={t`Arrangement`}
+              name={'arrangementKey'}
+              options={ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS}
+            />
           </FormGroup>
         </Box>
-        <Box
-          sx={{
-            marginY: 1,
-          }}
-        >
-          <Typography variant={'h6'}>
-            {t`Arrangement`}
-          </Typography>
-        </Box>
-        {arrangementOptions.length > 0 && (
-          <Box
-            sx={{
-              marginY: 1,
-            }}
-          >
-            <FormGroup>
-              <ToggleButtonGroup
-                disabled={layoutConfig.layouts.length < 1}
-                name={'arrangement'}
-                options={arrangementOptions}
-                required
-              />
-            </FormGroup>
-          </Box>
-        )}
       </form>
       <Box
         sx={{

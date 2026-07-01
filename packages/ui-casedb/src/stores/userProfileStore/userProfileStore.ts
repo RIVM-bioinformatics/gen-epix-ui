@@ -3,75 +3,67 @@ import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware';
+import {
+  ConfigManager,
+  FormUtil,
+} from '@gen-epix/ui';
 
-import type { EpiDashboardLayoutUserConfig } from '../../models/epi';
+import type { EpiDashboardArrangementConfig } from '../../models/epi';
 import { DashboardUtil } from '../../utils/DashboardUtil';
+import type { CaseDbConfig } from '../../models/config';
 
-export type EpiDashboardEpiCurveSettings = {
-  isIncludeMissingValuesInAreaChartEnabled: boolean;
-};
 
 export type EpiDashboardGeneralSettings = {
   isHighlightingEnabled: boolean;
 };
 
-export type EpiDashboardTreeSettings = {
-  isShowDistancesEnabled: boolean;
-  isShowSupportLinesWhenUnlinkedEnabled?: boolean;
-};
 
 export type UserProfileStore = UserProfileStoreActions & UserProfileStoreState;
 
 export interface UserProfileStoreActions {
-  resetEpiDashboardEpiCurveSettings: () => void;
   resetEpiDashboardGeneralSettings: () => void;
   resetEpiDashboardLayout: () => void;
-  resetEpiDashboardTreeSettings: () => void;
-  setEpiDashboardEpiCurveSettings: (settings: EpiDashboardEpiCurveSettings) => void;
+  resetWidgetSettings: (widgetName: string) => void;
+  setEpiDashboardArrangementConfig: (config: EpiDashboardArrangementConfig) => void;
   setEpiDashboardGeneralSettings: (settings: EpiDashboardGeneralSettings) => void;
-  setEpiDashboardLayoutUserConfig: (config: EpiDashboardLayoutUserConfig) => void;
   setEpiDashboardPanelConfiguration: (id: string, configuration: string) => void;
-  setEpiDashboardTreeSettings: (settings: EpiDashboardTreeSettings) => void;
+  setWidgetSettings: (widgetName: string, settings: unknown) => void;
 }
 
 export interface UserProfileStoreState {
-  epiDashboardEpiCurveSettings: EpiDashboardEpiCurveSettings;
+  epiDashboardArrangementConfig: EpiDashboardArrangementConfig;
   epiDashboardGeneralSettings: EpiDashboardGeneralSettings;
-  epiDashboardLayoutUserConfig: EpiDashboardLayoutUserConfig;
   epiDashboardPanels: {
     [key: string]: string;
   };
-  epiDashboardTreeSettings: EpiDashboardTreeSettings;
+  epiDashboardWidgetSettings: {
+    [key: string]: unknown;
+  };
 }
 
-export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => ({
-  epiDashboardEpiCurveSettings: {
-    isIncludeMissingValuesInAreaChartEnabled: false,
-  },
-  epiDashboardGeneralSettings: {
-    isHighlightingEnabled: true,
-  },
-  epiDashboardLayoutUserConfig: DashboardUtil.createDashboardLayoutUserConfigInitialState(),
-  epiDashboardPanels: {},
-  epiDashboardTreeSettings: {
-    isShowDistancesEnabled: true,
-    isShowSupportLinesWhenUnlinkedEnabled: true,
-  },
-  tableSettings: {},
-});
+export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => {
+  const widgets = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
+  const epiDashboardWidgetSettings: UserProfileStoreState['epiDashboardWidgetSettings'] = {};
+  for (const widgetName of Object.keys(widgets)) {
+    epiDashboardWidgetSettings[widgetName] = widgets[widgetName].configDefaultValues ?? {};
+  }
 
-export const userProfileStore = createStore<UserProfileStore>()(
+  return {
+    epiDashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
+    epiDashboardGeneralSettings: {
+      isHighlightingEnabled: true,
+    },
+    epiDashboardPanels: {},
+    epiDashboardWidgetSettings,
+    tableSettings: {},
+  };
+};
+
+export const createUserProfileStore = () => createStore<UserProfileStore>()(
   persist(
     (set, get) => {
       return {
         ...createUserProfileStoreInitialState(),
-        resetEpiDashboardEpiCurveSettings: () => {
-          set({
-            epiDashboardEpiCurveSettings: {
-              isIncludeMissingValuesInAreaChartEnabled: false,
-            },
-          });
-        },
         resetEpiDashboardGeneralSettings: () => {
           set({
             epiDashboardGeneralSettings: {
@@ -81,27 +73,24 @@ export const userProfileStore = createStore<UserProfileStore>()(
         },
         resetEpiDashboardLayout: () => {
           set({
-            epiDashboardLayoutUserConfig: DashboardUtil.createDashboardLayoutUserConfigInitialState(),
+            epiDashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
             epiDashboardPanels: {},
           });
         },
-        resetEpiDashboardTreeSettings: () => {
+        resetWidgetSettings: (widgetName: string) => {
+          const epiDashboardWidgetSettings = get().epiDashboardWidgetSettings;
           set({
-            epiDashboardTreeSettings: {
-              isShowDistancesEnabled: true,
-              isShowSupportLinesWhenUnlinkedEnabled: true,
+            epiDashboardWidgetSettings: {
+              ...epiDashboardWidgetSettings,
+              [widgetName]: ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS[widgetName].configDefaultValues ?? {},
             },
           });
         },
-        setEpiDashboardEpiCurveSettings: (settings: EpiDashboardEpiCurveSettings) => {
-          set({ epiDashboardEpiCurveSettings: settings });
+        setEpiDashboardArrangementConfig: (config: EpiDashboardArrangementConfig) => {
+          set({ epiDashboardArrangementConfig: config });
         },
         setEpiDashboardGeneralSettings: (settings: EpiDashboardGeneralSettings) => {
           set({ epiDashboardGeneralSettings: settings });
-        },
-
-        setEpiDashboardLayoutUserConfig: (config: EpiDashboardLayoutUserConfig) => {
-          set({ epiDashboardLayoutUserConfig: config });
         },
         setEpiDashboardPanelConfiguration: (id: string, configuration: string) => {
           const epiDashboardPanels = get().epiDashboardPanels;
@@ -112,21 +101,49 @@ export const userProfileStore = createStore<UserProfileStore>()(
             },
           });
         },
-        setEpiDashboardTreeSettings: (settings: EpiDashboardTreeSettings) => {
-          set({ epiDashboardTreeSettings: settings });
+        setWidgetSettings: (widgetName: string, settings: unknown) => {
+          const epiDashboardWidgetSettings = get().epiDashboardWidgetSettings;
+          set({
+            epiDashboardWidgetSettings: {
+              ...epiDashboardWidgetSettings,
+              [widgetName]: settings,
+            },
+          });
         },
       };
     },
     {
       name: 'GENEPIX-User-Profile',
+      onRehydrateStorage: () => (state) => {
+        if (!state) {
+          return;
+        }
+        const validatedConfig = DashboardUtil.validateAndMigrateArrangementConfig(state.epiDashboardArrangementConfig);
+        if (validatedConfig !== state.epiDashboardArrangementConfig) {
+          state.setEpiDashboardArrangementConfig(validatedConfig);
+        }
+
+        const widgets = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
+        const initialWidgetSettings = createUserProfileStoreInitialState().epiDashboardWidgetSettings;
+        for (const widgetName of Object.keys(state.epiDashboardWidgetSettings)) {
+          const fieldDefs = widgets[widgetName]?.configFormFieldsDefinitions;
+          if (!fieldDefs) {
+            continue;
+          }
+          if (!FormUtil.areFormValuesValid(fieldDefs, state.epiDashboardWidgetSettings[widgetName])) {
+            state.setWidgetSettings(widgetName, initialWidgetSettings[widgetName] ?? {});
+          }
+        }
+
+      },
       partialize: (state) => ({
+        epiDashboardArrangementConfig: state.epiDashboardArrangementConfig,
         epiDashboardGeneralSettings: state.epiDashboardGeneralSettings,
-        epiDashboardLayoutUserConfig: state.epiDashboardLayoutUserConfig,
         epiDashboardPanels: state.epiDashboardPanels,
-        epiDashboardTreeSettings: state.epiDashboardTreeSettings,
+        epiDashboardWidgetSettings: state.epiDashboardWidgetSettings,
       }),
       storage: createJSONStorage(() => localStorage),
-      version: 3,
+      version: 4,
     },
   ),
 );

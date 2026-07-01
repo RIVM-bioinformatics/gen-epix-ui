@@ -35,7 +35,6 @@ import type {
 } from '@gen-epix/ui';
 
 import type {
-  EPI_ZONE,
   FindSimilarCasesResult,
   StratifiableColumn,
   Stratification,
@@ -50,7 +49,6 @@ import {
 import { EpiFilterUtil } from '../../utils/EpiFilterUtil';
 import { NewickUtil } from '../../utils/NewickUtil';
 import { EpiTreeUtil } from '../../utils/EpiTreeUtil';
-import { EpiHighlightingManager } from '../../classes/managers/EpiHighlightingManager';
 import type { CaseDbConfig } from '../../models/config';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
@@ -75,7 +73,7 @@ interface EpiCurveWidgetData extends WidgetData {
 interface EpiDashboardStoreActions extends TableStoreActions<CaseDbCase, CaseDbCompleteCaseType> {
   addTreeFilter: (nodeId: string) => Promise<void>;
   destroy: () => void;
-  expandZone: (zone: EPI_ZONE) => void;
+  expandZone: (zone: string) => void;
   mutateCachedCase: (caseId: string, item: CaseDbCase) => void;
   // Private
   reloadStratification: () => void;
@@ -101,7 +99,7 @@ interface EpiDashboardStoreState extends TableStoreState<CaseDbCase, CaseDbCompl
   epiListWidgetData: EpiListWidgetData;
   epiMapWidgetData: EpiMapWidgetData;
   epiTreeWidgetData: EpiTreeWidgetData;
-  expandedZone: EPI_ZONE;
+  expandedZone: string;
   findSimilarCasesResults: FindSimilarCasesResult[];
   isMaxResultsExceeded: boolean;
   isMaxResultsExceededDismissed: boolean;
@@ -220,10 +218,9 @@ export const createEpiDashboardStore = (kwArgs: CreateEpiDashboardStoreKwArgs) =
             reloadSelectedIds();
           },
           destroy: () => {
-            EpiHighlightingManager.getInstance().reset();
             tableStoreActions.destroy();
           },
-          expandZone: (expandedZone: EPI_ZONE) => {
+          expandZone: (expandedZone: string) => {
             set({ expandedZone });
           },
           fetchData: async () => {

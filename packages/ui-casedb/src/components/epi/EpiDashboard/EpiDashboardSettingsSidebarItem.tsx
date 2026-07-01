@@ -8,12 +8,16 @@ import { useTranslation } from 'react-i18next';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useMemo } from 'react';
 import type { SidebarItemSharedProps } from '@gen-epix/ui';
-import { SidebarItem } from '@gen-epix/ui';
+import {
+  ConfigManager,
+  SidebarItem,
+} from '@gen-epix/ui';
+
+import type { CaseDbConfig } from '../../../models/config';
 
 import { EpiDashboardGeneralSettingsForm } from './EpiDashboardGeneralSettingsForm';
 import { EpiDashboardLayoutSettingsForm } from './EpiDashboardLayoutSettingsForm';
-import { EpiDashboardTreeSettingsForm } from './EpiDashboardTreeSettingsForm';
-import { EpiDashboardEpiCurveSettingsForm } from './EpiDashboardEpiCurveSettingsForm';
+import { EpiDashboardWidgetSettingsForm } from './EpiDashboardWidgetSettingsForm';
 
 export type EpiDashboardSettingsSidebarItemProps = {
   readonly onReset: () => void;
@@ -26,24 +30,27 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const items = useMemo(() => [
-    {
-      component: <EpiDashboardGeneralSettingsForm onReset={onReset} />,
-      label: t`General`,
-    },
-    {
-      component: <EpiDashboardTreeSettingsForm onReset={onReset} />,
-      label: t`Phylogenetic tree`,
-    },
-    {
-      component: <EpiDashboardEpiCurveSettingsForm onReset={onReset} />,
-      label: t`Epi curve`,
-    },
-    {
-      component: <EpiDashboardLayoutSettingsForm onReset={onReset} />,
-      label: t`Dashboard layout`,
-    },
-  ], [onReset, t]);
+  const items = useMemo(() => {
+    const x = [
+      {
+        component: <EpiDashboardLayoutSettingsForm onReset={onReset} />,
+        label: t`Dashboard layout`,
+      },
+      {
+        component: <EpiDashboardGeneralSettingsForm />,
+        label: t`General`,
+      },
+    ];
+    Object.entries(ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS).forEach(([widgetName, widgetConfig]) => {
+      if (widgetConfig.configFormFieldsDefinitions) {
+        x.push({
+          component: <EpiDashboardWidgetSettingsForm widgetName={widgetName} />,
+          label: widgetConfig.widgetLabel,
+        });
+      }
+    });
+    return x;
+  }, [onReset, t]);
 
   return (
     <Box
@@ -59,12 +66,19 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
             paddingTop: index !== items.length - 1 ? 1 : 0,
           }}
         >
-          <Typography variant={'h5'}>
-            {label}
-          </Typography>
           <Box
             sx={{
               marginBottom: 2,
+            }}
+          >
+            <Typography variant={'h5'}>
+              {label}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              marginBottom: 2,
+              marginRight: 1,
             }}
           >
             {component}

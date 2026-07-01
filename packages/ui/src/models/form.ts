@@ -12,10 +12,12 @@ import type { DatePickerProps } from '../components/form/fields/DatePicker';
 import type { UploadButtonProps } from '../components/form/fields/UploadButton/UploadButton';
 import type { RadioGroupProps } from '../components/form/fields/RadioGroup';
 import type { NumberFieldProps } from '../components/form/fields/NumberField';
+import type { SwitchProps } from '../components/form/fields/Switch';
 
 export enum FORM_FIELD_DEFINITION_TYPE {
   AUTOCOMPLETE = 'AUTOCOMPLETE',
   BOOLEAN = 'BOOLEAN',
+  BOOLEAN_SWITCH = 'BOOLEAN_SWITCH',
   DATE = 'DATE',
   FILE = 'FILE',
   HIDDEN = 'HIDDEN',
@@ -45,6 +47,7 @@ export type FormFieldDefinition<TFormFields extends FieldValues> =
   FormFieldDefinitionAutocomplete<TFormFields> |
   FormFieldDefinitionAutocompleteMultiple<TFormFields> |
   FormFieldDefinitionBoolean<TFormFields> |
+  FormFieldDefinitionBooleanSwitch<TFormFields> |
   FormFieldDefinitionDate<TFormFields> |
   FormFieldDefinitionFile<TFormFields> |
   FormFieldDefinitionHidden<TFormFields> |
@@ -60,6 +63,7 @@ export type FormFieldDefinitionAutocomplete<TFormFields extends FieldValues> = {
 
 export type FormFieldDefinitionAutocompleteMultiple<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: true } & AutocompleteProps<TFormFields, Path<TFormFields>, true> & FormFieldGrouping;
 export type FormFieldDefinitionBoolean<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN } & FormFieldGrouping & Omit<SelectProps<TFormFields, Path<TFormFields>, false>, 'options'>;
+export type FormFieldDefinitionBooleanSwitch<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH } & FormFieldGrouping & Omit<SwitchProps<TFormFields, Path<TFormFields>>, 'options'>;
 export type FormFieldDefinitionDate<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.DATE } & DatePickerProps<TFormFields, Path<TFormFields>> & FormFieldGrouping;
 export type FormFieldDefinitionFile<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.FILE } & FormFieldGrouping & UploadButtonProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionHidden<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.HIDDEN } & FormFieldGrouping & TextFieldProps<TFormFields, Path<TFormFields>>;

@@ -1,0 +1,7 @@
+export const EPI_WIDGET_NAME = {
+  EPI_CURVE: 'EPI_CURVE',
+  LEGENDA: 'LEGENDA',
+  LINE_LIST: 'LINE_LIST',
+  MAP: 'MAP',
+  TREE: 'TREE',
+};

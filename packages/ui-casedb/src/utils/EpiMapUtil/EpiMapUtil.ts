@@ -12,7 +12,7 @@ import type { UnwrapArray } from '@gen-epix/ui';
 
 import type { CaseDbConfig } from '../../models/config';
 import type { Stratification } from '../../models/epi';
-import { EpiDashboardUtil } from '../EpiDashboardUtil';
+import { DashboardUtil } from '../DashboardUtil';
 
 
 export type GenEpixPieSeriesOptionEventData = {
@@ -123,7 +123,7 @@ export class EpiMapUtil {
         stratification.legendaItems.forEach(legendaItem => {
           const rows = regionData.rows.filter(row => legendaItem.caseIds.includes(row.id));
           const caseIds = rows.map(row => row.id);
-          const numCases = EpiDashboardUtil.getCaseCount(rows);
+          const numCases = DashboardUtil.getCaseCount(rows);
           data.push({
             emphasis: {
               focus: 'self',

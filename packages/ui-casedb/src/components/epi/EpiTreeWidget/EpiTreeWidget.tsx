@@ -13,15 +13,11 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LinkIcon from '@mui/icons-material/Link';
-import type {
-  ReactElement,
-  Ref,
-} from 'react';
+import type { ReactElement } from 'react';
 import {
   use,
   useCallback,
   useEffect,
-  useImperativeHandle,
   useMemo,
   useRef,
   useState,
@@ -40,23 +36,18 @@ import {
 } from '@gen-epix/ui';
 
 import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import type {
-  EpiLineListRangeSubjectValue,
-  EpiLinkedScrollSubjectValue,
+  EpiDashboardTreeSettings,
   Highlighting,
   TreeConfiguration,
 } from '../../../models/epi';
-import { EPI_ZONE } from '../../../models/epi';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
-import { userProfileStore } from '../../../stores/userProfileStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiTreeDescription } from '../EpiTreeDescription';
-import { EpiWidget } from '../EpiWidget';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
 import { PhylogeneticTreeComponent } from '../../ui/PhylogeneticTreeComponent';
 import type {
@@ -67,31 +58,25 @@ import type {
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
-
-export interface EpiTreeWidgetRef {
-  link: () => void;
-}
-
-type EpiTreeWidgetProps = {
-  readonly itemHeight: number;
-  readonly lineListRangeSubject: Subject<EpiLineListRangeSubjectValue>;
-  readonly linkedScrollSubject: Subject<EpiLinkedScrollSubjectValue>;
-  readonly ref: Ref<EpiTreeWidgetRef>;
-};
+import { EpiDashboardWidget } from '../EpiDashboard';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { EpiDashboardContext } from '../EpiDashboard/context/EpiDashboardContext';
+import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
 type ZoomInMenuItemConfig = {
   caseIds?: string[];
   rootId?: string;
 };
 
-export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSubject, ref }: EpiTreeWidgetProps) => {
+export const EpiTreeWidget = () => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [isTreeLinked, setIsTreeLinked] = useState(true);
   const treeRef = useRef<PhylogeneticTreeComponentRef>(null);
-  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
   const epiDashboardStore = use(EpiDashboardStoreContext);
+  const epiDashboardContext = use(EpiDashboardContext);
+  const userProfileStore = use(UserProfileStoreContext);
   const setPhylogeneticTreeResponse = useStore(epiDashboardStore, (state) => state.setPhylogeneticTreeResponse);
   const baseData = useStore(epiDashboardStore, (state) => state.baseData);
   const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
@@ -109,8 +94,8 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   const isCaseDataLoading = useStore(epiDashboardStore, (state) => state.isDataLoading);
   const newick = useStore(epiDashboardStore, (state) => state.newick);
   const resetTreeAddresses = useStore(epiDashboardStore, (state) => state.resetTreeAddresses);
-  const isShowDistancesEnabled = useStore(userProfileStore, (state) => state.epiDashboardTreeSettings.isShowDistancesEnabled);
-  const isShowSupportLinesWhenUnlinkedEnabled = useStore(userProfileStore, (state) => state.epiDashboardTreeSettings.isShowSupportLinesWhenUnlinkedEnabled);
+  const isShowDistancesEnabled = useStore(userProfileStore, (state) => (state.epiDashboardWidgetSettings[EPI_WIDGET_NAME.TREE] as EpiDashboardTreeSettings).isShowDistancesEnabled);
+  const isShowSupportLinesWhenUnlinkedEnabled = useStore(userProfileStore, (state) => (state.epiDashboardWidgetSettings[EPI_WIDGET_NAME.TREE] as EpiDashboardTreeSettings).isShowSupportLinesWhenUnlinkedEnabled);
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithPosition | null>(null);
   const [zoomInMenuItemConfig, setZoomInMenuItemConfig] = useState<ZoomInMenuItemConfig>(null);
   const [extraLeafInfoId, setExtraLeafInfoId] = useState<string>(null);
@@ -148,24 +133,24 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   }, [treeConfiguration, t]);
 
   useEffect(() => {
-    const unsubscribeHighlightingManager = highlightingManager.subscribe((highlighting) => {
-      if (highlighting.origin === EPI_ZONE.TREE) {
+    const unsubscribeHighlightingManager = epiDashboardContext.highlightSubject.subscribe((highlighting) => {
+      if (highlighting.origin === EPI_WIDGET_NAME.TREE) {
         return;
       }
       treeHighlightingSubject.next(highlighting);
     });
     const unsubscribeTreeHighlightingSubject = treeHighlightingSubject.subscribe((highlighting) => {
-      if (highlighting.origin !== EPI_ZONE.TREE) {
+      if (highlighting.origin !== EPI_WIDGET_NAME.TREE) {
         return;
       }
-      highlightingManager.highlight(highlighting);
+      epiDashboardContext.highlight(highlighting);
     });
 
     return () => {
       unsubscribeHighlightingManager();
       unsubscribeTreeHighlightingSubject();
     };
-  }, [highlightingManager, treeHighlightingSubject]);
+  }, [epiDashboardContext, treeHighlightingSubject]);
 
   const caseIds = useMemo(() => filteredCases.map(c => c.id).sort(), [filteredCases]);
 
@@ -464,7 +449,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
             label: t`Save as PNG`,
           },
         ],
-        zone: EPI_ZONE.TREE,
+        zone: EPI_WIDGET_NAME.TREE,
         zoneLabel: t`Phylogenetic Tree`,
       });
     };
@@ -477,7 +462,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
     return () => {
       epiEventBusManager.emit('onDownloadOptionsChanged', {
         items: null,
-        zone: EPI_ZONE.TREE,
+        zone: EPI_WIDGET_NAME.TREE,
         zoneLabel: t`Tree`,
       });
       epiEventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
@@ -485,24 +470,25 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
   }, [completeCaseType, isTreeLinked, isTreeUnavailable, newick, t, treeCanvas, treeConfiguration?.geneticDistanceProtocol.name, treeConfiguration?.treeAlgorithm.name]);
 
 
-  const link = useCallback(() => {
-    treeRef.current?.link();
+  useEffect(() => {
+    // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
+    const removeEventListener = EpiEventBusManager.getInstance().addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
+    return () => {
+      removeEventListener();
+    };
   }, []);
+
 
   const onLinkStateChange = useCallback((linked: boolean) => {
     setIsTreeLinked(linked);
   }, [setIsTreeLinked]);
 
-  useImperativeHandle(ref, () => ({
-    link,
-  }));
-
   return (
-    <EpiWidget
+    <EpiDashboardWidget
       expandDisabled={isTreeUnavailable}
       primaryMenu={primaryMenu}
       title={titleMenu}
-      zone={EPI_ZONE.TREE}
+      widgetName={EPI_WIDGET_NAME.TREE}
     >
       <Box
         sx={{
@@ -548,8 +534,7 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
                 }}
               >
                 <EpiWidgetUnavailable
-                  epiZone={EPI_ZONE.TREE}
-                  widgetName={t`phylogenetic tree`}
+                  widgetLabel={t`Phylogenetic Tree`}
                 />
               </Box>
             )}
@@ -564,11 +549,11 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
         {!isTreeUnavailable && shouldShowTree && (
           <PhylogeneticTreeComponent
             ariaLabel={treeCanvasAriaLabel}
-            externalScrollSubject={linkedScrollSubject}
-            externalVisibleRangeSubject={lineListRangeSubject}
-            highlightingSubject={treeHighlightingSubject}
+            externalScrollSubject={epiDashboardContext.linkedScrollSubject}
+            externalVisibleRangeSubject={epiDashboardContext.lineListRangeSubject}
+            highlightingSubject={epiDashboardContext.highlightSubject}
             initialViewState={initialTreeViewState}
-            itemHeight={itemHeight}
+            itemHeight={ConfigManager.getInstance<CaseDbConfig>().config.epiLineList.TABLE_ROW_HEIGHT}
             leafOrder={sortedLeafNames}
             onCanvasChange={onTreeCanvasChange}
             onLinkStateChange={onLinkStateChange}
@@ -587,6 +572,6 @@ export const EpiTreeWidget = ({ itemHeight, lineListRangeSubject, linkedScrollSu
         getExtraItems={getEpiContextMenuExtraItems}
         onMenuClose={onEpiContextMenuClose}
       />
-    </EpiWidget>
+    </EpiDashboardWidget>
   );
 };

@@ -26,16 +26,16 @@ import isArray from 'lodash/isArray';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 
 import type { CaseDbConfig } from '../../../models/config';
-import { EpiHighlightingManager } from '../../../classes/managers/EpiHighlightingManager';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import type { StratificationLegendaItem } from '../../../models/epi';
 import {
-  EPI_ZONE,
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
 } from '../../../models/epi';
 import { EpiContextMenu } from '../EpiContextMenu';
 import type { EpiContextMenuConfigWithAnchor } from '../EpiContextMenu';
+import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { EpiDashboardContext } from '../EpiDashboard/context/EpiDashboardContext';
 
 export type EpiLegendaItemProps = {
   readonly children?: ReactNode;
@@ -47,6 +47,7 @@ export type EpiLegendaItemProps = {
 export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLegendaItemProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const epiDashboardContext = use(EpiDashboardContext);
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const stratification = useStore(epiDashboardStore, (state) => state.stratification);
   const sortedData = useStore(epiDashboardStore, (state) => state.sortedData);
@@ -54,8 +55,6 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
   const filters = useStoreWithEqualityFn(epiDashboardStore, (state) => state.filters, (a, b) => JSON.stringify(a.map(filter => filter.filterValue)) === JSON.stringify(b.map(filter => filter.filterValue)));
   const [focussedLegendaItem, setFocussedLegendaItem] = useState<StratificationLegendaItem>(null);
   const [epiContextMenuConfig, setEpiContextMenuConfig] = useState<EpiContextMenuConfigWithAnchor | null>(null);
-
-  const highlightingManager = useMemo(() => EpiHighlightingManager.getInstance(), []);
 
   const parseIdsFromAnchorElement = useCallback((element: Element): string[] => {
     if (!stratification?.caseIdColors) {
@@ -84,18 +83,18 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
   }, [item, parseIdsFromAnchorElement]);
 
   const onMouseOver = useCallback(() => {
-    highlightingManager.highlight({
+    epiDashboardContext.highlight({
       caseIds: Object.entries(stratification?.caseIdColors).filter(([_itemId, itemColor]) => itemColor === item.color).map(([itemId]) => itemId),
-      origin: EPI_ZONE.LEGENDA,
+      origin: EPI_WIDGET_NAME.LEGENDA,
     });
-  }, [item.color, highlightingManager, stratification]);
+  }, [item.color, stratification, epiDashboardContext]);
 
   const onMouseLeave = useCallback(() => {
-    highlightingManager.highlight({
+    epiDashboardContext.highlight({
       caseIds: [],
-      origin: EPI_ZONE.LEGENDA,
+      origin: EPI_WIDGET_NAME.LEGENDA,
     });
-  }, [highlightingManager]);
+  }, [epiDashboardContext]);
 
   const onNodeMenuClose = useCallback(() => {
     setEpiContextMenuConfig(null);

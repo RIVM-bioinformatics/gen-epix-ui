@@ -11,6 +11,14 @@ import type {
   CaseDbRegionSet,
   CaseDbTreeAlgorithm,
 } from '@gen-epix/api-casedb';
+import type { FormFieldDefinition } from '@gen-epix/ui';
+import type { FunctionComponent } from 'react';
+import type { FieldValues } from 'react-hook-form';
+
+export enum EPI_DASHBOARD_ARRANGEMENT_ORIENTATION {
+  HORIZONTAL = 'horizontal',
+  VERTICAL = 'vertical',
+}
 
 export enum EPI_UPLOAD_STEP {
   SELECT_FILE = 0,
@@ -21,12 +29,11 @@ export enum EPI_UPLOAD_STEP {
   CREATE_CASES = 5,
 }
 
-export enum EPI_ZONE {
-  EPI_CURVE = 'EPI_CURVE',
-  LEGENDA = 'LEGENDA',
-  LINE_LIST = 'LINE_LIST',
-  MAP = 'MAP',
-  TREE = 'TREE',
+export enum EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION {
+  EAST = 'EAST',
+  NORTH = 'NORTH',
+  SOUTH = 'SOUTH',
+  WEST = 'WEST',
 }
 
 export enum FILTER_TYPE {
@@ -56,7 +63,6 @@ export type CaseTypeRowValue = {
 };
 
 export type EpiCaseHasCaseSet = { [caseId: string]: boolean };
-
 export type EpiConceptBoundaryProps = {
   lb: number;
   lb_in: boolean;
@@ -65,19 +71,29 @@ export type EpiConceptBoundaryProps = {
   unit: string;
 };
 
-export type EpiDashboardLayout = [EpiDashboardLayoutPanelOrientation, ...EpiDashboardLayoutFirstAxisPanel[]];
-export type EpiDashboardLayoutConfig = { layouts: EpiDashboardLayout[]; zones: EPI_ZONE[] };
-export type EpiDashboardLayoutFirstAxisPanel = [100 | 30 | 50 | 70, ...EpiDashboardLayoutSecondAxisPanel[]];
-export type EpiDashboardLayoutPanelOrientation = 'horizontal' | 'vertical';
-export type EpiDashboardLayoutSecondAxisPanel = [100 | 30 | 50 | 70, EPI_ZONE];
-export type EpiDashboardLayoutUserConfig = {
-  arrangement: number;
-  zones: {
-    [EPI_ZONE.EPI_CURVE]: boolean;
-    [EPI_ZONE.LINE_LIST]: boolean;
-    [EPI_ZONE.MAP]: boolean;
-    [EPI_ZONE.TREE]: boolean;
-  };
+export type EpiDashboardArrangement = {
+  cells: (EpiDashboardArrangement | EpiDashboardArrangementCell)[];
+  orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION;
+  size: number;
+};
+export type EpiDashboardArrangementCell = {
+  name: string;
+  size: number;
+};
+export type EpiDashboardArrangementConfig = {
+  arrangementKey: string;
+  arrangementWidgetAssignments: EpiDashboardArrangementWidgetAssignments;
+};
+
+export type EpiDashboardArrangementWidgetAssignments = { [arrangementZone: string]: string };
+
+export type EpiDashboardEpiCurveSettings = {
+  isIncludeMissingValuesInAreaChartEnabled: boolean;
+};
+
+export type EpiDashboardTreeSettings = {
+  isShowDistancesEnabled: boolean;
+  isShowSupportLinesWhenUnlinkedEnabled?: boolean;
 };
 
 export type EpiData = {
@@ -154,6 +170,27 @@ export type EpiUploadTableRow = {
   [key: string]: string;
 };
 
+export type EpiWidgetConstraint = {
+  require_adjacent?: {
+    direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION;
+    widgetName: string;
+  };
+  require_adjacent_direct_sibling?: {
+    direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION;
+    widgetName: string;
+  };
+};
+
+export type EpiWidgetsConfig<TConfigFormValues extends FieldValues> = {
+  [widgetName: string]: {
+    component: FunctionComponent;
+    configDefaultValues?: TConfigFormValues;
+    configFormFieldsDefinitions?: FormFieldDefinition<TConfigFormValues>[];
+    constraints?: EpiWidgetConstraint[];
+    widgetLabel: string;
+  };
+};
+
 export type FindSimilarCasesChartDataPoint = {
   count: number;
   date: string;
@@ -178,14 +215,13 @@ export type FindSimilarCasesResult = {
 
 export type Highlighting = {
   caseIds: string[];
-  origin: EPI_ZONE;
+  origin: string;
 };
 
 export interface StratifiableColumn {
   col: CaseDbCol;
   enabled: boolean;
 }
-
 
 export type Stratification = {
   caseIdColors: { [key: string]: string };

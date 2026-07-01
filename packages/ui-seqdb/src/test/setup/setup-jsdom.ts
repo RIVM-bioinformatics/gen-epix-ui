@@ -2,13 +2,13 @@ import { vi } from 'vitest';
 import { ConfigManager } from '@gen-epix/ui';
 
 import { setupSeqDb } from '../../setup';
-import { SeqDbDemoConfigUtil } from '../lib';
+import { SeqDbStandardConfigUtil } from '../../utils/SeqDbStandardConfigUtil';
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 export const setupTestEnvironment = () => {
-  ConfigManager.getInstance().config = SeqDbDemoConfigUtil.createConfig();
+  ConfigManager.getInstance().config = SeqDbStandardConfigUtil.createConfig();
   setupSeqDb();
 
   vi.setConfig({

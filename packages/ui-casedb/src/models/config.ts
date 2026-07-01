@@ -2,16 +2,18 @@ import type { TFunction } from 'i18next';
 import type { CaseDbColType } from '@gen-epix/api-casedb';
 import type { ConfigBase } from '@gen-epix/ui';
 import type { Range } from 'colorjs.io';
+import type { FieldValues } from 'react-hook-form';
 
 import type {
-  EPI_ZONE,
-  EpiDashboardLayoutConfig,
+  EpiDashboardArrangement,
+  EpiDashboardArrangementWidgetAssignments,
+  EpiWidgetsConfig,
 } from './epi';
 
 export interface CaseDbConfig extends ConfigBase {
   epi: {
     DATA_MISSING_CHARACTER: string;
-    DOWNLOAD_SECTION_ORDER: EPI_ZONE[];
+    DOWNLOAD_SECTION_ORDER: string[];
     INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY: number;
     SEQDB_MAX_STORED_DISTANCE_FALLBACK: number;
     STRATIFICATION: {
@@ -26,9 +28,12 @@ export interface CaseDbConfig extends ConfigBase {
     };
   };
   epiDashboard: {
-    LAYOUTS: EpiDashboardLayoutConfig[];
+    ARRANGEMENT_OPTIONS: { [key: string]: EpiDashboardArrangement };
+    DEFAULT_ARRANGEMENT_KEY: string;
+    DEFAULT_WIDGET_ASSIGNMENTS: { [key: string]: EpiDashboardArrangementWidgetAssignments };
     MIN_PANEL_HEIGHT: number;
     MIN_PANEL_WIDTH: number;
+    WIDGETS: EpiWidgetsConfig<FieldValues>;
   };
   epiLineList: {
     CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS: number;

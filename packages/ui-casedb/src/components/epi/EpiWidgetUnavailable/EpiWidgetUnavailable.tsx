@@ -1,33 +1,15 @@
 import {
   Box,
-  Button,
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useCallback } from 'react';
-import { useStore } from 'zustand';
-import { produce } from 'immer';
-
-import type { EPI_ZONE } from '../../../models/epi';
-import { userProfileStore } from '../../../stores/userProfileStore';
 
 export type EpiWidgetUnavailableProps = {
-  readonly epiZone: EPI_ZONE;
-  readonly widgetName: string;
+  readonly widgetLabel: string;
 };
 
-export const EpiWidgetUnavailable = ({ epiZone, widgetName }: EpiWidgetUnavailableProps) => {
+export const EpiWidgetUnavailable = ({ widgetLabel }: EpiWidgetUnavailableProps) => {
   const { t } = useTranslation();
-  const epiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.epiDashboardLayoutUserConfig);
-  const setEpiDashboardLayoutUserConfig = useStore(userProfileStore, (state) => state.setEpiDashboardLayoutUserConfig);
-
-  const onDisableButtonClick = useCallback(() => {
-    setEpiDashboardLayoutUserConfig(produce(epiDashboardLayoutUserConfig, (draft => {
-      draft.arrangement = 0;
-      draft.zones[epiZone as keyof typeof draft.zones] = false;
-      return draft;
-    })));
-  }, [epiDashboardLayoutUserConfig, epiZone, setEpiDashboardLayoutUserConfig]);
 
   return (
     <Box
@@ -41,22 +23,8 @@ export const EpiWidgetUnavailable = ({ epiZone, widgetName }: EpiWidgetUnavailab
         }}
       >
         <Typography>
-          {t('The {{widgetName}} cannot be shown.', { widgetName })}
+          {t('The {{widgetLabel}} cannot be shown.', { widgetLabel })}
         </Typography>
-      </Box>
-      <Box
-        sx={{
-          marginY: 1,
-        }}
-      >
-        <Button
-          color={'primary'}
-          onClick={onDisableButtonClick}
-          size={'small'}
-          variant={'outlined'}
-        >
-          {t('Hide {{widgetName}}', { widgetName })}
-        </Button>
       </Box>
     </Box>
   );
