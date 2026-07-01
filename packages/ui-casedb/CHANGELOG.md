@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.5.0...ui-casedb-v2.6.0) (2026-07-01)
+
+
+### Features
+
+* flexible dashboard ([#148](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/148)) ([5ec990c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5ec990c5c851536376aaa542755e279a6f5cb69d))
+* remove bugs from upload ([#147](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/147)) ([fac16a8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fac16a89a08dbfc8144ff3b5aaa33574ac6ceebc))
+
+
+### Bug Fixes
+
+* fix echarts tooltip CSP violation ([164bbb5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/164bbb5f198d01936200492a1990c2eb9d488aea))
+* fix non-passive wheel event ([1358f80](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1358f80ef94f5c1eaf5291c59f8331d7ba806c4b))
+
 ## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.4.2...ui-casedb-v2.5.0) (2026-06-22)
 
 

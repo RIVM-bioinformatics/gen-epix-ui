@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v2.4.0...api-commondb-v2.5.0) (2026-07-01)
+
+
+### Features
+
+* flexible dashboard ([#148](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/148)) ([5ec990c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5ec990c5c851536376aaa542755e279a6f5cb69d))
+* remove bugs from upload ([#147](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/147)) ([fac16a8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fac16a89a08dbfc8144ff3b5aaa33574ac6ceebc))
+
 ## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v2.3.2...api-commondb-v2.4.0) (2026-06-22)
 
 
