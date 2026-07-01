@@ -1,5 +1,4 @@
 import type { ConfigBase } from '../../models/config';
-import { createDemoTheme } from '../../theme/demoTheme';
 import { AxiosUtil } from '../AxiosUtil';
 
 const ApplicationHeader = (): ReturnType<ConfigBase['ApplicationHeader']> => null;
@@ -8,8 +7,8 @@ const HomePageIntroduction = (): ReturnType<ConfigBase['HomePageIntroduction']> 
 const LicenseInformation = (): ReturnType<ConfigBase['LicenseInformation']> => null;
 
 export class StandardConfigUtil {
-  public static createConfig(): ConfigBase {
-    const config: ConfigBase = {
+  public static createConfig(): Omit<ConfigBase, 'theme'> {
+    const config: Omit<ConfigBase, 'theme'> = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ApplicationHeader,
       applicationName: 'Gen-EpiX',
@@ -103,7 +102,6 @@ export class StandardConfigUtil {
         DEFAULT_OVERSCAN_MAIN: 10,
         DEFAULT_OVERSCAN_REVERSE: 10,
       },
-      theme: createDemoTheme('light'),
       userFeedback: {
         SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS: 2 * 60 * 1000, // 2 minutes
       },

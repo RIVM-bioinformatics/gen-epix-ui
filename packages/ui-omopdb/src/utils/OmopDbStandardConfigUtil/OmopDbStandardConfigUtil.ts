@@ -6,10 +6,9 @@ import {
 import { t } from 'i18next';
 
 import type { OmopDbConfig } from '../../models/config';
-import { createOmopDbDemoTheme } from '../../theme/demoTheme';
 
 export class OmopDbStandardConfigUtil {
-  public static createConfig(): OmopDbConfig {
+  public static createConfig(): Omit<OmopDbConfig, 'theme'> {
     const onEnglishClick = () => {
       I18nManager.getInstance().emit('onUserLanguageChange', 'en');
     };
@@ -18,7 +17,7 @@ export class OmopDbStandardConfigUtil {
       I18nManager.getInstance().emit('onUserLanguageChange', 'nl');
     };
 
-    const config: OmopDbConfig = {
+    const config: Omit<OmopDbConfig, 'theme'> = {
       ...StandardConfigUtil.createConfig(),
       createFooter: () => ({
         sections: [
@@ -90,7 +89,6 @@ export class OmopDbStandardConfigUtil {
         }
         return environment;
       },
-      theme: createOmopDbDemoTheme('light'),
     };
     return config;
   }

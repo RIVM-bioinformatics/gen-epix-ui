@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { CaseDbConfig } from '@gen-epix/ui-casedb';
-import { CaseDbStandardConfigUtil } from '@gen-epix/ui-casedb';
+import {
+  CaseDbStandardConfigUtil,
+  createCaseDbDemoTheme,
+} from '@gen-epix/ui-casedb';
 import { t } from 'i18next';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
@@ -22,6 +25,7 @@ export class ConfigUtil {
       },
       HomePageIntroduction,
       LicenseInformation,
+      theme: createCaseDbDemoTheme('light'),
     };
 
     return config;

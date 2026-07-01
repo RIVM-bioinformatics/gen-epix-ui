@@ -1,5 +1,8 @@
 import type { SeqDbConfig } from '@gen-epix/ui-seqdb';
-import { SeqDbStandardConfigUtil } from '@gen-epix/ui-seqdb';
+import {
+  createSeqDbDemoTheme,
+  SeqDbStandardConfigUtil,
+} from '@gen-epix/ui-seqdb';
 import { t } from 'i18next';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
@@ -25,6 +28,7 @@ export class ConfigUtil {
       HomePageIntroduction,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       LicenseInformation,
+      theme: createSeqDbDemoTheme('light'),
     };
 
     return config;

@@ -1,5 +1,6 @@
 import { ConfigManager } from '../../classes/managers/ConfigManager';
 import { setup } from '../../setup/setup';
+import { createDemoTheme } from '../../theme/demoTheme';
 import { StandardConfigUtil } from '../../utils/StandardConfigUtil';
 
 export const setupTestEnvironment = () => {
@@ -13,7 +14,10 @@ export const setupTestEnvironment = () => {
   }
 
   if (!hasConfig) {
-    configManager.config = StandardConfigUtil.createConfig();
+    configManager.config = {
+      ...StandardConfigUtil.createConfig(),
+      theme: createDemoTheme('light'),
+    };
   }
 
   setup();

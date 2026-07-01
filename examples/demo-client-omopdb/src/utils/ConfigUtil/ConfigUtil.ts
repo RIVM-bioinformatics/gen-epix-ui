@@ -1,5 +1,8 @@
 import type { OmopDbConfig } from '@gen-epix/ui-omopdb';
-import { OmopDbStandardConfigUtil } from '@gen-epix/ui-omopdb';
+import {
+  createOmopDbDemoTheme,
+  OmopDbStandardConfigUtil,
+} from '@gen-epix/ui-omopdb';
 import { t } from 'i18next';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
@@ -25,6 +28,7 @@ export class ConfigUtil {
       HomePageIntroduction,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       LicenseInformation,
+      theme: createOmopDbDemoTheme('light'),
     };
 
     return config;

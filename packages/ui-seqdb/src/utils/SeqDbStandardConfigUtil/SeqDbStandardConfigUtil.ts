@@ -6,10 +6,9 @@ import {
 import { t } from 'i18next';
 
 import type { SeqDbConfig } from '../../models/config';
-import { createSeqDbDemoTheme } from '../../theme/demoTheme';
 
 export class SeqDbStandardConfigUtil {
-  public static createConfig(): SeqDbConfig {
+  public static createConfig(): Omit<SeqDbConfig, 'theme'> {
     const onEnglishClick = () => {
       I18nManager.getInstance().emit('onUserLanguageChange', 'en');
     };
@@ -18,7 +17,7 @@ export class SeqDbStandardConfigUtil {
       I18nManager.getInstance().emit('onUserLanguageChange', 'nl');
     };
 
-    const config: SeqDbConfig = {
+    const config: Omit<SeqDbConfig, 'theme'> = {
       ...StandardConfigUtil.createConfig(),
       createFooter: () => ({
         sections: [
@@ -90,7 +89,6 @@ export class SeqDbStandardConfigUtil {
         }
         return environment;
       },
-      theme: createSeqDbDemoTheme('light'),
     };
     return config;
   }

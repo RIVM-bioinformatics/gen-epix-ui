@@ -3,12 +3,16 @@ import { ConfigManager } from '@gen-epix/ui';
 
 import { setupSeqDb } from '../../setup';
 import { SeqDbStandardConfigUtil } from '../../utils/SeqDbStandardConfigUtil';
+import { createSeqDbDemoTheme } from '../../theme/demoTheme';
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 export const setupTestEnvironment = () => {
-  ConfigManager.getInstance().config = SeqDbStandardConfigUtil.createConfig();
+  ConfigManager.getInstance().config = {
+    ...SeqDbStandardConfigUtil.createConfig(),
+    theme: createSeqDbDemoTheme('light'),
+  };
   setupSeqDb();
 
   vi.setConfig({

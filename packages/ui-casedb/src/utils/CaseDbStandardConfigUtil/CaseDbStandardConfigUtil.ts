@@ -15,7 +15,6 @@ import type { Range } from 'colorjs.io';
 import { t } from 'i18next';
 
 import type { CaseDbConfig } from '../../models/config';
-import { createCaseDbDemoTheme } from '../../theme/demoTheme';
 import { EPI_WIDGET_NAME } from '../../data/epi';
 import { EpiCurveWidget } from '../../components/epi/EpiCurveWidget';
 import { EpiLineListWidget } from '../../components/epi/EpiLineListWidget';
@@ -31,7 +30,7 @@ import {
 } from '../../models/epi';
 
 export class CaseDbStandardConfigUtil {
-  public static createConfig(): CaseDbConfig {
+  public static createConfig(): Omit<CaseDbConfig, 'theme'> {
     const onEnglishClick = () => {
       I18nManager.getInstance().emit('onUserLanguageChange', 'en');
     };
@@ -40,7 +39,7 @@ export class CaseDbStandardConfigUtil {
       I18nManager.getInstance().emit('onUserLanguageChange', 'nl');
     };
 
-    const config: CaseDbConfig = {
+    const config: Omit<CaseDbConfig, 'theme'> = {
       ...StandardConfigUtil.createConfig(),
       createFooter: () => ({
         sections: [
@@ -367,7 +366,6 @@ export class CaseDbStandardConfigUtil {
         }
         return environment;
       },
-      theme: createCaseDbDemoTheme('light'),
       trends: {
         homePage: {
           getSinceDate: () => format(subDays(new Date().toISOString(), 365), 'yyyy-MM-dd'),
