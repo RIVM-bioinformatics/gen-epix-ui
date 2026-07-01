@@ -94,9 +94,6 @@ export default defineConfig({
           filePath,
         };
       },
-      bundleTypes: {
-        extractorConfig: { mainEntryPointFilePath: '<projectFolder>/dist/src/index.d.ts' },
-      } as unknown,
       insertTypesEntry: true,
       tsconfigPath: './tsconfig.build.json',
     }),
