@@ -32,7 +32,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const auth = useAuth();
   const consentDialogRef = useRef<ConsentDialogRefMethods>(null);
   const [hasGivenConsent, setHasGivenConsent] = useState<boolean>(
-    !ConfigManager.getInstance().config.consentDialog.getShouldShow(),
+    !ConfigManager.getInstance().config.consentDialog?.getShouldShow(),
   );
 
   const oidcConfiguration = useSubscribable(AuthenticationManager.getInstance());
@@ -205,7 +205,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   return (
     <>
       {children}
-      {ConfigManager.getInstance().config.consentDialog.getShouldShow() && (
+      {ConfigManager.getInstance().config.consentDialog?.getShouldShow() && (
         <ConsentDialog
           onConsent={onConsentDialogConsent}
           ref={consentDialogRef}
