@@ -6,19 +6,44 @@ Genomic Epidemiology platform for disease X
 
 ---
 
-Gen-EpiX is platform for visualizing and analyzing genomic epidemiology data. It can be used for any disease and has very fine-grained access controls to enable collaboration between multiple organizations. It does not include, by design, bioinformatics pipelines or any other data analysis pipelines.
+Gen-EpiX is a platform for visualizing and analyzing genomic epidemiology data. It can be used for any disease and has very fine-grained access controls to enable collaboration between multiple organizations. It does not include, by design, bioinformatics pipelines or any other data analysis pipelines.
 
-The platform is currently at the beta release stage and as such not yet usable for production. We are currently to get the platform released, for use in the Netherlands as the official national platform for laboratory-based surveillance of infectious diseases. Feel free to [contact us](mailto:ivo.van.walle@rivm.nl) if you are interested.
+The platform is currently at the beta release stage and as such not yet usable for production. We are working towards a release for use in the Netherlands as the official national platform for laboratory-based surveillance of infectious diseases. Feel free to [contact us](mailto:ivo.van.walle@rivm.nl) if you are interested.
 
 ## About this repository
 
-This repository is a pnpm monorepo containing the frontend packages for the Gen-EpiX platform. It is structured as follows:
+This repository is a pnpm monorepo managed with [Lerna](https://lerna.js.org/). It contains all frontend packages for the Gen-EpiX platform, organized under two directories:
+
+- **`packages/`** — publishable libraries
+- **`examples/`** — development sandboxes / demo applications
+
+### Publishable packages
+
+#### UI component libraries
 
 | Package | Description |
 | --- | --- |
-| [`@gen-epix/ui`](packages/ui) | The main publishable React component library. Contains UI components, data hooks, routing, forms, and state management used by Gen-EpiX applications. Built with [Vite](https://vitejs.dev/), [MUI](https://mui.com/), [TanStack Query](https://tanstack.com/query), [React Hook Form](https://react-hook-form.com/), [TipTap](https://tiptap.dev/), and [Zustand](https://zustand-demo.pmnd.rs/). |
-| [`@gen-epix/api-casedb`](packages/api-casedb) | A publishable TypeScript API client generated from the Gen-EpiX Case DB OpenAPI schema. Exports typed API classes, models, and shared request utilities used by `@gen-epix/ui` and other consumers. |
-| [`@gen-epix/demo-client`](packages/demo-client) | A Vite-based React application that serves as a development sandbox and demonstration environment for `@gen-epix/ui` and `@gen-epix/api-casedb`. |
+| [`@gen-epix/ui`](packages/ui) | The core React component library shared across all Gen-EpiX applications. Contains UI components, data hooks, routing, forms, services, and state management. Built with [Vite](https://vitejs.dev/), [MUI](https://mui.com/), [TanStack Query](https://tanstack.com/query), [React Hook Form](https://react-hook-form.com/), [TipTap](https://tiptap.dev/), and [Zustand](https://zustand-demo.pmnd.rs/). |
+| [`@gen-epix/ui-casedb`](packages/ui-casedb) | Disease case management UI built on top of `@gen-epix/ui`. Provides the epidemiology dashboard, line list, phylogenetic tree, curve, and map widgets, as well as case/case-set/case-type admin pages. |
+| [`@gen-epix/ui-omopdb`](packages/ui-omopdb) | OMOP DB-specific UI components and pages built on top of `@gen-epix/ui`. |
+| [`@gen-epix/ui-seqdb`](packages/ui-seqdb) | Sequence DB-specific UI components and pages built on top of `@gen-epix/ui`. |
+
+#### API clients (auto-generated from OpenAPI schemas)
+
+| Package | Description |
+| --- | --- |
+| [`@gen-epix/api-casedb`](packages/api-casedb) | Typed API client for the Gen-EpiX Case DB backend. |
+| [`@gen-epix/api-commondb`](packages/api-commondb) | Typed API client for the Gen-EpiX Common DB backend (shared by all domain UIs). |
+| [`@gen-epix/api-omopdb`](packages/api-omopdb) | Typed API client for the Gen-EpiX OMOP DB backend. |
+| [`@gen-epix/api-seqdb`](packages/api-seqdb) | Typed API client for the Gen-EpiX Sequence DB backend. |
+
+### Example applications
+
+| Package | Description |
+| --- | --- |
+| [`@gen-epix/demo-client-casedb`](examples/demo-client-casedb) | Vite-based React app that demonstrates `@gen-epix/ui-casedb`. Includes an OIDC mock server for local development. |
+| [`@gen-epix/demo-client-omopdb`](examples/demo-client-omopdb) | Vite-based React app that demonstrates `@gen-epix/ui-omopdb`. Includes an OIDC mock server for local development. |
+| [`@gen-epix/demo-client-seqdb`](examples/demo-client-seqdb) | Vite-based React app that demonstrates `@gen-epix/ui-seqdb`. Includes an OIDC mock server for local development. |
 
 ### Development
 
@@ -28,22 +53,36 @@ Install dependencies:
 pnpm install
 ```
 
-Start the demo client with the OIDC mock server:
+Start a demo client with its OIDC mock server:
 
 ```sh
-pnpm start
+pnpm start          # Case DB demo
+pnpm start-omop     # OMOP DB demo
+pnpm start-seq      # Sequence DB demo
 ```
 
-Build the UI library:
+Build all publishable packages:
 
 ```sh
-pnpm --filter @gen-epix/ui run build
+pnpm run build
 ```
 
-Validate (lint, type-check, tests)
+Validate (lint, type-check, tests) across all packages:
 
 ```sh
 pnpm run validate
+```
+
+Regenerate API clients from their OpenAPI schemas:
+
+```sh
+pnpm run generate-api
+```
+
+Add missing i18n translation placeholders:
+
+```sh
+pnpm run add-missing-translations
 ```
 
 ## Funding

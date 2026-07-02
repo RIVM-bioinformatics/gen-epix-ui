@@ -6,45 +6,94 @@ Genomic Epidemiology platform for disease X
 
 ---
 
-Gen-EpiX is a platform for visualizing and analyzing genomic epidemiology data. It can be used for any disease and has fine-grained access controls to enable collaboration between multiple organizations. It does not include, by design, bioinformatics pipelines or other analysis pipelines.
+Gen-EpiX is a platform for visualizing and analyzing genomic epidemiology data. It can be used for any disease and has very fine-grained access controls to enable collaboration between multiple organizations. It does not include, by design, bioinformatics pipelines or other analysis pipelines.
 
 The platform is currently in beta and is not yet intended for production use. Feel free to [contact us](mailto:ivo.van.walle@rivm.nl) if you are interested.
 
 ## About @gen-epix/ui-casedb
 
-`@gen-epix/ui-casedb` extends `@gen-epix/ui` with the CaseDB frontend module. It exports the CaseDB setup routine, route factories, pages, data hooks, stores, models, utilities, and theme types used by the CaseDB client.
+`@gen-epix/ui-casedb` extends `@gen-epix/ui` with the Case DB frontend module. It exports:
 
-This package is not a standalone application. It is intended to be used from a host app that already uses `@gen-epix/ui`.
+- `CaseDbApp` — the root application component
+- `setupCaseDb` — the bootstrapping function that registers routes, query keys, and API wiring
+- Pages: case management, case sets, case types, dashboards, admin pages, …
+- Widgets: line list, phylogenetic tree, epicurve, map
+- Data hooks, stores, models, utilities, and theme / config types
+- `CaseDbConfig` — the typed configuration interface
+
+This package is not a standalone application. It is intended to be used from a host application that provides a Vite (or similar) build setup.
 
 ## Installation
-
-Install the shared UI package, the CaseDB UI package, the matching API clients, and the peer dependencies listed in `package.json`.
 
 ```sh
 pnpm add @gen-epix/ui @gen-epix/ui-casedb @gen-epix/api-commondb @gen-epix/api-casedb
 ```
 
+Refer to `package.json` for the full list of peer dependencies.
+
 ## Usage
 
 ```tsx
 import { createRoot } from 'react-dom/client';
+import {
+  ConfigService,
+  I18nService,
+  WindowService,
+} from '@gen-epix/ui';
+import {
+  CaseDbApp,
+  setupCaseDb,
+} from '@gen-epix/ui-casedb';
+import type { CaseDbConfig } from '@gen-epix/ui-casedb';
 
-import { App, ConfigManager, I18nManager } from '@gen-epix/ui';
-import { setupCaseDb } from '@gen-epix/ui-casedb';
+const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
-ConfigManager.getInstance().config = {
-  // add your config
+const init = async () => {
+  await I18nService.getInstance().init({
+    getCurrentLanguageCode: async () => {
+      return Promise.resolve(
+        WindowService.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE)
+          ?? window.navigator.language.split('-')[0]
+          ?? 'en',
+      );
+    },
+    languageConfigs: [
+      {
+        bundles: [
+          '/locale/en.json',
+          '/locale/ui/en.json',
+          '/locale/ui-casedb/en.json',
+        ],
+        code: 'en',
+      },
+      {
+        bundles: [
+          '/locale/nl.json',
+          '/locale/ui/nl.json',
+          '/locale/ui-casedb/nl.json',
+        ],
+        code: 'nl',
+      },
+    ],
+    setNewLanguageCode: async (code: string) => {
+      return Promise.resolve(
+        WindowService.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code),
+      );
+    },
+  });
+
+  ConfigService.getInstance<CaseDbConfig>().config = {
+    // add your config here
+  };
+
+  setupCaseDb();
+
+  createRoot(document.getElementById('root')!).render(<CaseDbApp />);
 };
 
-I18nManager.getInstance().init()
-  .then(() => {
-    setupCaseDb();
-
-    createRoot(document.getElementById('root')!).render(<App />);
-  })
-  .catch(() => {
-    alert('Failed to initialize the application');
-  });
+init().catch((error) => {
+  console.error('Failed to initialize the application', error);
+});
 ```
 
 ## Funding
