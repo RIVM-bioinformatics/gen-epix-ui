@@ -16,7 +16,7 @@ import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 type FormFields = OmitWithMetaData<CommonDbIdentifierIssuer>;
 
@@ -25,19 +25,19 @@ export const IdentifierIssuersAdminPage = () => {
 
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().organizationApi.identifierIssuersGetAll(null, null, { signal }))?.data;
+    return (await ApiService.getInstance().organizationApi.identifierIssuersGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbIdentifierIssuer) => {
-    return await ApiManager.getInstance().organizationApi.identifierIssuersDeleteOne(item.id);
+    return await ApiService.getInstance().organizationApi.identifierIssuersDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbIdentifierIssuer) => {
-    return (await ApiManager.getInstance().organizationApi.identifierIssuersPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await ApiService.getInstance().organizationApi.identifierIssuersPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ApiManager.getInstance().organizationApi.identifierIssuersPostOne(variables)).data;
+    return (await ApiService.getInstance().organizationApi.identifierIssuersPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CommonDbIdentifierIssuer) => {

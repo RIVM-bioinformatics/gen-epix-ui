@@ -11,17 +11,17 @@ import {
 
 import { withPermissions } from '../../../hoc/withPermissions';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../../data/query';
-import { ApiManager } from '../../../classes/managers/ApiManager';
+import { ApiService } from '../../../classes/services/ApiService';
 
 export const UserOrganizationAdminMenuItem = withPermissions(() => {
   const { t } = useTranslation();
 
   const { data: organizationAdminNameEmails, error: organizationAdminNameEmailsError, isLoading: isOrganizationAdminNameEmailsLoading } = useQueryMemo({
     gcTime: 0,
-    queryFn: async ({ signal }) => (await ApiManager.getInstance().abacApi.retrieveOrganizationAdminNameEmails({ signal })).data,
-    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
+    queryFn: async ({ signal }) => (await ApiService.getInstance().abacApi.retrieveOrganizationAdminNameEmails({ signal })).data,
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     staleTime: 0,
   });
 

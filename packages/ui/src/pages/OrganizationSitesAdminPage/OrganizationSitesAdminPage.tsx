@@ -18,11 +18,11 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 type FormFields = OmitWithMetaData<CommonDbSite, 'organization_id' | 'organization'>;
 
@@ -31,7 +31,7 @@ export const OrganizationSitesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().organizationApi.sitesGetAll(null, null, { signal })).data;
+    return (await ApiService.getInstance().organizationApi.sitesGetAll(null, null, { signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((sites: CommonDbSite[]) => {
@@ -39,7 +39,7 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbSite) => {
-    return (await ApiManager.getInstance().organizationApi.sitesPutOne(item.id, {
+    return (await ApiService.getInstance().organizationApi.sitesPutOne(item.id, {
       id: item.id,
       name: variables.name,
       organization_id: organizationId,
@@ -47,14 +47,14 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ApiManager.getInstance().organizationApi.sitesPostOne({
+    return (await ApiService.getInstance().organizationApi.sitesPostOne({
       name: variables.name,
       organization_id: organizationId,
     })).data;
   }, [organizationId]);
 
   const deleteOne = useCallback(async (item: CommonDbSite) => {
-    return await ApiManager.getInstance().organizationApi.sitesDeleteOne(item.id);
+    return await ApiService.getInstance().organizationApi.sitesDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -92,7 +92,7 @@ export const OrganizationSitesAdminPage = () => {
   }, []);
 
   const subPages = useMemo<CrudPageSubPage<CommonDbSite>[]>(() => {
-    if (!AuthorizationManager.getInstance().doesUserHavePermission([
+    if (!AuthorizationService.getInstance().doesUserHavePermission([
       { command_name: CommonDbCommandName.ContactCrudCommand, permission_type: CommonDbPermissionType.READ },
     ])) {
       return [];

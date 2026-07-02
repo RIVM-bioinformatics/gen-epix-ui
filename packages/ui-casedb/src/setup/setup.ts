@@ -3,10 +3,10 @@ import type {
   MyNonIndexRouteObject,
 } from '@gen-epix/ui';
 import {
-  ApiManager,
+  ApiService,
   COMMON_QUERY_DEPENDENCIES,
-  QueryClientManager,
-  RouterManager,
+  QueryClientService,
+  RouterService,
   setup,
 } from '@gen-epix/ui';
 import {
@@ -30,15 +30,15 @@ export const setupCaseDb = () => {
   const adminRoutes = createAdminRoutes();
   const routes = createRoutes(adminRoutes);
 
-  RouterManager.getInstance().initialize({
+  RouterService.getInstance().initialize({
     adminRoutes: adminRoutes as MyNonIndexRouteObject[],
     homePageComponent: HomePage,
     routes: routes as MyNonIndexRouteObject[],
   });
-  QueryClientManager.getInstance<CASEDB_QUERY_KEY & COMMON_QUERY_KEY>().initialize({
+  QueryClientService.getInstance<CASEDB_QUERY_KEY & COMMON_QUERY_KEY>().initialize({
     queryKeyDependencies: [COMMON_QUERY_DEPENDENCIES, CASEDB_QUERY_DEPENDENCIES],
   });
-  ApiManager.getInstance().initialize({
+  ApiService.getInstance().initialize({
     abacApi: CaseDbAbacApi.getInstance(),
     authApi: CaseDbAuthApi.getInstance(),
     baseApi: CaseDbBaseAPI,

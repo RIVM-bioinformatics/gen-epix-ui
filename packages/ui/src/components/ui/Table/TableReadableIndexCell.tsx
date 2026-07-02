@@ -6,8 +6,8 @@ import type {
   TableColumnReadableIndex,
   TableRowParams,
 } from '../../../models/table';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
+import { PageEventBusService } from '../../../classes/services/PageEventBusService';
 
 export type TableReadableIndexCellProps<TRowData, TDataContext> = {
   readonly cell: TableRowParams<TRowData, TDataContext>;
@@ -27,8 +27,8 @@ export const TableReadableIndexCell = <TRowData, TDataContext>({
       if (!getRowName) {
         throw new Error('getRowName is required when onReadableIndexClick is provided');
       }
-      if (ConfigManager.getInstance().config.enablePageEvents) {
-        PageEventBusManager.getInstance().emit('click', {
+      if (ConfigService.getInstance().config.enablePageEvents) {
+        PageEventBusService.getInstance().emit('click', {
           label: getRowName(cell.row),
           type: 'table-row-index',
         });

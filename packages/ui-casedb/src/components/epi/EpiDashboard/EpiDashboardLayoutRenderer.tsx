@@ -20,7 +20,7 @@ import {
 import type { StoreApi } from 'zustand';
 import { useStore } from 'zustand';
 import {
-  ConfigManager,
+  ConfigService,
   StringUtil,
 } from '@gen-epix/ui';
 
@@ -68,10 +68,10 @@ export const EpiDashboardLayoutRenderer = ({
   const epiDashboardStore = use(EpiDashboardStoreContext);
   const epiDashboardArrangementConfig = useStore(userProfileStore, (state) => state.epiDashboardArrangementConfig);
   const expandedZone = useStore(epiDashboardStore, (state) => state.expandedZone);
-  const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard;
+  const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard;
 
   const { arrangementKey, arrangementWidgetAssignments } = epiDashboardArrangementConfig;
-  const arrangement = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS[arrangementKey];
+  const arrangement = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS[arrangementKey];
 
   const storagePrefix = arrangementKey;
 
@@ -156,7 +156,7 @@ export const EpiDashboardLayoutRenderer = ({
   }), [allGroupRefs]);
 
   const panelMap = useMemo(() => {
-    const widgetsConfig = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
+    const widgetsConfig = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
     return Object.fromEntries(
       Object.entries(widgetsConfig).map(([widgetName, { component, widgetLabel }]) => [
         widgetName,

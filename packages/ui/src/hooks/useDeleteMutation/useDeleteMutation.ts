@@ -2,10 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
 
-import { NotificationManager } from '../../classes/managers/NotificationManager';
+import { NotificationService } from '../../classes/services/NotificationService';
 import type { GenericData } from '../../models/data';
 import { NotificationUtil } from '../../utils/NotificationUtil';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 
 
 export type MutationContextDelete<TData> = { notificationKey?: string; previousData?: TData[] };
@@ -31,7 +31,7 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
   queryFn,
   resourceQueryKey,
 }: UseDeleteMutationProps<TData>) => {
-  const queryClient = QueryClientManager.getInstance().queryClient;
+  const queryClient = QueryClientService.getInstance().queryClient;
 
   const deleteMutation = useMutation<unknown, Error, TData, MutationContextDelete<TData>>({
     mutationFn: async (item) => {
@@ -47,15 +47,15 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
         });
       }
       if (associationQueryKeys) {
-        await QueryClientManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+        await QueryClientService.getInstance().invalidateQueryKeys(associationQueryKeys);
       }
       if (onError) {
         await onError(error, item, context);
       }
-      NotificationManager.getInstance().fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(item, error), error), 'error');
+      NotificationService.getInstance().fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(item, error), error), 'error');
     },
     onMutate: async (item) => {
-      const notificationKey = NotificationManager.getInstance().showNotification({
+      const notificationKey = NotificationService.getInstance().showNotification({
         isLoading: true,
         message: getProgressNotificationMessage(item),
         severity: 'info',
@@ -75,12 +75,12 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
     },
     onSuccess: async (_data, item, context) => {
       if (associationQueryKeys) {
-        await QueryClientManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+        await QueryClientService.getInstance().invalidateQueryKeys(associationQueryKeys);
       }
       if (onSuccess) {
         await onSuccess(item, context);
       }
-      NotificationManager.getInstance().fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
+      NotificationService.getInstance().fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
     },
   });
 

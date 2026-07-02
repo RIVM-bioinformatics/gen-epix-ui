@@ -16,7 +16,7 @@ import type {
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
   NavLink,
-  QueryClientManager,
+  QueryClientService,
   ResponseHandler,
   useArray,
   useQueryMemo,
@@ -47,7 +47,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
       const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const caseSetsFilter: CaseDbTypedUuidSetFilter = {
@@ -62,7 +62,7 @@ export const EpiCaseCaseSetInfo = ({ epiCase, ...boxProps }: EpiCaseCaseSetInfoP
       const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetsFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetsFilter),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetsFilter),
   });
 
   const loadables = useArray([caseSetCategoryMapQuery, caseSetStatusMapQuery]);

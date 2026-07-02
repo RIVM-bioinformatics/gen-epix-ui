@@ -37,7 +37,7 @@ import type {
   TableRowParams,
 } from '@gen-epix/ui';
 import {
-  ConfigManager,
+  ConfigService,
   StringUtil,
   Subject,
   Table,
@@ -49,8 +49,8 @@ import ShareIcon from '@mui/icons-material/Share';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { EpiLegendaItem } from '../EpiLegendaItem';
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
-import { EpiLineListCaseSetMembersManager } from '../../../classes/managers/EpiLineListCaseSetMembersManager';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
+import { EpiLineListCaseSetMembersService } from '../../../classes/services/EpiLineListCaseSetMembersService';
 import type {
   Stratification,
   StratificationLegendaItem,
@@ -98,7 +98,7 @@ export const EpiLineListWidget = () => {
   }, [epiDashboardContext]);
 
   const openCaseInfoDialog = useCallback((caseId: string, tabName: EPI_CASE_INFO_DIALOG_TAB_NAME) => {
-    EpiEventBusManager.getInstance().emit('openCaseInfoDialog', {
+    EpiEventBusService.getInstance().emit('openCaseInfoDialog', {
       caseId,
       caseTypeId: completeCaseType.id,
       initialTab: tabName,
@@ -106,7 +106,7 @@ export const EpiLineListWidget = () => {
   }, [completeCaseType.id]);
 
   const onAddToEventClick = useCallback((row: CaseDbCase) => {
-    EpiEventBusManager.getInstance().emit('openAddCasesToEventDialog', {
+    EpiEventBusService.getInstance().emit('openAddCasesToEventDialog', {
       currentCaseSet: caseSet,
       rows: [row],
     });
@@ -131,12 +131,12 @@ export const EpiLineListWidget = () => {
       maxWidth = maxWidth + +theme.spacing(3).replace('px', '');
     }
 
-    const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = ConfigManager.getInstance<CaseDbConfig>().config.epiLineList;
+    const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = ConfigService.getInstance<CaseDbConfig>().config.epiLineList;
     return Math.min(MAX_COLUMN_WIDTH, maxWidth) + REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT;
   }, [completeCaseType, sortedData, stratification?.col?.id, theme]);
 
   const onOrganizationCellClick = useCallback((organizationId: string, organizationName: string) => {
-    EpiEventBusManager.getInstance().emit('openContactDetailsDialog', {
+    EpiEventBusService.getInstance().emit('openContactDetailsDialog', {
       organizationId,
       organizationName,
     });
@@ -182,7 +182,7 @@ export const EpiLineListWidget = () => {
   }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.col?.id]);
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: CaseDbCase) => {
-    EpiEventBusManager.getInstance().emit('openSequenceDownloadDialog', {
+    EpiEventBusService.getInstance().emit('openSequenceDownloadDialog', {
       cases: [row],
       geneticSequenceColId: id,
     });
@@ -231,7 +231,7 @@ export const EpiLineListWidget = () => {
     let queryResult;
     const rowId = `row_${row.id}`;
 
-    EpiLineListCaseSetMembersManager.getInstance().query(row.id).then(result => {
+    EpiLineListCaseSetMembersService.getInstance().query(row.id).then(result => {
       queryResult = result;
       const element = document.getElementById(rowId);
       if (element) {
@@ -445,7 +445,7 @@ export const EpiLineListWidget = () => {
   }, [completeCaseType]);
 
   const tableColumns = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
-    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { DATA_MISSING_CHARACTER } = ConfigService.getInstance<CaseDbConfig>().config.epi;
 
     const initialVisibleColumnIds = CaseTypeUtil.getInitialVisibleColIds(completeCaseType);
     const caseTypeTableColumns: TableColumn<CaseDbCase, CaseDbCompleteCaseType>[] = [];
@@ -554,8 +554,8 @@ export const EpiLineListWidget = () => {
   }, [updateVisibleIndexDebounced]);
 
   const onRangeChangedDebounced = useDebouncedCallback(async (range: ListRange) => {
-    await EpiLineListCaseSetMembersManager.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
-  }, ConfigManager.getInstance<CaseDbConfig>().config.epiLineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
+    await EpiLineListCaseSetMembersService.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
+  }, ConfigService.getInstance<CaseDbConfig>().config.epiLineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
     leading: false,
     trailing: true,
   });
@@ -567,7 +567,7 @@ export const EpiLineListWidget = () => {
 
   useEffect(() => {
     return () => {
-      EpiLineListCaseSetMembersManager.getInstance().cleanStaleQueue();
+      EpiLineListCaseSetMembersService.getInstance().cleanStaleQueue();
     };
   }, []);
 

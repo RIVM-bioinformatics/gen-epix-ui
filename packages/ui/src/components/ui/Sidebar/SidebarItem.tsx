@@ -15,7 +15,7 @@ import type {
   ReactElement,
 } from 'react';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
 import type { PropsWithTestIdAttributes } from '../../../models/testId';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
@@ -36,7 +36,7 @@ export const SidebarItem = ({ children, closeIcon, closeIconTooltipText, onClose
   const [mainContentDOMRect, setMainContentDOMRect] = useState<DOMRect>(null);
 
   useEffect(() => {
-    const mainContentElement = document.getElementById(ConfigManager.getInstance().config.layout.MAIN_CONTENT_ID);
+    const mainContentElement = document.getElementById(ConfigService.getInstance().config.layout.MAIN_CONTENT_ID);
 
 
     setMainContentDOMRect(mainContentElement.getBoundingClientRect());

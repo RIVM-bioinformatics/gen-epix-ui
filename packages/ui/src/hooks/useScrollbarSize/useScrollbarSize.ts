@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
-import { WindowManager } from '../../classes/managers/WindowManager';
+import { WindowService } from '../../classes/services/WindowService';
 
 
 export const useScrollbarSize = () => {
   const scrollbarSize = useMemo(() => {
-    const win = WindowManager.getInstance().window;
+    const win = WindowService.getInstance().window;
     const div1 = win.document.createElement('div');
     const div2 = win.document.createElement('div');
     div1.style.width = '100px';

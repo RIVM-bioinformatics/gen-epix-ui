@@ -13,8 +13,8 @@ import {
 } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import {
-  ConfigManager,
-  DevicePixelRatioManager,
+  ConfigService,
+  DevicePixelRatioService,
   Subject,
   useDimensions,
   useScrollbarSize,
@@ -99,7 +99,7 @@ export const PhylogeneticTreeComponent = ({
   const { dimensions: { height, width } } = useDimensions(containerRef);
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [treeAssembly, setTreeAssembly] = useState<TreeAssembly>(null);
-  const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioManager.getInstance().data);
+  const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioService.getInstance().data);
   const [isLinked, setIsLinked] = useState(true);
   const canvasScrollSubject = useMemo(() => new Subject<{ x: number; y: number }>({ x: 0, y: 0 }), []);
   const fallbackHighlightingSubject = useMemo(() => new Subject<Highlighting>({
@@ -113,11 +113,11 @@ export const PhylogeneticTreeComponent = ({
   }), [initialViewState]);
   const effectiveHighlightingSubject = highlightingSubject ?? fallbackHighlightingSubject;
 
-  const headerHeight = ConfigManager.getInstance<CaseDbConfig>().config.epiTree.HEADER_HEIGHT;
+  const headerHeight = ConfigService.getInstance<CaseDbConfig>().config.epiTree.HEADER_HEIGHT;
   const treeCanvasWidth = width;
   const treeCanvasHeight = Math.max(0, height - headerHeight);
   const combinedCanvasHeight = Math.max(0, height);
-  const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigManager.getInstance<CaseDbConfig>().config.epiTree.TREE_PADDING);
+  const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigService.getInstance<CaseDbConfig>().config.epiTree.TREE_PADDING);
   const pixelToGeneticDistanceRatio = tree?.maxBranchLength ? treeWidthMinusPadding / tree.maxBranchLength.toNumber() : null;
   const treeHeight = tree?.size ? (tree.size * itemHeight) + scrollbarSize : itemHeight;
 
@@ -223,7 +223,7 @@ export const PhylogeneticTreeComponent = ({
       origin: scrollContainerRef.current,
       position: position / devicePixelRatio,
     });
-  }, ConfigManager.getInstance<CaseDbConfig>().config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS, { leading: true, trailing: true });
+  }, ConfigService.getInstance<CaseDbConfig>().config.epiTree.LINKED_SCROLL_DEBOUNCE_DELAY_MS, { leading: true, trailing: true });
 
   const updateScrollPosition = useCallback((params: { internalZoomLevel: number; positionX: number; positionY: number }) => {
     const { internalZoomLevel, positionX, positionY } = params;
@@ -312,7 +312,7 @@ export const PhylogeneticTreeComponent = ({
     unlink,
   }), [link, syncExternalScrollToVisibleTree, unlink]);
 
-  const devicePixelRatioManagerCallback = useCallback((newDevicePixelRatio: number, previousDevicePixelRatio: number) => {
+  const devicePixelRatioServiceCallback = useCallback((newDevicePixelRatio: number, previousDevicePixelRatio: number) => {
     canvasScrollSubject.next({
       x: (canvasScrollSubject.data.x / previousDevicePixelRatio) * newDevicePixelRatio,
       y: (canvasScrollSubject.data.y / previousDevicePixelRatio) * newDevicePixelRatio,
@@ -320,8 +320,8 @@ export const PhylogeneticTreeComponent = ({
     setDevicePixelRatio(newDevicePixelRatio);
   }, [canvasScrollSubject]);
 
-  useSubscribable(DevicePixelRatioManager.getInstance(), {
-    callback: devicePixelRatioManagerCallback,
+  useSubscribable(DevicePixelRatioService.getInstance(), {
+    callback: devicePixelRatioServiceCallback,
   });
 
   const getTickerMarkScale = useCallback((zoomLevel: number) => {
@@ -557,7 +557,7 @@ export const PhylogeneticTreeComponent = ({
         const scrollPositionY = pos.currentY - deltaY;
 
         let sanitizedScrollPositionX = scrollPositionX;
-        if (zoomLevel === 1 && Math.abs(deltaX) < ConfigManager.getInstance<CaseDbConfig>().config.epiTree.PANNING_THRESHOLD && pos.currentX === 0) {
+        if (zoomLevel === 1 && Math.abs(deltaX) < ConfigService.getInstance<CaseDbConfig>().config.epiTree.PANNING_THRESHOLD && pos.currentX === 0) {
           sanitizedScrollPositionX = 0;
         }
         updateScrollPosition({ internalZoomLevel: zoomLevel, positionX: sanitizedScrollPositionX, positionY: scrollPositionY });
@@ -609,7 +609,7 @@ export const PhylogeneticTreeComponent = ({
         return;
       }
 
-      const { MAX_ZOOM_LEVEL, MAX_ZOOM_SPEED, MIN_ZOOM_LEVEL, MIN_ZOOM_SPEED } = ConfigManager.getInstance<CaseDbConfig>().config.epiTree;
+      const { MAX_ZOOM_LEVEL, MAX_ZOOM_SPEED, MIN_ZOOM_LEVEL, MIN_ZOOM_SPEED } = ConfigService.getInstance<CaseDbConfig>().config.epiTree;
 
       const zoomSpeed = Math.min(MAX_ZOOM_SPEED, Math.max(MIN_ZOOM_SPEED, treeHeight / treeCanvasHeight * 0.2));
       const newZoomLevel = Math.min(MAX_ZOOM_LEVEL, Math.max(MIN_ZOOM_LEVEL, zoomLevel + (event.deltaY > 0 ? zoomSpeed : -zoomSpeed)));

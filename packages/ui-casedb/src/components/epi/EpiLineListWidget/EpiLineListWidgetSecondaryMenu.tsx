@@ -12,7 +12,7 @@ import type { MenuItemData } from '@gen-epix/ui';
 
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
 
 export const EpiLineListWidgetSecondaryMenu = () => {
   const theme = useTheme();
@@ -24,7 +24,7 @@ export const EpiLineListWidgetSecondaryMenu = () => {
   const onLinkButtonClick = useCallback(() => {
     const perform = async () => {
       await setSorting(null, null);
-      EpiEventBusManager.getInstance().emit('onLinkLineListAndTree');
+      EpiEventBusService.getInstance().emit('onLinkLineListAndTree');
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();

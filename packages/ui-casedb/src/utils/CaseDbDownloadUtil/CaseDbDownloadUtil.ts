@@ -13,12 +13,12 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import {
-  ConfigManager,
+  ConfigService,
   DATE_FORMAT,
   DownloadUtil,
-  LogManager,
-  NotificationManager,
-  QueryClientManager,
+  LogService,
+  NotificationService,
+  QueryClientService,
   StringUtil,
 } from '@gen-epix/ui';
 
@@ -86,13 +86,13 @@ export class CaseDbDownloadUtil {
   }
 
   public static async downloadExcelTemplate(caseTypeId: string, t: TFunction<'translation', undefined>): Promise<void> {
-    const queryClient = QueryClientManager.getInstance().queryClient;
+    const queryClient = QueryClientService.getInstance().queryClient;
     try {
       const completeCaseType = await queryClient.fetchQuery({
         queryFn: async ({ signal }) => {
           return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
         },
-        queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
+        queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
       });
 
       const headers = CaseDbDownloadUtil.getColumnHeadersForImport(
@@ -117,7 +117,7 @@ export class CaseDbDownloadUtil {
       const base64 = DownloadUtil.arrayBufferToBase64(arrayBuffer);
       DownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
     } catch (error) {
-      LogManager.getInstance().log([{
+      LogService.getInstance().log([{
         detail: {
           error,
           stack: (error as Error)?.stack,
@@ -125,7 +125,7 @@ export class CaseDbDownloadUtil {
         level: CaseDbLogLevel.ERROR,
         topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
       }]);
-      NotificationManager.getInstance().showNotification({
+      NotificationService.getInstance().showNotification({
         message: t('Excel template could not be created'),
         severity: 'error',
       });
@@ -139,7 +139,7 @@ export class CaseDbDownloadUtil {
 
   public static getExportFileName(baseName: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): string {
     return t('{{date}}--{{applicationName}}--{{caseTypeName}}--{{baseName}}', {
-      applicationName: StringUtil.createSlug(ConfigManager.getInstance().config.applicationName),
+      applicationName: StringUtil.createSlug(ConfigService.getInstance().config.applicationName),
       baseName: StringUtil.createSlug(baseName),
       caseTypeName: StringUtil.createSlug(completeCaseType.name),
       date: format(new Date(), DATE_FORMAT.DATE),
@@ -147,7 +147,7 @@ export class CaseDbDownloadUtil {
   }
 
   public static getTemplateFileName(completeCaseType: CaseDbCompleteCaseType): string {
-    return `${StringUtil.createSlug(ConfigManager.getInstance().config.applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
+    return `${StringUtil.createSlug(ConfigService.getInstance().config.applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
   }
 
   private static getColsForImportExport(colIds: string[], completeCaseType: CaseDbCompleteCaseType): CaseDbCol[] {

@@ -1,7 +1,7 @@
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
-import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
-import { LogManager } from '../../classes/managers/LogManager';
+import { AuthenticationService } from '../../classes/services/AuthenticationService';
+import { LogService } from '../../classes/services/LogService';
 
 export class DownloadUtil {
   public static arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -49,12 +49,12 @@ export class DownloadUtil {
     const input = document.createElement('input');
     input.name = 'token';
     // ! FIXME: add access token to arguments instead of accessing it directly here
-    input.value = AuthenticationManager.getInstance().authContextProps?.user?.access_token ?? '';
+    input.value = AuthenticationService.getInstance().authContextProps?.user?.access_token ?? '';
     formElement.appendChild(input);
 
     document.body.appendChild(formElement);
 
-    LogManager.getInstance().log([{
+    LogService.getInstance().log([{
       detail: kwArgs,
       level: CommonDbLogLevel.INFO,
       topic: 'MULTI_PART_FORM_DOWNLOAD',

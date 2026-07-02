@@ -12,7 +12,7 @@ import {
   useState,
 } from 'react';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { ApplicationBarActionsFeedbackItem } from './ApplicationBarActionsFeedbackItem';
@@ -29,7 +29,7 @@ export type ApplicationBarActionsProps = {
 export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const environmentMessage = ConfigManager.getInstance().config.getEnvironmentMessage();
+  const environmentMessage = ConfigService.getInstance().config.getEnvironmentMessage();
   const navId = useId();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);

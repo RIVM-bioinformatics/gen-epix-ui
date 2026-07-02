@@ -8,7 +8,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QueryClientManager,
+  QueryClientService,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -21,7 +21,7 @@ export const useConceptSetsQuery = (): UseQueryResult<CaseDbConceptSet[]> => {
       const response = await CaseDbOntologyApi.getInstance().conceptSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS),
   });
 };
 

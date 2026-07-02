@@ -5,23 +5,23 @@ import type { CommonDbIdentifierIssuer } from '@gen-epix/api-commondb';
 import type { UseOptions } from '../../models/dataHooks';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { AuthorizationService } from '../../classes/services/AuthorizationService';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<CommonDbIdentifierIssuer[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const links = (await ApiManager.getInstance().organizationApi.organizationIdentifierIssuerLinksPostQuery({
+      const links = (await ApiService.getInstance().organizationApi.organizationIdentifierIssuerLinksPostQuery({
         key: 'organization_id',
         type: 'EQUALS_UUID',
-        value: AuthorizationManager.getInstance().user.organization_id,
+        value: AuthorizationService.getInstance().user.organization_id,
       }, null, null, { signal })).data;
-      const response = await ApiManager.getInstance().organizationApi.identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
+      const response = await ApiService.getInstance().organizationApi.identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
   });
 };
 

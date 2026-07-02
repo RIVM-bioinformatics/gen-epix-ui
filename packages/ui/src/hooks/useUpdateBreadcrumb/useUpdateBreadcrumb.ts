@@ -3,17 +3,17 @@ import {
   useEffect,
 } from 'react';
 
-import { BreadcrumbManager } from '../../classes/managers/BreadcrumbManager';
+import { BreadcrumbService } from '../../classes/services/BreadcrumbService';
 
 
 export const useUpdateBreadcrumb = (position: string) => {
   const update = useCallback((title: string) => {
-    BreadcrumbManager.getInstance().update(position, title);
+    BreadcrumbService.getInstance().update(position, title);
   }, [position]);
 
   useEffect(() => {
     return () => {
-      BreadcrumbManager.getInstance().remove(position);
+      BreadcrumbService.getInstance().remove(position);
     };
   }, [position]);
 

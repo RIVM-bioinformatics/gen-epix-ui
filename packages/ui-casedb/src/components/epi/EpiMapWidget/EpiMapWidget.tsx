@@ -51,13 +51,13 @@ import {
 } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui';
 import {
-  QueryClientManager,
+  QueryClientService,
   useDimensions,
   useQueryMemo,
 } from '@gen-epix/ui';
 
-import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiDataService } from '../../../classes/services/EpiDataService';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
@@ -125,7 +125,7 @@ export const EpiMapWidget = () => {
     queryFn: async ({ signal }) => {
       return (await CaseDbGeoApi.getInstance().regionSetShapesPostQuery(regionSetShapesFilter, null, null, { signal })).data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,
     select: (shapes) => Object.fromEntries(shapes.map(regionSetShape => [regionSetShape.region_set_id, regionSetShape])),
   });
@@ -151,7 +151,7 @@ export const EpiMapWidget = () => {
       return [];
     }
     const regionSetId = completeCaseType.ref_cols[col.ref_col_id].region_set_id;
-    return EpiDataManager.getInstance().data.regionsByRegionSetId[regionSetId];
+    return EpiDataService.getInstance().data.regionsByRegionSetId[regionSetId];
   }, [col, completeCaseType.ref_cols]);
 
   const lineListCaseCount = useMemo(() => {
@@ -378,7 +378,7 @@ export const EpiMapWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
+      EpiEventBusService.getInstance().emit('onDownloadOptionsChanged', {
         disabled: !shouldShowMap,
         items: [
           {
@@ -397,15 +397,15 @@ export const EpiMapWidget = () => {
 
 
     emitDownloadOptions();
-    const epiEventBusManager = EpiEventBusManager.getInstance();
-    epiEventBusManager.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+    const epiEventBusService = EpiEventBusService.getInstance();
+    epiEventBusService.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
-      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
+      EpiEventBusService.getInstance().emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_WIDGET_NAME.MAP,
         zoneLabel: t`Map`,
       });
-      epiEventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+      epiEventBusService.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, shouldShowMap, t]);
 

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 
-import { RouterManager } from '../../classes/managers/RouterManager';
+import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { AuthState } from '../../models/auth';
@@ -23,7 +23,7 @@ export const PostLoginPage = () => {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    RouterManager.getInstance().router.navigate(path);
+    RouterService.getInstance().router.navigate(path);
   }, [authState?.preLoginLocation]);
 
   return (

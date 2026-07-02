@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
@@ -30,7 +30,7 @@ export const ConsentDialog = withDialog<ConsentDialogProps, ConsentDialogOpenPro
   const { t } = useTranslation();
 
   useEffect(() => {
-    onTitleChange(ConfigManager.getInstance().config.consentDialog.getTitle());
+    onTitleChange(ConfigService.getInstance().config.consentDialog.getTitle());
   }, [onTitleChange, t]);
 
   useEffect(() => {
@@ -39,14 +39,14 @@ export const ConsentDialog = withDialog<ConsentDialogProps, ConsentDialogOpenPro
         ...TestIdUtil.createAttributes('ConsentDialog-agree'),
         autoFocus: true,
         color: 'secondary',
-        label: ConfigManager.getInstance().config.consentDialog.getButtonLabel(),
+        label: ConfigService.getInstance().config.consentDialog.getButtonLabel(),
         onClick: onConsent,
         variant: 'contained',
       },
     ]);
   }, [onActionsChange, onConsent, t]);
 
-  return ConfigManager.getInstance().config.consentDialog.Content();
+  return ConfigService.getInstance().config.consentDialog.Content();
 }, {
   defaultTitle: '',
   disableBackdropClick: true,

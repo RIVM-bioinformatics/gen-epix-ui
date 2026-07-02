@@ -15,7 +15,7 @@ import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
 } from '../../classes/abstracts/FilterAbstract';
-import { WindowManager } from '../../classes/managers/WindowManager';
+import { WindowService } from '../../classes/services/WindowService';
 import type { TableEvent } from '../../classes/TableEventBus';
 import { TableEventBus } from '../../classes/TableEventBus';
 import type {
@@ -401,7 +401,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         frontendFilters: Object.fromEntries(frontendFilterPriorities.map(filterPriority => [filterPriority, filters.filter(filter => filter.filterPriority === filterPriority)])),
       });
       if (navigateFunction) {
-        const searchParams = new URLSearchParams(WindowManager.getInstance().window.document.location.search);
+        const searchParams = new URLSearchParams(WindowService.getInstance().window.document.location.search);
         filters.forEach(filter => {
           const searchParamStringValue = searchParams.get(filter.id);
           if (!searchParamStringValue) {

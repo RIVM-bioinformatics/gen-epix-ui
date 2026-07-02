@@ -1,8 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import {
-  ConfigManager,
-  I18nManager,
-  WindowManager,
+  ConfigService,
+  I18nService,
+  WindowService,
 } from '@gen-epix/ui';
 import {
   CaseDbApp,
@@ -15,9 +15,9 @@ import { ConfigUtil } from './utils/ConfigUtil';
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 const init = async () => {
-  await I18nManager.getInstance().init({
+  await I18nService.getInstance().init({
     getCurrentLanguageCode: async () => {
-      return Promise.resolve(WindowManager.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
+      return Promise.resolve(WindowService.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
     },
     languageConfigs: [
       {
@@ -38,11 +38,11 @@ const init = async () => {
       },
     ],
     setNewLanguageCode: async (code: string) => {
-      return Promise.resolve(WindowManager.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code));
+      return Promise.resolve(WindowService.getInstance().window.localStorage.setItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE, code));
     },
   });
 
-  ConfigManager.getInstance<CaseDbConfig>().config = ConfigUtil.createConfig();
+  ConfigService.getInstance<CaseDbConfig>().config = ConfigUtil.createConfig();
   setupCaseDb();
 
   createRoot(document.getElementById('root')).render(

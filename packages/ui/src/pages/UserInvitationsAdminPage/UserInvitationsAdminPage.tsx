@@ -39,7 +39,7 @@ import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserCons
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 import { UserInvitationShareDialog } from './UserInvitationShareDialog';
 import type { UserInvitationShareDialogRefMethods } from './UserInvitationShareDialog';
@@ -79,15 +79,15 @@ export const UserInvitationsAdminPage = () => {
   const userInvitationConsumeDialogRef = useRef<UserInvitationConsumeDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().organizationApi.userInvitationsGetAll(null, null, { signal }))?.data;
+    return (await ApiService.getInstance().organizationApi.userInvitationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbUserInvitation) => {
-    return await ApiManager.getInstance().organizationApi.userInvitationsDeleteOne(item.id);
+    return await ApiService.getInstance().organizationApi.userInvitationsDeleteOne(item.id);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ApiManager.getInstance().organizationApi.inviteUser({
+    return (await ApiService.getInstance().organizationApi.inviteUser({
       ...variables,
     })).data;
   }, []);

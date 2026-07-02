@@ -10,7 +10,7 @@ import {
 } from '@gen-epix/api-commondb';
 
 import { withPermissions } from '../../../hoc/withPermissions';
-import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
+import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { useOrganizationMapQuery } from '../../../dataHooks/useOrganizationsQuery';
 
 export const UserOwnOrganizationMenuItem = withPermissions(() => {
@@ -25,7 +25,7 @@ export const UserOwnOrganizationMenuItem = withPermissions(() => {
     if (organizationMapQuery.error) {
       return t`Error`;
     }
-    return organizationMapQuery.map.get(AuthorizationManager.getInstance().user?.organization_id ?? '')?.name ?? t`Unknown`;
+    return organizationMapQuery.map.get(AuthorizationService.getInstance().user?.organization_id ?? '')?.name ?? t`Unknown`;
   }, [organizationMapQuery, t]);
 
   return (

@@ -40,7 +40,7 @@ import {
   FORM_FIELD_DEFINITION_TYPE,
   GenericForm,
   LoadableUtil,
-  QueryClientManager,
+  QueryClientService,
   ResponseHandler,
   SchemaUtil,
   TestIdUtil,
@@ -50,7 +50,7 @@ import {
   withDialog,
 } from '@gen-epix/ui';
 
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
@@ -273,20 +273,20 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
         caseTypeId: completeCaseType.id,
       });
     }
-    EpiEventBusManager.getInstance().emit('onEventCreated');
+    EpiEventBusService.getInstance().emit('onEventCreated');
     onClose();
   }, [completeCaseType?.id, onClose, openProps.rows]);
 
   const onError = useCallback(() => {
-    EpiEventBusManager.getInstance().emit('onEventCreated');
+    EpiEventBusService.getInstance().emit('onEventCreated');
     onClose();
   }, [onClose]);
 
   const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<CaseDbCaseSet, FormFields>({
     associationQueryKeys: [
-      ...QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS]),
-      ...QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
-      ...QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
+      ...QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS]),
+      ...QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
+      ...QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
     ],
     getErrorNotificationMessage: (item, _error) => t('Failed to create event: {{name}}', { name: item.name }),
     getProgressNotificationMessage: (variables) => t('Creating event: {{name}}...', { name: variables.name }),
@@ -315,7 +315,7 @@ export const EpiCreateEventDialog = withDialog<EpiCreateEventDialogProps, EpiCre
 
       return caseSetResult;
     },
-    resourceQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   const isFormDisabled = useMemo(() => {

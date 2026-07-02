@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export type SidebarMenuProps = PropsWithChildren;
@@ -23,7 +23,7 @@ export const SidebarMenu = ({ children }: SidebarMenuProps) => {
         left: 0,
         position: 'absolute',
         top: 0,
-        width: theme.spacing(ConfigManager.getInstance().config.layout.SIDEBAR_MENU_WIDTH),
+        width: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH),
         zIndex: 2,
       }}
     >

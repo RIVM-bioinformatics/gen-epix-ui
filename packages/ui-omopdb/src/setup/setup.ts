@@ -3,10 +3,10 @@ import type {
   MyNonIndexRouteObject,
 } from '@gen-epix/ui';
 import {
-  ApiManager,
+  ApiService,
   COMMON_QUERY_DEPENDENCIES,
-  QueryClientManager,
-  RouterManager,
+  QueryClientService,
+  RouterService,
   setup,
 } from '@gen-epix/ui';
 import {
@@ -30,15 +30,15 @@ export const setupOmopDb = () => {
   const adminRoutes = createAdminRoutes();
   const routes = createRoutes(adminRoutes);
 
-  RouterManager.getInstance().initialize({
+  RouterService.getInstance().initialize({
     adminRoutes: adminRoutes as MyNonIndexRouteObject[],
     homePageComponent: HomePage,
     routes: routes as MyNonIndexRouteObject[],
   });
-  QueryClientManager.getInstance<COMMON_QUERY_KEY & OMOPDB_QUERY_KEY>().initialize({
+  QueryClientService.getInstance<COMMON_QUERY_KEY & OMOPDB_QUERY_KEY>().initialize({
     queryKeyDependencies: [COMMON_QUERY_DEPENDENCIES, OMOPDB_QUERY_DEPENDENCIES],
   });
-  ApiManager.getInstance().initialize({
+  ApiService.getInstance().initialize({
     abacApi: OmopDbAbacApi.getInstance(),
     authApi: OmopDbAuthApi.getInstance(),
     baseApi: OmopDbBaseAPI,

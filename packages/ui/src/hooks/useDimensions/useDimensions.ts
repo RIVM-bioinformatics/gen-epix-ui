@@ -7,7 +7,7 @@ import {
   useSyncExternalStore,
 } from 'react';
 
-import { WindowManager } from '../../classes/managers/WindowManager';
+import { WindowService } from '../../classes/services/WindowService';
 
 
 type Dimensions = { height: number; width: number };
@@ -47,7 +47,7 @@ export const useDimensions = (ref: RefObject<HTMLElement>, onResizeCallback?: ()
       if (timeoutHandleRef.current) {
         clearTimeout(timeoutHandleRef.current);
       }
-      timeoutHandleRef.current = WindowManager.getInstance().window.setTimeout(() => {
+      timeoutHandleRef.current = WindowService.getInstance().window.setTimeout(() => {
         setIsResizing(false);
         if (onResizeCallback) {
           onResizeCallback();

@@ -6,9 +6,9 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { FormFieldDefinition } from '@gen-epix/ui';
 import {
   FORM_FIELD_DEFINITION_TYPE,
-  I18nManager,
+  I18nService,
   StandardConfigUtil,
-  WindowManager,
+  WindowService,
 } from '@gen-epix/ui';
 import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
@@ -32,11 +32,11 @@ import {
 export class CaseDbStandardConfigUtil {
   public static createConfig(): Omit<CaseDbConfig, 'theme'> {
     const onEnglishClick = () => {
-      I18nManager.getInstance().emit('onUserLanguageChange', 'en');
+      I18nService.getInstance().emit('onUserLanguageChange', 'en');
     };
 
     const onDutchClick = () => {
-      I18nManager.getInstance().emit('onUserLanguageChange', 'nl');
+      I18nService.getInstance().emit('onUserLanguageChange', 'nl');
     };
 
     const config: Omit<CaseDbConfig, 'theme'> = {
@@ -342,7 +342,7 @@ export class CaseDbStandardConfigUtil {
         TREE_PADDING: 20,
       },
       getAPIBaseUrl: () => {
-        const { location: { href } } = WindowManager.getInstance().window.document;
+        const { location: { href } } = WindowService.getInstance().window.document;
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
@@ -354,7 +354,7 @@ export class CaseDbStandardConfigUtil {
         }
       },
       getEnvironmentMessage: () => {
-        const { location: { href } } = WindowManager.getInstance().window.document;
+        const { location: { href } } = WindowService.getInstance().window.document;
         const { hostname } = new URL(href);
         let environment: string;
         switch (hostname) {

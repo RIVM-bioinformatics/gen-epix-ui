@@ -12,12 +12,12 @@ import {
   CaseDbColType,
 } from '@gen-epix/api-casedb';
 import {
-  ConfigManager,
-  NotificationManager,
-  QueryClientManager,
+  ConfigService,
+  NotificationService,
+  QueryClientService,
 } from '@gen-epix/ui';
 
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import { EpiDataService } from '../../classes/services/EpiDataService';
 import type { CaseTypeRowValue } from '../../models/epi';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 import type { CaseDbConfig } from '../../models/config';
@@ -30,7 +30,7 @@ export class CaseUtil {
       throw new Error('Either caseSetId or caseIds must be provided');
     }
 
-    const notificationKey = NotificationManager.getInstance().showNotification({
+    const notificationKey = NotificationService.getInstance().showNotification({
       isLoading: true,
       message: t('Applying sharing to the cases'),
       severity: 'info',
@@ -38,7 +38,7 @@ export class CaseUtil {
 
     try {
       if (!caseSetDataCollectionIds.length) {
-        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because the event is not shared.'), 'info');
+        NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because the event is not shared.'), 'info');
       }
 
       let normalizedCaseIds: string[] = [];
@@ -54,7 +54,7 @@ export class CaseUtil {
       }
 
       if (!normalizedCaseIds.length) {
-        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because there are no cases in the event.'), 'info');
+        NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because there are no cases in the event.'), 'info');
       }
 
       const dataLinksToAdd: CaseDbCaseDataCollectionLink[] = [];
@@ -80,17 +80,17 @@ export class CaseUtil {
       });
 
       if (!dataLinksToAdd.length) {
-        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because sharing has already been applied.'), 'info');
+        NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because sharing has already been applied.'), 'info');
         return;
       }
 
       // Batch add the data collection links
       await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostSome(dataLinksToAdd);
-      await QueryClientManager.getInstance().invalidateQueryKeys(QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
-      NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
+      await QueryClientService.getInstance().invalidateQueryKeys(QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
+      NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
 
     } catch (_error) {
-      NotificationManager.getInstance().fulfillNotification(notificationKey, t('Sharing could not be applied to selected cases due to an error.'), 'error');
+      NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing could not be applied to selected cases due to an error.'), 'error');
     }
   }
 
@@ -112,7 +112,7 @@ export class CaseUtil {
   }
 
   public static getMissingRowValue(raw: string, machineReadable = true): CaseTypeRowValue {
-    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { DATA_MISSING_CHARACTER } = ConfigService.getInstance<CaseDbConfig>().config.epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     return {
@@ -131,7 +131,7 @@ export class CaseUtil {
       return CaseUtil.getMappedValue(content[col.id], col, completeCaseType, machineReadable);
     }
 
-    const { DATA_MISSING_CHARACTER } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { DATA_MISSING_CHARACTER } = ConfigService.getInstance<CaseDbConfig>().config.epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     const rowValue: CaseTypeRowValue = {
@@ -145,7 +145,7 @@ export class CaseUtil {
   }
 
   private static getConceptMappedValue(raw: string): CaseTypeRowValue {
-    const concept = EpiDataManager.getInstance().data.conceptsById?.[raw];
+    const concept = EpiDataService.getInstance().data.conceptsById?.[raw];
     if (!concept) {
       return CaseUtil.getMissingRowValue(raw);
     }
@@ -159,7 +159,7 @@ export class CaseUtil {
   }
 
   private static getOrganizationMappedValue(raw: string): CaseTypeRowValue {
-    const organization = EpiDataManager.getInstance().data?.organizationsById?.[raw];
+    const organization = EpiDataService.getInstance().data?.organizationsById?.[raw];
     if (!organization) {
       return CaseUtil.getMissingRowValue(raw);
     }
@@ -173,8 +173,8 @@ export class CaseUtil {
   }
 
   private static getRegionMappedValue(refCol: CaseDbRefCol, raw: string): CaseTypeRowValue {
-    const regionSet = EpiDataManager.getInstance().data.regionSets[refCol.region_set_id];
-    const region = EpiDataManager.getInstance().data.regionsById?.[raw];
+    const regionSet = EpiDataService.getInstance().data.regionSets[refCol.region_set_id];
+    const region = EpiDataService.getInstance().data.regionsById?.[raw];
     if (!region) {
       return CaseUtil.getMissingRowValue(raw);
     }

@@ -6,14 +6,14 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
 import {
-  ConfigManager,
-  RouterManager,
+  ConfigService,
+  RouterService,
 } from '@gen-epix/ui';
 
 export const HomePageIntroduction = () => {
   const [t] = useTranslation();
   const onExploreCasesButtonClick = useCallback(async () => {
-    await RouterManager.getInstance().router.navigate('/cases');
+    await RouterService.getInstance().router.navigate('/cases');
   }, []);
 
   return (
@@ -24,7 +24,7 @@ export const HomePageIntroduction = () => {
         }}
       >
         <Typography variant={'h1'}>
-          {t('Welcome to {{applicationName}}', { applicationName: ConfigManager.getInstance().config.applicationName })}
+          {t('Welcome to {{applicationName}}', { applicationName: ConfigService.getInstance().config.applicationName })}
         </Typography>
       </Box>
       <Box

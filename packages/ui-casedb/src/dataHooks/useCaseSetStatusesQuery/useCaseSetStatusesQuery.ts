@@ -9,7 +9,7 @@ import type {
 import {
   DataHookUtil,
   DataUtil,
-  QueryClientManager,
+  QueryClientService,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -22,7 +22,7 @@ export const useCaseSetStatusesQuery = (): UseQueryResult<CaseDbCaseSetStatus[]>
       const response = await CaseDbCaseApi.getInstance().caseSetStatusesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_STATUSES),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_STATUSES),
   });
 };
 

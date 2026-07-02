@@ -13,17 +13,17 @@ import { useOrganizationMapQuery } from '../useOrganizationsQuery';
 import { useUsersMapQuery } from '../useUsersQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { DataUtil } from '../../utils/DataUtil';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrganizationAdminPolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiManager.getInstance().abacApi.organizationAdminPoliciesGetAll(null, null, { signal });
+      const response = await ApiService.getInstance().abacApi.organizationAdminPoliciesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
   });
 };
 

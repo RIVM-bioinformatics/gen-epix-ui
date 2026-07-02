@@ -27,7 +27,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   Autocomplete,
-  ConfigManager,
+  ConfigService,
   DownloadUtil,
   StringUtil,
   withDialog,
@@ -93,7 +93,7 @@ export const EpiSequenceDownloadDialog = withDialog<EpiSequenceDownloadDialogPro
 
   const onDownloadFastaButtonClick = useCallback(() => {
     DownloadUtil.downloadAsMultiPartForm({
-      action: `${ConfigManager.getInstance().config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
+      action: `${ConfigService.getInstance().config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),
         case_type_id: completeCaseType.id,

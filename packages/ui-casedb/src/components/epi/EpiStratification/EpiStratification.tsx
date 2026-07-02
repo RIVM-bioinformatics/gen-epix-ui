@@ -10,7 +10,7 @@ import { produce } from 'immer';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui';
 import {
-  ConfigManager,
+  ConfigService,
   NestedDropdown,
 } from '@gen-epix/ui';
 
@@ -65,7 +65,7 @@ export const EpiStratification = () => {
       }],
       label,
       tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', {
-        max_stratification_unique_values: ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES,
+        max_stratification_unique_values: ConfigService.getInstance<CaseDbConfig>().config.epi.STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES,
       }),
     }, draft => {
       stratifyableColumns

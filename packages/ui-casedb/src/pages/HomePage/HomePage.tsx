@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import {
-  ConfigManager,
+  ConfigService,
   PageContainer,
   TestIdUtil,
 } from '@gen-epix/ui';
@@ -11,7 +11,7 @@ import { HomePageTrends } from '../../components/ui/HomePageTrends';
 
 export const HomePage = () => {
   const { t } = useTranslation();
-  const { HomePageIntroduction } = ConfigManager.getInstance().config;
+  const { HomePageIntroduction } = ConfigService.getInstance().config;
 
   return (
     <PageContainer

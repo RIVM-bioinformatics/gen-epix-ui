@@ -31,7 +31,7 @@ import { useTranslation } from 'react-i18next';
 import { FormUtil } from '../../../../utils/FormUtil';
 import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
-import { WindowManager } from '../../../../classes/managers/WindowManager';
+import { WindowService } from '../../../../classes/services/WindowService';
 
 export type UploadButtonProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly accept: string;
@@ -93,7 +93,7 @@ export const UploadButton = <TFieldValues extends FieldValues, TName extends Pat
         buttonRef?.current?.focus();
       },
     });
-    const inputElement = WindowManager.getInstance().document.getElementById(inputId) as HTMLInputElement | null;
+    const inputElement = WindowService.getInstance().document.getElementById(inputId) as HTMLInputElement | null;
     if (!value && inputElement) {
       inputElement.value = '';
     }

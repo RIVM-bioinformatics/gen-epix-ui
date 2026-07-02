@@ -22,8 +22,8 @@ import {
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
 import {
-  NotificationManager,
-  QueryClientManager,
+  NotificationService,
+  QueryClientService,
   Spinner,
 } from '@gen-epix/ui';
 
@@ -61,14 +61,14 @@ export const EpiCaseInfoForm = ({ caseRights, epiCase, formId, onFinish, onIsSav
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
-      const queryKeys = QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
-      const notificationKey = NotificationManager.getInstance().showNotification({
+      const queryKeys = QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
+      const notificationKey = NotificationService.getInstance().showNotification({
         isLoading: true,
         message: t('Saving case data'),
         severity: 'info',
       });
       try {
-        await QueryClientManager.getInstance().cancelQueries(queryKeys);
+        await QueryClientService.getInstance().cancelQueries(queryKeys);
         const uploadResult = (await CaseDbCaseApi.getInstance().uploadCases({
           case_batch: {
             cases: [
@@ -90,11 +90,11 @@ export const EpiCaseInfoForm = ({ caseRights, epiCase, formId, onFinish, onIsSav
         }
         // await CaseDbCaseApi.getInstance().casesPutOne(item.id, item);
         mutateCachedCase(epiCase.id, epiCase);
-        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
+        NotificationService.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
       } catch (_error) {
-        NotificationManager.getInstance().fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
+        NotificationService.getInstance().fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
       } finally {
-        await QueryClientManager.getInstance().invalidateQueryKeys(queryKeys);
+        await QueryClientService.getInstance().invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

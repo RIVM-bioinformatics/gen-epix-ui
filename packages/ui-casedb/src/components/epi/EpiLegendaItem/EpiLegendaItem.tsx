@@ -7,7 +7,7 @@ import {
   Tooltip,
   useTheme,
 } from '@mui/material';
-import { ConfigManager } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 import { useStore } from 'zustand';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import type {
@@ -162,7 +162,7 @@ export const EpiLegendaItem = ({ children, item, tooltip, tooltipProps }: EpiLeg
   const disabled = stratification?.mode === STRATIFICATION_MODE.FIELD && item.caseIds.length === 0;
 
   const innerContent = useMemo(() => {
-    const value = item.rowValue.isMissing ? ConfigManager.getInstance<CaseDbConfig>().config.epi.DATA_MISSING_CHARACTER : item.rowValue.short;
+    const value = item.rowValue.isMissing ? ConfigService.getInstance<CaseDbConfig>().config.epi.DATA_MISSING_CHARACTER : item.rowValue.short;
     return (
       <Box
         sx={{

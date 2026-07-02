@@ -23,9 +23,9 @@ import {
 } from 'yup';
 
 import { ResponseHandler } from '../ResponseHandler';
-import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
-import { NotificationManager } from '../../../classes/managers/NotificationManager';
-import { WindowManager } from '../../../classes/managers/WindowManager';
+import { AuthorizationService } from '../../../classes/services/AuthorizationService';
+import { NotificationService } from '../../../classes/services/NotificationService';
+import { WindowService } from '../../../classes/services/WindowService';
 import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
 import { useArray } from '../../../hooks/useArray';
 import type {
@@ -35,7 +35,7 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
-import { ApiManager } from '../../../classes/managers/ApiManager';
+import { ApiService } from '../../../classes/services/ApiService';
 
 export interface OrganizationSwitcherDialogOpenProps {
   //
@@ -60,7 +60,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
 ): ReactElement => {
   const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
-  const user = AuthorizationManager.getInstance().user;
+  const user = AuthorizationService.getInstance().user;
   const [isChanging, setIsChanging] = useState(false);
   const [newOrganizationId, setNewOrganizationId] = useState<string>(null);
 
@@ -81,7 +81,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
   const { handleSubmit } = formMethods;
 
   const onRefreshPageClick = useCallback(() => {
-    WindowManager.getInstance().window.location.reload();
+    WindowService.getInstance().window.location.reload();
   }, []);
 
   const onFormSubmit = useCallback((formValues: FormFields): void => {
@@ -89,21 +89,21 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       onClose();
     }
     const perform = async () => {
-      const notificationKey = NotificationManager.getInstance().showNotification({
+      const notificationKey = NotificationService.getInstance().showNotification({
         isLoading: true,
         message: t`Changing organization...`,
         severity: 'info',
       });
       try {
         setIsChanging(true);
-        await ApiManager.getInstance().organizationApi.updateUserOwnOrganization({
+        await ApiService.getInstance().organizationApi.updateUserOwnOrganization({
           organization_id: formValues.organization_id,
         }, {});
         setNewOrganizationId(formValues.organization_id);
         setIsChanging(false);
-        NotificationManager.getInstance().fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
+        NotificationService.getInstance().fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
       } catch (_error: unknown) {
-        NotificationManager.getInstance().fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
+        NotificationService.getInstance().fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
         onClose();
       }
     };

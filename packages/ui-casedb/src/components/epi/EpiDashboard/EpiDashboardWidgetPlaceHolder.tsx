@@ -13,7 +13,7 @@ import {
   useState,
 } from 'react';
 import { useStore } from 'zustand';
-import { ConfigManager } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 
 import type { CaseDbConfig } from '../../../models/config';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
@@ -30,7 +30,7 @@ export const EpiDashboardWidgetPlaceHolder = () => {
   const epiDashboardArrangementConfig = useStore(userProfileStore, (state) => state.epiDashboardArrangementConfig);
   const setEpiDashboardArrangementConfig = useStore(userProfileStore, (state) => state.setEpiDashboardArrangementConfig);
 
-  const widgetsConfig = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
+  const widgetsConfig = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
   const availableWidgets = zoneName
     ? DashboardUtil.getAvailableWidgets(epiDashboardArrangementConfig, zoneName, widgetsConfig)
     : [];

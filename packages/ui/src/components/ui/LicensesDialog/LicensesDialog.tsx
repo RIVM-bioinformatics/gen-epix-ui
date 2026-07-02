@@ -27,8 +27,8 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import axios from 'axios';
 import type { CommonDbPackageMetadata } from '@gen-epix/api-commondb';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { WindowManager } from '../../../classes/managers/WindowManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
+import { WindowService } from '../../../classes/services/WindowService';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
@@ -37,9 +37,9 @@ import { withDialog } from '../../../hoc/withDialog';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../../data/query';
-import { ApiManager } from '../../../classes/managers/ApiManager';
+import { ApiService } from '../../../classes/services/ApiService';
 
 
 export interface LicensesDialogOpenProps {
@@ -64,7 +64,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   const { t } = useTranslation();
   const [item, setItem] = useState<CommonDbPackageMetadata>(null);
 
-  const { LicenseInformation } = ConfigManager.getInstance().config;
+  const { LicenseInformation } = ConfigService.getInstance().config;
 
   const { data: frontendLicenses, error: frontendLicensesError, isLoading: isFrontendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
@@ -77,10 +77,10 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
   const { data: backendLicenses, error: backendLicensesError, isLoading: isBackendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiManager.getInstance().systemApi.retrieveLicenses({ signal });
+      const response = await ApiService.getInstance().systemApi.retrieveLicenses({ signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.LICENSES),
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.LICENSES),
   });
 
   const isLoading = isFrontendLicensesLoading || isBackendLicensesLoading;
@@ -122,7 +122,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   }, [item, onActionsChange, onClose, t]);
 
   const onItemURLClick = useCallback((url: string) => {
-    WindowManager.getInstance().window.open(url, '_blank');
+    WindowService.getInstance().window.open(url, '_blank');
   }, []);
 
   const onItemLicenseClick = useCallback((entry: CommonDbPackageMetadata) => {

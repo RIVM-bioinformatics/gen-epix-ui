@@ -14,7 +14,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
 
 import { ApplicationFooterLink } from './ApplicationFooterLink';
 import { ApplicationFooterLinkSection } from './ApplicationFooterLinkSection';
@@ -48,7 +48,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
     setIsMenuOpen(x => !x);
   }, []);
 
-  const footer = useMemo(() => ConfigManager.getInstance().config.createFooter(), []);
+  const footer = useMemo(() => ConfigService.getInstance().config.createFooter(), []);
 
   return (
     <Box

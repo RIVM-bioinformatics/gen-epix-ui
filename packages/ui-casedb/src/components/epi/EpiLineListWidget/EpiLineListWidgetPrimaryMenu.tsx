@@ -21,12 +21,12 @@ import type {
   TableColumn,
 } from '@gen-epix/ui';
 import {
-  AuthorizationManager,
+  AuthorizationService,
   useColumnsMenu,
 } from '@gen-epix/ui';
 import last from 'lodash/last';
 
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { EpiWidgetMenu } from '../EpiWidgetMenu';
@@ -90,9 +90,9 @@ export const EpiLineListWidgetPrimaryMenu = ({
   }, [sortedData, selectedIds]);
 
   const menu = useMemo<MenuItemData[]>(() => {
-    const shouldShowCreateEventMenuItem = AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CreateCaseSetCommand, permission_type: CaseDbPermissionType.EXECUTE }]);
-    const shouldShowAddToEventMenuItem = AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
-    const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
+    const shouldShowCreateEventMenuItem = AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CreateCaseSetCommand, permission_type: CaseDbPermissionType.EXECUTE }]);
+    const shouldShowAddToEventMenuItem = AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
+    const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
     // !TODO
     const shouldShowBulkEditCaseMenuItem = true;
 
@@ -105,7 +105,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
           label: t`Create filter from selected cases`,
         },
         {
-          callback: () => EpiEventBusManager.getInstance().emit('openFindSimilarCasesDialog', {
+          callback: () => EpiEventBusService.getInstance().emit('openFindSimilarCasesDialog', {
             allRows: sortedData,
             completeCaseType,
             selectedRows: sortedData,
@@ -114,7 +114,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
           label: t`Find similar cases`,
         },
         {
-          callback: () => EpiEventBusManager.getInstance().emit('openFindSimilarCasesDialog', {
+          callback: () => EpiEventBusService.getInstance().emit('openFindSimilarCasesDialog', {
             allRows: sortedData,
             completeCaseType,
             selectedRows,
@@ -123,7 +123,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
           label: t`Find similar cases (based on selected cases)`,
         },
         {
-          callback: () => EpiEventBusManager.getInstance().emit('openRemoveFindSimilarCasesResultDialog', {
+          callback: () => EpiEventBusService.getInstance().emit('openRemoveFindSimilarCasesResultDialog', {
             completeCaseType,
           }),
           disabled: !findSimilarCasesResults?.length,
@@ -136,7 +136,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
     if (shouldShowCreateEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EpiEventBusManager.getInstance().emit('openCreateEventDialog', {
+          callback: () => EpiEventBusService.getInstance().emit('openCreateEventDialog', {
             completeCaseType,
             rows: selectedRows,
           }),
@@ -149,7 +149,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
     if (shouldShowAddToEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EpiEventBusManager.getInstance().emit('openAddCasesToEventDialog', {
+          callback: () => EpiEventBusService.getInstance().emit('openAddCasesToEventDialog', {
             currentCaseSet: caseSet,
             rows: selectedRows,
           }),
@@ -162,7 +162,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
     if (shouldShowRemoveFromEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EpiEventBusManager.getInstance().emit('openRemoveCasesFromEventDialog', {
+          callback: () => EpiEventBusService.getInstance().emit('openRemoveCasesFromEventDialog', {
             caseSet,
             rows: selectedRowsWithoutSimilarCases,
           }),
@@ -179,7 +179,7 @@ export const EpiLineListWidgetPrimaryMenu = ({
     if (shouldShowBulkEditCaseMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EpiEventBusManager.getInstance().emit('openEditCases', selectedRows),
+          callback: () => EpiEventBusService.getInstance().emit('openEditCases', selectedRows),
           disabled: !selectedIds?.length,
           label: t`Edit selected cases`,
         },

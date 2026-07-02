@@ -27,9 +27,9 @@ import type {
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { CommonDbPermissionType } from '@gen-epix/api-commondb';
 
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
+import { AuthorizationService } from '../../classes/services/AuthorizationService';
+import { ConfigService } from '../../classes/services/ConfigService';
+import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import {
@@ -62,7 +62,7 @@ import type { DialogAction } from '../../components/ui/Dialog';
 import type { FormFieldDefinition } from '../../models/form';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 import type { COMMON_QUERY_KEY } from '../../data/query';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
@@ -200,13 +200,13 @@ export const CrudPage = <
   const theme = useTheme();
   const deleteConfirmationRef = useRef<CrudPageDeleteDialogRefMethods<TData>>(null);
   const editDialogRef = useRef<CrudPageEditDialogRefMethods<TData, TFormFields>>(null);
-  const authorizationManager = useMemo(() => AuthorizationManager.getInstance(), []);
+  const authorizationService = useMemo(() => AuthorizationService.getInstance(), []);
   const resourceQueryKey = useMemo(() => [resourceQueryKeyBase], [resourceQueryKeyBase]);
   const tableStore = useMemo(() => createTableStore<TTableData, null>({
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
     idSelectorCallback: (item) => item.id,
-    navigatorFunction: RouterManager.getInstance().router.navigate,
+    navigatorFunction: RouterService.getInstance().router.navigate,
     storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
     storageVersion: tableStoreStorageVersion ?? 1,
   }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
@@ -259,37 +259,37 @@ export const CrudPage = <
     if (!updateOne) {
       return false;
     }
-    return authorizationManager.doesUserHavePermission<CrudPermission>(
+    return authorizationService.doesUserHavePermission<CrudPermission>(
       [
         ...(crudCommandType ? [createPermission(CommonDbPermissionType.UPDATE)] : []),
         ...(extraUpdateOnePermissions ?? []),
       ],
     );
-  }, [authorizationManager, createPermission, crudCommandType, extraUpdateOnePermissions, updateOne]);
+  }, [authorizationService, createPermission, crudCommandType, extraUpdateOnePermissions, updateOne]);
 
   const userCanDelete = useMemo(() => {
     if (!deleteOne) {
       return false;
     }
-    return authorizationManager.doesUserHavePermission<CrudPermission>(
+    return authorizationService.doesUserHavePermission<CrudPermission>(
       [
         ...(crudCommandType ? [createPermission(CommonDbPermissionType.DELETE)] : []),
         ...(extraDeleteOnePermissions ?? []),
       ],
     );
-  }, [authorizationManager, createPermission, crudCommandType, deleteOne, extraDeleteOnePermissions]);
+  }, [authorizationService, createPermission, crudCommandType, deleteOne, extraDeleteOnePermissions]);
 
   const userCanCreate = useMemo(() => {
     if (!createOne || error) {
       return false;
     }
-    return authorizationManager.doesUserHavePermission<CrudPermission>(
+    return authorizationService.doesUserHavePermission<CrudPermission>(
       [
         ...(crudCommandType ? [createPermission(CommonDbPermissionType.CREATE)] : []),
         ...(extraCreateOnePermissions ?? []),
       ],
     );
-  }, [authorizationManager, createOne, createPermission, crudCommandType, error, extraCreateOnePermissions]);
+  }, [authorizationService, createOne, createPermission, crudCommandType, error, extraCreateOnePermissions]);
 
   const normalizedEditDialogExtraActionsFactory = useCallback((item: TData) => {
     const actions: DialogAction[] = [];
@@ -301,7 +301,7 @@ export const CrudPage = <
       actions.push({
         color: 'primary',
         label: subPage.label,
-        onClick: async () => await RouterManager.getInstance().router.navigate({
+        onClick: async () => await RouterService.getInstance().router.navigate({
           pathname: subPage.getPathName(item),
         }),
         variant: 'outlined',
@@ -377,7 +377,7 @@ export const CrudPage = <
   const calculatedAssociationQueryKeys = useMemo<string[][]>(() => {
     const keys = associationQueryKeys ?? [];
 
-    QueryClientManager.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
+    QueryClientService.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
       keys.push(key);
     });
     return keys;
@@ -456,7 +456,7 @@ export const CrudPage = <
         <MenuItem
           key={subPage.label}
           // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-          onClick={async () => await RouterManager.getInstance().router.navigate({
+          onClick={async () => await RouterService.getInstance().router.navigate({
             pathname: subPage.getPathName(params.row),
           })}
         >
@@ -658,7 +658,7 @@ export const CrudPage = <
             <Box
               sx={{
                 height: '100%',
-                paddingLeft: theme.spacing(ConfigManager.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
                 width: '100%',
               }}
             >

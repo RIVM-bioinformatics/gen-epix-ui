@@ -1,4 +1,4 @@
-import { ConfigManager } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import type { FieldValues } from 'react-hook-form';
 import sumBy from 'lodash/sumBy';
@@ -25,11 +25,11 @@ export class DashboardUtil {
   public static readonly dashboardLayoutStorageKey = 'GENEPIX-EpiDashboard-Layout-v1.3';
 
   public static createDashboardArrangementConfigInitialState(): EpiDashboardArrangementConfig {
-    const defaultArrangementKey = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_ARRANGEMENT_KEY;
+    const defaultArrangementKey = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_ARRANGEMENT_KEY;
 
     return {
       arrangementKey: defaultArrangementKey,
-      arrangementWidgetAssignments: ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_WIDGET_ASSIGNMENTS[defaultArrangementKey],
+      arrangementWidgetAssignments: ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_WIDGET_ASSIGNMENTS[defaultArrangementKey],
     };
   }
 
@@ -167,7 +167,7 @@ export class DashboardUtil {
   }
 
   public static validateAndMigrateArrangementConfig(config: EpiDashboardArrangementConfig): EpiDashboardArrangementConfig {
-    const epiDashboardConfig = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard;
+    const epiDashboardConfig = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard;
     let result = config;
 
     if (!result.arrangementKey || !(result.arrangementKey in epiDashboardConfig.ARRANGEMENT_OPTIONS)) {
@@ -186,7 +186,7 @@ export class DashboardUtil {
   }
 
   private static getArrangementByKey(arrangementKey: string): EpiDashboardArrangement {
-    return ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS[arrangementKey];
+    return ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS[arrangementKey];
   }
 
   private static getBoundaryLeafZones(

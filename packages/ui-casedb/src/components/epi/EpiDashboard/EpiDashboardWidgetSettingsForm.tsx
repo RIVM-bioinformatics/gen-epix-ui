@@ -19,7 +19,7 @@ import {
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import {
-  ConfigManager,
+  ConfigService,
   FormUtil,
   GenericForm,
 } from '@gen-epix/ui';
@@ -38,8 +38,8 @@ export const EpiDashboardWidgetSettingsForm = ({ widgetName }: EpiDashboardEpiCu
 
   const resetWidgetSettings = useStore(userProfileStore, useShallow((state) => state.resetWidgetSettings));
   const setWidgetSettings = useStore(userProfileStore, useShallow((state) => state.setWidgetSettings));
-  const formFieldDefinitions = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS[widgetName].configFormFieldsDefinitions;
-  const defaultFormValues = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS[widgetName].configDefaultValues;
+  const formFieldDefinitions = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS[widgetName].configFormFieldsDefinitions;
+  const defaultFormValues = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS[widgetName].configDefaultValues;
 
   const schema = useMemo(() => {
     if (!formFieldDefinitions) {

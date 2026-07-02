@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { useCallback } from 'react';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import { RouterManager } from '@gen-epix/ui';
+import { RouterService } from '@gen-epix/ui';
 
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 
@@ -17,7 +17,7 @@ export type EpiAddCasesToEventDialogSuccessNotificationMessageProps = {
 export const EpiAddCasesToEventDialogSuccessNotificationMessage = ({ caseSet, numAddedCases }: EpiAddCasesToEventDialogSuccessNotificationMessageProps) => {
 
   const onLinkClick = useCallback(async () => {
-    await RouterManager.getInstance().router.navigate({ pathname: CaseSetUtil.createCaseSetLink(caseSet) });
+    await RouterService.getInstance().router.navigate({ pathname: CaseSetUtil.createCaseSetLink(caseSet) });
   }, [caseSet]);
 
   return (

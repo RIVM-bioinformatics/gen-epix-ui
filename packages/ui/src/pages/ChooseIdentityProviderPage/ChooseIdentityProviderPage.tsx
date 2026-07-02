@@ -13,8 +13,8 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { AuthenticationService } from '../../classes/services/AuthenticationService';
+import { ConfigService } from '../../classes/services/ConfigService';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { IdentityProviderWithAvailability } from '../../models/auth';
@@ -29,7 +29,7 @@ export const ChooseIdentityProviderPage = ({
   const { t } = useTranslation();
 
   const AfterIdentityProviderSelection =
-    ConfigManager.getInstance().config.login?.AfterIdentityProviderSelection;
+    ConfigService.getInstance().config.login?.AfterIdentityProviderSelection;
 
   const onIdentityProviderButtonClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
@@ -37,7 +37,7 @@ export const ChooseIdentityProviderPage = ({
         'data-name',
       );
 
-      AuthenticationManager.getInstance().next(
+      AuthenticationService.getInstance().next(
         identityProvidersWithAvailability.find(
           (identityProviderWithAvailability) =>
             identityProviderWithAvailability.provider.name === name,
@@ -122,7 +122,7 @@ export const ChooseIdentityProviderPage = ({
           variant={'h1'}
         >
           {t('Welcome to {{applicationName}}', {
-            applicationName: ConfigManager.getInstance().config.applicationName,
+            applicationName: ConfigService.getInstance().config.applicationName,
           })}
         </Typography>
         <Typography

@@ -13,9 +13,9 @@ import type {
 import { useTranslation } from 'react-i18next';
 
 import { Breadcrumbs } from '../Breadcrumbs';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
-import { WindowManager } from '../../../classes/managers/WindowManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
+import { PageEventBusService } from '../../../classes/services/PageEventBusService';
+import { WindowService } from '../../../classes/services/WindowService';
 import { useUpdateDocumentTitle } from '../../../hooks/useUpdateDocumentTitle';
 import type { PropsWithTestIdAttributes } from '../../../models/testId';
 import { ApplicationFooter } from '../ApplicationFooter/ApplicationFooter';
@@ -50,7 +50,7 @@ export const PageContainer = ({
 
   const hasContentHeaderArea = contentHeader || contentActions;
   const hasFooterArea = !fullHeight && !singleAction;
-  const { ApplicationHeader } = ConfigManager.getInstance().config;
+  const { ApplicationHeader } = ConfigService.getInstance().config;
 
   useEffect(() => {
     const pageName = testIdAttributes['data-testid'];
@@ -58,9 +58,9 @@ export const PageContainer = ({
       return;
     }
 
-    if (ConfigManager.getInstance().config.enablePageEvents) {
-      PageEventBusManager.getInstance().emit('changePage', {
-        location: WindowManager.getInstance().window.location,
+    if (ConfigService.getInstance().config.enablePageEvents) {
+      PageEventBusService.getInstance().emit('changePage', {
+        location: WindowService.getInstance().window.location,
         pageName: testIdAttributes['data-testid'],
       });
     }
@@ -119,7 +119,7 @@ export const PageContainer = ({
           singleAction={singleAction}
         />
         <Box
-          id={ConfigManager.getInstance().config.layout.MAIN_CONTENT_ID}
+          id={ConfigService.getInstance().config.layout.MAIN_CONTENT_ID}
           sx={{
             display: 'grid',
             gridTemplateRows: `${showBreadcrumbs ? 'max-content' : ''} auto`,

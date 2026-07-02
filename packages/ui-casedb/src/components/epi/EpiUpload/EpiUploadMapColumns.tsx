@@ -28,7 +28,7 @@ import { useStore } from 'zustand';
 import difference from 'lodash/difference';
 import type { FormFieldDefinition } from '@gen-epix/ui';
 import {
-  ConfigManager,
+  ConfigService,
   GenericForm,
   ResponseHandler,
   Select,
@@ -178,7 +178,7 @@ export const EpiUploadMapColumns = () => {
               {t`Source`}
             </TableCell>
             <TableCell sx={{ width: '33%' }}>
-              {ConfigManager.getInstance().config.applicationName}
+              {ConfigService.getInstance().config.applicationName}
             </TableCell>
             <TableCell sx={{ width: '34%' }}>
               {t`Data preview (first 5 unique values)`}
@@ -218,7 +218,7 @@ export const EpiUploadMapColumns = () => {
           <Alert severity={unMappedColumns.length === 0 ? 'info' : 'warning'}>
             <AlertTitle>
               {unMappedColumns.length === 0 ?
-                t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { applicationName: ConfigManager.getInstance().config.applicationName, fileName })
+                t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { applicationName: ConfigService.getInstance().config.applicationName, fileName })
                 : t('{{numUnmappedColumns}} column(s) in {{fileName}} are not mapped', { fileName, numUnmappedColumns: unMappedColumns.length })}
             </AlertTitle>
             {unMappedColumns.map((unmappedColumn) => (

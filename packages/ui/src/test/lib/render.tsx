@@ -7,19 +7,19 @@ import {
   ThemeProvider,
 } from '@mui/material';
 
-import { ConfigManager } from '../../classes/managers/ConfigManager';
-import { EmotionCacheManager } from '../../classes/managers/EmotionCacheManager';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { ConfigService } from '../../classes/services/ConfigService';
+import { EmotionCacheService } from '../../classes/services/EmotionCacheService';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }: PropsWithChildren<unknown>) => {
-  const queryQueryManager = QueryClientManager.getInstance();
-  const emotionCacheManager = EmotionCacheManager.getInstance();
+  const queryQueryManager = QueryClientService.getInstance();
+  const emotionCacheService = EmotionCacheService.getInstance();
 
   return (
     <QueryClientProvider client={queryQueryManager.queryClient}>
-      <CacheProvider value={emotionCacheManager.emotionCache}>
-        <ThemeProvider theme={ConfigManager.getInstance().config.theme}>
+      <CacheProvider value={emotionCacheService.emotionCache}>
+        <ThemeProvider theme={ConfigService.getInstance().config.theme}>
           <CssBaseline />
           { children }
         </ThemeProvider>

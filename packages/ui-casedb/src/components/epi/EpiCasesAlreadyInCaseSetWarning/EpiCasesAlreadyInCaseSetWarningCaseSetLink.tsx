@@ -9,7 +9,7 @@ import type { ConfirmationRefMethods } from '@gen-epix/ui';
 import {
   Confirmation,
   ResponseHandler,
-  RouterManager,
+  RouterService,
   useArray,
 } from '@gen-epix/ui';
 
@@ -33,7 +33,7 @@ export const EpiCasesAlreadyInCaseSetWarningCaseSetLink = ({ caseSet }: EpiCases
   }, []);
 
   const onConfirm = useCallback(async () => {
-    await RouterManager.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
+    await RouterService.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
   }, [caseSet]);
 
 

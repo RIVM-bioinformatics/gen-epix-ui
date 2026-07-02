@@ -25,14 +25,14 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { useIdentifierIssuerOptionsQuery } from '../../dataHooks/useIdentifierIssuerQuery';
 import { useArray } from '../../hooks/useArray';
 import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOrganizationIdentifierIssuerLinksQuery';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 type FormFields = OmitWithMetaData<TableData>;
 
@@ -46,22 +46,22 @@ export const OrganizationsAdminPage = () => {
   const loadables = useArray([identifierIssuerOptionsQuery, organizationIdentifierIssuerLinksQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().organizationApi.organizationsGetAll(null, null, { signal }))?.data;
+    return (await ApiService.getInstance().organizationApi.organizationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganization) => {
-    await ApiManager.getInstance().organizationApi.organizationsPutIdentifierIssuers(item.id, {
+    await ApiService.getInstance().organizationApi.organizationsPutIdentifierIssuers(item.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: item.id,
       })),
     });
-    return (await ApiManager.getInstance().organizationApi.organizationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await ApiService.getInstance().organizationApi.organizationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await ApiManager.getInstance().organizationApi.organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
-    await ApiManager.getInstance().organizationApi.organizationsPutIdentifierIssuers(resultItem.id, {
+    const resultItem = (await ApiService.getInstance().organizationApi.organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
+    await ApiService.getInstance().organizationApi.organizationsPutIdentifierIssuers(resultItem.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: resultItem.id,
@@ -71,7 +71,7 @@ export const OrganizationsAdminPage = () => {
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOrganization) => {
-    return await ApiManager.getInstance().organizationApi.organizationsDeleteOne(item.id);
+    return await ApiService.getInstance().organizationApi.organizationsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: CommonDbOrganization) => {
@@ -134,7 +134,7 @@ export const OrganizationsAdminPage = () => {
   }, [identifierIssuerOptionsQuery.options.length, t]);
 
   const subPages = useMemo<CrudPageSubPage<CommonDbOrganization>[]>(() => {
-    if (!AuthorizationManager.getInstance().doesUserHavePermission([
+    if (!AuthorizationService.getInstance().doesUserHavePermission([
       { command_name: CommonDbCommandName.SiteCrudCommand, permission_type: CommonDbPermissionType.READ },
     ])) {
       return [];

@@ -21,8 +21,8 @@ import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { Confirmation } from '../Confirmation';
 import type { ConfirmationRefMethods } from '../Confirmation';
-import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
-import { LogManager } from '../../../classes/managers/LogManager';
+import { AuthorizationService } from '../../../classes/services/AuthorizationService';
+import { LogService } from '../../../classes/services/LogService';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { MyPermissionsDialogRefMethods } from '../MyPermissionsDialog';
@@ -55,22 +55,22 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   }, []);
 
   const onLogoutConfirmationConfirm = useCallback(() => {
-    LogManager.getInstance().log([{
+    LogService.getInstance().log([{
       detail: auth.user,
       level: CommonDbLogLevel.TRACE,
       topic: 'USER_LOGOUT',
     }]);
-    LogManager.getInstance().flushLog();
+    LogService.getInstance().flushLog();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     auth.signoutRedirect();
   }, [auth]);
 
   const userName = useMemo(() => {
-    return DataUtil.getUserDisplayValue(AuthorizationManager.getInstance().user, t);
+    return DataUtil.getUserDisplayValue(AuthorizationService.getInstance().user, t);
   }, [t]);
 
   const userRoles = useMemo(() => {
-    return AuthorizationManager.getInstance().user?.roles;
+    return AuthorizationService.getInstance().user?.roles;
   }, []);
 
   return (

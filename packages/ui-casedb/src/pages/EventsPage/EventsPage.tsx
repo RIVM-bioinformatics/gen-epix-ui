@@ -24,14 +24,14 @@ import type {
   TableRowParams,
 } from '@gen-epix/ui';
 import {
-  ConfigManager,
+  ConfigService,
   createTableStore,
   DATE_FORMAT,
   LoadableUtil,
   PageContainer,
-  QueryClientManager,
+  QueryClientService,
   ResponseHandler,
-  RouterManager,
+  RouterService,
   Table,
   TableCaption,
   TableMenu,
@@ -73,13 +73,13 @@ export const EventsPage = () => {
       const response = await CaseDbCaseApi.getInstance().caseSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
   const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
   const navigateToEvent = useCallback(async (row: CaseDbCaseSet) => {
-    await RouterManager.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(row));
+    await RouterService.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(row));
   }, []);
 
   const showEventInformation = useCallback((row: CaseDbCaseSet) => {
@@ -169,7 +169,7 @@ export const EventsPage = () => {
     defaultSortByField: 'case_set_date',
     defaultSortDirection: 'desc',
     idSelectorCallback: (row) => row.id,
-    navigatorFunction: RouterManager.getInstance().router.navigate,
+    navigatorFunction: RouterService.getInstance().router.navigate,
     storageNamePostFix: 'caseSets',
     storageVersion: 3,
   }), []);
@@ -250,7 +250,7 @@ export const EventsPage = () => {
                 <Box
                   sx={{
                     height: '100%',
-                    paddingLeft: theme.spacing(ConfigManager.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                    paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
                     width: '100%',
                   }}
                 >

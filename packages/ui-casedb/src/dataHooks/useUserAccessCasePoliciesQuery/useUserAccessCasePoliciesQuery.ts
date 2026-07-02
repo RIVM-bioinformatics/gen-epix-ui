@@ -2,7 +2,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbUserAccessCasePolicy } from '@gen-epix/api-casedb';
 import { CaseDbAbacApi } from '@gen-epix/api-casedb';
 import {
-  QueryClientManager,
+  QueryClientService,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -14,7 +14,7 @@ export const useUserAccessCasePoliciesQuery = (select?: (data: CaseDbUserAccessC
       const response = await CaseDbAbacApi.getInstance().userAccessCasePoliciesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.USER_ACCESS_CASE_POLICIES),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.USER_ACCESS_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

@@ -8,19 +8,19 @@ import type {
 } from '../../models/dataHooks';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 type Select = (data: CommonDbIdentifierIssuer[]) => CommonDbIdentifierIssuer[];
 
 export const useIdentifierIssuersQuery = (select?: Select): UseQueryResult<CommonDbIdentifierIssuer[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiManager.getInstance().organizationApi.identifierIssuersGetAll(null, null, { signal });
+      const response = await ApiService.getInstance().organizationApi.identifierIssuersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS),
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS),
     select: select ? (data) => select(data) : undefined,
   });
 };

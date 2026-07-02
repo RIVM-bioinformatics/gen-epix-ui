@@ -17,7 +17,7 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { ConfigManager } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 import noop from 'lodash/noop';
 
 import { ArrangementEditor } from '../../forms/fields/ArrangementEditor';
@@ -62,7 +62,7 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
     if (!arrangementKey) {
       return;
     }
-    const arrangementOptions = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS;
+    const arrangementOptions = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS;
     const arrangement = arrangementOptions[arrangementKey];
     if (!arrangement) {
       return;
@@ -70,7 +70,7 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
 
     setEpiDashboardLayoutUserConfig({
       arrangementKey,
-      arrangementWidgetAssignments: DashboardUtil.getArrangementWidgetAssignments(arrangement, ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_WIDGET_ASSIGNMENTS[arrangementKey]),
+      arrangementWidgetAssignments: DashboardUtil.getArrangementWidgetAssignments(arrangement, ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_WIDGET_ASSIGNMENTS[arrangementKey]),
     });
   }, [formValues, setEpiDashboardLayoutUserConfig]);
 
@@ -91,7 +91,7 @@ export const EpiDashboardLayoutSettingsForm = ({ onReset }: EpiDashboardLayoutSe
             <ArrangementEditor
               label={t`Arrangement`}
               name={'arrangementKey'}
-              options={ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS}
+              options={ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS}
             />
           </FormGroup>
         </Box>

@@ -20,8 +20,8 @@ import { useTranslation } from 'react-i18next';
 
 import type { LicensesDialogRefMethods } from '../LicensesDialog';
 import { LicensesDialog } from '../LicensesDialog';
-import { BackendVersionManager } from '../../../classes/managers/BackendVersionManager';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { BackendVersionService } from '../../../classes/services/BackendVersionService';
+import { ConfigService } from '../../../classes/services/ConfigService';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
@@ -41,7 +41,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
   }, []);
 
   const onCopyVersionInformationButtonClick = useCallback(async () => {
-    const versionInformation = `Frontend version: ${ConfigManager.getInstance().config.getSoftwareVersion()}\nBackend version: ${BackendVersionManager.getInstance().version}\nURL: ${window.location.href}\nDate/time: ${new Date().toISOString()}`;
+    const versionInformation = `Frontend version: ${ConfigService.getInstance().config.getSoftwareVersion()}\nBackend version: ${BackendVersionService.getInstance().version}\nURL: ${window.location.href}\nDate/time: ${new Date().toISOString()}`;
     await navigator.clipboard.writeText(versionInformation);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
@@ -75,7 +75,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
         >
           <ListItemText
             primary={t('Frontend version')}
-            secondary={ConfigManager.getInstance().config.getSoftwareVersion()}
+            secondary={ConfigService.getInstance().config.getSoftwareVersion()}
             slotProps={{
               primary: {
                 sx: {
@@ -91,7 +91,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
         >
           <ListItemText
             primary={t('Backend version')}
-            secondary={BackendVersionManager.getInstance().version}
+            secondary={BackendVersionService.getInstance().version}
             slotProps={{
               primary: {
                 sx: {

@@ -23,7 +23,7 @@ import type {
   TableColumn,
 } from '@gen-epix/ui';
 import {
-  AuthorizationManager,
+  AuthorizationService,
   CrudPage,
   FORM_FIELD_DEFINITION_TYPE,
   SchemaUtil,
@@ -107,7 +107,7 @@ export const RegionSetsAdminPage = () => {
   const subPages = useMemo<CrudPageSubPage<CaseDbRegionSet>[]>(() => {
     const pages: CrudPageSubPage<CaseDbRegionSet>[] = [];
 
-    if (AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RegionCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(
@@ -118,7 +118,7 @@ export const RegionSetsAdminPage = () => {
       );
     }
 
-    if (AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RegionSetShapeCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(

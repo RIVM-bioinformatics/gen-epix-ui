@@ -19,12 +19,12 @@ import type {
 } from '@gen-epix/ui';
 import {
   COMMON_QUERY_KEY,
-  ConfigManager,
+  ConfigService,
   createTableStore,
   DataUtil,
   PageContainer,
   ResponseHandler,
-  RouterManager,
+  RouterService,
   Table,
   TableCaption,
   TableMenu,
@@ -109,7 +109,7 @@ export const UserEffectiveRightsAdminPage = () => {
     defaultSortByField: 'data_collection_id',
     defaultSortDirection: 'asc',
     idSelectorCallback: (entry) => entry.data_collection_id,
-    navigatorFunction: RouterManager.getInstance().router.navigate,
+    navigatorFunction: RouterService.getInstance().router.navigate,
     storageNamePostFix: 'UsersEffectiveRightsAdminPage-Table',
     storageVersion: 1,
   }), []);
@@ -312,7 +312,7 @@ export const UserEffectiveRightsAdminPage = () => {
             <Box
               sx={{
                 height: '100%',
-                paddingLeft: theme.spacing(ConfigManager.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
                 width: '100%',
               }}
             >

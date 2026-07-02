@@ -14,7 +14,7 @@ import { useStore } from 'zustand';
 
 import { EpiDashboardStoreContext } from '../../../stores/epiDashboardStore';
 import { withEpiDashboardStore } from '../EpiDashboardStoreLoader';
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
 import { EpiDashboardEditCases } from '../EpiDashboardEditCases';
 
 import { EpiDashboardContent } from './EpiDashboardContent';
@@ -34,7 +34,7 @@ export const EpiDashboard = withEpiDashboardStore(({ caseSet }: EpiDashboardProp
   }, []);
 
   useEffect(() => {
-    const eventBus = EpiEventBusManager.getInstance();
+    const eventBus = EpiEventBusService.getInstance();
     const removers = [
       // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openEditCases', (cases: CaseDbCase[]) => {

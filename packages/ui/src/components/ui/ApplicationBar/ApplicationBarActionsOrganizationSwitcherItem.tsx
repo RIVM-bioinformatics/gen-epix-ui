@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 import { OrganizationSwitcherDialog } from '../OrganizationSwitcherDialog';
 import type { OrganizationSwitcherDialogRefMethods } from '../OrganizationSwitcherDialog';
-import { FeatureFlagsManager } from '../../../classes/managers/FeatureFlagsManager';
+import { FeatureFlagsService } from '../../../classes/services/FeatureFlagsService';
 
 
 export const ApplicationBarActionsOrganizationSwitcherItem = () => {
@@ -25,7 +25,7 @@ export const ApplicationBarActionsOrganizationSwitcherItem = () => {
     organizationSwitcherDialogRef.current.open();
   }, []);
 
-  if (!FeatureFlagsManager.getInstance().featureFlags.update_own_organization) {
+  if (!FeatureFlagsService.getInstance().featureFlags.update_own_organization) {
     return null;
   }
 

@@ -7,7 +7,7 @@ import {
   useTheme,
 } from '@mui/material';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { ApplicationBarNavigationMenu } from './ApplicationBarNavigationMenu';
@@ -61,7 +61,7 @@ export const ApplicationBar = ({
                 }}
                 variant={'body2'}
               >
-                {ConfigManager.getInstance().config.applicationName}
+                {ConfigService.getInstance().config.applicationName}
               </Typography>
             </Box>
           )}

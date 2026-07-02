@@ -26,7 +26,7 @@ import { DATE_FORMAT } from '../../data/date';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 type FormFields = OmitWithMetaData<CommonDbOutage>;
 
@@ -34,19 +34,19 @@ export const OutagesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().systemApi.outagesGetAll(null, null, { signal }))?.data;
+    return (await ApiService.getInstance().systemApi.outagesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOutage) => {
-    return await ApiManager.getInstance().systemApi.outagesDeleteOne(item.id);
+    return await ApiService.getInstance().systemApi.outagesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbOutage) => {
-    return (await ApiManager.getInstance().systemApi.outagesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await ApiService.getInstance().systemApi.outagesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ApiManager.getInstance().systemApi.outagesPostOne(variables)).data;
+    return (await ApiService.getInstance().systemApi.outagesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CommonDbOutage) => {

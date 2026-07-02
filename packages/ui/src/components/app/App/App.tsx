@@ -7,55 +7,55 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RouterProvider } from 'react-router-dom';
 
-import { BackendVersionManager } from '../../../classes/managers/BackendVersionManager';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
+import { BackendVersionService } from '../../../classes/services/BackendVersionService';
+import { ConfigService } from '../../../classes/services/ConfigService';
+import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { ErrorPage } from '../../../pages/ErrorPage';
-import { EmotionCacheManager } from '../../../classes/managers/EmotionCacheManager';
-import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
-import { LogManager } from '../../../classes/managers/LogManager';
-import { ApiManager } from '../../../classes/managers/ApiManager';
-import { RouterManager } from '../../../classes/managers/RouterManager';
+import { EmotionCacheService } from '../../../classes/services/EmotionCacheService';
+import { AuthenticationService } from '../../../classes/services/AuthenticationService';
+import { LogService } from '../../../classes/services/LogService';
+import { ApiService } from '../../../classes/services/ApiService';
+import { RouterService } from '../../../classes/services/RouterService';
 
 
 export const App = () => {
-  const { config } = ConfigManager.getInstance();
+  const { config } = ConfigService.getInstance();
 
-  const authenticationManager = AuthenticationManager.getInstance();
-  const logManager = LogManager.getInstance();
+  const authenticationService = AuthenticationService.getInstance();
+  const logService = LogService.getInstance();
 
   const touchIconUrl = config.getTouchIconUrl();
   if (touchIconUrl) {
 
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
   }
-  const apiManager = ApiManager.getInstance();
-  const routerManager = RouterManager.getInstance();
-  apiManager.api.baseUrl = config.getAPIBaseUrl();
-  apiManager.api.defaultRequestTimeout = config.defaultRequestTimeout;
-  apiManager.api.onRequest = [
-    authenticationManager.onRequest.bind(authenticationManager),
-    logManager.onRequest.bind(logManager),
+  const apiService = ApiService.getInstance();
+  const routerService = RouterService.getInstance();
+  apiService.api.baseUrl = config.getAPIBaseUrl();
+  apiService.api.defaultRequestTimeout = config.defaultRequestTimeout;
+  apiService.api.onRequest = [
+    authenticationService.onRequest.bind(authenticationService),
+    logService.onRequest.bind(logService),
   ];
-  apiManager.api.onResponseFulfilled = [
-    logManager.onResponseFulfilled.bind(logManager),
-    BackendVersionManager.getInstance().onResponseFulfilled.bind(BackendVersionManager.getInstance()),
+  apiService.api.onResponseFulfilled = [
+    logService.onResponseFulfilled.bind(logService),
+    BackendVersionService.getInstance().onResponseFulfilled.bind(BackendVersionService.getInstance()),
   ];
-  apiManager.api.onResponseRejected = [
-    logManager.onResponseRejected.bind(logManager),
-    authenticationManager.onResponseRejected.bind(authenticationManager),
+  apiService.api.onResponseRejected = [
+    logService.onResponseRejected.bind(logService),
+    authenticationService.onResponseRejected.bind(authenticationService),
   ];
 
-  const queryQueryManager = QueryClientManager.getInstance();
-  const emotionCacheManager = EmotionCacheManager.getInstance();
+  const queryQueryManager = QueryClientService.getInstance();
+  const emotionCacheService = EmotionCacheService.getInstance();
 
   return (
     <QueryClientProvider client={queryQueryManager.queryClient}>
-      <CacheProvider value={emotionCacheManager.emotionCache}>
-        <ThemeProvider theme={ConfigManager.getInstance().config.theme}>
+      <CacheProvider value={emotionCacheService.emotionCache}>
+        <ThemeProvider theme={ConfigService.getInstance().config.theme}>
           <CssBaseline />
           <ErrorBoundary FallbackComponent={ErrorPage}>
-            <RouterProvider router={routerManager.router} />
+            <RouterProvider router={routerService.router} />
           </ErrorBoundary>
         </ThemeProvider>
       </CacheProvider>

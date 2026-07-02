@@ -13,7 +13,7 @@ import {
 } from '@gen-epix/api-casedb';
 import {
   StringUtil,
-  WindowManager,
+  WindowService,
 } from '@gen-epix/ui';
 
 
@@ -24,7 +24,7 @@ export class CaseTypeUtil {
   public static createCaseTypeLink(caseType: CaseDbCaseType | CaseDbCompleteCaseType, full?: boolean): string {
     const path = `/cases/${StringUtil.createSlug(caseType.name)}/${caseType.id}`;
     if (full) {
-      return `${WindowManager.getInstance().window.location.origin}${path}`;
+      return `${WindowService.getInstance().window.location.origin}${path}`;
     }
     return path;
   }

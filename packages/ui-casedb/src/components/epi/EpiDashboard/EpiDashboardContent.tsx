@@ -19,9 +19,9 @@ import InfoIcon from '@mui/icons-material/Info';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui';
 import {
-  ConfigManager,
+  ConfigService,
   EpiContactDetailsDialog,
-  KeyboardShortcutManager,
+  KeyboardShortcutService,
   SidebarMenu,
   SidebarMenuItem,
   TableFiltersSidebarItem,
@@ -49,7 +49,7 @@ import { EpiFindSimilarCasesDialog } from '../EpiFindSimilarCasesDialog';
 import type { EpiFindSimilarCasesDialogRefMethods } from '../EpiFindSimilarCasesDialog';
 import { EpiRemoveFindSimilarCasesResultDialog } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
 import type { EpiRemoveFindSimilarCasesResultDialogRefMethods } from '../EpiRemoveFindSimilarCasesResultDialog/EpiRemoveFindSimilarCasesResultDialog';
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
 
 import {
   EpiDashboardSettingsSidebarItem,
@@ -95,7 +95,7 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
   }, [epiDashboardStore]);
 
   useEffect(() => {
-    const eventBus = EpiEventBusManager.getInstance();
+    const eventBus = EpiEventBusService.getInstance();
     const removers = [
       // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('onEventCreated', () => {
@@ -128,13 +128,13 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
 
   useEffect(() => {
     const removers = [
-      KeyboardShortcutManager.getInstance().registerShortcut({ callback: () => {
+      KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
         setIsFilterSidebarOpen(x => !x);
       }, key: 'f', modifier: null }),
-      KeyboardShortcutManager.getInstance().registerShortcut({ callback: () => {
+      KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
         setIsSettingsSidebarOpen(x => !x);
       }, key: 's', modifier: null }),
-      KeyboardShortcutManager.getInstance().registerShortcut({ callback: () => {
+      KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
         epiCaseTypeInfoDialogRef.current.open();
       }, key: 'i', modifier: null }),
     ];
@@ -252,7 +252,7 @@ export const EpiDashboardContent = ({ caseSet }: EpiDashboardProps) => {
           display: 'grid',
           gridTemplateRows: `${shouldShowMaxResultsExceededAlert ? 'max-content ' : ''}max-content auto`,
           height: '100%',
-          paddingLeft: theme.spacing(ConfigManager.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+          paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
           width: '100%',
         }}
       >

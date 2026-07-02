@@ -12,8 +12,8 @@ import type {
   OptionBase,
 } from '@gen-epix/ui';
 import {
-  NotificationManager,
-  QueryClientManager,
+  NotificationService,
+  QueryClientService,
   StringUtil,
 } from '@gen-epix/ui';
 
@@ -148,7 +148,7 @@ const createEpiUploadStoreInitialState: (kwArgs: CreateEpiUploadStoreKwArgs) => 
   stepOrder: kwArgs.stepOrder,
   uploadCompleteButtonCallback: kwArgs.uploadCompleteButtonCallback ?? null,
   uploadCompleteButtonLabel: kwArgs.uploadCompleteButtonLabel ?? null,
-  validateCasesQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
+  validateCasesQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
   validatedCases: [],
 });
 
@@ -188,7 +188,7 @@ export const createEpiUploadStore = (kwArgs: CreateEpiUploadStoreKwArgs) => {
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_COLUMNS) {
           if (shouldResetColumnMapping && mappedColumns.length > 0) {
-            NotificationManager.getInstance().showNotification({
+            NotificationService.getInstance().showNotification({
               isLoading: false,
               message: t`Column mappings have been reset due to changes in the selected case type or file.`,
               severity: 'info',
@@ -212,7 +212,7 @@ export const createEpiUploadStore = (kwArgs: CreateEpiUploadStoreKwArgs) => {
 
         if (nextStep === EPI_UPLOAD_STEP.MAP_SEQUENCES) {
           if (shouldResetSequenceMapping && Object.keys(sequenceMapping).length > 0) {
-            NotificationManager.getInstance().showNotification({
+            NotificationService.getInstance().showNotification({
               isLoading: false,
               message: t`Sequence mappings have been reset due to changes in the selected uploaded files.`,
               severity: 'info',
@@ -246,8 +246,8 @@ export const createEpiUploadStore = (kwArgs: CreateEpiUploadStoreKwArgs) => {
       invalidateCaseValidationQuery: async () => {
         const { validateCasesQueryKey } = get();
 
-        await QueryClientManager.getInstance().invalidateQueryKeys([validateCasesQueryKey]);
-        QueryClientManager.getInstance().removeQueries([validateCasesQueryKey]);
+        await QueryClientService.getInstance().invalidateQueryKeys([validateCasesQueryKey]);
+        QueryClientService.getInstance().removeQueries([validateCasesQueryKey]);
       },
 
       reset: async () => {

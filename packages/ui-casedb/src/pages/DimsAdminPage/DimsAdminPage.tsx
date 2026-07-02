@@ -25,7 +25,7 @@ import type {
   TableColumn,
 } from '@gen-epix/ui';
 import {
-  AuthorizationManager,
+  AuthorizationService,
   CrudPage,
   FORM_FIELD_DEFINITION_TYPE,
   SchemaUtil,
@@ -164,7 +164,7 @@ export const DimsAdminPage = () => {
   }, [caseTypeId]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbDim>[]>(() => {
-    if (!AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (!AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

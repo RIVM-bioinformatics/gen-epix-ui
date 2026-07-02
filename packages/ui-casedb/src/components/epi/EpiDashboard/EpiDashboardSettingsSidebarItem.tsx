@@ -9,7 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useMemo } from 'react';
 import type { SidebarItemSharedProps } from '@gen-epix/ui';
 import {
-  ConfigManager,
+  ConfigService,
   SidebarItem,
 } from '@gen-epix/ui';
 
@@ -41,7 +41,7 @@ const EpiDashboardSettingsSidebarItemContent = ({ onReset }: EpiDashboardSetting
         label: t`General`,
       },
     ];
-    Object.entries(ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS).forEach(([widgetName, widgetConfig]) => {
+    Object.entries(ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS).forEach(([widgetName, widgetConfig]) => {
       if (widgetConfig.configFormFieldsDefinitions) {
         x.push({
           component: <EpiDashboardWidgetSettingsForm widgetName={widgetName} />,

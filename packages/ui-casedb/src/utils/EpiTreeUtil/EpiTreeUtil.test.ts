@@ -8,9 +8,9 @@ import type { Theme } from '@mui/material/styles';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { CaseDbTreeAlgorithm } from '@gen-epix/api-casedb';
 import type { ArgumentTypes } from '@gen-epix/ui';
-import { ConfigManager } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import { EpiDataService } from '../../classes/services/EpiDataService';
 import { STRATIFICATION_MODE } from '../../models/epi';
 import type {
   Stratification,
@@ -161,7 +161,7 @@ describe('EpiTreeUtil', () => {
 
   describe('getTickMarkScale', () => {
     beforeAll(() => {
-      vi.spyOn(ConfigManager.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
         epiTree: {
           MAX_SCALE_WIDTH_PX: 144,
           MIN_SCALE_WIDTH_PX: 48,
@@ -802,7 +802,7 @@ describe('EpiTreeUtil', () => {
     const treeCanvasWidth = 800;
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
         epiTree: {
           ANCESTOR_DOT_RADIUS,
           LEAF_DOT_RADIUS,
@@ -1151,7 +1151,7 @@ describe('EpiTreeUtil', () => {
     const HEADER_HEIGHT = 40;
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
         epiTree: {
           HEADER_HEIGHT,
           TREE_PADDING,
@@ -1355,7 +1355,7 @@ describe('EpiTreeUtil', () => {
     const REGULAR_FILL_COLOR = '#dddddd';
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
         epiTree: {
           REGULAR_FILL_COLOR_SUPPORT_LINE: REGULAR_FILL_COLOR,
           TREE_PADDING: TREE_PADDING_GUIDES,
@@ -1480,7 +1480,7 @@ describe('EpiTreeUtil', () => {
     const HEADER_HEIGHT_SCALE = 40;
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
         epiTree: {
           HEADER_HEIGHT: HEADER_HEIGHT_SCALE,
           TREE_PADDING: TREE_PADDING_SCALE,
@@ -1586,7 +1586,7 @@ describe('EpiTreeUtil', () => {
     const REGULAR_FILL_CANVAS = '#eeeeee';
 
     beforeAll(() => {
-      vi.spyOn(ConfigManager.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
+      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
         epiLineList: {
           TABLE_ROW_HEIGHT: 30,
         },
@@ -2063,12 +2063,12 @@ describe('EpiTreeUtil', () => {
     };
 
     beforeAll(() => {
-      savedTreeAlgorithms = EpiDataManager.getInstance().data.treeAlgorithms;
-      EpiDataManager.getInstance().data.treeAlgorithms = [mockAlgo1, mockAlgo2];
+      savedTreeAlgorithms = EpiDataService.getInstance().data.treeAlgorithms;
+      EpiDataService.getInstance().data.treeAlgorithms = [mockAlgo1, mockAlgo2];
     });
 
     afterAll(() => {
-      EpiDataManager.getInstance().data.treeAlgorithms = savedTreeAlgorithms;
+      EpiDataService.getInstance().data.treeAlgorithms = savedTreeAlgorithms;
     });
 
     it('returns empty array when no GENETIC_DISTANCE cols exist', () => {
@@ -2128,8 +2128,8 @@ describe('EpiTreeUtil', () => {
       expect(result[0].computedId).toBe('col1_rc1_gdp1_algo-nj');
     });
 
-    it('sorts algorithms according to EpiDataManager.getInstance().data.treeAlgorithms order', () => {
-      // EpiDataManager order: [mockAlgo1(NJ), mockAlgo2(UPGMA)]
+    it('sorts algorithms according to EpiDataService.getInstance().data.treeAlgorithms order', () => {
+      // EpiDataService order: [mockAlgo1(NJ), mockAlgo2(UPGMA)]
       // col specifies UPGMA first, then NJ -> result should be sorted to NJ then UPGMA
       const completeCaseType = {
         cols: {

@@ -19,7 +19,7 @@ import type {
   WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
-import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
+import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 
 
 export interface MyPermissionsDialogOpenProps {
@@ -52,7 +52,7 @@ export const MyPermissionsDialog = withDialog<MyPermissionsDialogProps, MyPermis
   }), [t]);
 
   const readablePermissions = useMemo(() => {
-    return AuthorizationManager.getInstance().apiPermissions.sort((a, b) => a.command_name.localeCompare(b.command_name)).map(permission => ({
+    return AuthorizationService.getInstance().apiPermissions.sort((a, b) => a.command_name.localeCompare(b.command_name)).map(permission => ({
       command_name: permission.command_name,
       key: `${permission.command_name}-${permission.permission_type}`,
       permission_type: permissionTypeTranslationMap[permission.permission_type],

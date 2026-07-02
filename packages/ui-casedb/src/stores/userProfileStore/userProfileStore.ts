@@ -4,7 +4,7 @@ import {
   persist,
 } from 'zustand/middleware';
 import {
-  ConfigManager,
+  ConfigService,
   FormUtil,
 } from '@gen-epix/ui';
 
@@ -42,7 +42,7 @@ export interface UserProfileStoreState {
 }
 
 export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => {
-  const widgets = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
+  const widgets = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
   const epiDashboardWidgetSettings: UserProfileStoreState['epiDashboardWidgetSettings'] = {};
   for (const widgetName of Object.keys(widgets)) {
     epiDashboardWidgetSettings[widgetName] = widgets[widgetName].configDefaultValues ?? {};
@@ -82,7 +82,7 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
           set({
             epiDashboardWidgetSettings: {
               ...epiDashboardWidgetSettings,
-              [widgetName]: ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS[widgetName].configDefaultValues ?? {},
+              [widgetName]: ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS[widgetName].configDefaultValues ?? {},
             },
           });
         },
@@ -123,7 +123,7 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
           state.setEpiDashboardArrangementConfig(validatedConfig);
         }
 
-        const widgets = ConfigManager.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
+        const widgets = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
         const initialWidgetSettings = createUserProfileStoreInitialState().epiDashboardWidgetSettings;
         for (const widgetName of Object.keys(state.epiDashboardWidgetSettings)) {
           const fieldDefs = widgets[widgetName]?.configFormFieldsDefinitions;

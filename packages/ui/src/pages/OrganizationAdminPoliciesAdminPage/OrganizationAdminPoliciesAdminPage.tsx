@@ -23,7 +23,7 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { OmitWithMetaData } from '../../models/data';
 import { CrudPage } from '../CrudPage';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 type FormFields = OmitWithMetaData<CommonDbOrganizationAdminPolicy, 'organization' | 'user'>;
 
@@ -36,19 +36,19 @@ export const OrganizationAdminPoliciesAdminPage = () => {
   const loadables = useArray([organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiManager.getInstance().abacApi.organizationAdminPoliciesGetAll(null, null, { signal }))?.data;
+    return (await ApiService.getInstance().abacApi.organizationAdminPoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOrganizationAdminPolicy) => {
-    return await ApiManager.getInstance().abacApi.organizationAdminPoliciesDeleteOne(item.id);
+    return await ApiService.getInstance().abacApi.organizationAdminPoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganizationAdminPolicy) => {
-    return (await ApiManager.getInstance().abacApi.organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await ApiService.getInstance().abacApi.organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ApiManager.getInstance().abacApi.organizationAdminPoliciesPostOne(variables)).data;
+    return (await ApiService.getInstance().abacApi.organizationAdminPoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CommonDbOrganizationAdminPolicy) => {

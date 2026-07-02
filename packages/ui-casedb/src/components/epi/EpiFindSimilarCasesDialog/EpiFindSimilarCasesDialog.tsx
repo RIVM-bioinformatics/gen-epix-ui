@@ -48,11 +48,11 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui';
 import {
-  ConfigManager,
+  ConfigService,
   DATE_FORMAT,
   FORM_FIELD_DEFINITION_TYPE,
   GenericForm,
-  QueryClientManager,
+  QueryClientService,
   ResponseHandler,
   SchemaUtil,
   TestIdUtil,
@@ -113,7 +113,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
         return s;
       }
       const sWithIntegerCheck = s.integer(t`Max distance must be an integer`);
-      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || ConfigManager.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
+      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || ConfigService.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
     }),
     treeColId: string().required(),
   }), [t, treeConfigurations]);
@@ -157,7 +157,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         label: t`Max distance`,
-        max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigManager.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
+        max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigService.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
         min: 0,
         name: 'maxDistance',
         showSlider: true,
@@ -186,7 +186,7 @@ export const EpiFindSimilarCasesDialog = withDialog<EpiFindSimilarCasesDialogPro
       }, { signal });
       return response.data;
     },
-    queryKey: [QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
+    queryKey: [QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
   const chartData = useMemo<FindSimilarCasesChartDataPoint[]>(() => {

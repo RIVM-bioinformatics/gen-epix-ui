@@ -8,17 +8,17 @@ import { useTranslation } from 'react-i18next';
 
 import type { ConfirmationRefMethods } from '../Confirmation';
 import { Confirmation } from '../Confirmation';
-import type { InactivityState } from '../../../classes/managers/InactivityManager';
-import { InactivityManager } from '../../../classes/managers/InactivityManager';
+import type { InactivityState } from '../../../classes/services/InactivityService';
+import { InactivityService } from '../../../classes/services/InactivityService';
 
 export const UserInactivityConfirmation = () => {
   const { t } = useTranslation();
   const confirmationRef = useRef<ConfirmationRefMethods>(null);
-  const [idleState, setIdleState] = useState<InactivityState>(InactivityManager.getInstance().data);
+  const [idleState, setIdleState] = useState<InactivityState>(InactivityService.getInstance().data);
 
 
   useEffect(() => {
-    const unsubscribe = InactivityManager.getInstance().subscribe((data) => {
+    const unsubscribe = InactivityService.getInstance().subscribe((data) => {
       if (data.isIdle) {
         setIdleState(data);
         confirmationRef.current?.open();
@@ -32,11 +32,11 @@ export const UserInactivityConfirmation = () => {
   }, []);
 
   const onCancel = useCallback(() => {
-    InactivityManager.getInstance().logout();
+    InactivityService.getInstance().logout();
   }, []);
 
   const onClose = useCallback(() => {
-    InactivityManager.getInstance().reset();
+    InactivityService.getInstance().reset();
   }, []);
 
 

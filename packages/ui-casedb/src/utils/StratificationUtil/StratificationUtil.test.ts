@@ -14,9 +14,9 @@ import type {
   CaseDbConcept,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import { ConfigManager } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import { EpiDataService } from '../../classes/services/EpiDataService';
 import type { CaseDbConfig } from '../../models/config';
 import { STRATIFICATION_MODE } from '../../models/epi';
 import type { EpiData } from '../../models/epi';
@@ -53,18 +53,18 @@ const makeConcept = (
 let savedData: EpiData;
 
 beforeEach(() => {
-  savedData = { ...EpiDataManager.getInstance().data };
-  EpiDataManager.getInstance().data.conceptsIdsBySetId = {};
-  EpiDataManager.getInstance().data.conceptsById = {};
+  savedData = { ...EpiDataService.getInstance().data };
+  EpiDataService.getInstance().data.conceptsIdsBySetId = {};
+  EpiDataService.getInstance().data.conceptsById = {};
 });
 
 afterEach(() => {
-  Object.assign(EpiDataManager.getInstance().data, savedData);
+  Object.assign(EpiDataService.getInstance().data, savedData);
   vi.restoreAllMocks();
 });
 
 const getStratificationConfig = () =>
-  ConfigManager.getInstance<CaseDbConfig>().config.epi.STRATIFICATION;
+  ConfigService.getInstance<CaseDbConfig>().config.epi.STRATIFICATION;
 
 describe('StratificationUtil', () => {
   // -------------------------------------------------------------------------
@@ -302,9 +302,9 @@ describe('StratificationUtil', () => {
         const SET_ID = 'set1';
 
         const setUpConcepts = (concepts: CaseDbConcept[]) => {
-          EpiDataManager.getInstance().data.conceptsIdsBySetId[SET_ID] = concepts.map(c => c.id);
+          EpiDataService.getInstance().data.conceptsIdsBySetId[SET_ID] = concepts.map(c => c.id);
           concepts.forEach(c => {
-            EpiDataManager.getInstance().data.conceptsById[c.id] = c;
+            EpiDataService.getInstance().data.conceptsById[c.id] = c;
           });
         };
 
@@ -434,7 +434,7 @@ describe('StratificationUtil', () => {
             makeConcept('c2', 2, null),
           ];
           concepts.forEach(c => {
-            EpiDataManager.getInstance().data.conceptsById[c.id] = c;
+            EpiDataService.getInstance().data.conceptsById[c.id] = c;
           });
           // conceptsIdsBySetId[SET_ID] is intentionally left unset
 

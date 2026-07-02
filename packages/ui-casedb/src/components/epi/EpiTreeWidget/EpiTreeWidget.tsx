@@ -29,13 +29,13 @@ import type { CaseDbRetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-ca
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui';
 import {
-  ConfigManager,
+  ConfigService,
   Spinner,
   Subject,
   useQueryMemo,
 } from '@gen-epix/ui';
 
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
 import type {
   EpiDashboardTreeSettings,
   Highlighting,
@@ -210,7 +210,7 @@ export const EpiTreeWidget = () => {
       treeRef.current?.unlink({
         positionX: 0,
         positionY: 0,
-        zoomLevel: ConfigManager.getInstance<CaseDbConfig>().config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL,
+        zoomLevel: ConfigService.getInstance<CaseDbConfig>().config.epiTree.INITIAL_UNLINKED_ZOOM_LEVEL,
       });
     }
   }, [isTreeLinked, shouldShowTree, sortByField]);
@@ -253,7 +253,7 @@ export const EpiTreeWidget = () => {
   }, [linkLineListToTree]);
 
   const onOpenFiltersButtonClick = useCallback(() => {
-    EpiEventBusManager.getInstance().emit('openFiltersMenu');
+    EpiEventBusService.getInstance().emit('openFiltersMenu');
   }, []);
 
   const resetZoomLevelAndScrollPosition = useCallback(() => {
@@ -315,7 +315,7 @@ export const EpiTreeWidget = () => {
   }, []);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
-    EpiEventBusManager.getInstance().emit('openCaseInfoDialog', {
+    EpiEventBusService.getInstance().emit('openCaseInfoDialog', {
       caseId: baseData.find(c => c.id === extraLeafInfoId).id,
       caseTypeId: completeCaseType.id,
     });
@@ -433,7 +433,7 @@ export const EpiTreeWidget = () => {
           treeAlgorithm: treeConfiguration?.treeAlgorithm.name ?? '',
         });
 
-      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
+      EpiEventBusService.getInstance().emit('onDownloadOptionsChanged', {
         disabled: isTreeUnavailable,
         items: [
           {
@@ -456,23 +456,23 @@ export const EpiTreeWidget = () => {
 
 
     emitDownloadOptions();
-    const epiEventBusManager = EpiEventBusManager.getInstance();
-    epiEventBusManager.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+    const epiEventBusService = EpiEventBusService.getInstance();
+    epiEventBusService.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
 
     return () => {
-      epiEventBusManager.emit('onDownloadOptionsChanged', {
+      epiEventBusService.emit('onDownloadOptionsChanged', {
         items: null,
         zone: EPI_WIDGET_NAME.TREE,
         zoneLabel: t`Tree`,
       });
-      epiEventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
+      epiEventBusService.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
   }, [completeCaseType, isTreeLinked, isTreeUnavailable, newick, t, treeCanvas, treeConfiguration?.geneticDistanceProtocol.name, treeConfiguration?.treeAlgorithm.name]);
 
 
   useEffect(() => {
     // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
-    const removeEventListener = EpiEventBusManager.getInstance().addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
+    const removeEventListener = EpiEventBusService.getInstance().addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
     return () => {
       removeEventListener();
     };
@@ -543,7 +543,7 @@ export const EpiTreeWidget = () => {
         {(isLoading && !isTreeUnavailable) && (
           <Spinner
             label={t`Loading`}
-            takingLongerTimeoutMs={ConfigManager.getInstance<CaseDbConfig>().config.epiTree.TAKING_LONGER_TIMEOUT_MS}
+            takingLongerTimeoutMs={ConfigService.getInstance<CaseDbConfig>().config.epiTree.TAKING_LONGER_TIMEOUT_MS}
           />
         )}
         {!isTreeUnavailable && shouldShowTree && (
@@ -553,7 +553,7 @@ export const EpiTreeWidget = () => {
             externalVisibleRangeSubject={epiDashboardContext.lineListRangeSubject}
             highlightingSubject={epiDashboardContext.highlightSubject}
             initialViewState={initialTreeViewState}
-            itemHeight={ConfigManager.getInstance<CaseDbConfig>().config.epiLineList.TABLE_ROW_HEIGHT}
+            itemHeight={ConfigService.getInstance<CaseDbConfig>().config.epiLineList.TABLE_ROW_HEIGHT}
             leafOrder={sortedLeafNames}
             onCanvasChange={onTreeCanvasChange}
             onLinkStateChange={onLinkStateChange}

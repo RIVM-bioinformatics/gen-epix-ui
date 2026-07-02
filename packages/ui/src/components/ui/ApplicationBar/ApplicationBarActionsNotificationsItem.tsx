@@ -14,20 +14,20 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useTranslation } from 'react-i18next';
 
 import { NotificationsDrawer } from '../Notifications';
-import { NotificationManager } from '../../../classes/managers/NotificationManager';
+import { NotificationService } from '../../../classes/services/NotificationService';
 import { useSubscribable } from '../../../hooks/useSubscribable';
 
 
 export const ApplicationBarActionsNotificationsItem = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const notifications = useSubscribable(NotificationManager.getInstance());
+  const notifications = useSubscribable(NotificationService.getInstance());
   const isLoading = useMemo(() => notifications.some(x => x.isLoading), [notifications]);
   const [open, setOpen] = useState(false);
 
 
   const onMenuIconClick = useCallback(() => {
-    NotificationManager.getInstance().hideAllNotifications();
+    NotificationService.getInstance().hideAllNotifications();
     setOpen(true);
   }, []);
 

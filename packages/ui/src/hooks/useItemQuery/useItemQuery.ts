@@ -10,7 +10,7 @@ import type {
 
 import type { GenericData } from '../../models/data';
 import { useQueryMemo } from '../useQueryMemo';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 
 export type UseItemQueryProps<T extends GenericData, TQueryKey extends string = string> = {
   readonly baseQueryKey: TQueryKey;
@@ -25,13 +25,13 @@ export const useItemQuery = <T extends GenericData>({
   itemId,
   useQueryOptions,
 }: UseItemQueryProps<T>) => {
-  const { queryCache } = QueryClientManager.getInstance();
-  const [itemFromCache, setItemFromCache] = useState<T>(QueryClientManager.getInstance().getItemFromCache<T>(baseQueryKey, itemId));
+  const { queryCache } = QueryClientService.getInstance();
+  const [itemFromCache, setItemFromCache] = useState<T>(QueryClientService.getInstance().getItemFromCache<T>(baseQueryKey, itemId));
 
   const useQueryResult = useQueryMemo({
     ...useQueryOptions,
     enabled: !itemFromCache && useQueryOptions.enabled,
-    queryKey: QueryClientManager.getInstance().getGenericKey(baseQueryKey, itemId),
+    queryKey: QueryClientService.getInstance().getGenericKey(baseQueryKey, itemId),
   });
 
   useEffect(() => {

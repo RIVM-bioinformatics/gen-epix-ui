@@ -26,12 +26,12 @@ import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import { GenericForm } from '../../components/form/helpers/GenericForm';
-import { AuthenticationManager } from '../../classes/managers/AuthenticationManager';
+import { AuthenticationService } from '../../classes/services/AuthenticationService';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
-import { NotificationManager } from '../../classes/managers/NotificationManager';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { NotificationService } from '../../classes/services/NotificationService';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 export interface UserInvitationConsumeDialogOpenProps {
   item: CommonDbUserInvitation;
@@ -82,9 +82,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
 
   const onFormSubmit = useCallback(async (data: FormFields) => {
     try {
-      AuthenticationManager.getInstance().temporaryToken = data.bearerToken;
-      await ApiManager.getInstance().organizationApi.userRegistrationsPostOne(openProps.item.token);
-      NotificationManager.getInstance().showNotification({
+      AuthenticationService.getInstance().temporaryToken = data.bearerToken;
+      await ApiService.getInstance().organizationApi.userRegistrationsPostOne(openProps.item.token);
+      NotificationService.getInstance().showNotification({
         message: t`Invitation has been consumed by bearer token`,
         severity: 'success',
       });
@@ -92,9 +92,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
     } catch (responseError) {
       setError(responseError);
     } finally {
-      delete AuthenticationManager.getInstance().temporaryToken;
-      const queryKeys = QueryClientManager.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
-      await QueryClientManager.getInstance().invalidateQueryKeys(queryKeys);
+      delete AuthenticationService.getInstance().temporaryToken;
+      const queryKeys = QueryClientService.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
+      await QueryClientService.getInstance().invalidateQueryKeys(queryKeys);
     }
   }, [onClose, openProps.item.token, t]);
 

@@ -8,7 +8,7 @@ import {
 } from '@gen-epix/api-casedb';
 import type { CrudPageSubPage } from '@gen-epix/ui';
 import {
-  AuthorizationManager,
+  AuthorizationService,
   UsersAdminPage,
 } from '@gen-epix/ui';
 import {
@@ -25,7 +25,7 @@ export const CaseDbUsersAdminPage = () => {
   const epiUserRightsDialogRef = useRef<EpiUserRightsDialogRefMethods>(null);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbUser>[]>(() => {
-    const doesUserHavePermissionToViewEffectiveRights = AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    const doesUserHavePermissionToViewEffectiveRights = AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
       { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
       { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },

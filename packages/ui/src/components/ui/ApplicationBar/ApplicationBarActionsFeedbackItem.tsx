@@ -13,10 +13,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import ChatIcon from '@mui/icons-material/Chat';
 
-import { UserSettingsManager } from '../../../classes/managers/UserSettingsManager';
+import { UserSettingsService } from '../../../classes/services/UserSettingsService';
 import { UserFeedbackDialog } from '../UserFeedbackDialog';
 import type { UserFeedbackDialogRefMethods } from '../UserFeedbackDialog';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
 
 const NOW = new Date().getTime();
 
@@ -26,10 +26,10 @@ export const ApplicationBarActionsFeedbackItem = () => {
   const userFeedbackDialogRef = useRef<UserFeedbackDialogRefMethods>(null);
   const [isFeedbackTooltipOpen, setIsFeedbackTooltipOpen] = useState(false);
   useEffect(() => {
-    if (!UserSettingsManager.getInstance().showShowUserFeedbackTooltip) {
+    if (!UserSettingsService.getInstance().showShowUserFeedbackTooltip) {
       return;
     }
-    const timeoutMs = Math.max(0, ConfigManager.getInstance().config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS - (new Date().getTime() - NOW));
+    const timeoutMs = Math.max(0, ConfigService.getInstance().config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS - (new Date().getTime() - NOW));
     const handle = setTimeout(() => {
       setIsFeedbackTooltipOpen(true);
     }, timeoutMs);
@@ -44,7 +44,7 @@ export const ApplicationBarActionsFeedbackItem = () => {
 
   const onTooltipMouseEnter = useCallback(() => {
     setIsFeedbackTooltipOpen(false);
-    UserSettingsManager.getInstance().showShowUserFeedbackTooltip = false;
+    UserSettingsService.getInstance().showShowUserFeedbackTooltip = false;
   }, []);
 
   return (

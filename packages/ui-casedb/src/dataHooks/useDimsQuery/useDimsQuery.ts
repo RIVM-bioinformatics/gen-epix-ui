@@ -10,7 +10,7 @@ import type {
 import {
   DataHookUtil,
   DataUtil,
-  QueryClientManager,
+  QueryClientService,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -24,7 +24,7 @@ export const useDimsQuery = (): UseQueryResult<CaseDbDim[]> => {
       const response = await CaseDbCaseApi.getInstance().dimsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.DIMS),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.DIMS),
   });
 };
 

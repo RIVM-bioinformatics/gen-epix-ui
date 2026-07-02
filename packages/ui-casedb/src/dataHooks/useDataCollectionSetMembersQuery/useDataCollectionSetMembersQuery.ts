@@ -2,7 +2,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbDataCollectionSetMember } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 import {
-  QueryClientManager,
+  QueryClientService,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -15,6 +15,6 @@ export const useDataCollectionSetMembersQuery = (): UseQueryResult<CaseDbDataCol
       const response = await CaseDbOrganizationApi.getInstance().dataCollectionSetMembersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS),
   });
 };

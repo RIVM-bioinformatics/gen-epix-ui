@@ -21,8 +21,8 @@ import {
   CaseDbLogLevel,
 } from '@gen-epix/api-casedb';
 import {
-  LogManager,
-  QueryClientManager,
+  LogService,
+  QueryClientService,
   ResponseHandler,
   useQueryMemo,
 } from '@gen-epix/ui';
@@ -54,7 +54,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
       const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   // Load all case sets for the given case set members
@@ -72,7 +72,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
       const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(existingCaseSetsFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
   });
 
   const caseSetsByCase = useMemo(() => {
@@ -85,7 +85,7 @@ export const EpiCasesAlreadyInCaseSetWarning = ({ cases }: EpiCasesAlreadyInCase
       const caseItem = cases.find(x => x.id === member.case_id);
       const caseSetItem = caseSets.find(x => x.id === member.case_set_id);
       if (!caseItem || !caseSetItem) {
-        LogManager.getInstance().log([
+        LogService.getInstance().log([
           {
             detail: member,
             level: CaseDbLogLevel.DEBUG,

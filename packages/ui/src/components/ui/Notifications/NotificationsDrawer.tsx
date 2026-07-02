@@ -12,7 +12,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { NotificationManager } from '../../../classes/managers/NotificationManager';
+import { NotificationService } from '../../../classes/services/NotificationService';
 import { useSubscribable } from '../../../hooks/useSubscribable';
 
 import { NotificationItem } from './NotificationItem';
@@ -25,14 +25,14 @@ export type NotificationsDrawerProps = {
 export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawerProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const notifications = useSubscribable(NotificationManager.getInstance());
+  const notifications = useSubscribable(NotificationService.getInstance());
 
   const onNotificationItemClose = useCallback((key: string) => {
-    NotificationManager.getInstance().clearNotification(key);
+    NotificationService.getInstance().clearNotification(key);
   }, []);
 
   const onClearAllButtonClick = useCallback(() => {
-    NotificationManager.getInstance().clearNotifications();
+    NotificationService.getInstance().clearNotifications();
     onDrawerClose();
   }, [onDrawerClose]);
 

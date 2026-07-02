@@ -43,7 +43,7 @@ import {
 } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
 import { StringUtil } from '../StringUtil';
-import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { ConfigService } from '../../classes/services/ConfigService';
 
 export class TableUtil {
   public static areColumnVisualSettingsValid<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], columnVisualSettings: TableColumnVisualSettings[]): boolean {
@@ -103,7 +103,7 @@ export class TableUtil {
     tableColumnVisualSettingsCopy.forEach(setting => {
       const tableColumn = tableColumns.find(c => c.id === setting.id);
       if (tableColumn?.cellColorGetter) {
-        setting.widthPx = ConfigManager.getInstance().config.table.CONDENSED_WIDTH_PX;
+        setting.widthPx = ConfigService.getInstance().config.table.CONDENSED_WIDTH_PX;
         setting.isVisible = true;
       }
     });

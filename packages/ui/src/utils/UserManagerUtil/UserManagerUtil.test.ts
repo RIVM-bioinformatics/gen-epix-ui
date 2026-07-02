@@ -6,7 +6,7 @@ import {
 } from 'vitest';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
 
-import { WindowManager } from '../../classes/managers/WindowManager';
+import { WindowService } from '../../classes/services/WindowService';
 
 import { UserManagerUtil } from './UserManagerUtil';
 
@@ -16,7 +16,7 @@ describe('UserManagerUtil', () => {
       const mockWindow = {
         location: { href: 'https://example.com/somepath?someQuery=123' },
       } as unknown as Window;
-      vi.spyOn(WindowManager.getInstance(), 'window', 'get').mockReturnValue(mockWindow as unknown as typeof globalThis & Window);
+      vi.spyOn(WindowService.getInstance(), 'window', 'get').mockReturnValue(mockWindow as unknown as typeof globalThis & Window);
 
       const oidcConfiguration: Partial<CommonDbIdentityProvider> = {
         client_id: 'client-id-123',

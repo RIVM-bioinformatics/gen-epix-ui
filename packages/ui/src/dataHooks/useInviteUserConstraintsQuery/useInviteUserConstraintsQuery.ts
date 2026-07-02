@@ -6,16 +6,16 @@ import {
 } from '@gen-epix/api-commondb';
 
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { AuthorizationService } from '../../classes/services/AuthorizationService';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 
 export const useInviteUserConstraintsQuery = (): UseQueryResult<CommonDbUserInvitationConstraints> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      if (!AuthorizationManager.getInstance().doesUserHavePermission([
+      if (!AuthorizationService.getInstance().doesUserHavePermission([
         { command_name: CommonDbCommandName.RetrieveInviteUserConstraintsCommand, permission_type: CommonDbPermissionType.EXECUTE },
       ])) {
         return {
@@ -24,9 +24,9 @@ export const useInviteUserConstraintsQuery = (): UseQueryResult<CommonDbUserInvi
         };
       }
 
-      const response = await ApiManager.getInstance().organizationApi.inviteUserConstraints({ signal });
+      const response = await ApiService.getInstance().organizationApi.inviteUserConstraints({ signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.INVITE_USER_CONSTRAINTS),
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.INVITE_USER_CONSTRAINTS),
   });
 };

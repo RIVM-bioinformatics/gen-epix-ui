@@ -6,11 +6,11 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { ConfigManager } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 import { t } from 'i18next';
 import type { Range } from 'colorjs.io';
 
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import { EpiDataService } from '../../classes/services/EpiDataService';
 import type { CaseDbConfig } from '../../models/config';
 import type {
   CaseTypeRowValue,
@@ -72,7 +72,7 @@ export class StratificationUtil {
     },
   ): StratifiableColumn[] {
     const { completeCaseType, data } = kwArgs;
-    const { STRATIFICATION } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
 
     const filteredCols = CaseTypeUtil.getCols(completeCaseType).filter(col => {
       const column = completeCaseType.ref_cols[col.ref_col_id];
@@ -97,7 +97,7 @@ export class StratificationUtil {
       useExtraGradients?: boolean;
     },
   ): Stratification {
-    const { STRATIFICATION } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
     const { col, completeCaseType, sortedData, useExtraGradients } = kwArgs;
     if (!col) {
       return null;
@@ -134,9 +134,9 @@ export class StratificationUtil {
           gradient = STRATIFICATION.BASE_UNORDERED_GRADIENT;
         }
       }
-      const conceptSetConceptIds = EpiDataManager.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+      const conceptSetConceptIds = EpiDataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
       if (conceptSetConceptIds?.length) {
-        const concepts = conceptSetConceptIds.map(conceptId => EpiDataManager.getInstance().data.conceptsById[conceptId]).sort((a, b) => a.rank - b.rank);
+        const concepts = conceptSetConceptIds.map(conceptId => EpiDataService.getInstance().data.conceptsById[conceptId]).sort((a, b) => a.rank - b.rank);
         if (concepts.every(concept => StratificationUtil.isEpiConceptBoundaryProps(concept.props))) {
           const boundaryProps = concepts.map(concept => concept.props as EpiConceptBoundaryProps);
           const finiteLbs = boundaryProps.map(bp => bp.lb).filter(v => isFinite(v));
@@ -213,7 +213,7 @@ export class StratificationUtil {
       sortedData: CaseDbCase[];
     },
   ): Stratification {
-    const { STRATIFICATION } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
     const { col, selectedIds, sortedData } = kwArgs;
     const caseIdColors: { [key: string]: string } = {};
     const legendaItems: StratificationLegendaItem[] = [];
@@ -265,14 +265,14 @@ export class StratificationUtil {
       sortedData: CaseDbCase[];
     },
   ): CaseTypeRowValue[] {
-    const { STRATIFICATION } = ConfigManager.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
     const { col, completeCaseType, sortedData } = kwArgs;
     const refCol = completeCaseType.ref_cols[col.ref_col_id];
-    const conceptSetConceptIds = EpiDataManager.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+    const conceptSetConceptIds = EpiDataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
 
     if (conceptSetConceptIds) {
       const uniqueRowValues: CaseTypeRowValue[] = [];
-      conceptSetConceptIds.map(conceptId => EpiDataManager.getInstance().data.conceptsById[conceptId]).sort((a, b) => {
+      conceptSetConceptIds.map(conceptId => EpiDataService.getInstance().data.conceptsById[conceptId]).sort((a, b) => {
         if (STRATIFICATION.GRADIENT_COL_TYPES.includes(refCol.col_type) && a.rank !== b.rank) {
           return a.rank - b.rank;
         }

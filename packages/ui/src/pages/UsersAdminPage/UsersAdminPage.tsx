@@ -30,13 +30,13 @@ import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageProps } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
+import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { useArray } from '../../hooks/useArray';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 export type UsersAdminPageProps = {
   subPages?: CrudPageProps<OmitWithMetaData<CommonDbUser, 'organization_id' | 'organization'>, CommonDbUser>['subPages'];
@@ -58,7 +58,7 @@ export const UsersAdminPage = ({
     inviteUserConstraintsQuery,
   ]);
 
-  const userRoles = AuthorizationManager.getInstance().user.roles;
+  const userRoles = AuthorizationService.getInstance().user.roles;
 
   const onRowsChange = useCallback((items: CommonDbUser[]) => {
     // Because roles are a string array (instead of an enum or similar), we need to dynamically determine the options for the roles column in the table and in the form.
@@ -73,7 +73,7 @@ export const UsersAdminPage = ({
     }));
     setTableRoleOptions(_tableRoleOptions);
     let _formRoleOptions: OptionBase<string>[];
-    if (AuthorizationManager.getInstance().doesUserHavePermission([
+    if (AuthorizationService.getInstance().doesUserHavePermission([
       { command_name: CommonDbCommandName.RetrieveInviteUserConstraintsCommand, permission_type: CommonDbPermissionType.EXECUTE },
     ])) {
       _formRoleOptions = inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
@@ -95,13 +95,13 @@ export const UsersAdminPage = ({
   }, [inviteUserConstraintsQuery.data, userRoles]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    const users = (await ApiManager.getInstance().organizationApi.usersGetAll(null, null, { signal }))?.data;
+    const users = (await ApiService.getInstance().organizationApi.usersGetAll(null, null, { signal }))?.data;
 
     return users;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbUser) => {
-    return (await ApiManager.getInstance().organizationApi.updateUser(item.id, {
+    return (await ApiService.getInstance().organizationApi.updateUser(item.id, {
       is_active: variables.is_active,
       organization_id: item.organization_id,
       roles: variables.roles,
@@ -109,7 +109,7 @@ export const UsersAdminPage = ({
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbUser) => {
-    return await ApiManager.getInstance().organizationApi.usersDeleteOne(item.id);
+    return await ApiService.getInstance().organizationApi.usersDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -117,7 +117,7 @@ export const UsersAdminPage = ({
   }, []);
 
   const canEditItem = useCallback((item: CommonDbUser) => {
-    return AuthorizationManager.getInstance().user.email !== item.email;
+    return AuthorizationService.getInstance().user.email !== item.email;
   }, []);
 
   const schema = useMemo(() => {

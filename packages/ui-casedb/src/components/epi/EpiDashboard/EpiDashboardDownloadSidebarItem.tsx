@@ -14,7 +14,7 @@ import {
 } from 'react';
 import type { SidebarItemSharedProps } from '@gen-epix/ui';
 import {
-  ConfigManager,
+  ConfigService,
   SidebarItem,
 } from '@gen-epix/ui';
 
@@ -22,8 +22,8 @@ import type {
   DownloadConfig,
   DownloadConfigItem,
   DownloadConfigSection,
-} from '../../../classes/managers/EpiEventBusManager';
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+} from '../../../classes/services/EpiEventBusService';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
 import type { CaseDbConfig } from '../../../models/config';
 
 
@@ -49,16 +49,16 @@ const EpiDashboardDownloadSidebarItemContent = () => {
           ...prevDownloadOptions.filter(item => item.zone !== payload.zone),
           payload,
         ].sort((a, b) => {
-          return ConfigManager.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - ConfigManager.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
+          return ConfigService.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - ConfigService.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
         });
       });
     };
-    const epiEventBusManager = EpiEventBusManager.getInstance();
-    epiEventBusManager.addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
-    epiEventBusManager.emit('onDownloadOptionsRequested');
+    const epiEventBusService = EpiEventBusService.getInstance();
+    epiEventBusService.addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
+    epiEventBusService.emit('onDownloadOptionsRequested');
 
     return () => {
-      epiEventBusManager.removeEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
+      epiEventBusService.removeEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
     };
   }, []);
 

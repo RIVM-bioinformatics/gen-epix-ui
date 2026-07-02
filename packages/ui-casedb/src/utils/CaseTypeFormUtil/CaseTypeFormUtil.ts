@@ -23,7 +23,7 @@ import {
   string,
 } from 'yup';
 
-import { EpiDataManager } from '../../classes/managers/EpiDataManager';
+import { EpiDataService } from '../../classes/services/EpiDataService';
 import { AbacUtil } from '../AbacUtil';
 import { CaseTypeUtil } from '../CaseTypeUtil';
 
@@ -71,14 +71,14 @@ export class CaseTypeFormUtil {
           } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
           break;
         case CaseDbColType.GEO_REGION:
-          if (EpiDataManager.getInstance().data.regionsByRegionSetId[refCol.region_set_id]) {
+          if (EpiDataService.getInstance().data.regionsByRegionSetId[refCol.region_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               disabled,
               label: col.label,
               name: col.id,
-              options: EpiDataManager.getInstance().data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
-                label: EpiDataManager.getInstance().data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
+              options: EpiDataService.getInstance().data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
+                label: EpiDataService.getInstance().data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
                 value: region.id,
               })),
             } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
@@ -87,13 +87,13 @@ export class CaseTypeFormUtil {
         case CaseDbColType.INTERVAL:
         case CaseDbColType.NOMINAL:
         case CaseDbColType.ORDINAL:
-          if (EpiDataManager.getInstance().data.conceptsBySetId[refCol.concept_set_id]) {
+          if (EpiDataService.getInstance().data.conceptsBySetId[refCol.concept_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               disabled,
               label: col.label,
               name: col.id,
-              options: EpiDataManager.getInstance().data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
+              options: EpiDataService.getInstance().data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
                 label: concept.name,
                 value: concept.id,
               })),
@@ -106,7 +106,7 @@ export class CaseTypeFormUtil {
             disabled,
             label: col.label,
             name: col.id,
-            options: (EpiDataManager.getInstance().data.organizations ?? []).map(organization => ({
+            options: (EpiDataService.getInstance().data.organizations ?? []).map(organization => ({
               label: organization.name,
               value: organization.id,
             })).sort((a, b) => StringUtil.advancedSortComperator(a.label, b.label)),

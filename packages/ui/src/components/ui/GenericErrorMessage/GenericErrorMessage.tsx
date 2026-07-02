@@ -14,11 +14,11 @@ import { isAxiosError } from 'axios';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { AxiosUtil } from '../../../utils/AxiosUtil';
-import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { LogManager } from '../../../classes/managers/LogManager';
-import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
-import { RouterManager } from '../../../classes/managers/RouterManager';
+import { AuthenticationService } from '../../../classes/services/AuthenticationService';
+import { ConfigService } from '../../../classes/services/ConfigService';
+import { LogService } from '../../../classes/services/LogService';
+import { PageEventBusService } from '../../../classes/services/PageEventBusService';
+import { RouterService } from '../../../classes/services/RouterService';
 
 export type GenericErrorMessageProps = {
   readonly error?: unknown;
@@ -30,10 +30,10 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
 
   useEffect(() => {
     if (!error || isAxiosError(error)) {
-      // Axios errors are logged in LogManager already
+      // Axios errors are logged in LogService already
       return;
     }
-    LogManager.getInstance().log([{
+    LogService.getInstance().log([{
       detail: {
         error,
         stack: (error as Error)?.stack,
@@ -41,29 +41,29 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       level: isAxiosError(error) ? CommonDbLogLevel.DEBUG : CommonDbLogLevel.ERROR,
       topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
     }]);
-    LogManager.getInstance().flushLog();
-    if (error instanceof Error && ConfigManager.getInstance().config.enablePageEvents) {
-      PageEventBusManager.getInstance().emit('error', error);
+    LogService.getInstance().flushLog();
+    if (error instanceof Error && ConfigService.getInstance().config.enablePageEvents) {
+      PageEventBusService.getInstance().emit('error', error);
     }
   }, [error]);
 
   const onBackToHomePageButtonClick = useCallback(async () => {
-    await RouterManager.getInstance().router.navigate({
+    await RouterService.getInstance().router.navigate({
       pathname: '/',
     });
   }, []);
 
   const onBackButtonClick = useCallback(async () => {
-    await RouterManager.getInstance().router.navigate(-1);
+    await RouterService.getInstance().router.navigate(-1);
   }, []);
 
   const onLogoutButtonClick = useCallback(async () => {
-    AuthenticationManager.clearStaleState();
-    if (AuthenticationManager.getInstance().authContextProps) {
+    AuthenticationService.clearStaleState();
+    if (AuthenticationService.getInstance().authContextProps) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      AuthenticationManager.getInstance().authContextProps.signoutRedirect();
+      AuthenticationService.getInstance().authContextProps.signoutRedirect();
     } else {
-      await RouterManager.getInstance().router.navigate({
+      await RouterService.getInstance().router.navigate({
         pathname: '/',
       });
     }

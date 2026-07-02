@@ -2,12 +2,12 @@ import { useMutation } from '@tanstack/react-query';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
 
-import { NotificationManager } from '../../classes/managers/NotificationManager';
+import { NotificationService } from '../../classes/services/NotificationService';
 import type { GenericData } from '../../models/data';
 import { StringUtil } from '../../utils/StringUtil';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 import { ObjectUtil } from '../../utils/ObjectUtil';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 
 
 export type MutationContextCreate<TData> = { notificationKey?: string; previousData?: TData[]; temporaryId?: string };
@@ -33,7 +33,7 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
   queryFn,
   resourceQueryKey,
 }: UseCreateMutationProps<TData, TVariables>) => {
-  const queryClient = QueryClientManager.getInstance().queryClient;
+  const queryClient = QueryClientService.getInstance().queryClient;
 
   const createMutation = useMutation<TData, Error, TVariables, MutationContextCreate<TData>>({
     mutationFn: async (item) => {
@@ -48,14 +48,14 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
           return [...oldItems.filter(item => (item as GenericData)?.id !== context.temporaryId)];
         });
       }
-      await QueryClientManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await QueryClientService.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onError) {
         await onError(error, variables, context);
       }
-      NotificationManager.getInstance().fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
+      NotificationService.getInstance().fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
     },
     onMutate: async (variables) => {
-      const notificationKey = NotificationManager.getInstance().showNotification({
+      const notificationKey = NotificationService.getInstance().showNotification({
         isLoading: true,
         message: getProgressNotificationMessage(variables),
         severity: 'info',
@@ -88,11 +88,11 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
           ];
         });
       }
-      await QueryClientManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await QueryClientService.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
         await onSuccess(item, variables, context);
       }
-      NotificationManager.getInstance().fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
+      NotificationService.getInstance().fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
     },
   });
 

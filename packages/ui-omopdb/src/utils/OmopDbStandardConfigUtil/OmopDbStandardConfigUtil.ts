@@ -1,7 +1,7 @@
 import {
-  I18nManager,
+  I18nService,
   StandardConfigUtil,
-  WindowManager,
+  WindowService,
 } from '@gen-epix/ui';
 import { t } from 'i18next';
 
@@ -10,11 +10,11 @@ import type { OmopDbConfig } from '../../models/config';
 export class OmopDbStandardConfigUtil {
   public static createConfig(): Omit<OmopDbConfig, 'theme'> {
     const onEnglishClick = () => {
-      I18nManager.getInstance().emit('onUserLanguageChange', 'en');
+      I18nService.getInstance().emit('onUserLanguageChange', 'en');
     };
 
     const onDutchClick = () => {
-      I18nManager.getInstance().emit('onUserLanguageChange', 'nl');
+      I18nService.getInstance().emit('onUserLanguageChange', 'nl');
     };
 
     const config: Omit<OmopDbConfig, 'theme'> = {
@@ -65,7 +65,7 @@ export class OmopDbStandardConfigUtil {
       enablePageEvents: false,
 
       getAPIBaseUrl: () => {
-        const { location: { href } } = WindowManager.getInstance().window.document;
+        const { location: { href } } = WindowService.getInstance().window.document;
         const { hostname } = new URL(href);
         switch (hostname) {
           case '127.0.0.1':
@@ -77,7 +77,7 @@ export class OmopDbStandardConfigUtil {
         }
       },
       getEnvironmentMessage: () => {
-        const { location: { href } } = WindowManager.getInstance().window.document;
+        const { location: { href } } = WindowService.getInstance().window.document;
         const { hostname } = new URL(href);
         let environment: string;
         switch (hostname) {

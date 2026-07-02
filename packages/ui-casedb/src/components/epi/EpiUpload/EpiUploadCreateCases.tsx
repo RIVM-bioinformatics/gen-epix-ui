@@ -17,9 +17,9 @@ import {
 import { useStore } from 'zustand';
 import {
   GenericErrorMessage,
-  InactivityManager,
+  InactivityService,
   LinearProgressWithLabel,
-  RouterManager,
+  RouterService,
 } from '@gen-epix/ui';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
@@ -67,13 +67,13 @@ export const EpiUploadCreateCases = () => {
 
     const abort = () => {
       abortController.abort();
-      InactivityManager.getInstance().resume();
+      InactivityService.getInstance().resume();
     };
 
     if (!isUploadStarted) {
       return abort;
     }
-    InactivityManager.getInstance().pause();
+    InactivityService.getInstance().pause();
 
     const perform = async () => {
       const result = await EpiUploadUtil.createCasesAndUploadFiles({
@@ -129,7 +129,7 @@ export const EpiUploadCreateCases = () => {
 
   const onGotoCasesButtonClick = useCallback(async () => {
     const link = CaseTypeUtil.createCaseTypeLink(completeCaseType);
-    await RouterManager.getInstance().router.navigate(link);
+    await RouterService.getInstance().router.navigate(link);
   }, [completeCaseType]);
 
   let content: ReactNode;

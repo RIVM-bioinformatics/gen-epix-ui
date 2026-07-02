@@ -9,7 +9,7 @@ import type {
 import {
   DataHookUtil,
   DataUtil,
-  QueryClientManager,
+  QueryClientService,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -21,7 +21,7 @@ export const useRefColsQuery = (): UseQueryResult<CaseDbRefCol[]> => {
       const response = await CaseDbCaseApi.getInstance().refColsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_COLS),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_COLS),
   });
 };
 

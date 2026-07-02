@@ -26,9 +26,9 @@ import type {
 } from '@gen-epix/ui';
 import {
   Confirmation,
-  QueryClientManager,
+  QueryClientService,
   ResponseHandler,
-  RouterManager,
+  RouterService,
   Spinner,
   TestIdUtil,
   useArray,
@@ -103,7 +103,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   }, [onClose]);
 
   const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<CaseDbCaseSet>({
-    associationQueryKeys: QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS], true),
+    associationQueryKeys: QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS], true),
     getErrorNotificationMessage: (data) => t('Unable to remove event: {{name}}.', { name: data.name }),
     getProgressNotificationMessage: (data) => t('Deleting event: {{name}}...', { name: data.name }),
     getSuccessNotificationMessage: (data) => t('Event: {{name}}, has been removed.', { name: data.name }),
@@ -112,7 +112,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
     queryFn: async (item: CaseDbCaseSet) => {
       return await CaseDbCaseApi.getInstance().caseSetsDeleteOne(item.id);
     },
-    resourceQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   const { data: caseSet, error: caseSetError, isLoading: isCaseSetLoading } = useItemQuery<CaseDbCaseSet>({
@@ -139,7 +139,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
       const response = await CaseDbCaseApi.getInstance().caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
   });
 
   const canEdit = useMemo(() => {
@@ -195,7 +195,7 @@ export const EpiCaseSetInfoDialog = withDialog<EpiCaseSetInfoDialogProps, EpiCas
   const isSaving = isEpiCaseSetFormSaving || isEpiCaseSetDataCollectionFormSaving;
 
   const onGotoEventButtonClick = useCallback(async () => {
-    await RouterManager.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
+    await RouterService.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
   }, [caseSet]);
 
   useEffect(() => {

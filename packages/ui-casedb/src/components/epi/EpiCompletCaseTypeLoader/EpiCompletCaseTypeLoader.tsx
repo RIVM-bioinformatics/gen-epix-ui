@@ -13,7 +13,7 @@ import {
   useItemQuery,
 } from '@gen-epix/ui';
 
-import { EpiDataManager } from '../../../classes/managers/EpiDataManager';
+import { EpiDataService } from '../../../classes/services/EpiDataService';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 
 
@@ -49,10 +49,10 @@ export const EpiCompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseT
       const perform = async () => {
         try {
           await Promise.all([
-            EpiDataManager.getInstance().loadConcepts(abortController.signal),
-            EpiDataManager.getInstance().loadMissingRegions(completeCaseType, abortController.signal),
-            EpiDataManager.getInstance().loadTreeAlgorithms(completeCaseType, abortController.signal),
-            EpiDataManager.getInstance().loadOrganizations(abortController.signal),
+            EpiDataService.getInstance().loadConcepts(abortController.signal),
+            EpiDataService.getInstance().loadMissingRegions(completeCaseType, abortController.signal),
+            EpiDataService.getInstance().loadTreeAlgorithms(completeCaseType, abortController.signal),
+            EpiDataService.getInstance().loadOrganizations(abortController.signal),
           ]);
           setIsSideEffectLoading(false);
         } catch (error) {

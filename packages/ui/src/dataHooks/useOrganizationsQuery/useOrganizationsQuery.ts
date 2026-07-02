@@ -9,17 +9,17 @@ import type {
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../data/query';
-import { ApiManager } from '../../classes/managers/ApiManager';
+import { ApiService } from '../../classes/services/ApiService';
 
 export const useOrganizationsQuery = (): UseQueryResult<CommonDbOrganization[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiManager.getInstance().organizationApi.organizationsGetAll(null, null, { signal });
+      const response = await ApiService.getInstance().organizationApi.organizationsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS),
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS),
   });
 };
 

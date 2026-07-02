@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { visuallyHidden } from '@mui/utils';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
 
 
 export type SpinnerProps = {
@@ -31,7 +31,7 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
   useEffect(() => {
     const handle = setTimeout(() => {
       setIsTakingLonger(true);
-    }, takingLongerTimeoutMs ?? ConfigManager.getInstance().config.spinner.DEFAULT_TAKING_LONGER_TIMEOUT_MS);
+    }, takingLongerTimeoutMs ?? ConfigService.getInstance().config.spinner.DEFAULT_TAKING_LONGER_TIMEOUT_MS);
     return () => {
       clearTimeout(handle);
     };
@@ -61,7 +61,7 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
       >
         <CircularProgress
           color={color}
-          size={size ?? ConfigManager.getInstance().config.spinner.DEFAULT_CIRCULAR_PROGRESS_SIZE}
+          size={size ?? ConfigService.getInstance().config.spinner.DEFAULT_CIRCULAR_PROGRESS_SIZE}
         />
       </Box>
       <Box

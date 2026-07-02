@@ -21,7 +21,7 @@ import {
   FORM_FIELD_DEFINITION_TYPE,
   FormUtil,
   GenericForm,
-  QueryClientManager,
+  QueryClientService,
   SchemaUtil,
   Spinner,
   useEditMutation,
@@ -118,7 +118,7 @@ export const EpiCaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: 
       const result = await CaseDbCaseApi.getInstance().caseSetsPutOne(item.id, { ...item, ...formData });
       return result.data;
     },
-    resourceQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   useEffect(() => {

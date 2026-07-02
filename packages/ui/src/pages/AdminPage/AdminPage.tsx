@@ -18,8 +18,8 @@ import {
   useMemo,
 } from 'react';
 
-import { AuthorizationManager } from '../../classes/managers/AuthorizationManager';
-import { RouterManager } from '../../classes/managers/RouterManager';
+import { AuthorizationService } from '../../classes/services/AuthorizationService';
+import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ADMIN_PAGE_CATEGORY } from '../../models/admin';
 import type { MyNonIndexRouteObject } from '../../models/reactRouter';
@@ -38,10 +38,10 @@ export const AdminPage = () => {
   const theme = useTheme();
 
   const menuItems = useMemo(() => {
-    const items = RouterManager.getInstance().adminRoutes
+    const items = RouterService.getInstance().adminRoutes
       .map(r => r.children?.length ? r.children.find(child => child.index) as MyNonIndexRouteObject : r)
       .filter(r => {
-        const hasPermission = AuthorizationManager.getInstance().doesUserHavePermission(r.handle.requiredPermissions);
+        const hasPermission = AuthorizationService.getInstance().doesUserHavePermission(r.handle.requiredPermissions);
         return !r.handle?.hidden && hasPermission;
       });
     return items;
@@ -75,7 +75,7 @@ export const AdminPage = () => {
   }, [categoryToLabelMap, menuItems]);
 
   const onCardClick = useCallback(async (path: string) => {
-    await RouterManager.getInstance().router.navigate(path);
+    await RouterService.getInstance().router.navigate(path);
   }, []);
 
   if (location?.pathname !== '/management') {

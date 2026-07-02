@@ -5,8 +5,8 @@ import {
   vi,
 } from 'vitest';
 import {
-  ConfigManager,
-  DevicePixelRatioManager,
+  ConfigService,
+  DevicePixelRatioService,
   Subject,
 } from '@gen-epix/ui';
 import { customRender } from '@gen-epix/ui/test-lib';
@@ -32,9 +32,9 @@ import { PhylogeneticTreeComponent } from './PhylogeneticTreeComponent';
 const DEFAULT_HEIGHT = 320;
 const DEFAULT_ITEM_HEIGHT = 32;
 const DEFAULT_WIDTH = 640;
-const HEADER_HEIGHT = ConfigManager.getInstance<CaseDbConfig>().config.epiTree.HEADER_HEIGHT;
+const HEADER_HEIGHT = ConfigService.getInstance<CaseDbConfig>().config.epiTree.HEADER_HEIGHT;
 const LARGE_TREE_NEWICK = '(A:1,B:1,C:1,D:1,E:1,F:1,G:1,H:1,I:1,J:1);';
-const TREE_PADDING = ConfigManager.getInstance<CaseDbConfig>().config.epiTree.TREE_PADDING;
+const TREE_PADDING = ConfigService.getInstance<CaseDbConfig>().config.epiTree.TREE_PADDING;
 
 let ariaLabelCounter = 0;
 
@@ -887,7 +887,7 @@ describe('PhylogeneticTreeComponent', () => {
   });
 
   test('redraws the canvas when the device pixel ratio changes', async () => {
-    const originalDevicePixelRatio = DevicePixelRatioManager.getInstance().data;
+    const originalDevicePixelRatio = DevicePixelRatioService.getInstance().data;
     const ref = createComponentRef();
     const viewStates: PhylogeneticTreeComponentViewState[] = [];
     const tree = parseTree(LARGE_TREE_NEWICK);
@@ -936,7 +936,7 @@ describe('PhylogeneticTreeComponent', () => {
       });
     });
 
-    DevicePixelRatioManager.getInstance().next(originalDevicePixelRatio * 2);
+    DevicePixelRatioService.getInstance().next(originalDevicePixelRatio * 2);
 
     await waitForAssertion(() => {
       expect(getLast(viewStates)).toMatchObject({
@@ -947,7 +947,7 @@ describe('PhylogeneticTreeComponent', () => {
       expect(canvas.width).toBe(canvas.clientWidth * (originalDevicePixelRatio * 2));
     });
 
-    DevicePixelRatioManager.getInstance().next(originalDevicePixelRatio);
+    DevicePixelRatioService.getInstance().next(originalDevicePixelRatio);
 
     await renderResult.unmount();
   });

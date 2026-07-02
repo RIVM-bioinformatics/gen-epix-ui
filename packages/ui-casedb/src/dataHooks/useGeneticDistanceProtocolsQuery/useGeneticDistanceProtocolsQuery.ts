@@ -5,7 +5,7 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { UseOptions } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QueryClientManager,
+  QueryClientService,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -18,7 +18,7 @@ export const useGeneticDistanceProtocolsQuery = (): UseQueryResult<CaseDbGenetic
       const response = await CaseDbCaseApi.getInstance().geneticDistanceProtocolsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.GENETIC_DISTANCE_PROTOCOLS),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.GENETIC_DISTANCE_PROTOCOLS),
   });
 };
 

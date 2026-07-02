@@ -19,9 +19,9 @@ import {
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { useTranslation } from 'react-i18next';
 
-import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
-import { LogManager } from '../../../classes/managers/LogManager';
-import { NavigationHistoryManager } from '../../../classes/managers/NavigationHistoryManager';
+import { AuthenticationService } from '../../../classes/services/AuthenticationService';
+import { LogService } from '../../../classes/services/LogService';
+import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';
 import { useSubscribable } from '../../../hooks/useSubscribable';
 import { ChooseIdentityProviderPage } from '../../../pages/ChooseIdentityProviderPage';
 import { UserManagerUtil } from '../../../utils/UserManagerUtil';
@@ -29,30 +29,30 @@ import { NotificationsStack } from '../../ui/Notifications';
 import { Spinner } from '../../ui/Spinner';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
 import type { IdentityProviderWithAvailability } from '../../../models/auth';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ApplicationBootstrap } from '../ApplicationBootstrap';
 import { AuthenticationWrapper } from '../AuthenticationWrapper';
 import { AuthorizationWrapper } from '../AuthorizationWrapper';
-import { QueryClientManager } from '../../../classes/managers/QueryClientManager';
+import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../../data/query';
-import { RouterManager } from '../../../classes/managers/RouterManager';
-import { ApiManager } from '../../../classes/managers/ApiManager';
-import { WindowManager } from '../../../classes/managers/WindowManager';
+import { RouterService } from '../../../classes/services/RouterService';
+import { ApiService } from '../../../classes/services/ApiService';
+import { WindowService } from '../../../classes/services/WindowService';
 
 
 export const RouterRoot = () => {
   const { t } = useTranslation();
   const location = useLocation();
 
-  const oidcConfiguration = useSubscribable(AuthenticationManager.getInstance());
+  const oidcConfiguration = useSubscribable(AuthenticationService.getInstance());
 
   const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const providers = (await ApiManager.getInstance().authApi.identityProvidersGetAll({ signal })).data;
+      const providers = (await ApiService.getInstance().authApi.identityProvidersGetAll({ signal })).data;
       if (!Array.isArray(providers)) {
         throw new Error('Invalid response for identity providers. Backend is most likely misconfigured.');
       }
@@ -71,7 +71,7 @@ export const RouterRoot = () => {
         } catch (error: unknown) {
           console.error(`Identity provider ${provider.name} is not available`, error);
           if (oidcConfiguration?.name === provider.name) {
-            AuthenticationManager.getInstance().next(undefined);
+            AuthenticationService.getInstance().next(undefined);
           }
           providersWithAvailability.push({
             isAvailable: false,
@@ -81,7 +81,7 @@ export const RouterRoot = () => {
       }
       return providersWithAvailability;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
     staleTime: Infinity,
   });
 
@@ -90,8 +90,8 @@ export const RouterRoot = () => {
   }, [identityProvidersWithAvailability]);
 
   useEffect(() => {
-    NavigationHistoryManager.getInstance().navigationHistory.push(location.pathname);
-    LogManager.getInstance().log([{
+    NavigationHistoryService.getInstance().navigationHistory.push(location.pathname);
+    LogService.getInstance().log([{
       detail: {
         pathname: location.pathname,
       },
@@ -102,7 +102,7 @@ export const RouterRoot = () => {
 
   useEffect(() => {
     if (identityProvidersWithAvailability?.length === 1 && availableIdentityProviders.length === 1) {
-      AuthenticationManager.getInstance().next(identityProvidersWithAvailability[0].provider);
+      AuthenticationService.getInstance().next(identityProvidersWithAvailability[0].provider);
     }
   }, [availableIdentityProviders.length, identityProvidersWithAvailability]);
 
@@ -114,15 +114,15 @@ export const RouterRoot = () => {
     // Validate the storage
     const identityProvider = identityProvidersWithAvailability.find(x => x.provider.name === oidcConfiguration.name)?.provider;
     if (!identityProvider || JSON.stringify(oidcConfiguration) !== JSON.stringify(identityProvider)) {
-      AuthenticationManager.getInstance().next(undefined);
+      AuthenticationService.getInstance().next(undefined);
       return null;
     }
-    WindowManager.getInstance().window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
-    return WindowManager.getInstance().window.userManager;
+    WindowService.getInstance().window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
+    return WindowService.getInstance().window.userManager;
   }, [availableIdentityProviders, identityProvidersWithAvailability, oidcConfiguration]);
 
   const onSignin = useCallback(() => {
-    LogManager.getInstance().log([{
+    LogService.getInstance().log([{
       level: CommonDbLogLevel.INFO,
       topic: 'USER_LOGIN',
     }]);
@@ -150,7 +150,7 @@ export const RouterRoot = () => {
           }}
         >
           <Typography>
-            {t('{{applicationName}} is currently unavailable. Please try again later.', { applicationName: ConfigManager.getInstance().config.applicationName })}
+            {t('{{applicationName}} is currently unavailable. Please try again later.', { applicationName: ConfigService.getInstance().config.applicationName })}
           </Typography>
           <Box sx={{ marginTop: 2 }}>
             <Button
@@ -171,7 +171,7 @@ export const RouterRoot = () => {
     );
   }
 
-  const HomePage = RouterManager.getInstance().homePageComponent;
+  const HomePage = RouterService.getInstance().homePageComponent;
 
   return (
     <AuthProvider

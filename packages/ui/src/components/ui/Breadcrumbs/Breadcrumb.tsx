@@ -12,8 +12,8 @@ import {
 } from 'react';
 import type { UIMatch } from 'react-router';
 
-import { BreadcrumbManager } from '../../../classes/managers/BreadcrumbManager';
-import { RouterManager } from '../../../classes/managers/RouterManager';
+import { BreadcrumbService } from '../../../classes/services/BreadcrumbService';
+import { RouterService } from '../../../classes/services/RouterService';
 import { useSubscribable } from '../../../hooks/useSubscribable';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 
@@ -23,7 +23,7 @@ type BreadcrumbProps = {
 };
 
 export const Breadcrumb = ({ isLast, item }: BreadcrumbProps): ReactElement => {
-  const breadcrumbsTitles = useSubscribable(BreadcrumbManager.getInstance());
+  const breadcrumbsTitles = useSubscribable(BreadcrumbService.getInstance());
 
   const title = useMemo(() => {
     if (breadcrumbsTitles[item.handle.title]) {
@@ -34,7 +34,7 @@ export const Breadcrumb = ({ isLast, item }: BreadcrumbProps): ReactElement => {
 
   const onLinkClick = useCallback(async (event: ReactMouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    await RouterManager.getInstance().router.navigate(item.pathname);
+    await RouterService.getInstance().router.navigate(item.pathname);
   }, [item.pathname]);
 
   if (!isLast) {

@@ -60,7 +60,7 @@ import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiContextMenuConfigWithPosition } from '../EpiContextMenu';
 import { EpiContextMenu } from '../EpiContextMenu';
 import { EpiWidgetUnavailable } from '../EpiWidgetUnavailable';
-import { EpiEventBusManager } from '../../../classes/managers/EpiEventBusManager';
+import { EpiEventBusService } from '../../../classes/services/EpiEventBusService';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EpiDashboardWidget } from '../EpiDashboard';
@@ -341,7 +341,7 @@ export const EpiCurveWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      EpiEventBusManager.getInstance().emit('onDownloadOptionsChanged', {
+      EpiEventBusService.getInstance().emit('onDownloadOptionsChanged', {
         disabled: !shouldShowEpiCurve,
         items: [
           {
@@ -358,7 +358,7 @@ export const EpiCurveWidget = () => {
       });
     };
     emitDownloadOptions();
-    const eventBusManager = EpiEventBusManager.getInstance();
+    const eventBusManager = EpiEventBusService.getInstance();
     eventBusManager.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
       eventBusManager.emit('onDownloadOptionsChanged', {

@@ -1,4 +1,4 @@
-import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { ConfigService } from '../../classes/services/ConfigService';
 import { setup } from '../../setup/setup';
 import { createDemoTheme } from '../../theme/demoTheme';
 import { StandardConfigUtil } from '../../utils/StandardConfigUtil';
@@ -7,7 +7,7 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 export const setupTestEnvironment = () => {
-  ConfigManager.getInstance().config = {
+  ConfigService.getInstance().config = {
     ...StandardConfigUtil.createConfig(),
     theme: createDemoTheme('light'),
   };

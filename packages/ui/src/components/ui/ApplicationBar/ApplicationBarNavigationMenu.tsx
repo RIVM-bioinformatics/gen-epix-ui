@@ -15,9 +15,9 @@ import {
   useState,
 } from 'react';
 
-import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
+import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
-import { RouterManager } from '../../../classes/managers/RouterManager';
+import { RouterService } from '../../../classes/services/RouterService';
 
 const NavLink = styled(BaseNavLink)(({ theme }) => ({
   '&:hover': {
@@ -36,11 +36,11 @@ export type ApplicationBarNavigationMenuProps = {
 export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNavigationMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const authorizationManager = useMemo(() => AuthorizationManager.getInstance(), []);
+  const authorizationService = useMemo(() => AuthorizationService.getInstance(), []);
   const navId = useId();
 
   const menuItems = useMemo(() => {
-    const rootItem = RouterManager.getInstance().routes.find(r => r.handle.root);
+    const rootItem = RouterService.getInstance().routes.find(r => r.handle.root);
     return [rootItem, ...rootItem.children.filter(r => !r.handle.hidden)] as MyNonIndexRouteObject[];
   }, []);
 
@@ -112,7 +112,7 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
             },
           }}
         >
-          {menuItems.filter(menuItem => !menuItem.handle.disabled && authorizationManager.doesUserHavePermissionForRoute(menuItem)).map(menuItem => {
+          {menuItems.filter(menuItem => !menuItem.handle.disabled && authorizationService.doesUserHavePermissionForRoute(menuItem)).map(menuItem => {
             return (
               <Box
                 component={'li'}

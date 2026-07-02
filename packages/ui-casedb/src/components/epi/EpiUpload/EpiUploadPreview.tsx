@@ -36,7 +36,7 @@ import {
   Confirmation,
   createTableStore,
   ObjectUtil,
-  QueryClientManager,
+  QueryClientService,
   ResponseHandler,
   TableStoreContextProvider,
   useArray,
@@ -145,7 +145,7 @@ export const EpiUploadPreview = withEpiCompleteCaseTypeLoader<EpiUploadPreviewPr
         casesToValidate.map(({ row }, index) => [row.id, batchValidationResult.cases[index]]),
       );
 
-      QueryClientManager.getInstance().queryClient.setQueryData(validateCasesQueryKey, {
+      QueryClientService.getInstance().queryClient.setQueryData(validateCasesQueryKey, {
         cases: caseUploadValidationResultQuery.data.map(row => {
           const newResult = resultById.get(row.id);
           if (newResult) {

@@ -24,7 +24,7 @@ import type {
   TableColumn,
 } from '@gen-epix/ui';
 import {
-  AuthorizationManager,
+  AuthorizationService,
   CrudPage,
   FORM_FIELD_DEFINITION_TYPE,
   SchemaUtil,
@@ -106,7 +106,7 @@ export const ConceptSetsAdminPage = () => {
   }, [conceptSetTypeOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbConceptSet>[]>(() => {
-    if (!AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (!AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.ConceptCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

@@ -29,7 +29,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   Confirmation,
-  QueryClientManager,
+  QueryClientService,
   ResponseHandler,
   Spinner,
   TestIdUtil,
@@ -121,7 +121,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
   }, [onClose]);
 
   const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<CaseDbCase>({
-    associationQueryKeys: QueryClientManager.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true),
+    associationQueryKeys: QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true),
     getErrorNotificationMessage: (data) => t('Unable to remove case: {{id}}.', { id: data.id }),
     getProgressNotificationMessage: (data) => t('Deleting case: {{id}}...', { id: data.id }),
     getSuccessNotificationMessage: (data) => t('Case: {{id}}, has been removed.', { id: data.id }),
@@ -130,7 +130,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
     queryFn: async (item: CaseDbCase) => {
       return await CaseDbCaseApi.getInstance().casesDeleteOne(item.id);
     },
-    resourceQueryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES),
+    resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES),
   });
 
   const caseRightsQuery = useCaseRightsQuery(caseIds, openProps.caseTypeId, !isDeleteMutating && !isRefreshingData);
@@ -160,7 +160,7 @@ export const EpiCaseInfoDialog = withDialog<EpiCaseInfoDialogProps, EpiCaseInfoD
       const response = await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostQuery(caseDataCollectionLinksFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),
   });
 
 

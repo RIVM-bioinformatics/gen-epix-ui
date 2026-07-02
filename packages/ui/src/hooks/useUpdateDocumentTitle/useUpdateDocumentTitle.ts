@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
-import { ConfigManager } from '../../classes/managers/ConfigManager';
+import { ConfigService } from '../../classes/services/ConfigService';
 
 
 export const useUpdateDocumentTitle = (title: string) => {
   useEffect(() => {
-    document.title = `${ConfigManager.getInstance().config.applicationName} - ${title}`;
+    document.title = `${ConfigService.getInstance().config.applicationName} - ${title}`;
   }, [title]);
 };

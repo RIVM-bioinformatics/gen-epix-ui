@@ -8,7 +8,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  QueryClientManager,
+  QueryClientService,
   useQueryMemo,
 } from '@gen-epix/ui';
 
@@ -20,7 +20,7 @@ export const useDiseasesQuery = (): UseQueryResult<CaseDbDisease[]> => {
       const response = await CaseDbOntologyApi.getInstance().diseasesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientManager.getInstance().getGenericKey(CASEDB_QUERY_KEY.DISEASES),
+    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.DISEASES),
   });
 };
 

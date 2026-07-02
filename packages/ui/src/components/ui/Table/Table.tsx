@@ -45,9 +45,9 @@ import { TableVirtuoso } from 'react-virtuoso';
 import { useDebouncedCallback } from 'use-debounce';
 import { useShallow } from 'zustand/shallow';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { PageEventBusManager } from '../../../classes/managers/PageEventBusManager';
-import { WindowManager } from '../../../classes/managers/WindowManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
+import { PageEventBusService } from '../../../classes/services/PageEventBusService';
+import { WindowService } from '../../../classes/services/WindowService';
 import { useScrollbarSize } from '../../../hooks/useScrollbarSize';
 import type {
   HasCellDataFn,
@@ -126,7 +126,7 @@ export const Table = <TRowData, TDataContext = null>({
   const { t } = useTranslation();
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
 
-  const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = ConfigManager.getInstance().config.table;
+  const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = ConfigService.getInstance().config.table;
 
   // make sure the table re-renders when the visible columns change
   useStore(tableStore, useShallow((state) => state.getCurrentColumnVisualSettings().filter(c => c.isVisible).map(c => c.id)));
@@ -169,8 +169,8 @@ export const Table = <TRowData, TDataContext = null>({
       if (!getRowName) {
         throw new Error('getRowName is required when onRowClick is provided');
       }
-      if (ConfigManager.getInstance().config.enablePageEvents) {
-        PageEventBusManager.getInstance().emit('click', {
+      if (ConfigService.getInstance().config.enablePageEvents) {
+        PageEventBusService.getInstance().emit('click', {
           label: getRowName(row.row),
           type: 'table-row',
         });
@@ -392,10 +392,10 @@ export const Table = <TRowData, TDataContext = null>({
       updateColumnSizesInVisualSettings();
       updateColumnOrderInDOM();
     };
-    const windowManager = WindowManager.getInstance();
-    windowManager.window.addEventListener('resize', onWindowResize);
+    const windowService = WindowService.getInstance();
+    windowService.window.addEventListener('resize', onWindowResize);
     return () => {
-      windowManager.window.removeEventListener('resize', onWindowResize);
+      windowService.window.removeEventListener('resize', onWindowResize);
     };
   }, [updateColumnOrderInDOM, updateColumnSizesInVisualSettings]);
 
@@ -434,7 +434,7 @@ export const Table = <TRowData, TDataContext = null>({
 
     if (event.type === 'start') {
       // Prevent a horizontal scroll on the entire page when dragging the column
-      WindowManager.getInstance().body.style.setProperty('overflow', 'hidden');
+      WindowService.getInstance().body.style.setProperty('overflow', 'hidden');
 
       // Prevent text selection while dragging
       container?.style.setProperty('--selection-background', 'none');
@@ -458,13 +458,13 @@ export const Table = <TRowData, TDataContext = null>({
         filter: blur(0.5px);
         box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.5);
       `;
-      WindowManager.getInstance().body.appendChild(dragConfigRef.current.clonedElement);
+      WindowService.getInstance().body.appendChild(dragConfigRef.current.clonedElement);
     }
     if (event.type === 'end') {
       // Restore the original behaviors and styles
-      WindowManager.getInstance().body.style.removeProperty('overflow');
+      WindowService.getInstance().body.style.removeProperty('overflow');
       container?.style.setProperty('--selection-background', 'highlight');
-      WindowManager.getInstance().document.getSelection().empty();
+      WindowService.getInstance().document.getSelection().empty();
       dragConfigRef.current.clonedElement.remove();
       event.target.style.setProperty('opacity', '1');
     }

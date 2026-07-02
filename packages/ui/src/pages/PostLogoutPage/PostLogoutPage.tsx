@@ -6,7 +6,7 @@ import {
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { RouterManager } from '../../classes/managers/RouterManager';
+import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 
@@ -14,7 +14,7 @@ export const PostLogoutPage = () => {
   const { t } = useTranslation();
   const onButtonClick = useCallback(async () => {
 
-    await RouterManager.getInstance().router.navigate('/');
+    await RouterService.getInstance().router.navigate('/');
   }, []);
 
   return (

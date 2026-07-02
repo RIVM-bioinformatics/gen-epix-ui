@@ -17,11 +17,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { LogManager } from '../../../classes/managers/LogManager';
-import { NavigationHistoryManager } from '../../../classes/managers/NavigationHistoryManager';
-import { NotificationManager } from '../../../classes/managers/NotificationManager';
-import { UserSettingsManager } from '../../../classes/managers/UserSettingsManager';
+import { ConfigService } from '../../../classes/services/ConfigService';
+import { LogService } from '../../../classes/services/LogService';
+import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';
+import { NotificationService } from '../../../classes/services/NotificationService';
+import { UserSettingsService } from '../../../classes/services/UserSettingsService';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
@@ -31,7 +31,7 @@ import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { FormFieldDefinition } from '../../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
 import { GenericForm } from '../../form/helpers/GenericForm';
-import { AuthorizationManager } from '../../../classes/managers/AuthorizationManager';
+import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { SchemaUtil } from '../../../utils/SchemaUtil';
 
 export interface UserFeedbackDialogOpenProps {
@@ -68,15 +68,15 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
-      email: AuthorizationManager.getInstance().user?.email ?? AuthorizationManager.getInstance().user?.key ?? '',
+      email: AuthorizationService.getInstance().user?.email ?? AuthorizationService.getInstance().user?.key ?? '',
       message: '',
-      name: AuthorizationManager.getInstance().user?.name ?? '',
+      name: AuthorizationService.getInstance().user?.name ?? '',
     },
   });
   const { handleSubmit } = formMethods;
 
   useEffect(() => {
-    UserSettingsManager.getInstance().showShowUserFeedbackTooltip = false;
+    UserSettingsService.getInstance().showShowUserFeedbackTooltip = false;
   }, []);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
@@ -104,8 +104,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   }, [onTitleChange, t]);
 
   const onFormSubmit = useCallback((formValues: FormFields): void => {
-    const navigationHistory = NavigationHistoryManager.getInstance().navigationHistory;
-    LogManager.getInstance().log([{
+    const navigationHistory = NavigationHistoryService.getInstance().navigationHistory;
+    LogService.getInstance().log([{
       detail: {
         ...formValues,
         navigationHistory: navigationHistory.slice(navigationHistory.length - 50).reverse(),
@@ -113,8 +113,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
       level: 'INFO',
       topic: 'USER_FEEDBACK',
     }]);
-    LogManager.getInstance().flushLog();
-    NotificationManager.getInstance().showNotification({
+    LogService.getInstance().flushLog();
+    NotificationService.getInstance().showNotification({
       message: t`Thank you for sharing your feedback with us`,
       severity: 'success',
     });
@@ -152,7 +152,7 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
         }}
       >
         <Typography component={'p'}>
-          {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: ConfigManager.getInstance().config.applicationName })}
+          {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: ConfigService.getInstance().config.applicationName })}
         </Typography>
       </Box>
       <GenericForm<FormFields>

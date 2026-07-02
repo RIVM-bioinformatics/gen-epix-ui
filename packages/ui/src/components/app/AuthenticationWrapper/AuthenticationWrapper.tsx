@@ -15,10 +15,10 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
-import { AuthenticationManager } from '../../../classes/managers/AuthenticationManager';
-import { ConfigManager } from '../../../classes/managers/ConfigManager';
-import { LogManager } from '../../../classes/managers/LogManager';
-import { WindowManager } from '../../../classes/managers/WindowManager';
+import { AuthenticationService } from '../../../classes/services/AuthenticationService';
+import { ConfigService } from '../../../classes/services/ConfigService';
+import { LogService } from '../../../classes/services/LogService';
+import { WindowService } from '../../../classes/services/WindowService';
 import { useSubscribable } from '../../../hooks/useSubscribable';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { AuthState } from '../../../models/auth';
@@ -32,15 +32,15 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const auth = useAuth();
   const consentDialogRef = useRef<ConsentDialogRefMethods>(null);
   const [hasGivenConsent, setHasGivenConsent] = useState<boolean>(
-    !ConfigManager.getInstance().config.consentDialog?.getShouldShow(),
+    !ConfigService.getInstance().config.consentDialog?.getShouldShow(),
   );
 
-  const oidcConfiguration = useSubscribable(AuthenticationManager.getInstance());
+  const oidcConfiguration = useSubscribable(AuthenticationService.getInstance());
   const AfterLoginElement =
-    ConfigManager.getInstance().config.login?.AfterLoginElement;
+    ConfigService.getInstance().config.login?.AfterLoginElement;
 
   useEffect(() => {
-    AuthenticationManager.getInstance().authContextProps = auth;
+    AuthenticationService.getInstance().authContextProps = auth;
   }, [auth]);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   }, [auth.isAuthenticated, hasGivenConsent]);
 
   const onConsentDialogConsent = useCallback(() => {
-    LogManager.getInstance().log([
+    LogService.getInstance().log([
       {
         level: CommonDbLogLevel.INFO,
         topic: 'CONSENT',
@@ -62,7 +62,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   const login = useCallback(() => {
     const perform = async () => {
-      const { hash, pathname, search } = WindowManager.getInstance().window.location;
+      const { hash, pathname, search } = WindowService.getInstance().window.location;
 
       const state: AuthState = {
         preLoginLocation: {
@@ -84,8 +84,8 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   }, [login]);
 
   const onChangeLoginProviderButtonClick = useCallback(() => {
-    AuthenticationManager.clearStaleState();
-    AuthenticationManager.getInstance().next(undefined);
+    AuthenticationService.clearStaleState();
+    AuthenticationService.getInstance().next(undefined);
   }, []);
 
   const now = useMemo(() => new Date().getTime(), []);
@@ -141,8 +141,8 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   }
 
   if (auth.error) {
-    AuthenticationManager.clearStaleState();
-    LogManager.getInstance().log([
+    AuthenticationService.clearStaleState();
+    LogService.getInstance().log([
       {
         detail: {
           error: auth.error,
@@ -173,10 +173,10 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   if (!auth.isAuthenticated) {
     if (
-      AuthenticationManager.getInstance().getUserManagerSettingsCreatedAt() &&
+      AuthenticationService.getInstance().getUserManagerSettingsCreatedAt() &&
       now -
-        AuthenticationManager.getInstance().getUserManagerSettingsCreatedAt() <
-        AuthenticationManager.autoLoginSkew
+        AuthenticationService.getInstance().getUserManagerSettingsCreatedAt() <
+        AuthenticationService.autoLoginSkew
     ) {
       login();
       return;
@@ -205,7 +205,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   return (
     <>
       {children}
-      {ConfigManager.getInstance().config.consentDialog?.getShouldShow() && (
+      {ConfigService.getInstance().config.consentDialog?.getShouldShow() && (
         <ConsentDialog
           onConsent={onConsentDialogConsent}
           ref={consentDialogRef}

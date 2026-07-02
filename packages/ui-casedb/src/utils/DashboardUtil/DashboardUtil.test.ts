@@ -7,7 +7,7 @@ import {
   vi,
 } from 'vitest';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
-import { ConfigManager } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 import type { FieldValues } from 'react-hook-form';
 
 import {
@@ -143,11 +143,11 @@ const makeWidgets = (): EpiWidgetsConfig<FieldValues> => ({
 });
 
 // ---------------------------------------------------------------------------
-// ConfigManager mock helper
+// ConfigService mock helper
 // ---------------------------------------------------------------------------
 
 const mockDashboard = (overrides: Partial<CaseDbConfig['epiDashboard']>): void => {
-  vi.spyOn(ConfigManager.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
+  vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
     epiDashboard: overrides,
   } as unknown as CaseDbConfig);
 };

@@ -6,8 +6,8 @@ import {
   useRef,
 } from 'react';
 
-import { NotificationManager } from '../../classes/managers/NotificationManager';
-import { QueryClientManager } from '../../classes/managers/QueryClientManager';
+import { NotificationService } from '../../classes/services/NotificationService';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 import type { GenericData } from '../../models/data';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 import { ObjectUtil } from '../../utils/ObjectUtil';
@@ -41,7 +41,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
   queryFn,
   resourceQueryKey,
 }: UseEditMutationProps<TData, TVariables>) => {
-  const queryClient = QueryClientManager.getInstance().queryClient;
+  const queryClient = QueryClientService.getInstance().queryClient;
   const previousItemRef = useRef<TData>(undefined);
 
   const setPreviousItem = useCallback((item: TData) => {
@@ -64,14 +64,14 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
           return [...oldItems.filter(x => (x as GenericData).id !== (context.item as GenericData).id), context.item];
         });
       }
-      await QueryClientManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await QueryClientService.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onError) {
         await onError(error, variables, context);
       }
-      NotificationManager.getInstance().fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(context.item, variables, error), error), 'error');
+      NotificationService.getInstance().fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(context.item, variables, error), error), 'error');
     },
     onMutate: async (variables) => {
-      const notificationKey = NotificationManager.getInstance().showNotification({
+      const notificationKey = NotificationService.getInstance().showNotification({
         isLoading: true,
         message: getProgressNotificationMessage(previousItemRef.current, variables),
         severity: 'info',
@@ -97,11 +97,11 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
     },
     onSuccess: async (item, variables, context) => {
       previousItemRef.current = undefined;
-      await QueryClientManager.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await QueryClientService.getInstance().invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
         await onSuccess(item, variables, context);
       }
-      NotificationManager.getInstance().fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
+      NotificationService.getInstance().fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
     },
   });
 

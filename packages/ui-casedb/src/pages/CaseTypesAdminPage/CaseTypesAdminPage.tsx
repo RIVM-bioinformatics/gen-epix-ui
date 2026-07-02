@@ -26,7 +26,7 @@ import type {
   TableColumn,
 } from '@gen-epix/ui';
 import {
-  AuthorizationManager,
+  AuthorizationService,
   CrudPage,
   FORM_FIELD_DEFINITION_TYPE,
   SchemaUtil,
@@ -231,7 +231,7 @@ export const CaseTypesAdminPage = () => {
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbCaseType>[]>(() => {
-    if (!AuthorizationManager.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (!AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.DimCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

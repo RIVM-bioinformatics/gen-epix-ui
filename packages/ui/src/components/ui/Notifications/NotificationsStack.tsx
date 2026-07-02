@@ -5,19 +5,19 @@ import {
   Snackbar,
 } from '@mui/material';
 
-import { NotificationManager } from '../../../classes/managers/NotificationManager';
+import { NotificationService } from '../../../classes/services/NotificationService';
 import { useSubscribable } from '../../../hooks/useSubscribable';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { NotificationItem } from './NotificationItem';
 
 export const NotificationsStack = (): ReactElement => {
-  const visibleNotifications = useSubscribable(NotificationManager.getInstance(), {
+  const visibleNotifications = useSubscribable(NotificationService.getInstance(), {
     select: (notifications) => notifications.filter(notification => notification.visible),
   });
 
   const onNotificationItemClose = useCallback((key: string) => {
-    NotificationManager.getInstance().hideNotification(key);
+    NotificationService.getInstance().hideNotification(key);
   }, []);
 
   return (
