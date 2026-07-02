@@ -100,7 +100,7 @@ export const EpiDashboardWidgetSettingsForm = ({ widgetName }: EpiDashboardEpiCu
             startIcon={<RestartAltIcon />}
             variant={'outlined'}
           >
-            {t`Reset epi curve settings`}
+            {t('Reset {widgetName} settings', { widgetName })}
           </Button>
         </Box>
       </Box>
