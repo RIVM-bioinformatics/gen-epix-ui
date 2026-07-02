@@ -1,7 +1,6 @@
 import {
   parse,
   parseISO,
-  subYears,
 } from 'date-fns';
 import { t } from 'i18next';
 import type {
@@ -140,8 +139,7 @@ export class EpiFilterUtil {
         }
 
         if (refDim.dim_type === CaseDbDimType.TIME) {
-          const today = new Date();
-          const todayMinus20Years = subYears(today, 20);
+          const minDate = new Date(1900, 0, 1);
           filters.push(
             new DateFilter({
               backendFilterType: refCol.col_type === CaseDbColType.TIME_DAY ? 'DATE_RANGE' : 'PARTIAL_DATE_RANGE',
@@ -152,7 +150,7 @@ export class EpiFilterUtil {
               id: col.id,
               label: col.label,
               maxDate: new Date(),
-              minDate: todayMinus20Years,
+              minDate,
             }),
           );
         } else if (refDim.dim_type === CaseDbDimType.GEO) {
