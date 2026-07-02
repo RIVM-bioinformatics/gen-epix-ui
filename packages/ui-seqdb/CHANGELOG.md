@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.6.2...ui-seqdb-v2.7.0) (2026-07-02)
+
+
+### Features
+
+* rename all managers to services ([98b087f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/98b087f031b70a92e0011f0428c442901e9be68a))
+
 ## [2.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.6.1...ui-seqdb-v2.6.2) (2026-07-01)
 
 

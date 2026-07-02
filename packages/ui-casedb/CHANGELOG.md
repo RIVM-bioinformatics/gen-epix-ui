@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.6.2...ui-casedb-v2.7.0) (2026-07-02)
+
+
+### Features
+
+* rename all managers to services ([98b087f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/98b087f031b70a92e0011f0428c442901e9be68a))
+
+
+### Bug Fixes
+
+* allow dates from before 20 years ago ([0fc3a8b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0fc3a8b53085b8853b5bb6761bd8666e345c2c4e))
+* fix reset button label in widget settings ([cd6106d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/cd6106dad95bb2b32bc9c74676ff82c8cc17c379))
+
 ## [2.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.6.1...ui-casedb-v2.6.2) (2026-07-01)
 
 

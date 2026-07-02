@@ -1,8 +1,8 @@
 {
-  "packages/ui": "2.6.3",
-  "packages/ui-casedb": "2.6.2",
-  "packages/ui-omopdb": "2.6.2",
-  "packages/ui-seqdb": "2.6.2",
+  "packages/ui": "2.7.0",
+  "packages/ui-casedb": "2.7.0",
+  "packages/ui-omopdb": "2.7.0",
+  "packages/ui-seqdb": "2.7.0",
   "packages/api-casedb": "2.5.0",
   "packages/api-commondb": "2.5.0",
   "packages/api-seqdb": "2.5.0",
