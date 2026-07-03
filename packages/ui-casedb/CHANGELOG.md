@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.7.0...ui-casedb-v2.8.0) (2026-07-03)
+
+
+### Features
+
+* major renaming of files and components ([1d1b24d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1d1b24d1495c922d2528786be5ad871163d7d58b))
+
 ## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.6.2...ui-casedb-v2.7.0) (2026-07-02)
 
 
