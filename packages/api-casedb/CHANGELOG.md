@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v2.5.0...api-casedb-v2.6.0) (2026-07-03)
+
+
+### Features
+
+* update dependencies ([410ec9f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/410ec9f1243ba7dd329a82183eafc787c828b52a))
+
 ## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v2.4.0...api-casedb-v2.5.0) (2026-07-01)
 
 

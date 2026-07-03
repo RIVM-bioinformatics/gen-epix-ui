@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.7.0...ui-omopdb-v2.8.0) (2026-07-03)
+
+
+### Features
+
+* update dependencies ([410ec9f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/410ec9f1243ba7dd329a82183eafc787c828b52a))
+
 ## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.6.2...ui-omopdb-v2.7.0) (2026-07-02)
 
 
