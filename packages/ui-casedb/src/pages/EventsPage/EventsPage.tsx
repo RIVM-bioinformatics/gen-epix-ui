@@ -45,10 +45,10 @@ import {
 } from '@gen-epix/ui';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
-import type { EpiCaseSetInfoDialogRefMethods } from '../../components/epi/EpiCaseSetInfoDialog';
-import { EpiCaseSetInfoDialog } from '../../components/epi/EpiCaseSetInfoDialog';
-import type { EpiCreateEventDialogRefMethods } from '../../components/epi/EpiCreateEventDialog';
-import { EpiCreateEventDialog } from '../../components/epi/EpiCreateEventDialog';
+import type { CaseSetInfoDialogRefMethods } from '../../components/ui/CaseSetInfoDialog';
+import { CaseSetInfoDialog } from '../../components/ui/CaseSetInfoDialog';
+import type { CreateEventDialogRefMethods } from '../../components/ui/CreateEventDialog';
+import { CreateEventDialog } from '../../components/ui/CreateEventDialog';
 import { useCaseSetCategoryOptionsQuery } from '../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatsMapQuery } from '../../dataHooks/useCaseSetStatsQuery';
 import { useCaseSetStatusOptionsQuery } from '../../dataHooks/useCaseSetStatusesQuery';
@@ -65,8 +65,8 @@ export const EventsPage = () => {
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseSetCategoryOptionsQuery = useCaseSetCategoryOptionsQuery();
   const caseSetStatusOptionsQuery = useCaseSetStatusOptionsQuery();
-  const epiCaseSetInfoDialogRef = useRef<EpiCaseSetInfoDialogRefMethods>(null);
-  const epiCreateEventDialogRef = useRef<EpiCreateEventDialogRefMethods>(null);
+  const caseSetInfoDialogRef = useRef<CaseSetInfoDialogRefMethods>(null);
+  const createEventDialogRef = useRef<CreateEventDialogRefMethods>(null);
 
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
@@ -83,7 +83,7 @@ export const EventsPage = () => {
   }, []);
 
   const showEventInformation = useCallback((row: CaseDbCaseSet) => {
-    epiCaseSetInfoDialogRef.current?.open({
+    caseSetInfoDialogRef.current?.open({
       caseSetId: row.id,
       caseTypeId: row.case_type_id,
     });
@@ -98,7 +98,7 @@ export const EventsPage = () => {
   }, [showEventInformation]);
 
   const onCreateItemButtonClick = useCallback(() => {
-    epiCreateEventDialogRef.current?.open({});
+    createEventDialogRef.current?.open({});
   }, []);
 
   const data = useMemo<Row[]>(() => {
@@ -265,12 +265,12 @@ export const EventsPage = () => {
             )}
 
           </ResponseHandler>
-          <EpiCaseSetInfoDialog
-            ref={epiCaseSetInfoDialogRef}
+          <CaseSetInfoDialog
+            ref={caseSetInfoDialogRef}
             showNavigationButton
           />
-          <EpiCreateEventDialog
-            ref={epiCreateEventDialogRef}
+          <CreateEventDialog
+            ref={createEventDialogRef}
           />
         </Box>
       </PageContainer>

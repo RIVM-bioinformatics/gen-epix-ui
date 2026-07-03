@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import type { PropsWithChildren } from 'react';
 
-import type { CaseAbacContext } from './CaseAbacContext';
-import { EpiCaseAbacContext } from './CaseAbacContext';
+import { CaseAbacContext } from './CaseAbacContext';
 
 export type CaseAbacContextProviderProps = PropsWithChildren<{
   readonly caseAbac: CaseAbacContext;
@@ -60,8 +59,8 @@ export const CaseAbacContextProvider = (
   }, [caseAbac]);
 
   return (
-    <EpiCaseAbacContext value={sanitizedCaseAbac}>
+    <CaseAbacContext value={sanitizedCaseAbac}>
       {children}
-    </EpiCaseAbacContext>
+    </CaseAbacContext>
   );
 };

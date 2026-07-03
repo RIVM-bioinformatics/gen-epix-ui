@@ -13,7 +13,7 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import { STRATIFICATION_MODE } from '../../models/epi';
+import { STRATIFICATION_MODE } from '../../models/caseDb';
 
 import type { EpiCurveChartItem } from './EpiCurveUtil';
 import { EpiCurveUtil } from './EpiCurveUtil';

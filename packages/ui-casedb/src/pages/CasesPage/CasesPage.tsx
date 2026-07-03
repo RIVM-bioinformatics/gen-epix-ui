@@ -49,8 +49,8 @@ import {
   useQueryMemo,
 } from '@gen-epix/ui';
 
-import type { EpiCaseTypeInfoDialogWithLoaderRefMethods } from '../../components/epi/EpiCaseTypeInfoDialog';
-import { EpiCaseTypeInfoDialogWithLoader } from '../../components/epi/EpiCaseTypeInfoDialog';
+import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';
+import { CaseTypeInfoDialogWithLoader } from '../../components/ui/CaseTypeInfoDialog';
 import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
 import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
@@ -70,7 +70,7 @@ const getCaseTypeSetCategoryRowId = (id: string) => `caseTypeSetCategory-${id}`;
 export const CasesPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const epiCaseTypeInfoDialogWithLoaderRef = useRef<EpiCaseTypeInfoDialogWithLoaderRefMethods>(null);
+  const caseTypeInfoDialogWithLoaderRef = useRef<CaseTypeInfoDialogWithLoaderRefMethods>(null);
   const caseTypeStatsQuery = useCaseTypeStatsQuery();
   const caseTypeSetCategoriesQuery = useCaseTypeSetCategoriesQuery();
 
@@ -119,7 +119,7 @@ export const CasesPage = () => {
   }, [handleCellNavigation]);
 
   const onShowCaseTypeInformationClick = useCallback((params: TableRowParams<Row>) => {
-    epiCaseTypeInfoDialogWithLoaderRef.current.open({
+    caseTypeInfoDialogWithLoaderRef.current.open({
       caseTypeId: params.row.id,
     });
   }, []);
@@ -129,7 +129,7 @@ export const CasesPage = () => {
   }, [t]);
 
   const onIndexCellClick = useCallback((row: Row) => {
-    epiCaseTypeInfoDialogWithLoaderRef.current.open({
+    caseTypeInfoDialogWithLoaderRef.current.open({
       caseTypeId: row.id,
     });
   }, []);
@@ -349,7 +349,7 @@ export const CasesPage = () => {
             )}
           </ResponseHandler>
         </Box>
-        <EpiCaseTypeInfoDialogWithLoader ref={epiCaseTypeInfoDialogWithLoaderRef} />
+        <CaseTypeInfoDialogWithLoader ref={caseTypeInfoDialogWithLoaderRef} />
       </PageContainer>
     </TableStoreContextProvider>
   );

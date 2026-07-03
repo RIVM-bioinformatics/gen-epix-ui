@@ -16,18 +16,18 @@ import { t } from 'i18next';
 
 import type { CaseDbConfig } from '../../models/config';
 import { EPI_WIDGET_NAME } from '../../data/epi';
-import { EpiCurveWidget } from '../../components/epi/EpiCurveWidget';
-import { EpiLineListWidget } from '../../components/epi/EpiLineListWidget';
-import { EpiMapWidget } from '../../components/epi/EpiMapWidget';
-import { EpiTreeWidget } from '../../components/epi/EpiTreeWidget';
+import { EpiCurveWidget } from '../../components/ui/EpiCurveWidget';
+import { LineListWidget } from '../../components/ui/LineListWidget';
+import { MapWidget } from '../../components/ui/MapWidget';
+import { TreeWidget } from '../../components/ui/TreeWidget';
 import type {
-  EpiDashboardEpiCurveSettings,
-  EpiDashboardTreeSettings,
-} from '../../models/epi';
+  DashboardEpiCurveSettings,
+  DashboardTreeSettings,
+} from '../../models/caseDb';
 import {
-  EPI_DASHBOARD_ARRANGEMENT_ORIENTATION,
-  EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/epi';
+  DASHBOARD_ARRANGEMENT_ORIENTATION,
+  WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
+} from '../../models/caseDb';
 
 export class CaseDbStandardConfigUtil {
   public static createConfig(): Omit<CaseDbConfig, 'theme'> {
@@ -84,6 +84,155 @@ export class CaseDbStandardConfigUtil {
           },
         ],
       }),
+      dashboard: {
+        ARRANGEMENT_OPTIONS: {
+          1: {
+            cells: [{
+              cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+              orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 70,
+            }, {
+              cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
+              orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 30,
+            }],
+            orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+            size: 100,
+          },
+          2: {
+            cells: [{
+              cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+              orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 70,
+            }, {
+              cells: [{ name: 'C', size: 34 }, { name: 'D', size: 33 }, { name: 'E', size: 33 }],
+              orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+              size: 30,
+            }],
+            orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+            size: 100,
+          },
+          3: {
+            cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+            orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+            size: 100,
+          },
+          4: {
+            cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
+            orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+            size: 100,
+          },
+          5: {
+            cells: [
+              { name: 'A', size: 50 },
+              {
+                cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
+                orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+                size: 50,
+              }],
+            orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+            size: 100,
+          },
+          6: {
+            cells: [
+              {
+                cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
+                orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
+                size: 50,
+              },
+              { name: 'A', size: 50 },
+            ],
+            orientation: DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
+            size: 100,
+          },
+        },
+        DEFAULT_ARRANGEMENT_KEY: '1',
+        DEFAULT_WIDGET_ASSIGNMENTS: {
+          1: {
+            A: EPI_WIDGET_NAME.TREE,
+            B: EPI_WIDGET_NAME.LINE_LIST,
+            C: EPI_WIDGET_NAME.MAP,
+            D: EPI_WIDGET_NAME.EPI_CURVE,
+          },
+          2: {
+            A: EPI_WIDGET_NAME.TREE,
+            B: EPI_WIDGET_NAME.LINE_LIST,
+            C: EPI_WIDGET_NAME.MAP,
+            D: EPI_WIDGET_NAME.EPI_CURVE,
+            E: undefined,
+          },
+          3: {
+            A: EPI_WIDGET_NAME.TREE,
+            B: EPI_WIDGET_NAME.LINE_LIST,
+          },
+          4: {
+            A: EPI_WIDGET_NAME.LINE_LIST,
+            B: EPI_WIDGET_NAME.EPI_CURVE,
+          },
+          5: {
+            A: EPI_WIDGET_NAME.LINE_LIST,
+            B: EPI_WIDGET_NAME.EPI_CURVE,
+            C: EPI_WIDGET_NAME.MAP,
+          },
+          6: {
+            A: EPI_WIDGET_NAME.LINE_LIST,
+            B: EPI_WIDGET_NAME.EPI_CURVE,
+            C: EPI_WIDGET_NAME.MAP,
+          },
+        },
+        MIN_PANEL_HEIGHT: 30,
+        MIN_PANEL_WIDTH: 30,
+        WIDGETS: {
+          [EPI_WIDGET_NAME.EPI_CURVE]: {
+            component: EpiCurveWidget,
+            configDefaultValues: {
+              isIncludeMissingValuesInAreaChartEnabled: false,
+            } satisfies DashboardEpiCurveSettings,
+            configFormFieldsDefinitions: [
+              {
+                definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH,
+                label: t`Include missing values in area chart`,
+                name: 'isIncludeMissingValuesInAreaChartEnabled',
+              },
+            ] satisfies FormFieldDefinition<DashboardEpiCurveSettings>[],
+            widgetLabel: t`Epi Curve`,
+          },
+          [EPI_WIDGET_NAME.LINE_LIST]: {
+            component: LineListWidget,
+            widgetLabel: t`Line List`,
+          },
+          [EPI_WIDGET_NAME.MAP]: {
+            component: MapWidget,
+            widgetLabel: t`Map`,
+          },
+          [EPI_WIDGET_NAME.TREE]: {
+            component: TreeWidget,
+            configDefaultValues: {
+              isShowDistancesEnabled: true,
+              isShowSupportLinesWhenUnlinkedEnabled: true,
+            } satisfies DashboardTreeSettings,
+            configFormFieldsDefinitions: [
+              {
+                definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH,
+                label: t`Show distances`,
+                name: 'isShowDistancesEnabled',
+              },
+              {
+                definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH,
+                label: t`Show support lines when unlinked`,
+                name: 'isShowSupportLinesWhenUnlinkedEnabled',
+              },
+            ] satisfies FormFieldDefinition<DashboardTreeSettings>[],
+            constraints: [{
+              require_adjacent_direct_sibling: {
+                direction: WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST,
+                widgetName: EPI_WIDGET_NAME.LINE_LIST,
+              },
+            }],
+            widgetLabel: t`Phylogenetic Tree`,
+          },
+        },
+      },
       epi: {
         DATA_MISSING_CHARACTER: '·',
         DOWNLOAD_SECTION_ORDER: [EPI_WIDGET_NAME.LINE_LIST, EPI_WIDGET_NAME.TREE, EPI_WIDGET_NAME.EPI_CURVE, EPI_WIDGET_NAME.MAP],
@@ -164,183 +313,6 @@ export class CaseDbStandardConfigUtil {
           MAX_ALLOWED_UNIQUE_VALUES: 50,
         },
       },
-      epiDashboard: {
-        ARRANGEMENT_OPTIONS: {
-          1: {
-            cells: [{
-              cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
-              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
-              size: 70,
-            }, {
-              cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
-              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
-              size: 30,
-            }],
-            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
-            size: 100,
-          },
-          2: {
-            cells: [{
-              cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
-              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
-              size: 70,
-            }, {
-              cells: [{ name: 'C', size: 34 }, { name: 'D', size: 33 }, { name: 'E', size: 33 }],
-              orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
-              size: 30,
-            }],
-            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
-            size: 100,
-          },
-          3: {
-            cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
-            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
-            size: 100,
-          },
-          4: {
-            cells: [{ name: 'A', size: 50 }, { name: 'B', size: 50 }],
-            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
-            size: 100,
-          },
-          5: {
-            cells: [
-              { name: 'A', size: 50 },
-              {
-                cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
-                orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
-                size: 50,
-              }],
-            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
-            size: 100,
-          },
-          6: {
-            cells: [
-              {
-                cells: [{ name: 'C', size: 50 }, { name: 'D', size: 50 }],
-                orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL,
-                size: 50,
-              },
-              { name: 'A', size: 50 },
-            ],
-            orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL,
-            size: 100,
-          },
-        },
-        DEFAULT_ARRANGEMENT_KEY: '1',
-        DEFAULT_WIDGET_ASSIGNMENTS: {
-          1: {
-            A: EPI_WIDGET_NAME.TREE,
-            B: EPI_WIDGET_NAME.LINE_LIST,
-            C: EPI_WIDGET_NAME.MAP,
-            D: EPI_WIDGET_NAME.EPI_CURVE,
-          },
-          2: {
-            A: EPI_WIDGET_NAME.TREE,
-            B: EPI_WIDGET_NAME.LINE_LIST,
-            C: EPI_WIDGET_NAME.MAP,
-            D: EPI_WIDGET_NAME.EPI_CURVE,
-            E: undefined,
-          },
-          3: {
-            A: EPI_WIDGET_NAME.TREE,
-            B: EPI_WIDGET_NAME.LINE_LIST,
-          },
-          4: {
-            A: EPI_WIDGET_NAME.LINE_LIST,
-            B: EPI_WIDGET_NAME.EPI_CURVE,
-          },
-          5: {
-            A: EPI_WIDGET_NAME.LINE_LIST,
-            B: EPI_WIDGET_NAME.EPI_CURVE,
-            C: EPI_WIDGET_NAME.MAP,
-          },
-          6: {
-            A: EPI_WIDGET_NAME.LINE_LIST,
-            B: EPI_WIDGET_NAME.EPI_CURVE,
-            C: EPI_WIDGET_NAME.MAP,
-          },
-        },
-        MIN_PANEL_HEIGHT: 30,
-        MIN_PANEL_WIDTH: 30,
-        WIDGETS: {
-          [EPI_WIDGET_NAME.EPI_CURVE]: {
-            component: EpiCurveWidget,
-            configDefaultValues: {
-              isIncludeMissingValuesInAreaChartEnabled: false,
-            } satisfies EpiDashboardEpiCurveSettings,
-            configFormFieldsDefinitions: [
-              {
-                definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH,
-                label: t`Include missing values in area chart`,
-                name: 'isIncludeMissingValuesInAreaChartEnabled',
-              },
-            ] satisfies FormFieldDefinition<EpiDashboardEpiCurveSettings>[],
-            widgetLabel: t`Epi Curve`,
-          },
-          [EPI_WIDGET_NAME.LINE_LIST]: {
-            component: EpiLineListWidget,
-            widgetLabel: t`Line List`,
-          },
-          [EPI_WIDGET_NAME.MAP]: {
-            component: EpiMapWidget,
-            widgetLabel: t`Map`,
-          },
-          [EPI_WIDGET_NAME.TREE]: {
-            component: EpiTreeWidget,
-            configDefaultValues: {
-              isShowDistancesEnabled: true,
-              isShowSupportLinesWhenUnlinkedEnabled: true,
-            } satisfies EpiDashboardTreeSettings,
-            configFormFieldsDefinitions: [
-              {
-                definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH,
-                label: t`Show distances`,
-                name: 'isShowDistancesEnabled',
-              },
-              {
-                definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH,
-                label: t`Show support lines when unlinked`,
-                name: 'isShowSupportLinesWhenUnlinkedEnabled',
-              },
-            ] satisfies FormFieldDefinition<EpiDashboardTreeSettings>[],
-            constraints: [{
-              require_adjacent_direct_sibling: {
-                direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST,
-                widgetName: EPI_WIDGET_NAME.LINE_LIST,
-              },
-            }],
-            widgetLabel: t`Phylogenetic Tree`,
-          },
-        },
-      },
-      epiLineList: {
-        CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS: 1000,
-        MAX_COLUMN_WIDTH: 400,
-        REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT: 36,
-        TABLE_ROW_HEIGHT: 24,
-      },
-      epiMap: {
-        MIN_PIE_CHART_RADIUS: 4,
-      },
-      epiTree: {
-        ANCESTOR_DOT_RADIUS: 3,
-        HEADER_HEIGHT: 32,
-        INITIAL_UNLINKED_ZOOM_LEVEL: 1.05,
-        LEAF_DOT_RADIUS: 5,
-        LINKED_SCROLL_DEBOUNCE_DELAY_MS: 500,
-        MAX_SCALE_WIDTH_PX: 144,
-        MAX_ZOOM_LEVEL: 20,
-        MAX_ZOOM_SPEED: 0.25,
-        MIN_SCALE_WIDTH_PX: 48,
-        MIN_ZOOM_LEVEL: 0.1,
-        MIN_ZOOM_SPEED: 0.1,
-        MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL: 1,
-        PANNING_THRESHOLD: 25,
-        REGULAR_FILL_COLOR_SUPPORT_LINE: '#E0E6F1',
-        SCALE_INCREMENTS: [1, 2, 5, 10, 20, 50],
-        TAKING_LONGER_TIMEOUT_MS: 10000,
-        TREE_PADDING: 20,
-      },
       getAPIBaseUrl: () => {
         const { location: { href } } = WindowService.getInstance().window.document;
         const { hostname } = new URL(href);
@@ -365,6 +337,34 @@ export class CaseDbStandardConfigUtil {
             break;
         }
         return environment;
+      },
+      lineList: {
+        CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS: 1000,
+        MAX_COLUMN_WIDTH: 400,
+        REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT: 36,
+        TABLE_ROW_HEIGHT: 24,
+      },
+      map: {
+        MIN_PIE_CHART_RADIUS: 4,
+      },
+      tree: {
+        ANCESTOR_DOT_RADIUS: 3,
+        HEADER_HEIGHT: 32,
+        INITIAL_UNLINKED_ZOOM_LEVEL: 1.05,
+        LEAF_DOT_RADIUS: 5,
+        LINKED_SCROLL_DEBOUNCE_DELAY_MS: 500,
+        MAX_SCALE_WIDTH_PX: 144,
+        MAX_ZOOM_LEVEL: 20,
+        MAX_ZOOM_SPEED: 0.25,
+        MIN_SCALE_WIDTH_PX: 48,
+        MIN_ZOOM_LEVEL: 0.1,
+        MIN_ZOOM_SPEED: 0.1,
+        MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL: 1,
+        PANNING_THRESHOLD: 25,
+        REGULAR_FILL_COLOR_SUPPORT_LINE: '#E0E6F1',
+        SCALE_INCREMENTS: [1, 2, 5, 10, 20, 50],
+        TAKING_LONGER_TIMEOUT_MS: 10000,
+        TREE_PADDING: 20,
       },
       trends: {
         homePage: {

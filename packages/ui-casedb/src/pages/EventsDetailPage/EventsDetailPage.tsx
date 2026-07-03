@@ -14,7 +14,7 @@ import {
   useUpdateBreadcrumb,
 } from '@gen-epix/ui';
 
-import { EpiDashboard } from '../../components/epi/EpiDashboard';
+import { Dashboard } from '../../components/ui/Dashboard';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 import { useCaseTypeMapQuery } from '../../dataHooks/useCaseTypesQuery';
 
@@ -59,7 +59,7 @@ export const EventsDetailPage = () => {
       <ResponseHandler
         loadables={loadables}
       >
-        <EpiDashboard
+        <Dashboard
           caseSet={caseSetQuery.data}
           caseTypeId={caseSetQuery.data?.case_type_id}
         />

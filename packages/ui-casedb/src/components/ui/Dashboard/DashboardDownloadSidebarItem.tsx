@@ -1,0 +1,164 @@
+import {
+  Box,
+  Link,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import DownloadIcon from '@mui/icons-material/Download';
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import type { SidebarItemSharedProps } from '@gen-epix/ui';
+import {
+  ConfigService,
+  SidebarItem,
+} from '@gen-epix/ui';
+
+import type {
+  DownloadConfig,
+  DownloadConfigItem,
+  DownloadConfigSection,
+} from '../../../classes/services/EventBusService';
+import { EventBusService } from '../../../classes/services/EventBusService';
+import type { CaseDbConfig } from '../../../models/config';
+
+
+export type DashboardDownloadSidebarItemProps = SidebarItemSharedProps;
+
+export const DashboardDownloadSidebarItemIcon = DownloadIcon;
+
+const DashboardDownloadSidebarItemContent = () => {
+  const theme = useTheme();
+  const { t } = useTranslation();
+  const [downloadConfigs, setDownloadConfigs] = useState<DownloadConfig[]>([]);
+
+  useEffect(() => {
+    const onDownloadOptionsChanged = (payload: DownloadConfig) => {
+      if (!payload?.zone) {
+        return;
+      }
+      setDownloadConfigs(prevDownloadOptions => {
+        if (payload.items === null) {
+          return prevDownloadOptions.filter(item => item.zone !== payload.zone);
+        }
+        return [
+          ...prevDownloadOptions.filter(item => item.zone !== payload.zone),
+          payload,
+        ].sort((a, b) => {
+          return ConfigService.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - ConfigService.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
+        });
+      });
+    };
+    const eventBusService = EventBusService.getInstance();
+    eventBusService.addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
+    eventBusService.emit('onDownloadOptionsRequested');
+
+    return () => {
+      eventBusService.removeEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
+    };
+  }, []);
+
+  const renderDownloadItem = useCallback((item: DownloadConfigItem, forceDisabled?: boolean) => {
+    return (
+      <Box
+        key={item.label}
+        sx={{ marginLeft: 1 }}
+      >
+        {(forceDisabled || item.disabled || !item.callback) ? (
+          <Typography>
+            {item.label}
+          </Typography>
+        ) : (
+          <Link
+            component={'button'}
+            // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+            onClick={() => item.callback()}
+            tabIndex={0}
+          >
+            {item.label}
+          </Link>
+        )}
+      </Box>
+    );
+  }, []);
+
+  const renderDownloadSection = useCallback((section: DownloadConfigSection) => {
+    return (
+      <Box key={section.label}>
+        <Typography variant={'h6'}>
+          {section.label}
+        </Typography>
+        {section.items.map(item => renderDownloadItem(item, section.disabled))}
+      </Box>
+    );
+  }, [renderDownloadItem]);
+
+  return (
+    <Box
+      sx={{
+        width: theme.spacing(59),
+      }}
+    >
+      {downloadConfigs.map((config) => (
+        <Box
+          key={config.zone}
+          sx={{
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            padding: theme.spacing(1),
+          }}
+        >
+          <Box>
+            <Typography
+              color={config.disabled ? theme.palette.text.disabled : undefined}
+              variant={'h5'}
+            >
+              {config.zoneLabel}
+            </Typography>
+          </Box>
+          {config.disabled && (
+            <Box sx={{ padding: theme.spacing(1) }}>
+              <Typography>
+                {t`No data available for download.`}
+              </Typography>
+            </Box>
+          )}
+          {!config.disabled && config.items.map((item) => {
+            if ('items' in item && item.disabled) {
+              return null;
+            }
+            return (
+              <Fragment key={item.label}>
+                {'items' in item
+                  ? renderDownloadSection(item)
+                  : renderDownloadItem(item)}
+              </Fragment>
+            );
+          })}
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+// eslint-disable-next-line @eslint-react/kit/no-multi-comp
+export const DashboardDownloadSidebarItem = ({ onClose, open }: DashboardDownloadSidebarItemProps) => {
+  const { t } = useTranslation();
+
+  return (
+    <SidebarItem
+      closeIcon={<DashboardDownloadSidebarItemIcon />}
+      closeIconTooltipText={t`Close download`}
+      onClose={onClose}
+      open={open}
+      testIdAttributes={{ name: 'DashboardDownloadSidebarItem' }}
+      title={t`Download`}
+      width={60}
+    >
+      {open && <DashboardDownloadSidebarItemContent />}
+    </SidebarItem>
+  );
+};

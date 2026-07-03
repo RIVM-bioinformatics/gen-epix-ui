@@ -9,25 +9,25 @@ import {
   TestIdUtil,
 } from '@gen-epix/ui';
 
-import { EpiUpload } from '../../components/epi/EpiUpload';
+import { Upload } from '../../components/ui/Upload';
 import {
-  createEpiUploadStore,
-  EpiUploadStoreContext,
+  createUploadStore,
   STEP_ORDER_UPLOAD,
-} from '../../stores/epiUploadStore';
+  UploadStoreContext,
+} from '../../stores/uploadStore';
 
 export const UploadPage = () => {
   const { t } = useTranslation();
 
-  const epiUploadStore = useMemo(() => createEpiUploadStore({
+  const uploadStore = useMemo(() => createUploadStore({
     stepOrder: STEP_ORDER_UPLOAD,
   }), []);
 
   useEffect(() => {
     return () => {
-      epiUploadStore.getState().destroy().catch(noop);
+      uploadStore.getState().destroy().catch(noop);
     };
-  }, [epiUploadStore]);
+  }, [uploadStore]);
 
   return (
     <PageContainer
@@ -38,9 +38,9 @@ export const UploadPage = () => {
       testIdAttributes={TestIdUtil.createAttributes('UploadPage')}
       title={t`Upload`}
     >
-      <EpiUploadStoreContext value={epiUploadStore}>
-        <EpiUpload />
-      </EpiUploadStoreContext>
+      <UploadStoreContext value={uploadStore}>
+        <Upload />
+      </UploadStoreContext>
     </PageContainer>
   );
 };

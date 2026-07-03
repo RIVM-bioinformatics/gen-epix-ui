@@ -8,12 +8,12 @@ import {
   FormUtil,
 } from '@gen-epix/ui';
 
-import type { EpiDashboardArrangementConfig } from '../../models/epi';
+import type { DashboardArrangementConfig } from '../../models/caseDb';
 import { DashboardUtil } from '../../utils/DashboardUtil';
 import type { CaseDbConfig } from '../../models/config';
 
 
-export type EpiDashboardGeneralSettings = {
+export type DashboardGeneralSettings = {
   isHighlightingEnabled: boolean;
 };
 
@@ -21,40 +21,40 @@ export type EpiDashboardGeneralSettings = {
 export type UserProfileStore = UserProfileStoreActions & UserProfileStoreState;
 
 export interface UserProfileStoreActions {
-  resetEpiDashboardGeneralSettings: () => void;
-  resetEpiDashboardLayout: () => void;
+  resetDashboardGeneralSettings: () => void;
+  resetDashboardLayout: () => void;
   resetWidgetSettings: (widgetName: string) => void;
-  setEpiDashboardArrangementConfig: (config: EpiDashboardArrangementConfig) => void;
-  setEpiDashboardGeneralSettings: (settings: EpiDashboardGeneralSettings) => void;
-  setEpiDashboardPanelConfiguration: (id: string, configuration: string) => void;
+  setDashboardArrangementConfig: (config: DashboardArrangementConfig) => void;
+  setDashboardGeneralSettings: (settings: DashboardGeneralSettings) => void;
+  setDashboardPanelConfiguration: (id: string, configuration: string) => void;
   setWidgetSettings: (widgetName: string, settings: unknown) => void;
 }
 
 export interface UserProfileStoreState {
-  epiDashboardArrangementConfig: EpiDashboardArrangementConfig;
-  epiDashboardGeneralSettings: EpiDashboardGeneralSettings;
-  epiDashboardPanels: {
+  dashboardArrangementConfig: DashboardArrangementConfig;
+  dashboardGeneralSettings: DashboardGeneralSettings;
+  dashboardPanels: {
     [key: string]: string;
   };
-  epiDashboardWidgetSettings: {
+  dashboardWidgetSettings: {
     [key: string]: unknown;
   };
 }
 
 export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => {
-  const widgets = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
-  const epiDashboardWidgetSettings: UserProfileStoreState['epiDashboardWidgetSettings'] = {};
+  const widgets = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS;
+  const dashboardWidgetSettings: UserProfileStoreState['dashboardWidgetSettings'] = {};
   for (const widgetName of Object.keys(widgets)) {
-    epiDashboardWidgetSettings[widgetName] = widgets[widgetName].configDefaultValues ?? {};
+    dashboardWidgetSettings[widgetName] = widgets[widgetName].configDefaultValues ?? {};
   }
 
   return {
-    epiDashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
-    epiDashboardGeneralSettings: {
+    dashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
+    dashboardGeneralSettings: {
       isHighlightingEnabled: true,
     },
-    epiDashboardPanels: {},
-    epiDashboardWidgetSettings,
+    dashboardPanels: {},
+    dashboardWidgetSettings,
     tableSettings: {},
   };
 };
@@ -64,48 +64,48 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
     (set, get) => {
       return {
         ...createUserProfileStoreInitialState(),
-        resetEpiDashboardGeneralSettings: () => {
+        resetDashboardGeneralSettings: () => {
           set({
-            epiDashboardGeneralSettings: {
+            dashboardGeneralSettings: {
               isHighlightingEnabled: true,
             },
           });
         },
-        resetEpiDashboardLayout: () => {
+        resetDashboardLayout: () => {
           set({
-            epiDashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
-            epiDashboardPanels: {},
+            dashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
+            dashboardPanels: {},
           });
         },
         resetWidgetSettings: (widgetName: string) => {
-          const epiDashboardWidgetSettings = get().epiDashboardWidgetSettings;
+          const dashboardWidgetSettings = get().dashboardWidgetSettings;
           set({
-            epiDashboardWidgetSettings: {
-              ...epiDashboardWidgetSettings,
-              [widgetName]: ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS[widgetName].configDefaultValues ?? {},
+            dashboardWidgetSettings: {
+              ...dashboardWidgetSettings,
+              [widgetName]: ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS[widgetName].configDefaultValues ?? {},
             },
           });
         },
-        setEpiDashboardArrangementConfig: (config: EpiDashboardArrangementConfig) => {
-          set({ epiDashboardArrangementConfig: config });
+        setDashboardArrangementConfig: (config: DashboardArrangementConfig) => {
+          set({ dashboardArrangementConfig: config });
         },
-        setEpiDashboardGeneralSettings: (settings: EpiDashboardGeneralSettings) => {
-          set({ epiDashboardGeneralSettings: settings });
+        setDashboardGeneralSettings: (settings: DashboardGeneralSettings) => {
+          set({ dashboardGeneralSettings: settings });
         },
-        setEpiDashboardPanelConfiguration: (id: string, configuration: string) => {
-          const epiDashboardPanels = get().epiDashboardPanels;
+        setDashboardPanelConfiguration: (id: string, configuration: string) => {
+          const dashboardPanels = get().dashboardPanels;
           set({
-            epiDashboardPanels: {
-              ...epiDashboardPanels,
+            dashboardPanels: {
+              ...dashboardPanels,
               [id]: configuration,
             },
           });
         },
         setWidgetSettings: (widgetName: string, settings: unknown) => {
-          const epiDashboardWidgetSettings = get().epiDashboardWidgetSettings;
+          const dashboardWidgetSettings = get().dashboardWidgetSettings;
           set({
-            epiDashboardWidgetSettings: {
-              ...epiDashboardWidgetSettings,
+            dashboardWidgetSettings: {
+              ...dashboardWidgetSettings,
               [widgetName]: settings,
             },
           });
@@ -118,29 +118,29 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
         if (!state) {
           return;
         }
-        const validatedConfig = DashboardUtil.validateAndMigrateArrangementConfig(state.epiDashboardArrangementConfig);
-        if (validatedConfig !== state.epiDashboardArrangementConfig) {
-          state.setEpiDashboardArrangementConfig(validatedConfig);
+        const validatedConfig = DashboardUtil.validateAndMigrateArrangementConfig(state.dashboardArrangementConfig);
+        if (validatedConfig !== state.dashboardArrangementConfig) {
+          state.setDashboardArrangementConfig(validatedConfig);
         }
 
-        const widgets = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.WIDGETS;
-        const initialWidgetSettings = createUserProfileStoreInitialState().epiDashboardWidgetSettings;
-        for (const widgetName of Object.keys(state.epiDashboardWidgetSettings)) {
+        const widgets = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS;
+        const initialWidgetSettings = createUserProfileStoreInitialState().dashboardWidgetSettings;
+        for (const widgetName of Object.keys(state.dashboardWidgetSettings)) {
           const fieldDefs = widgets[widgetName]?.configFormFieldsDefinitions;
           if (!fieldDefs) {
             continue;
           }
-          if (!FormUtil.areFormValuesValid(fieldDefs, state.epiDashboardWidgetSettings[widgetName])) {
+          if (!FormUtil.areFormValuesValid(fieldDefs, state.dashboardWidgetSettings[widgetName])) {
             state.setWidgetSettings(widgetName, initialWidgetSettings[widgetName] ?? {});
           }
         }
 
       },
       partialize: (state) => ({
-        epiDashboardArrangementConfig: state.epiDashboardArrangementConfig,
-        epiDashboardGeneralSettings: state.epiDashboardGeneralSettings,
-        epiDashboardPanels: state.epiDashboardPanels,
-        epiDashboardWidgetSettings: state.epiDashboardWidgetSettings,
+        dashboardArrangementConfig: state.dashboardArrangementConfig,
+        dashboardGeneralSettings: state.dashboardGeneralSettings,
+        dashboardPanels: state.dashboardPanels,
+        dashboardWidgetSettings: state.dashboardWidgetSettings,
       }),
       storage: createJSONStorage(() => localStorage),
       version: 4,

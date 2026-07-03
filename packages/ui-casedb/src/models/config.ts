@@ -5,12 +5,20 @@ import type { Range } from 'colorjs.io';
 import type { FieldValues } from 'react-hook-form';
 
 import type {
-  EpiDashboardArrangement,
-  EpiDashboardArrangementWidgetAssignments,
-  EpiWidgetsConfig,
-} from './epi';
+  DashboardArrangement,
+  DashboardArrangementWidgetAssignments,
+  WidgetsConfig,
+} from './caseDb';
 
 export interface CaseDbConfig extends ConfigBase {
+  dashboard: {
+    ARRANGEMENT_OPTIONS: { [key: string]: DashboardArrangement };
+    DEFAULT_ARRANGEMENT_KEY: string;
+    DEFAULT_WIDGET_ASSIGNMENTS: { [key: string]: DashboardArrangementWidgetAssignments };
+    MIN_PANEL_HEIGHT: number;
+    MIN_PANEL_WIDTH: number;
+    WIDGETS: WidgetsConfig<FieldValues>;
+  };
   epi: {
     DATA_MISSING_CHARACTER: string;
     DOWNLOAD_SECTION_ORDER: string[];
@@ -27,24 +35,16 @@ export interface CaseDbConfig extends ConfigBase {
       MAX_ALLOWED_UNIQUE_VALUES: number;
     };
   };
-  epiDashboard: {
-    ARRANGEMENT_OPTIONS: { [key: string]: EpiDashboardArrangement };
-    DEFAULT_ARRANGEMENT_KEY: string;
-    DEFAULT_WIDGET_ASSIGNMENTS: { [key: string]: EpiDashboardArrangementWidgetAssignments };
-    MIN_PANEL_HEIGHT: number;
-    MIN_PANEL_WIDTH: number;
-    WIDGETS: EpiWidgetsConfig<FieldValues>;
-  };
-  epiLineList: {
+  lineList: {
     CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS: number;
     MAX_COLUMN_WIDTH: number;
     REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT: number;
     TABLE_ROW_HEIGHT: number;
   };
-  epiMap: {
+  map: {
     MIN_PIE_CHART_RADIUS: number;
   };
-  epiTree: {
+  tree: {
     ANCESTOR_DOT_RADIUS: number;
     HEADER_HEIGHT: number;
     INITIAL_UNLINKED_ZOOM_LEVEL: number;

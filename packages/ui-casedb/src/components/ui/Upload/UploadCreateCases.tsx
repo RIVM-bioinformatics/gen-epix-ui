@@ -1,0 +1,329 @@
+import { useTranslation } from 'react-i18next';
+import type { ReactNode } from 'react';
+import {
+  use,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Container,
+} from '@mui/material';
+import { useStore } from 'zustand';
+import {
+  GenericErrorMessage,
+  InactivityService,
+  LinearProgressWithLabel,
+  RouterService,
+} from '@gen-epix/ui';
+
+import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
+import { UploadError } from '../../../classes/errors';
+import { UploadStoreContext } from '../../../stores/uploadStore';
+import { UploadUtil } from '../../../utils/UploadUtil';
+
+import { UploadNavigation } from './UploadNavigation';
+
+
+export const UploadCreateCases = () => {
+  const { t } = useTranslation();
+
+  const store = use(UploadStoreContext);
+  const reset = useStore(store, (state) => state.reset);
+  const goToPreviousStep = useStore(store, (state) => state.goToPreviousStep);
+  const sequenceMapping = useStore(store, (state) => state.sequenceMapping);
+  const sequenceFilesDataTransfer = useStore(store, (state) => state.sequenceFilesDataTransfer);
+  const validatedCases = useStore(store, (state) => state.validatedCases);
+  const selectedIdsForUpload = useStore(store, (state) => state.selectedIdsForUpload);
+  const casesForVerificationFromSourceData = useStore(store, (state) => state.casesForVerificationFromSourceData);
+  const uploadCompleteButtonCallback = useStore(store, (state) => state.uploadCompleteButtonCallback);
+  const uploadCompleteButtonLabel = useStore(store, (state) => state.uploadCompleteButtonLabel);
+  const onUploadComplete = useStore(store, (state) => state.onUploadComplete);
+
+  const completeCaseType = useStore(store, (state) => state.completeCaseType);
+  const [progress, setProgress] = useState(0);
+  const [progressMessage, setProgressMessage] = useState('');
+
+  const [isUploadStarted, setIsUploadStarted] = useState(false);
+  const [isUploadCompleted, setIsUploadCompleted] = useState(false);
+  const [error, setError] = useState<unknown>(undefined);
+
+  const sequenceFileStats = useMemo(() => {
+    return UploadUtil.getSequenceMappingStats(sequenceMapping, sequenceFilesDataTransfer);
+  }, [sequenceFilesDataTransfer, sequenceMapping]);
+
+  const selectedValidatedCases = useMemo(() => {
+    return validatedCases.filter(vc => selectedIdsForUpload.includes(vc.id));
+  }, [validatedCases, selectedIdsForUpload]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
+
+    const abort = () => {
+      abortController.abort();
+      InactivityService.getInstance().resume();
+    };
+
+    if (!isUploadStarted) {
+      return abort;
+    }
+    InactivityService.getInstance().pause();
+
+    const perform = async () => {
+      const result = await UploadUtil.createCasesAndUploadFiles({
+        assemblyProtocolId: store.getState().assemblyProtocolId,
+        casesForVerificationFromSourceData,
+        completeCaseType: store.getState().completeCaseType,
+        createdInDataCollectionId: store.getState().createdInDataCollectionId,
+        mappedColumns: store.getState().mappedColumns,
+        onComplete: () => {
+          setIsUploadCompleted(true);
+        },
+        onError: (e: Error) => {
+          setError(e);
+        },
+        onProgress: (percentage: number, message: string) => {
+          setProgress(percentage);
+          setProgressMessage(message);
+        },
+        sampleIdColId: store.getState().sampleIdColId,
+        selectedValidatedCases,
+        sequenceFilesDataTransfer,
+        sequenceMapping,
+        sequencingProtocolId: store.getState().sequencingProtocolId,
+        signal,
+      });
+      if (onUploadComplete) {
+        await onUploadComplete(result);
+      }
+    };
+
+    perform().catch((e) => {
+      if (!signal.aborted) {
+        setError(e);
+      }
+    });
+
+
+    return abort;
+  }, [isUploadStarted, sequenceFilesDataTransfer, sequenceMapping, store, t, selectedValidatedCases, casesForVerificationFromSourceData, onUploadComplete]);
+
+
+  const onStartOverButtonClick = useCallback(async () => {
+    await reset();
+  }, [reset]);
+
+  const onStartUploadButtonClick = useCallback(() => {
+    setIsUploadStarted(true);
+  }, []);
+
+  const onGoBackButtonClick = useCallback(() => {
+    goToPreviousStep();
+  }, [goToPreviousStep]);
+
+  const onGotoCasesButtonClick = useCallback(async () => {
+    const link = CaseTypeUtil.createCaseTypeLink(completeCaseType);
+    await RouterService.getInstance().router.navigate(link);
+  }, [completeCaseType]);
+
+  let content: ReactNode;
+
+  if (error) {
+    content = (
+      <Box>
+        {error instanceof UploadError && (
+          <Alert severity={'error'}>
+            <AlertTitle>
+              {t('Failed to create cases during upload.')}
+            </AlertTitle>
+            {t('An error occurred while creating cases. Please try again or contact support if the issue persists. Cases may have been partially created. No files were uploaded.')}
+          </Alert>
+        )}
+        <GenericErrorMessage error={error} />
+      </Box>
+    );
+  } else if (isUploadCompleted) {
+    content = (
+      <Box>
+        <Box>
+          <Alert severity={'success'}>
+            <AlertTitle>
+              {t('Upload completed.')}
+            </AlertTitle>
+          </Alert>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            justifyContent: 'flex-end',
+            marginBottom: 1,
+            marginTop: 2,
+          }}
+        >
+          {uploadCompleteButtonCallback && uploadCompleteButtonLabel ? (
+            <Button
+              // eslint-disable-next-line @eslint-react/kit/jsx-handler-names
+              onClick={uploadCompleteButtonCallback}
+              variant={'contained'}
+            >
+              {uploadCompleteButtonLabel}
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={onStartOverButtonClick}
+                variant={'outlined'}
+              >
+                {t('Upload more cases')}
+              </Button>
+              <Button
+                onClick={onGotoCasesButtonClick}
+                variant={'contained'}
+              >
+                {t('View uploaded cases')}
+              </Button>
+            </>
+          )}
+        </Box>
+      </Box>
+    );
+  } else if (isUploadStarted) {
+    content = (
+      <Box>
+        <Box
+          sx={{
+            marginBottom: 4,
+          }}
+        >
+          <Alert severity={'info'}>
+            <AlertTitle>
+              {t('Uploading cases and files.')}
+            </AlertTitle>
+            {t('Please wait while the cases and associated files are being uploaded. This may take a while depending on the number and size of the files being uploaded.')}
+          </Alert>
+        </Box>
+        <Box
+          sx={{
+            marginBottom: 2,
+            marginTop: 4,
+          }}
+        >
+          <LinearProgressWithLabel value={progress} />
+        </Box>
+        <Box
+          sx={{
+            fontWeight: 700,
+          }}
+        >
+          {progressMessage}
+        </Box>
+      </Box>
+    );
+  } else {
+    content = (
+      <Box>
+        <Box>
+          <Box
+            sx={{
+              marginY: 2,
+            }}
+          >
+            <Alert severity={'info'}>
+              <AlertTitle>
+                {t('{{numCases}} cases are ready to be uploaded.', { numCases: selectedValidatedCases.length })}
+              </AlertTitle>
+            </Alert>
+          </Box>
+          {sequenceFileStats.mappedSequenceFiles.length > 0 && (
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
+              <Alert severity={'info'}>
+                <AlertTitle>
+                  {t('{{numSequenceFiles}} genome files are ready to be uploaded.', { numSequenceFiles: sequenceFileStats.mappedSequenceFiles.length })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+          )}
+          {sequenceFileStats.mappedReadsFiles.length > 0 && (
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
+              <Alert severity={'info'}>
+                <AlertTitle>
+                  {t('{{numReadsFiles}} reads files are ready to be uploaded.', { numReadsFiles: sequenceFileStats.mappedReadsFiles.length })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+          )}
+          {validatedCases.length - selectedValidatedCases.length > 0 && (
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
+              <Alert severity={'warning'}>
+                <AlertTitle>
+                  {t('{{numCases}} cases were not selected and will not be uploaded.', { numCases: validatedCases.length - selectedValidatedCases.length })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+          )}
+          {sequenceFileStats.unmappedSequenceFiles.length > 0 && (
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
+              <Alert severity={'warning'}>
+                <AlertTitle>
+                  {t('{{unmappedSequenceFiles}} unmapped genome files will not be uploaded.', { unmappedSequenceFiles: sequenceFileStats.unmappedSequenceFiles.length })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+          )}
+          {sequenceFileStats.unmappedReadsFiles.length > 0 && (
+            <Box
+              sx={{
+                marginY: 2,
+              }}
+            >
+              <Alert severity={'warning'}>
+                <AlertTitle>
+                  {t('{{unmappedReadsFiles}} unmapped reads files will not be uploaded.', { unmappedReadsFiles: sequenceFileStats.unmappedReadsFiles.length })}
+                </AlertTitle>
+              </Alert>
+            </Box>
+          )}
+        </Box>
+        <UploadNavigation
+          onGoBackButtonClick={onGoBackButtonClick}
+          onProceedButtonClick={onStartUploadButtonClick}
+          proceedLabel={'Start upload'}
+        />
+      </Box>
+    );
+  }
+
+  return (
+    <Container
+      maxWidth={'xl'}
+      sx={{
+        height: '100%',
+      }}
+    >
+      {content}
+    </Container>
+  );
+};

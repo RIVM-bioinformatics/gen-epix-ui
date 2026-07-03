@@ -4,16 +4,16 @@ import type { FieldValues } from 'react-hook-form';
 import sumBy from 'lodash/sumBy';
 
 import {
-  EPI_DASHBOARD_ARRANGEMENT_ORIENTATION,
-  EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/epi';
+  DASHBOARD_ARRANGEMENT_ORIENTATION,
+  WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
+} from '../../models/caseDb';
 import type {
-  EpiDashboardArrangement,
-  EpiDashboardArrangementCell,
-  EpiDashboardArrangementConfig,
-  EpiDashboardArrangementWidgetAssignments,
-  EpiWidgetsConfig,
-} from '../../models/epi';
+  DashboardArrangement,
+  DashboardArrangementCell,
+  DashboardArrangementConfig,
+  DashboardArrangementWidgetAssignments,
+  WidgetsConfig,
+} from '../../models/caseDb';
 import type { CaseDbConfig } from '../../models/config';
 
 export type ArrangementGroupInfo = {
@@ -24,44 +24,44 @@ export type ArrangementGroupInfo = {
 export class DashboardUtil {
   public static readonly dashboardLayoutStorageKey = 'GENEPIX-EpiDashboard-Layout-v1.3';
 
-  public static createDashboardArrangementConfigInitialState(): EpiDashboardArrangementConfig {
-    const defaultArrangementKey = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_ARRANGEMENT_KEY;
+  public static createDashboardArrangementConfigInitialState(): DashboardArrangementConfig {
+    const defaultArrangementKey = ConfigService.getInstance<CaseDbConfig>().config.dashboard.DEFAULT_ARRANGEMENT_KEY;
 
     return {
       arrangementKey: defaultArrangementKey,
-      arrangementWidgetAssignments: ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.DEFAULT_WIDGET_ASSIGNMENTS[defaultArrangementKey],
+      arrangementWidgetAssignments: ConfigService.getInstance<CaseDbConfig>().config.dashboard.DEFAULT_WIDGET_ASSIGNMENTS[defaultArrangementKey],
     };
   }
 
 
   public static getAdjacentZones(
-    arrangement: EpiDashboardArrangement,
+    arrangement: DashboardArrangement,
     zoneName: string,
-    direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
+    direction: WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
   ): string[] {
-    const adjacencyMap: Record<string, Partial<Record<EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION, string[]>>> = {};
+    const adjacencyMap: Record<string, Partial<Record<WIDGET_CONSTRAINT_CARDINAL_DIRECTION, string[]>>> = {};
 
-    const addAdjacency = (zone: string, dir: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION, adjacent: string[]) => {
+    const addAdjacency = (zone: string, dir: WIDGET_CONSTRAINT_CARDINAL_DIRECTION, adjacent: string[]) => {
       adjacencyMap[zone] ??= {};
       adjacencyMap[zone][dir] ??= [];
       adjacencyMap[zone][dir].push(...adjacent);
     };
 
-    const traverse = (arr: EpiDashboardArrangement) => {
-      const isHorizontal = arr.orientation === EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL;
+    const traverse = (arr: DashboardArrangement) => {
+      const isHorizontal = arr.orientation === DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL;
       arr.cells.forEach((cell, index) => {
         if (index > 0) {
           const prevCell = arr.cells[index - 1];
           if (isHorizontal) {
-            const prevEast = DashboardUtil.getBoundaryLeafZones(prevCell, EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST);
-            const currWest = DashboardUtil.getBoundaryLeafZones(cell, EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.WEST);
-            prevEast.forEach(z => addAdjacency(z, EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST, currWest));
-            currWest.forEach(z => addAdjacency(z, EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.WEST, prevEast));
+            const prevEast = DashboardUtil.getBoundaryLeafZones(prevCell, WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST);
+            const currWest = DashboardUtil.getBoundaryLeafZones(cell, WIDGET_CONSTRAINT_CARDINAL_DIRECTION.WEST);
+            prevEast.forEach(z => addAdjacency(z, WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST, currWest));
+            currWest.forEach(z => addAdjacency(z, WIDGET_CONSTRAINT_CARDINAL_DIRECTION.WEST, prevEast));
           } else {
-            const prevSouth = DashboardUtil.getBoundaryLeafZones(prevCell, EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.SOUTH);
-            const currNorth = DashboardUtil.getBoundaryLeafZones(cell, EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.NORTH);
-            prevSouth.forEach(z => addAdjacency(z, EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.SOUTH, currNorth));
-            currNorth.forEach(z => addAdjacency(z, EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.NORTH, prevSouth));
+            const prevSouth = DashboardUtil.getBoundaryLeafZones(prevCell, WIDGET_CONSTRAINT_CARDINAL_DIRECTION.SOUTH);
+            const currNorth = DashboardUtil.getBoundaryLeafZones(cell, WIDGET_CONSTRAINT_CARDINAL_DIRECTION.NORTH);
+            prevSouth.forEach(z => addAdjacency(z, WIDGET_CONSTRAINT_CARDINAL_DIRECTION.SOUTH, currNorth));
+            currNorth.forEach(z => addAdjacency(z, WIDGET_CONSTRAINT_CARDINAL_DIRECTION.NORTH, prevSouth));
           }
         }
         if ('cells' in cell) {
@@ -74,7 +74,7 @@ export class DashboardUtil {
     return adjacencyMap[zoneName]?.[direction] ?? [];
   }
 
-  public static getArrangementGroupInfos(arrangement: EpiDashboardArrangement, storagePrefix: string, path = 'root'): ArrangementGroupInfo[] {
+  public static getArrangementGroupInfos(arrangement: DashboardArrangement, storagePrefix: string, path = 'root'): ArrangementGroupInfo[] {
     const result: ArrangementGroupInfo[] = [{
       groupId: `${storagePrefix}-${path}`,
       orientation: arrangement.orientation,
@@ -87,10 +87,10 @@ export class DashboardUtil {
     return result;
   }
 
-  public static getArrangementWidgetAssignments(arrangement: EpiDashboardArrangement, arrangementWidgetAssignments?: { [key: string]: string }): { [key: string]: string } {
+  public static getArrangementWidgetAssignments(arrangement: DashboardArrangement, arrangementWidgetAssignments?: { [key: string]: string }): { [key: string]: string } {
     // traverse the arrangement and create an object with all zones set to empty string
     const emptyAssignments: { [key: string]: string } = {};
-    const traverseArrangement = (arr: EpiDashboardArrangement) => {
+    const traverseArrangement = (arr: DashboardArrangement) => {
       arr.cells.forEach((item) => {
         if ('name' in item) {
           emptyAssignments[item.name] = arrangementWidgetAssignments?.[item.name] || null;
@@ -104,9 +104,9 @@ export class DashboardUtil {
   }
 
   public static getAvailableWidgets(
-    arrangementConfig: EpiDashboardArrangementConfig,
+    arrangementConfig: DashboardArrangementConfig,
     zoneName: string,
-    widgetsConfig: EpiWidgetsConfig<FieldValues>,
+    widgetsConfig: WidgetsConfig<FieldValues>,
   ): string[] {
     const assignments = DashboardUtil.getArrangementWidgetAssignments(
       DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey),
@@ -145,7 +145,7 @@ export class DashboardUtil {
     return sumBy(cases, (row) => (row.count ?? 1));
   }
 
-  public static getEnabledWidgets(arrangementConfig: EpiDashboardArrangementConfig): string[] {
+  public static getEnabledWidgets(arrangementConfig: DashboardArrangementConfig): string[] {
     const arrangementWidgetAssignments = DashboardUtil.getArrangementWidgetAssignments(DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey), arrangementConfig.arrangementWidgetAssignments);
     return Object.keys(arrangementWidgetAssignments).filter(widgetName => arrangementWidgetAssignments[widgetName]);
   }
@@ -155,43 +155,43 @@ export class DashboardUtil {
   }
 
   public static isArrangementWidgetAssignmentsValid(
-    assignments: EpiDashboardArrangementWidgetAssignments,
-    widgets: EpiWidgetsConfig<FieldValues>,
+    assignments: DashboardArrangementWidgetAssignments,
+    widgets: WidgetsConfig<FieldValues>,
   ): boolean {
     return Object.values(assignments).every((widgetName) => !widgetName || widgetName in widgets);
   }
 
-  public static isSingleWidget(arrangementConfig: EpiDashboardArrangementConfig, widgetName: string): boolean {
+  public static isSingleWidget(arrangementConfig: DashboardArrangementConfig, widgetName: string): boolean {
     const arrangementWidgetAssignments = DashboardUtil.getArrangementWidgetAssignments(DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey), arrangementConfig.arrangementWidgetAssignments);
     return arrangementWidgetAssignments?.[widgetName] && Object.keys(arrangementWidgetAssignments).length === 1;
   }
 
-  public static validateAndMigrateArrangementConfig(config: EpiDashboardArrangementConfig): EpiDashboardArrangementConfig {
-    const epiDashboardConfig = ConfigService.getInstance<CaseDbConfig>().config.epiDashboard;
+  public static validateAndMigrateArrangementConfig(config: DashboardArrangementConfig): DashboardArrangementConfig {
+    const dashboardConfig = ConfigService.getInstance<CaseDbConfig>().config.dashboard;
     let result = config;
 
-    if (!result.arrangementKey || !(result.arrangementKey in epiDashboardConfig.ARRANGEMENT_OPTIONS)) {
-      result = { ...result, arrangementKey: epiDashboardConfig.DEFAULT_ARRANGEMENT_KEY };
+    if (!result.arrangementKey || !(result.arrangementKey in dashboardConfig.ARRANGEMENT_OPTIONS)) {
+      result = { ...result, arrangementKey: dashboardConfig.DEFAULT_ARRANGEMENT_KEY };
     }
 
-    if (!DashboardUtil.isArrangementWidgetAssignmentsValid(result.arrangementWidgetAssignments, epiDashboardConfig.WIDGETS)) {
+    if (!DashboardUtil.isArrangementWidgetAssignmentsValid(result.arrangementWidgetAssignments, dashboardConfig.WIDGETS)) {
       result = {
         ...result,
-        arrangementWidgetAssignments: epiDashboardConfig.DEFAULT_WIDGET_ASSIGNMENTS[result.arrangementKey]
-          ?? epiDashboardConfig.DEFAULT_WIDGET_ASSIGNMENTS[epiDashboardConfig.DEFAULT_ARRANGEMENT_KEY],
+        arrangementWidgetAssignments: dashboardConfig.DEFAULT_WIDGET_ASSIGNMENTS[result.arrangementKey]
+          ?? dashboardConfig.DEFAULT_WIDGET_ASSIGNMENTS[dashboardConfig.DEFAULT_ARRANGEMENT_KEY],
       };
     }
 
     return result;
   }
 
-  private static getArrangementByKey(arrangementKey: string): EpiDashboardArrangement {
-    return ConfigService.getInstance<CaseDbConfig>().config.epiDashboard.ARRANGEMENT_OPTIONS[arrangementKey];
+  private static getArrangementByKey(arrangementKey: string): DashboardArrangement {
+    return ConfigService.getInstance<CaseDbConfig>().config.dashboard.ARRANGEMENT_OPTIONS[arrangementKey];
   }
 
   private static getBoundaryLeafZones(
-    cell: EpiDashboardArrangement | EpiDashboardArrangementCell,
-    direction: EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
+    cell: DashboardArrangement | DashboardArrangementCell,
+    direction: WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
   ): string[] {
     if ('name' in cell) {
       return [cell.name];
@@ -200,18 +200,18 @@ export class DashboardUtil {
     if (cells.length === 0) {
       return [];
     }
-    const isHorizontal = orientation === EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL;
-    if (direction === EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST) {
+    const isHorizontal = orientation === DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL;
+    if (direction === WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST) {
       return isHorizontal
         ? DashboardUtil.getBoundaryLeafZones(cells[cells.length - 1], direction)
         : cells.flatMap(c => DashboardUtil.getBoundaryLeafZones(c, direction));
     }
-    if (direction === EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.WEST) {
+    if (direction === WIDGET_CONSTRAINT_CARDINAL_DIRECTION.WEST) {
       return isHorizontal
         ? DashboardUtil.getBoundaryLeafZones(cells[0], direction)
         : cells.flatMap(c => DashboardUtil.getBoundaryLeafZones(c, direction));
     }
-    if (direction === EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.SOUTH) {
+    if (direction === WIDGET_CONSTRAINT_CARDINAL_DIRECTION.SOUTH) {
       return isHorizontal
         ? cells.flatMap(c => DashboardUtil.getBoundaryLeafZones(c, direction))
         : DashboardUtil.getBoundaryLeafZones(cells[cells.length - 1], direction);
@@ -223,12 +223,12 @@ export class DashboardUtil {
   }
 
   private static getSiblingZonesInSameCellsArray(
-    arrangement: EpiDashboardArrangement,
+    arrangement: DashboardArrangement,
     zoneName: string,
   ): string[] {
-    const search = (arr: EpiDashboardArrangement): null | string[] => {
+    const search = (arr: DashboardArrangement): null | string[] => {
       const directLeafNames = arr.cells
-        .filter((cell): cell is EpiDashboardArrangementCell => 'name' in cell)
+        .filter((cell): cell is DashboardArrangementCell => 'name' in cell)
         .map(cell => cell.name);
       if (directLeafNames.includes(zoneName)) {
         return directLeafNames.filter(name => name !== zoneName);

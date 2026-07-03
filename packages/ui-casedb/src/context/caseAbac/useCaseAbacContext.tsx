@@ -1,6 +1,5 @@
 import { use } from 'react';
 
-import type { CaseAbacContext } from './CaseAbacContext';
-import { EpiCaseAbacContext } from './CaseAbacContext';
+import { CaseAbacContext } from './CaseAbacContext';
 
-export const useCaseAbacContext = (): CaseAbacContext => use(EpiCaseAbacContext);
+export const useCaseAbacContext = (): CaseAbacContext => use(CaseAbacContext);

@@ -11,7 +11,7 @@ import type {
   TableColumnText,
 } from '@gen-epix/ui';
 
-import { EpiDataService } from '../../classes/services/EpiDataService';
+import { DataService } from '../../classes/services/DataService';
 import { CaseUtil } from '../CaseUtil';
 
 export class CaseDbTableUtil {
@@ -36,7 +36,7 @@ export class CaseDbTableUtil {
       }
 
       if (refCol.col_type === CaseDbColType.ORDINAL) {
-        const conceptSetConceptIds = EpiDataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+        const conceptSetConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
         return (conceptSetConceptIds.indexOf(aValue.raw) - conceptSetConceptIds.indexOf(bValue.raw)) * directionMultiplier;
       }
 

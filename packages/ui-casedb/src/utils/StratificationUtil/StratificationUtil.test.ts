@@ -16,10 +16,10 @@ import type {
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import { ConfigService } from '@gen-epix/ui';
 
-import { EpiDataService } from '../../classes/services/EpiDataService';
+import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config';
-import { STRATIFICATION_MODE } from '../../models/epi';
-import type { EpiData } from '../../models/epi';
+import { STRATIFICATION_MODE } from '../../models/caseDb';
+import type { Data } from '../../models/caseDb';
 
 import { StratificationUtil } from './StratificationUtil';
 
@@ -50,16 +50,16 @@ const makeConcept = (
 ): CaseDbConcept =>
   ({ code: id.toUpperCase(), concept_set_id: conceptSetId, id, name: `Name ${id}`, props, rank });
 
-let savedData: EpiData;
+let savedData: Data;
 
 beforeEach(() => {
-  savedData = { ...EpiDataService.getInstance().data };
-  EpiDataService.getInstance().data.conceptsIdsBySetId = {};
-  EpiDataService.getInstance().data.conceptsById = {};
+  savedData = { ...DataService.getInstance().data };
+  DataService.getInstance().data.conceptsIdsBySetId = {};
+  DataService.getInstance().data.conceptsById = {};
 });
 
 afterEach(() => {
-  Object.assign(EpiDataService.getInstance().data, savedData);
+  Object.assign(DataService.getInstance().data, savedData);
   vi.restoreAllMocks();
 });
 
@@ -302,9 +302,9 @@ describe('StratificationUtil', () => {
         const SET_ID = 'set1';
 
         const setUpConcepts = (concepts: CaseDbConcept[]) => {
-          EpiDataService.getInstance().data.conceptsIdsBySetId[SET_ID] = concepts.map(c => c.id);
+          DataService.getInstance().data.conceptsIdsBySetId[SET_ID] = concepts.map(c => c.id);
           concepts.forEach(c => {
-            EpiDataService.getInstance().data.conceptsById[c.id] = c;
+            DataService.getInstance().data.conceptsById[c.id] = c;
           });
         };
 
@@ -434,7 +434,7 @@ describe('StratificationUtil', () => {
             makeConcept('c2', 2, null),
           ];
           concepts.forEach(c => {
-            EpiDataService.getInstance().data.conceptsById[c.id] = c;
+            DataService.getInstance().data.conceptsById[c.id] = c;
           });
           // conceptsIdsBySetId[SET_ID] is intentionally left unset
 

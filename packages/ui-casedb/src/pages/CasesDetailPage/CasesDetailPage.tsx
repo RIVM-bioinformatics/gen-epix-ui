@@ -13,7 +13,7 @@ import {
   useUpdateBreadcrumb,
 } from '@gen-epix/ui';
 
-import { EpiDashboard } from '../../components/epi/EpiDashboard';
+import { Dashboard } from '../../components/ui/Dashboard';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 
 
@@ -51,7 +51,7 @@ export const CasesDetailPage = () => {
         error={error}
         isLoading={isLoading}
       >
-        <EpiDashboard
+        <Dashboard
           caseTypeId={caseTypeId}
         />
       </ResponseHandler>

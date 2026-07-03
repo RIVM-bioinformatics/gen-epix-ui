@@ -44,7 +44,7 @@ import {
 } from '../../../dataHooks/useColsQuery';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import type { UserEffectiveRight } from '../../../models/caseAccess';
-import { EpiCustomTabPanel } from '../../epi/EpiCustomTabPanel';
+import { CustomTabPanel } from '../CustomTabPanel';
 
 
 export interface UsersEffectiveRightsDetailsDialogOpenProps {
@@ -170,7 +170,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               />
             </Tabs>
           </Box>
-          <EpiCustomTabPanel
+          <CustomTabPanel
             index={0}
             value={activeTab}
           >
@@ -254,8 +254,8 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 </Box>
               </Box>
             )}
-          </EpiCustomTabPanel>
-          <EpiCustomTabPanel
+          </CustomTabPanel>
+          <CustomTabPanel
             index={1}
             value={activeTab}
           >
@@ -346,8 +346,8 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 </Box>
               </Box>
             )}
-          </EpiCustomTabPanel>
-          <EpiCustomTabPanel
+          </CustomTabPanel>
+          <CustomTabPanel
             index={2}
             value={activeTab}
           >
@@ -435,8 +435,8 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 </Box>
               </Box>
             )}
-          </EpiCustomTabPanel>
-          <EpiCustomTabPanel
+          </CustomTabPanel>
+          <CustomTabPanel
             index={3}
             value={activeTab}
           >
@@ -487,8 +487,8 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
                 {userEffectiveRight.is_private ? t`Yes` : t`No`}
               </dd>
             </Box>
-          </EpiCustomTabPanel>
-          <EpiCustomTabPanel
+          </CustomTabPanel>
+          <CustomTabPanel
             index={4}
             value={activeTab}
           >
@@ -631,7 +631,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
               ))}
 
             </Box>
-          </EpiCustomTabPanel>
+          </CustomTabPanel>
         </Box>
       )}
     </ResponseHandler>

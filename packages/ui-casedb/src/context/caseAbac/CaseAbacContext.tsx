@@ -20,4 +20,5 @@ export type CaseAbacContext = {
   userDataCollectionsMap: Map<string, CaseDbDataCollection>;
 };
 
-export const EpiCaseAbacContext = createContext<CaseAbacContext>(null);
+// eslint-disable-next-line no-redeclare
+export const CaseAbacContext = createContext<CaseAbacContext>(null);

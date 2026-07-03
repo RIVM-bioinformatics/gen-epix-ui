@@ -11,14 +11,14 @@ import { ConfigService } from '@gen-epix/ui';
 import type { FieldValues } from 'react-hook-form';
 
 import {
-  EPI_DASHBOARD_ARRANGEMENT_ORIENTATION,
-  EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/epi';
+  DASHBOARD_ARRANGEMENT_ORIENTATION,
+  WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
+} from '../../models/caseDb';
 import type {
-  EpiDashboardArrangement,
-  EpiDashboardArrangementConfig,
-  EpiWidgetsConfig,
-} from '../../models/epi';
+  DashboardArrangement,
+  DashboardArrangementConfig,
+  WidgetsConfig,
+} from '../../models/caseDb';
 import type { CaseDbConfig } from '../../models/config';
 
 import { DashboardUtil } from './DashboardUtil';
@@ -27,12 +27,12 @@ import { DashboardUtil } from './DashboardUtil';
 // Shorthands
 // ---------------------------------------------------------------------------
 
-const H = EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL;
-const V = EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL;
-const EAST = EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST;
-const WEST = EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.WEST;
-const SOUTH = EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.SOUTH;
-const NORTH = EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.NORTH;
+const H = DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL;
+const V = DASHBOARD_ARRANGEMENT_ORIENTATION.VERTICAL;
+const EAST = WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST;
+const WEST = WIDGET_CONSTRAINT_CARDINAL_DIRECTION.WEST;
+const SOUTH = WIDGET_CONSTRAINT_CARDINAL_DIRECTION.SOUTH;
+const NORTH = WIDGET_CONSTRAINT_CARDINAL_DIRECTION.NORTH;
 
 // ---------------------------------------------------------------------------
 // Layout factory helpers
@@ -40,10 +40,10 @@ const NORTH = EPI_WIDGET_CONSTRAINT_CARDINAL_DIRECTION.NORTH;
 
 const leaf = (name: string): { name: string; size: number } => ({ name, size: 50 });
 const grp = (
-  orientation: EPI_DASHBOARD_ARRANGEMENT_ORIENTATION,
-  cells: EpiDashboardArrangement['cells'],
+  orientation: DASHBOARD_ARRANGEMENT_ORIENTATION,
+  cells: DashboardArrangement['cells'],
   size = 50,
-): EpiDashboardArrangement => ({ cells, orientation, size });
+): DashboardArrangement => ({ cells, orientation, size });
 
 // ---------------------------------------------------------------------------
 // Fixed arrangements used across multiple test suites
@@ -120,7 +120,7 @@ const TWO_NESTED = grp(H, [grp(V, [leaf('A'), leaf('B')]), grp(V, [leaf('C'), le
 
 const noop: () => null = () => null;
 
-const makeWidgets = (): EpiWidgetsConfig<FieldValues> => ({
+const makeWidgets = (): WidgetsConfig<FieldValues> => ({
   unconstrained: {
     component: noop as never,
     widgetLabel: 'Unconstrained',
@@ -146,9 +146,9 @@ const makeWidgets = (): EpiWidgetsConfig<FieldValues> => ({
 // ConfigService mock helper
 // ---------------------------------------------------------------------------
 
-const mockDashboard = (overrides: Partial<CaseDbConfig['epiDashboard']>): void => {
+const mockDashboard = (overrides: Partial<CaseDbConfig['dashboard']>): void => {
   vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
-    epiDashboard: overrides,
+    dashboard: overrides,
   } as unknown as CaseDbConfig);
 };
 
@@ -354,11 +354,11 @@ describe('DashboardUtil', () => {
   describe('getAvailableWidgets', () => {
     const ARRANGEMENT_KEY = 'layout';
 
-    const setup = (arrangement: EpiDashboardArrangement): void => {
+    const setup = (arrangement: DashboardArrangement): void => {
       mockDashboard({ ARRANGEMENT_OPTIONS: { [ARRANGEMENT_KEY]: arrangement } });
     };
 
-    const cfg = (assignments: Record<string, null | string>): EpiDashboardArrangementConfig => ({
+    const cfg = (assignments: Record<string, null | string>): DashboardArrangementConfig => ({
       arrangementKey: ARRANGEMENT_KEY,
       arrangementWidgetAssignments: assignments,
     });
@@ -476,7 +476,7 @@ describe('DashboardUtil', () => {
 
   // -------------------------------------------------------------------------
   describe('getEnabledWidgets', () => {
-    const cfg = (assignments: Record<string, null | string>): EpiDashboardArrangementConfig => ({
+    const cfg = (assignments: Record<string, null | string>): DashboardArrangementConfig => ({
       arrangementKey: 'key',
       arrangementWidgetAssignments: assignments,
     });
@@ -524,7 +524,7 @@ describe('DashboardUtil', () => {
 
   // -------------------------------------------------------------------------
   describe('isArrangementWidgetAssignmentsValid', () => {
-    const widgets: EpiWidgetsConfig<FieldValues> = {
+    const widgets: WidgetsConfig<FieldValues> = {
       widgetA: { component: noop as never, widgetLabel: 'A' },
     };
 
@@ -551,7 +551,7 @@ describe('DashboardUtil', () => {
 
   // -------------------------------------------------------------------------
   describe('isSingleWidget', () => {
-    const cfg = (assignments: Record<string, null | string>): EpiDashboardArrangementConfig => ({
+    const cfg = (assignments: Record<string, null | string>): DashboardArrangementConfig => ({
       arrangementKey: 'key',
       arrangementWidgetAssignments: assignments,
     });
@@ -574,7 +574,7 @@ describe('DashboardUtil', () => {
 
   // -------------------------------------------------------------------------
   describe('validateAndMigrateArrangementConfig', () => {
-    const WIDGETS: EpiWidgetsConfig<FieldValues> = {
+    const WIDGETS: WidgetsConfig<FieldValues> = {
       widgetA: { component: noop as never, widgetLabel: 'A' },
     };
 

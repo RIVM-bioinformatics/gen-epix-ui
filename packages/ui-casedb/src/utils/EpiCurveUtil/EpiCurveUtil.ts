@@ -22,8 +22,8 @@ import { DATE_FORMAT } from '@gen-epix/ui';
 import type { Theme } from '@mui/material';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
-import { EpiFilterUtil } from '../EpiFilterUtil';
-import type { Stratification } from '../../models/epi';
+import { FilterUtil } from '../FilterUtil';
+import type { Stratification } from '../../models/caseDb';
 
 export interface EpiCurveChartItem {
   date: Date;
@@ -387,7 +387,7 @@ export class EpiCurveUtil {
     // cache the parsers
     const dateParsers: { [key: string]: (date: string) => Date } = {};
     cols.forEach(col => {
-      dateParsers[col.id] = EpiFilterUtil.getDateParser(completeCaseType.ref_cols[col.ref_col_id]);
+      dateParsers[col.id] = FilterUtil.getDateParser(completeCaseType.ref_cols[col.ref_col_id]);
     });
 
     const items: EpiCurveChartItem[] = cases.map(row => {

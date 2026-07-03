@@ -37,8 +37,8 @@ import {
   TestIdUtil,
 } from '@gen-epix/ui';
 
-import { EPI_DASHBOARD_ARRANGEMENT_ORIENTATION } from '../../../../models/epi';
-import type { EpiDashboardArrangement } from '../../../../models/epi';
+import { DASHBOARD_ARRANGEMENT_ORIENTATION } from '../../../../models/caseDb';
+import type { DashboardArrangement } from '../../../../models/caseDb';
 
 export type ArrangementEditorProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;
@@ -47,7 +47,7 @@ export type ArrangementEditorProps<TFieldValues extends FieldValues, TName exten
   readonly loading?: boolean;
   readonly name: TName;
   readonly onChange?: (value: string) => void;
-  readonly options: { [key: string]: EpiDashboardArrangement };
+  readonly options: { [key: string]: DashboardArrangement };
   readonly required?: boolean;
   readonly warningMessage?: string;
 };
@@ -70,8 +70,8 @@ export const ArrangementEditor = <TFieldValues extends FieldValues, TName extend
   const errorMessage = FormUtil.getFieldErrorMessage(errors, name);
   const hasError = !!errorMessage;
 
-  const renderArrangement = useCallback((option: EpiDashboardArrangement) => {
-    const direction: 'column' | 'row' = option.orientation === EPI_DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL ? 'row' : 'column';
+  const renderArrangement = useCallback((option: DashboardArrangement) => {
+    const direction: 'column' | 'row' = option.orientation === DASHBOARD_ARRANGEMENT_ORIENTATION.HORIZONTAL ? 'row' : 'column';
     const gridTemplate = option.cells.map((cell) => `${cell.size}fr`).join(' ');
 
     return (

@@ -1,0 +1,393 @@
+import { createStore } from 'zustand';
+import { t } from 'i18next';
+import type {
+  CaseDbCaseBatchUploadResult,
+  CaseDbCaseForUpload,
+  CaseDbCaseUploadResult,
+  CaseDbCol,
+  CaseDbCompleteCaseType,
+} from '@gen-epix/api-casedb';
+import type {
+  AutoCompleteOption,
+  OptionBase,
+} from '@gen-epix/ui';
+import {
+  NotificationService,
+  QueryClientService,
+  StringUtil,
+} from '@gen-epix/ui';
+
+import type {
+  UploadMappedColumn,
+  UploadSequenceMapping,
+} from '../../models/caseDb';
+import { UPLOAD_STEP } from '../../models/caseDb';
+import { UploadUtil } from '../../utils/UploadUtil';
+import { CASEDB_QUERY_KEY } from '../../data/query';
+
+export const STEP_ORDER_UPLOAD = [
+  UPLOAD_STEP.SELECT_FILE,
+  UPLOAD_STEP.MAP_COLUMNS,
+  UPLOAD_STEP.PREVIEW,
+  UPLOAD_STEP.SELECT_SEQUENCE_FILES,
+  UPLOAD_STEP.MAP_SEQUENCES,
+  UPLOAD_STEP.CREATE_CASES,
+];
+
+export const STEP_ORDER_BULK_EDIT = [
+  UPLOAD_STEP.PREVIEW,
+  UPLOAD_STEP.CREATE_CASES,
+];
+
+export interface CreateUploadStoreInitialStateKwArg {
+  caseRightsColMap?: { [colId: string]: string[] };
+  casesForVerificationFromSourceData?: CaseDbCaseForUpload[];
+  completeCaseType?: CaseDbCompleteCaseType;
+  goBackFromFirstStepCallback?: () => void;
+  goBackFromFirstStepLabel?: string;
+  onUploadComplete?: (result: CaseDbCaseBatchUploadResult) => Promise<void> | void;
+  stepOrder: UPLOAD_STEP[];
+  uploadCompleteButtonCallback?: () => void;
+  uploadCompleteButtonLabel?: string;
+}
+
+export type CreateUploadStoreKwArgs = CreateUploadStoreInitialStateKwArg;
+
+export type UploadStore = UploadStoreActions & UploadStoreState;
+export interface UploadStoreActions {
+  destroy: () => Promise<void>;
+  findNextStep: (currentStep: UPLOAD_STEP) => UPLOAD_STEP;
+  findPreviousStep: (currentStep: UPLOAD_STEP) => UPLOAD_STEP;
+  goToNextStep: () => Promise<void>;
+  goToPreviousStep: () => void;
+  invalidateCaseValidationQuery: () => Promise<void>;
+  reset: () => Promise<void>;
+  setCaseTypeId: (caseTypeId: string) => void;
+  setCols: (cols: CaseDbCol[]) => void;
+  setCompleteCaseType: (completeCaseType: CaseDbCompleteCaseType) => void;
+  setCreatedInDataCollectionId: (createdInDataCollectionId: string) => void;
+  setDataCollectionOptions: (options: OptionBase<string>[]) => void;
+  setFileList: (fileList: FileList) => Promise<void>;
+
+  setMappedColumns: (mappedColumns: UploadMappedColumn[]) => Promise<void>;
+  setRawData: (rawData: string[][]) => Promise<void>;
+  setSequenceFilesDataTransfer: (dataTransfer: DataTransfer) => void;
+  setSequenceMapping: (sequenceMapping: UploadSequenceMapping) => void;
+  setSheet: (sheet: string) => Promise<void>;
+  setSheetOptions: (sheetOptions: AutoCompleteOption<string>[]) => Promise<void>;
+}
+
+export interface UploadStoreState {
+  activeStep: UPLOAD_STEP;
+  assemblyProtocolId: string;
+  caseRightsColMap: { [colId: string]: string[] };
+  casesForVerificationFromSourceData: CaseDbCaseForUpload[];
+  caseTypeId: string;
+  cols: CaseDbCol[];
+  completeCaseType: CaseDbCompleteCaseType;
+  createdInDataCollectionId: string;
+  createdInDataCollectionOptions: AutoCompleteOption<string>[];
+  dataCollectionOptions: OptionBase<string>[];
+  fileList: FileList;
+  fileName: string;
+  fileParsingError: string;
+  goBackFromFirstStepCallback: () => void;
+  goBackFromFirstStepLabel: string;
+  initError: unknown;
+  isInitLoading: boolean;
+  mappedColumns: UploadMappedColumn[];
+  onUploadComplete: (result: CaseDbCaseBatchUploadResult) => Promise<void> | void;
+  rawData: string[][];
+  sampleIdColId: string;
+  selectedIdsForUpload: string[];
+  sequenceFilesDataTransfer: DataTransfer;
+  sequenceMapping: UploadSequenceMapping;
+  sequencingProtocolId: string;
+  sheet: string;
+  sheetOptions: AutoCompleteOption<string>[];
+  shouldResetColumnMapping: boolean;
+  shouldResetSequenceMapping: boolean;
+  stepOrder: UPLOAD_STEP[];
+  uploadCompleteButtonCallback: () => void;
+  uploadCompleteButtonLabel: string;
+  validateCasesQueryKey: string[];
+  validatedCases: CaseDbCaseUploadResult[];
+}
+
+
+const createEpiUploadStoreInitialState: (kwArgs: CreateUploadStoreKwArgs) => UploadStoreState = (kwArgs) => ({
+  activeStep: kwArgs.stepOrder[0],
+  assemblyProtocolId: null,
+  caseRightsColMap: kwArgs.caseRightsColMap ?? {},
+  casesForVerificationFromSourceData: kwArgs.casesForVerificationFromSourceData ?? [],
+  caseTypeId: null,
+  cols: [],
+  completeCaseType: kwArgs.completeCaseType ?? null,
+  createdInDataCollectionId: null,
+  createdInDataCollectionOptions: [],
+  dataCollectionOptions: [],
+  fileList: null,
+  fileName: null,
+  fileParsingError: null,
+  goBackFromFirstStepCallback: kwArgs.goBackFromFirstStepCallback ?? null,
+  goBackFromFirstStepLabel: kwArgs.goBackFromFirstStepLabel ?? null,
+  initError: null,
+  isInitLoading: true,
+  mappedColumns: [],
+  onUploadComplete: kwArgs.onUploadComplete ?? null,
+  rawData: null,
+  sampleIdColId: null,
+  selectedIdsForUpload: [],
+  sequenceFilesDataTransfer: new DataTransfer(),
+  sequenceMapping: {},
+  sequencingProtocolId: null,
+  sheet: null,
+  sheetOptions: [],
+  shouldResetColumnMapping: false,
+  shouldResetSequenceMapping: false,
+  stepOrder: kwArgs.stepOrder,
+  uploadCompleteButtonCallback: kwArgs.uploadCompleteButtonCallback ?? null,
+  uploadCompleteButtonLabel: kwArgs.uploadCompleteButtonLabel ?? null,
+  validateCasesQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
+  validatedCases: [],
+});
+
+export const createUploadStore = (kwArgs: CreateUploadStoreKwArgs) => {
+  const initialStateParams = { ...kwArgs };
+  const initialState = createEpiUploadStoreInitialState(initialStateParams);
+  const STEP_ORDER = kwArgs.stepOrder;
+
+  return createStore<UploadStore>()((set, get) => {
+    return {
+      ...initialState,
+      destroy: async () => {
+        const { invalidateCaseValidationQuery } = get();
+        await invalidateCaseValidationQuery();
+      },
+
+      findNextStep: (currentStep: UPLOAD_STEP): UPLOAD_STEP => {
+        const currentIndex = STEP_ORDER.indexOf(currentStep);
+        if (currentIndex === -1 || currentIndex === STEP_ORDER.length - 1) {
+          return null;
+        }
+        return STEP_ORDER[currentIndex + 1];
+      },
+
+      findPreviousStep: (currentStep: UPLOAD_STEP): UPLOAD_STEP => {
+        const currentIndex = STEP_ORDER.indexOf(currentStep);
+        if (currentIndex <= 0) {
+          return null;
+        }
+        return STEP_ORDER[currentIndex - 1];
+      },
+
+      goToNextStep: async () => {
+        const { activeStep, completeCaseType, createdInDataCollectionId, mappedColumns, rawData, sequenceFilesDataTransfer, sequenceMapping, setMappedColumns, shouldResetColumnMapping, shouldResetSequenceMapping, validatedCases } = get();
+
+        let nextStep = get().findNextStep(activeStep);
+
+        if (nextStep === UPLOAD_STEP.MAP_COLUMNS) {
+          if (shouldResetColumnMapping && mappedColumns.length > 0) {
+            NotificationService.getInstance().showNotification({
+              isLoading: false,
+              message: t`Column mappings have been reset due to changes in the selected case type or file.`,
+              severity: 'info',
+            });
+          }
+          if ((shouldResetColumnMapping && mappedColumns.length > 0) || mappedColumns.length === 0) {
+            await setMappedColumns(UploadUtil.getInitialMappedColumns(completeCaseType, rawData));
+          }
+        }
+
+        if (nextStep === UPLOAD_STEP.PREVIEW) {
+          set({
+            casesForVerificationFromSourceData: UploadUtil.getCasesForUpload({
+              caseTypeId: completeCaseType.id,
+              createdInDataCollectionId,
+              mappedColumns,
+              rawData,
+            }),
+          });
+        }
+
+        if (nextStep === UPLOAD_STEP.MAP_SEQUENCES) {
+          if (shouldResetSequenceMapping && Object.keys(sequenceMapping).length > 0) {
+            NotificationService.getInstance().showNotification({
+              isLoading: false,
+              message: t`Sequence mappings have been reset due to changes in the selected uploaded files.`,
+              severity: 'info',
+            });
+          }
+          if ((shouldResetSequenceMapping && sequenceMapping) || !sequenceMapping) {
+            set({ sequenceMapping: UploadUtil.getEpiUploadSequenceMapping(completeCaseType, validatedCases, sequenceFilesDataTransfer) });
+          }
+          if (UploadUtil.getSequenceMappingStats(get().sequenceMapping, sequenceFilesDataTransfer).numberOfFilesToMap === 0) {
+            nextStep = get().findNextStep(nextStep);
+          }
+        }
+
+        if (nextStep !== null) {
+          set({ activeStep: nextStep, shouldResetColumnMapping: false, shouldResetSequenceMapping: false });
+        }
+      },
+
+      goToPreviousStep: () => {
+        const { activeStep, sequenceFilesDataTransfer, sequenceMapping } = get();
+        let previousStep = get().findPreviousStep(activeStep);
+        if (previousStep === UPLOAD_STEP.MAP_SEQUENCES && UploadUtil.getSequenceMappingStats(sequenceMapping, sequenceFilesDataTransfer).numberOfFilesToMap === 0) {
+          previousStep = get().findPreviousStep(previousStep);
+        }
+
+        if (previousStep !== null) {
+          set({ activeStep: previousStep });
+        }
+      },
+
+      invalidateCaseValidationQuery: async () => {
+        const { validateCasesQueryKey } = get();
+
+        await QueryClientService.getInstance().invalidateQueryKeys([validateCasesQueryKey]);
+        QueryClientService.getInstance().removeQueries([validateCasesQueryKey]);
+      },
+
+      reset: async () => {
+        const { invalidateCaseValidationQuery } = get();
+        await invalidateCaseValidationQuery();
+        set(createEpiUploadStoreInitialState(initialStateParams));
+      },
+
+      setCaseTypeId: (caseTypeId: string) => {
+        set({ caseTypeId });
+      },
+
+      setCols: (cols: CaseDbCol[]) => {
+        set({ cols });
+      },
+
+      setCompleteCaseType: async (completeCaseType: CaseDbCompleteCaseType) => {
+        const { completeCaseType: oldCompleteCaseType, createdInDataCollectionId, dataCollectionOptions, invalidateCaseValidationQuery } = get();
+        set({ completeCaseType });
+        if (completeCaseType && completeCaseType.id !== oldCompleteCaseType?.id) {
+          await invalidateCaseValidationQuery();
+          set({ shouldResetColumnMapping: true });
+          const createdInDataCollectionOptions = dataCollectionOptions.filter(option => {
+            const dataCollectionId = option.value;
+            return completeCaseType.case_type_access_abacs[dataCollectionId]?.is_private && completeCaseType.case_type_access_abacs[dataCollectionId]?.add_case_set;
+          });
+          set({ createdInDataCollectionOptions });
+          if (createdInDataCollectionOptions.length === 1) {
+            set({ createdInDataCollectionId: createdInDataCollectionOptions[0].value });
+          }
+
+          // If the current createdInDataCollectionId is not valid for the new completeCaseType, reset it
+          if (createdInDataCollectionId) {
+            const isValid = createdInDataCollectionOptions.some(option => option.value === createdInDataCollectionId);
+            if (!isValid) {
+              set({ createdInDataCollectionId: null });
+            }
+          }
+        }
+      },
+
+      setCreatedInDataCollectionId: (createdInDataCollectionId: string) => {
+        set({ createdInDataCollectionId });
+      },
+
+      setDataCollectionOptions: (options: OptionBase<string>[]) => {
+        set({ dataCollectionOptions: options });
+      },
+
+      setFileList: async (fileList: FileList) => {
+        const { setRawData, setSheet, setSheetOptions } = get();
+
+        const file = fileList?.length > 0 ? fileList[0] : null;
+        set({ fileName: file?.name ?? null, fileParsingError: null, rawData: null, sheet: null });
+
+        if (!file) {
+          await setSheet(null);
+          await setRawData(null);
+          set({ fileList: null });
+          return;
+        }
+
+        set({ fileList });
+        try {
+          if (!UploadUtil.isXlsxFile(file.name)) {
+            const data = await UploadUtil.readRawData(fileList);
+            await setRawData(data);
+          }
+          const sheetOptions = await UploadUtil.getSheetNameOptions(fileList);
+          await setSheetOptions(sheetOptions);
+        } catch (_error) {
+          await setSheet(null);
+          await setSheetOptions([]);
+          set({ fileList: null, fileParsingError: t('Error reading file') });
+        }
+      },
+
+      setMappedColumns: async (mappedColumns: UploadMappedColumn[]) => {
+        const { invalidateCaseValidationQuery } = get();
+        await invalidateCaseValidationQuery();
+        set({ mappedColumns });
+      },
+
+      setRawData: async (rawData: string[][]) => {
+        const { cols, invalidateCaseValidationQuery, rawData: oldRawData, setCaseTypeId } = get();
+        if (JSON.stringify(oldRawData) !== JSON.stringify(rawData)) {
+          set({ shouldResetColumnMapping: true });
+          await invalidateCaseValidationQuery();
+        }
+        set({ rawData });
+        if (!rawData || rawData.length === 0) {
+          return;
+        }
+        const bestMatchingCaseType = UploadUtil.getCaseTypeFromColumnLabels(cols, rawData[0]);
+        if (bestMatchingCaseType) {
+          setCaseTypeId(bestMatchingCaseType.id);
+        }
+      },
+
+      setSequenceFilesDataTransfer: (dataTransfer: DataTransfer) => {
+        const { sequenceFilesDataTransfer, sequenceMapping } = get();
+        if (dataTransfer === sequenceFilesDataTransfer) {
+          return;
+        }
+        set({ sequenceFilesDataTransfer: dataTransfer });
+        if (sequenceMapping) {
+          set({ shouldResetSequenceMapping: true });
+        }
+      },
+
+      setSequenceMapping: (sequenceMapping: UploadSequenceMapping) => {
+        set({ sequenceMapping });
+      },
+
+      setSheet: async (sheet: string) => {
+        const { fileList, setRawData } = get();
+        set({ fileParsingError: null, rawData: null, sheet });
+
+        if (!sheet) {
+          return;
+        }
+        try {
+          // Call the callback with parsed data
+          await setRawData(await UploadUtil.readRawData(fileList, sheet));
+        } catch (error) {
+          console.error('Error reading sheet', error);
+          set({ sheet: null });
+          set({ fileParsingError: t('Error reading sheet') });
+          await setRawData(null);
+          return;
+        }
+      },
+
+      setSheetOptions: async (sheetOptions: AutoCompleteOption<string>[]) => {
+        const { setSheet } = get();
+        set({ sheetOptions });
+        if (sheetOptions.length === 1) {
+          await setSheet(sheetOptions[0].value);
+        }
+      },
+    };
+  });
+};

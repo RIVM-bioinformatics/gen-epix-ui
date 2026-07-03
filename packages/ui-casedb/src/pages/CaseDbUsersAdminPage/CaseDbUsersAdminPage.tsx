@@ -17,12 +17,12 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { EpiUserRightsDialog } from '../../components/epi/EpiUserRightsDialog';
-import type { EpiUserRightsDialogRefMethods } from '../../components/epi/EpiUserRightsDialog';
+import { UserRightsDialog } from '../../components/ui/UserRightsDialog';
+import type { UserRightsDialogRefMethods } from '../../components/ui/UserRightsDialog';
 
 export const CaseDbUsersAdminPage = () => {
   const { t } = useTranslation();
-  const epiUserRightsDialogRef = useRef<EpiUserRightsDialogRefMethods>(null);
+  const userRightsDialogRef = useRef<UserRightsDialogRefMethods>(null);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbUser>[]>(() => {
     const doesUserHavePermissionToViewEffectiveRights = AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
@@ -58,7 +58,7 @@ export const CaseDbUsersAdminPage = () => {
   return (
     <>
       <UsersAdminPage subPages={subPages} />
-      <EpiUserRightsDialog ref={epiUserRightsDialogRef} />
+      <UserRightsDialog ref={userRightsDialogRef} />
     </>
   );
 };

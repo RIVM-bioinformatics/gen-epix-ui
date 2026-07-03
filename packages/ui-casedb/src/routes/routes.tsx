@@ -23,7 +23,7 @@ import { createAdminRoutes } from './adminRoutes';
 
 type RoutePermission = CaseDbApiPermission | CommonDbApiPermission;
 
-const epiDashboardPermissions: RoutePermission[] = [
+const dashboardPermissions: RoutePermission[] = [
   { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
   { command_name: CaseDbCommandName.ConceptSetCrudCommand, permission_type: CaseDbPermissionType.READ },
   { command_name: CaseDbCommandName.OrganizationCrudCommand, permission_type: CaseDbPermissionType.READ },
@@ -63,7 +63,7 @@ export const createRoutes = (
           handle: {
             hidden: false,
             requiredPermissions: [
-              ...epiDashboardPermissions,
+              ...dashboardPermissions,
             ],
             requiresUserProfile: true,
             title: t`Case type`,
@@ -109,7 +109,7 @@ export const createRoutes = (
             hidden: false,
             requiredPermissions: [
               { command_name: CaseDbCommandName.CaseSetCrudCommand, permission_type: CaseDbPermissionType.READ },
-              ...epiDashboardPermissions,
+              ...dashboardPermissions,
             ],
             requiresUserProfile: true,
             title: t`Event`,

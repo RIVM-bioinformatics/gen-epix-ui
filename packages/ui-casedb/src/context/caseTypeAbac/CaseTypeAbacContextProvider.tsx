@@ -3,8 +3,7 @@ import type { PropsWithChildren } from 'react';
 
 import { AbacUtil } from '../../utils/AbacUtil';
 
-import type { CaseTypeAbacContext } from './CaseTypeAbacContext';
-import { EpiCaseTypeAbacContext } from './CaseTypeAbacContext';
+import { CaseTypeAbacContext } from './CaseTypeAbacContext';
 
 export type CaseTypeAbacContextProviderProps = PropsWithChildren<{
   readonly caseTypeAbac: CaseTypeAbacContext;
@@ -30,8 +29,8 @@ export const CaseTypeAbacContextProvider = (
   }, [caseTypeAbac]);
 
   return (
-    <EpiCaseTypeAbacContext value={sanitizedCaseAbac}>
+    <CaseTypeAbacContext value={sanitizedCaseAbac}>
       {children}
-    </EpiCaseTypeAbacContext>
+    </CaseTypeAbacContext>
   );
 };

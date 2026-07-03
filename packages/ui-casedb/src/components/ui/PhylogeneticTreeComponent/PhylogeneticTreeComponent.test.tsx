@@ -14,10 +14,10 @@ import { customRender } from '@gen-epix/ui/test-lib';
 import type {
   Highlighting,
   Stratification,
-} from '../../../models/epi';
-import { STRATIFICATION_MODE } from '../../../models/epi';
+} from '../../../models/caseDb';
+import { STRATIFICATION_MODE } from '../../../models/caseDb';
 import type { TreeNode } from '../../../models/tree';
-import { EpiTreeUtil } from '../../../utils/EpiTreeUtil';
+import { TreeUtil } from '../../../utils/TreeUtil';
 import { NewickUtil } from '../../../utils/NewickUtil';
 import type { CaseDbConfig } from '../../../models/config';
 import { EPI_WIDGET_NAME } from '../../../data/epi';
@@ -32,9 +32,9 @@ import { PhylogeneticTreeComponent } from './PhylogeneticTreeComponent';
 const DEFAULT_HEIGHT = 320;
 const DEFAULT_ITEM_HEIGHT = 32;
 const DEFAULT_WIDTH = 640;
-const HEADER_HEIGHT = ConfigService.getInstance<CaseDbConfig>().config.epiTree.HEADER_HEIGHT;
+const HEADER_HEIGHT = ConfigService.getInstance<CaseDbConfig>().config.tree.HEADER_HEIGHT;
 const LARGE_TREE_NEWICK = '(A:1,B:1,C:1,D:1,E:1,F:1,G:1,H:1,I:1,J:1);';
-const TREE_PADDING = ConfigService.getInstance<CaseDbConfig>().config.epiTree.TREE_PADDING;
+const TREE_PADDING = ConfigService.getInstance<CaseDbConfig>().config.tree.TREE_PADDING;
 
 let ariaLabelCounter = 0;
 
@@ -183,7 +183,7 @@ const waitForCanvasPaint = async (canvas: HTMLCanvasElement, assertion: () => bo
 };
 
 const parseTree = (newick: string) => {
-  return EpiTreeUtil.sanitizeTree(NewickUtil.parse(newick), 20);
+  return TreeUtil.sanitizeTree(NewickUtil.parse(newick), 20);
 };
 
 const getLayoutNode = (layout: TreeLayout, nodeName: string) => {

@@ -17,8 +17,8 @@ import {
   QueryClientService,
 } from '@gen-epix/ui';
 
-import { EpiDataService } from '../../classes/services/EpiDataService';
-import type { CaseTypeRowValue } from '../../models/epi';
+import { DataService } from '../../classes/services/DataService';
+import type { CaseTypeRowValue } from '../../models/caseDb';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 import type { CaseDbConfig } from '../../models/config';
 
@@ -145,7 +145,7 @@ export class CaseUtil {
   }
 
   private static getConceptMappedValue(raw: string): CaseTypeRowValue {
-    const concept = EpiDataService.getInstance().data.conceptsById?.[raw];
+    const concept = DataService.getInstance().data.conceptsById?.[raw];
     if (!concept) {
       return CaseUtil.getMissingRowValue(raw);
     }
@@ -159,7 +159,7 @@ export class CaseUtil {
   }
 
   private static getOrganizationMappedValue(raw: string): CaseTypeRowValue {
-    const organization = EpiDataService.getInstance().data?.organizationsById?.[raw];
+    const organization = DataService.getInstance().data?.organizationsById?.[raw];
     if (!organization) {
       return CaseUtil.getMissingRowValue(raw);
     }
@@ -173,8 +173,8 @@ export class CaseUtil {
   }
 
   private static getRegionMappedValue(refCol: CaseDbRefCol, raw: string): CaseTypeRowValue {
-    const regionSet = EpiDataService.getInstance().data.regionSets[refCol.region_set_id];
-    const region = EpiDataService.getInstance().data.regionsById?.[raw];
+    const regionSet = DataService.getInstance().data.regionSets[refCol.region_set_id];
+    const region = DataService.getInstance().data.regionsById?.[raw];
     if (!region) {
       return CaseUtil.getMissingRowValue(raw);
     }
