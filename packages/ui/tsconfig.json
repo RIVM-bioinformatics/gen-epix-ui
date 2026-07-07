@@ -30,7 +30,6 @@
   },
   "include": [
     "src/**/*",
-    "vite.config.ts",
-    "../ui-casedb/src/components/forms/fields/ArrangementEditor",
+    "vite.config.ts"
   ]
 }

@@ -33,14 +33,15 @@ import type {
   TableStoreActions,
   TableStoreState,
 } from '@gen-epix/ui';
+import cloneDeep from 'lodash/cloneDeep';
 
+import type { FindSimilarCasesResult } from '../../models/caseDb';
+import type { TreeWidgetDataPersistable } from '../../models/dashboard';
 import type {
-  FindSimilarCasesResult,
   StratifiableColumn,
   Stratification,
-  TreeConfiguration,
-} from '../../models/caseDb';
-import { STRATIFICATION_MODE } from '../../models/caseDb';
+} from '../../models/stratification';
+import { STRATIFICATION_MODE } from '../../models/stratification';
 import type { TreeNode } from '../../models/tree';
 import {
   SELECTION_FILTER_GROUP,
@@ -54,6 +55,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
 import { TreeFilter } from '../../classes/filters/TreeFilter';
 import { StratificationUtil } from '../../utils/StratificationUtil';
+import { DASHBOARD_WIDGET_NAME } from '../../data/dashboard';
 
 export interface CreateDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;
@@ -70,8 +72,9 @@ interface DashboardStoreActions extends TableStoreActions<CaseDbCase, CaseDbComp
   addTreeFilter: (nodeId: string) => Promise<void>;
   destroy: () => void;
   expandZone: (zone: string) => void;
+  getWidgetData: <TData>(widgetName: string) => TData;
+  getWidgetDataPersistable: <TData>(widgetName: string) => TData;
   mutateCachedCase: (caseId: string, item: CaseDbCase) => void;
-  // Private
   reloadStratification: () => void;
   reloadStratifyableColumns: () => void;
   reloadTree: () => void;
@@ -82,22 +85,16 @@ interface DashboardStoreActions extends TableStoreActions<CaseDbCase, CaseDbComp
   setPhylogeneticTreeResponse: (phylogeneticTree: CaseDbPhylogeneticTree) => void;
   stratify: (mode: STRATIFICATION_MODE, col?: CaseDbCol) => void;
   treeFilterStepOut: () => Promise<void>;
-  updateEpiCurveWidgetData: (data: Partial<EpiCurveWidgetData>) => void;
-
-  updateListWidgetData: (data: Partial<ListWidgetData>) => void;
-  updateMapWidgetData: (data: Partial<MapWidgetData>) => void;
-  updateTreeWidgetData: (data: Partial<TreeWidgetData>) => void;
+  updateWidgetData: <TData, TPartialData = Partial<TData>>(widgetName: string, data: TPartialData) => void;
+  updateWidgetDataPersistable: <TData, TPartialData = Partial<TData>>(widgetName: string, data: TPartialData) => void;
 }
 interface DashboardStoreState extends TableStoreState<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;
   completeCaseType: CaseDbCompleteCaseType;
-  epiCurveWidgetData: EpiCurveWidgetData;
   expandedZone: string;
   findSimilarCasesResults: FindSimilarCasesResult[];
   isMaxResultsExceeded: boolean;
   isMaxResultsExceededDismissed: boolean;
-  listWidgetData: ListWidgetData;
-  mapWidgetData: MapWidgetData;
   newick: string;
   numVisibleAttributesInSummary: number;
   stratification: Stratification;
@@ -110,44 +107,18 @@ interface DashboardStoreState extends TableStoreState<CaseDbCase, CaseDbComplete
     };
   };
   treeResponse: TreeNode;
-  treeWidgetData: TreeWidgetData;
-}
-interface EpiCurveWidgetData extends WidgetData {
-  columnId: string;
-  dimensionId: string;
-}
+  widgetData: {
+    [key: string]: {
+      [key: string]: unknown;
+    };
+  };
+  widgetDataPersistable: {
+    [key: string]: {
+      [key: string]: unknown;
+    };
+  };
 
-interface ListWidgetData extends WidgetData {
-  visibleItemItemIndex: number;
 }
-
-interface MapWidgetData extends WidgetData {
-  columnId: string;
-  dimensionId: string;
-}
-
-interface TreeWidgetData extends WidgetData {
-  horizontalScrollPosition: number;
-  treeConfiguration: TreeConfiguration;
-  verticalScrollPosition: number;
-  zoomLevel: number;
-}
-
-interface WidgetData {
-  isUnavailable: boolean;
-}
-
-const createWidgetDataInitialState = (): WidgetData => ({
-  isUnavailable: false,
-});
-
-const createTreeWidgetDataInitialState = (): TreeWidgetData => ({
-  ...createWidgetDataInitialState(),
-  horizontalScrollPosition: 0,
-  treeConfiguration: null,
-  verticalScrollPosition: 0,
-  zoomLevel: 1,
-});
 
 const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialStateKwArgs): DashboardStoreState => {
   const { caseSetId, completeCaseType, ...createTableStoreInitialStateKwArgs } = kwArgs;
@@ -157,11 +128,6 @@ const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialSta
     caseSetId,
     completeCaseType,
     dataContext: completeCaseType,
-    epiCurveWidgetData: {
-      ...createWidgetDataInitialState(),
-      columnId: null,
-      dimensionId: null,
-    },
     expandedZone: null,
     filteredData: {
       [SELECTION_FILTER_GROUP]: [],
@@ -171,15 +137,6 @@ const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialSta
     frontendFilterPriorities: [SELECTION_FILTER_GROUP, TREE_FILTER_GROUP],
     isMaxResultsExceeded: false,
     isMaxResultsExceededDismissed: false,
-    listWidgetData: {
-      ...createWidgetDataInitialState(),
-      visibleItemItemIndex: 0,
-    },
-    mapWidgetData: {
-      ...createWidgetDataInitialState(),
-      columnId: null,
-      dimensionId: null,
-    },
     newick: null,
     numVisibleAttributesInSummary: ConfigService.getInstance<CaseDbConfig>().config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
     stratification: null,
@@ -187,7 +144,14 @@ const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialSta
     tree: null,
     treeAddresses: {},
     treeResponse: null,
-    treeWidgetData: createTreeWidgetDataInitialState(),
+    widgetData: Object.entries(ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
+      acc[widgetName] = cloneDeep(widgetConfig.dataDefaultValues);
+      return acc;
+    }, {} as { [key: string]: { [key: string]: unknown } }),
+    widgetDataPersistable: Object.entries(ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
+      acc[widgetName] = cloneDeep(widgetConfig.dataDefaultValues);
+      return acc;
+    }, {} as { [key: string]: { [key: string]: unknown } }),
   };
 };
 
@@ -301,6 +265,14 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
               globalAbortSignal.removeEventListener('abort', globalAbortSignalListener);
             }
           },
+          getWidgetData: <TData>(widgetName: string): TData => {
+            const widgetData = get().widgetData[widgetName];
+            return widgetData as TData;
+          },
+          getWidgetDataPersistable: <TData>(widgetName: string): TData => {
+            const widgetData = get().widgetDataPersistable[widgetName];
+            return widgetData as TData;
+          },
           mutateCachedCase: (caseId: string, item: CaseDbCase) => {
             const queryClient = QueryClientService.getInstance().queryClient;
             const currentCases = QueryClientService.getInstance().getValidQueryData<CaseDbCase[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY));
@@ -372,7 +344,8 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             set({ stratifyableColumns });
           },
           reloadTree: () => {
-            const { filters, treeResponse, treeWidgetData: { treeConfiguration } } = get();
+            const { filters, getWidgetDataPersistable, treeResponse } = get();
+            const treeConfiguration = getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_WIDGET_NAME.TREE).treeConfiguration;
             const zoomedInTreeNodeName = filters.find(filter => filter instanceof TreeFilter)?.filterValue;
             const tree = zoomedInTreeNodeName ? TreeUtil.findNewTreeRoot(treeResponse, zoomedInTreeNodeName, 'node') : treeResponse;
             if (tree) {
@@ -513,27 +486,18 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             const zoomedInTreeNodeName = TreeUtil.findNewTreeRoot(treeResponse, treeFilter?.filterValue, 'parent').name;
             await setFilterValue(treeFilter.id, zoomedInTreeNodeName === treeResponse.name ? null : zoomedInTreeNodeName);
           },
-          updateEpiCurveWidgetData: (data: Partial<EpiCurveWidgetData>) => {
-            set({ epiCurveWidgetData: produce(get().epiCurveWidgetData, (draft) => ({ ...draft, ...data })) });
+          updateWidgetData: <T, TPartialData = Partial<T>>(widgetName: string, data: TPartialData) => {
+            set({ widgetData: produce(get().widgetData, (draft) => ({ ...draft, [widgetName]: { ...draft[widgetName] as { [key: string]: T }, ...data } })) });
           },
-          updateListWidgetData: (data: Partial<ListWidgetData>) => {
-            set({ listWidgetData: produce(get().listWidgetData, (draft) => ({ ...draft, ...data })) });
-          },
-          updateMapWidgetData: (data: Partial<MapWidgetData>) => {
-            set({ mapWidgetData: produce(get().mapWidgetData, (draft) => ({ ...draft, ...data })) });
-          },
-          updateTreeWidgetData: (data: Partial<TreeWidgetData>) => {
-            set({ treeWidgetData: produce(get().treeWidgetData, (draft) => ({ ...draft, ...data })) });
+          updateWidgetDataPersistable: <T, TPartialData = Partial<T>>(widgetName: string, data: TPartialData) => {
+            set({ widgetDataPersistable: produce(get().widgetDataPersistable, (draft) => ({ ...draft, [widgetName]: { ...draft[widgetName] as { [key: string]: T }, ...data } })) });
           },
         };
       },
       createTableStorePersistConfiguration<CaseDbCase, CaseDbCompleteCaseType, DashboardStore>(kwArgs.storageNamePostFix, kwArgs.storageVersion, (state) => {
         return {
           numVisibleAttributesInSummary: state.numVisibleAttributesInSummary,
-          treeWidgetData: {
-            ...createTreeWidgetDataInitialState(),
-            treeConfiguration: state.treeWidgetData.treeConfiguration,
-          },
+          widgetDataPersistable: state.widgetDataPersistable,
         };
       }),
     ),

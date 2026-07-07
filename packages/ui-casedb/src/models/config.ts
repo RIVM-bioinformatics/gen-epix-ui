@@ -7,8 +7,9 @@ import type { FieldValues } from 'react-hook-form';
 import type {
   DashboardArrangement,
   DashboardArrangementWidgetAssignments,
+  WidgetDataBase,
   WidgetsConfig,
-} from './caseDb';
+} from './dashboard';
 
 export interface CaseDbConfig extends ConfigBase {
   dashboard: {
@@ -17,7 +18,7 @@ export interface CaseDbConfig extends ConfigBase {
     DEFAULT_WIDGET_ASSIGNMENTS: { [key: string]: DashboardArrangementWidgetAssignments };
     MIN_PANEL_HEIGHT: number;
     MIN_PANEL_WIDTH: number;
-    WIDGETS: WidgetsConfig<FieldValues>;
+    WIDGETS: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase>;
   };
   epi: {
     DATA_MISSING_CHARACTER: string;

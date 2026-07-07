@@ -11,16 +11,14 @@ import {
 } from '@gen-epix/ui';
 import { customRender } from '@gen-epix/ui/test-lib';
 
-import type {
-  Highlighting,
-  Stratification,
-} from '../../../models/caseDb';
-import { STRATIFICATION_MODE } from '../../../models/caseDb';
+import type { Highlighting } from '../../../models/caseDb';
+import type { Stratification } from '../../../models/stratification';
+import { STRATIFICATION_MODE } from '../../../models/stratification';
 import type { TreeNode } from '../../../models/tree';
 import { TreeUtil } from '../../../utils/TreeUtil';
 import { NewickUtil } from '../../../utils/NewickUtil';
 import type { CaseDbConfig } from '../../../models/config';
-import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
 
 import type {
   PhylogeneticTreeComponentPathClickEvent,
@@ -463,7 +461,7 @@ describe('PhylogeneticTreeComponent', () => {
   test('draws highlighted distance labels only when enabled', async () => {
     const highlightingSubject = new Subject<Highlighting>({
       caseIds: ['LeafA'],
-      origin: EPI_WIDGET_NAME.TREE,
+      origin: DASHBOARD_WIDGET_NAME.TREE,
     });
     const { ariaLabel, canvas, layout, renderResult, resolvedOptions } = await renderTree({
       highlightingSubject,
@@ -632,7 +630,7 @@ describe('PhylogeneticTreeComponent', () => {
     await waitForAssertion(() => {
       expect(highlightingSubject.data.caseIds).toHaveLength(1);
       expect(['LeafA', 'LeafB', 'LeafC']).toContain(highlightingSubject.data.caseIds[0]);
-      expect(highlightingSubject.data.origin).toBe(EPI_WIDGET_NAME.TREE);
+      expect(highlightingSubject.data.origin).toBe(DASHBOARD_WIDGET_NAME.TREE);
       expect(canvas.style.cursor).toBe('pointer');
     });
 
@@ -641,7 +639,7 @@ describe('PhylogeneticTreeComponent', () => {
 
     await waitForAssertion(() => {
       expect(highlightingSubject.data.caseIds).toEqual([]);
-      expect(highlightingSubject.data.origin).toBe(EPI_WIDGET_NAME.TREE);
+      expect(highlightingSubject.data.origin).toBe(DASHBOARD_WIDGET_NAME.TREE);
       expect(canvas.style.cursor).toBe('default');
     });
 
@@ -665,7 +663,7 @@ describe('PhylogeneticTreeComponent', () => {
 
     await waitForAssertion(() => {
       expect(highlightingSubject.data.caseIds).toEqual([]);
-      expect(highlightingSubject.data.origin).toBe(EPI_WIDGET_NAME.TREE);
+      expect(highlightingSubject.data.origin).toBe(DASHBOARD_WIDGET_NAME.TREE);
     });
   });
 

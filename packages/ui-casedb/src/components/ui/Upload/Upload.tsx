@@ -13,7 +13,7 @@ import { Stepper } from '@gen-epix/ui';
 import type { Step } from '@gen-epix/ui';
 
 import { UploadStoreContext } from '../../../stores/uploadStore';
-import { UPLOAD_STEP } from '../../../models/caseDb';
+import { UPLOAD_STEP } from '../../../models/upload';
 
 import { UploadSelectFile } from './UploadSelectFile';
 import { UploadMapColumns } from './UploadMapColumns';

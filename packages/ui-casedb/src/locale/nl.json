@@ -273,6 +273,8 @@
     "Grouped by Selected rows": "Gegroepeerd op geselecteerde rijen",
     "Grouping": "Groepering",
     "Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.": "Groeperen stelt u in staat casussen te groeperen op een geselecteerd veld. Groeperen wordt uitgeschakeld wanneer het maximum aantal unieke waarden van het geselecteerde veld {{max_stratification_unique_values}} overschrijdt.",
+    "Histogram": "Histogram ⚠",
+    "Histogram: {{label}}": "Histogram: {{label}} ⚠",
     "Home": "Home",
     "Horizontal separator": "Horizontale scheidingslijn",
     "ICD Code": "ICD Code",

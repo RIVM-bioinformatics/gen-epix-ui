@@ -20,8 +20,8 @@ import {
 import type {
   UploadMappedColumn,
   UploadSequenceMapping,
-} from '../../models/caseDb';
-import { UPLOAD_STEP } from '../../models/caseDb';
+} from '../../models/upload';
+import { UPLOAD_STEP } from '../../models/upload';
 import { UploadUtil } from '../../utils/UploadUtil';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 

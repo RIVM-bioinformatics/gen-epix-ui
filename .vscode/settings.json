@@ -6,6 +6,7 @@
     "commondb",
     "LATLON",
     "Omop",
-    "omopdb"
+    "omopdb",
+    "persistable"
   ]
 }

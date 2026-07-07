@@ -37,8 +37,8 @@ import {
   TestIdUtil,
 } from '@gen-epix/ui';
 
-import { DASHBOARD_ARRANGEMENT_ORIENTATION } from '../../../../models/caseDb';
-import type { DashboardArrangement } from '../../../../models/caseDb';
+import { DASHBOARD_ARRANGEMENT_ORIENTATION } from '../../../../models/dashboard';
+import type { DashboardArrangement } from '../../../../models/dashboard';
 
 export type ArrangementEditorProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;

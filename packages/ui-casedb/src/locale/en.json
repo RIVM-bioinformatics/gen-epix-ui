@@ -273,6 +273,8 @@
     "Grouped by Selected rows": "Grouped by Selected rows",
     "Grouping": "Grouping",
     "Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.": "Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.",
+    "Histogram": "Histogram",
+    "Histogram: {{label}}": "Histogram: {{label}}",
     "Home": "Home",
     "Horizontal separator": "Horizontal separator",
     "ICD Code": "ICD Code",

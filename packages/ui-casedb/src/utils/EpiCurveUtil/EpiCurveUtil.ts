@@ -23,7 +23,7 @@ import type { Theme } from '@mui/material';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { FilterUtil } from '../FilterUtil';
-import type { Stratification } from '../../models/caseDb';
+import type { Stratification } from '../../models/stratification';
 
 export interface EpiCurveChartItem {
   date: Date;

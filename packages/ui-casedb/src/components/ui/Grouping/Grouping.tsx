@@ -16,7 +16,7 @@ import {
 
 import { LegendaItem } from '../LegendaItem';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { STRATIFICATION_MODE } from '../../../models/caseDb';
+import { STRATIFICATION_MODE } from '../../../models/stratification';
 import type { CaseDbConfig } from '../../../models/config';
 
 export const Grouping = () => {

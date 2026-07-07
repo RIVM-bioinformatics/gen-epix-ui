@@ -57,7 +57,7 @@ import type {
   UploadMappedColumnsFormFields,
   UploadSequenceMapping,
   UploadSequenceMappingForCaseId,
-} from '../../models/caseDb';
+} from '../../models/upload';
 import { FileUtil } from '../FileUtil';
 import { UploadError } from '../../classes/errors';
 import { CASEDB_QUERY_KEY } from '../../data/query';

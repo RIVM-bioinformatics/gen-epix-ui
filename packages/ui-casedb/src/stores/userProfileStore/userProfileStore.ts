@@ -7,8 +7,9 @@ import {
   ConfigService,
   FormUtil,
 } from '@gen-epix/ui';
+import cloneDeep from 'lodash/cloneDeep';
 
-import type { DashboardArrangementConfig } from '../../models/caseDb';
+import type { DashboardArrangementConfig } from '../../models/dashboard';
 import { DashboardUtil } from '../../utils/DashboardUtil';
 import type { CaseDbConfig } from '../../models/config';
 
@@ -45,7 +46,7 @@ export const createUserProfileStoreInitialState: () => UserProfileStoreState = (
   const widgets = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS;
   const dashboardWidgetSettings: UserProfileStoreState['dashboardWidgetSettings'] = {};
   for (const widgetName of Object.keys(widgets)) {
-    dashboardWidgetSettings[widgetName] = widgets[widgetName].configDefaultValues ?? {};
+    dashboardWidgetSettings[widgetName] = cloneDeep(widgets[widgetName].configDefaultValues) ?? {};
   }
 
   return {

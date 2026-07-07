@@ -13,12 +13,13 @@ import type { FieldValues } from 'react-hook-form';
 import {
   DASHBOARD_ARRANGEMENT_ORIENTATION,
   WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/caseDb';
+} from '../../models/dashboard';
 import type {
   DashboardArrangement,
   DashboardArrangementConfig,
+  WidgetDataBase,
   WidgetsConfig,
-} from '../../models/caseDb';
+} from '../../models/dashboard';
 import type { CaseDbConfig } from '../../models/config';
 
 import { DashboardUtil } from './DashboardUtil';
@@ -120,7 +121,7 @@ const TWO_NESTED = grp(H, [grp(V, [leaf('A'), leaf('B')]), grp(V, [leaf('C'), le
 
 const noop: () => null = () => null;
 
-const makeWidgets = (): WidgetsConfig<FieldValues> => ({
+const makeWidgets = (): WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase> => ({
   unconstrained: {
     component: noop as never,
     widgetLabel: 'Unconstrained',
@@ -524,7 +525,7 @@ describe('DashboardUtil', () => {
 
   // -------------------------------------------------------------------------
   describe('isArrangementWidgetAssignmentsValid', () => {
-    const widgets: WidgetsConfig<FieldValues> = {
+    const widgets: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase> = {
       widgetA: { component: noop as never, widgetLabel: 'A' },
     };
 
@@ -574,7 +575,7 @@ describe('DashboardUtil', () => {
 
   // -------------------------------------------------------------------------
   describe('validateAndMigrateArrangementConfig', () => {
-    const WIDGETS: WidgetsConfig<FieldValues> = {
+    const WIDGETS: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase> = {
       widgetA: { component: noop as never, widgetLabel: 'A' },
     };
 
