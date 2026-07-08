@@ -99,7 +99,7 @@ export const HistogramWidget = () => {
   }, [updateWidgetData]);
 
   useEffect(() => {
-    if (aCol || bCol) {
+    if (aCol && bCol) {
       return;
     }
     const defaultCols = HistogramUtil.getDefaultCols(allowedCols, completeCaseType);
