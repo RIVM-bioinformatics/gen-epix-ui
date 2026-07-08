@@ -7,6 +7,7 @@ export * from './utils/TreeUtil';
 export * from './utils/StratificationUtil';
 export * from './utils/NewickUtil';
 export * from './utils/MapUtil';
+export * from './utils/HistogramUtil';
 export * from './utils/FindSimilarCasesUtil';
 export * from './utils/FilterUtil';
 export * from './utils/FileUtil';

@@ -53,6 +53,12 @@ Install dependencies:
 pnpm install
 ```
 
+Copy the OIDC mock server config and adjust as needed:
+
+```sh
+cp oidc-mock-server.config.example.json oidc-mock-server.config.json
+```
+
 Start a demo client with its OIDC mock server:
 
 ```sh

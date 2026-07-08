@@ -25,6 +25,7 @@ import type {
   DashboardEpiCurveSettings,
   DashboardTreeSettings,
   EpiCurveWidgetData,
+  HistogramWidgetData,
   LineListWidgetData,
   MapWidgetData,
   TreeWidgetData,
@@ -210,7 +211,10 @@ export class CaseDbStandardConfigUtil {
           },
           [DASHBOARD_WIDGET_NAME.HISTOGRAM]: {
             component: HistogramWidget,
-            dataDefaultValues: {},
+            dataDefaultValues: {
+              colAId: null,
+              colBId: null,
+            } satisfies HistogramWidgetData,
             widgetLabel: t`Histogram`,
           },
           [DASHBOARD_WIDGET_NAME.LINE_LIST]: {

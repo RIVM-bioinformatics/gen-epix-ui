@@ -7,10 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import type {
-  EChartsOption,
-  EChartsType,
-} from 'echarts';
+import type { EChartsType } from 'echarts';
 import {
   LegendComponent,
   TooltipComponent,
@@ -22,8 +19,10 @@ import {
   use as registerECharts,
 } from 'echarts/core';
 import EChartsReact from 'echarts-for-react';
-import { CaseDbColType } from '@gen-epix/api-casedb';
-import type { CaseDbCol } from '@gen-epix/api-casedb';
+import type {
+  CaseDbCol,
+  CaseDbColType,
+} from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui';
 import { useStore } from 'zustand';
 import { BarChart } from 'echarts/charts';
@@ -39,12 +38,13 @@ import { DashboardWidget } from '../Dashboard';
 import { WidgetUnavailable } from '../WidgetUnavailable';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
-import { CaseUtil } from '../../../utils/CaseUtil';
-import { DataService } from '../../../classes/services/DataService';
-import { StratificationUtil } from '../../../utils/StratificationUtil';
-import { STRATIFICATION_MODE } from '../../../models/stratification';
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
+import type { HistogramWidgetData } from '../../../models/dashboard';
+import {
+  HISTOGRAM_ALLOWED_COL_TYPES,
+  HistogramUtil,
+} from '../../../utils/HistogramUtil';
 
 registerECharts([TooltipComponent, BarChart, LegendComponent, CanvasRenderer]);
 
@@ -54,12 +54,6 @@ const echartsCore = {
   init,
 };
 
-type SeriesItem = {
-  data: (number | string)[];
-  name: string;
-  type: 'bar';
-};
-
 export const HistogramWidget = () => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -67,28 +61,19 @@ export const HistogramWidget = () => {
   const dashboardStore = use(DashboardStoreContext);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
+  const updateWidgetData = useStore(dashboardStore, (state) => state.updateWidgetData);
+  const epiCurveWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<HistogramWidgetData>(DASHBOARD_WIDGET_NAME.HISTOGRAM));
 
   const allowedColTypes = useMemo<CaseDbColType[]>(() => {
-    return [CaseDbColType.INTERVAL, CaseDbColType.NOMINAL, CaseDbColType.ORDINAL] as CaseDbColType[];
+    return HISTOGRAM_ALLOWED_COL_TYPES;
   }, []);
 
   const allowedCols = useMemo(() => {
-    if (!completeCaseType) {
-      return [];
-    }
-    return completeCaseType.ordered_col_ids.reduce<CaseDbCol[]>((acc, colId) => {
-      const col = completeCaseType.cols[colId];
-      const refCol = completeCaseType.ref_cols[col.ref_col_id];
-      if (allowedColTypes.includes(refCol.col_type)) {
-        acc.push(col);
-      }
-      return acc;
-    }, []);
-
+    return HistogramUtil.getAllowedCols(completeCaseType, allowedColTypes);
   }, [allowedColTypes, completeCaseType]);
 
-  const [xAxisCol, setXAxisCol] = useState<CaseDbCol | null>(null);
-  const [yAxisCol, setYAxisCol] = useState<CaseDbCol | null>(null);
+  const [aCol, setACol] = useState<CaseDbCol | null>(epiCurveWidgetData.colAId ? completeCaseType?.cols[epiCurveWidgetData.colAId] ?? null : null);
+  const [bCol, setBCol] = useState<CaseDbCol | null>(epiCurveWidgetData.colBId ? completeCaseType?.cols[epiCurveWidgetData.colBId] ?? null : null);
 
   const [contextMenuConfig, setContextMenuConfig] = useState<ContextMenuConfigWithPosition | null>(null);
 
@@ -102,152 +87,76 @@ export const HistogramWidget = () => {
 
 
   const shouldShowWidget = allowedColTypes?.length > 1;
-  const shouldShowGraph = shouldShowWidget && xAxisCol && yAxisCol && lineListCaseCount > 0;
+  const shouldShowGraph = shouldShowWidget && aCol && bCol && lineListCaseCount > 0;
 
   const onMenuItemClick = useCallback((x: CaseDbCol, y: CaseDbCol) => {
-    setXAxisCol(x);
-    setYAxisCol(y);
-  }, []);
+    setACol(x);
+    setBCol(y);
+    updateWidgetData(DASHBOARD_WIDGET_NAME.HISTOGRAM, {
+      colAId: x.id,
+      colBId: y.id,
+    });
+  }, [updateWidgetData]);
 
-  const series = useMemo<SeriesItem[]>(() => {
-    if (!xAxisCol || !yAxisCol || !completeCaseType) {
-      return [];
+  useEffect(() => {
+    if (aCol || bCol) {
+      return;
     }
+    const defaultCols = HistogramUtil.getDefaultCols(allowedCols, completeCaseType);
+    if (!defaultCols) {
+      return;
+    }
+    const { newColA, newColB } = defaultCols;
 
-    const refColY = completeCaseType.ref_cols[yAxisCol.ref_col_id];
-    const conceptSetYConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refColY.concept_set_id];
-    const conceptsY = conceptSetYConceptIds?.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort((a, b) => a.rank - b.rank) ?? [];
+    setACol(newColA);
+    setBCol(newColB);
 
-    const refColX = completeCaseType.ref_cols[xAxisCol.ref_col_id];
-    const conceptSetXConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refColX.concept_set_id];
-    const conceptsX = conceptSetXConceptIds?.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort((a, b) => a.rank - b.rank) ?? [];
-
-    const countMap = new Map<string, Map<string, number>>();
-
-    sortedData.forEach(caseDbCase => {
-      const xAxisValue = CaseUtil.getRowValue(caseDbCase.content, xAxisCol, completeCaseType);
-      const yAxisValue = CaseUtil.getRowValue(caseDbCase.content, yAxisCol, completeCaseType);
-
-      if (xAxisValue.isMissing || yAxisValue.isMissing) {
-        return;
-      }
-
-      const xKey = xAxisValue.raw;
-      const yKey = yAxisValue.raw;
-
-      if (!countMap.has(yKey)) {
-        countMap.set(yKey, new Map<string, number>());
-      }
-      const xMap = countMap.get(yKey);
-      xMap.set(xKey, (xMap.get(xKey) ?? 0) + (caseDbCase.count ?? 1));
+    updateWidgetData(DASHBOARD_WIDGET_NAME.HISTOGRAM, {
+      colAId: newColA.id,
+      colBId: newColB.id,
     });
+  }, [aCol, allowedCols, bCol, completeCaseType, updateWidgetData]);
 
-    return conceptsY.map(yConcept => {
-      const xCounts = countMap.get(yConcept.id) ?? new Map<string, number>();
-      return {
-        data: conceptsX.map(xConcept => xCounts.get(xConcept.id) ?? 0),
-        name: yConcept.name,
-        type: 'bar',
-      };
-    });
-  }, [completeCaseType, sortedData, xAxisCol, yAxisCol]);
+  const [conceptsA, conceptsB] = useMemo(() => {
+    return HistogramUtil.getConcepts(aCol, bCol, completeCaseType);
+  }, [aCol, bCol, completeCaseType]);
+
+  const series = useMemo(() => {
+    return HistogramUtil.getSeries(aCol, bCol, completeCaseType, sortedData, conceptsA, conceptsB);
+  }, [aCol, bCol, completeCaseType, sortedData, conceptsA, conceptsB]);
 
   const histogramCaseCount = useMemo(() => {
-    if (!series?.length) {
-      return 0;
-    }
-    return series.reduce((total, item) => {
-      return total + (item.data as number[]).reduce((subTotal, value) => {
-        if (typeof value === 'number') {
-          return subTotal + value;
-        }
-        return subTotal;
-      }, 0);
-    }, 0);
+    return HistogramUtil.getCaseCount(series);
   }, [series]);
 
   const missingCasesCount = lineListCaseCount - histogramCaseCount;
   const missingCasesPercentage = missingCasesCount > 0 ? round(missingCasesCount / lineListCaseCount * 100, 1) : 0;
 
   const colors = useMemo(() => {
-    const stratification = StratificationUtil.getStratification({
-      col: yAxisCol,
-      completeCaseType,
-      mode: STRATIFICATION_MODE.FIELD,
-      sortedData,
-    });
-    return stratification?.legendaItems.map(l => l.color) ?? [];
-  }, [completeCaseType, yAxisCol, sortedData]);
+    return HistogramUtil.getColors(aCol, completeCaseType, sortedData);
+  }, [completeCaseType, aCol, sortedData]);
 
   const getOptions = useCallback(() => {
     if (!shouldShowGraph) {
       return null;
     }
-    const refColY = completeCaseType?.ref_cols[yAxisCol?.ref_col_id ?? ''];
-    const conceptSetYConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refColY.concept_set_id];
-    const conceptsY = conceptSetYConceptIds?.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort((a, b) => a.rank - b.rank) ?? [];
 
-    const refColX = completeCaseType?.ref_cols[xAxisCol?.ref_col_id ?? ''];
-    const conceptSetXConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refColX.concept_set_id];
-    const conceptsX = conceptSetXConceptIds?.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort((a, b) => a.rank - b.rank) ?? [];
-
-    return {
-      color: colors,
-      grid: {
-        bottom: theme.spacing(8),
-        left: theme.spacing(1),
-        right: theme.spacing(25),
-        top: theme.spacing(2),
-      },
-      legend: {
-        align: 'auto',
-        data: conceptsY.map(concept => concept.name),
-        left: 'right',
-        orient: 'vertical',
-        pageIconColor: theme.palette.primary.main,
-        pageIconInactiveColor: theme.palette.text.disabled,
-        type: 'scroll',
-      },
+    return HistogramUtil.getChartOptions({
+      aCol,
+      bCol,
+      colors,
+      conceptsA,
+      conceptsB,
       series,
-      tooltip: {
-        axisPointer: {
-          crossStyle: {
-            color: theme.palette.primary.main,
-          },
-          type: 'cross',
-        },
-        trigger: 'axis',
-      },
-      xAxis: [
-        {
-          axisLabel: {
-            height: 100,
-            rotate: 45,
-          },
-          axisPointer: {
-            type: 'shadow',
-          },
-          axisTick: {
-            alignWithLabel: true,
-            show: true,
-          },
-          data: conceptsX.map(concept => concept.name),
-          type: 'category',
-        },
-      ],
-      yAxis: [
-        {
-          minInterval: 1,
-          type: 'value',
-        },
-      ],
-    } satisfies EChartsOption;
-  }, [colors, completeCaseType?.ref_cols, series, shouldShowGraph, theme, xAxisCol?.ref_col_id, yAxisCol?.ref_col_id]);
+      t,
+      theme,
+    });
+  }, [shouldShowGraph, colors, theme, conceptsB, series, conceptsA, aCol, bCol, t]);
 
   const titleMenu = useMemo<MenuItemData>(() => {
     let label: string;
-    if (xAxisCol && yAxisCol) {
-      label = t('Histogram: {{xAxisColLabel}} vs {{yAxisColLabel}}', { xAxisColLabel: xAxisCol.label, yAxisColLabel: yAxisCol.label });
+    if (aCol && bCol) {
+      label = t('Histogram: {{aColLabel}} and {{bColLabel}}', { aColLabel: aCol.label, bColLabel: bCol.label });
     } else {
       label = t`Histogram`;
     }
@@ -260,20 +169,20 @@ export const HistogramWidget = () => {
 
     allowedCols.forEach(x => {
       const subMenu: MenuItemData = {
-        active: xAxisCol?.id === x.id || undefined,
+        active: aCol?.id === x.id || undefined,
         items: [],
-        label: t('X-axis: {{label}}', { label: x.label }),
+        label: t('Grouping: {{label}}', { label: x.label }),
       };
       allowedCols.forEach(y => {
         if (x.id === y.id) {
           return;
         }
         subMenu.items.push({
-          active: (xAxisCol?.id === x.id || undefined) && (yAxisCol?.id === y.id || undefined),
+          active: (aCol?.id === x.id || undefined) && (bCol?.id === y.id || undefined),
           callback: () => {
             onMenuItemClick(x, y);
           },
-          label: t('Y-axis: {{label}}', { label: y.label }),
+          label: t('X-Axis: {{label}}', { label: y.label }),
         });
       });
       mainMenu.items.push(subMenu);
@@ -281,16 +190,16 @@ export const HistogramWidget = () => {
 
 
     return mainMenu;
-  }, [xAxisCol, yAxisCol, shouldShowWidget, allowedCols, t, onMenuItemClick]);
+  }, [aCol, bCol, shouldShowWidget, allowedCols, t, onMenuItemClick]);
 
   const onChartReady = useCallback((chart: EChartsType) => {
-    if (!xAxisCol || !yAxisCol) {
+    if (!aCol || !bCol) {
       return;
     }
     const dom = chart.getDom();
-    dom?.setAttribute('aria-label', t('Histogram showing the number of cases ({{xAxisColLabel}} vs {{yAxisColLabel}})', { xAxisColLabel: xAxisCol?.label, yAxisColLabel: yAxisCol?.label }));
+    dom?.setAttribute('aria-label', t('Histogram showing the number of cases for {{aColLabel}} and {{bColLabel}}', { aColLabel: aCol?.label, bColLabel: bCol?.label }));
     dom?.setAttribute('role', 'img');
-  }, [xAxisCol, yAxisCol, t]);
+  }, [aCol, bCol, t]);
 
 
   useEffect(() => {
@@ -350,7 +259,6 @@ export const HistogramWidget = () => {
               echarts={echartsCore}
               notMerge
               onChartReady={onChartReady}
-              // onEvents={onEvents}
               option={getOptions()}
               ref={chartRef}
               style={{
@@ -362,7 +270,6 @@ export const HistogramWidget = () => {
           )}
           <ContextMenu
             config={contextMenuConfig}
-            // getExtraItems={getEpiContextMenuExtraItems}
             onMenuClose={onEpiContextMenuClose}
           />
         </Box>

@@ -54,6 +54,11 @@ export interface EpiCurveWidgetData extends WidgetDataBase {
   dimensionId: string;
 }
 
+export interface HistogramWidgetData extends WidgetDataBase {
+  colAId: string;
+  colBId: string;
+}
+
 export interface LineListWidgetData extends WidgetDataBase {
   visibleItemItemIndex: number;
 }

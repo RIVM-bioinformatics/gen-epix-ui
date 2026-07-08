@@ -167,6 +167,33 @@ export class DashboardUtil {
     return arrangementWidgetAssignments?.[widgetName] && Object.keys(arrangementWidgetAssignments).length === 1;
   }
 
+  public static removeInvalidWidgetAssignments(
+    config: DashboardArrangementConfig,
+    widgetsConfig: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase>,
+  ): DashboardArrangementConfig {
+    let updatedConfig = config;
+    let changed = true;
+    while (changed) {
+      changed = false;
+      const assignments = { ...updatedConfig.arrangementWidgetAssignments };
+      for (const [zoneName, widgetName] of Object.entries(assignments)) {
+        if (!widgetName) {
+          continue;
+        }
+        const availableWidgets = DashboardUtil.getAvailableWidgets(updatedConfig, zoneName, widgetsConfig);
+        if (!availableWidgets.includes(widgetName)) {
+
+          assignments[zoneName] = null;
+          changed = true;
+        }
+      }
+      if (changed) {
+        updatedConfig = { ...updatedConfig, arrangementWidgetAssignments: assignments };
+      }
+    }
+    return updatedConfig;
+  }
+
   public static validateAndMigrateArrangementConfig(config: DashboardArrangementConfig): DashboardArrangementConfig {
     const dashboardConfig = ConfigService.getInstance<CaseDbConfig>().config.dashboard;
     let result = config;

@@ -88,7 +88,8 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
           });
         },
         setDashboardArrangementConfig: (config: DashboardArrangementConfig) => {
-          set({ dashboardArrangementConfig: config });
+          const widgetsConfig = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS;
+          set({ dashboardArrangementConfig: DashboardUtil.removeInvalidWidgetAssignments(config, widgetsConfig) });
         },
         setDashboardGeneralSettings: (settings: DashboardGeneralSettings) => {
           set({ dashboardGeneralSettings: settings });
