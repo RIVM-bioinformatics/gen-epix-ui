@@ -172,7 +172,7 @@ export const EpiCurveWidget = () => {
       }
       completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach((c) => {
         menu.items.push({
-          active: c.id === c?.id,
+          active: !!(c.id === col?.id),
           callback: () => {
             updateWidgetData<EpiCurveWidgetData>(DASHBOARD_WIDGET_NAME.EPI_CURVE, { columnId: c.id });
             setCol(c);

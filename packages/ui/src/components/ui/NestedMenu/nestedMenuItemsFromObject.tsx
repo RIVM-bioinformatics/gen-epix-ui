@@ -31,7 +31,6 @@ export const nestedMenuItemsFromObject = ({
           title={undefined}
         >
           <NestedMenuItem
-            active={active}
             callback={callback}
             checked={checked}
             disabled={disabled}
@@ -40,7 +39,12 @@ export const nestedMenuItemsFromObject = ({
             leftIcon={leftIcon}
             parentMenuOpen={isOpen}
             rightIcon={rightIcon}
-            sx={sx}
+            sx={{
+              ...(sx || {}),
+              '& p': {
+                fontWeight: active ? 700 : undefined,
+              },
+            }}
           >
             {/* Call this function to nest more items */}
             {nestedMenuItemsFromObject({

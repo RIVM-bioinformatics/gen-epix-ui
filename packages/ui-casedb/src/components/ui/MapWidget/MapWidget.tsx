@@ -333,7 +333,7 @@ export const MapWidget = () => {
       }
       completeCaseType.ordered_col_ids_by_dim[dim.id].map(id => completeCaseType.cols[id]).forEach((c) => {
         menu.items.push({
-          active: c.id === c?.id,
+          active: !!(c.id === col?.id),
           callback: () => {
             updateWidgetData<MapWidgetData>(DASHBOARD_WIDGET_NAME.MAP, { columnId: c.id });
             setCol(c);

@@ -49,7 +49,7 @@ const DashboardDownloadSidebarItemContent = () => {
           ...prevDownloadOptions.filter(item => item.zone !== payload.zone),
           payload,
         ].sort((a, b) => {
-          return ConfigService.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - ConfigService.getInstance<CaseDbConfig>().config.epi.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
+          return ConfigService.getInstance<CaseDbConfig>().config.dashboard.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - ConfigService.getInstance<CaseDbConfig>().config.dashboard.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
         });
       });
     };
