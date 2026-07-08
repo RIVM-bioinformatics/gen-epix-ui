@@ -21,12 +21,12 @@ import {
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
-import type { Data } from '../../../models/caseDb';
+import type { DataCache } from '../../../models/caseDb';
 
 export class DataService {
   private static __instance: DataService;
 
-  public readonly data: Data = {
+  public readonly data: DataCache = {
     conceptsById: {},
     conceptsBySetId: {},
     conceptSets: {},

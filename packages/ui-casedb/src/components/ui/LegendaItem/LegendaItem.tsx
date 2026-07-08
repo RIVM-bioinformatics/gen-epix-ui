@@ -27,14 +27,14 @@ import { useStoreWithEqualityFn } from 'zustand/traditional';
 
 import type { CaseDbConfig } from '../../../models/config';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import type { StratificationLegendaItem } from '../../../models/caseDb';
+import type { StratificationLegendaItem } from '../../../models/stratification';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
-} from '../../../models/caseDb';
+} from '../../../models/stratification';
 import { ContextMenu } from '../ContextMenu';
 import type { ContextMenuConfigWithAnchor } from '../ContextMenu';
-import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 
 export type LegendaItemProps = {
@@ -85,14 +85,14 @@ export const LegendaItem = ({ children, item, tooltip, tooltipProps }: LegendaIt
   const onMouseOver = useCallback(() => {
     dashboardContext.highlight({
       caseIds: Object.entries(stratification?.caseIdColors).filter(([_itemId, itemColor]) => itemColor === item.color).map(([itemId]) => itemId),
-      origin: EPI_WIDGET_NAME.LEGENDA,
+      origin: DASHBOARD_WIDGET_NAME.LEGENDA,
     });
   }, [item.color, stratification, dashboardContext]);
 
   const onMouseLeave = useCallback(() => {
     dashboardContext.highlight({
       caseIds: [],
-      origin: EPI_WIDGET_NAME.LEGENDA,
+      origin: DASHBOARD_WIDGET_NAME.LEGENDA,
     });
   }, [dashboardContext]);
 

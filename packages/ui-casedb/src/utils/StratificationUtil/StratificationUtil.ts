@@ -15,14 +15,16 @@ import type { CaseDbConfig } from '../../models/config';
 import type {
   CaseTypeRowValue,
   ConceptBoundaryProps,
+} from '../../models/caseDb';
+import type {
   StratifiableColumn,
   Stratification,
   StratificationLegendaItem,
-} from '../../models/caseDb';
+} from '../../models/stratification';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
-} from '../../models/caseDb';
+} from '../../models/stratification';
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
 

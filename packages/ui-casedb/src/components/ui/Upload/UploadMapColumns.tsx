@@ -37,7 +37,7 @@ import {
 } from '@gen-epix/ui';
 
 import { useColMapQuery } from '../../../dataHooks/useColsQuery';
-import type { UploadMappedColumnsFormFields } from '../../../models/caseDb';
+import type { UploadMappedColumnsFormFields } from '../../../models/upload';
 import { UploadStoreContext } from '../../../stores/uploadStore';
 import { UploadUtil } from '../../../utils/UploadUtil';
 

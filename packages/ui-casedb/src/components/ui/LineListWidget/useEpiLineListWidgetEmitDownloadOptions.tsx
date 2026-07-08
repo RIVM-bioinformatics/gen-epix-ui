@@ -11,7 +11,7 @@ import { EventBusService } from '../../../classes/services/EventBusService';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
-import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
 
 export const useEpiLineListWidgetEmitDownloadOptions = () => {
   const { t } = useTranslation();
@@ -74,7 +74,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
             label: t`Selected rows`,
           },
         ],
-        zone: EPI_WIDGET_NAME.LINE_LIST,
+        zone: DASHBOARD_WIDGET_NAME.LINE_LIST,
         zoneLabel: t`Line list`,
       });
     };
@@ -93,7 +93,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
     return () => {
       eventBusService.emit('onDownloadOptionsChanged', {
         items: null,
-        zone: EPI_WIDGET_NAME.LINE_LIST,
+        zone: DASHBOARD_WIDGET_NAME.LINE_LIST,
         zoneLabel: t`Line list`,
       });
       eventBusService.removeEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);

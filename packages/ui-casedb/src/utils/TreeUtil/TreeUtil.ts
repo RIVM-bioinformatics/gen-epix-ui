@@ -12,10 +12,8 @@ import {
   StringUtil,
 } from '@gen-epix/ui';
 
-import type {
-  Stratification,
-  TreeConfiguration,
-} from '../../models/caseDb';
+import type { Stratification } from '../../models/stratification';
+import type { TreeConfiguration } from '../../models/dashboard';
 import { DataService } from '../../classes/services/DataService';
 import type {
   TreeAssembly,

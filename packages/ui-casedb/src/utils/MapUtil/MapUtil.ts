@@ -11,7 +11,7 @@ import { ConfigService } from '@gen-epix/ui';
 import type { UnwrapArray } from '@gen-epix/ui';
 
 import type { CaseDbConfig } from '../../models/config';
-import type { Stratification } from '../../models/caseDb';
+import type { Stratification } from '../../models/stratification';
 import { DashboardUtil } from '../DashboardUtil';
 
 

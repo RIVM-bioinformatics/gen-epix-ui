@@ -18,8 +18,8 @@ import { ConfigService } from '@gen-epix/ui';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config';
-import { STRATIFICATION_MODE } from '../../models/caseDb';
-import type { Data } from '../../models/caseDb';
+import { STRATIFICATION_MODE } from '../../models/stratification';
+import type { DataCache } from '../../models/caseDb';
 
 import { StratificationUtil } from './StratificationUtil';
 
@@ -50,7 +50,7 @@ const makeConcept = (
 ): CaseDbConcept =>
   ({ code: id.toUpperCase(), concept_set_id: conceptSetId, id, name: `Name ${id}`, props, rank });
 
-let savedData: Data;
+let savedData: DataCache;
 
 beforeEach(() => {
   savedData = { ...DataService.getInstance().data };

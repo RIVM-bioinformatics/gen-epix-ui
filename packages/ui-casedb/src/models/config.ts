@@ -7,21 +7,22 @@ import type { FieldValues } from 'react-hook-form';
 import type {
   DashboardArrangement,
   DashboardArrangementWidgetAssignments,
+  WidgetDataBase,
   WidgetsConfig,
-} from './caseDb';
+} from './dashboard';
 
 export interface CaseDbConfig extends ConfigBase {
   dashboard: {
     ARRANGEMENT_OPTIONS: { [key: string]: DashboardArrangement };
     DEFAULT_ARRANGEMENT_KEY: string;
     DEFAULT_WIDGET_ASSIGNMENTS: { [key: string]: DashboardArrangementWidgetAssignments };
+    DOWNLOAD_SECTION_ORDER: string[];
     MIN_PANEL_HEIGHT: number;
     MIN_PANEL_WIDTH: number;
-    WIDGETS: WidgetsConfig<FieldValues>;
+    WIDGETS: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase>;
   };
   epi: {
     DATA_MISSING_CHARACTER: string;
-    DOWNLOAD_SECTION_ORDER: string[];
     INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY: number;
     SEQDB_MAX_STORED_DISTANCE_FALLBACK: number;
     STRATIFICATION: {

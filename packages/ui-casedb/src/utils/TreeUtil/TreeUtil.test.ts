@@ -11,11 +11,9 @@ import type { ArgumentTypes } from '@gen-epix/ui';
 import { ConfigService } from '@gen-epix/ui';
 
 import { DataService } from '../../classes/services/DataService';
-import { STRATIFICATION_MODE } from '../../models/caseDb';
-import type {
-  Stratification,
-  TreeConfiguration,
-} from '../../models/caseDb';
+import { STRATIFICATION_MODE } from '../../models/stratification';
+import type { Stratification } from '../../models/stratification';
+import type { TreeConfiguration } from '../../models/dashboard';
 import type {
   TreeAssembly,
   TreeNode,

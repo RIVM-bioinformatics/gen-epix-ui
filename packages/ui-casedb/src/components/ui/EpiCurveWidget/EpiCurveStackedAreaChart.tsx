@@ -17,7 +17,7 @@ import { useTheme } from '@mui/material';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
-import type { Stratification } from '../../../models/caseDb';
+import type { Stratification } from '../../../models/stratification';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 
 export interface EpiCurveStackedAreaChartProps {

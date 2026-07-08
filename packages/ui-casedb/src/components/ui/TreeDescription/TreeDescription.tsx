@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import type { TreeConfiguration } from '../../../models/caseDb';
+import type { TreeConfiguration } from '../../../models/dashboard';
 
 export type TreeDescriptionProps = {
   readonly treeConfiguration: TreeConfiguration;

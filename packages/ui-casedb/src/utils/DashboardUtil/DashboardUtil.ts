@@ -6,14 +6,15 @@ import sumBy from 'lodash/sumBy';
 import {
   DASHBOARD_ARRANGEMENT_ORIENTATION,
   WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/caseDb';
+} from '../../models/dashboard';
 import type {
   DashboardArrangement,
   DashboardArrangementCell,
   DashboardArrangementConfig,
   DashboardArrangementWidgetAssignments,
+  WidgetDataBase,
   WidgetsConfig,
-} from '../../models/caseDb';
+} from '../../models/dashboard';
 import type { CaseDbConfig } from '../../models/config';
 
 export type ArrangementGroupInfo = {
@@ -106,7 +107,7 @@ export class DashboardUtil {
   public static getAvailableWidgets(
     arrangementConfig: DashboardArrangementConfig,
     zoneName: string,
-    widgetsConfig: WidgetsConfig<FieldValues>,
+    widgetsConfig: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase>,
   ): string[] {
     const assignments = DashboardUtil.getArrangementWidgetAssignments(
       DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey),
@@ -156,7 +157,7 @@ export class DashboardUtil {
 
   public static isArrangementWidgetAssignmentsValid(
     assignments: DashboardArrangementWidgetAssignments,
-    widgets: WidgetsConfig<FieldValues>,
+    widgets: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase>,
   ): boolean {
     return Object.values(assignments).every((widgetName) => !widgetName || widgetName in widgets);
   }
@@ -164,6 +165,33 @@ export class DashboardUtil {
   public static isSingleWidget(arrangementConfig: DashboardArrangementConfig, widgetName: string): boolean {
     const arrangementWidgetAssignments = DashboardUtil.getArrangementWidgetAssignments(DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey), arrangementConfig.arrangementWidgetAssignments);
     return arrangementWidgetAssignments?.[widgetName] && Object.keys(arrangementWidgetAssignments).length === 1;
+  }
+
+  public static removeInvalidWidgetAssignments(
+    config: DashboardArrangementConfig,
+    widgetsConfig: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase>,
+  ): DashboardArrangementConfig {
+    let updatedConfig = config;
+    let changed = true;
+    while (changed) {
+      changed = false;
+      const assignments = { ...updatedConfig.arrangementWidgetAssignments };
+      for (const [zoneName, widgetName] of Object.entries(assignments)) {
+        if (!widgetName) {
+          continue;
+        }
+        const availableWidgets = DashboardUtil.getAvailableWidgets(updatedConfig, zoneName, widgetsConfig);
+        if (!availableWidgets.includes(widgetName)) {
+
+          assignments[zoneName] = null;
+          changed = true;
+        }
+      }
+      if (changed) {
+        updatedConfig = { ...updatedConfig, arrangementWidgetAssignments: assignments };
+      }
+    }
+    return updatedConfig;
   }
 
   public static validateAndMigrateArrangementConfig(config: DashboardArrangementConfig): DashboardArrangementConfig {

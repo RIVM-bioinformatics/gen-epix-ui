@@ -20,7 +20,7 @@ import { useShallow } from 'zustand/shallow';
 import { ConfigService } from '@gen-epix/ui';
 import noop from 'lodash/noop';
 
-import { ArrangementEditor } from '../../forms/fields/ArrangementEditor';
+import { ArrangementEditor } from '../../form/fields/ArrangementEditor';
 import type { CaseDbConfig } from '../../../models/config';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import { DashboardUtil } from '../../../utils/DashboardUtil';

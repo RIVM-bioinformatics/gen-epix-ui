@@ -34,7 +34,7 @@ import {
 import { WidgetUnavailable } from '../WidgetUnavailable';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import type { UserProfileStore } from '../../../stores/userProfileStore';
-import type { DashboardArrangement } from '../../../models/caseDb';
+import type { DashboardArrangement } from '../../../models/dashboard';
 
 import { DashboardZoneContext } from './DashboardZoneContext';
 import { DashboardWidgetPlaceHolder } from './DashboardWidgetPlaceHolder';

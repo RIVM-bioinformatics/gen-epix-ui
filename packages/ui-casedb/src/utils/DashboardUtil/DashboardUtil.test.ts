@@ -13,12 +13,13 @@ import type { FieldValues } from 'react-hook-form';
 import {
   DASHBOARD_ARRANGEMENT_ORIENTATION,
   WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/caseDb';
+} from '../../models/dashboard';
 import type {
   DashboardArrangement,
   DashboardArrangementConfig,
+  WidgetDataBase,
   WidgetsConfig,
-} from '../../models/caseDb';
+} from '../../models/dashboard';
 import type { CaseDbConfig } from '../../models/config';
 
 import { DashboardUtil } from './DashboardUtil';
@@ -120,7 +121,7 @@ const TWO_NESTED = grp(H, [grp(V, [leaf('A'), leaf('B')]), grp(V, [leaf('C'), le
 
 const noop: () => null = () => null;
 
-const makeWidgets = (): WidgetsConfig<FieldValues> => ({
+const makeWidgets = (): WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase> => ({
   unconstrained: {
     component: noop as never,
     widgetLabel: 'Unconstrained',
@@ -524,7 +525,7 @@ describe('DashboardUtil', () => {
 
   // -------------------------------------------------------------------------
   describe('isArrangementWidgetAssignmentsValid', () => {
-    const widgets: WidgetsConfig<FieldValues> = {
+    const widgets: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase> = {
       widgetA: { component: noop as never, widgetLabel: 'A' },
     };
 
@@ -573,8 +574,90 @@ describe('DashboardUtil', () => {
   });
 
   // -------------------------------------------------------------------------
+  describe('removeInvalidWidgetAssignments', () => {
+    const ARRANGEMENT_KEY = 'layout';
+
+    const setup = (arrangement: DashboardArrangement): void => {
+      mockDashboard({ ARRANGEMENT_OPTIONS: { [ARRANGEMENT_KEY]: arrangement } });
+    };
+
+    const cfg = (assignments: Record<string, null | string>): DashboardArrangementConfig => ({
+      arrangementKey: ARRANGEMENT_KEY,
+      arrangementWidgetAssignments: assignments,
+    });
+
+    it('returns the config unchanged when all assignments satisfy their constraints', () => {
+      // withAdjacent in A requires 'unconstrained' to EAST; B has 'unconstrained' ✓
+      const widgets = makeWidgets();
+      setup(FLAT_H);
+      const input = cfg({ A: 'withAdjacent', B: 'unconstrained' });
+      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets)).toEqual(input);
+    });
+
+    it('returns the config unchanged when all assignments are null', () => {
+      const widgets = makeWidgets();
+      setup(FLAT_H);
+      const input = cfg({ A: null, B: null });
+      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets)).toEqual(input);
+    });
+
+    it('keeps a validly assigned unconstrained widget', () => {
+      const widgets = makeWidgets();
+      setup(FLAT_H);
+      const input = cfg({ A: 'unconstrained', B: null });
+      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets)).toEqual(input);
+    });
+
+    it('does not remove a widget whose constraint object has no fields (always satisfied)', () => {
+      const widgets = makeWidgets();
+      setup(FLAT_H);
+      const input = cfg({ A: 'withEmptyConstraint', B: null });
+      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets)).toEqual(input);
+    });
+
+    it('nulls a zone whose require_adjacent constraint is not satisfied', () => {
+      // withAdjacent requires 'unconstrained' to EAST; B is empty → constraint fails
+      const widgets = makeWidgets();
+      setup(FLAT_H);
+      const result = DashboardUtil.removeInvalidWidgetAssignments(cfg({ A: 'withAdjacent', B: null }), widgets);
+      expect(result.arrangementWidgetAssignments).toEqual({ A: null, B: null });
+    });
+
+    it('nulls a zone whose require_adjacent_direct_sibling constraint is not satisfied', () => {
+      // withSibling requires 'unconstrained' as a direct sibling; B is empty → constraint fails
+      const widgets = makeWidgets();
+      setup(FLAT_H);
+      const result = DashboardUtil.removeInvalidWidgetAssignments(cfg({ A: 'withSibling', B: null }), widgets);
+      expect(result.arrangementWidgetAssignments).toEqual({ A: null, B: null });
+    });
+
+    it('cascades: removing one widget causes a dependent widget to be removed in the next pass', () => {
+      // Y requires 'X' as a direct sibling; Z requires 'Y' as a direct sibling.
+      // A='Y', B='Z': pass 1 — Y in A fails (B has Z, not X) → A cleared;
+      //               Z in B still passes (A had Y in original assignments).
+      // pass 2 — Z in B now fails (A is null, not Y) → B cleared.
+      const cascadeWidgets: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase> = {
+        X: { component: noop as never, widgetLabel: 'X' },
+        Y: {
+          component: noop as never,
+          constraints: [{ require_adjacent_direct_sibling: { direction: EAST, widgetName: 'X' } }],
+          widgetLabel: 'Y',
+        },
+        Z: {
+          component: noop as never,
+          constraints: [{ require_adjacent_direct_sibling: { direction: EAST, widgetName: 'Y' } }],
+          widgetLabel: 'Z',
+        },
+      };
+      setup(FLAT_H);
+      const result = DashboardUtil.removeInvalidWidgetAssignments(cfg({ A: 'Y', B: 'Z' }), cascadeWidgets);
+      expect(result.arrangementWidgetAssignments).toEqual({ A: null, B: null });
+    });
+  });
+
+  // -------------------------------------------------------------------------
   describe('validateAndMigrateArrangementConfig', () => {
-    const WIDGETS: WidgetsConfig<FieldValues> = {
+    const WIDGETS: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase> = {
       widgetA: { component: noop as never, widgetLabel: 'A' },
     };
 

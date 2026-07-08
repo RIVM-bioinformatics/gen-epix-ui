@@ -51,11 +51,12 @@ import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { LegendaItem } from '../LegendaItem';
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { LineListCaseSetMembersService } from '../../../classes/services/LineListCaseSetMembersService';
+import type { LineListWidgetData } from '../../../models/dashboard';
 import type {
   Stratification,
   StratificationLegendaItem,
-} from '../../../models/caseDb';
-import { STRATIFICATION_MODE } from '../../../models/caseDb';
+} from '../../../models/stratification';
+import { STRATIFICATION_MODE } from '../../../models/stratification';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
@@ -64,7 +65,7 @@ import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
 import { CASE_INFO_DIALOG_TAB_NAME } from '../CaseInfoDialog';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
-import { EPI_WIDGET_NAME } from '../../../data/epi';
+import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 
 import { LineListWidgetTitle } from './LineListWidgetTitle';
@@ -86,7 +87,7 @@ export const LineListWidget = () => {
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
   const isCondensed = useStore(dashboardStore, (state) => state.isCondensed);
   const stratification = useStore(dashboardStore, (state) => state.stratification?.mode === STRATIFICATION_MODE.FIELD ? state.stratification : null);
-  const updateListWidgetData = useStore(dashboardStore, (state) => state.updateListWidgetData);
+  const updateWidgetData = useStore(dashboardStore, (state) => state.updateWidgetData);
   const treeAddresses = useStore(dashboardStore, (state) => state.treeAddresses);
   const setTableColumns = useStore(dashboardStore, (state) => state.setColumns);
   const isDataLoading = useStore(dashboardStore, (state) => state.isDataLoading);
@@ -513,7 +514,7 @@ export const LineListWidget = () => {
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
     dashboardContext.highlight({
       caseIds: [row.id],
-      origin: EPI_WIDGET_NAME.LINE_LIST,
+      origin: DASHBOARD_WIDGET_NAME.LINE_LIST,
     });
   }, [dashboardContext]);
 
@@ -521,7 +522,7 @@ export const LineListWidget = () => {
   const onRowMouseLeave = useCallback(() => {
     dashboardContext.highlight({
       caseIds: [],
-      origin: EPI_WIDGET_NAME.LINE_LIST,
+      origin: DASHBOARD_WIDGET_NAME.LINE_LIST,
     });
   }, [dashboardContext]);
 
@@ -531,7 +532,7 @@ export const LineListWidget = () => {
 
   useEffect(() => {
     const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
-      if (highlighting?.origin === EPI_WIDGET_NAME.LINE_LIST) {
+      if (highlighting?.origin === DASHBOARD_WIDGET_NAME.LINE_LIST) {
         return;
       }
       rowHighlightingSubject.next(highlighting.caseIds);
@@ -544,7 +545,7 @@ export const LineListWidget = () => {
   useEpiLineListWidgetEmitDownloadOptions();
 
   const updateVisibleIndexDebounced = useDebouncedCallback((index: number) => {
-    updateListWidgetData({
+    updateWidgetData<LineListWidgetData>(DASHBOARD_WIDGET_NAME.LINE_LIST, {
       visibleItemItemIndex: index,
     });
   }, 500);
@@ -604,7 +605,7 @@ export const LineListWidget = () => {
       primaryMenu={<LineListWidgetPrimaryMenu caseSet={caseSet} />}
       secondaryMenu={<LineListWidgetSecondaryMenu />}
       title={<LineListWidgetTitle />}
-      widgetName={EPI_WIDGET_NAME.LINE_LIST}
+      widgetName={DASHBOARD_WIDGET_NAME.LINE_LIST}
     >
       <Box
         ref={containerRef}
@@ -617,7 +618,7 @@ export const LineListWidget = () => {
           font={theme['gen-epix-ui-casedb'].lineList.font}
           forceHorizontalOverflow
           getRowName={getRowName}
-          initialVisibleItemIndex={dashboardStore.getState().listWidgetData.visibleItemItemIndex}
+          initialVisibleItemIndex={dashboardStore.getState().getWidgetData<LineListWidgetData>(DASHBOARD_WIDGET_NAME.LINE_LIST)?.visibleItemItemIndex}
           onRangeChanged={onRangeChanged}
           onReadableIndexClick={onIndexCellClick}
           onRowMouseEnter={onRowMouseEnter}
