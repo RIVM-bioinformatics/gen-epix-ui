@@ -24,6 +24,7 @@ import type {
   CaseDbColType,
 } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 import { useStore } from 'zustand';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -58,6 +59,9 @@ export const HistogramWidget = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const chartRef = useRef<EChartsReact>(null);
+  const echartsOpts = useMemo(() => ({
+    nonce: ConfigService.getInstance().config.nonce,
+  }), []);
   const dashboardStore = use(DashboardStoreContext);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
@@ -260,6 +264,7 @@ export const HistogramWidget = () => {
               notMerge
               onChartReady={onChartReady}
               option={getOptions()}
+              opts={echartsOpts as unknown}
               ref={chartRef}
               style={{
                 height: '100%',
