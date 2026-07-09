@@ -318,7 +318,8 @@ export const createUploadStore = (kwArgs: CreateUploadStoreKwArgs) => {
           }
           const sheetOptions = await UploadUtil.getSheetNameOptions(fileList);
           await setSheetOptions(sheetOptions);
-        } catch (_error) {
+        } catch (error) {
+          console.log(error);
           await setSheet(null);
           await setSheetOptions([]);
           set({ fileList: null, fileParsingError: t('Error reading file') });
