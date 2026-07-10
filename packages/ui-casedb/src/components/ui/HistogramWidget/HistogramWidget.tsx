@@ -1,4 +1,5 @@
 import { Box } from '@mui/system';
+import type { ReactElement } from 'react';
 import {
   use,
   useCallback,
@@ -18,6 +19,8 @@ import {
   init,
   use as registerECharts,
 } from 'echarts/core';
+import type { EChartsReactProps } from 'echarts-for-react';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import EChartsReact from 'echarts-for-react';
 import type {
   CaseDbCol,
@@ -30,7 +33,13 @@ import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
-import { useTheme } from '@mui/material';
+import {
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  useTheme,
+} from '@mui/material';
+import intersection from 'lodash/intersection';
 
 import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
@@ -46,6 +55,8 @@ import {
   HISTOGRAM_ALLOWED_COL_TYPES,
   HistogramUtil,
 } from '../../../utils/HistogramUtil';
+import { DashboardContext } from '../Dashboard/context/DashboardContext';
+import { CaseUtil } from '../../../utils/CaseUtil';
 
 registerECharts([TooltipComponent, BarChart, LegendComponent, CanvasRenderer]);
 
@@ -59,14 +70,18 @@ export const HistogramWidget = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const chartRef = useRef<EChartsReact>(null);
+  const chartInstanceRef = useRef<EChartsType | null>(null);
   const echartsOpts = useMemo(() => ({
     nonce: ConfigService.getInstance().config.nonce,
   }), []);
   const dashboardStore = use(DashboardStoreContext);
+  const dashboardContext = use(DashboardContext);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
+  const setFilterValues = useStore(dashboardStore, (state) => state.setFilterValues);
   const updateWidgetData = useStore(dashboardStore, (state) => state.updateWidgetData);
   const epiCurveWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<HistogramWidgetData>(DASHBOARD_WIDGET_NAME.HISTOGRAM));
+  const [focussedColValues, setFocussedColValues] = useState<{ a: string; b: string }>(null);
 
   const allowedColTypes = useMemo<CaseDbColType[]>(() => {
     return HISTOGRAM_ALLOWED_COL_TYPES;
@@ -83,6 +98,7 @@ export const HistogramWidget = () => {
 
   const onEpiContextMenuClose = useCallback(() => {
     setContextMenuConfig(null);
+    setFocussedColValues(null);
   }, []);
 
   const lineListCaseCount = useMemo(() => {
@@ -197,6 +213,7 @@ export const HistogramWidget = () => {
   }, [aCol, bCol, shouldShowWidget, allowedCols, t, onMenuItemClick]);
 
   const onChartReady = useCallback((chart: EChartsType) => {
+    chartInstanceRef.current = chart;
     if (!aCol || !bCol) {
       return;
     }
@@ -239,6 +256,138 @@ export const HistogramWidget = () => {
     };
   }, [completeCaseType, shouldShowGraph, shouldShowWidget, t]);
 
+  const highlight = useCallback((caseIds: string[]) => {
+    dashboardContext.highlight({
+      caseIds,
+      origin: DASHBOARD_WIDGET_NAME.HISTOGRAM,
+    });
+  }, [dashboardContext]);
+
+  const onEvents = useMemo<EChartsReactProps['onEvents']>(() => {
+
+    const getCaseIdsFromPayload = (payload: unknown): string[] => {
+      const colValues = HistogramUtil.getColValuesFromPayload(payload, conceptsA, conceptsB);
+      if (!colValues) {
+        return [];
+      }
+      const caseIds = sortedData.filter(caseDbCase => {
+        const aValue = CaseUtil.getRowValue(caseDbCase.content, aCol, completeCaseType);
+        const bValue = CaseUtil.getRowValue(caseDbCase.content, bCol, completeCaseType);
+        return colValues.a === aValue.raw && colValues.b === bValue.raw;
+      }).map(caseDbCase => caseDbCase.id);
+      return caseIds;
+    };
+
+    return {
+      globalout: () => {
+        highlight([]);
+      },
+      mouseout: () => {
+        highlight([]);
+      },
+      mouseover: (payload: unknown) => {
+        highlight(getCaseIdsFromPayload(payload));
+      },
+      mouseup: (payload: unknown) => {
+        const { event } = payload as { event: { event: MouseEvent } };
+        setFocussedColValues(HistogramUtil.getColValuesFromPayload(payload, conceptsA, conceptsB));
+        setContextMenuConfig({
+          caseIds: getCaseIdsFromPayload(payload),
+          mouseEvent: event.event,
+          position: {
+            left: (event.event).clientX,
+            top: (event.event).clientY,
+          },
+        });
+      },
+    };
+  }, [aCol, bCol, completeCaseType, conceptsA, conceptsB, highlight, sortedData]);
+
+  const onShowOnlyFocussedColValuesMenuItemClick = useCallback(async (onMenuClose: () => void) => {
+    if (!focussedColValues || !aCol || !bCol) {
+      return;
+    }
+    await setFilterValues({
+      [aCol.id]: [focussedColValues.a],
+      [bCol.id]: [focussedColValues.b],
+    });
+
+    onMenuClose();
+  }, [aCol, bCol, focussedColValues, setFilterValues]);
+
+  const getEpiContextMenuExtraItems = useCallback((onMenuClose: () => void): ReactElement => {
+    const conceptALabel = conceptsA.find(concept => concept.id === focussedColValues?.a)?.name;
+    const conceptBLabel = conceptsB.find(concept => concept.id === focussedColValues?.b)?.name;
+    if (!conceptALabel || !conceptBLabel) {
+      return null;
+    }
+    if (!focussedColValues) {
+      return null;
+    }
+    return (
+      <MenuItem
+        divider
+        // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+        onClick={async () => await onShowOnlyFocussedColValuesMenuItemClick(onMenuClose)}
+      >
+        <ListItemIcon>
+          <FilterAltIcon fontSize={'small'} />
+        </ListItemIcon>
+        <ListItemText>
+          {t('Filter (show only {{conceptALabel}} and {{conceptBLabel}})', { conceptALabel, conceptBLabel })}
+        </ListItemText>
+      </MenuItem>
+    );
+  }, [conceptsA, conceptsB, focussedColValues, onShowOnlyFocussedColValuesMenuItemClick, t]);
+
+  useEffect(() => {
+    const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
+      if (highlighting.origin === DASHBOARD_WIDGET_NAME.HISTOGRAM) {
+        return;
+      }
+      const instance = chartInstanceRef.current;
+      if (!instance) {
+        return;
+      }
+
+      if (!highlighting?.caseIds?.length) {
+        instance.dispatchAction({
+          type: 'downplay',
+        });
+        return;
+      }
+
+      const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
+      series?.forEach((serie, serieIndex) => {
+        const castedSerie = serie as { data: unknown[]; xCaseIds: string[][] };
+        castedSerie.xCaseIds?.forEach((caseIds: string[], dataIndex: number) => {
+          if (intersection(caseIds, highlighting.caseIds).length) {
+            highlightTargets.push({
+              dataIndex,
+              seriesIndex: serieIndex,
+            });
+          }
+        });
+      });
+
+      instance.dispatchAction({
+        type: 'downplay',
+      });
+
+      highlightTargets.forEach((target) => {
+        instance.dispatchAction({
+          dataIndex: target.dataIndex,
+          seriesIndex: target.seriesIndex,
+          type: 'highlight',
+        });
+      });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [dashboardContext, series]);
+
   return (
     <DashboardWidget
       expandDisabled={!shouldShowWidget}
@@ -263,6 +412,7 @@ export const HistogramWidget = () => {
               echarts={echartsCore}
               notMerge
               onChartReady={onChartReady}
+              onEvents={onEvents}
               option={getOptions()}
               opts={echartsOpts as unknown}
               ref={chartRef}
@@ -275,6 +425,7 @@ export const HistogramWidget = () => {
           )}
           <ContextMenu
             config={contextMenuConfig}
+            getExtraItems={getEpiContextMenuExtraItems}
             onMenuClose={onEpiContextMenuClose}
           />
         </Box>

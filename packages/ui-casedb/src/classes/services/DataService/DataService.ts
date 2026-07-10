@@ -177,10 +177,13 @@ export class DataService {
       return;
     }
     const treeAlgorithms = (await CaseDbCaseApi.getInstance().treeAlgorithmsGetAll(null, null, { signal })).data.sort((a, b) => {
-      if (a.rank === b.rank) {
+      if (!a.rank && !b.rank) {
         return a.name.localeCompare(b.name);
       }
-      return a.rank - b.rank;
+      if (a.rank && b.rank) {
+        return a.rank - b.rank;
+      }
+      return a.rank ? -1 : 1;
     });
     queryClient.setQueryData(queryKey, treeAlgorithms);
     this.data.treeAlgorithms = treeAlgorithms;

@@ -28,6 +28,7 @@ import {
 } from '../../models/stratification';
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
+import { CaseDbDataUtil } from '../CaseDbDataUtil';
 
 export class StratificationUtil {
   public static getEchartsColors(stratification: Stratification, theme: Theme): string[] {
@@ -146,7 +147,7 @@ export class StratificationUtil {
       }
       const conceptSetConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
       if (conceptSetConceptIds?.length) {
-        const concepts = conceptSetConceptIds.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort((a, b) => a.rank - b.rank);
+        const concepts = conceptSetConceptIds.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort(CaseDbDataUtil.conceptComparator);
         if (concepts.every(concept => StratificationUtil.isEpiConceptBoundaryProps(concept.props))) {
           const boundaryProps = concepts.map(concept => concept.props as ConceptBoundaryProps);
           const finiteLbs = boundaryProps.map(bp => bp.lb).filter(v => isFinite(v));

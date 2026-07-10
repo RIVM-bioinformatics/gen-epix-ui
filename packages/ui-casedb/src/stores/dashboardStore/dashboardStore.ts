@@ -428,7 +428,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             if (phylogeneticTree.newick_repr && phylogeneticTree.newick_repr.trim().length > 0 && phylogeneticTree.newick_repr !== '();') {
               // parse the newick into a tree
               const parsedTree = NewickUtil.parse(phylogeneticTree.newick_repr);
-              const sanitizedTree = TreeUtil.sanitizeTree(parsedTree, completeCaseType.genetic_distance_protocols[phylogeneticTree.protocol_id].seqdb_max_stored_distance); // FIXME
+              const sanitizedTree = TreeUtil.sanitizeTree(parsedTree, completeCaseType.genetic_distance_protocols[phylogeneticTree.protocol_id].seqdb_max_stored_distance);
 
               // the tree determines the order of the line list
               const sortedIds = NewickUtil.getSortedNames(sanitizedTree);

@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import type {
   CaseDbCaseSet,
   CaseDbCol,
+  CaseDbConcept,
   CaseDbDim,
   CaseDbRefCol,
   CaseDbRefColValidationRulesResponseBody,
@@ -13,10 +14,19 @@ import { DATE_FORMAT } from '@gen-epix/ui';
 
 
 export class CaseDbDataUtil {
+  public static conceptComparator(a: CaseDbConcept, b: CaseDbConcept): number {
+    if (!a.rank && !b.rank) {
+      return a.code.localeCompare(b.code);
+    }
+    if (a.rank && b.rank) {
+      return a.rank - b.rank;
+    }
+    return a.rank ? -1 : 1;
+  }
+
   public static getCaseSetName(caseSet: CaseDbCaseSet): string {
     return `${caseSet.name} (${format(caseSet.case_set_date, DATE_FORMAT.DATE)})`;
   }
-
 
   public static getColTypeOptionsForRefDimId(kwArgs: { colsValidationRules: CaseDbRefColValidationRulesResponseBody['valid_col_types_by_dim_type']; colTypeOptions: OptionBase<string>[]; refDimId: string; refDimMap: Map<string, CaseDbRefDim> }): OptionBase<string>[] {
     const refDim = kwArgs.refDimMap.get(kwArgs.refDimId);

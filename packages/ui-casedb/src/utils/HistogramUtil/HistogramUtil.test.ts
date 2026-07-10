@@ -408,8 +408,10 @@ describe('HistogramUtil', () => {
       expect(result[0].type).toBe('bar');
       // a1/b1 = 2 cases, a1/b2 = 1 case
       expect(result[0].data).toEqual([2, 1]);
+      expect(result[0].xCaseIds).toEqual([['c1', 'c4'], ['c2']]);
       // a2/b1 = 1 case, a2/b2 = 0
       expect(result[1].data).toEqual([1, 0]);
+      expect(result[1].xCaseIds).toEqual([['c3'], []]);
     });
 
     it('respects the count field on cases', () => {
@@ -448,6 +450,7 @@ describe('HistogramUtil', () => {
         aCol, bCol, cct, [caseWithMissingA], [conceptA1], [conceptB1],
       );
       expect(result[0].data[0]).toBe(0);
+      expect(result[0].xCaseIds).toEqual([[]]);
     });
 
     it('skips cases where the bCol value is missing', () => {
@@ -461,6 +464,7 @@ describe('HistogramUtil', () => {
         aCol, bCol, cct, [caseWithMissingB], [conceptA1], [conceptB1],
       );
       expect(result[0].data[0]).toBe(0);
+      expect(result[0].xCaseIds).toEqual([[]]);
     });
   });
 
@@ -476,22 +480,22 @@ describe('HistogramUtil', () => {
 
     it('sums numeric values across all series and all data points', () => {
       const series: SeriesItem[] = [
-        { data: [1, 2, 3], name: 'A', type: 'bar' },
-        { data: [4, 5], name: 'B', type: 'bar' },
+        { data: [1, 2, 3], emphasis: { focus: 'self' }, name: 'A', type: 'bar', xCaseIds: [] },
+        { data: [4, 5], emphasis: { focus: 'self' }, name: 'B', type: 'bar', xCaseIds: [] },
       ];
       expect(HistogramUtil.getCaseCount(series)).toBe(15);
     });
 
     it('ignores non-numeric (string) data points', () => {
       const series: SeriesItem[] = [
-        { data: [1, 'N/A', 2], name: 'A', type: 'bar' },
+        { data: [1, 'N/A', 2], emphasis: { focus: 'self' }, name: 'A', type: 'bar', xCaseIds: [] },
       ];
       expect(HistogramUtil.getCaseCount(series)).toBe(3);
     });
 
     it('handles series with all-zero data', () => {
       const series: SeriesItem[] = [
-        { data: [0, 0, 0], name: 'A', type: 'bar' },
+        { data: [0, 0, 0], emphasis: { focus: 'self' }, name: 'A', type: 'bar', xCaseIds: [] },
       ];
       expect(HistogramUtil.getCaseCount(series)).toBe(0);
     });
@@ -518,6 +522,35 @@ describe('HistogramUtil', () => {
       const aCol = makeCol('a', 'ra');
       const result = HistogramUtil.getColors(aCol, null, []);
       expect(result).toEqual(['#ff0000', '#00ff00']);
+    });
+  });
+
+  // -------------------------------------------------------------------------
+  describe('getColValuesFromPayload', () => {
+    const conceptsA = [makeConcept('a1', 1, 'Concept A1'), makeConcept('a2', 2, 'Concept A2')];
+    const conceptsB = [makeConcept('b1', 1, 'Concept B1'), makeConcept('b2', 2, 'Concept B2')];
+
+    it('returns concept ids for an item payload', () => {
+      const result = HistogramUtil.getColValuesFromPayload(
+        { name: 'Concept B2', seriesName: 'Concept A1' },
+        conceptsA,
+        conceptsB,
+      );
+
+      expect(result).toEqual({ a: 'a1', b: 'b2' });
+    });
+
+    it('returns null when either concept cannot be found', () => {
+      expect(HistogramUtil.getColValuesFromPayload(
+        { name: 'Concept B2', seriesName: 'Unknown' },
+        conceptsA,
+        conceptsB,
+      )).toBeNull();
+      expect(HistogramUtil.getColValuesFromPayload(
+        { name: 'Unknown', seriesName: 'Concept A1' },
+        conceptsA,
+        conceptsB,
+      )).toBeNull();
     });
   });
 
@@ -551,7 +584,7 @@ describe('HistogramUtil', () => {
     const conceptB1 = makeConcept('b1', 1, 'Concept B1');
 
     const series: SeriesItem[] = [
-      { data: [3], name: 'Concept A1', type: 'bar' },
+      { data: [3], emphasis: { focus: 'self' }, name: 'Concept A1', type: 'bar', xCaseIds: [] },
     ];
 
     const baseParams = {
@@ -585,48 +618,47 @@ describe('HistogramUtil', () => {
 
     it('sets legend data from conceptsA names', () => {
       const opts = HistogramUtil.getChartOptions(baseParams);
-      const legend = opts.legend as { data: string[] };
+      const legend = opts.legend as { data: string[]; selectedMode: boolean };
       expect(legend.data).toEqual(['Concept A1']);
+      expect(legend.selectedMode).toBe(false);
     });
 
-    it('tooltip formatter returns null for non-array params', () => {
-      const opts = HistogramUtil.getChartOptions(baseParams);
-      const tooltip = opts.tooltip as { formatter: (p: unknown) => null | string };
-      expect(tooltip.formatter('not-array')).toBeNull();
+    it('keeps bar emphasis enabled for external highlight actions', () => {
+      const result = HistogramUtil.getSeries(
+        aCol,
+        bCol,
+        makeCompleteCaseType([aCol, bCol], {
+          rA: makeRefCol(CaseDbColType.NOMINAL),
+          rB: makeRefCol(CaseDbColType.NOMINAL),
+        }),
+        [],
+        [conceptA1],
+        [conceptB1],
+      );
+      expect(result[0].emphasis).toEqual({ focus: 'self' });
     });
 
-    it('tooltip formatter builds HTML string for array params', () => {
+    it('configures tooltip for item payloads', () => {
       const opts = HistogramUtil.getChartOptions(baseParams);
-      const tooltip = opts.tooltip as { formatter: (p: unknown[]) => string };
-      const params = [
-        {
-          axisValue: 'Concept B1',
-          marker: '<span style="color:#f00">●</span>',
-          seriesName: 'Concept A1',
-          value: 3,
-        },
-      ];
+      const tooltip = opts.tooltip as { trigger: string };
+      expect(tooltip.trigger).toBe('item');
+    });
+
+    it('tooltip formatter builds HTML string for item params', () => {
+      const opts = HistogramUtil.getChartOptions(baseParams);
+      const tooltip = opts.tooltip as { formatter: (p: unknown) => string };
+      const params = {
+        marker: '<span style="color:#f00">●</span>',
+        name: 'Concept B1',
+        seriesName: 'Concept A1',
+        value: 3,
+      };
       const html = tooltip.formatter(params);
       expect(html).toContain('Concept B1');
       expect(html).toContain('Label B');
       expect(html).toContain('Concept A1');
       expect(html).toContain('Label A');
       expect(html).toContain('3');
-    });
-
-    it('tooltip formatter uses N/A when item value is undefined', () => {
-      const opts = HistogramUtil.getChartOptions(baseParams);
-      const tooltip = opts.tooltip as { formatter: (p: unknown[]) => string };
-      const params = [
-        {
-          axisValue: 'X',
-          marker: '●',
-          seriesName: 'S',
-          value: undefined as unknown,
-        },
-      ];
-      const html = tooltip.formatter(params);
-      expect(html).toContain('N/A');
     });
 
     it('valueFormatter returns translated string', () => {

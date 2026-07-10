@@ -204,7 +204,7 @@ describe('EpiCurveUtil', () => {
   });
 
   describe('getAreaChartSeriesData', () => {
-    it('includes line stack settings and triggerLineEvent', () => {
+    it('includes line stack settings and triggerEvent', () => {
       const items: EpiCurveChartItem[] = [
         { date: new Date('2024-01-01T00:00:00Z'), row: { id: 'a' } as CaseDbCase, value: 1 },
         { date: new Date('2024-01-01T00:00:00Z'), row: { id: 'b' } as CaseDbCase, value: 1 },
@@ -237,11 +237,11 @@ describe('EpiCurveUtil', () => {
       });
 
       expect(result.max).toBe(100);
-      const series = result.series as Array<{ data: unknown[]; stack: string; triggerLineEvent: boolean; type: string }>;
+      const series = result.series as Array<{ data: unknown[]; stack: string; triggerEvent: boolean; type: string }>;
       expect(series).toHaveLength(2);
       expect(series[0].type).toBe('line');
       expect(series[0].stack).toBe('total');
-      expect(series[0].triggerLineEvent).toBe(true);
+      expect(series[0].triggerEvent).toBe(true);
       expect(series[0].data).toHaveLength(1);
     });
 

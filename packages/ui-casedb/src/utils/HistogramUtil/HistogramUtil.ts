@@ -15,6 +15,7 @@ import type { CaseDbConfig } from '../../models/config';
 import { CaseUtil } from '../CaseUtil';
 import { StratificationUtil } from '../StratificationUtil';
 import { STRATIFICATION_MODE } from '../../models/stratification';
+import { CaseDbDataUtil } from '../CaseDbDataUtil';
 
 export type GetChartOptionsParams = {
   aCol: CaseDbCol;
@@ -29,8 +30,12 @@ export type GetChartOptionsParams = {
 
 export type SeriesItem = {
   data: (number | string)[];
+  emphasis: {
+    focus: 'self';
+  };
   name: string;
   type: 'bar';
+  xCaseIds: string[][];
 };
 
 // Note the typings are not exposed by echarts, so we need to define our own type here
@@ -126,6 +131,7 @@ export class HistogramUtil {
         orient: 'vertical',
         pageIconColor: theme.palette.primary.main,
         pageIconInactiveColor: theme.palette.text.disabled,
+        selectedMode: false,
         top: theme.spacing(4),
         type: 'scroll',
       },
@@ -140,23 +146,18 @@ export class HistogramUtil {
         top: theme.spacing(1),
       },
       tooltip: {
-        formatter: (params) => {
-          if (!Array.isArray(params)) {
-            return null;
-          }
-          const axisValue = (params[0] as TooltipCallbackDataParams).axisValue;
-          let result = `<strong>${axisValue} (${bCol.label})</strong><br/>`;
-
-          params.forEach(item => {
-            // item.marker provides the default colored circle icon
-            const value = item.value !== undefined ? (item.value as string) : t('N/A');
-            result += `${(item as TooltipCallbackDataParams).marker} ${item.seriesName}: <b>${value} (${aCol.label})</b><br/>`;
-          });
-
+        formatter: (item) => {
+          const castedItem = item as TooltipCallbackDataParams;
+          const axisValue = castedItem.name;
+          const result = `
+            <strong>${axisValue} (${bCol.label})</strong>
+            <br/>
+            ${castedItem.marker} ${castedItem.seriesName}: <b>${castedItem.value as number} (${aCol.label})</b><br/>
+          `;
           return result;
         },
         show: true,
-        trigger: 'axis',
+        trigger: 'item',
         valueFormatter: (value: unknown) => {
           return t('{{numCases}} case(s)', { numCases: value });
         },
@@ -209,6 +210,16 @@ export class HistogramUtil {
     return stratification?.legendaItems.map(l => l.color) ?? [];
   }
 
+  public static getColValuesFromPayload = (payload: unknown, conceptsA: CaseDbConcept[], conceptsB: CaseDbConcept[]): { a: string; b: string } | null => {
+    const { name, seriesName } = payload as { name: string; seriesName: string };
+    const aConcept = conceptsA.find(concept => concept.name === seriesName);
+    const bConcept = conceptsB.find(concept => concept.name === name);
+    if (!aConcept || !bConcept) {
+      return null;
+    }
+    return { a: aConcept.id, b: bConcept.id };
+  };
+
   /**
    * Returns the sorted concepts for colA and colB.
    */
@@ -239,7 +250,7 @@ export class HistogramUtil {
     return (
       conceptIds
         ?.map(conceptId => DataService.getInstance().data.conceptsById[conceptId])
-        .sort((a, b) => a.rank - b.rank) ?? []
+        .sort(CaseDbDataUtil.conceptComparator) ?? []
     );
   }
 
@@ -292,6 +303,7 @@ export class HistogramUtil {
     }
 
     const countMap = new Map<string, Map<string, number>>();
+    const caseIdsMap = new Map<string, Map<string, string[]>>();
 
     sortedData.forEach(caseDbCase => {
       const aValue = CaseUtil.getRowValue(caseDbCase.content, aCol, completeCaseType);
@@ -309,14 +321,25 @@ export class HistogramUtil {
       }
       const aMap = countMap.get(aKey);
       aMap.set(bKey, (aMap.get(bKey) ?? 0) + (caseDbCase.count ?? 1));
+
+      if (!caseIdsMap.has(aKey)) {
+        caseIdsMap.set(aKey, new Map<string, string[]>());
+      }
+      const aCaseIdsMap = caseIdsMap.get(aKey);
+      aCaseIdsMap.set(bKey, [...(aCaseIdsMap.get(bKey) ?? []), caseDbCase.id]);
     });
 
     return conceptsA.map(aConcept => {
       const aCounts = countMap.get(aConcept.id) ?? new Map<string, number>();
+      const aCaseIds = caseIdsMap.get(aConcept.id) ?? new Map<string, string[]>();
       return {
         data: conceptsB.map(bConcept => aCounts.get(bConcept.id) ?? 0),
+        emphasis: {
+          focus: 'self',
+        },
         name: aConcept.name,
         type: 'bar',
+        xCaseIds: conceptsB.map(bConcept => aCaseIds.get(bConcept.id) ?? []),
       };
     });
   }

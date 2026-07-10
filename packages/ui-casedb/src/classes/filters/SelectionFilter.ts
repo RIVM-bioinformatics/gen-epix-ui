@@ -14,7 +14,6 @@ export class SelectionFilter extends FilterAbstract<string[]> implements Filter<
   }
 
   public matchRowValue(_rowValue: unknown): boolean {
-    // ! FIXME
     return !this.filterValue.length;
   }
 
