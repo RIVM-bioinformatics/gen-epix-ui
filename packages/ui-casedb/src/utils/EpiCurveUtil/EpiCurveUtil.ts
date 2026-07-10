@@ -117,7 +117,7 @@ export class EpiCurveUtil {
         name: seriesName,
         smooth: false,
         stack: 'total',
-        triggerLineEvent: true,
+        triggerEvent: true,
         type: 'line',
       };
     });
