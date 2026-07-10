@@ -18,7 +18,10 @@ import { ConfigService } from '@gen-epix/ui';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config';
-import { STRATIFICATION_MODE } from '../../models/stratification';
+import {
+  STRATIFICATION_MODE,
+  STRATIFICATION_SIMILAR_CASE,
+} from '../../models/stratification';
 import type { DataCache } from '../../models/caseDb';
 
 import { StratificationUtil } from './StratificationUtil';
@@ -112,6 +115,17 @@ describe('StratificationUtil', () => {
         col,
         completeCaseType: cct,
         mode: STRATIFICATION_MODE.SELECTION,
+        sortedData: [],
+      })).toBeNull();
+    });
+
+    it('returns null for SIMILAR_CASES mode when similarCaseIds is not provided', () => {
+      const col = makeCol('c', 'rc');
+      const cct = makeCompleteCaseType([col], { rc: makeRefCol(CaseDbColType.NOMINAL) });
+      expect(StratificationUtil.getStratification({
+        col,
+        completeCaseType: cct,
+        mode: STRATIFICATION_MODE.SIMILAR_CASES,
         sortedData: [],
       })).toBeNull();
     });
@@ -589,7 +603,7 @@ describe('StratificationUtil', () => {
       expect(result.mode).toBe(STRATIFICATION_MODE.SELECTION);
     });
 
-    it('uses col from kwArgs in the returned stratification', () => {
+    it('does not include a column in the returned stratification', () => {
       const col = makeCol('c', 'rc');
       const cct = makeCompleteCaseType([col], { rc: makeRefCol(CaseDbColType.NOMINAL) });
 
@@ -597,7 +611,59 @@ describe('StratificationUtil', () => {
         col, completeCaseType: cct, mode: STRATIFICATION_MODE.SELECTION, selectedIds: [], sortedData: [],
       });
 
-      expect(result.col).toBe(col);
+      expect(result.col).toBeUndefined();
+    });
+  });
+
+  // -------------------------------------------------------------------------
+  describe('similar cases stratification', () => {
+    it('creates YES and NO legenda items', () => {
+      const col = makeCol('c', 'rc');
+      const cct = makeCompleteCaseType([col], { rc: makeRefCol(CaseDbColType.NOMINAL) });
+      const cases = [makeCase('r1', 'c', 'v'), makeCase('r2', 'c', 'v')];
+
+      const result = StratificationUtil.getStratification({
+        col, completeCaseType: cct, mode: STRATIFICATION_MODE.SIMILAR_CASES, similarCaseIds: ['r1'], sortedData: cases,
+      });
+
+      expect(result.legendaItems).toHaveLength(2);
+      const rawValues = result.legendaItems.map(li => li.rowValue.raw);
+      expect(rawValues).toContain(STRATIFICATION_SIMILAR_CASE.YES);
+      expect(rawValues).toContain(STRATIFICATION_SIMILAR_CASE.NO);
+    });
+
+    it('assigns similar case IDs to YES colour and others to NO colour', () => {
+      const { BASE_COLORS } = getStratificationConfig();
+      const col = makeCol('c', 'rc');
+      const cct = makeCompleteCaseType([col], { rc: makeRefCol(CaseDbColType.NOMINAL) });
+      const cases = [makeCase('r1', 'c', 'v'), makeCase('r2', 'c', 'v'), makeCase('r3', 'c', 'v')];
+
+      const result = StratificationUtil.getStratification({
+        col, completeCaseType: cct, mode: STRATIFICATION_MODE.SIMILAR_CASES, similarCaseIds: ['r1', 'r3'], sortedData: cases,
+      });
+
+      const similarColor = BASE_COLORS[0];
+      const regularColor = BASE_COLORS[1];
+
+      expect(result.caseIdColors.r1).toBe(similarColor);
+      expect(result.caseIdColors.r3).toBe(similarColor);
+      expect(result.caseIdColors.r2).toBe(regularColor);
+      expect(result.legendaItemsByValue[STRATIFICATION_SIMILAR_CASE.YES].caseIds).toEqual(['r1', 'r3']);
+      expect(result.legendaItemsByValue[STRATIFICATION_SIMILAR_CASE.NO].caseIds).toEqual(['r2']);
+    });
+
+    it('sets colorForIsMissing, mode, and no column', () => {
+      const { ITEM_MISSING_COLOR } = getStratificationConfig();
+      const col = makeCol('c', 'rc');
+      const cct = makeCompleteCaseType([col], { rc: makeRefCol(CaseDbColType.NOMINAL) });
+
+      const result = StratificationUtil.getStratification({
+        col, completeCaseType: cct, mode: STRATIFICATION_MODE.SIMILAR_CASES, similarCaseIds: [], sortedData: [],
+      });
+
+      expect(result.colorForIsMissing).toBe(ITEM_MISSING_COLOR);
+      expect(result.mode).toBe(STRATIFICATION_MODE.SIMILAR_CASES);
+      expect(result.col).toBeUndefined();
     });
   });
 });

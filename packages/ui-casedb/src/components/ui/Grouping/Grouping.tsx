@@ -40,6 +40,8 @@ export const Grouping = () => {
     if (stratification) {
       if (stratification.mode === STRATIFICATION_MODE.SELECTION) {
         label = t`Grouped by Selected rows`;
+      } else if (stratification.mode === STRATIFICATION_MODE.SIMILAR_CASES) {
+        label = t`Grouped by Similar cases`;
       } else {
         label = t('Grouped by {{fieldName}}', { fieldName: stratification.col.label });
       }
@@ -47,22 +49,32 @@ export const Grouping = () => {
 
     return produce<MenuItemData>({
       disabled: stratifyableColumns.length === 0,
-      items: [{
-        active: !stratification,
-        callback: () => {
-          stratify(null);
+      items: [
+        {
+          active: !stratification,
+          callback: () => {
+            stratify(null);
+          },
+          divider: true,
+          label: 'None',
         },
-        divider: true,
-        label: 'None',
-      },
-      {
-        active: stratification?.mode === STRATIFICATION_MODE.SELECTION,
-        callback: () => {
-          stratify(stratification?.mode === STRATIFICATION_MODE.SELECTION ? null : STRATIFICATION_MODE.SELECTION);
+        {
+          active: stratification?.mode === STRATIFICATION_MODE.SELECTION,
+          callback: () => {
+            stratify(stratification?.mode === STRATIFICATION_MODE.SELECTION ? null : STRATIFICATION_MODE.SELECTION);
+          },
+          divider: true,
+          label: 'Selected rows',
         },
-        divider: true,
-        label: 'Selected rows',
-      }],
+        {
+          active: stratification?.mode === STRATIFICATION_MODE.SIMILAR_CASES,
+          callback: () => {
+            stratify(stratification?.mode === STRATIFICATION_MODE.SIMILAR_CASES ? null : STRATIFICATION_MODE.SIMILAR_CASES);
+          },
+          divider: true,
+          label: 'Similar cases',
+        },
+      ],
       label,
       tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', {
         max_stratification_unique_values: ConfigService.getInstance<CaseDbConfig>().config.epi.STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES,

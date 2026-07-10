@@ -75,7 +75,7 @@ interface DashboardStoreActions extends TableStoreActions<CaseDbCase, CaseDbComp
   getWidgetData: <TData>(widgetName: string) => TData;
   getWidgetDataPersistable: <TData>(widgetName: string) => TData;
   mutateCachedCase: (caseId: string, item: CaseDbCase) => void;
-  reloadStratification: () => void;
+  reloadFieldStratification: () => void;
   reloadStratifyableColumns: () => void;
   reloadTree: () => void;
   removeTreeFilter: () => Promise<void>;
@@ -278,11 +278,26 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             const currentCases = QueryClientService.getInstance().getValidQueryData<CaseDbCase[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY));
             queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY), currentCases.map(c => c.id === caseId ? item : c));
           },
+          reloadFieldStratification: () => {
+            const { stratification, stratify, stratifyableColumns } = get();
+            if (stratification?.mode === STRATIFICATION_MODE.FIELD) {
+              const activeStratifyableColumn = stratifyableColumns.find(c => c.col.ref_col_id === stratification.col.ref_col_id);
+              if (!activeStratifyableColumn?.enabled) {
+                // column no longer stratifiable
+                NotificationService.getInstance().showNotification({
+                  message: t`The grouping column is no longer available. Grouping has been removed.`,
+                  severity: 'info',
+                });
+                stratify(null);
+                return;
+              }
+            }
+          },
           reloadFilterData: () => {
-            const { reloadStratification, reloadStratifyableColumns } = get();
+            const { reloadFieldStratification, reloadStratifyableColumns } = get();
             tableStoreActions.reloadFilterData();
             reloadStratifyableColumns();
-            reloadStratification();
+            reloadFieldStratification();
           },
           // Private
           reloadFilterPriorityData: (filterPriority: string, data: CaseDbCase[]): CaseDbCase[] => {
@@ -312,26 +327,6 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
               return filteredCases;
             }
             throw new Error(`Unknown filter group: ${filterPriority}`);
-          },
-          reloadStratification: () => {
-            const { stratification, stratify, stratifyableColumns } = get();
-            if (stratification?.mode === STRATIFICATION_MODE.FIELD) {
-              const activeStratifyableColumn = stratifyableColumns.find(c => c.col.ref_col_id === stratification.col.ref_col_id);
-              if (!activeStratifyableColumn?.enabled) {
-                // column no longer stratifiable
-                NotificationService.getInstance().showNotification({
-                  message: t`The grouping column is no longer available. Grouping has been removed.`,
-                  severity: 'info',
-                });
-                stratify(null);
-                return;
-              }
-            }
-
-            if (!stratification) {
-              return;
-            }
-            stratify(stratification.mode, stratification.col);
           },
           reloadStratifyableColumns: () => {
             const { filteredData, frontendFilterPriorities } = get();
@@ -396,7 +391,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             }
           },
           setFindSimilarCasesResults: async (findSimilarCasesResults: FindSimilarCasesResult[]) => {
-            const { filters } = get();
+            const { filters, stratification, stratify } = get();
             const filterValues: FilterValues = {};
             filters.forEach(filter => {
               filterValues[filter.id] = filter.filterValue;
@@ -415,6 +410,9 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             }
             set({ findSimilarCasesResults });
             await get().fetchData();
+            if (stratification?.mode === STRATIFICATION_MODE.SIMILAR_CASES) {
+              stratify(STRATIFICATION_MODE.SIMILAR_CASES);
+            }
           },
           setNumVisibleAttributesInSummary: (numVisibleAttributesInSummary: number) => {
             set({ numVisibleAttributesInSummary });
@@ -468,13 +466,14 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
           },
 
           stratify: (mode: STRATIFICATION_MODE, col?: CaseDbCol) => {
-            const { selectedIds, sortedData } = get();
+            const { findSimilarCasesResults, selectedIds, sortedData } = get();
             set({
               stratification: StratificationUtil.getStratification({
                 col,
                 completeCaseType,
                 mode,
                 selectedIds,
+                similarCaseIds: findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [],
                 sortedData,
               }),
             });

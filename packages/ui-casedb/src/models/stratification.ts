@@ -8,12 +8,17 @@ import type { CaseTypeRowValue } from './caseDb';
 export enum STRATIFICATION_MODE {
   FIELD = 'FIELD',
   SELECTION = 'SELECTION',
+  SIMILAR_CASES = 'SIMILAR_CASES',
 }
-
 
 export enum STRATIFICATION_SELECTED {
   SELECTED = 'SELECTED',
   UNSELECTED = 'UNSELECTED',
+}
+
+export enum STRATIFICATION_SIMILAR_CASE {
+  NO = 'NO',
+  YES = 'YES',
 }
 
 export interface StratifiableColumn {

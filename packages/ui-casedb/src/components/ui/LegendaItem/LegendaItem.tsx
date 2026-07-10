@@ -107,16 +107,15 @@ export const LegendaItem = ({ children, item, tooltip, tooltipProps }: LegendaIt
       } else {
         await setFilterValue('selected', focussedLegendaItem.caseIds);
       }
-    } else {
+    } else if (stratification?.mode === STRATIFICATION_MODE.FIELD) {
       const filter = filters.find(f => f.id === stratification.col.id);
-      if (!filter) {
-        return;
+      if (filter) {
+        const filterValue = isArray(filter.initialFilterValue) ? [focussedLegendaItem.rowValue.raw] : focussedLegendaItem.rowValue.raw;
+        await setFilterValue(stratification.col.id, filterValue);
       }
-      const filterValue = isArray(filter.initialFilterValue) ? [focussedLegendaItem.rowValue.raw] : focussedLegendaItem.rowValue.raw;
-
-      await setFilterValue(stratification.col.id, filterValue);
+    } else {
+      // not implemented
     }
-
 
     onMenuClose();
   }, [filters, focussedLegendaItem, setFilterValue, stratification]);
@@ -132,7 +131,7 @@ export const LegendaItem = ({ children, item, tooltip, tooltipProps }: LegendaIt
         return null;
       }
       label = t('Filter (show only {{label}})', { label: focussedLegendaItem?.rowValue?.raw === STRATIFICATION_SELECTED.SELECTED.toString() ? t('selected rows') : t('unselected rows') });
-    } else {
+    } else if (stratification?.mode === STRATIFICATION_MODE.FIELD) {
       if (!focussedLegendaItem || focussedLegendaItem?.rowValue?.isMissing || !stratification?.col?.id) {
         return null;
       }
@@ -141,6 +140,8 @@ export const LegendaItem = ({ children, item, tooltip, tooltipProps }: LegendaIt
         return null;
       }
       label = t('Filter (show only {{label}})', { label: focussedLegendaItem.rowValue.short });
+    } else {
+      return null;
     }
 
     return (

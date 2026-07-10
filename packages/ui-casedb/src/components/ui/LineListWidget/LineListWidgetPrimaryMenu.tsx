@@ -93,7 +93,6 @@ export const LineListWidgetPrimaryMenu = ({
     const shouldShowCreateEventMenuItem = AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CreateCaseSetCommand, permission_type: CaseDbPermissionType.EXECUTE }]);
     const shouldShowAddToEventMenuItem = AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
     const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
-    // !TODO
     const shouldShowBulkEditCaseMenuItem = true;
 
     const actionsColumnMenuItem: MenuItemData = {

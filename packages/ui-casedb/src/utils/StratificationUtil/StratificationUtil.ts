@@ -24,6 +24,7 @@ import type {
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
+  STRATIFICATION_SIMILAR_CASE,
 } from '../../models/stratification';
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
@@ -43,16 +44,13 @@ export class StratificationUtil {
       completeCaseType: CaseDbCompleteCaseType;
       mode: STRATIFICATION_MODE;
       selectedIds?: string[];
+      similarCaseIds?: string[];
       sortedData: CaseDbCase[];
       useExtraGradients?: boolean;
     },
   ): Stratification {
-    const { col, completeCaseType, mode, selectedIds, sortedData } = kwArgs;
+    const { col, completeCaseType, mode, selectedIds, similarCaseIds, sortedData } = kwArgs;
     if (!mode) {
-      return null;
-    }
-
-    if (mode === STRATIFICATION_MODE.SELECTION && !selectedIds) {
       return null;
     }
 
@@ -61,7 +59,17 @@ export class StratificationUtil {
     }
 
     if (mode === STRATIFICATION_MODE.SELECTION) {
-      return StratificationUtil.getSelectionStratification({ col, selectedIds, sortedData });
+      if (!selectedIds) {
+        return null;
+      }
+      return StratificationUtil.getSelectionStratification({ selectedIds, sortedData });
+    }
+
+    if (mode === STRATIFICATION_MODE.SIMILAR_CASES) {
+      if (!similarCaseIds) {
+        return null;
+      }
+      return StratificationUtil.getSimilarCasesStratification({ similarCaseIds, sortedData });
     }
 
     return null;
@@ -210,13 +218,12 @@ export class StratificationUtil {
 
   private static getSelectionStratification(
     kwArgs: {
-      col?: CaseDbCol;
       selectedIds: string[];
       sortedData: CaseDbCase[];
     },
   ): Stratification {
     const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
-    const { col, selectedIds, sortedData } = kwArgs;
+    const { selectedIds, sortedData } = kwArgs;
     const caseIdColors: { [key: string]: string } = {};
     const legendaItems: StratificationLegendaItem[] = [];
     const legendaItemsByColor: { [key: string]: StratificationLegendaItem } = {};
@@ -251,12 +258,61 @@ export class StratificationUtil {
 
     return {
       caseIdColors,
-      col,
       colorForIsMissing: STRATIFICATION.ITEM_MISSING_COLOR,
       legendaItems,
       legendaItemsByColor,
       legendaItemsByValue,
       mode: STRATIFICATION_MODE.SELECTION,
+    };
+  }
+
+  private static getSimilarCasesStratification(
+    kwArgs: {
+      similarCaseIds: string[];
+      sortedData: CaseDbCase[];
+    },
+  ): Stratification {
+    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { similarCaseIds, sortedData } = kwArgs;
+    const caseIdColors: { [key: string]: string } = {};
+    const legendaItems: StratificationLegendaItem[] = [];
+    const legendaItemsByColor: { [key: string]: StratificationLegendaItem } = {};
+    const legendaItemsByValue: { [key: string]: StratificationLegendaItem } = {};
+
+    const rawValues: STRATIFICATION_SIMILAR_CASE[] = [STRATIFICATION_SIMILAR_CASE.NO, STRATIFICATION_SIMILAR_CASE.YES];
+
+    rawValues.forEach(rawValue => {
+      const color = rawValue === STRATIFICATION_SIMILAR_CASE.YES ? STRATIFICATION.BASE_COLORS[0] : STRATIFICATION.BASE_COLORS[1];
+      const presentationValue = rawValue === STRATIFICATION_SIMILAR_CASE.YES ? t`Cases found by similarity` : t`Regular cases`;
+      const legendaItem: StratificationLegendaItem = {
+        caseIds: [],
+        color,
+        rowValue: {
+          full: presentationValue,
+          isMissing: false,
+          long: presentationValue,
+          raw: rawValue,
+          short: presentationValue,
+        },
+      };
+      legendaItemsByColor[color] = legendaItem;
+      legendaItemsByValue[rawValue] = legendaItem;
+      legendaItems.push(legendaItem);
+    });
+
+    sortedData.forEach(row => {
+      const legendaItem = similarCaseIds.includes(row.id) ? legendaItemsByValue[STRATIFICATION_SIMILAR_CASE.YES] : legendaItemsByValue[STRATIFICATION_SIMILAR_CASE.NO];
+      legendaItem.caseIds.push(row.id);
+      caseIdColors[row.id] = legendaItem.color;
+    });
+
+    return {
+      caseIdColors,
+      colorForIsMissing: STRATIFICATION.ITEM_MISSING_COLOR,
+      legendaItems,
+      legendaItemsByColor,
+      legendaItemsByValue,
+      mode: STRATIFICATION_MODE.SIMILAR_CASES,
     };
   }
 
