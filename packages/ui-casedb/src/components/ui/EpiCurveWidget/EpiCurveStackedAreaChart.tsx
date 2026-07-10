@@ -5,6 +5,7 @@ import type {
   EChartsType,
 } from 'echarts';
 import {
+  use,
   useCallback,
   useEffect,
   useMemo,
@@ -19,12 +20,13 @@ import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
 import type { Stratification } from '../../../models/stratification';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
+import { DashboardContext } from '../Dashboard/context/DashboardContext';
+import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
 
 export interface EpiCurveStackedAreaChartProps {
   chartRef: Ref<EChartsReact>;
   echarts: unknown;
   getXAxisLabel: (value: Date) => string;
-  highlightedCaseIds?: string[];
   includeMissingValues: boolean;
   items: EpiCurveChartItem[];
   onCaseIdsChange?: (caseIds: string[]) => void;
@@ -38,7 +40,6 @@ export const EpiCurveStackedAreaChart = ({
   chartRef,
   echarts,
   getXAxisLabel,
-  highlightedCaseIds,
   includeMissingValues,
   items,
   onCaseIdsChange,
@@ -50,6 +51,7 @@ export const EpiCurveStackedAreaChart = ({
   const theme = useTheme();
   const hoveredSeriesIndexRef = useRef<null | number>(null);
   const chartInstanceRef = useRef<EChartsType | null>(null);
+  const dashboardContext = use(DashboardContext);
 
   // Calculate series data only when rendering
   const seriesData = useMemo(() =>
@@ -186,44 +188,54 @@ export const EpiCurveStackedAreaChart = ({
   }, []);
 
   useEffect(() => {
-    const instance = chartInstanceRef.current;
-    if (!instance) {
-      return;
-    }
+    const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
+      if (highlighting.origin === DASHBOARD_WIDGET_NAME.EPI_CURVE) {
+        return;
+      }
 
-    if (!highlightedCaseIds?.length) {
+      const instance = chartInstanceRef.current;
+      if (!instance) {
+        return;
+      }
+
+      if (!highlighting.caseIds.length) {
+        instance.dispatchAction({
+          type: 'downplay',
+        });
+        return;
+      }
+
+      const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
+      seriesData.series?.forEach((serie, serieIndex) => {
+        const serieData = (serie as { data: unknown[] }).data;
+        serieData?.forEach((dataArray: unknown, dataIndex: number) => {
+          const caseIds = JSON.parse((dataArray as [unknown, unknown, string])[2]) as string[];
+          if (intersection(caseIds, highlighting.caseIds).length) {
+            highlightTargets.push({
+              dataIndex,
+              seriesIndex: serieIndex,
+            });
+          }
+        });
+      });
+
       instance.dispatchAction({
         type: 'downplay',
       });
-      return;
-    }
 
-    const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
-    seriesData.series?.forEach((serie, serieIndex) => {
-      const serieData = (serie as { data: unknown[] }).data;
-      serieData?.forEach((dataArray: unknown, dataIndex: number) => {
-        const caseIds = JSON.parse((dataArray as [unknown, unknown, string])[2]) as string[];
-        if (intersection(caseIds, highlightedCaseIds).length) {
-          highlightTargets.push({
-            dataIndex,
-            seriesIndex: serieIndex,
-          });
-        }
+      highlightTargets.forEach((target) => {
+        instance.dispatchAction({
+          dataIndex: target.dataIndex,
+          seriesIndex: target.seriesIndex,
+          type: 'highlight',
+        });
       });
     });
 
-    instance.dispatchAction({
-      type: 'downplay',
-    });
-
-    highlightTargets.forEach((target) => {
-      instance.dispatchAction({
-        dataIndex: target.dataIndex,
-        seriesIndex: target.seriesIndex,
-        type: 'highlight',
-      });
-    });
-  }, [highlightedCaseIds, seriesData]);
+    return () => {
+      unsubscribe();
+    };
+  }, [dashboardContext, seriesData]);
 
   const onInternalChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;

@@ -90,7 +90,6 @@ export const EpiCurveWidget = () => {
   const [contextMenuConfig, setContextMenuConfig] = useState<ContextMenuConfigWithPosition | null>(null);
   const [chartType, setChartType] = useState<ChartType>('bar');
   const chartRef = useRef<EChartsReact>(null);
-  const [highlightedCaseIds, setHighlightedCaseIds] = useState<string[]>([]);
   const dashboardContext = use(DashboardContext);
   const userProfileStore = use(UserProfileStoreContext);
 
@@ -257,19 +256,6 @@ export const EpiCurveWidget = () => {
     dom?.setAttribute('role', 'img');
   }, [colLabel, t]);
 
-  useEffect(() => {
-    const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
-      if (highlighting.origin === DASHBOARD_WIDGET_NAME.EPI_CURVE) {
-        return;
-      }
-      setHighlightedCaseIds(highlighting.caseIds);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [dashboardContext]);
-
   const onShowOnlySelectedDateMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     if (!isString(focussedDate) || !col?.id) {
       onMenuClose();
@@ -399,7 +385,6 @@ export const EpiCurveWidget = () => {
               chartRef={chartRef}
               echarts={echartsCore}
               getXAxisLabel={getXAxisLabel}
-              highlightedCaseIds={highlightedCaseIds}
               items={items}
               onCaseIdsChange={onChartCaseIdsChange}
               onChartReady={onChartReady}
@@ -413,7 +398,6 @@ export const EpiCurveWidget = () => {
               chartRef={chartRef}
               echarts={echartsCore}
               getXAxisLabel={getXAxisLabel}
-              highlightedCaseIds={highlightedCaseIds}
               includeMissingValues={isIncludeMissingValuesInAreaChartEnabled}
               items={items}
               onCaseIdsChange={onChartCaseIdsChange}

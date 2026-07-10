@@ -80,7 +80,7 @@ export const HistogramWidget = () => {
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
   const setFilterValues = useStore(dashboardStore, (state) => state.setFilterValues);
   const updateWidgetData = useStore(dashboardStore, (state) => state.updateWidgetData);
-  const epiCurveWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<HistogramWidgetData>(DASHBOARD_WIDGET_NAME.HISTOGRAM));
+  const histogramWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<HistogramWidgetData>(DASHBOARD_WIDGET_NAME.HISTOGRAM));
   const [focussedColValues, setFocussedColValues] = useState<{ a: string; b: string }>(null);
 
   const allowedColTypes = useMemo<CaseDbColType[]>(() => {
@@ -91,8 +91,8 @@ export const HistogramWidget = () => {
     return HistogramUtil.getAllowedCols(completeCaseType, allowedColTypes);
   }, [allowedColTypes, completeCaseType]);
 
-  const [aCol, setACol] = useState<CaseDbCol | null>(epiCurveWidgetData.colAId ? completeCaseType?.cols[epiCurveWidgetData.colAId] ?? null : null);
-  const [bCol, setBCol] = useState<CaseDbCol | null>(epiCurveWidgetData.colBId ? completeCaseType?.cols[epiCurveWidgetData.colBId] ?? null : null);
+  const [aCol, setACol] = useState<CaseDbCol | null>(histogramWidgetData.colAId ? completeCaseType?.cols[histogramWidgetData.colAId] ?? null : null);
+  const [bCol, setBCol] = useState<CaseDbCol | null>(histogramWidgetData.colBId ? completeCaseType?.cols[histogramWidgetData.colBId] ?? null : null);
 
   const [contextMenuConfig, setContextMenuConfig] = useState<ContextMenuConfigWithPosition | null>(null);
 
@@ -357,15 +357,14 @@ export const HistogramWidget = () => {
         return;
       }
 
-      const highlightTargets: Array<{ dataIndex: number; seriesIndex: number }> = [];
+      const highlightTargetsByDataIndex = new Map<number, Set<number>>();
       series?.forEach((serie, serieIndex) => {
         const castedSerie = serie as { data: unknown[]; xCaseIds: string[][] };
         castedSerie.xCaseIds?.forEach((caseIds: string[], dataIndex: number) => {
           if (intersection(caseIds, highlighting.caseIds).length) {
-            highlightTargets.push({
-              dataIndex,
-              seriesIndex: serieIndex,
-            });
+            const seriesIndices = highlightTargetsByDataIndex.get(dataIndex) ?? new Set<number>();
+            seriesIndices.add(serieIndex);
+            highlightTargetsByDataIndex.set(dataIndex, seriesIndices);
           }
         });
       });
@@ -374,12 +373,32 @@ export const HistogramWidget = () => {
         type: 'downplay',
       });
 
-      highlightTargets.forEach((target) => {
-        instance.dispatchAction({
-          dataIndex: target.dataIndex,
-          seriesIndex: target.seriesIndex,
-          type: 'highlight',
+      const highlightBatch: Array<{ dataIndex: number; notBlur?: boolean; seriesIndex?: number }> = [];
+      highlightTargetsByDataIndex.forEach((seriesIndices, dataIndex) => {
+        if (seriesIndices.size === series?.length) {
+          highlightBatch.push({
+            dataIndex,
+          });
+          return;
+        }
+
+        seriesIndices.forEach((seriesIndex) => {
+          highlightBatch.push({
+            dataIndex,
+            seriesIndex,
+          });
         });
+      });
+
+      highlightBatch.forEach((target, index) => {
+        if (index > 0) {
+          target.notBlur = true;
+        }
+      });
+
+      instance.dispatchAction({
+        batch: highlightBatch,
+        type: 'highlight',
       });
     });
 
