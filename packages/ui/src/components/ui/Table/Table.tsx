@@ -36,6 +36,7 @@ import { useStore } from 'zustand';
 import type {
   FillerRowProps,
   ItemProps,
+  ListItem,
   ListRange,
   TableBodyProps,
   TableVirtuosoHandle,
@@ -99,7 +100,7 @@ export type TableProps<TRowData, TDataContext = null> = {
 };
 
 export interface TableRef {
-  scrollToIndex: (index: number) => void;
+  scrollToIndex: (index: number, onScrolledToIndex?: () => void) => void;
   setVerticalScrollPosition: (position: number) => void;
 }
 
@@ -152,6 +153,9 @@ export const Table = <TRowData, TDataContext = null>({
   const tableRef = useRef<TableVirtuosoHandle>(null);
   const tableWidthRef = useRef<number>(0);
   const tableRangeRef = useRef<ListRange>(null);
+  const renderedItemIndexesRef = useRef<Set<number>>(new Set());
+  const isScrollingRef = useRef(false);
+  const pendingScrollToIndexRef = useRef<{ hasRendered: boolean; index: number; onScrolledToIndex: () => void }>(null);
   const [container, setContainer] = useState<HTMLDivElement>();
   const tableColumnsEditorDialogRef = useRef<TableColumnsEditorDialogRefMethods<TRowData, TDataContext>>(null);
   const lastClickedRowIdRef = useRef<string>(null);
@@ -707,9 +711,24 @@ export const Table = <TRowData, TDataContext = null>({
     scrollerElement.scrollTop = position;
   }, [getScrollerElement]);
 
-  const scrollToIndex = useCallback((index: number) => {
-    tableRef.current.scrollToIndex(index);
+  const resolvePendingScrollToIndex = useCallback(() => {
+    const pendingScrollToIndex = pendingScrollToIndexRef.current;
+    if (!pendingScrollToIndex || isScrollingRef.current || !pendingScrollToIndex.hasRendered) {
+      return;
+    }
+    pendingScrollToIndexRef.current = null;
+    pendingScrollToIndex.onScrolledToIndex();
   }, []);
+
+  const scrollToIndex = useCallback((index: number, onScrolledToIndex?: () => void) => {
+    pendingScrollToIndexRef.current = onScrolledToIndex ? {
+      hasRendered: renderedItemIndexesRef.current.has(index),
+      index,
+      onScrolledToIndex,
+    } : null;
+    tableRef.current?.scrollToIndex(index);
+    resolvePendingScrollToIndex();
+  }, [resolvePendingScrollToIndex]);
 
   useImperativeHandle(ref, () => ({
     scrollToIndex,
@@ -720,6 +739,20 @@ export const Table = <TRowData, TDataContext = null>({
     tableRangeRef.current = range;
     onRangeChanged(range);
   }, [onRangeChanged]);
+
+  const onVirtuosoItemsRendered = useCallback((items: ListItem<TRowData>[]) => {
+    renderedItemIndexesRef.current = new Set(items.map(item => item.index));
+    const pendingScrollToIndex = pendingScrollToIndexRef.current;
+    if (pendingScrollToIndex && renderedItemIndexesRef.current.has(pendingScrollToIndex.index)) {
+      pendingScrollToIndex.hasRendered = true;
+    }
+    resolvePendingScrollToIndex();
+  }, [resolvePendingScrollToIndex]);
+
+  const onVirtuosoIsScrolling = useCallback((isScrolling: boolean) => {
+    isScrollingRef.current = isScrolling;
+    resolvePendingScrollToIndex();
+  }, [resolvePendingScrollToIndex]);
 
   useEffect(() => {
     if (tableRangeRef.current) {
@@ -835,8 +868,10 @@ export const Table = <TRowData, TDataContext = null>({
           fixedHeaderContent={renderFixedHeaderContent}
           fixedItemHeight={+theme.spacing(rowHeight).replace('px', '')}
           initialTopMostItemIndex={initialVisibleItemIndex ?? 0}
+          isScrolling={onVirtuosoIsScrolling}
           itemContent={renderItemContent}
           itemSize={handleItemSize}
+          itemsRendered={onVirtuosoItemsRendered}
           onScroll={onTableScroll}
           overscan={{
             main: overscanMain ?? DEFAULT_OVERSCAN_MAIN,

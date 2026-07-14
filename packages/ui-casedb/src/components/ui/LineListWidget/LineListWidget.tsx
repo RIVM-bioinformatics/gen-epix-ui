@@ -539,11 +539,10 @@ export const LineListWidget = () => {
         const firstHighlightedCaseId = highlighting.caseIds[0];
         const index = sortedData.findIndex(row => row.id === firstHighlightedCaseId);
         if (index !== -1) {
-          tableRef.current.scrollToIndex(index);
+          tableRef.current?.scrollToIndex(index, () => {
+            rowHighlightingSubject.next(highlighting.caseIds);
+          });
         }
-        setTimeout(() => {
-          rowHighlightingSubject.next(highlighting.caseIds);
-        }, 100);
       } else {
         rowHighlightingSubject.next(highlighting.caseIds);
       }
