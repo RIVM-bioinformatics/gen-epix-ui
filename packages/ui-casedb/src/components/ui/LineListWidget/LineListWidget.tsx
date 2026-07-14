@@ -65,7 +65,7 @@ import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
 import { CASE_INFO_DIALOG_TAB_NAME } from '../CaseInfoDialog';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 
 import { LineListWidgetTitle } from './LineListWidgetTitle';
@@ -514,7 +514,7 @@ export const LineListWidget = () => {
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
     dashboardContext.highlight({
       caseIds: [row.id],
-      origin: DASHBOARD_WIDGET_NAME.LINE_LIST,
+      origin: DASHBOARD_COMPONENT_NAME.LINE_LIST,
     });
   }, [dashboardContext]);
 
@@ -522,7 +522,7 @@ export const LineListWidget = () => {
   const onRowMouseLeave = useCallback(() => {
     dashboardContext.highlight({
       caseIds: [],
-      origin: DASHBOARD_WIDGET_NAME.LINE_LIST,
+      origin: DASHBOARD_COMPONENT_NAME.LINE_LIST,
     });
   }, [dashboardContext]);
 
@@ -532,20 +532,30 @@ export const LineListWidget = () => {
 
   useEffect(() => {
     const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
-      if (highlighting?.origin === DASHBOARD_WIDGET_NAME.LINE_LIST) {
+      if (highlighting?.origin === DASHBOARD_COMPONENT_NAME.LINE_LIST) {
         return;
       }
-      rowHighlightingSubject.next(highlighting.caseIds);
+      if (highlighting.scrollIntoView) {
+        const firstHighlightedCaseId = highlighting.caseIds[0];
+        const index = sortedData.findIndex(row => row.id === firstHighlightedCaseId);
+        if (index !== -1) {
+          tableRef.current?.scrollToIndex(index, () => {
+            rowHighlightingSubject.next(highlighting.caseIds);
+          });
+        }
+      } else {
+        rowHighlightingSubject.next(highlighting.caseIds);
+      }
     });
     return () => {
       unsubscribe();
     };
-  }, [dashboardContext, rowHighlightingSubject]);
+  }, [dashboardContext, rowHighlightingSubject, sortedData]);
 
   useEpiLineListWidgetEmitDownloadOptions();
 
   const updateVisibleIndexDebounced = useDebouncedCallback((index: number) => {
-    updateWidgetData<LineListWidgetData>(DASHBOARD_WIDGET_NAME.LINE_LIST, {
+    updateWidgetData<LineListWidgetData>(DASHBOARD_COMPONENT_NAME.LINE_LIST, {
       visibleItemItemIndex: index,
     });
   }, 500);
@@ -605,7 +615,7 @@ export const LineListWidget = () => {
       primaryMenu={<LineListWidgetPrimaryMenu caseSet={caseSet} />}
       secondaryMenu={<LineListWidgetSecondaryMenu />}
       title={<LineListWidgetTitle />}
-      widgetName={DASHBOARD_WIDGET_NAME.LINE_LIST}
+      widgetName={DASHBOARD_COMPONENT_NAME.LINE_LIST}
     >
       <Box
         ref={containerRef}
@@ -618,7 +628,7 @@ export const LineListWidget = () => {
           font={theme['gen-epix-ui-casedb'].lineList.font}
           forceHorizontalOverflow
           getRowName={getRowName}
-          initialVisibleItemIndex={dashboardStore.getState().getWidgetData<LineListWidgetData>(DASHBOARD_WIDGET_NAME.LINE_LIST)?.visibleItemItemIndex}
+          initialVisibleItemIndex={dashboardStore.getState().getWidgetData<LineListWidgetData>(DASHBOARD_COMPONENT_NAME.LINE_LIST)?.visibleItemItemIndex}
           onRangeChanged={onRangeChanged}
           onReadableIndexClick={onIndexCellClick}
           onRowMouseEnter={onRowMouseEnter}

@@ -7,3 +7,4 @@ oidc-mock-server.config.json
 .npmrc
 .vitest-attachments
 __screenshots__
+.vscode/chrome-debug-profile

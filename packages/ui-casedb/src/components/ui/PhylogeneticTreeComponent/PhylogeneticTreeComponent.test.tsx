@@ -18,7 +18,7 @@ import type { TreeNode } from '../../../models/tree';
 import { TreeUtil } from '../../../utils/TreeUtil';
 import { NewickUtil } from '../../../utils/NewickUtil';
 import type { CaseDbConfig } from '../../../models/config';
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 import type {
   PhylogeneticTreeComponentPathClickEvent,
@@ -461,7 +461,7 @@ describe('PhylogeneticTreeComponent', () => {
   test('draws highlighted distance labels only when enabled', async () => {
     const highlightingSubject = new Subject<Highlighting>({
       caseIds: ['LeafA'],
-      origin: DASHBOARD_WIDGET_NAME.TREE,
+      origin: DASHBOARD_COMPONENT_NAME.TREE,
     });
     const { ariaLabel, canvas, layout, renderResult, resolvedOptions } = await renderTree({
       highlightingSubject,
@@ -630,7 +630,7 @@ describe('PhylogeneticTreeComponent', () => {
     await waitForAssertion(() => {
       expect(highlightingSubject.data.caseIds).toHaveLength(1);
       expect(['LeafA', 'LeafB', 'LeafC']).toContain(highlightingSubject.data.caseIds[0]);
-      expect(highlightingSubject.data.origin).toBe(DASHBOARD_WIDGET_NAME.TREE);
+      expect(highlightingSubject.data.origin).toBe(DASHBOARD_COMPONENT_NAME.TREE);
       expect(canvas.style.cursor).toBe('pointer');
     });
 
@@ -639,7 +639,7 @@ describe('PhylogeneticTreeComponent', () => {
 
     await waitForAssertion(() => {
       expect(highlightingSubject.data.caseIds).toEqual([]);
-      expect(highlightingSubject.data.origin).toBe(DASHBOARD_WIDGET_NAME.TREE);
+      expect(highlightingSubject.data.origin).toBe(DASHBOARD_COMPONENT_NAME.TREE);
       expect(canvas.style.cursor).toBe('default');
     });
 
@@ -663,7 +663,7 @@ describe('PhylogeneticTreeComponent', () => {
 
     await waitForAssertion(() => {
       expect(highlightingSubject.data.caseIds).toEqual([]);
-      expect(highlightingSubject.data.origin).toBe(DASHBOARD_WIDGET_NAME.TREE);
+      expect(highlightingSubject.data.origin).toBe(DASHBOARD_COMPONENT_NAME.TREE);
     });
   });
 

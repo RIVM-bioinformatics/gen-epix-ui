@@ -1,0 +1,54 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Case DB demo in Chrome (start server)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "https://localhost:5010",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "pnpm: start",
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "skipFiles": [
+        "**/node_modules/**"
+      ],
+      "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-profile"
+    },
+    {
+      "name": "Debug Case DB demo in Chrome (running server)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "https://localhost:5010",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "skipFiles": [
+        "**/node_modules/**"
+      ],
+      "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-profile"
+    },
+    {
+      "name": "Attach Case DB demo to Chrome on 9222",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "urlFilter": "https://localhost:5010/*",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "skipFiles": [
+        "**/node_modules/**"
+      ]
+    }
+  ]
+}

@@ -61,7 +61,7 @@ import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
@@ -97,18 +97,18 @@ export const TreeWidget = () => {
   const isCaseDataLoading = useStore(dashboardStore, (state) => state.isDataLoading);
   const newick = useStore(dashboardStore, (state) => state.newick);
   const resetTreeAddresses = useStore(dashboardStore, (state) => state.resetTreeAddresses);
-  const isShowDistancesEnabled = useStore(userProfileStore, (state) => (state.dashboardWidgetSettings[DASHBOARD_WIDGET_NAME.TREE] as DashboardTreeSettings).isShowDistancesEnabled);
-  const isShowSupportLinesWhenUnlinkedEnabled = useStore(userProfileStore, (state) => (state.dashboardWidgetSettings[DASHBOARD_WIDGET_NAME.TREE] as DashboardTreeSettings).isShowSupportLinesWhenUnlinkedEnabled);
+  const isShowDistancesEnabled = useStore(userProfileStore, (state) => (state.dashboardWidgetSettings[DASHBOARD_COMPONENT_NAME.TREE] as DashboardTreeSettings).isShowDistancesEnabled);
+  const isShowSupportLinesWhenUnlinkedEnabled = useStore(userProfileStore, (state) => (state.dashboardWidgetSettings[DASHBOARD_COMPONENT_NAME.TREE] as DashboardTreeSettings).isShowSupportLinesWhenUnlinkedEnabled);
   const [contextMenuConfig, setContextMenuConfig] = useState<ContextMenuConfigWithPosition | null>(null);
   const [zoomInMenuItemConfig, setZoomInMenuItemConfig] = useState<ZoomInMenuItemConfig>(null);
   const [extraLeafInfoId, setExtraLeafInfoId] = useState<string>(null);
-  const [treeConfiguration, setTreeConfiguration] = useState<TreeConfiguration>(dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_WIDGET_NAME.TREE).treeConfiguration);
+  const [treeConfiguration, setTreeConfiguration] = useState<TreeConfiguration>(dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE).treeConfiguration);
   const treeHighlightingSubject = useMemo(() => new Subject<Highlighting>({
     caseIds: [],
     origin: null,
   }), []);
   const initialTreeViewState = useMemo<PhylogeneticTreeComponentViewState>(() => {
-    const widgetData = dashboardStore.getState().getWidgetData<TreeWidgetData>(DASHBOARD_WIDGET_NAME.TREE);
+    const widgetData = dashboardStore.getState().getWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE);
     return {
       horizontalScrollPosition: !isNaN(widgetData?.horizontalScrollPosition) ? widgetData.horizontalScrollPosition : 0,
       verticalScrollPosition: !isNaN(widgetData?.verticalScrollPosition) ? widgetData.verticalScrollPosition : 0,
@@ -140,13 +140,13 @@ export const TreeWidget = () => {
 
   useEffect(() => {
     const unsubscribeHighlightingManager = dashboardContext.highlightSubject.subscribe((highlighting) => {
-      if (highlighting.origin === DASHBOARD_WIDGET_NAME.TREE) {
+      if (highlighting.origin === DASHBOARD_COMPONENT_NAME.TREE) {
         return;
       }
       treeHighlightingSubject.next(highlighting);
     });
     const unsubscribeTreeHighlightingSubject = treeHighlightingSubject.subscribe((highlighting) => {
-      if (highlighting.origin !== DASHBOARD_WIDGET_NAME.TREE) {
+      if (highlighting.origin !== DASHBOARD_COMPONENT_NAME.TREE) {
         return;
       }
       dashboardContext.highlight(highlighting);
@@ -198,15 +198,15 @@ export const TreeWidget = () => {
   useEffect(() => {
     if (!treeConfigurations?.length) {
       setTreeConfiguration(null);
-      updateWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_WIDGET_NAME.TREE, {
+      updateWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE, {
         treeConfiguration: null,
       });
       return;
     }
-    const newConfig = dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_WIDGET_NAME.TREE)?.treeConfiguration || treeConfigurations[0];
+    const newConfig = dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE)?.treeConfiguration || treeConfigurations[0];
 
     setTreeConfiguration(newConfig);
-    updateWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_WIDGET_NAME.TREE, {
+    updateWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE, {
       treeConfiguration: newConfig,
     });
   }, [dashboardStore, treeConfigurations, updateWidgetDataPersistable]);
@@ -222,7 +222,7 @@ export const TreeWidget = () => {
   }, [isTreeLinked, shouldShowTree, sortByField]);
 
   const updateEpiTreeWidgetDataDebounced = useDebouncedCallback((viewState: PhylogeneticTreeComponentViewState) => {
-    updateWidgetData<TreeWidgetData>(DASHBOARD_WIDGET_NAME.TREE, {
+    updateWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE, {
       horizontalScrollPosition: viewState.horizontalScrollPosition,
       verticalScrollPosition: viewState.verticalScrollPosition,
       zoomLevel: viewState.zoomLevel,
@@ -375,7 +375,7 @@ export const TreeWidget = () => {
         callback: () => {
           const perform = async () => {
             await removeTreeFilter();
-            updateWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_WIDGET_NAME.TREE, {
+            updateWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE, {
               treeConfiguration: config,
             });
             setTreeConfiguration(config);
@@ -455,7 +455,7 @@ export const TreeWidget = () => {
             label: t`Save as PNG`,
           },
         ],
-        zone: DASHBOARD_WIDGET_NAME.TREE,
+        zone: DASHBOARD_COMPONENT_NAME.TREE,
         zoneLabel: t`Phylogenetic Tree`,
       });
     };
@@ -468,7 +468,7 @@ export const TreeWidget = () => {
     return () => {
       eventBusService.emit('onDownloadOptionsChanged', {
         items: null,
-        zone: DASHBOARD_WIDGET_NAME.TREE,
+        zone: DASHBOARD_COMPONENT_NAME.TREE,
         zoneLabel: t`Tree`,
       });
       eventBusService.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
@@ -494,7 +494,7 @@ export const TreeWidget = () => {
       expandDisabled={isTreeUnavailable}
       primaryMenu={primaryMenu}
       title={titleMenu}
-      widgetName={DASHBOARD_WIDGET_NAME.TREE}
+      widgetName={DASHBOARD_COMPONENT_NAME.TREE}
     >
       <Box
         sx={{

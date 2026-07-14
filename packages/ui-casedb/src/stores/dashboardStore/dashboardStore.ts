@@ -55,7 +55,7 @@ import { CASEDB_QUERY_KEY } from '../../data/query';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
 import { TreeFilter } from '../../classes/filters/TreeFilter';
 import { StratificationUtil } from '../../utils/StratificationUtil';
-import { DASHBOARD_WIDGET_NAME } from '../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../data/dashboard';
 
 export interface CreateDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;
@@ -340,7 +340,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
           },
           reloadTree: () => {
             const { filters, getWidgetDataPersistable, treeResponse } = get();
-            const treeConfiguration = getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_WIDGET_NAME.TREE).treeConfiguration;
+            const treeConfiguration = getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE).treeConfiguration;
             const zoomedInTreeNodeName = filters.find(filter => filter instanceof TreeFilter)?.filterValue;
             const tree = zoomedInTreeNodeName ? TreeUtil.findNewTreeRoot(treeResponse, zoomedInTreeNodeName, 'node') : treeResponse;
             if (tree) {

@@ -41,7 +41,7 @@ import {
 } from '@mui/material';
 import intersection from 'lodash/intersection';
 
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { DashboardWidget } from '../Dashboard';
@@ -80,7 +80,7 @@ export const HistogramWidget = () => {
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
   const setFilterValues = useStore(dashboardStore, (state) => state.setFilterValues);
   const updateWidgetData = useStore(dashboardStore, (state) => state.updateWidgetData);
-  const histogramWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<HistogramWidgetData>(DASHBOARD_WIDGET_NAME.HISTOGRAM));
+  const histogramWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<HistogramWidgetData>(DASHBOARD_COMPONENT_NAME.HISTOGRAM));
   const [focussedColValues, setFocussedColValues] = useState<{ a: string; b: string }>(null);
 
   const allowedColTypes = useMemo<CaseDbColType[]>(() => {
@@ -112,7 +112,7 @@ export const HistogramWidget = () => {
   const onMenuItemClick = useCallback((x: CaseDbCol, y: CaseDbCol) => {
     setACol(x);
     setBCol(y);
-    updateWidgetData(DASHBOARD_WIDGET_NAME.HISTOGRAM, {
+    updateWidgetData(DASHBOARD_COMPONENT_NAME.HISTOGRAM, {
       colAId: x.id,
       colBId: y.id,
     });
@@ -131,7 +131,7 @@ export const HistogramWidget = () => {
     setACol(newColA);
     setBCol(newColB);
 
-    updateWidgetData(DASHBOARD_WIDGET_NAME.HISTOGRAM, {
+    updateWidgetData(DASHBOARD_COMPONENT_NAME.HISTOGRAM, {
       colAId: newColA.id,
       colBId: newColB.id,
     });
@@ -239,7 +239,7 @@ export const HistogramWidget = () => {
             label: t`Save as JPEG`,
           },
         ],
-        zone: DASHBOARD_WIDGET_NAME.HISTOGRAM,
+        zone: DASHBOARD_COMPONENT_NAME.HISTOGRAM,
         zoneLabel: t`Histogram`,
       });
     };
@@ -249,7 +249,7 @@ export const HistogramWidget = () => {
     return () => {
       eventBusManager.emit('onDownloadOptionsChanged', {
         items: null,
-        zone: DASHBOARD_WIDGET_NAME.HISTOGRAM,
+        zone: DASHBOARD_COMPONENT_NAME.HISTOGRAM,
         zoneLabel: t`Histogram`,
       });
       eventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
@@ -259,7 +259,7 @@ export const HistogramWidget = () => {
   const highlight = useCallback((caseIds: string[]) => {
     dashboardContext.highlight({
       caseIds,
-      origin: DASHBOARD_WIDGET_NAME.HISTOGRAM,
+      origin: DASHBOARD_COMPONENT_NAME.HISTOGRAM,
     });
   }, [dashboardContext]);
 
@@ -342,7 +342,7 @@ export const HistogramWidget = () => {
 
   useEffect(() => {
     const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
-      if (highlighting.origin === DASHBOARD_WIDGET_NAME.HISTOGRAM) {
+      if (highlighting.origin === DASHBOARD_COMPONENT_NAME.HISTOGRAM) {
         return;
       }
       const instance = chartInstanceRef.current;
@@ -412,7 +412,7 @@ export const HistogramWidget = () => {
       expandDisabled={!shouldShowWidget}
       title={titleMenu}
       warningMessage={shouldShowWidget && histogramCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
-      widgetName={DASHBOARD_WIDGET_NAME.HISTOGRAM}
+      widgetName={DASHBOARD_COMPONENT_NAME.HISTOGRAM}
     >
       {!shouldShowWidget && (
         <WidgetUnavailable

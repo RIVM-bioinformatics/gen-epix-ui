@@ -61,6 +61,7 @@ import {
   DashboardDownloadSidebarItem,
   DashboardDownloadSidebarItemIcon,
 } from './DashboardDownloadSidebarItem';
+import { DashboardSearch } from './DashboardSearch';
 
 type DashboardProps = {
   readonly caseSet?: CaseDbCaseSet;
@@ -257,7 +258,11 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
         }}
       >
         {shouldShowMaxResultsExceededAlert && (
-          <Box>
+          <Box
+            sx={{
+              marginY: theme.spacing(1),
+            }}
+          >
             <Alert
               onClose={onMaxResultsExceededButtonClose}
               severity={'warning'}
@@ -272,8 +277,14 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
             </Alert>
           </Box>
         )}
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
           <Grouping />
+          <DashboardSearch />
         </Box>
         <Box>
           <DashboardLayoutRenderer

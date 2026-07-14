@@ -13,14 +13,14 @@ import type { MenuItemData } from '@gen-epix/ui';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { WidgetMenu } from '../WidgetMenu';
 import { EventBusService } from '../../../classes/services/EventBusService';
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 import type { TreeWidgetData } from '../../../models/dashboard';
 
 export const LineListWidgetSecondaryMenu = () => {
   const theme = useTheme();
   const dashboardStore = use(DashboardStoreContext);
   const { t } = useTranslation();
-  const isTreeLinked = useStore(dashboardStore, useShallow((state) => state.getWidgetData<TreeWidgetData>(DASHBOARD_WIDGET_NAME.TREE).zoomLevel === 1));
+  const isTreeLinked = useStore(dashboardStore, useShallow((state) => state.getWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE).zoomLevel === 1));
   const setSorting = useStore(dashboardStore, useShallow((state) => state.setSorting));
 
   const onLinkButtonClick = useCallback(() => {

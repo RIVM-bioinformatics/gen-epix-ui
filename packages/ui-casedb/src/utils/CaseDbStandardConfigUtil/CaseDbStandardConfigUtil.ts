@@ -15,7 +15,7 @@ import type { Range } from 'colorjs.io';
 import { t } from 'i18next';
 
 import type { CaseDbConfig } from '../../models/config';
-import { DASHBOARD_WIDGET_NAME } from '../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../data/dashboard';
 import { EpiCurveWidget } from '../../components/ui/EpiCurveWidget';
 import { LineListWidget } from '../../components/ui/LineListWidget';
 import { MapWidget } from '../../components/ui/MapWidget';
@@ -156,42 +156,42 @@ export class CaseDbStandardConfigUtil {
         DEFAULT_ARRANGEMENT_KEY: '1',
         DEFAULT_WIDGET_ASSIGNMENTS: {
           1: {
-            A: DASHBOARD_WIDGET_NAME.TREE,
-            B: DASHBOARD_WIDGET_NAME.LINE_LIST,
-            C: DASHBOARD_WIDGET_NAME.MAP,
-            D: DASHBOARD_WIDGET_NAME.EPI_CURVE,
+            A: DASHBOARD_COMPONENT_NAME.TREE,
+            B: DASHBOARD_COMPONENT_NAME.LINE_LIST,
+            C: DASHBOARD_COMPONENT_NAME.MAP,
+            D: DASHBOARD_COMPONENT_NAME.EPI_CURVE,
           },
           2: {
-            A: DASHBOARD_WIDGET_NAME.TREE,
-            B: DASHBOARD_WIDGET_NAME.LINE_LIST,
-            C: DASHBOARD_WIDGET_NAME.MAP,
-            D: DASHBOARD_WIDGET_NAME.EPI_CURVE,
-            E: DASHBOARD_WIDGET_NAME.HISTOGRAM,
+            A: DASHBOARD_COMPONENT_NAME.TREE,
+            B: DASHBOARD_COMPONENT_NAME.LINE_LIST,
+            C: DASHBOARD_COMPONENT_NAME.MAP,
+            D: DASHBOARD_COMPONENT_NAME.EPI_CURVE,
+            E: DASHBOARD_COMPONENT_NAME.HISTOGRAM,
           },
           3: {
-            A: DASHBOARD_WIDGET_NAME.TREE,
-            B: DASHBOARD_WIDGET_NAME.LINE_LIST,
+            A: DASHBOARD_COMPONENT_NAME.TREE,
+            B: DASHBOARD_COMPONENT_NAME.LINE_LIST,
           },
           4: {
-            A: DASHBOARD_WIDGET_NAME.LINE_LIST,
-            B: DASHBOARD_WIDGET_NAME.EPI_CURVE,
+            A: DASHBOARD_COMPONENT_NAME.LINE_LIST,
+            B: DASHBOARD_COMPONENT_NAME.EPI_CURVE,
           },
           5: {
-            A: DASHBOARD_WIDGET_NAME.LINE_LIST,
-            B: DASHBOARD_WIDGET_NAME.EPI_CURVE,
-            C: DASHBOARD_WIDGET_NAME.MAP,
+            A: DASHBOARD_COMPONENT_NAME.LINE_LIST,
+            B: DASHBOARD_COMPONENT_NAME.EPI_CURVE,
+            C: DASHBOARD_COMPONENT_NAME.MAP,
           },
           6: {
-            A: DASHBOARD_WIDGET_NAME.LINE_LIST,
-            B: DASHBOARD_WIDGET_NAME.EPI_CURVE,
-            C: DASHBOARD_WIDGET_NAME.MAP,
+            A: DASHBOARD_COMPONENT_NAME.LINE_LIST,
+            B: DASHBOARD_COMPONENT_NAME.EPI_CURVE,
+            C: DASHBOARD_COMPONENT_NAME.MAP,
           },
         },
-        DOWNLOAD_SECTION_ORDER: [DASHBOARD_WIDGET_NAME.LINE_LIST, DASHBOARD_WIDGET_NAME.TREE, DASHBOARD_WIDGET_NAME.EPI_CURVE, DASHBOARD_WIDGET_NAME.MAP, DASHBOARD_WIDGET_NAME.HISTOGRAM],
+        DOWNLOAD_SECTION_ORDER: [DASHBOARD_COMPONENT_NAME.LINE_LIST, DASHBOARD_COMPONENT_NAME.TREE, DASHBOARD_COMPONENT_NAME.EPI_CURVE, DASHBOARD_COMPONENT_NAME.MAP, DASHBOARD_COMPONENT_NAME.HISTOGRAM],
         MIN_PANEL_HEIGHT: 30,
         MIN_PANEL_WIDTH: 30,
         WIDGETS: {
-          [DASHBOARD_WIDGET_NAME.EPI_CURVE]: {
+          [DASHBOARD_COMPONENT_NAME.EPI_CURVE]: {
             component: EpiCurveWidget,
             configDefaultValues: {
               isIncludeMissingValuesInAreaChartEnabled: false,
@@ -209,7 +209,7 @@ export class CaseDbStandardConfigUtil {
             } satisfies EpiCurveWidgetData,
             widgetLabel: t`Epi Curve`,
           },
-          [DASHBOARD_WIDGET_NAME.HISTOGRAM]: {
+          [DASHBOARD_COMPONENT_NAME.HISTOGRAM]: {
             component: HistogramWidget,
             dataDefaultValues: {
               colAId: null,
@@ -217,14 +217,14 @@ export class CaseDbStandardConfigUtil {
             } satisfies HistogramWidgetData,
             widgetLabel: t`Histogram`,
           },
-          [DASHBOARD_WIDGET_NAME.LINE_LIST]: {
+          [DASHBOARD_COMPONENT_NAME.LINE_LIST]: {
             component: LineListWidget,
             dataDefaultValues: {
               visibleItemItemIndex: 0,
             } satisfies LineListWidgetData,
             widgetLabel: t`Line List`,
           },
-          [DASHBOARD_WIDGET_NAME.MAP]: {
+          [DASHBOARD_COMPONENT_NAME.MAP]: {
             component: MapWidget,
             dataDefaultValues: {
               columnId: null,
@@ -232,7 +232,7 @@ export class CaseDbStandardConfigUtil {
             } satisfies MapWidgetData,
             widgetLabel: t`Map`,
           },
-          [DASHBOARD_WIDGET_NAME.TREE]: {
+          [DASHBOARD_COMPONENT_NAME.TREE]: {
             component: TreeWidget,
             configDefaultValues: {
               isShowDistancesEnabled: true,
@@ -253,7 +253,7 @@ export class CaseDbStandardConfigUtil {
             constraints: [{
               require_adjacent_direct_sibling: {
                 direction: WIDGET_CONSTRAINT_CARDINAL_DIRECTION.EAST,
-                widgetName: DASHBOARD_WIDGET_NAME.LINE_LIST,
+                widgetName: DASHBOARD_COMPONENT_NAME.LINE_LIST,
               },
             }],
             dataDefaultValues: {
