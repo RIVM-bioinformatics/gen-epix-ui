@@ -20,7 +20,7 @@ import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
 import type { Stratification } from '../../../models/stratification';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 export interface EpiCurveBarChartProps {
   chartRef: Ref<EChartsReact>;
@@ -54,7 +54,7 @@ export const EpiCurveBarChart = ({
 
   useEffect(() => {
     const unsubscribe = dashboardContext.highlightSubject.subscribe((highlighting) => {
-      if (highlighting.origin === DASHBOARD_WIDGET_NAME.EPI_CURVE) {
+      if (highlighting.origin === DASHBOARD_COMPONENT_NAME.EPI_CURVE) {
         return;
       }
 

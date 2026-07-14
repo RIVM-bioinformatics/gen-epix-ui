@@ -34,7 +34,7 @@ import type {
 } from '../../../models/tree';
 import { TreeUtil } from '../../../utils/TreeUtil';
 import type { CaseDbConfig } from '../../../models/config';
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 // NOTE: this component has the Component suffix in order to prevent a name collision with the PhylogeneticTree model in the api package.
 
@@ -518,7 +518,7 @@ export const PhylogeneticTreeComponent = ({
       if (effectiveHighlightingSubject.data?.caseIds?.length) {
         effectiveHighlightingSubject.next({
           caseIds: [],
-          origin: DASHBOARD_WIDGET_NAME.TREE,
+          origin: DASHBOARD_COMPONENT_NAME.TREE,
         });
       }
     };
@@ -569,7 +569,7 @@ export const PhylogeneticTreeComponent = ({
         treeCanvas.style.cursor = 'pointer';
         effectiveHighlightingSubject.next({
           caseIds: pathProperties.subTreeLeaveNames,
-          origin: DASHBOARD_WIDGET_NAME.TREE,
+          origin: DASHBOARD_COMPONENT_NAME.TREE,
         });
       } else {
         treeCanvas.style.cursor = 'default';

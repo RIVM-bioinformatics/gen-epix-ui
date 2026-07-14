@@ -77,6 +77,7 @@ export type FindSimilarCasesResult = {
 export type Highlighting = {
   caseIds: string[];
   origin: string;
+  scrollIntoView?: boolean;
 };
 
 export type LineListRangeSubjectValue = {

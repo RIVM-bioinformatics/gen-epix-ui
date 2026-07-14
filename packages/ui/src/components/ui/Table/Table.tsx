@@ -99,6 +99,7 @@ export type TableProps<TRowData, TDataContext = null> = {
 };
 
 export interface TableRef {
+  scrollToIndex: (index: number) => void;
   setVerticalScrollPosition: (position: number) => void;
 }
 
@@ -706,7 +707,12 @@ export const Table = <TRowData, TDataContext = null>({
     scrollerElement.scrollTop = position;
   }, [getScrollerElement]);
 
+  const scrollToIndex = useCallback((index: number) => {
+    tableRef.current.scrollToIndex(index);
+  }, []);
+
   useImperativeHandle(ref, () => ({
+    scrollToIndex,
     setVerticalScrollPosition,
   }));
 

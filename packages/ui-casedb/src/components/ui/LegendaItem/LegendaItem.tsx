@@ -34,7 +34,7 @@ import {
 } from '../../../models/stratification';
 import { ContextMenu } from '../ContextMenu';
 import type { ContextMenuConfigWithAnchor } from '../ContextMenu';
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 
 export type LegendaItemProps = {
@@ -85,14 +85,14 @@ export const LegendaItem = ({ children, item, tooltip, tooltipProps }: LegendaIt
   const onMouseOver = useCallback(() => {
     dashboardContext.highlight({
       caseIds: Object.entries(stratification?.caseIdColors).filter(([_itemId, itemColor]) => itemColor === item.color).map(([itemId]) => itemId),
-      origin: DASHBOARD_WIDGET_NAME.LEGENDA,
+      origin: DASHBOARD_COMPONENT_NAME.LEGENDA,
     });
   }, [item.color, stratification, dashboardContext]);
 
   const onMouseLeave = useCallback(() => {
     dashboardContext.highlight({
       caseIds: [],
-      origin: DASHBOARD_WIDGET_NAME.LEGENDA,
+      origin: DASHBOARD_COMPONENT_NAME.LEGENDA,
     });
   }, [dashboardContext]);
 

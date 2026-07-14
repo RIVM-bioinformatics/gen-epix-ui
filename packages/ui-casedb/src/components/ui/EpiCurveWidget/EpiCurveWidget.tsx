@@ -64,7 +64,7 @@ import { EventBusService } from '../../../classes/services/EventBusService';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import type {
@@ -99,11 +99,11 @@ export const EpiCurveWidget = () => {
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
   const updateWidgetData = useStore(dashboardStore, (state) => state.updateWidgetData);
-  const epiCurveWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<EpiCurveWidgetData>(DASHBOARD_WIDGET_NAME.EPI_CURVE));
+  const epiCurveWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<EpiCurveWidgetData>(DASHBOARD_COMPONENT_NAME.EPI_CURVE));
   const setFilterValue = useStore(dashboardStore, (state) => state.setFilterValue);
   const filterDimensions = useStore(dashboardStore, (state) => state.filterDimensions);
   const timeDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [CaseDbDimType.TIME]), [completeCaseType]);
-  const isIncludeMissingValuesInAreaChartEnabled = useStore(userProfileStore, (state) => (state.dashboardWidgetSettings[DASHBOARD_WIDGET_NAME.EPI_CURVE] as DashboardEpiCurveSettings).isIncludeMissingValuesInAreaChartEnabled);
+  const isIncludeMissingValuesInAreaChartEnabled = useStore(userProfileStore, (state) => (state.dashboardWidgetSettings[DASHBOARD_COMPONENT_NAME.EPI_CURVE] as DashboardEpiCurveSettings).isIncludeMissingValuesInAreaChartEnabled);
   const [focussedDate, setFocussedDate] = useState<string>(null);
   const [col, setCol] = useState<CaseDbCol>(null);
   const colLabel = col?.label ?? '';
@@ -173,7 +173,7 @@ export const EpiCurveWidget = () => {
         menu.items.push({
           active: !!(c.id === col?.id),
           callback: () => {
-            updateWidgetData<EpiCurveWidgetData>(DASHBOARD_WIDGET_NAME.EPI_CURVE, { columnId: c.id });
+            updateWidgetData<EpiCurveWidgetData>(DASHBOARD_COMPONENT_NAME.EPI_CURVE, { columnId: c.id });
             setCol(c);
           },
           label: c.label,
@@ -234,7 +234,7 @@ export const EpiCurveWidget = () => {
   const onChartCaseIdsChange = useCallback((caseIds: string[]) => {
     dashboardContext.highlight({
       caseIds,
-      origin: DASHBOARD_WIDGET_NAME.EPI_CURVE,
+      origin: DASHBOARD_COMPONENT_NAME.EPI_CURVE,
     });
   }, [dashboardContext]);
 
@@ -342,7 +342,7 @@ export const EpiCurveWidget = () => {
             label: t`Save as JPEG`,
           },
         ],
-        zone: DASHBOARD_WIDGET_NAME.EPI_CURVE,
+        zone: DASHBOARD_COMPONENT_NAME.EPI_CURVE,
         zoneLabel: t`Epi curve`,
       });
     };
@@ -352,7 +352,7 @@ export const EpiCurveWidget = () => {
     return () => {
       eventBusManager.emit('onDownloadOptionsChanged', {
         items: null,
-        zone: DASHBOARD_WIDGET_NAME.EPI_CURVE,
+        zone: DASHBOARD_COMPONENT_NAME.EPI_CURVE,
         zoneLabel: t`Epi curve`,
       });
       eventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
@@ -366,7 +366,7 @@ export const EpiCurveWidget = () => {
       primaryMenu={primaryMenu}
       title={titleMenu}
       warningMessage={shouldShowWidget && epiCurveCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
-      widgetName={DASHBOARD_WIDGET_NAME.EPI_CURVE}
+      widgetName={DASHBOARD_COMPONENT_NAME.EPI_CURVE}
     >
       {!shouldShowWidget && (
         <WidgetUnavailable

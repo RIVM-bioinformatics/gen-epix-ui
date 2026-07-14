@@ -70,7 +70,7 @@ import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_WIDGET_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import type { MapWidgetData } from '../../../models/dashboard';
 
@@ -107,7 +107,7 @@ export const MapWidget = () => {
   const isDataLoading = useStore(dashboardStore, (state) => state.isDataLoading);
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
   const updateWidgetData = useStore(dashboardStore, (state) => state.updateWidgetData);
-  const mapWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<MapWidgetData>(DASHBOARD_WIDGET_NAME.MAP));
+  const mapWidgetData = useStore(dashboardStore, (state) => state.getWidgetData<MapWidgetData>(DASHBOARD_COMPONENT_NAME.MAP));
   const setFilterValue = useStore(dashboardStore, (state) => state.setFilterValue);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
 
@@ -248,14 +248,14 @@ export const MapWidget = () => {
       mouseout: () => {
         dashboardContext.highlight({
           caseIds: [],
-          origin: DASHBOARD_WIDGET_NAME.MAP,
+          origin: DASHBOARD_COMPONENT_NAME.MAP,
         });
       },
       mouseover: (event: unknown) => {
         try {
           dashboardContext.highlight({
             caseIds: (event as GenEpixEchartsEvent).data.genEpixData.caseIds,
-            origin: DASHBOARD_WIDGET_NAME.MAP,
+            origin: DASHBOARD_COMPONENT_NAME.MAP,
           });
         } catch (_error) {
           // ignore
@@ -335,7 +335,7 @@ export const MapWidget = () => {
         menu.items.push({
           active: !!(c.id === col?.id),
           callback: () => {
-            updateWidgetData<MapWidgetData>(DASHBOARD_WIDGET_NAME.MAP, { columnId: c.id });
+            updateWidgetData<MapWidgetData>(DASHBOARD_COMPONENT_NAME.MAP, { columnId: c.id });
             setCol(c);
           },
           label: c.label,
@@ -391,7 +391,7 @@ export const MapWidget = () => {
             label: t`Save as JPEG`,
           },
         ],
-        zone: DASHBOARD_WIDGET_NAME.MAP,
+        zone: DASHBOARD_COMPONENT_NAME.MAP,
         zoneLabel: t`Map`,
       });
     };
@@ -403,7 +403,7 @@ export const MapWidget = () => {
     return () => {
       EventBusService.getInstance().emit('onDownloadOptionsChanged', {
         items: null,
-        zone: DASHBOARD_WIDGET_NAME.MAP,
+        zone: DASHBOARD_COMPONENT_NAME.MAP,
         zoneLabel: t`Map`,
       });
       eventBusService.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
@@ -416,7 +416,7 @@ export const MapWidget = () => {
       isLoading={shouldShowLoading}
       title={titleMenu}
       warningMessage={shouldShowMap && mapCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
-      widgetName={DASHBOARD_WIDGET_NAME.MAP}
+      widgetName={DASHBOARD_COMPONENT_NAME.MAP}
     >
       <Box
         ref={containerRef}
