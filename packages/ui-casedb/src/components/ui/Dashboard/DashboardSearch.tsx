@@ -8,6 +8,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import TuneIcon from '@mui/icons-material/Tune';
 import CloseIcon from '@mui/icons-material/Close';
 import type {
   ChangeEvent,
@@ -30,15 +31,35 @@ import { CaseUtil } from '../../../utils/CaseUtil';
 import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 import { DashboardContext } from './context/DashboardContext';
+import type { DashboardSearchMode } from './DashboardSearchSettings';
+import { DashboardSearchSettings } from './DashboardSearchSettings';
 
 type FuseData = {
   [key: string]: string;
   id: string;
 };
 
+const getExtendedSearchText = (searchText: string, searchMode: DashboardSearchMode) => {
+  switch (searchMode) {
+    case 'exact-match':
+      return `=${searchText}`;
+    case 'fuzzy-match':
+      return searchText;
+    case 'include-match':
+      return `'${searchText}`;
+    case 'prefix-exact-match':
+      return `^${searchText}`;
+    case 'suffix-exact-match':
+      return `${searchText}$`;
+    default:
+      return `'${searchText}`;
+  }
+};
+
 export const DashboardSearch = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
+  const settingsButtonRef = useRef<HTMLButtonElement>(null);
   const shouldRestoreSearchButtonFocusRef = useRef(false);
   const arrowUpButtonRef = useRef<HTMLButtonElement>(null);
   const arrowDownButtonRef = useRef<HTMLButtonElement>(null);
@@ -53,6 +74,8 @@ export const DashboardSearch = () => {
   const [fuseResults, setFuseResults] = useState<FuseResult<FuseData>[]>([]);
   const [isActive, setIsActive] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
+  const [searchMode, setSearchMode] = useState<DashboardSearchMode>('include-match');
+  const [settingsAnchorEl, setSettingsAnchorEl] = useState<HTMLElement | null>(null);
   const dashboardContext = use(DashboardContext);
   let searchResultStatusText: null | string = null;
   if (searchText) {
@@ -111,7 +134,7 @@ export const DashboardSearch = () => {
         'id',
         ...Object.keys(completeCaseType.cols).map(x => [`${x}-raw`, `${x}-full`, `${x}-long`, `${x}-short`]).flat(),
       ],
-      threshold: 0.5,
+      threshold: 0.3,
       useExtendedSearch: true,
     });
   }, [completeCaseType, sortedData]);
@@ -154,11 +177,11 @@ export const DashboardSearch = () => {
     if (!fuse) {
       return;
     }
-    const extendedSearchText = `'${searchText}`;
+    const extendedSearchText = getExtendedSearchText(searchText, searchMode);
     const results = fuse.search(extendedSearchText).sort((a, b) => a.refIndex - b.refIndex);
     setFuseResults(results);
     setHighlightedIndex(-1);
-  }, [dashboardContext, fuse, searchText]);
+  }, [dashboardContext, fuse, searchMode, searchText]);
 
   const onSearchButtonClick = useCallback(() => {
     setIsActive(true);
@@ -265,11 +288,29 @@ export const DashboardSearch = () => {
     }
   }, []);
 
+  const onSettingsButtonClick = useCallback(() => {
+    setSettingsAnchorEl(settingsButtonRef.current);
+  }, []);
+
+  const onSettingsClose = useCallback(() => {
+    setSettingsAnchorEl(null);
+  }, []);
+
+  const onSettingsEscapeKeyDown = useCallback(() => {
+    setSettingsAnchorEl(null);
+    settingsButtonRef.current?.focus();
+  }, []);
+
+  const onChangeSearchMode = useCallback((nextSearchMode: DashboardSearchMode) => {
+    setSearchMode(nextSearchMode);
+    inputRef.current?.focus();
+  }, []);
+
   return (
     <Box
       sx={{
         height: theme.spacing(4),
-        maxWidth: theme.spacing(50),
+        maxWidth: theme.spacing(60),
         overflow: 'hidden',
         width: 'calc(100% / 2)',
       }}
@@ -311,6 +352,23 @@ export const DashboardSearch = () => {
                   <KeyboardArrowDownIcon />
                 </IconButton>
                 <IconButton
+                  aria-label={t`Open settings`}
+                  edge={'end'}
+                  onClick={onSettingsButtonClick}
+                  onKeyDown={onGenericKeyDown}
+                  ref={settingsButtonRef}
+                >
+                  <TuneIcon />
+                </IconButton>
+                <DashboardSearchSettings
+                  anchorEl={settingsAnchorEl}
+                  onChange={onChangeSearchMode}
+                  onClose={onSettingsClose}
+                  onEscapeKeyDown={onSettingsEscapeKeyDown}
+                  open={Boolean(settingsAnchorEl)}
+                  searchMode={searchMode}
+                />
+                <IconButton
                   aria-label={t`Close search`}
                   edge={'end'}
                   onClick={onCloseButtonClick}
@@ -332,6 +390,9 @@ export const DashboardSearch = () => {
               input: {
                 'aria-label': t`Search listed cases`,
                 sx: {
+                  '&::-webkit-search-cancel-button': {
+                    display: 'none',
+                  },
                   height: '32px',
                   outline: 'none !important',
                   paddingBottom: '0 !important',
@@ -340,6 +401,7 @@ export const DashboardSearch = () => {
               },
             }}
             sx={{
+              backgroundColor: theme.palette.background.paper,
               height: '32px',
             }}
             type={'search'}

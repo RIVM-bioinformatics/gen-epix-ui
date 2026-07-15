@@ -184,6 +184,11 @@ export default defineConfig({
             'src/**/*.test.tsx',
           ],
           name: 'browser',
+          server: {
+            deps: {
+              inline: ['@gen-epix/ui', 'vitest-browser-react'],
+            },
+          },
           setupFiles: ['./src/test/setup/setup-browser.ts'],
           testTimeout: 30000,
         },
