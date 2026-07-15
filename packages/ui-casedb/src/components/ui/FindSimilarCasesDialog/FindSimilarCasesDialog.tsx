@@ -35,7 +35,6 @@ import {
 } from 'date-fns';
 import type {
   CaseDbCase,
-  CaseDbCaseIdAndDate,
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
@@ -64,12 +63,15 @@ import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { TreeUtil } from '../../../utils/TreeUtil';
-import type { FindSimilarCasesChartDataPoint } from '../../../models/caseDb';
+import type {
+  CaseDbSimilarCaseWithIsOwnCase,
+  FindSimilarCasesChartDataPoint,
+  FindSimilarCasesOrganizationFilter,
+} from '../../../models/caseDb';
 import type { TreeWidgetDataPersistable } from '../../../models/dashboard';
 import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 import { FindSimilarCasesDialogDateRangeChart } from './FindSimilarCasesDialogDateRangeChart';
-
 
 export interface FindSimilarCasesDialogOpenProps {
   allRows: CaseDbCase[];
@@ -83,10 +85,10 @@ export interface FindSimilarCasesDialogProps extends WithDialogRenderProps<FindS
 
 export type FindSimilarCasesDialogRefMethods = WithDialogRefMethods<FindSimilarCasesDialogProps, FindSimilarCasesDialogOpenProps>;
 
-
 type FormFields = {
   dateRange: [string, string] | null;
   maxDistance: number;
+  organizationFilter: FindSimilarCasesOrganizationFilter;
   treeColId: string;
 };
 
@@ -99,7 +101,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   }: FindSimilarCasesDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
-  const formId = useId();
+  const searchFormId = useId();
   const dashboardStore = use(DashboardStoreContext);
   const treeConfiguration = dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE).treeConfiguration;
   const setFindSimilarCasesResults = useStore(dashboardStore, (state) => state.setFindSimilarCasesResults);
@@ -117,6 +119,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
       const sWithIntegerCheck = s.integer(t`Max distance must be an integer`);
       return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || ConfigService.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
     }),
+    organizationFilter: string<FindSimilarCasesOrganizationFilter>().required().oneOf(['all', 'own', 'otherOrganization']),
     treeColId: string().required(),
   }), [t, treeConfigurations]);
 
@@ -135,23 +138,23 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   }, [treeConfigurations]);
 
   const formMethods = useForm<FormFields>({
-    resolver: yupResolver(schema, undefined, { raw: true }) as Resolver<FormFields>,
-    values: {
+    defaultValues: {
       dateRange: null,
       maxDistance: 0,
+      organizationFilter: 'all',
       treeColId: treeConfiguration ? treeConfiguration.col.id : null,
     },
+    resolver: yupResolver(schema, undefined, { raw: true }) as Resolver<FormFields>,
   });
   const { control, handleSubmit } = formMethods;
 
   const formValues = useWatch({ control });
 
-  const formFieldDefinitions = useMemo(() => {
+  const searchFormFieldDefinitions = useMemo(() => {
     const currentTreeConfiguration = treeConfigurations.find(x => x.col.id === formValues.treeColId);
-
     return [
       {
-        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
         label: t`Tree`,
         name: 'treeColId',
         options: treeOptions,
@@ -177,52 +180,85 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
     setFormData({ ...data, dateRange: null });
   }, [formMethods]);
 
+  const onOrganizationFilterChange = useCallback((organizationFilter: FindSimilarCasesOrganizationFilter) => {
+    formMethods.setValue('organizationFilter', organizationFilter);
+  }, [formMethods]);
+
   const query = useQueryMemo({
     enabled: !!formData,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrieveSimilarCases({
+      const retrieveSimilarCasesResponse = await CaseDbCaseApi.getInstance().retrieveSimilarCases({
         case_ids: openProps.selectedRows.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
         genetic_distance_col_id: formData?.treeColId,
         max_distance: formData?.maxDistance,
       }, { signal });
-      return response.data;
+      const retrieveIsOwnCasesResponse = await CaseDbCaseApi.getInstance().retrieveIsOwnCases({
+        case_ids: retrieveSimilarCasesResponse.data.cases.map(x => x.id),
+        case_type_id: openProps.completeCaseType.id,
+      }, { signal });
+
+      return retrieveSimilarCasesResponse.data.cases.map(caseDbCase => {
+        return {
+          ...caseDbCase,
+          is_own_case: retrieveIsOwnCasesResponse.data[caseDbCase.id] || false,
+        } satisfies CaseDbSimilarCaseWithIsOwnCase;
+      });
     },
     queryKey: [QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
-  const chartData = useMemo<FindSimilarCasesChartDataPoint[]>(() => {
+  const organizationFilteredCases = useMemo<CaseDbSimilarCaseWithIsOwnCase[]>(() => {
     if (!query.data) {
       return [];
     }
-    const counts = new Map<string, number>();
-    for (const { case_date } of query.data.cases) {
+    return query.data.filter(c => {
+      switch (formValues.organizationFilter) {
+        case 'all': return true;
+        case 'otherOrganization': return !c.is_own_case;
+        case 'own': return c.is_own_case;
+        default: return true;
+      }
+    });
+  }, [query.data, formValues.organizationFilter]);
+
+  const chartData = useMemo<FindSimilarCasesChartDataPoint[]>(() => {
+    const counts = new Map<string, FindSimilarCasesChartDataPoint>();
+    for (const { case_date, is_own_case } of query.data ?? []) {
       if (case_date) {
-        counts.set(case_date, (counts.get(case_date) ?? 0) + 1);
+        const currentCount = counts.get(case_date) ?? {
+          count: 0,
+          date: case_date,
+          otherOrganizationCaseCount: 0,
+          ownCaseCount: 0,
+        };
+        currentCount.count += 1;
+        if (is_own_case) {
+          currentCount.ownCaseCount += 1;
+        } else {
+          currentCount.otherOrganizationCaseCount += 1;
+        }
+        counts.set(case_date, currentCount);
       }
     }
-    return Array.from(counts.entries())
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([date, count]) => ({ count, date }));
+    return Array.from(counts.values())
+      .sort((a, b) => a.date.localeCompare(b.date));
   }, [query.data]);
 
-  const filteredCases = useMemo<CaseDbCaseIdAndDate[]>(() => {
-    if (!query.data) {
-      return [];
-    }
+  const filteredCases = useMemo<CaseDbSimilarCaseWithIsOwnCase[]>(() => {
     const dateRange = formValues.dateRange;
     if (!dateRange) {
-      return query.data.cases;
+      return organizationFilteredCases;
     }
     const [startDate, endDate] = dateRange;
-    return query.data.cases.filter(c => {
+    return organizationFilteredCases.filter(c => {
       if (!c.case_date) {
         return false;
       }
       const caseDateOnly = format(parseISO(c.case_date), DATE_FORMAT.DATE);
       return caseDateOnly >= startDate && caseDateOnly <= endDate;
     });
-  }, [query.data, formValues.dateRange]);
+  }, [formValues.dateRange, organizationFilteredCases]);
 
   const similarCaseIdsNotInLineListWithDateFilter = useMemo<string[]>(() => {
     const allRowIds = openProps.allRows.map(x => x.id);
@@ -280,7 +316,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
       variant: 'contained',
     });
     onActionsChange(actions);
-  }, [formId, onActionsChange, onAddToLineListButtonClick, onClose, similarCaseIdsNotInLineListWithDateFilter.length, t]);
+  }, [onActionsChange, onAddToLineListButtonClick, onClose, similarCaseIdsNotInLineListWithDateFilter.length, t]);
 
   return (
     <Box>
@@ -295,8 +331,8 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
       </Box>
       <Box>
         <GenericForm<FormFields>
-          formFieldDefinitions={formFieldDefinitions}
-          formId={formId}
+          formFieldDefinitions={searchFormFieldDefinitions}
+          formId={searchFormId}
           formMethods={formMethods}
           onSubmit={handleSubmit(onFormSubmit)}
           schema={schema}
@@ -311,7 +347,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
       >
         <Button
           color={'secondary'}
-          form={formId}
+          form={searchFormId}
           type={'submit'}
           variant={'contained'}
         >
@@ -331,10 +367,10 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
               }}
             >
               <Alert
-                severity={query.data.cases.length > 0 ? 'success' : 'warning'}
+                severity={query.data.length > 0 ? 'success' : 'warning'}
               >
                 <AlertTitle>
-                  {t('Found {{count}} similar cases with a distance of {{distance}}.', { count: query.data.cases.length, distance: formData?.maxDistance })}
+                  {t('Found {{count}} similar cases with a distance of {{distance}}.', { count: query.data.length, distance: formData?.maxDistance })}
                 </AlertTitle>
               </Alert>
             </Box>
@@ -348,6 +384,8 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
                   control={control}
                   data={chartData}
                   name={'dateRange'}
+                  onOrganizationFilterChange={onOrganizationFilterChange}
+                  organizationFilter={formValues.organizationFilter}
                 />
               </Box>
             )}

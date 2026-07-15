@@ -5,6 +5,7 @@ import type {
   CaseDbOrganization,
   CaseDbRegion,
   CaseDbRegionSet,
+  CaseDbSimilarCase,
   CaseDbTreeAlgorithm,
 } from '@gen-epix/api-casedb';
 
@@ -16,6 +17,10 @@ export enum FILTER_TYPE {
   NUMBER = 'NUMBER',
   STRING = 'STRING',
 }
+
+export type CaseDbSimilarCaseWithIsOwnCase = {
+  is_own_case: boolean;
+} & CaseDbSimilarCase;
 
 export type CaseHasCaseSet = { [caseId: string]: boolean };
 
@@ -36,6 +41,7 @@ export type ConceptBoundaryProps = {
   unit: string;
 };
 
+
 export type DataCache = {
   conceptsById: { [id: string]: CaseDbConcept };
   conceptsBySetId: { [id: string]: CaseDbConcept[] };
@@ -51,10 +57,11 @@ export type DataCache = {
   userDataCollectionsById: { [id: string]: CaseDbDataCollection };
 };
 
-
 export type FindSimilarCasesChartDataPoint = {
   count: number;
   date: string;
+  otherOrganizationCaseCount: number;
+  ownCaseCount: number;
 };
 
 export type FindSimilarCasesChartGranularity = 'day' | 'month' | 'quarter' | 'year';
@@ -63,8 +70,12 @@ export type FindSimilarCasesChartInterval = {
   count: number;
   endDate: string;
   label: string;
+  otherOrganizationCaseCount: number;
+  ownCaseCount: number;
   startDate: string;
 };
+
+export type FindSimilarCasesOrganizationFilter = 'all' | 'otherOrganization' | 'own';
 
 export type FindSimilarCasesResult = {
   colId: string;
@@ -80,11 +91,11 @@ export type Highlighting = {
   scrollIntoView?: boolean;
 };
 
+
 export type LineListRangeSubjectValue = {
   endIndex: number;
   startIndex: number;
 };
-
 
 export type LinkedScrollSubjectValue = {
   origin: HTMLElement;

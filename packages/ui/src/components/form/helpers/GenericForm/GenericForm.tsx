@@ -40,8 +40,8 @@ import { NumberField } from '../../fields/NumberField';
 import { DatePicker } from '../../fields/DatePicker';
 import { UploadButton } from '../../fields/UploadButton/UploadButton';
 import { RadioGroup } from '../../fields/RadioGroup';
-import { useIsFormFieldRequiredFromSchema } from '../../../../hooks/useIsFormFieldRequiredFromSchema';
 import { Switch } from '../../fields/Switch';
+import { useIsFormFieldRequiredFromSchema } from '../../../../hooks/useIsFormFieldRequiredFromSchema';
 
 export type GenericFormProps<TFormFields extends FieldValues> = {
   readonly defaultFormValues?: Partial<TFormFields>;
@@ -146,6 +146,14 @@ export const GenericForm = <TFormFields extends FieldValues>({
         return (
           <Select
             {...formFieldDefinition as SelectProps<TFormFields, Path<TFormFields>, false>}
+            disabled={formFieldDefinition.disabled || disableAll}
+            required={isFormFieldRequired(formFieldDefinition.name)}
+          />
+        );
+      case FORM_FIELD_DEFINITION_TYPE.SWITCH:
+        return (
+          <Switch
+            {...formFieldDefinition}
             disabled={formFieldDefinition.disabled || disableAll}
             required={isFormFieldRequired(formFieldDefinition.name)}
           />

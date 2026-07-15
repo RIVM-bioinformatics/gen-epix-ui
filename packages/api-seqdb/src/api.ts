@@ -195,82 +195,82 @@ export interface SeqDbCalculateSeqDistancesResult {
 
 
 export const SeqDbCommandName = {
-    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
-    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
-    LocusSetCrudCommand: 'LocusSetCrudCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
-    AlleleCrudCommand: 'AlleleCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
-    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    ProtocolCrudCommand: 'ProtocolCrudCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
-    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
-    CreateFileCommand: 'CreateFileCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
-    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
-    TaxonCrudCommand: 'TaxonCrudCommand',
-    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
-    LocusCrudCommand: 'LocusCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
-    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    FileCrudCommand: 'FileCrudCommand',
-    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
-    UploadSamplesCommand: 'UploadSamplesCommand',
-    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
     RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
-    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
     CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
     OutageCrudCommand: 'OutageCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    FileCrudCommand: 'FileCrudCommand',
+    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    LocusCrudCommand: 'LocusCrudCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    LocusSetCrudCommand: 'LocusSetCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
     RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
+    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    CreateFileCommand: 'CreateFileCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
+    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
+    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
+    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
+    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
+    UploadSamplesCommand: 'UploadSamplesCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
     OrganizationCrudCommand: 'OrganizationCrudCommand',
     ReadSetCrudCommand: 'ReadSetCrudCommand',
-    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
     UpdateUserCommand: 'UpdateUserCommand',
-    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
-    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
+    TaxonCrudCommand: 'TaxonCrudCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
+    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
+    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    AlleleCrudCommand: 'AlleleCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -1117,7 +1117,7 @@ export type SeqDbQualityControlResult = typeof SeqDbQualityControlResult[keyof t
 
 
 /**
- * A set of sequencing reads, either single-end or paired-end, that is the result of sequencing a sample using a protocol. The reads data itself are not included in this model, but are referenced via either URIs or file links.  The actual reads data need not be referenced on creation of this instance, to allow for deferred upload of the reads data. The is_available property can be used to check whether the reads data have been linked to this instance.    PARENT CLASS DOCUMENTATION   CodeMixin:  Mixin class to add a code field to a model.    HasProtocolMixin: Mixin for models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    QualityMixin:  Mixin class to add quality related fields to a model.
+ * A set of sequencing reads, either single-end or paired-end, that is the result of sequencing a sample using a protocol. The reads data itself are not included in this model, but are referenced via either URIs or file links.  The actual reads data need not be referenced on creation of this instance, to allow for deferred upload of the reads data. The is_available property can be used to check whether the reads data have been linked to this instance.    PARENT CLASS DOCUMENTATION   HasProtocolMixin: Mixin for models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    QualityMixin:  Mixin class to add quality related fields to a model.
  */
 export interface SeqDbReadSet {
     'qc_result'?: SeqDbQualityControlResult;
@@ -1128,10 +1128,6 @@ export interface SeqDbReadSet {
      */
     'protocol_id': string;
     'protocol'?: SeqDbProtocol;
-    /**
-     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
-     */
-    'code'?: string;
     /**
      * The unique identifier for the sample from which these results were obtained. FOREIGN KEY
      */
@@ -1152,11 +1148,12 @@ export interface SeqDbReadSet {
     'fwd_reads_hash'?: string | null;
     'rev_reads_hash'?: string | null;
     'sequencing_run_code'?: string | null;
+    'code'?: string | null;
 }
 
 
 /**
- * A read set intended for upload.    PARENT CLASS DOCUMENTATION   SeqDbReadSet: A set of sequencing reads, either single-end or paired-end, that is the result of sequencing a sample using a protocol. The reads data itself are not included in this model, but are referenced via either URIs or file links.  The actual reads data need not be referenced on creation of this instance, to allow for deferred upload of the reads data. The is_available property can be used to check whether the reads data have been linked to this instance.    PARENT CLASS DOCUMENTATION   CodeMixin:  Mixin class to add a code field to a model.    HasProtocolMixin: Mixin for models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    QualityMixin:  Mixin class to add quality related fields to a model.    IdentifiersMixin:  Mixin that adds identifiers fields and validation. Assumes that the inheriting model also has an \'identifiers\' field.  Additional validation: - All identifiers must have the same identifier type. - All identifiers must have unique values.
+ * A read set intended for upload.    PARENT CLASS DOCUMENTATION   SeqDbReadSet: A set of sequencing reads, either single-end or paired-end, that is the result of sequencing a sample using a protocol. The reads data itself are not included in this model, but are referenced via either URIs or file links.  The actual reads data need not be referenced on creation of this instance, to allow for deferred upload of the reads data. The is_available property can be used to check whether the reads data have been linked to this instance.    PARENT CLASS DOCUMENTATION   HasProtocolMixin: Mixin for models that have an associated SeqDbProtocol. Provides a protocol_id field and a method to retrieve the associated SeqDbProtocol.    QualityMixin:  Mixin class to add quality related fields to a model.    IdentifiersMixin:  Mixin that adds identifiers fields and validation. Assumes that the inheriting model also has an \'identifiers\' field.  Additional validation: - All identifiers must have the same identifier type. - All identifiers must have unique values.
  */
 export interface SeqDbReadSetForUpload {
     'identifiers'?: Array<SeqDbIdentifierForUpload> | null;
@@ -1168,10 +1165,6 @@ export interface SeqDbReadSetForUpload {
      */
     'protocol_id'?: string;
     'protocol'?: SeqDbProtocol;
-    /**
-     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
-     */
-    'code'?: string;
     /**
      * The UUID of the sample that the read set is associated with. If not available, the null ID is put.
      */
@@ -1192,6 +1185,7 @@ export interface SeqDbReadSetForUpload {
     'fwd_reads_hash'?: string | null;
     'rev_reads_hash'?: string | null;
     'sequencing_run_code'?: string | null;
+    'code'?: string | null;
     'protocol_code'?: string | null;
 }
 
@@ -1330,13 +1324,9 @@ export interface SeqDbRetrieveSimilarProfilesRequestBody {
     'max_distance': number;
 }
 /**
- * The original physical sample (specimen) on which all measurements were performed either directly or through some derived samples. Derived samples such as cultures or library preps for sequencing are not modelled.  Descriptive properties of the sample, such as the sampling date, are not modelled explicitly but can be stored in the props attribute as key-value pairs.    PARENT CLASS DOCUMENTATION   CodeMixin:  Mixin class to add a code field to a model.
+ * The original physical sample (specimen) on which all measurements were performed either directly or through some derived samples. Derived samples such as cultures or library preps for sequencing are not modelled.  Descriptive properties of the sample, such as the sampling date, are not modelled explicitly but can be stored in the props attribute as key-value pairs.
  */
 export interface SeqDbSample {
-    /**
-     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
-     */
-    'code'?: string;
     'created_at'?: string | null;
     'modified_at'?: string | null;
     'modified_by'?: string | null;
@@ -1346,6 +1336,7 @@ export interface SeqDbSample {
      */
     'created_in_data_collection_id': string;
     'created_in_data_collection'?: SeqDbDataCollection;
+    'code'?: string | null;
     /**
      * The properties of the sample.
      */
@@ -1520,16 +1511,12 @@ export interface SeqDbSampleUploadResult {
 
 
 /**
- * A DNA sequence, typically representing an assembled genome or a part thereof. A sequence consists of one or more contiguous sequences (contigs).  The actual sequence data need not be provided on creation of this instance, to allow for deferred upload and processing of the sequence data. The is_available property can be used to check whether the sequence data have been processed and added to the sequence as contigs.  A sequence that is available, is also immutable: once created and the contigs have been added, it cannot be deleted or semantically updated. As such, sequence IDs can safely be referenced in other models and outside of the application. The representation of the contigs that make up the sequence may still be updated to e.g. optimize storage or performance, but the actual sequence data will not change.  The sequence hash of the sequence can be computed outside of the application as well,  based on the sorted sequence hashes of the contigs that make up the sequence, thereby providing an easy way to search for existing exactly matching sequences.    PARENT CLASS DOCUMENTATION   CodeMixin:  Mixin class to add a code field to a model.    QualityMixin:  Mixin class to add quality related fields to a model.
+ * A DNA sequence, typically representing an assembled genome or a part thereof. A sequence consists of one or more contiguous sequences (contigs).  The actual sequence data need not be provided on creation of this instance, to allow for deferred upload and processing of the sequence data. The is_available property can be used to check whether the sequence data have been processed and added to the sequence as contigs.  A sequence that is available, is also immutable: once created and the contigs have been added, it cannot be deleted or semantically updated. As such, sequence IDs can safely be referenced in other models and outside of the application. The representation of the contigs that make up the sequence may still be updated to e.g. optimize storage or performance, but the actual sequence data will not change.  The sequence hash of the sequence can be computed outside of the application as well,  based on the sorted sequence hashes of the contigs that make up the sequence, thereby providing an easy way to search for existing exactly matching sequences.    PARENT CLASS DOCUMENTATION   QualityMixin:  Mixin class to add quality related fields to a model.
  */
 export interface SeqDbSeq {
     'qc_result'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
     'qc_report'?: string | null;
-    /**
-     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
-     */
-    'code'?: string;
     /**
      * The unique identifier for the sample from which these results were obtained. FOREIGN KEY
      */
@@ -1559,6 +1546,7 @@ export interface SeqDbSeq {
      * The first 128 bits of the SHA256 hash of the sorted contig seq hashes concatenated together. If the sequence has no contigs, the null UUID is returned.
      */
     'seq_hash'?: string;
+    'code'?: string | null;
 }
 
 
@@ -1743,17 +1731,13 @@ export type SeqDbSeqFileFormat = typeof SeqDbSeqFileFormat[keyof typeof SeqDbSeq
 
 
 /**
- * A sequence intended for upload.    PARENT CLASS DOCUMENTATION   SeqDbSeq: A DNA sequence, typically representing an assembled genome or a part thereof. A sequence consists of one or more contiguous sequences (contigs).  The actual sequence data need not be provided on creation of this instance, to allow for deferred upload and processing of the sequence data. The is_available property can be used to check whether the sequence data have been processed and added to the sequence as contigs.  A sequence that is available, is also immutable: once created and the contigs have been added, it cannot be deleted or semantically updated. As such, sequence IDs can safely be referenced in other models and outside of the application. The representation of the contigs that make up the sequence may still be updated to e.g. optimize storage or performance, but the actual sequence data will not change.  The sequence hash of the sequence can be computed outside of the application as well,  based on the sorted sequence hashes of the contigs that make up the sequence, thereby providing an easy way to search for existing exactly matching sequences.    PARENT CLASS DOCUMENTATION   CodeMixin:  Mixin class to add a code field to a model.    QualityMixin:  Mixin class to add quality related fields to a model.    IdentifiersMixin:  Mixin that adds identifiers fields and validation. Assumes that the inheriting model also has an \'identifiers\' field.  Additional validation: - All identifiers must have the same identifier type. - All identifiers must have unique values.
+ * A sequence intended for upload.    PARENT CLASS DOCUMENTATION   SeqDbSeq: A DNA sequence, typically representing an assembled genome or a part thereof. A sequence consists of one or more contiguous sequences (contigs).  The actual sequence data need not be provided on creation of this instance, to allow for deferred upload and processing of the sequence data. The is_available property can be used to check whether the sequence data have been processed and added to the sequence as contigs.  A sequence that is available, is also immutable: once created and the contigs have been added, it cannot be deleted or semantically updated. As such, sequence IDs can safely be referenced in other models and outside of the application. The representation of the contigs that make up the sequence may still be updated to e.g. optimize storage or performance, but the actual sequence data will not change.  The sequence hash of the sequence can be computed outside of the application as well,  based on the sorted sequence hashes of the contigs that make up the sequence, thereby providing an easy way to search for existing exactly matching sequences.    PARENT CLASS DOCUMENTATION   QualityMixin:  Mixin class to add quality related fields to a model.    IdentifiersMixin:  Mixin that adds identifiers fields and validation. Assumes that the inheriting model also has an \'identifiers\' field.  Additional validation: - All identifiers must have the same identifier type. - All identifiers must have unique values.
  */
 export interface SeqDbSeqForUpload {
     'identifiers'?: Array<SeqDbIdentifierForUpload> | null;
     'qc_result'?: SeqDbQualityControlResult;
     'qc_score'?: number | null;
     'qc_report'?: string | null;
-    /**
-     * A code that should be unique within the context of the application. The code can be used as an alternative identifier for the instance, and can be more human-readable than the UUID.
-     */
-    'code'?: string;
     /**
      * The UUID of the sample that the sequence is associated with. If not available, the null ID is put.
      */
@@ -1786,6 +1770,7 @@ export interface SeqDbSeqForUpload {
      * The first 128 bits of the SHA256 hash of the sorted contig seq hashes concatenated together. If the sequence has no contigs, the null UUID is returned.
      */
     'seq_hash'?: string;
+    'code'?: string | null;
     'protocol_code'?: string | null;
 }
 
@@ -2456,6 +2441,10 @@ export interface SeqDbUploadSamplesRequestBody {
     'calculate_distances'?: boolean;
     'seq_distance_last_modified_at'?: string | null;
     'existing_chunk_size'?: number | null;
+    /**
+     * If True, use numpy-vectorised ALLELE Hamming with an automatic variant gate: numpy_batch for n_new < 200, int32_vocab for n_new >= 200. No effect on non-ALLELE profile types.
+     */
+    'use_numpy_allele_distance'?: boolean;
 }
 
 

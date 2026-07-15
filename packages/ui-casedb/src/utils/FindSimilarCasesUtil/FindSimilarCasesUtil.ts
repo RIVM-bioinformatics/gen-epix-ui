@@ -34,9 +34,13 @@ export class FindSimilarCasesUtil {
     const granularity = FindSimilarCasesUtil.pickGranularity(minDate, maxDate);
 
     const countsMap = new Map<string, number>();
-    for (const { count, date } of data) {
+    const ownCaseCountsMap = new Map<string, number>();
+    const otherOrganizationCaseCountsMap = new Map<string, number>();
+    for (const { count, date, otherOrganizationCaseCount, ownCaseCount } of data) {
       const { label } = FindSimilarCasesUtil.getIntervalBoundsAndLabel(parseISO(date), granularity);
       countsMap.set(label, (countsMap.get(label) ?? 0) + count);
+      ownCaseCountsMap.set(label, (ownCaseCountsMap.get(label) ?? 0) + ownCaseCount);
+      otherOrganizationCaseCountsMap.set(label, (otherOrganizationCaseCountsMap.get(label) ?? 0) + otherOrganizationCaseCount);
     }
 
     const { start: rangeStart } = FindSimilarCasesUtil.getIntervalBoundsAndLabel(minDate, granularity);
@@ -49,6 +53,8 @@ export class FindSimilarCasesUtil {
         count: countsMap.get(label) ?? 0,
         endDate: format(end, DATE_FORMAT.DATE),
         label,
+        otherOrganizationCaseCount: otherOrganizationCaseCountsMap.get(label) ?? 0,
+        ownCaseCount: ownCaseCountsMap.get(label) ?? 0,
         startDate: format(start, DATE_FORMAT.DATE),
       };
     });

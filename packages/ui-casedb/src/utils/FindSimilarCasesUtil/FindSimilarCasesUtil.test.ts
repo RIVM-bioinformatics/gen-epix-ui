@@ -8,7 +8,12 @@ import type { FindSimilarCasesChartDataPoint } from '../../models/caseDb';
 
 import { FindSimilarCasesUtil } from './FindSimilarCasesUtil';
 
-const pt = (date: string, count: number): FindSimilarCasesChartDataPoint => ({ count, date });
+const pt = (date: string, count: number, ownCaseCount = 0): FindSimilarCasesChartDataPoint => ({
+  count,
+  date,
+  otherOrganizationCaseCount: count - ownCaseCount,
+  ownCaseCount,
+});
 
 describe('FindSimilarCasesUtil', () => {
   describe('buildChartIntervals', () => {
@@ -26,6 +31,8 @@ describe('FindSimilarCasesUtil', () => {
           count: 3,
           endDate: '2024-01-15',
           label: '2024-01-15',
+          otherOrganizationCaseCount: 3,
+          ownCaseCount: 0,
           startDate: '2024-01-15',
         });
       });
@@ -53,12 +60,14 @@ describe('FindSimilarCasesUtil', () => {
 
       it('sums counts when multiple data points share the same day', () => {
         const result = FindSimilarCasesUtil.buildChartIntervals([
-          pt('2024-01-01', 2),
+          pt('2024-01-01', 2, 2),
           pt('2024-01-01', 3),
         ]);
 
         expect(result).toHaveLength(1);
         expect(result[0].count).toBe(5);
+        expect(result[0].ownCaseCount).toBe(2);
+        expect(result[0].otherOrganizationCaseCount).toBe(3);
       });
 
       it('sums counts on the same day even when interspersed with other days', () => {

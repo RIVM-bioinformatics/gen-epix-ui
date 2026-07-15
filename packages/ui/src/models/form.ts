@@ -25,6 +25,7 @@ export enum FORM_FIELD_DEFINITION_TYPE {
   RADIO_GROUP = 'RADIO_GROUP',
   RICH_TEXT = 'RICH_TEXT',
   SELECT = 'SELECT',
+  SWITCH = 'SWITCH',
   TEXTFIELD = 'TEXTFIELD',
   TRANSFER_LIST = 'TRANSFER_LIST',
 }
@@ -56,6 +57,7 @@ export type FormFieldDefinition<TFormFields extends FieldValues> =
   FormFieldDefinitionRichText<TFormFields> |
   FormFieldDefinitionSelect<TFormFields> |
   FormFieldDefinitionSelectMultiple<TFormFields> |
+  FormFieldDefinitionSwitch<TFormFields> |
   FormFieldDefinitionTextField<TFormFields> |
   FormFieldDefinitionTransferList<TFormFields>;
 
@@ -72,6 +74,7 @@ export type FormFieldDefinitionRadioGroup<TFormFields extends FieldValues> = { d
 export type FormFieldDefinitionRichText<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT } & FormFieldGrouping & RichTextEditorProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionSelect<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SELECT; multiple?: false } & FormFieldGrouping & SelectProps<TFormFields, Path<TFormFields>, false>;
 export type FormFieldDefinitionSelectMultiple<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SELECT; multiple?: true } & FormFieldGrouping & SelectProps<TFormFields, Path<TFormFields>, true>;
+export type FormFieldDefinitionSwitch<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SWITCH } & FormFieldGrouping & SwitchProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionTextField<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD } & FormFieldGrouping & TextFieldProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionTransferList<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST } & FormFieldGrouping & TransferListProps<TFormFields, Path<TFormFields>>;
 export type FormFieldGrouping = {

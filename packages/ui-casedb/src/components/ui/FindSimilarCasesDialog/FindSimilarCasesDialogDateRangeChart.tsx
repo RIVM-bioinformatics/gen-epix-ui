@@ -15,9 +15,13 @@ import {
 import {
   DataZoomComponent,
   GridComponent,
+  LegendComponent,
   TooltipComponent,
 } from 'echarts/components';
-import { BarChart } from 'echarts/charts';
+import {
+  BarChart,
+  LineChart,
+} from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import EChartsReact from 'echarts-for-react';
 import type {
@@ -26,15 +30,21 @@ import type {
   Path,
 } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   useTheme,
 } from '@mui/material';
+import { ConfigService } from '@gen-epix/ui';
 
 import { FindSimilarCasesUtil } from '../../../utils/FindSimilarCasesUtil';
-import type { FindSimilarCasesChartDataPoint } from '../../../models/caseDb';
+import type {
+  FindSimilarCasesChartDataPoint,
+  FindSimilarCasesOrganizationFilter,
+} from '../../../models/caseDb';
+import type { CaseDbConfig } from '../../../models/config';
 
-registerECharts([BarChart, GridComponent, TooltipComponent, DataZoomComponent, CanvasRenderer]);
+registerECharts([BarChart, LineChart, GridComponent, LegendComponent, TooltipComponent, DataZoomComponent, CanvasRenderer]);
 
 const echartsCore = {
   dispose,
@@ -49,6 +59,8 @@ export interface FindSimilarCasesDialogDateRangeChartProps<
   control: Control<TFieldValues>;
   data: FindSimilarCasesChartDataPoint[];
   name: TName;
+  onOrganizationFilterChange: (organizationFilter: FindSimilarCasesOrganizationFilter) => void;
+  organizationFilter: FindSimilarCasesOrganizationFilter;
 }
 
 export const FindSimilarCasesDialogDateRangeChart = <
@@ -58,10 +70,15 @@ export const FindSimilarCasesDialogDateRangeChart = <
   control,
   data,
   name,
+  onOrganizationFilterChange,
+  organizationFilter,
 }: FindSimilarCasesDialogDateRangeChartProps<TFieldValues, TName>): ReactElement => {
+  const { t } = useTranslation();
   const intervals = useMemo(() => FindSimilarCasesUtil.buildChartIntervals(data), [data]);
   const theme = useTheme();
   const [tooltipState, setTooltipState] = useState<{ content: string; x: number; y: number } | null>(null);
+  const ownCasesLabel = t`Own cases`;
+  const otherOrganizationCasesLabel = t`Cases from other organizations`;
 
   const intervalsRef = useRef(intervals);
   useEffect(() => {
@@ -102,35 +119,76 @@ export const FindSimilarCasesDialogDateRangeChart = <
     onChangeRef.current?.(null);
   }, []);
 
-  const option = useMemo(() => ({
-    color: [theme.palette.primary.main],
-    dataZoom: [{
-      borderColor: theme.palette.primary.light,
-      bottom: 0,
-      fillerColor: `${theme.palette.primary.main}33`,
-      handleStyle: { borderColor: theme.palette.primary.main, color: theme.palette.primary.main },
-      height: 50,
-      left: 80,
-      right: 80,
-      selectedDataBackground: { areaStyle: { color: theme.palette.primary.light }, lineStyle: { color: theme.palette.primary.main } },
-      type: 'slider',
-    }],
-    grid: { bottom: 110, left: 80, right: 80, top: 0 },
-    series: [{ data: intervals.map(i => i.count), type: 'bar' }],
-    tooltip: { show: false },
-    xAxis: { axisLabel: {
-      height: 100,
-      rotate: 45,
-    }, axisTick: {
-      alignWithLabel: true,
-      show: true,
-    }, data: intervals.map(i => i.label),
-    type: 'category' },
-    yAxis: { max: Math.max(...intervals.map(i => i.count), 1), minInterval: 1, type: 'value' },
-  }), [intervals, theme]);
+  const option = useMemo(() => {
+    const { BASE_COLORS } = ConfigService.getInstance<CaseDbConfig>().config.epi.STRATIFICATION;
+    return {
+      color: BASE_COLORS,
+      dataZoom: [{
+        borderColor: theme.palette.primary.light,
+        bottom: 0,
+        fillerColor: `${theme.palette.primary.main}33`,
+        handleStyle: { borderColor: theme.palette.primary.main, color: theme.palette.primary.main },
+        height: 50,
+        left: 80,
+        right: 80,
+        selectedDataBackground: { areaStyle: { color: theme.palette.primary.light }, lineStyle: { color: theme.palette.primary.main } },
+        type: 'slider',
+      }],
+      grid: { bottom: 110, left: 80, right: 80, top: 40 },
+      legend: {
+        data: [ownCasesLabel, otherOrganizationCasesLabel],
+        selected: {
+          [otherOrganizationCasesLabel]: organizationFilter !== 'own',
+          [ownCasesLabel]: organizationFilter !== 'otherOrganization',
+        },
+        top: 0,
+      },
+      series: [
+        {
+          data: intervals.map(i => i.count),
+          lineStyle: { opacity: 0 },
+          name: 'dataZoomShadow',
+          silent: true,
+          symbol: 'none',
+          type: 'line',
+        },
+        { data: intervals.map(i => i.ownCaseCount), itemStyle: { color: BASE_COLORS[0] }, name: ownCasesLabel, stack: 'similarCases', type: 'bar' },
+        { data: intervals.map(i => i.otherOrganizationCaseCount), itemStyle: { color: BASE_COLORS[1] }, name: otherOrganizationCasesLabel, stack: 'similarCases', type: 'bar' },
+      ],
+      tooltip: { show: false },
+      xAxis: { axisLabel: {
+        height: 100,
+        rotate: 45,
+      }, axisTick: {
+        alignWithLabel: true,
+        show: true,
+      }, data: intervals.map(i => i.label),
+      type: 'category' },
+      yAxis: { max: Math.max(...intervals.map(i => i.count), 1), minInterval: 1, type: 'value' },
+    };
+  }, [intervals, organizationFilter, otherOrganizationCasesLabel, ownCasesLabel, theme]);
+
+  const onLegendSelectChanged = useCallback((params: unknown) => {
+    const { selected } = params as { selected?: Record<string, boolean> };
+    if (!selected) {
+      return;
+    }
+    const ownCasesSelected = selected[ownCasesLabel] ?? true;
+    const otherOrganizationCasesSelected = selected[otherOrganizationCasesLabel] ?? true;
+    if (ownCasesSelected && !otherOrganizationCasesSelected) {
+      onOrganizationFilterChange('own');
+      return;
+    }
+    if (!ownCasesSelected && otherOrganizationCasesSelected) {
+      onOrganizationFilterChange('otherOrganization');
+      return;
+    }
+    onOrganizationFilterChange('all');
+  }, [onOrganizationFilterChange, otherOrganizationCasesLabel, ownCasesLabel]);
 
   const onEvents = useMemo(() => ({
     datazoom: onDataZoom,
+    legendselectchanged: onLegendSelectChanged,
     mouseout: () => {
       setTooltipState(null);
     },
@@ -141,7 +199,7 @@ export const FindSimilarCasesDialogDateRangeChart = <
         setTooltipState({ content: `${e.name} (n=${e.value ?? 0})`, x: mouseEvent.clientX + 12, y: mouseEvent.clientY + 12 });
       }
     },
-  }), [onDataZoom]);
+  }), [onDataZoom, onLegendSelectChanged]);
 
   const renderChart = useCallback(({ field: { onChange } }: { field: { onChange: (value: [string, string] | null) => void } }) => {
     onChangeRef.current = onChange;
