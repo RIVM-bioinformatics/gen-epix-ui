@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v2.6.0...api-casedb-v2.7.0) (2026-07-16)
+
+
+### Features
+
+* add own- other organization cases filter to find similar cases ([49c7436](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/49c7436a28b02389fa51541f13b97ecbd9f310f7))
+
 ## [2.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v2.5.0...api-casedb-v2.6.0) (2026-07-03)
 
 

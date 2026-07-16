@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.10.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.9.0...ui-casedb-v2.10.0) (2026-07-16)
+
+
+### Features
+
+* add own- other organization cases filter to find similar cases ([49c7436](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/49c7436a28b02389fa51541f13b97ecbd9f310f7))
+* add search box in dashboard ([28c7dd5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/28c7dd58e38daad68a54c845d108c0e4acbcbe6b))
+* add settings to search bar ([382df6d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/382df6daaf4cd0011107ac4aa901440db9dc3c06))
+* group by similar cases result ([720cbef](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/720cbef8f3caae7d0323170470151eab4f35b3e5))
+* histogram widget ([#156](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/156)) ([459f45f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/459f45fc07499e591281558313db2a558372d987))
+* improve Histogram with highlighting and and selection/filter context menu ([1e71ed9](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1e71ed92707b0851cd17d11741bceb44acfd4e34))
+* show -is own case- in line list ([83db7f4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/83db7f4a51b1f36fc79fe2b1bfdc7db5e5acd80b))
+
+
+### Bug Fixes
+
+* add nonce support to histogram ([e75bd31](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e75bd31e4d5d7f59bb2310bc2de32b5e84be4395))
+* fix highlighting in HistogramWidget and EpiCurveWidget ([b9e27b4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b9e27b409d224aa2affb84d248bbee226d5f6c7a))
+* remove usage of deprecated triggerLineEvent in echarts ([b7b0c78](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b7b0c78352424c5fe5dd8043c9ed8a7fa2da287b))
+
 ## [2.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.8.0...ui-casedb-v2.9.0) (2026-07-03)
 
 
