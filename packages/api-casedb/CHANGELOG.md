@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v2.7.0...api-casedb-v2.8.0) (2026-07-16)
+
+
+### Features
+
+* force coordinated package release ([4801965](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4801965482eadf6119651075c4d4adda8633333f))
+
 ## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v2.6.0...api-casedb-v2.7.0) (2026-07-16)
 
 
