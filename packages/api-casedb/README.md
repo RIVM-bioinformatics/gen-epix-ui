@@ -1,5 +1,7 @@
 # @gen-epix/api-casedb [beta]
 
+<!-- release-please: force coordinated package release -->
+
 ![gen-epix-logo](https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/gen-epix_logo_full.svg)
 
 Genomic Epidemiology platform for disease X
