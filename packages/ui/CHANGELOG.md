@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.8.0...ui-v2.9.0) (2026-07-16)
+
+
+### Features
+
+* add own- other organization cases filter to find similar cases ([49c7436](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/49c7436a28b02389fa51541f13b97ecbd9f310f7))
+* add search box in dashboard ([28c7dd5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/28c7dd58e38daad68a54c845d108c0e4acbcbe6b))
+* histogram widget ([#156](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/156)) ([459f45f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/459f45fc07499e591281558313db2a558372d987))
+
 ## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.7.0...ui-v2.8.0) (2026-07-03)
 
 
