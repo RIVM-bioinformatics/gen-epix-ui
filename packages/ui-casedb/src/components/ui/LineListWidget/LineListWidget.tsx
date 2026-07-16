@@ -1,6 +1,5 @@
 import {
   Box,
-  CircularProgress,
   Link,
   ListItemIcon,
   ListItemText,
@@ -21,6 +20,7 @@ import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
 import type { ListRange } from 'react-virtuoso';
 import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import type {
   CaseDbCase,
@@ -50,7 +50,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { LegendaItem } from '../LegendaItem';
 import { EventBusService } from '../../../classes/services/EventBusService';
-import { LineListCaseSetMembersService } from '../../../classes/services/LineListCaseSetMembersService';
+import { LineListCaseSetMembersService } from '../../../classes/services/LineListService/LineListCaseSetMembersService';
 import type { LineListWidgetData } from '../../../models/dashboard';
 import type {
   Stratification,
@@ -67,7 +67,10 @@ import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
 import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
+import { LineListIsOwnCaseService } from '../../../classes/services/LineListService/LineListIsOwnCaseService';
 
+import { LineListWidgetIsInEventCell } from './LineListWidgetIsInEventCell';
+import { LineListWidgetIsOwnCaseCell } from './LineListWidgetIsOwnCaseCell';
 import { LineListWidgetTitle } from './LineListWidgetTitle';
 import { LineListWidgetPrimaryMenu } from './LineListWidgetPrimaryMenu';
 import { LineListWidgetSecondaryMenu } from './LineListWidgetSecondaryMenu';
@@ -207,12 +210,12 @@ export const LineListWidget = () => {
     );
   }, [onGeneticSequenceCellClick]);
 
-  const renderEventsHeader = useCallback(() => {
+  const renderIsInEventHeader = useCallback(() => {
     return (
       <Tooltip
         aria-hidden={false}
         arrow
-        title={t('Indicates if case is in an event')}
+        title={t`Indicates if the case is in an event.`}
       >
         <CollectionIcon
           fontSize={'small'}
@@ -228,46 +231,53 @@ export const LineListWidget = () => {
     );
   }, [t, theme]);
 
-  const renderEventsCell = useCallback(({ row }: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
-    let queryResult;
-    const rowId = `row_${row.id}`;
+  const renderIsInEventCell = useCallback(({ row }: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
+    return <LineListWidgetIsInEventCell row={row} />;
+  }, []);
 
-    LineListCaseSetMembersService.getInstance().query(row.id).then(result => {
-      queryResult = result;
-      const element = document.getElementById(rowId);
-      if (element) {
-        element.innerHTML = queryResult ? '✓' : '';
-      }
-    }).catch(() => {
-      const element = document.getElementById(rowId);
-      if (element) {
-        element.innerHTML = '?';
-      }
-    });
+  const renderIsOwnCaseHeader = useCallback(() => {
     return (
-      <Box id={rowId}>
-        <CircularProgress
-          size={16}
-          sx={{
-            marginTop: '4px',
+      <Tooltip
+        aria-hidden={false}
+        arrow
+        title={t`Indicates if the case is owned by the current user (the case is in a private data collection that is owned by the user's organization).`}
+      >
+        <CorporateFareIcon
+          fontSize={'small'}
+          style={{
+            color: theme.palette.primary.main,
+            height: 20,
+            marginLeft: theme.spacing(-0.5),
             position: 'absolute',
+            width: 20,
           }}
         />
-      </Box>
+      </Tooltip>
     );
+  }, [t, theme]);
+
+  const renderIsOwnCaseCell = useCallback(({ row }: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
+    return <LineListWidgetIsOwnCaseCell row={row} />;
   }, []);
 
   const renderSimilarCell = useCallback(({ row }: TableRowParams<CaseDbCase, CaseDbCompleteCaseType>) => {
     const similarCaseIds = dashboardStore.getState().findSimilarCasesResults.reduce<string[]>((acc, result) => [...acc, ...result.similarCaseIds], []);
     if (similarCaseIds.includes(row.id)) {
       return (
-        <Box>
-          {`✓`}
-        </Box>
+        <TroubleshootIcon
+          fontSize={'small'}
+          style={{
+            color: theme.palette.primary.main,
+            height: 20,
+            marginLeft: theme.spacing(-0.5),
+            position: 'absolute',
+            width: 20,
+          }}
+        />
       );
     }
     return null;
-  }, [dashboardStore]);
+  }, [dashboardStore, theme]);
 
 
   const renderSimilarHeader = useCallback(() => {
@@ -275,7 +285,7 @@ export const LineListWidget = () => {
       <Tooltip
         aria-hidden={false}
         arrow
-        title={t('Indicates if the case has been identified as similar to another case based on the selected tree algorithm and distance threshold')}
+        title={t`Indicates if the case has been identified as a similar case, based on the find similar cases result.`}
       >
         <TroubleshootIcon
           fontSize={'small'}
@@ -323,10 +333,20 @@ export const LineListWidget = () => {
       TableUtil.createSelectableColumn(),
       {
         frozen: TABLE_COLUMN_FROZEN.LEFT,
-        id: 'events',
+        id: 'isInEvent',
         isInitiallyVisible: true,
-        renderCell: renderEventsCell,
-        renderHeader: renderEventsHeader,
+        renderCell: renderIsInEventCell,
+        renderHeader: renderIsInEventHeader,
+        resizable: false,
+        type: 'text',
+        widthPx: 24,
+      } satisfies TableColumn<CaseDbCase, CaseDbCompleteCaseType>,
+      {
+        frozen: TABLE_COLUMN_FROZEN.LEFT,
+        id: 'isOwnCase',
+        isInitiallyVisible: true,
+        renderCell: renderIsOwnCaseCell,
+        renderHeader: renderIsOwnCaseHeader,
         resizable: false,
         type: 'text',
         widthPx: 24,
@@ -343,7 +363,7 @@ export const LineListWidget = () => {
         widthPx: 24,
       } satisfies TableColumn<CaseDbCase, CaseDbCompleteCaseType>,
     ];
-  }, [renderEventsCell, renderSimilarCell, renderEventsHeader, renderSimilarHeader, t]);
+  }, [renderIsInEventCell, renderIsInEventHeader, renderIsOwnCaseCell, renderIsOwnCaseHeader, t, renderSimilarCell, renderSimilarHeader]);
 
   const frozenTableColumnsRight = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
     return [
@@ -566,6 +586,7 @@ export const LineListWidget = () => {
 
   const onRangeChangedDebounced = useDebouncedCallback(async (range: ListRange) => {
     await LineListCaseSetMembersService.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
+    await LineListIsOwnCaseService.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id), completeCaseType.id);
   }, ConfigService.getInstance<CaseDbConfig>().config.lineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
     leading: false,
     trailing: true,
@@ -579,6 +600,7 @@ export const LineListWidget = () => {
   useEffect(() => {
     return () => {
       LineListCaseSetMembersService.getInstance().cleanStaleQueue();
+      LineListIsOwnCaseService.getInstance().cleanStaleQueue();
     };
   }, []);
 

@@ -1,29 +1,16 @@
-import type { CaseDbCaseSetMember } from '@gen-epix/api-casedb';
-import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import {
-  HmrUtil,
-  QueryClientService,
-} from '@gen-epix/ui';
+import { QueryClientService } from '@gen-epix/ui';
 
-import type { CaseHasCaseSet } from '../../../models/caseDb';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import type { CASEDB_QUERY_KEY } from '../../../../data/query';
 
+
+type CaseIdCache = { [caseId: string]: boolean };
 
 type QueueItem = { caseId: string; isFetching: boolean; promise: Promise<boolean>; reject: () => void; resolve: (result: boolean) => void };
 
-export class LineListCaseSetMembersService {
-  private static __instance: LineListCaseSetMembersService;
+export abstract class LineListServiceAbstract {
+  protected abstract readonly queryKey: CASEDB_QUERY_KEY;
 
   private readonly queuedCases: { [caseId: string]: QueueItem } = {};
-
-  private constructor() {
-    //
-  }
-
-  public static getInstance(): LineListCaseSetMembersService {
-    LineListCaseSetMembersService.__instance = HmrUtil.getHmrSingleton('lineListCaseSetMembersService', LineListCaseSetMembersService.__instance, () => new LineListCaseSetMembersService());
-    return LineListCaseSetMembersService.__instance;
-  }
 
   public cleanStaleQueue(): void {
     Object.values(this.queuedCases).forEach((item) => {
@@ -34,8 +21,8 @@ export class LineListCaseSetMembersService {
     });
   }
 
-  public async loadRange(caseIds: string[]): Promise<void> {
-    const cache = QueryClientService.getInstance().getValidQueryData<CaseHasCaseSet>([CASEDB_QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET]) ?? {};
+  public async loadRange(caseIds: string[], caseTypeId?: string): Promise<void> {
+    const cache = QueryClientService.getInstance().getValidQueryData<CaseIdCache>([this.queryKey]) ?? {};
     const caseIdsToFetch: string[] = [];
     caseIds.forEach((caseId) => {
       if (caseIdsToFetch.includes(caseId)) {
@@ -56,18 +43,19 @@ export class LineListCaseSetMembersService {
       return;
     }
 
+    caseIdsToFetch.forEach(caseId => {
+      if (this.queuedCases[caseId]) {
+        this.queuedCases[caseId].isFetching = true;
+      }
+    });
+
     try {
       const queryClient = QueryClientService.getInstance().queryClient;
       const newCache = { ...cache };
-      const caseSetMembersResult = (await CaseDbCaseApi.getInstance().caseSetMembersPostQuery({
-        invert: false,
-        key: 'case_id',
-        members: caseIdsToFetch,
-        type: 'UUID_SET',
-      }, null, null)).data;
+      const matchingCaseIds = await this.fetchMatchingCaseIds(caseIdsToFetch, caseTypeId);
 
-      caseSetMembersResult.forEach((caseSetMember: CaseDbCaseSetMember) => {
-        newCache[caseSetMember.case_id] = true;
+      matchingCaseIds.forEach((caseId) => {
+        newCache[caseId] = true;
       });
       caseIdsToFetch.forEach(caseId => {
         if (newCache[caseId] === undefined) {
@@ -76,7 +64,7 @@ export class LineListCaseSetMembersService {
         this.queuedCases[caseId]?.resolve(newCache[caseId]);
         delete this.queuedCases[caseId];
       });
-      queryClient.setQueryData<CaseHasCaseSet>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET), {
+      queryClient.setQueryData<CaseIdCache>(QueryClientService.getInstance().getGenericKey(this.queryKey), {
         ...newCache,
       });
     } catch (_error: unknown) {
@@ -99,9 +87,11 @@ export class LineListCaseSetMembersService {
     return this.queuedCases[caseId].promise;
   }
 
+  protected abstract fetchMatchingCaseIds(caseIds: string[], caseTypeId?: string): Promise<string[]>;
+
   private createQueueItem(caseId: string): QueueItem {
-    let resolve: (result: boolean) => void;
-    let reject: () => void;
+    let resolve!: (result: boolean) => void;
+    let reject!: () => void;
     const promise = new Promise<boolean>((res, rej) => {
       resolve = res;
       reject = rej;
@@ -115,7 +105,8 @@ export class LineListCaseSetMembersService {
     };
   }
 
-  private getItemFromCache(caseId: string): boolean {
-    return QueryClientService.getInstance().getValidQueryData<CaseHasCaseSet>([CASEDB_QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET])?.[caseId];
+  private getItemFromCache(caseId: string): boolean | undefined {
+    return QueryClientService.getInstance().getValidQueryData<CaseIdCache>([this.queryKey])?.[caseId];
   }
+
 }

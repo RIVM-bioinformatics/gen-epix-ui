@@ -10,7 +10,7 @@
     "start-seq": "concurrently \"pnpm --filter @gen-epix/demo-client-seqdb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-seqdb run start\"",
     "clean": "lerna clean && rm -fr node_modules",
     "generate-api": "lerna run generate-api && generate-common-api packages/api-casedb packages/api-seqdb packages/api-omopdb packages/api-commondb",
-    "validate": "lerna run validate",
+    "validate": "lerna run validate --concurrency 1 --stream",
     "lint": "lerna run lint",
     "lint-fix": "lerna run lint-fix",
     "check-types": "lerna run check-types",
