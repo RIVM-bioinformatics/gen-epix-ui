@@ -25,6 +25,7 @@ import { useStore } from 'zustand';
 import type { FuseResult } from 'fuse.js';
 import Fuse from 'fuse.js';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
@@ -212,11 +213,14 @@ export const DashboardSearch = () => {
     handleClose();
   }, [handleClose]);
 
-  const onTextInputKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+  const onContainerKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
       event.preventDefault();
       handleClose();
     }
+  }, [handleClose]);
+
+  const onTextInputKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
     // on enter press, highlight the first result and focus the down arrow button
     if (event.key === 'Enter') {
       if (!fuseResults?.length) {
@@ -226,7 +230,7 @@ export const DashboardSearch = () => {
       setHighlightedIndex(0);
       arrowDownButtonRef.current?.focus();
     }
-  }, [handleClose, fuseResults]);
+  }, [fuseResults]);
 
   const onUpArrowButtonClick = useCallback(() => {
     // goto previous result
@@ -314,9 +318,12 @@ export const DashboardSearch = () => {
         overflow: 'hidden',
         width: 'calc(100% / 2)',
       }}
+      {...TestIdUtil.createAttributes('DashboardSearch')}
     >
       {isActive ? (
-        <Box>
+        <Box
+          onKeyDown={onContainerKeyDown}
+        >
           <OutlinedInput
             endAdornment={(
               <InputAdornment position={'end'}>
@@ -330,6 +337,7 @@ export const DashboardSearch = () => {
                   </Box>
                 )}
                 <IconButton
+                  {...TestIdUtil.createAttributes('DashboardSearch-PreviousButton')}
                   aria-label={t`Goto previous search result`}
                   disabled={!fuseResults?.length}
                   edge={'end'}
@@ -341,6 +349,7 @@ export const DashboardSearch = () => {
                   <KeyboardArrowUpIcon />
                 </IconButton>
                 <IconButton
+                  {...TestIdUtil.createAttributes('DashboardSearch-NextButton')}
                   aria-label={t`Goto next search result`}
                   disabled={!fuseResults?.length}
                   edge={'end'}
@@ -352,6 +361,7 @@ export const DashboardSearch = () => {
                   <KeyboardArrowDownIcon />
                 </IconButton>
                 <IconButton
+                  {...TestIdUtil.createAttributes('DashboardSearch-SettingsButton')}
                   aria-label={t`Open settings`}
                   edge={'end'}
                   onClick={onSettingsButtonClick}
@@ -369,6 +379,7 @@ export const DashboardSearch = () => {
                   searchMode={searchMode}
                 />
                 <IconButton
+                  {...TestIdUtil.createAttributes('DashboardSearch-CloseButton')}
                   aria-label={t`Close search`}
                   edge={'end'}
                   onClick={onCloseButtonClick}

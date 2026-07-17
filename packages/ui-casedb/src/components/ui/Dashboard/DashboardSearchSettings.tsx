@@ -17,6 +17,7 @@ import type {
   MouseEvent,
 } from 'react';
 import { useCallback } from 'react';
+import { TestIdUtil } from '@gen-epix/ui';
 
 export type DashboardSearchMode = 'exact-match' | 'fuzzy-match' | 'include-match' | 'prefix-exact-match' | 'suffix-exact-match';
 
@@ -91,6 +92,7 @@ export const DashboardSearchSettings = ({ anchorEl, onChange, onClose, onEscapeK
         <Paper
           elevation={8}
           sx={{ width: 280 }}
+          {...TestIdUtil.createAttributes('DashboardSearchSettings')}
         >
           <MenuList
             autoFocusItem={open}
