@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
-import { RouterProvider } from 'react-router-dom';
 
 import { BackendVersionService } from '../../../classes/services/BackendVersionService';
 import { ConfigService } from '../../../classes/services/ConfigService';
@@ -15,8 +14,8 @@ import { EmotionCacheService } from '../../../classes/services/EmotionCacheServi
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
 import { ApiService } from '../../../classes/services/ApiService';
-import { RouterService } from '../../../classes/services/RouterService';
-
+import { ApplicationBootstrapWithoutAuthorization } from '../ApplicationBootstrapWithoutAuthorization';
+import { AppRouterProvider } from '../AppRouterProvider/AppRouterProvider';
 
 export const App = () => {
   const { config } = ConfigService.getInstance();
@@ -30,7 +29,6 @@ export const App = () => {
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
   }
   const apiService = ApiService.getInstance();
-  const routerService = RouterService.getInstance();
   apiService.api.baseUrl = config.getAPIBaseUrl();
   apiService.api.defaultRequestTimeout = config.defaultRequestTimeout;
   apiService.api.onRequest = [
@@ -55,7 +53,9 @@ export const App = () => {
         <ThemeProvider theme={ConfigService.getInstance().config.theme}>
           <CssBaseline />
           <ErrorBoundary FallbackComponent={ErrorPage}>
-            <RouterProvider router={routerService.router} />
+            <ApplicationBootstrapWithoutAuthorization>
+              <AppRouterProvider />
+            </ApplicationBootstrapWithoutAuthorization>
           </ErrorBoundary>
         </ThemeProvider>
       </CacheProvider>

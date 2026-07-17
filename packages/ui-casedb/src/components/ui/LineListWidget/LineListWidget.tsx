@@ -38,6 +38,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   ConfigService,
+  FeatureFlagsService,
   StringUtil,
   Subject,
   Table,
@@ -387,6 +388,7 @@ export const LineListWidget = () => {
             ),
             (
               <MenuItem
+                disabled={!(FeatureFlagsService.getInstance().featureFlags?.upload_enabled ?? false)}
                 key={'editInformation'}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={() => openCaseInfoDialog(params.row.id, CASE_INFO_DIALOG_TAB_NAME.EDIT)}

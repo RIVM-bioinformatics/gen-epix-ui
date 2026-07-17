@@ -33,7 +33,7 @@ import { ConfigService } from '../../../classes/services/ConfigService';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
-import { ApplicationBootstrap } from '../ApplicationBootstrap';
+import { ApplicationBootstrapWithAuthentication } from '../ApplicationBootstrapWithAuthentication';
 import { AuthenticationWrapper } from '../AuthenticationWrapper';
 import { AuthorizationWrapper } from '../AuthorizationWrapper';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
@@ -179,7 +179,7 @@ export const RouterRoot = () => {
       userManager={userManager}
     >
       <AuthenticationWrapper>
-        <ApplicationBootstrap>
+        <ApplicationBootstrapWithAuthentication>
           <AuthorizationWrapper>
             <UserInactivityConfirmation />
             <NotificationsStack />
@@ -187,7 +187,7 @@ export const RouterRoot = () => {
               {location?.pathname === '/' ? <HomePage /> : <Outlet /> }
             </StrictMode>
           </AuthorizationWrapper>
-        </ApplicationBootstrap>
+        </ApplicationBootstrapWithAuthentication>
       </AuthenticationWrapper>
     </AuthProvider>
   );

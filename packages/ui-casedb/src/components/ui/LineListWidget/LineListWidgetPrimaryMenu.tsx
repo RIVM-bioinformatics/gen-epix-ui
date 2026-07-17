@@ -22,6 +22,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   AuthorizationService,
+  FeatureFlagsService,
   useColumnsMenu,
 } from '@gen-epix/ui';
 import last from 'lodash/last';
@@ -179,7 +180,7 @@ export const LineListWidgetPrimaryMenu = ({
       actionsColumnMenuItem.items.push(
         {
           callback: () => EventBusService.getInstance().emit('openEditCases', selectedRows),
-          disabled: !selectedIds?.length,
+          disabled: !selectedIds?.length || !(FeatureFlagsService.getInstance().featureFlags?.upload_enabled ?? false),
           label: t`Edit selected cases`,
         },
       );

@@ -8,6 +8,7 @@ import { t } from 'i18next';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import {
   createRoutes as createCommonRoutes,
+  FeatureFlagsService,
   RouterErrorPage,
 } from '@gen-epix/ui';
 import type { MyNonIndexRouteObject } from '@gen-epix/ui';
@@ -141,6 +142,7 @@ export const createRoutes = (
       Component: UploadPage,
       errorElement: <RouterErrorPage />,
       handle: {
+        disabled: !(FeatureFlagsService.getInstance().featureFlags?.upload_enabled ?? false),
         requiredPermissions: [
           { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
           { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },
