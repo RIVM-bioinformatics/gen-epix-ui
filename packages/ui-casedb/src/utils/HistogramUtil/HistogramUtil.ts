@@ -149,13 +149,10 @@ export class HistogramUtil {
         formatter: (item) => {
           const castedItem = item as TooltipCallbackDataParams;
           const axisValue = castedItem.name;
-          const result = `
-            <strong>${axisValue} (${bCol.label})</strong>
-            <br/>
-            ${castedItem.marker} ${castedItem.seriesName}: <b>${castedItem.value as number} (${aCol.label})</b><br/>
-          `;
+          const result = `${axisValue} (${bCol.label})\n${castedItem.seriesName}: ${castedItem.value as number} (${aCol.label})`;
           return result;
         },
+        renderMode: 'richText',
         show: true,
         trigger: 'item',
         valueFormatter: (value: unknown) => {

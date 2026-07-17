@@ -640,11 +640,12 @@ describe('HistogramUtil', () => {
 
     it('configures tooltip for item payloads', () => {
       const opts = HistogramUtil.getChartOptions(baseParams);
-      const tooltip = opts.tooltip as { trigger: string };
+      const tooltip = opts.tooltip as { renderMode: string; trigger: string };
+      expect(tooltip.renderMode).toBe('richText');
       expect(tooltip.trigger).toBe('item');
     });
 
-    it('tooltip formatter builds HTML string for item params', () => {
+    it('tooltip formatter builds text for item params', () => {
       const opts = HistogramUtil.getChartOptions(baseParams);
       const tooltip = opts.tooltip as { formatter: (p: unknown) => string };
       const params = {
@@ -653,12 +654,8 @@ describe('HistogramUtil', () => {
         seriesName: 'Concept A1',
         value: 3,
       };
-      const html = tooltip.formatter(params);
-      expect(html).toContain('Concept B1');
-      expect(html).toContain('Label B');
-      expect(html).toContain('Concept A1');
-      expect(html).toContain('Label A');
-      expect(html).toContain('3');
+      const text = tooltip.formatter(params);
+      expect(text).toBe('Concept B1 (Label B)\nConcept A1: 3 (Label A)');
     });
 
     it('valueFormatter returns translated string', () => {
