@@ -29,6 +29,7 @@ import type {
 } from '@gen-epix/ui';
 import {
   Confirmation,
+  FeatureFlagsService,
   QueryClientService,
   ResponseHandler,
   Spinner,
@@ -165,7 +166,7 @@ export const CaseInfoDialog = withDialog<CaseInfoDialogProps, CaseInfoDialogOpen
 
 
   const canEdit = useMemo(() => {
-    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.write_col_ids.length);
+    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.write_col_ids.length) && (FeatureFlagsService.getInstance().featureFlags?.upload_enabled ?? false);
   }, [caseRightsQuery.data]);
 
   const canShare = useMemo(() => {
