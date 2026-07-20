@@ -46,6 +46,7 @@
     "All filters have been removed, but have not yet been applied.": "All filters have been removed, but have not yet been applied.",
     "Apply": "Apply",
     "Are you sure you want to delete the item \"{{itemName}}\"?": "Are you sure you want to delete the item \"{{itemName}}\"?",
+    "Are you sure you want to forget your user data?": "Are you sure you want to forget your user data?",
     "Are you sure you want to logout?": "Are you sure you want to logout?",
     "Are you sure?": "Are you sure?",
     "Backend version": "Backend version",
@@ -138,6 +139,8 @@
     "Field is mandatory": "Field is mandatory",
     "Filter": "Filter",
     "Filters": "Filters",
+    "Forget my data": "Forget my data",
+    "Forget my user data": "Forget my user data",
     "For demo purposes, it is possible to switch your organization. Choose your organization from the list below and click 'Change'.": "For demo purposes, it is possible to switch your organization. Choose your organization from the list below and click 'Change'.",
     "From": "From",
     "Frontend version": "Frontend version",
@@ -323,6 +326,7 @@
     "There are scheduled outages. Our platform will be disrupted during these times.": "There are scheduled outages. Our platform will be disrupted during these times.",
     "There no current or scheduled outages.": "There no current or scheduled outages.",
     "This application uses the following open source libraries:": "This application uses the following open source libraries:",
+    "This action anonymizes your user data and cannot be undone.": "This action anonymizes your user data and cannot be undone.",
     "This identity provider is currently unavailable. Please try again later.": "This identity provider is currently unavailable. Please try again later.",
     "This is taking longer than expected. We are still trying.": "This is taking longer than expected. We are still trying.",
     "This value is invalid": "This value is invalid",
@@ -370,6 +374,8 @@
     "You need to login to access this application.": "You need to login to access this application.",
     "Your message": "Your message",
     "Your organization has been changed. You are now a member of \"{{organization}}\". You will need to refresh the page for changes to take effect.": "Your organization has been changed. You are now a member of \"{{organization}}\". You will need to refresh the page for changes to take effect.",
+    "Your user data could not be forgotten": "Your user data could not be forgotten",
+    "Your user data has been forgotten": "Your user data has been forgotten",
     "Your session is about to expire": "Your session is about to expire"
   }
 }
