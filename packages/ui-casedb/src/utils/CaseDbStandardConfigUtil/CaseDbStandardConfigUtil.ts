@@ -2,7 +2,10 @@ import {
   format,
   subDays,
 } from 'date-fns';
-import { CaseDbColType } from '@gen-epix/api-casedb';
+import {
+  CaseDbColType,
+  CaseDbOrganizationApi,
+} from '@gen-epix/api-casedb';
 import type { FormFieldDefinition } from '@gen-epix/ui';
 import {
   FORM_FIELD_DEFINITION_TYPE,
@@ -346,6 +349,9 @@ export class CaseDbStandardConfigUtil {
           ITEM_MISSING_COLOR: '#aaa',
           MAX_ALLOWED_UNIQUE_VALUES: 50,
         },
+      },
+      forgetUser: async () => {
+        await CaseDbOrganizationApi.getInstance().userForget();
       },
       getAPIBaseUrl: () => {
         const { location: { href } } = WindowService.getInstance().window.document;

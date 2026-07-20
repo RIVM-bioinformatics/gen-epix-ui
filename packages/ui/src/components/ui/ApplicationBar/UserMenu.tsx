@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyIcon from '@mui/icons-material/Key';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
@@ -22,9 +23,12 @@ import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { Confirmation } from '../Confirmation';
 import type { ConfirmationRefMethods } from '../Confirmation';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
+import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';
+import { NotificationService } from '../../../classes/services/NotificationService';
 import { StringUtil } from '../../../utils/StringUtil';
 import { TestIdUtil } from '../../../utils/TestIdUtil';
+import { NotificationUtil } from '../../../utils/NotificationUtil';
 import type { MyPermissionsDialogRefMethods } from '../MyPermissionsDialog';
 import { MyPermissionsDialog } from '../MyPermissionsDialog';
 import { DataUtil } from '../../../utils/DataUtil';
@@ -39,7 +43,9 @@ type UserMenuProps = {
 
 export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElement => {
   const auth = useAuth();
+  const forgetUser = ConfigService.getInstance().config.forgetUser;
   const logoutConfirmationRef = useRef<ConfirmationRefMethods>(null);
+  const forgetUserConfirmationRef = useRef<ConfirmationRefMethods>(null);
   const popoverId = useMemo(() => StringUtil.createUuid(), []);
   const isUserMenuOpen = !!anchorElement;
   const { t } = useTranslation();
@@ -64,6 +70,29 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     auth.signoutRedirect();
   }, [auth]);
+
+  const onForgetUserButtonClick = useCallback(() => {
+    forgetUserConfirmationRef.current.open();
+  }, []);
+
+  const onForgetUserConfirmationConfirm = useCallback(async () => {
+    if (!forgetUser) {
+      return;
+    }
+    try {
+      await forgetUser();
+      NotificationService.getInstance().showNotification({
+        message: t`Your user data has been forgotten`,
+        severity: 'success',
+      });
+      onLogoutConfirmationConfirm();
+    } catch (error) {
+      NotificationService.getInstance().showNotification({
+        message: NotificationUtil.wrapErrorNotificationMessage(t`Your user data could not be forgotten`, error),
+        severity: 'error',
+      });
+    }
+  }, [forgetUser, onLogoutConfirmationConfirm, t]);
 
   const userName = useMemo(() => {
     return DataUtil.getUserDisplayValue(AuthorizationService.getInstance().user, t);
@@ -171,6 +200,39 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
             ref={myPermissionsDialogRef}
           />
         </ListItem>
+        {forgetUser && (
+          <ListItem
+            alignItems={'center'}
+            divider
+            sx={{ justifyContent: 'center' }}
+          >
+            <ListItemButton
+              onClick={onForgetUserButtonClick}
+            >
+              <ListItemIcon>
+                <PersonRemoveIcon color={'secondary'} />
+              </ListItemIcon>
+              <ListItemText
+                primary={t`Forget my user data`}
+                slotProps={{
+                  primary: {
+                    sx: {
+                      color: 'secondary.main',
+                    },
+                  },
+                }}
+              />
+            </ListItemButton>
+            <Confirmation
+              body={t`This action anonymizes your user data and cannot be undone.`}
+              cancelLabel={t`Cancel`}
+              confirmLabel={t`Forget my data`}
+              onConfirm={onForgetUserConfirmationConfirm}
+              ref={forgetUserConfirmationRef}
+              title={t`Are you sure you want to forget your user data?`}
+            />
+          </ListItem>
+        )}
         <ListItem
           alignItems={'center'}
           sx={{ justifyContent: 'center' }}

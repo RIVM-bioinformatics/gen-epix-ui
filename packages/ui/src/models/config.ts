@@ -26,6 +26,7 @@ export interface ConfigBase {
   createFooter: () => FooterConfig;
   defaultRequestTimeout: number;
   enablePageEvents: boolean;
+  forgetUser?: () => Promise<unknown>;
   getAPIBaseUrl: () => string;
   getEnvironmentMessage: () => string;
   getSoftwareVersion: () => string;
