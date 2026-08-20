@@ -357,13 +357,13 @@ export const MapWidget = () => {
       return;
     }
     if (!col) {
-      return t`No geographical column found`;
+      return t`No geographical column found.`;
     }
     if (!regionSetShape?.geo_json || regionSetShape?.geo_json === 'null') {
-      return t`No geographical shape found for the selected column`;
+      return t`No geographical shape found for the selected column.`;
     }
     if (!series.length) {
-      return t`No cases with valid geographical information found for the selected column`;
+      return t`No cases with valid geographical information found for the selected column.`;
     }
     return null;
   }, [canShowWidget, col, regionSetShape?.geo_json, series.length, t]);

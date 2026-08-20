@@ -332,16 +332,16 @@ export const EpiCurveWidget = () => {
       return;
     }
     if (!timeDims.length) {
-      return t`No time column found`;
+      return t`No time column found.`;
     }
     if (!lineListCaseCount) {
-      return t`No cases found`;
+      return t`No cases found.`;
     }
     if (!col) {
-      return t`No time column selected`;
+      return t`No time column selected.`;
     }
     if (!epiCurveCaseCount) {
-      return t`No cases with valid date- / time information found for the selected column`;
+      return t`No cases with valid date- / time information found for the selected column.`;
     }
     return null;
   }, [canShowWidget, col, epiCurveCaseCount, lineListCaseCount, t, timeDims.length]);

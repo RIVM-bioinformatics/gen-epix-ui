@@ -105,9 +105,13 @@ export const HistogramWidget = () => {
     return DashboardUtil.getCaseCount(sortedData);
   }, [sortedData]);
 
+  const defaultCols = useMemo(() => {
+    return HistogramUtil.getDefaultCols(allowedCols, completeCaseType);
+  }, [allowedCols, completeCaseType]);
 
-  const canShowWidget = allowedCols.length > 1;
-  const hasSelectedColumns = !!aCol && !!bCol;
+
+  const canShowWidget = allowedCols.length > 1 && defaultCols?.newColA && defaultCols?.newColB;
+  const shouldShowGraph = canShowWidget && aCol && bCol && lineListCaseCount > 0;
 
   const onMenuItemClick = useCallback((x: CaseDbCol, y: CaseDbCol) => {
     setACol(x);
@@ -118,11 +122,11 @@ export const HistogramWidget = () => {
     });
   }, [updateWidgetData]);
 
+
   useEffect(() => {
     if (aCol && bCol) {
       return;
     }
-    const defaultCols = HistogramUtil.getDefaultCols(allowedCols, completeCaseType);
     if (!defaultCols) {
       return;
     }
@@ -135,7 +139,7 @@ export const HistogramWidget = () => {
       colAId: newColA.id,
       colBId: newColB.id,
     });
-  }, [aCol, allowedCols, bCol, completeCaseType, updateWidgetData]);
+  }, [aCol, allowedCols, bCol, completeCaseType, defaultCols, updateWidgetData]);
 
   const [conceptsA, conceptsB] = useMemo(() => {
     return HistogramUtil.getConcepts(aCol, bCol, completeCaseType);
@@ -149,8 +153,6 @@ export const HistogramWidget = () => {
     return HistogramUtil.getCaseCount(series);
   }, [series]);
 
-  const shouldShowGraph = canShowWidget && hasSelectedColumns && histogramCaseCount > 0;
-
   const missingCasesCount = lineListCaseCount - histogramCaseCount;
   const missingCasesPercentage = missingCasesCount > 0 ? round(missingCasesCount / lineListCaseCount * 100, 1) : 0;
 
@@ -158,20 +160,17 @@ export const HistogramWidget = () => {
     if (shouldShowGraph) {
       return;
     }
-    if (allowedCols.length < 2) {
-      return t`No two compatible columns found`;
-    }
-    if (!hasSelectedColumns) {
-      return t`No column pair selected`;
+    if (!defaultCols || allowedCols.length < 2) {
+      return t`No two compatible columns found to display a histogram.`;
     }
     if (!lineListCaseCount) {
-      return t`No cases found`;
+      return t`No cases found.`;
     }
     if (!histogramCaseCount) {
-      return t`No cases found for the selected columns`;
+      return t`No cases found with valid values for the selected columns to display a histogram.`;
     }
     return null;
-  }, [allowedCols.length, hasSelectedColumns, histogramCaseCount, lineListCaseCount, shouldShowGraph, t]);
+  }, [allowedCols.length, defaultCols, histogramCaseCount, lineListCaseCount, shouldShowGraph, t]);
 
   const colors = useMemo(() => {
     return HistogramUtil.getColors(aCol, completeCaseType, sortedData);
@@ -194,7 +193,7 @@ export const HistogramWidget = () => {
     });
   }, [shouldShowGraph, colors, theme, conceptsB, series, conceptsA, aCol, bCol, t]);
 
-  const titleMenu = useMemo<MenuItemData>(() => {
+  const titleMenu = useMemo<MenuItemData | string>(() => {
     let label: string;
     if (aCol && bCol) {
       label = t('Histogram: {{aColLabel}} and {{bColLabel}}', { aColLabel: aCol.label, bColLabel: bCol.label });
@@ -202,11 +201,16 @@ export const HistogramWidget = () => {
       label = t`Histogram`;
     }
 
+    if (!defaultCols?.newColA || !defaultCols?.newColB) {
+      return label;
+    }
+
     const mainMenu: MenuItemData = {
       disabled: !canShowWidget || allowedCols.length < 2,
       items: [],
       label,
     };
+
 
     allowedCols.forEach(x => {
       const subMenu: MenuItemData = {
@@ -231,7 +235,7 @@ export const HistogramWidget = () => {
 
 
     return mainMenu;
-  }, [aCol, bCol, canShowWidget, allowedCols, t, onMenuItemClick]);
+  }, [aCol, bCol, canShowWidget, allowedCols, defaultCols?.newColA, defaultCols?.newColB, t, onMenuItemClick]);
 
   const onChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;
@@ -435,7 +439,7 @@ export const HistogramWidget = () => {
       warningMessage={canShowWidget && histogramCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
       widgetName={DASHBOARD_COMPONENT_NAME.HISTOGRAM}
     >
-      {!shouldShowGraph && (
+      {!canShowWidget && (
         <WidgetUnavailable
           reason={widgetUnavailableReason}
           widgetLabel={t`histogram`}
