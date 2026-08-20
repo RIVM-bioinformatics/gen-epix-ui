@@ -8,3 +8,4 @@ oidc-mock-server.config.json
 .vitest-attachments
 __screenshots__
 .vscode/chrome-debug-profile
+graphify-out
