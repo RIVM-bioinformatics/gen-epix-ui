@@ -1,6 +1,4 @@
 import {
-  Alert,
-  AlertTitle,
   Box,
   Button,
   ListItemIcon,
@@ -185,9 +183,50 @@ export const TreeWidget = () => {
     staleTime: Infinity,
   });
 
+  const onOpenFiltersButtonClick = useCallback(() => {
+    EventBusService.getInstance().emit('openFiltersMenu');
+  }, []);
+
   const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreeLoading));
   const isTreeUnavailable = hasToManyResultsToShowTree || !isCaseDataLoading && ((!isLoading && !!treeError) || !hasEnoughSequencesToShowTree || tree?.maxBranchLength?.toNumber() === 0 || tree?.size === 0 || !treeConfiguration || (!isLoading && tree === null));
   const shouldShowTree = !hasToManyResultsToShowTree && !!treeConfiguration && !isCaseDataLoading && !treeError && !isTreeLoading && tree?.size > 0 && hasEnoughSequencesToShowTree;
+
+  const widgetUnavailableReason = useMemo<ReactElement | string>(() => {
+    if (!isTreeUnavailable) {
+      return null;
+    }
+    if (!hasEnoughSequencesToShowTree) {
+      return t`The phylogenetic tree cannot be displayed because there are not enough sequences available for the shown cases. A minimum of 2 sequences is required to generate a phylogenetic tree.`;
+    }
+    if (hasEnoughSequencesToShowTree && !tree) {
+      return t`The phylogenetic tree cannot be displayed because the tree could not be generated. Either there are no sequences available for the shown cases or the selected tree configuration does not yield a valid tree.`;
+    }
+    if (hasToManyResultsToShowTree) {
+      return (
+        (
+          <>
+            <Box
+              sx={{
+                marginBottom: 2,
+              }}
+            >
+              {t('The phylogenetic tree cannot be displayed because the number of cases ({{caseCount}}) exceeds the maximum allowed number of cases ({{maxSize}}) to display a phylogenetic tree. Refine your filters to reduce the number of results.', {
+                caseCount: caseIds.length,
+                maxSize: completeCaseType.props.read_max_tree_size,
+              })}
+            </Box>
+            <Button
+              color={'inherit'}
+              onClick={onOpenFiltersButtonClick}
+              variant={'outlined'}
+            >
+              {t`Refine filters`}
+            </Button>
+          </>
+        )
+      );
+    }
+  }, [caseIds.length, completeCaseType.props.read_max_tree_size, hasEnoughSequencesToShowTree, hasToManyResultsToShowTree, isTreeUnavailable, onOpenFiltersButtonClick, t, tree]);
 
   useEffect(() => {
     if (treeData) {
@@ -257,10 +296,6 @@ export const TreeWidget = () => {
     linkLineListToTree();
 
   }, [linkLineListToTree]);
-
-  const onOpenFiltersButtonClick = useCallback(() => {
-    EventBusService.getInstance().emit('openFiltersMenu');
-  }, []);
 
   const resetZoomLevelAndScrollPosition = useCallback(() => {
     treeRef.current?.link(0);
@@ -489,6 +524,8 @@ export const TreeWidget = () => {
     setIsTreeLinked(linked);
   }, [setIsTreeLinked]);
 
+  console.log({ treeUnavailableReason: widgetUnavailableReason });
+
   return (
     <DashboardWidget
       expandDisabled={isTreeUnavailable}
@@ -506,44 +543,10 @@ export const TreeWidget = () => {
       >
         {isTreeUnavailable && (
           <>
-            {hasToManyResultsToShowTree && (
-              <Box>
-                <Alert severity={'warning'}>
-                  <AlertTitle>
-                    {t`Too many cases to display the phylogenetic tree`}
-                  </AlertTitle>
-                  <Box
-                    sx={{
-                      marginY: 2,
-                    }}
-                  >
-                    {t('The phylogenetic tree cannot be displayed because the number of cases ({{caseCount}}) exceeds the maximum allowed number of cases ({{maxSize}}) to display a phylogenetic tree. Refine your filters to reduce the number of results.', {
-                      caseCount: caseIds.length,
-                      maxSize: completeCaseType.props.read_max_tree_size,
-                    })}
-                  </Box>
-                  <Button
-                    color={'inherit'}
-                    onClick={onOpenFiltersButtonClick}
-                    variant={'outlined'}
-                  >
-                    {t`Refine filters`}
-                  </Button>
-                </Alert>
-              </Box>
-            )}
-            {!hasToManyResultsToShowTree && (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  zIndex: 1,
-                }}
-              >
-                <WidgetUnavailable
-                  widgetLabel={t`Phylogenetic Tree`}
-                />
-              </Box>
-            )}
+            <WidgetUnavailable
+              reason={widgetUnavailableReason}
+              widgetLabel={t`phylogenetic tree`}
+            />
           </>
         )}
         {(isLoading && !isTreeUnavailable) && (

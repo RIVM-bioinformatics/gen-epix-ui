@@ -190,7 +190,7 @@ export const EpiCurveWidget = () => {
       return;
     }
     if (!timeDims.length) {
-      throw Error('Epi curve can not be shown');
+      return;
     }
     if (epiCurveWidgetData.columnId) {
       setCol(CaseTypeUtil.getCols(completeCaseType).find(c => c.id === epiCurveWidgetData.columnId));
@@ -325,13 +325,32 @@ export const EpiCurveWidget = () => {
 
   const missingCasesCount = lineListCaseCount - epiCurveCaseCount;
   const missingCasesPercentage = missingCasesCount > 0 ? round(missingCasesCount / lineListCaseCount * 100, 1) : 0;
-  const shouldShowWidget = epiCurveCaseCount > 0 && timeDims.length > 0;
+  const canShowWidget = epiCurveCaseCount > 0 && timeDims.length > 0;
+
+  const widgetUnavailableReason = useMemo<ReactElement | string>(() => {
+    if (canShowWidget) {
+      return;
+    }
+    if (!timeDims.length) {
+      return t`No time column found`;
+    }
+    if (!lineListCaseCount) {
+      return t`No cases found`;
+    }
+    if (!col) {
+      return t`No time column selected`;
+    }
+    if (!epiCurveCaseCount) {
+      return t`No cases with valid date- / time information found for the selected column`;
+    }
+    return null;
+  }, [canShowWidget, col, epiCurveCaseCount, lineListCaseCount, t, timeDims.length]);
 
 
   useEffect(() => {
     const emitDownloadOptions = () => {
       EventBusService.getInstance().emit('onDownloadOptionsChanged', {
-        disabled: !shouldShowWidget,
+        disabled: !canShowWidget,
         items: [
           {
             callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Epi curve`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
@@ -357,23 +376,24 @@ export const EpiCurveWidget = () => {
       });
       eventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
-  }, [completeCaseType, shouldShowWidget, t]);
+  }, [completeCaseType, canShowWidget, t]);
 
   return (
     <DashboardWidget
-      expandDisabled={!shouldShowWidget}
+      expandDisabled={!canShowWidget}
       isLoading={isDataLoading}
       primaryMenu={primaryMenu}
       title={titleMenu}
-      warningMessage={shouldShowWidget && epiCurveCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
+      warningMessage={canShowWidget && epiCurveCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
       widgetName={DASHBOARD_COMPONENT_NAME.EPI_CURVE}
     >
-      {!shouldShowWidget && (
+      {!canShowWidget && (
         <WidgetUnavailable
-          widgetLabel={t`Epi Curve`}
+          reason={widgetUnavailableReason}
+          widgetLabel={t`epi curve`}
         />
       )}
-      {shouldShowWidget && (
+      {canShowWidget && (
         <Box
           sx={{
             height: '100%',

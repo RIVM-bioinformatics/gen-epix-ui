@@ -106,8 +106,8 @@ export const HistogramWidget = () => {
   }, [sortedData]);
 
 
-  const shouldShowWidget = allowedColTypes?.length > 1;
-  const shouldShowGraph = shouldShowWidget && aCol && bCol && lineListCaseCount > 0;
+  const canShowWidget = allowedCols.length > 1;
+  const hasSelectedColumns = !!aCol && !!bCol;
 
   const onMenuItemClick = useCallback((x: CaseDbCol, y: CaseDbCol) => {
     setACol(x);
@@ -149,8 +149,29 @@ export const HistogramWidget = () => {
     return HistogramUtil.getCaseCount(series);
   }, [series]);
 
+  const shouldShowGraph = canShowWidget && hasSelectedColumns && histogramCaseCount > 0;
+
   const missingCasesCount = lineListCaseCount - histogramCaseCount;
   const missingCasesPercentage = missingCasesCount > 0 ? round(missingCasesCount / lineListCaseCount * 100, 1) : 0;
+
+  const widgetUnavailableReason = useMemo<ReactElement | string>(() => {
+    if (shouldShowGraph) {
+      return;
+    }
+    if (allowedCols.length < 2) {
+      return t`No two compatible columns found`;
+    }
+    if (!hasSelectedColumns) {
+      return t`No column pair selected`;
+    }
+    if (!lineListCaseCount) {
+      return t`No cases found`;
+    }
+    if (!histogramCaseCount) {
+      return t`No cases found for the selected columns`;
+    }
+    return null;
+  }, [allowedCols.length, hasSelectedColumns, histogramCaseCount, lineListCaseCount, shouldShowGraph, t]);
 
   const colors = useMemo(() => {
     return HistogramUtil.getColors(aCol, completeCaseType, sortedData);
@@ -182,7 +203,7 @@ export const HistogramWidget = () => {
     }
 
     const mainMenu: MenuItemData = {
-      disabled: !shouldShowWidget || allowedCols.length < 2,
+      disabled: !canShowWidget || allowedCols.length < 2,
       items: [],
       label,
     };
@@ -210,7 +231,7 @@ export const HistogramWidget = () => {
 
 
     return mainMenu;
-  }, [aCol, bCol, shouldShowWidget, allowedCols, t, onMenuItemClick]);
+  }, [aCol, bCol, canShowWidget, allowedCols, t, onMenuItemClick]);
 
   const onChartReady = useCallback((chart: EChartsType) => {
     chartInstanceRef.current = chart;
@@ -226,7 +247,7 @@ export const HistogramWidget = () => {
   useEffect(() => {
     const emitDownloadOptions = () => {
       EventBusService.getInstance().emit('onDownloadOptionsChanged', {
-        disabled: !shouldShowWidget,
+        disabled: !canShowWidget,
         items: [
           {
             callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Histogram`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
@@ -254,7 +275,7 @@ export const HistogramWidget = () => {
       });
       eventBusManager.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
-  }, [completeCaseType, shouldShowGraph, shouldShowWidget, t]);
+  }, [completeCaseType, shouldShowGraph, canShowWidget, t]);
 
   const highlight = useCallback((caseIds: string[]) => {
     dashboardContext.highlight({
@@ -409,17 +430,18 @@ export const HistogramWidget = () => {
 
   return (
     <DashboardWidget
-      expandDisabled={!shouldShowWidget}
+      expandDisabled={!canShowWidget}
       title={titleMenu}
-      warningMessage={shouldShowWidget && histogramCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
+      warningMessage={canShowWidget && histogramCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
       widgetName={DASHBOARD_COMPONENT_NAME.HISTOGRAM}
     >
-      {!shouldShowWidget && (
+      {!shouldShowGraph && (
         <WidgetUnavailable
-          widgetLabel={t`Histogram`}
+          reason={widgetUnavailableReason}
+          widgetLabel={t`histogram`}
         />
       )}
-      {shouldShowWidget && (
+      {canShowWidget && (
         <Box
           sx={{
             height: '100%',

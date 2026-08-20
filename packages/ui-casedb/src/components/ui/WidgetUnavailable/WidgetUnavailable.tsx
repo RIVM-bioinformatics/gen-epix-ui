@@ -1,31 +1,30 @@
 import {
-  Box,
-  Typography,
+  Alert,
+  AlertTitle,
 } from '@mui/material';
+import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export type WidgetUnavailableProps = {
+  readonly reason?: ReactElement | string;
   readonly widgetLabel: string;
 };
 
-export const WidgetUnavailable = ({ widgetLabel }: WidgetUnavailableProps) => {
+export const WidgetUnavailable = ({ reason, widgetLabel }: WidgetUnavailableProps) => {
   const { t } = useTranslation();
 
   return (
-    <Box
-      sx={{
-        marginY: 1,
-      }}
+    <Alert
+      severity={'info'}
     >
-      <Box
+      <AlertTitle
         sx={{
-          marginY: 1,
+          width: '100%',
         }}
       >
-        <Typography>
-          {t('The {{widgetLabel}} cannot be shown.', { widgetLabel })}
-        </Typography>
-      </Box>
-    </Box>
+        {t('The {{widgetLabel}} cannot be shown.', { widgetLabel })}
+      </AlertTitle>
+      {reason}
+    </Alert>
   );
 };

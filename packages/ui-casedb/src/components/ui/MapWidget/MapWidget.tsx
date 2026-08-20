@@ -350,7 +350,23 @@ export const MapWidget = () => {
   const missingCasesCount = mapCaseCount !== undefined ? lineListCaseCount - mapCaseCount : 0;
   const missingCasesPercentage = missingCasesCount > 0 ? round(missingCasesCount / lineListCaseCount * 100, 1) : 0;
   const shouldShowLoading = isLoading && !error;
-  const shouldShowMap = !!col && (regionSetShape?.geo_json && regionSetShape?.geo_json !== 'null') && series.length > 0;
+  const canShowWidget = !!col && (regionSetShape?.geo_json && regionSetShape?.geo_json !== 'null') && series.length > 0;
+
+  const widgetUnavailableReason = useMemo<ReactElement | string>(() => {
+    if (canShowWidget) {
+      return;
+    }
+    if (!col) {
+      return t`No geographical column found`;
+    }
+    if (!regionSetShape?.geo_json || regionSetShape?.geo_json === 'null') {
+      return t`No geographical shape found for the selected column`;
+    }
+    if (!series.length) {
+      return t`No cases with valid geographical information found for the selected column`;
+    }
+    return null;
+  }, [canShowWidget, col, regionSetShape?.geo_json, series.length, t]);
 
   const onShowOnlySelectedRegionMenuItemClick = useCallback(async (onMenuClose: () => void) => {
     await setFilterValue(col.id, [focussedRegion.id]);
@@ -380,7 +396,7 @@ export const MapWidget = () => {
   useEffect(() => {
     const emitDownloadOptions = () => {
       EventBusService.getInstance().emit('onDownloadOptionsChanged', {
-        disabled: !shouldShowMap,
+        disabled: !canShowWidget,
         items: [
           {
             callback: () => CaseDbDownloadUtil.downloadEchartsImage(t`Incidence map`, chartRef.current.getEchartsInstance(), 'png', completeCaseType, t),
@@ -408,14 +424,14 @@ export const MapWidget = () => {
       });
       eventBusService.removeEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     };
-  }, [completeCaseType, shouldShowMap, t]);
+  }, [completeCaseType, canShowWidget, t]);
 
   return (
     <DashboardWidget
-      expandDisabled={!shouldShowMap}
+      expandDisabled={!canShowWidget}
       isLoading={shouldShowLoading}
       title={titleMenu}
-      warningMessage={shouldShowMap && mapCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
+      warningMessage={canShowWidget && mapCaseCount > 0 && missingCasesCount > 0 ? t('Missing cases: {{missingCasesCount}} ({{missingCasesPercentage}}%)', { missingCasesCount, missingCasesPercentage }) : undefined}
       widgetName={DASHBOARD_COMPONENT_NAME.MAP}
     >
       <Box
@@ -425,14 +441,13 @@ export const MapWidget = () => {
           position: 'relative',
         }}
       >
-        {!shouldShowLoading && !shouldShowMap && (
-          <Box sx={{ position: 'absolute' }}>
-            <WidgetUnavailable
-              widgetLabel={t`Map`}
-            />
-          </Box>
+        {!shouldShowLoading && !canShowWidget && (
+          <WidgetUnavailable
+            reason={widgetUnavailableReason}
+            widgetLabel={t`map`}
+          />
         )}
-        {shouldShowMap && (
+        {canShowWidget && (
           <EChartsReact
             echarts={echartsCore}
             notMerge
