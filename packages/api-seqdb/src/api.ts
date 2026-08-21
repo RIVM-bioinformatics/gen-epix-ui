@@ -195,82 +195,84 @@ export interface SeqDbCalculateSeqDistancesResult {
 
 
 export const SeqDbCommandName = {
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    LocusCrudCommand: 'LocusCrudCommand',
+    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    CreateFileCommand: 'CreateFileCommand',
+    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
+    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
+    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
+    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
+    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
     RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
     SiteCrudCommand: 'SiteCrudCommand',
-    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    UploadSamplesCommand: 'UploadSamplesCommand',
+    ProtocolCrudCommand: 'ProtocolCrudCommand',
     CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
     OutageCrudCommand: 'OutageCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    FileCrudCommand: 'FileCrudCommand',
-    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    LocusCrudCommand: 'LocusCrudCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    LocusSetCrudCommand: 'LocusSetCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
     SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    CreateFileCommand: 'CreateFileCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
     ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
-    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
-    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
-    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
-    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
-    ProtocolCrudCommand: 'ProtocolCrudCommand',
-    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
-    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    UploadSamplesCommand: 'UploadSamplesCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
     OrganizationCrudCommand: 'OrganizationCrudCommand',
+    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
     ReadSetCrudCommand: 'ReadSetCrudCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    TaxonCrudCommand: 'TaxonCrudCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
-    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
-    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
-    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    UserCrudCommand: 'UserCrudCommand',
+    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
+    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
     AlleleCrudCommand: 'AlleleCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    TaxonCrudCommand: 'TaxonCrudCommand',
+    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
+    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    FileCrudCommand: 'FileCrudCommand',
     RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
+    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
+    LocusSetCrudCommand: 'LocusSetCrudCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
+    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -1285,6 +1287,20 @@ export interface SeqDbRefSeq {
 }
 
 
+export interface SeqDbRetrieveBestSeqClassificationPerSampleRequestBody {
+    /**
+     * The IDs of the sequence classification protocols to search among.
+     */
+    'protocol_ids': Array<string>;
+    'sample_ids': Array<string> | null;
+    'ranking_strategy'?: SeqDbSeqClassificationRankingStrategy;
+    /**
+     * If True, return the primary category ID of the best classification, rather than the ID of the best classification. This facilitates the most frequent use casees where the primary category is the desired output.
+     */
+    'return_primary_category_id'?: boolean;
+}
+
+
 export interface SeqDbRetrieveBestSeqPerSampleRequestBody {
     'protocol_ids'?: Array<string> | null;
     'sample_ids': Array<string> | null;
@@ -1671,6 +1687,14 @@ export interface SeqDbSeqClassificationForUpload {
     'protocol_code'?: string | null;
     'primary_category_code'?: string | null;
 }
+
+
+
+export const SeqDbSeqClassificationRankingStrategy = {
+    QC_RESULT_THEN_SCORE_THEN_CREATED: 'QC_RESULT_THEN_SCORE_THEN_CREATED',
+} as const;
+
+export type SeqDbSeqClassificationRankingStrategy = typeof SeqDbSeqClassificationRankingStrategy[keyof typeof SeqDbSeqClassificationRankingStrategy];
 
 
 /**
@@ -2282,7 +2306,7 @@ export interface SeqDbTypedNumberSetFilter {
     /**
      * The numbers to match.
      */
-    'members'?: Array<SeqDbMembersInner>;
+    'members': Array<SeqDbMembersInner>;
     'type': string;
 }
 export interface SeqDbTypedPartialDateRangeFilter {
@@ -2329,7 +2353,7 @@ export interface SeqDbTypedStringSetFilter {
     /**
      * The strings to match.
      */
-    'members'?: Array<string>;
+    'members': Array<string>;
     /**
      * Whether the match is case sensitive.
      */
@@ -2348,7 +2372,7 @@ export interface SeqDbTypedUuidSetFilter {
     /**
      * The UUIDs to match.
      */
-    'members'?: Array<string>;
+    'members': Array<string>;
     'type': string;
 }
 export interface SeqDbUpdateDataCollectionSetDataCollectionRequestBody {
@@ -2377,6 +2401,10 @@ export interface SeqDbUpdateSeqDistancesRequestBody {
     'max_new_profiles'?: number | null;
     'limit'?: number | null;
     'existing_chunk_size'?: number | null;
+    /**
+     * If True, use numpy-vectorised ALLELE Hamming with an automatic variant gate: numpy_batch for n_new < 200, int32_vocab for n_new >= 200. No effect on non-ALLELE profile types.
+     */
+    'use_numpy_allele_distance'?: boolean;
 }
 export interface SeqDbUpdateUserOwnOrganizationRequestBody {
     /**
@@ -4458,6 +4486,40 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
  */
 const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * Anonymizes, in the sense of the EU General Data Protection Regulation (GDPR), the target user by removing the name and replacing the key by the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
+         * @summary Anonymizeuser
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        anonymizeUser: async (userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('anonymizeUser', 'userId', userId)
+            const localVarPath = `/v1/user/{user_id}/anonymize`
+                .replace(`{${"user_id"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary Contacts  Delete All
@@ -10325,6 +10387,19 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = SeqDbOrganizationApiAxiosParamCreator(configuration)
     return {
         /**
+         * Anonymizes, in the sense of the EU General Data Protection Regulation (GDPR), the target user by removing the name and replacing the key by the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
+         * @summary Anonymizeuser
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async anonymizeUser(userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.anonymizeUser(userId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.anonymizeUser']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @summary Contacts  Delete All
          * @param {number | null} [limit] 
@@ -12448,6 +12523,17 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     SeqDbOrganizationApi.__instance = instance;
     return instance;
   }
+
+    /**
+     * Anonymizes, in the sense of the EU General Data Protection Regulation (GDPR), the target user by removing the name and replacing the key by the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
+     * @summary Anonymizeuser
+     * @param {string} userId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public anonymizeUser(userId: string, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).anonymizeUser(userId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
 
     /**
      * 
@@ -20625,6 +20711,41 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(refSeq, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve the best SeqDbSeqClassification ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
+         * @summary Retrievebestseqclassificationpersample
+         * @param {SeqDbRetrieveBestSeqClassificationPerSampleRequestBody} retrieveBestSeqClassificationPerSampleRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveBestSeqClassificationPerSample: async (retrieveBestSeqClassificationPerSampleRequestBody: SeqDbRetrieveBestSeqClassificationPerSampleRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveBestSeqClassificationPerSampleRequestBody' is not null or undefined
+            assertParamExists('retrieveBestSeqClassificationPerSample', 'retrieveBestSeqClassificationPerSampleRequestBody', retrieveBestSeqClassificationPerSampleRequestBody)
+            const localVarPath = `/v1/retrieve/best_seq_classification_per_sample`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveBestSeqClassificationPerSampleRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -31059,6 +31180,19 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Retrieve the best SeqDbSeqClassification ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
+         * @summary Retrievebestseqclassificationpersample
+         * @param {SeqDbRetrieveBestSeqClassificationPerSampleRequestBody} retrieveBestSeqClassificationPerSampleRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveBestSeqClassificationPerSample(retrieveBestSeqClassificationPerSampleRequestBody: SeqDbRetrieveBestSeqClassificationPerSampleRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: string; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveBestSeqClassificationPerSample(retrieveBestSeqClassificationPerSampleRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.retrieveBestSeqClassificationPerSample']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Retrieve the best SeqDbSeq ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
          * @summary Retrievebestseqpersample
          * @param {SeqDbRetrieveBestSeqPerSampleRequestBody} retrieveBestSeqPerSampleRequestBody 
@@ -35941,6 +36075,17 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
      */
     public refSeqsPutSome(refSeq: Array<SeqDbRefSeq>, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).refSeqsPutSome(refSeq, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Retrieve the best SeqDbSeqClassification ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
+     * @summary Retrievebestseqclassificationpersample
+     * @param {SeqDbRetrieveBestSeqClassificationPerSampleRequestBody} retrieveBestSeqClassificationPerSampleRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public retrieveBestSeqClassificationPerSample(retrieveBestSeqClassificationPerSampleRequestBody: SeqDbRetrieveBestSeqClassificationPerSampleRequestBody, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).retrieveBestSeqClassificationPerSample(retrieveBestSeqClassificationPerSampleRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**

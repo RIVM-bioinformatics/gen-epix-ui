@@ -1,6 +1,8 @@
+import type { ReactElement } from 'react';
 import {
   useCallback,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +20,12 @@ import {
   CommonDbCommandName,
   CommonDbPermissionType,
 } from '@gen-epix/api-commondb';
+import {
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+} from '@mui/material';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
 
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
@@ -25,7 +33,10 @@ import type {
   OptionBase,
 } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import type { TableColumn } from '../../models/table';
+import type {
+  TableColumn,
+  TableRowParams,
+} from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageProps } from '../CrudPage';
@@ -37,6 +48,10 @@ import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
 import { ApiService } from '../../classes/services/ApiService';
+import type { ConfirmationRefMethods } from '../../components/ui/Confirmation';
+import { Confirmation } from '../../components/ui/Confirmation';
+import { NotificationService } from '../../classes/services/NotificationService';
+import { QueryClientService } from '../../classes/services/QueryClientService';
 
 export type UsersAdminPageProps = {
   subPages?: CrudPageProps<OmitWithMetaData<CommonDbUser, 'organization_id' | 'organization'>, CommonDbUser>['subPages'];
@@ -48,10 +63,12 @@ export const UsersAdminPage = ({
   subPages,
 }: UsersAdminPageProps) => {
   const { t } = useTranslation();
+  const anonymizeUserConfirmationRef = useRef<ConfirmationRefMethods>(null);
   const organizationOptionsQuery = useOrganizationOptionsQuery();
   const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
   const [tableRoleOptions, setTableRoleOptions] = useState<OptionBase<string>[]>([]);
   const [formRoleOptions, setFormRoleOptions] = useState<OptionBase<string>[]>([]);
+  const selectedUserRef = useRef<CommonDbUser | null>(null);
 
   const loadables = useArray([
     organizationOptionsQuery,
@@ -201,6 +218,54 @@ export const UsersAdminPage = ({
     { command_name: CommonDbCommandName.UserCrudCommand, permission_type: CommonDbPermissionType.DELETE },
   ], []);
 
+  const onAnonymizeUserConfirmationConfirm = useCallback(async () => {
+    const userName = selectedUserRef.current?.email ?? selectedUserRef.current?.key;
+    const notificationId = NotificationService.getInstance().showNotification({
+      isLoading: true,
+      message: t('Anonymizing user: {{userName}}', { userName }),
+      severity: 'info',
+    });
+    try {
+      // Anonymize the user
+      await ApiService.getInstance().organizationApi.anonymizeUser(selectedUserRef.current.id);
+      // Invalidate the users query key so that the users list is refreshed and the anonymized user is no longer visible in the list.
+      await QueryClientService.getInstance().invalidateQueryKeys(
+        QueryClientService.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USERS], true),
+      );
+      NotificationService.getInstance().fulfillNotification(notificationId, t('User anonymized successfully: {{userName}}', { userName }), 'success');
+    } catch (_error) {
+      NotificationService.getInstance().fulfillNotification(notificationId, t('Error anonymizing user: {{userName}}', { userName }), 'error');
+    }
+  }, [t]);
+
+  const extraActionsFactory = useCallback((params: TableRowParams<CommonDbUser, null>) => {
+    const menuItems: ReactElement[] = [];
+
+    if (AuthorizationService.getInstance().doesUserHavePermission([
+      { command_name: CommonDbCommandName.AnonymizeUserCommand, permission_type: CommonDbPermissionType.EXECUTE },
+    ])) {
+      menuItems.push(
+        <MenuItem
+          key={'custom-action-1'}
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+          onClick={() => {
+            selectedUserRef.current = params.row;
+            anonymizeUserConfirmationRef.current.open();
+          }}
+        >
+          <ListItemIcon>
+            <PersonOffIcon fontSize={'small'} />
+          </ListItemIcon>
+          <ListItemText>
+            {t`Anonymize user`}
+          </ListItemText>
+        </MenuItem>,
+      );
+    }
+
+    return menuItems;
+  }, [t]);
+
   return (
     <>
       <CrudPage<FormFields, CommonDbUser>
@@ -209,6 +274,7 @@ export const UsersAdminPage = ({
         defaultSortByField={'name'}
         defaultSortDirection={'asc'}
         deleteOne={deleteOne}
+        extraActionsFactory={extraActionsFactory}
         extraDeleteOnePermissions={extraDeleteOnePermissions}
         extraUpdateOnePermissions={extraUpdateOnePermissions}
         fetchAll={fetchAll}
@@ -225,6 +291,14 @@ export const UsersAdminPage = ({
         testIdAttributes={TestIdUtil.createAttributes('UsersAdminPage')}
         title={t`Users`}
         updateOne={updateOne}
+      />
+      <Confirmation
+        body={t`Click the anonymize button to anonymize the user`}
+        cancelLabel={t`Cancel`}
+        confirmLabel={t`Anonymize`}
+        onConfirm={onAnonymizeUserConfirmationConfirm}
+        ref={anonymizeUserConfirmationRef}
+        title={t`Are you sure you want to anonymize this user?`}
       />
     </>
   );

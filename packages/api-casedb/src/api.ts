@@ -791,95 +791,96 @@ export type CaseDbColType = typeof CaseDbColType[keyof typeof CaseDbColType];
 
 
 export const CaseDbCommandName = {
-    SiteCrudCommand: 'SiteCrudCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
     UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
     RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
     UserCrudCommand: 'UserCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
 } as const;
 
 export type CaseDbCommandName = typeof CaseDbCommandName[keyof typeof CaseDbCommandName];
@@ -2458,7 +2459,7 @@ export interface CaseDbTypedNumberSetFilter {
     /**
      * The numbers to match.
      */
-    'members'?: Array<CaseDbMembersInner>;
+    'members': Array<CaseDbMembersInner>;
     'type': string;
 }
 export interface CaseDbTypedPartialDateRangeFilter {
@@ -2505,7 +2506,7 @@ export interface CaseDbTypedStringSetFilter {
     /**
      * The strings to match.
      */
-    'members'?: Array<string>;
+    'members': Array<string>;
     /**
      * Whether the match is case sensitive.
      */
@@ -2524,7 +2525,7 @@ export interface CaseDbTypedUuidSetFilter {
     /**
      * The UUIDs to match.
      */
-    'members'?: Array<string>;
+    'members': Array<string>;
     'type': string;
 }
 export interface CaseDbUpdateCaseTypeSetCaseTypesRequestBody {
@@ -31906,6 +31907,40 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
 const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Anonymizes, in the sense of the EU General Data Protection Regulation (GDPR), the target user by removing the name and replacing the key by the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
+         * @summary Anonymizeuser
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        anonymizeUser: async (userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('anonymizeUser', 'userId', userId)
+            const localVarPath = `/v1/user/{user_id}/anonymize`
+                .replace(`{${"user_id"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Contacts  Delete All
          * @param {number | null} [limit] 
@@ -37772,6 +37807,19 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CaseDbOrganizationApiAxiosParamCreator(configuration)
     return {
         /**
+         * Anonymizes, in the sense of the EU General Data Protection Regulation (GDPR), the target user by removing the name and replacing the key by the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
+         * @summary Anonymizeuser
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async anonymizeUser(userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.anonymizeUser(userId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.anonymizeUser']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @summary Contacts  Delete All
          * @param {number | null} [limit] 
@@ -39895,6 +39943,17 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     CaseDbOrganizationApi.__instance = instance;
     return instance;
   }
+
+    /**
+     * Anonymizes, in the sense of the EU General Data Protection Regulation (GDPR), the target user by removing the name and replacing the key by the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
+     * @summary Anonymizeuser
+     * @param {string} userId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public anonymizeUser(userId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).anonymizeUser(userId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
 
     /**
      * 

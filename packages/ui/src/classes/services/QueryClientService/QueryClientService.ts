@@ -126,17 +126,15 @@ export class QueryClientService<TQueryKey extends string = string> {
   }
 
   public async invalidateQueryKeys(queryKeys: string[][]) {
-    const queryClient = QueryClientService.getInstance().queryClient;
     for (const queryKey of this.getUniqueQueryKeys(queryKeys ?? [])) {
-      await queryClient.cancelQueries({ queryKey });
-      await queryClient.invalidateQueries({ queryKey });
+      await this.queryClient.cancelQueries({ queryKey });
+      await this.queryClient.invalidateQueries({ queryKey });
     }
   }
 
   public removeQueries(queryKeys: string[][]) {
-    const queryClient = QueryClientService.getInstance().queryClient;
     for (const queryKey of this.getUniqueQueryKeys(queryKeys ?? [])) {
-      queryClient.removeQueries({ queryKey });
+      this.queryClient.removeQueries({ queryKey });
     }
   }
 
