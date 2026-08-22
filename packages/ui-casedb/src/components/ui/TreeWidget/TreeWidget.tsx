@@ -524,8 +524,6 @@ export const TreeWidget = () => {
     setIsTreeLinked(linked);
   }, [setIsTreeLinked]);
 
-  console.log({ treeUnavailableReason: widgetUnavailableReason });
-
   return (
     <DashboardWidget
       expandDisabled={isTreeUnavailable}
