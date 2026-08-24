@@ -22,37 +22,37 @@ export type CommonDbAuthProtocol = typeof CommonDbAuthProtocol[keyof typeof Comm
 
 
 export const CommonDbCommandName = {
-  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+  OrganizationCrudCommand: 'OrganizationCrudCommand',
   RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-  UpdateUserCommand: 'UpdateUserCommand',
-  RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
   SiteCrudCommand: 'SiteCrudCommand',
-  InviteUserCommand: 'InviteUserCommand',
-  AnonymizeUserCommand: 'AnonymizeUserCommand',
-  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+  DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
   GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+  RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+  InviteUserCommand: 'InviteUserCommand',
+  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+  OutageCrudCommand: 'OutageCrudCommand',
+  UpdateUserCommand: 'UpdateUserCommand',
   ContactCrudCommand: 'ContactCrudCommand',
   IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-  OutageCrudCommand: 'OutageCrudCommand',
-  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-  OrganizationCrudCommand: 'OrganizationCrudCommand',
-  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-  UserCrudCommand: 'UserCrudCommand',
-  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
   OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-  DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+  UserCrudCommand: 'UserCrudCommand',
+  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+  AnonymizeUserCommand: 'AnonymizeUserCommand',
   DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
 } as const;
 
@@ -101,6 +101,11 @@ export interface CommonDbDataCollectionSet {
   'id'?: string | null;
   'name': string;
   'description'?: string | null;
+}
+
+
+export interface CommonDbDataCollectionSetDataCollectionUpdateAssociationRequestBody {
+  'data_collection_set_members': Array<CommonDbDataCollectionSetMember>;
 }
 
 
@@ -215,6 +220,14 @@ export interface CommonDbIdentityProvider {
 }
 
 
+export interface CommonDbInviteUserRequestBody {
+  'key'?: string | null;
+  'description'?: string | null;
+  'roles': Array<string>;
+  'organization_id': string;
+}
+
+
 export interface CommonDbLogItem {
   'level': CommonDbLogLevel;
   'command_id': string;
@@ -316,6 +329,11 @@ export interface CommonDbOrganizationIdentifierIssuerLink {
 }
 
 
+export interface CommonDbOrganizationIdentifierIssuerUpdateAssociationRequestBody {
+  'organization_identifier_issuer_links': Array<CommonDbOrganizationIdentifierIssuerLink>;
+}
+
+
 export interface CommonDbOrganizationSet {
   'created_at'?: string | null;
   'modified_at'?: string | null;
@@ -335,6 +353,11 @@ export interface CommonDbOrganizationSetMember {
   'organization_set'?: CommonDbOrganizationSet;
   'organization_id': string;
   'organization'?: CommonDbOrganization;
+}
+
+
+export interface CommonDbOrganizationSetOrganizationUpdateAssociationRequestBody {
+  'organization_set_members': Array<CommonDbOrganizationSetMember>;
 }
 
 
@@ -524,21 +547,6 @@ export interface CommonDbTypedUuidSetFilter {
 }
 
 
-export interface CommonDbUpdateDataCollectionSetDataCollectionRequestBody {
-  'data_collection_set_members': Array<CommonDbDataCollectionSetMember>;
-}
-
-
-export interface CommonDbUpdateOrganizationIdentifierIssuerLinksRequestBody {
-  'organization_identifier_issuer_links': Array<CommonDbOrganizationIdentifierIssuerLink>;
-}
-
-
-export interface CommonDbUpdateOrganizationSetOrganizationRequestBody {
-  'organization_set_members': Array<CommonDbOrganizationSetMember>;
-}
-
-
 export interface CommonDbUpdateUserOwnOrganizationRequestBody {
   'organization_id': string;
 }
@@ -611,14 +619,6 @@ export interface CommonDbUserInvitationConstraints {
   'id'?: string | null;
   'roles': Array<string>;
   'organization_ids': Array<string>;
-}
-
-
-export interface CommonDbUserInvitationRequestBody {
-  'key'?: string | null;
-  'description'?: string | null;
-  'roles': Array<string>;
-  'organization_id': string;
 }
 
 
@@ -703,7 +703,7 @@ export interface CommonDbOrganizationApi {
   dataCollectionSetsPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSet>>>;
   dataCollectionSetsPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   dataCollectionSetsPostSome(dataCollectionSet: Array<CommonDbDataCollectionSet>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSet>>>;
-  dataCollectionSetsPutDataCollections(dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: CommonDbUpdateDataCollectionSetDataCollectionRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
+  dataCollectionSetsPutDataCollections(dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: CommonDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
   dataCollectionSetsPutOne(objectId: string, dataCollectionSet: CommonDbDataCollectionSet, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollectionSet>>;
   dataCollectionSetsPutSome(dataCollectionSet: Array<CommonDbDataCollectionSet>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSet>>>;
   dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
@@ -730,7 +730,7 @@ export interface CommonDbOrganizationApi {
   identifierIssuersPostSome(identifierIssuer: Array<CommonDbIdentifierIssuer>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbIdentifierIssuer>>>;
   identifierIssuersPutOne(objectId: string, identifierIssuer: CommonDbIdentifierIssuer, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbIdentifierIssuer>>;
   identifierIssuersPutSome(identifierIssuer: Array<CommonDbIdentifierIssuer>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbIdentifierIssuer>>>;
-  inviteUser(userInvitationRequestBody: CommonDbUserInvitationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUserInvitation>>;
+  inviteUser(inviteUserRequestBody: CommonDbInviteUserRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUserInvitation>>;
   inviteUserConstraints(options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUserInvitationConstraints>>;
   organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
   organizationIdentifierIssuerLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
@@ -767,7 +767,7 @@ export interface CommonDbOrganizationApi {
   organizationSetsPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationSetsPostSome(organizationSet: Array<CommonDbOrganizationSet>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSet>>>;
   organizationSetsPutOne(objectId: string, organizationSet: CommonDbOrganizationSet, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationSet>>;
-  organizationSetsPutOrganizations(organizationSetId: string, updateOrganizationSetOrganizationRequestBody: CommonDbUpdateOrganizationSetOrganizationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
+  organizationSetsPutOrganizations(organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: CommonDbOrganizationSetOrganizationUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
   organizationSetsPutSome(organizationSet: Array<CommonDbOrganizationSet>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSet>>>;
   organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
   organizationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
@@ -779,7 +779,7 @@ export interface CommonDbOrganizationApi {
   organizationsPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganization>>>;
   organizationsPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationsPostSome(organization: Array<CommonDbOrganization>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganization>>>;
-  organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: CommonDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
+  organizationsPutIdentifierIssuers(organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: CommonDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
   organizationsPutOne(objectId: string, organization: CommonDbOrganization, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganization>>;
   organizationsPutSome(organization: Array<CommonDbOrganization>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganization>>>;
   retrieveOrganizationContacts(retrieveOrganizationContactsRequestBody: CommonDbRetrieveOrganizationContactsRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationContacts>>;

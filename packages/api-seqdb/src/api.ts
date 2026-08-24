@@ -164,11 +164,20 @@ export const SeqDbAuthProtocol = {
 export type SeqDbAuthProtocol = typeof SeqDbAuthProtocol[keyof typeof SeqDbAuthProtocol];
 
 
+/**
+ * Calculate a phylogenetic tree based on the given protocol, tree algorithm, and query profile IDs. The returned tree is expected to contain the query profiles as well as any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).
+ */
 export interface SeqDbCalculatePhylogeneticTreeRequestBody {
+    /**
+     * The ID of the protocol to use for generating the distances
+     */
     'protocol_id': string;
     'tree_algorithm': SeqDbGenEpixSeqdbDomainTreeAlgorithm;
-    'profile_ids': Array<string>;
-    'leaf_codes'?: Array<string> | null;
+    /**
+     * List of sequence profile IDs to calculate the phylogenetic tree for
+     */
+    'seq_profile_ids': Array<string>;
+    'leaf_names'?: Array<string> | null;
 }
 
 
@@ -195,84 +204,84 @@ export interface SeqDbCalculateSeqDistancesResult {
 
 
 export const SeqDbCommandName = {
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
     LocusCrudCommand: 'LocusCrudCommand',
     SeqProfileCrudCommand: 'SeqProfileCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    CreateFileCommand: 'CreateFileCommand',
-    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
-    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
-    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
-    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
     RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    UploadSamplesCommand: 'UploadSamplesCommand',
-    ProtocolCrudCommand: 'ProtocolCrudCommand',
-    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
     OrganizationCrudCommand: 'OrganizationCrudCommand',
-    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    ReadSetCrudCommand: 'ReadSetCrudCommand',
-    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
+    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
+    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    AlleleCrudCommand: 'AlleleCrudCommand',
+    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
+    UploadSamplesCommand: 'UploadSamplesCommand',
+    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    TaxonCrudCommand: 'TaxonCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
+    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
+    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
+    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
     AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
     RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    AlleleCrudCommand: 'AlleleCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
-    TaxonCrudCommand: 'TaxonCrudCommand',
-    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
-    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
-    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    FileCrudCommand: 'FileCrudCommand',
-    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
-    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
-    LocusSetCrudCommand: 'LocusSetCrudCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
-    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
-    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
     RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
+    ReadSetCrudCommand: 'ReadSetCrudCommand',
+    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
     TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
     TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    CreateFileCommand: 'CreateFileCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    FileCrudCommand: 'FileCrudCommand',
+    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
     DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
+    LocusSetCrudCommand: 'LocusSetCrudCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -336,7 +345,7 @@ export interface SeqDbContig {
 
 export interface SeqDbCreateFileRequestBody {
     /**
-     * The content of the file  as base64 encoded bytes.
+     * The content of the file as base64 encoded bytes.
      */
     'content': string;
     'format': SeqDbFileFormat;
@@ -368,6 +377,12 @@ export interface SeqDbDataCollectionSet {
      */
     'name': string;
     'description'?: string | null;
+}
+/**
+ * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
+ */
+export interface SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody {
+    'data_collection_set_members': Array<SeqDbDataCollectionSetMember>;
 }
 export interface SeqDbDataCollectionSetMember {
     'created_at'?: string | null;
@@ -652,6 +667,21 @@ export interface SeqDbIdentityProvider {
 
 
 /**
+ * Creates and returns a SeqDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+ */
+export interface SeqDbInviteUserRequestBody {
+    'key'?: string | null;
+    'description'?: string | null;
+    /**
+     * The initial roles that the new user will have
+     */
+    'roles': Array<string>;
+    /**
+     * The ID of the organization that the new user will belong to. FOREIGN KEY
+     */
+    'organization_id': string;
+}
+/**
  * @type SeqDbLocationInner
  */
 export type SeqDbLocationInner = number | string;
@@ -893,6 +923,9 @@ export interface SeqDbOrganizationIdentifierIssuerLink {
     'identifier_issuer_id': string;
     'identifier_issuer'?: SeqDbIdentifierIssuer;
 }
+export interface SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody {
+    'organization_identifier_issuer_links': Array<SeqDbOrganizationIdentifierIssuerLink>;
+}
 export interface SeqDbOrganizationSet {
     'created_at'?: string | null;
     'modified_at'?: string | null;
@@ -919,6 +952,12 @@ export interface SeqDbOrganizationSetMember {
      */
     'organization_id': string;
     'organization'?: SeqDbOrganization;
+}
+/**
+ * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
+ */
+export interface SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody {
+    'organization_set_members': Array<SeqDbOrganizationSetMember>;
 }
 /**
  * Represents a system outage.
@@ -1287,6 +1326,9 @@ export interface SeqDbRefSeq {
 }
 
 
+/**
+ * Retrieve the best SeqDbSeqClassification ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
+ */
 export interface SeqDbRetrieveBestSeqClassificationPerSampleRequestBody {
     /**
      * The IDs of the sequence classification protocols to search among.
@@ -1301,10 +1343,16 @@ export interface SeqDbRetrieveBestSeqClassificationPerSampleRequestBody {
 }
 
 
+/**
+ * Retrieve the best SeqDbSeq ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
+ */
 export interface SeqDbRetrieveBestSeqPerSampleRequestBody {
     'protocol_ids'?: Array<string> | null;
     'sample_ids': Array<string> | null;
 }
+/**
+ * Retrieve the best SeqDbSeqProfile ID for each sample among the given sample IDs and protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
+ */
 export interface SeqDbRetrieveBestSeqProfilePerSampleRequestBody {
     /**
      * The IDs of the sequence profile protocols to search among.
@@ -1312,18 +1360,36 @@ export interface SeqDbRetrieveBestSeqProfilePerSampleRequestBody {
     'protocol_ids': Array<string>;
     'sample_ids': Array<string> | null;
 }
+/**
+ * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+ */
 export interface SeqDbRetrieveOrganizationContactsRequestBody {
     /**
-     * The ID of the organization to retrieve contacts for.
+     * The ID of the organization to retrieve contacts for
      */
     'organization_id': string;
 }
+/**
+ * Retrieve only the SeqDbSampleIdentifier records for a list of sample IDs. Lighter than RetrieveSamplesByIdCommand — no sequences or read sets.
+ */
 export interface SeqDbRetrieveSampleIdentifiersByIdsRequestBody {
+    /**
+     * IDs of the samples to retrieve identifiers for. Must be unique.
+     */
     'sample_ids': Array<string>;
 }
+/**
+ * Retrieve all data for a list of sample IDs, as a list of SeqDbFullSample objects in the same order.
+ */
 export interface SeqDbRetrieveSamplesByIdsRequestBody {
+    /**
+     * IDs of the samples to retrieve. Must be unique.
+     */
     'sample_ids': Array<string>;
 }
+/**
+ * Retrieve the sequences for the given sequence IDs in FASTA format as an iterable that yields one contig at a time.
+ */
 export interface SeqDbRetrieveSeqFastaRequestBody {
     /**
      * List of sequence IDs to retrieve in FASTA format.
@@ -1334,9 +1400,21 @@ export interface SeqDbRetrieveSeqFastaRequestBody {
      */
     'file_name': string;
 }
+/**
+ * Retrieve all profiles that match at least one of the given query profiles within the given maximum distance and based on the given seq distance protocol. The returned profiles do not contain the query profiles.
+ */
 export interface SeqDbRetrieveSimilarProfilesRequestBody {
+    /**
+     * ID of the protocol to use for similarity search.
+     */
     'protocol_id': string;
+    /**
+     * List of query profile IDs to find similar profiles for.
+     */
     'profile_ids': Array<string>;
+    /**
+     * Maximum distance threshold for considering profiles as similar.
+     */
     'max_distance': number;
 }
 /**
@@ -2375,24 +2453,9 @@ export interface SeqDbTypedUuidSetFilter {
     'members': Array<string>;
     'type': string;
 }
-export interface SeqDbUpdateDataCollectionSetDataCollectionRequestBody {
-    /**
-     * The updated set of data collection set members, replacing the previous set
-     */
-    'data_collection_set_members': Array<SeqDbDataCollectionSetMember>;
-}
-export interface SeqDbUpdateOrganizationIdentifierIssuerLinksRequestBody {
-    /**
-     * The identifier issuers that the organization is linked to.
-     */
-    'organization_identifier_issuer_links': Array<SeqDbOrganizationIdentifierIssuerLink>;
-}
-export interface SeqDbUpdateOrganizationSetOrganizationRequestBody {
-    /**
-     * The updated set of organization set members, replacing the previous set
-     */
-    'organization_set_members': Array<SeqDbOrganizationSetMember>;
-}
+/**
+ * For a given distance protocol, find all profiles that don\'t yet have a SeqDbSeqDistance record, compute the missing distances, and create the records while maintaining the symmetry invariant (every distance is stored in both directions).
+ */
 export interface SeqDbUpdateSeqDistancesRequestBody {
     /**
      * The ID of the seq distance protocol to update distances for.
@@ -2406,12 +2469,18 @@ export interface SeqDbUpdateSeqDistancesRequestBody {
      */
     'use_numpy_allele_distance'?: boolean;
 }
+/**
+ * Updates the current user\'s SeqDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+ */
 export interface SeqDbUpdateUserOwnOrganizationRequestBody {
     /**
-     * The ID of the organization to update the user to
+     * The ID of the organization of the user. FOREIGN KEY
      */
     'organization_id': string;
 }
+/**
+ * Updates an existing SeqDbUser with new properties such as active status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+ */
 export interface SeqDbUpdateUserRequestBody {
     'is_active': boolean | null;
     'roles': Array<string> | null;
@@ -2445,6 +2514,9 @@ export interface SeqDbUploadResult {
 }
 
 
+/**
+ * Upload a batch of samples along with their associated data. The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  The upload process consists of the following steps: 1) Check if the user has the rights to upload the data in question. 2) Verify the validity of the sample data. The verification does not fail fast    but rather proceeds with the remaining data and checks to the extent possible,    so that all errors can be reported back to the caller instead of just the    first encountered one. 3) Upsert (create and/or update) the sample data.  The return value contains the results of the upload operation, whether successful or otherwise, and with details for each sample and associated data item.
+ */
 export interface SeqDbUploadSamplesRequestBody {
     /**
      * If true, the upload is only verified but not actually performed.
@@ -2550,18 +2622,6 @@ export interface SeqDbUserInvitationConstraints {
      * The organizations that the user may be assigned by the inviting user.
      */
     'organization_ids': Array<string>;
-}
-export interface SeqDbUserInvitationRequestBody {
-    'key'?: string | null;
-    'description'?: string | null;
-    /**
-     * The initial roles that the new user will have
-     */
-    'roles': Array<string>;
-    /**
-     * The ID of the organization that the new user will belong to. FOREIGN KEY
-     */
-    'organization_id': string;
 }
 export interface SeqDbUserNameEmail {
     'id'?: string | null;
@@ -5818,15 +5878,15 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
-         * @param {SeqDbUpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
+         * @param {SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsPutDataCollections: async (dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: SeqDbUpdateDataCollectionSetDataCollectionRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsPutDataCollections: async (dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'dataCollectionSetId' is not null or undefined
             assertParamExists('dataCollectionSetsPutDataCollections', 'dataCollectionSetId', dataCollectionSetId)
-            // verify required parameter 'updateDataCollectionSetDataCollectionRequestBody' is not null or undefined
-            assertParamExists('dataCollectionSetsPutDataCollections', 'updateDataCollectionSetDataCollectionRequestBody', updateDataCollectionSetDataCollectionRequestBody)
+            // verify required parameter 'dataCollectionSetDataCollectionUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('dataCollectionSetsPutDataCollections', 'dataCollectionSetDataCollectionUpdateAssociationRequestBody', dataCollectionSetDataCollectionUpdateAssociationRequestBody)
             const localVarPath = `/v1/data_collection_sets/{data_collection_set_id}/data_collections`
                 .replace(`{${"data_collection_set_id"}}`, encodeURIComponent(String(dataCollectionSetId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -5846,7 +5906,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateDataCollectionSetDataCollectionRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(dataCollectionSetDataCollectionUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -6842,13 +6902,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
         /**
          * Creates and returns a SeqDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A SeqDbUser
-         * @param {SeqDbUserInvitationRequestBody} userInvitationRequestBody 
+         * @param {SeqDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        inviteUser: async (userInvitationRequestBody: SeqDbUserInvitationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'userInvitationRequestBody' is not null or undefined
-            assertParamExists('inviteUser', 'userInvitationRequestBody', userInvitationRequestBody)
+        inviteUser: async (inviteUserRequestBody: SeqDbInviteUserRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'inviteUserRequestBody' is not null or undefined
+            assertParamExists('inviteUser', 'inviteUserRequestBody', inviteUserRequestBody)
             const localVarPath = `/v1/invite_user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6867,7 +6927,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userInvitationRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(inviteUserRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -8241,15 +8301,15 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
          * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset SeqDbOrganization
          * @param {string} organizationSetId 
-         * @param {SeqDbUpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
+         * @param {SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsPutOrganizations: async (organizationSetId: string, updateOrganizationSetOrganizationRequestBody: SeqDbUpdateOrganizationSetOrganizationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsPutOrganizations: async (organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'organizationSetId' is not null or undefined
             assertParamExists('organizationSetsPutOrganizations', 'organizationSetId', organizationSetId)
-            // verify required parameter 'updateOrganizationSetOrganizationRequestBody' is not null or undefined
-            assertParamExists('organizationSetsPutOrganizations', 'updateOrganizationSetOrganizationRequestBody', updateOrganizationSetOrganizationRequestBody)
+            // verify required parameter 'organizationSetOrganizationUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('organizationSetsPutOrganizations', 'organizationSetOrganizationUpdateAssociationRequestBody', organizationSetOrganizationUpdateAssociationRequestBody)
             const localVarPath = `/v1/organization_sets/{organization_set_id}/organizations`
                 .replace(`{${"organization_set_id"}}`, encodeURIComponent(String(organizationSetId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -8269,7 +8329,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateOrganizationSetOrganizationRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationSetOrganizationUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -8694,18 +8754,18 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * 
+         * See router description.
          * @summary Update Association Between SeqDbOrganization And Identifierissuer
          * @param {string} organizationId 
-         * @param {SeqDbUpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+         * @param {SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsPutIdentifierIssuers: async (organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: SeqDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsPutIdentifierIssuers: async (organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'organizationId' is not null or undefined
             assertParamExists('organizationsPutIdentifierIssuers', 'organizationId', organizationId)
-            // verify required parameter 'updateOrganizationIdentifierIssuerLinksRequestBody' is not null or undefined
-            assertParamExists('organizationsPutIdentifierIssuers', 'updateOrganizationIdentifierIssuerLinksRequestBody', updateOrganizationIdentifierIssuerLinksRequestBody)
+            // verify required parameter 'organizationIdentifierIssuerUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('organizationsPutIdentifierIssuers', 'organizationIdentifierIssuerUpdateAssociationRequestBody', organizationIdentifierIssuerUpdateAssociationRequestBody)
             const localVarPath = `/v1/organizations/{organization_id}/identifier_issuers`
                 .replace(`{${"organization_id"}}`, encodeURIComponent(String(organizationId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -8725,7 +8785,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateOrganizationIdentifierIssuerLinksRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationIdentifierIssuerUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -9828,7 +9888,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * 
+         * See router description.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9858,7 +9918,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * 
+         * See router description.
          * @summary Userme Permissions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10865,12 +10925,12 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
-         * @param {SeqDbUpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
+         * @param {SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsPutDataCollections(dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: SeqDbUpdateDataCollectionSetDataCollectionRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPutDataCollections(dataCollectionSetId, updateDataCollectionSetDataCollectionRequestBody, options);
+        async dataCollectionSetsPutDataCollections(dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbDataCollectionSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPutDataCollections(dataCollectionSetId, dataCollectionSetDataCollectionUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsPutDataCollections']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11231,12 +11291,12 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Creates and returns a SeqDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A SeqDbUser
-         * @param {SeqDbUserInvitationRequestBody} userInvitationRequestBody 
+         * @param {SeqDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async inviteUser(userInvitationRequestBody: SeqDbUserInvitationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SeqDbUserInvitation>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUser(userInvitationRequestBody, options);
+        async inviteUser(inviteUserRequestBody: SeqDbInviteUserRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SeqDbUserInvitation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUser(inviteUserRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.inviteUser']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11733,12 +11793,12 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
          * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset SeqDbOrganization
          * @param {string} organizationSetId 
-         * @param {SeqDbUpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
+         * @param {SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsPutOrganizations(organizationSetId: string, updateOrganizationSetOrganizationRequestBody: SeqDbUpdateOrganizationSetOrganizationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPutOrganizations(organizationSetId, updateOrganizationSetOrganizationRequestBody, options);
+        async organizationSetsPutOrganizations(organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPutOrganizations(organizationSetId, organizationSetOrganizationUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsPutOrganizations']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -11893,15 +11953,15 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * See router description.
          * @summary Update Association Between SeqDbOrganization And Identifierissuer
          * @param {string} organizationId 
-         * @param {SeqDbUpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+         * @param {SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: SeqDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationIdentifierIssuerLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPutIdentifierIssuers(organizationId, updateOrganizationIdentifierIssuerLinksRequestBody, options);
+        async organizationsPutIdentifierIssuers(organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbOrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPutIdentifierIssuers(organizationId, organizationIdentifierIssuerUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsPutIdentifierIssuers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -12300,7 +12360,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * See router description.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12312,7 +12372,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * See router description.
          * @summary Userme Permissions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -12933,12 +12993,12 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
      * @summary Datacollectionset Datacollection
      * @param {string} dataCollectionSetId 
-     * @param {SeqDbUpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
+     * @param {SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsPutDataCollections(dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: SeqDbUpdateDataCollectionSetDataCollectionRequestBody, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsPutDataCollections(dataCollectionSetId, updateDataCollectionSetDataCollectionRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsPutDataCollections(dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsPutDataCollections(dataCollectionSetId, dataCollectionSetDataCollectionUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13245,12 +13305,12 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     /**
      * Creates and returns a SeqDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
      * @summary Invite A SeqDbUser
-     * @param {SeqDbUserInvitationRequestBody} userInvitationRequestBody 
+     * @param {SeqDbInviteUserRequestBody} inviteUserRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public inviteUser(userInvitationRequestBody: SeqDbUserInvitationRequestBody, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).inviteUser(userInvitationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public inviteUser(inviteUserRequestBody: SeqDbInviteUserRequestBody, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).inviteUser(inviteUserRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13673,12 +13733,12 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
      * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
      * @summary Organizationset SeqDbOrganization
      * @param {string} organizationSetId 
-     * @param {SeqDbUpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
+     * @param {SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsPutOrganizations(organizationSetId: string, updateOrganizationSetOrganizationRequestBody: SeqDbUpdateOrganizationSetOrganizationRequestBody, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationSetsPutOrganizations(organizationSetId, updateOrganizationSetOrganizationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsPutOrganizations(organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationSetsPutOrganizations(organizationSetId, organizationSetOrganizationUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -13809,15 +13869,15 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * 
+     * See router description.
      * @summary Update Association Between SeqDbOrganization And Identifierissuer
      * @param {string} organizationId 
-     * @param {SeqDbUpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+     * @param {SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: SeqDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig) {
-        return SeqDbOrganizationApiFp(this.configuration).organizationsPutIdentifierIssuers(organizationId, updateOrganizationIdentifierIssuerLinksRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsPutIdentifierIssuers(organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return SeqDbOrganizationApiFp(this.configuration).organizationsPutIdentifierIssuers(organizationId, organizationIdentifierIssuerUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -14156,7 +14216,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * 
+     * See router description.
      * @summary Userme
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -14166,7 +14226,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * 
+     * See router description.
      * @summary Userme Permissions
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

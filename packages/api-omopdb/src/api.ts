@@ -145,97 +145,97 @@ export interface OmopDbCohortDefinition {
 }
 
 export const OmopDbCommandName = {
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    VisitDetailCrudCommand: 'VisitDetailCrudCommand',
-    ConceptRelationshipCrudCommand: 'ConceptRelationshipCrudCommand',
-    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
-    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    SpecimenCrudCommand: 'SpecimenCrudCommand',
+    DrugEraCrudCommand: 'DrugEraCrudCommand',
+    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
+    RetrieveSpecimenIdsByCohortIdsCommand: 'RetrieveSpecimenIdsByCohortIdsCommand',
+    FactRelationshipCrudCommand: 'FactRelationshipCrudCommand',
     ProcedureOccurrenceIdentifierCrudCommand: 'ProcedureOccurrenceIdentifierCrudCommand',
+    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
+    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    ConceptClassCrudCommand: 'ConceptClassCrudCommand',
+    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
+    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
+    VisitDetailCrudCommand: 'VisitDetailCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    MeasurementRelationIdentifierCrudCommand: 'MeasurementRelationIdentifierCrudCommand',
+    EpisodeCrudCommand: 'EpisodeCrudCommand',
+    DoseEraCrudCommand: 'DoseEraCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    DeathCrudCommand: 'DeathCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
+    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
+    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
+    CostCrudCommand: 'CostCrudCommand',
+    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
+    DomainCrudCommand: 'DomainCrudCommand',
+    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
+    UploadPersonsCommand: 'UploadPersonsCommand',
+    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
+    DrugExposureIdentifierCrudCommand: 'DrugExposureIdentifierCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
+    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RetrievePersonsByQueryCommand: 'RetrievePersonsByQueryCommand',
+    PersonCrudCommand: 'PersonCrudCommand',
+    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
+    MeasurementCrudCommand: 'MeasurementCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
+    ProviderCrudCommand: 'ProviderCrudCommand',
+    ObservationCrudCommand: 'ObservationCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    ConceptSynonymCrudCommand: 'ConceptSynonymCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    CohortDefinitionCrudCommand: 'CohortDefinitionCrudCommand',
+    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
+    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
+    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
+    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
+    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    CareSiteCrudCommand: 'CareSiteCrudCommand',
+    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    MetadataCrudCommand: 'MetadataCrudCommand',
+    ConceptRelationshipCrudCommand: 'ConceptRelationshipCrudCommand',
+    VocabularyCrudCommand: 'VocabularyCrudCommand',
+    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
+    EpisodeEventCrudCommand: 'EpisodeEventCrudCommand',
     RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
     NoteCrudCommand: 'NoteCrudCommand',
-    VocabularyCrudCommand: 'VocabularyCrudCommand',
-    UploadPersonsCommand: 'UploadPersonsCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    DrugEraCrudCommand: 'DrugEraCrudCommand',
-    CostCrudCommand: 'CostCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    DeathCrudCommand: 'DeathCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    EpisodeEventCrudCommand: 'EpisodeEventCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
-    MetadataCrudCommand: 'MetadataCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    ConceptSynonymCrudCommand: 'ConceptSynonymCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveSpecimenIdsByCohortIdsCommand: 'RetrieveSpecimenIdsByCohortIdsCommand',
-    CohortCrudCommand: 'CohortCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    EpisodeCrudCommand: 'EpisodeCrudCommand',
-    SpecimenCrudCommand: 'SpecimenCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    DoseEraCrudCommand: 'DoseEraCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    ProviderCrudCommand: 'ProviderCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
-    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
-    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
-    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
-    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
-    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
-    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
-    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
-    ObservationCrudCommand: 'ObservationCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
-    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
-    MeasurementCrudCommand: 'MeasurementCrudCommand',
-    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
-    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
-    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
-    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
-    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
     LocationCrudCommand: 'LocationCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
-    DomainCrudCommand: 'DomainCrudCommand',
-    FactRelationshipCrudCommand: 'FactRelationshipCrudCommand',
-    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
-    ConceptClassCrudCommand: 'ConceptClassCrudCommand',
     ObservationIdentifierCrudCommand: 'ObservationIdentifierCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    DrugExposureIdentifierCrudCommand: 'DrugExposureIdentifierCrudCommand',
-    CareSiteCrudCommand: 'CareSiteCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
-    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
-    PersonCrudCommand: 'PersonCrudCommand',
-    RelationshipCrudCommand: 'RelationshipCrudCommand',
-    RetrievePersonsByQueryCommand: 'RetrievePersonsByQueryCommand',
-    MeasurementRelationIdentifierCrudCommand: 'MeasurementRelationIdentifierCrudCommand',
-    CohortDefinitionCrudCommand: 'CohortDefinitionCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    CohortCrudCommand: 'CohortCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
     DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
+    RelationshipCrudCommand: 'RelationshipCrudCommand',
 } as const;
 
 export type OmopDbCommandName = typeof OmopDbCommandName[keyof typeof OmopDbCommandName];
@@ -569,6 +569,12 @@ export interface OmopDbDataCollectionSet {
      */
     'name': string;
     'description'?: string | null;
+}
+/**
+ * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating OmopDbDataCollectionSetMember associations between data collection sets and individual data collections.
+ */
+export interface OmopDbDataCollectionSetDataCollectionUpdateAssociationRequestBody {
+    'data_collection_set_members': Array<OmopDbDataCollectionSetMember>;
 }
 export interface OmopDbDataCollectionSetMember {
     'created_at'?: string | null;
@@ -1240,6 +1246,21 @@ export interface OmopDbIdentityProvider {
 }
 
 
+/**
+ * Creates and returns a OmopDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+ */
+export interface OmopDbInviteUserRequestBody {
+    'key'?: string | null;
+    'description'?: string | null;
+    /**
+     * The initial roles that the new user will have
+     */
+    'roles': Array<string>;
+    /**
+     * The ID of the organization that the new user will belong to. FOREIGN KEY
+     */
+    'organization_id': string;
+}
 /**
  * The LOCATION table represents a generic way to capture physical location or address information of Persons and Care Sites.
  */
@@ -1916,6 +1937,9 @@ export interface OmopDbOrganizationIdentifierIssuerLink {
     'identifier_issuer_id': string;
     'identifier_issuer'?: OmopDbIdentifierIssuer;
 }
+export interface OmopDbOrganizationIdentifierIssuerUpdateAssociationRequestBody {
+    'organization_identifier_issuer_links': Array<OmopDbOrganizationIdentifierIssuerLink>;
+}
 export interface OmopDbOrganizationSet {
     'created_at'?: string | null;
     'modified_at'?: string | null;
@@ -1942,6 +1966,12 @@ export interface OmopDbOrganizationSetMember {
      */
     'organization_id': string;
     'organization'?: OmopDbOrganization;
+}
+/**
+ * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating OmopDbOrganizationSetMember associations between organization sets and individual organizations.
+ */
+export interface OmopDbOrganizationSetOrganizationUpdateAssociationRequestBody {
+    'organization_set_members': Array<OmopDbOrganizationSetMember>;
 }
 /**
  * Represents a system outage.
@@ -2332,9 +2362,12 @@ export interface OmopDbRelationship {
      */
     'relationship_concept_id': string;
 }
+/**
+ * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+ */
 export interface OmopDbRetrieveOrganizationContactsRequestBody {
     /**
-     * The ID of the organization to retrieve contacts for.
+     * The ID of the organization to retrieve contacts for
      */
     'organization_id': string;
 }
@@ -2753,30 +2786,18 @@ export interface OmopDbTypedUuidSetFilter {
     'members': Array<string>;
     'type': string;
 }
-export interface OmopDbUpdateDataCollectionSetDataCollectionRequestBody {
-    /**
-     * The updated set of data collection set members, replacing the previous set
-     */
-    'data_collection_set_members': Array<OmopDbDataCollectionSetMember>;
-}
-export interface OmopDbUpdateOrganizationIdentifierIssuerLinksRequestBody {
-    /**
-     * The identifier issuers that the organization is linked to.
-     */
-    'organization_identifier_issuer_links': Array<OmopDbOrganizationIdentifierIssuerLink>;
-}
-export interface OmopDbUpdateOrganizationSetOrganizationRequestBody {
-    /**
-     * The updated set of organization set members, replacing the previous set
-     */
-    'organization_set_members': Array<OmopDbOrganizationSetMember>;
-}
+/**
+ * Updates the current user\'s OmopDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+ */
 export interface OmopDbUpdateUserOwnOrganizationRequestBody {
     /**
-     * The ID of the organization to update the user to
+     * The ID of the organization of the user. FOREIGN KEY
      */
     'organization_id': string;
 }
+/**
+ * Updates an existing OmopDbUser with new properties such as active status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+ */
 export interface OmopDbUpdateUserRequestBody {
     'is_active': boolean | null;
     'roles': Array<string> | null;
@@ -2908,18 +2929,6 @@ export interface OmopDbUserInvitationConstraints {
      * The organizations that the user may be assigned by the inviting user.
      */
     'organization_ids': Array<string>;
-}
-export interface OmopDbUserInvitationRequestBody {
-    'key'?: string | null;
-    'description'?: string | null;
-    /**
-     * The initial roles that the new user will have
-     */
-    'roles': Array<string>;
-    /**
-     * The ID of the organization that the new user will belong to. FOREIGN KEY
-     */
-    'organization_id': string;
 }
 export interface OmopDbUserNameEmail {
     'id'?: string | null;
@@ -47445,15 +47454,15 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating OmopDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
-         * @param {OmopDbUpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
+         * @param {OmopDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsPutDataCollections: async (dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: OmopDbUpdateDataCollectionSetDataCollectionRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsPutDataCollections: async (dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: OmopDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'dataCollectionSetId' is not null or undefined
             assertParamExists('dataCollectionSetsPutDataCollections', 'dataCollectionSetId', dataCollectionSetId)
-            // verify required parameter 'updateDataCollectionSetDataCollectionRequestBody' is not null or undefined
-            assertParamExists('dataCollectionSetsPutDataCollections', 'updateDataCollectionSetDataCollectionRequestBody', updateDataCollectionSetDataCollectionRequestBody)
+            // verify required parameter 'dataCollectionSetDataCollectionUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('dataCollectionSetsPutDataCollections', 'dataCollectionSetDataCollectionUpdateAssociationRequestBody', dataCollectionSetDataCollectionUpdateAssociationRequestBody)
             const localVarPath = `/v1/data_collection_sets/{data_collection_set_id}/data_collections`
                 .replace(`{${"data_collection_set_id"}}`, encodeURIComponent(String(dataCollectionSetId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -47473,7 +47482,7 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateDataCollectionSetDataCollectionRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(dataCollectionSetDataCollectionUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -48469,13 +48478,13 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Creates and returns a OmopDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A OmopDbUser
-         * @param {OmopDbUserInvitationRequestBody} userInvitationRequestBody 
+         * @param {OmopDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        inviteUser: async (userInvitationRequestBody: OmopDbUserInvitationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'userInvitationRequestBody' is not null or undefined
-            assertParamExists('inviteUser', 'userInvitationRequestBody', userInvitationRequestBody)
+        inviteUser: async (inviteUserRequestBody: OmopDbInviteUserRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'inviteUserRequestBody' is not null or undefined
+            assertParamExists('inviteUser', 'inviteUserRequestBody', inviteUserRequestBody)
             const localVarPath = `/v1/invite_user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -48494,7 +48503,7 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userInvitationRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(inviteUserRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -49868,15 +49877,15 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating OmopDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset OmopDbOrganization
          * @param {string} organizationSetId 
-         * @param {OmopDbUpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
+         * @param {OmopDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsPutOrganizations: async (organizationSetId: string, updateOrganizationSetOrganizationRequestBody: OmopDbUpdateOrganizationSetOrganizationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsPutOrganizations: async (organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: OmopDbOrganizationSetOrganizationUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'organizationSetId' is not null or undefined
             assertParamExists('organizationSetsPutOrganizations', 'organizationSetId', organizationSetId)
-            // verify required parameter 'updateOrganizationSetOrganizationRequestBody' is not null or undefined
-            assertParamExists('organizationSetsPutOrganizations', 'updateOrganizationSetOrganizationRequestBody', updateOrganizationSetOrganizationRequestBody)
+            // verify required parameter 'organizationSetOrganizationUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('organizationSetsPutOrganizations', 'organizationSetOrganizationUpdateAssociationRequestBody', organizationSetOrganizationUpdateAssociationRequestBody)
             const localVarPath = `/v1/organization_sets/{organization_set_id}/organizations`
                 .replace(`{${"organization_set_id"}}`, encodeURIComponent(String(organizationSetId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -49896,7 +49905,7 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateOrganizationSetOrganizationRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationSetOrganizationUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -50321,18 +50330,18 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         * See router description.
          * @summary Update Association Between OmopDbOrganization And Identifierissuer
          * @param {string} organizationId 
-         * @param {OmopDbUpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+         * @param {OmopDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsPutIdentifierIssuers: async (organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: OmopDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsPutIdentifierIssuers: async (organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: OmopDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'organizationId' is not null or undefined
             assertParamExists('organizationsPutIdentifierIssuers', 'organizationId', organizationId)
-            // verify required parameter 'updateOrganizationIdentifierIssuerLinksRequestBody' is not null or undefined
-            assertParamExists('organizationsPutIdentifierIssuers', 'updateOrganizationIdentifierIssuerLinksRequestBody', updateOrganizationIdentifierIssuerLinksRequestBody)
+            // verify required parameter 'organizationIdentifierIssuerUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('organizationsPutIdentifierIssuers', 'organizationIdentifierIssuerUpdateAssociationRequestBody', organizationIdentifierIssuerUpdateAssociationRequestBody)
             const localVarPath = `/v1/organizations/{organization_id}/identifier_issuers`
                 .replace(`{${"organization_id"}}`, encodeURIComponent(String(organizationId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -50352,7 +50361,7 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateOrganizationIdentifierIssuerLinksRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationIdentifierIssuerUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -51455,7 +51464,7 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         * See router description.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -51485,7 +51494,7 @@ const OmopDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         * See router description.
          * @summary Userme Permissions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -52492,12 +52501,12 @@ const OmopDbOrganizationApiFp = function(configuration?: Configuration) {
          * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating OmopDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
-         * @param {OmopDbUpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
+         * @param {OmopDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsPutDataCollections(dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: OmopDbUpdateDataCollectionSetDataCollectionRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbDataCollectionSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPutDataCollections(dataCollectionSetId, updateDataCollectionSetDataCollectionRequestBody, options);
+        async dataCollectionSetsPutDataCollections(dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: OmopDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbDataCollectionSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPutDataCollections(dataCollectionSetId, dataCollectionSetDataCollectionUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsPutDataCollections']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -52858,12 +52867,12 @@ const OmopDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Creates and returns a OmopDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A OmopDbUser
-         * @param {OmopDbUserInvitationRequestBody} userInvitationRequestBody 
+         * @param {OmopDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async inviteUser(userInvitationRequestBody: OmopDbUserInvitationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OmopDbUserInvitation>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUser(userInvitationRequestBody, options);
+        async inviteUser(inviteUserRequestBody: OmopDbInviteUserRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OmopDbUserInvitation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUser(inviteUserRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.inviteUser']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -53360,12 +53369,12 @@ const OmopDbOrganizationApiFp = function(configuration?: Configuration) {
          * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating OmopDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset OmopDbOrganization
          * @param {string} organizationSetId 
-         * @param {OmopDbUpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
+         * @param {OmopDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsPutOrganizations(organizationSetId: string, updateOrganizationSetOrganizationRequestBody: OmopDbUpdateOrganizationSetOrganizationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbOrganizationSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPutOrganizations(organizationSetId, updateOrganizationSetOrganizationRequestBody, options);
+        async organizationSetsPutOrganizations(organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: OmopDbOrganizationSetOrganizationUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbOrganizationSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPutOrganizations(organizationSetId, organizationSetOrganizationUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsPutOrganizations']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -53520,15 +53529,15 @@ const OmopDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * See router description.
          * @summary Update Association Between OmopDbOrganization And Identifierissuer
          * @param {string} organizationId 
-         * @param {OmopDbUpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+         * @param {OmopDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: OmopDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbOrganizationIdentifierIssuerLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPutIdentifierIssuers(organizationId, updateOrganizationIdentifierIssuerLinksRequestBody, options);
+        async organizationsPutIdentifierIssuers(organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: OmopDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbOrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPutIdentifierIssuers(organizationId, organizationIdentifierIssuerUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsPutIdentifierIssuers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -53927,7 +53936,7 @@ const OmopDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * See router description.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -53939,7 +53948,7 @@ const OmopDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * See router description.
          * @summary Userme Permissions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -54560,12 +54569,12 @@ export class OmopDbOrganizationApi extends OmopDbBaseAPI {
      * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating OmopDbDataCollectionSetMember associations between data collection sets and individual data collections.
      * @summary Datacollectionset Datacollection
      * @param {string} dataCollectionSetId 
-     * @param {OmopDbUpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
+     * @param {OmopDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsPutDataCollections(dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: OmopDbUpdateDataCollectionSetDataCollectionRequestBody, options?: RawAxiosRequestConfig) {
-        return OmopDbOrganizationApiFp(this.configuration).dataCollectionSetsPutDataCollections(dataCollectionSetId, updateDataCollectionSetDataCollectionRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsPutDataCollections(dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: OmopDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return OmopDbOrganizationApiFp(this.configuration).dataCollectionSetsPutDataCollections(dataCollectionSetId, dataCollectionSetDataCollectionUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -54872,12 +54881,12 @@ export class OmopDbOrganizationApi extends OmopDbBaseAPI {
     /**
      * Creates and returns a OmopDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
      * @summary Invite A OmopDbUser
-     * @param {OmopDbUserInvitationRequestBody} userInvitationRequestBody 
+     * @param {OmopDbInviteUserRequestBody} inviteUserRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public inviteUser(userInvitationRequestBody: OmopDbUserInvitationRequestBody, options?: RawAxiosRequestConfig) {
-        return OmopDbOrganizationApiFp(this.configuration).inviteUser(userInvitationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public inviteUser(inviteUserRequestBody: OmopDbInviteUserRequestBody, options?: RawAxiosRequestConfig) {
+        return OmopDbOrganizationApiFp(this.configuration).inviteUser(inviteUserRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -55300,12 +55309,12 @@ export class OmopDbOrganizationApi extends OmopDbBaseAPI {
      * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating OmopDbOrganizationSetMember associations between organization sets and individual organizations.
      * @summary Organizationset OmopDbOrganization
      * @param {string} organizationSetId 
-     * @param {OmopDbUpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
+     * @param {OmopDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsPutOrganizations(organizationSetId: string, updateOrganizationSetOrganizationRequestBody: OmopDbUpdateOrganizationSetOrganizationRequestBody, options?: RawAxiosRequestConfig) {
-        return OmopDbOrganizationApiFp(this.configuration).organizationSetsPutOrganizations(organizationSetId, updateOrganizationSetOrganizationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsPutOrganizations(organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: OmopDbOrganizationSetOrganizationUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return OmopDbOrganizationApiFp(this.configuration).organizationSetsPutOrganizations(organizationSetId, organizationSetOrganizationUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -55436,15 +55445,15 @@ export class OmopDbOrganizationApi extends OmopDbBaseAPI {
     }
 
     /**
-     * 
+     * See router description.
      * @summary Update Association Between OmopDbOrganization And Identifierissuer
      * @param {string} organizationId 
-     * @param {OmopDbUpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+     * @param {OmopDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: OmopDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig) {
-        return OmopDbOrganizationApiFp(this.configuration).organizationsPutIdentifierIssuers(organizationId, updateOrganizationIdentifierIssuerLinksRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsPutIdentifierIssuers(organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: OmopDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return OmopDbOrganizationApiFp(this.configuration).organizationsPutIdentifierIssuers(organizationId, organizationIdentifierIssuerUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -55783,7 +55792,7 @@ export class OmopDbOrganizationApi extends OmopDbBaseAPI {
     }
 
     /**
-     * 
+     * See router description.
      * @summary Userme
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -55793,7 +55802,7 @@ export class OmopDbOrganizationApi extends OmopDbBaseAPI {
     }
 
     /**
-     * 
+     * See router description.
      * @summary Userme Permissions
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

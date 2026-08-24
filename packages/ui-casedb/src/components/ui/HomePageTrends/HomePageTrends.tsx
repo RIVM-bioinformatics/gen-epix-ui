@@ -319,7 +319,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   );
 }, {
   requiredPermissions: [
-    { command_name: CaseDbCommandName.RetrieveCaseStatsCommand, permission_type: CaseDbPermissionType.EXECUTE },
+    { command_name: CaseDbCommandName.RetrieveCaseTypeStatsCommand, permission_type: CaseDbPermissionType.EXECUTE },
     { command_name: CaseDbCommandName.CaseSetCrudCommand, permission_type: CaseDbPermissionType.READ },
     { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
   ] });

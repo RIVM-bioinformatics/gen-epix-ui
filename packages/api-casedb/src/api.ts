@@ -67,7 +67,7 @@ export interface CaseDbCase {
      */
     'case_date'?: string;
     /**
-     * The data content of the case as {col_id: str_value | None}. Only columns defined for the CaseDbCaseType of the case should be present here, and if no value is present, the key should be omitted. None content values are allowed to support deletion of keys but will be removed upon serialization.
+     * The data content of the case as {col_id: str_value | None}. Only columns defined for the CaseDbCaseType of the case should be present here, and if no value is present, the key should be omitted. None content values are allowed to support deletion of keys.
      */
     'content': { [key: string]: string | null; };
 }
@@ -578,6 +578,12 @@ export interface CaseDbCaseTypeSet {
      */
     'rank': number;
 }
+/**
+ * Replace the CaseTypes in a CaseDbCaseTypeSet with the provided list of members, keeping the set in sync for downstream access policies and presets.
+ */
+export interface CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody {
+    'case_type_set_members': Array<CaseDbCaseTypeSetMember>;
+}
 export interface CaseDbCaseTypeSetCategory {
     'created_at'?: string | null;
     'modified_at'?: string | null;
@@ -734,6 +740,12 @@ export interface CaseDbColSet {
     'name': string;
     'description'?: string | null;
 }
+/**
+ * Replace the columns in a CaseDbColSet with the provided members so read/write scopes and UI column groupings stay aligned.
+ */
+export interface CaseDbColSetColUpdateAssociationRequestBody {
+    'col_set_members': Array<CaseDbColSetMember>;
+}
 export interface CaseDbColSetMember {
     'created_at'?: string | null;
     'modified_at'?: string | null;
@@ -791,96 +803,97 @@ export type CaseDbColType = typeof CaseDbColType[keyof typeof CaseDbColType];
 
 
 export const CaseDbCommandName = {
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
     RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
     RetrieveOutagesCommand: 'RetrieveOutagesCommand',
     DimCrudCommand: 'DimCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
     RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
     RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    RetrieveCaseStatsCommand: 'RetrieveCaseStatsCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
     RegionSetCrudCommand: 'RegionSetCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
+    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
     CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
     TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
     TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
     DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
 } as const;
 
 export type CaseDbCommandName = typeof CaseDbCommandName[keyof typeof CaseDbCommandName];
@@ -1079,14 +1092,20 @@ export interface CaseDbContact {
     'email'?: string | null;
     'phone'?: string | null;
 }
+/**
+ * Create a new case set and associate it with the specified data collections and cases.
+ */
 export interface CaseDbCreateCaseSetRequestBody {
     'case_set': CaseDbCaseSet;
     /**
-     * The data collections in which the case set will be put initially
+     * The data collections to associate with the case set, other than the created_in_data_collection. The latter will be removed from the set if present.
      */
     'data_collection_ids'?: Array<string>;
     'case_ids'?: Array<string> | null;
 }
+/**
+ * Upload a raw reads file (e.g., FASTQ) for a case\'s read-set column and return the stored file ID. Accepts base64 content, optional compression, and marks whether the payload is forward or reverse reads.
+ */
 export interface CaseDbCreateFileForReadSetRequestBody {
     /**
      * The content of the file to create as base64 encoded bytes.
@@ -1101,6 +1120,9 @@ export interface CaseDbCreateFileForReadSetRequestBody {
 }
 
 
+/**
+ * Upload an assembled sequence file (e.g., FASTA) for a case\'s sequence column and return the stored file ID. Accepts base64 content with optional compression.
+ */
 export interface CaseDbCreateFileForSeqRequestBody {
     /**
      * The content of the file to create as base64 encoded bytes.
@@ -1135,6 +1157,12 @@ export interface CaseDbDataCollectionSet {
      */
     'name': string;
     'description'?: string | null;
+}
+/**
+ * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
+ */
+export interface CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody {
+    'data_collection_set_members': Array<CaseDbDataCollectionSetMember>;
 }
 export interface CaseDbDataCollectionSetMember {
     'created_at'?: string | null;
@@ -1229,6 +1257,9 @@ export interface CaseDbDisease {
      */
     'name': string;
     'icd_code'?: string | null;
+}
+export interface CaseDbDiseaseEtiologicalAgentUpdateAssociationRequestBody {
+    'etiologies': Array<CaseDbEtiology>;
 }
 /**
  * An etiological agent.
@@ -1427,6 +1458,21 @@ export interface CaseDbIdentityProvider {
 
 
 /**
+ * Creates and returns a CaseDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+ */
+export interface CaseDbInviteUserRequestBody {
+    'key'?: string | null;
+    'description'?: string | null;
+    /**
+     * The initial roles that the new user will have
+     */
+    'roles': Array<string>;
+    /**
+     * The ID of the organization that the new user will belong to. FOREIGN KEY
+     */
+    'organization_id': string;
+}
+/**
  * @type CaseDbLocationInner
  */
 export type CaseDbLocationInner = number | string;
@@ -1623,6 +1669,9 @@ export interface CaseDbOrganizationIdentifierIssuerLink {
     'identifier_issuer_id': string;
     'identifier_issuer'?: CaseDbIdentifierIssuer;
 }
+export interface CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody {
+    'organization_identifier_issuer_links': Array<CaseDbOrganizationIdentifierIssuerLink>;
+}
 export interface CaseDbOrganizationSet {
     'created_at'?: string | null;
     'modified_at'?: string | null;
@@ -1649,6 +1698,12 @@ export interface CaseDbOrganizationSetMember {
      */
     'organization_id': string;
     'organization'?: CaseDbOrganization;
+}
+/**
+ * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
+ */
+export interface CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody {
+    'organization_set_members': Array<CaseDbOrganizationSetMember>;
 }
 /**
  * Stores any additional case or case set share rights of an organization to a particular data collection, if the case or case set is already in a particular other data collection.  The share rights are limited to the CaseTypes in the CaseDbCaseTypeSet. If a CaseDbCaseType is not in the CaseDbCaseTypeSet, the organization has no share rights to that data collection for that CaseDbCaseType.
@@ -2048,12 +2103,18 @@ export interface CaseDbRegionSetShape {
      */
     'geo_json': string;
 }
+/**
+ * Retrieve all (case_id, cohort_ids) pairs for a given CaseDbCaseType. Returns every case without pagination. Restricted to APP_ADMIN.
+ */
 export interface CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody {
     /**
      * The CaseDbCaseType ID to retrieve pairs for.
      */
     'case_type_id': string;
 }
+/**
+ * Retrieve access rights for a set of cases.
+ */
 export interface CaseDbRetrieveCaseRightsRequestBody {
     /**
      * The CaseDbCaseType ID to retrieve case access for.
@@ -2064,17 +2125,24 @@ export interface CaseDbRetrieveCaseRightsRequestBody {
      */
     'case_ids': Array<string>;
 }
+/**
+ * Retrieve statistics for a set of CaseSets. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+ */
 export interface CaseDbRetrieveCaseSetStatsRequestBody {
-    /**
-     * The case set IDs to retrieve stats for, if not all.
-     */
-    'case_set_ids': Array<string>;
+    'case_set_ids'?: Array<string> | null;
+    'datetime_range_filter'?: CaseDbTypedDatetimeRangeFilter;
 }
+/**
+ * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+ */
 export interface CaseDbRetrieveCaseTypeStatsRequestBody {
     'case_type_ids'?: Array<string> | null;
     'datetime_range_filter'?: CaseDbTypedDatetimeRangeFilter;
 }
-export interface CaseDbRetrieveCasesByIdsRequestBody {
+/**
+ * Retrieve cases by their IDs.
+ */
+export interface CaseDbRetrieveCasesByIdRequestBody {
     /**
      * The CaseDbCaseType ID to retrieve cases for.
      */
@@ -2084,12 +2152,18 @@ export interface CaseDbRetrieveCasesByIdsRequestBody {
      */
     'case_ids': Array<string>;
 }
+/**
+ * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+ */
 export interface CaseDbRetrieveOrganizationContactsRequestBody {
     /**
-     * The ID of the organization to retrieve contacts for.
+     * The ID of the organization to retrieve contacts for
      */
     'organization_id': string;
 }
+/**
+ * Retrieve a phylogenetic tree based on a set of case IDs, a tree algorithm, and a genetic distance CaseDbCol.
+ */
 export interface CaseDbRetrievePhylogeneticTreeRequestBody {
     /**
      * The CaseDbCaseType ID that all the cases must belong to.
@@ -2107,6 +2181,9 @@ export interface CaseDbRetrievePhylogeneticTreeRequestBody {
 }
 
 
+/**
+ * Retrieve cases that are (genetically) similar to a given list of case_ids, based on the genetic distance values in a specified genetic distance CaseDbCol and a maximum distance threshold.
+ */
 export interface CaseDbRetrieveSimilarCasesRequestBody {
     /**
      * The CaseDbCaseType ID that all the cases must belong to.
@@ -2125,6 +2202,9 @@ export interface CaseDbRetrieveSimilarCasesRequestBody {
      */
     'max_distance': number;
 }
+/**
+ * The return value for the RetrieveSimilarCasesCommand.
+ */
 export interface CaseDbRetrieveSimilarCasesResponseBody {
     /**
      * The similar cases that were found, limited to their IDs and case dates.
@@ -2528,45 +2608,18 @@ export interface CaseDbTypedUuidSetFilter {
     'members': Array<string>;
     'type': string;
 }
-export interface CaseDbUpdateCaseTypeSetCaseTypesRequestBody {
-    /**
-     * The members of the CaseDbCaseTypeSet.
-     */
-    'case_type_set_members': Array<CaseDbCaseTypeSetMember>;
-}
-export interface CaseDbUpdateColSetColsRequestBody {
-    /**
-     * The members of the CaseDbColSet.
-     */
-    'col_set_members': Array<CaseDbColSetMember>;
-}
-export interface CaseDbUpdateDataCollectionSetDataCollectionRequestBody {
-    /**
-     * The updated set of data collection set members, replacing the previous set
-     */
-    'data_collection_set_members': Array<CaseDbDataCollectionSetMember>;
-}
-export interface CaseDbUpdateDiseaseEtiologicalAgentRequestBody {
-    'etiologies': Array<CaseDbEtiology>;
-}
-export interface CaseDbUpdateOrganizationIdentifierIssuerLinksRequestBody {
-    /**
-     * The identifier issuers that the organization is linked to.
-     */
-    'organization_identifier_issuer_links': Array<CaseDbOrganizationIdentifierIssuerLink>;
-}
-export interface CaseDbUpdateOrganizationSetOrganizationRequestBody {
-    /**
-     * The updated set of organization set members, replacing the previous set
-     */
-    'organization_set_members': Array<CaseDbOrganizationSetMember>;
-}
+/**
+ * Updates the current user\'s CaseDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+ */
 export interface CaseDbUpdateUserOwnOrganizationRequestBody {
     /**
-     * The ID of the organization to update the user to
+     * The ID of the organization of the user. FOREIGN KEY
      */
     'organization_id': string;
 }
+/**
+ * Updates an existing CaseDbUser with new properties such as active status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+ */
 export interface CaseDbUpdateUserRequestBody {
     'is_active': boolean | null;
     'roles': Array<string> | null;
@@ -2762,18 +2815,6 @@ export interface CaseDbUserInvitationConstraints {
      * The organizations that the user may be assigned by the inviting user.
      */
     'organization_ids': Array<string>;
-}
-export interface CaseDbUserInvitationRequestBody {
-    'key'?: string | null;
-    'description'?: string | null;
-    /**
-     * The initial roles that the new user will have
-     */
-    'roles': Array<string>;
-    /**
-     * The ID of the organization that the new user will belong to. FOREIGN KEY
-     */
-    'organization_id': string;
 }
 export interface CaseDbUserNameEmail {
     'id'?: string | null;
@@ -11316,15 +11357,15 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Replace the CaseTypes in a CaseDbCaseTypeSet with the provided list of members, keeping the set in sync for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
-         * @param {CaseDbUpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
+         * @param {CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody} caseTypeSetCaseTypeUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetsPutCaseTypes: async (caseTypeSetId: string, updateCaseTypeSetCaseTypesRequestBody: CaseDbUpdateCaseTypeSetCaseTypesRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetsPutCaseTypes: async (caseTypeSetId: string, caseTypeSetCaseTypeUpdateAssociationRequestBody: CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'caseTypeSetId' is not null or undefined
             assertParamExists('caseTypeSetsPutCaseTypes', 'caseTypeSetId', caseTypeSetId)
-            // verify required parameter 'updateCaseTypeSetCaseTypesRequestBody' is not null or undefined
-            assertParamExists('caseTypeSetsPutCaseTypes', 'updateCaseTypeSetCaseTypesRequestBody', updateCaseTypeSetCaseTypesRequestBody)
+            // verify required parameter 'caseTypeSetCaseTypeUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('caseTypeSetsPutCaseTypes', 'caseTypeSetCaseTypeUpdateAssociationRequestBody', caseTypeSetCaseTypeUpdateAssociationRequestBody)
             const localVarPath = `/v1/case_type_sets/{case_type_set_id}/case_types`
                 .replace(`{${"case_type_set_id"}}`, encodeURIComponent(String(caseTypeSetId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -11344,7 +11385,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateCaseTypeSetCaseTypesRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(caseTypeSetCaseTypeUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -13179,15 +13220,15 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
          * Replace the columns in a CaseDbColSet with the provided members so read/write scopes and UI column groupings stay aligned.
          * @summary Update Association Between Colset And CaseDbCol
          * @param {string} colSetId 
-         * @param {CaseDbUpdateColSetColsRequestBody} updateColSetColsRequestBody 
+         * @param {CaseDbColSetColUpdateAssociationRequestBody} colSetColUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetsPutCols: async (colSetId: string, updateColSetColsRequestBody: CaseDbUpdateColSetColsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetsPutCols: async (colSetId: string, colSetColUpdateAssociationRequestBody: CaseDbColSetColUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'colSetId' is not null or undefined
             assertParamExists('colSetsPutCols', 'colSetId', colSetId)
-            // verify required parameter 'updateColSetColsRequestBody' is not null or undefined
-            assertParamExists('colSetsPutCols', 'updateColSetColsRequestBody', updateColSetColsRequestBody)
+            // verify required parameter 'colSetColUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('colSetsPutCols', 'colSetColUpdateAssociationRequestBody', colSetColUpdateAssociationRequestBody)
             const localVarPath = `/v1/col_sets/{col_set_id}/cols`
                 .replace(`{${"col_set_id"}}`, encodeURIComponent(String(colSetId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -13207,7 +13248,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateColSetColsRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(colSetColUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -15927,7 +15968,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+         * Retrieve statistics for a set of CaseSets. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
          * @summary Retrieve CaseDbCase Set Statistics
          * @param {CaseDbRetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
          * @param {*} [options] Override http request option.
@@ -15999,13 +16040,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Retrieve cases by their IDs.
          * @summary Retrieve Cases By Ids
-         * @param {CaseDbRetrieveCasesByIdsRequestBody} retrieveCasesByIdsRequestBody 
+         * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveCasesByIds: async (retrieveCasesByIdsRequestBody: CaseDbRetrieveCasesByIdsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'retrieveCasesByIdsRequestBody' is not null or undefined
-            assertParamExists('retrieveCasesByIds', 'retrieveCasesByIdsRequestBody', retrieveCasesByIdsRequestBody)
+        retrieveCasesByIds: async (retrieveCasesByIdRequestBody: CaseDbRetrieveCasesByIdRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveCasesByIdRequestBody' is not null or undefined
+            assertParamExists('retrieveCasesByIds', 'retrieveCasesByIdRequestBody', retrieveCasesByIdRequestBody)
             const localVarPath = `/v1/retrieve/cases_by_ids`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16024,7 +16065,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(retrieveCasesByIdsRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveCasesByIdRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -16102,13 +16143,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Given a list of case IDs, check which of the cases are owned by the user or the user has access to. Returns a list of case IDs that the user owns or has access to.
          * @summary Retrieve Whether The CaseDbUser Owns The Cases
-         * @param {CaseDbRetrieveCasesByIdsRequestBody} retrieveCasesByIdsRequestBody 
+         * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveIsOwnCases: async (retrieveCasesByIdsRequestBody: CaseDbRetrieveCasesByIdsRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'retrieveCasesByIdsRequestBody' is not null or undefined
-            assertParamExists('retrieveIsOwnCases', 'retrieveCasesByIdsRequestBody', retrieveCasesByIdsRequestBody)
+        retrieveIsOwnCases: async (retrieveCasesByIdRequestBody: CaseDbRetrieveCasesByIdRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveCasesByIdRequestBody' is not null or undefined
+            assertParamExists('retrieveIsOwnCases', 'retrieveCasesByIdRequestBody', retrieveCasesByIdRequestBody)
             const localVarPath = `/v1/retrieve/is_own_cases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16127,7 +16168,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(retrieveCasesByIdsRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveCasesByIdRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -18797,12 +18838,12 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Replace the CaseTypes in a CaseDbCaseTypeSet with the provided list of members, keeping the set in sync for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
-         * @param {CaseDbUpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
+         * @param {CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody} caseTypeSetCaseTypeUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetsPutCaseTypes(caseTypeSetId: string, updateCaseTypeSetCaseTypesRequestBody: CaseDbUpdateCaseTypeSetCaseTypesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsPutCaseTypes(caseTypeSetId, updateCaseTypeSetCaseTypesRequestBody, options);
+        async caseTypeSetsPutCaseTypes(caseTypeSetId: string, caseTypeSetCaseTypeUpdateAssociationRequestBody: CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseTypeSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsPutCaseTypes(caseTypeSetId, caseTypeSetCaseTypeUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsPutCaseTypes']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19463,12 +19504,12 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
          * Replace the columns in a CaseDbColSet with the provided members so read/write scopes and UI column groupings stay aligned.
          * @summary Update Association Between Colset And CaseDbCol
          * @param {string} colSetId 
-         * @param {CaseDbUpdateColSetColsRequestBody} updateColSetColsRequestBody 
+         * @param {CaseDbColSetColUpdateAssociationRequestBody} colSetColUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetsPutCols(colSetId: string, updateColSetColsRequestBody: CaseDbUpdateColSetColsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPutCols(colSetId, updateColSetColsRequestBody, options);
+        async colSetsPutCols(colSetId: string, colSetColUpdateAssociationRequestBody: CaseDbColSetColUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbColSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsPutCols(colSetId, colSetColUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsPutCols']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -20448,7 +20489,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+         * Retrieve statistics for a set of CaseSets. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
          * @summary Retrieve CaseDbCase Set Statistics
          * @param {CaseDbRetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
          * @param {*} [options] Override http request option.
@@ -20476,12 +20517,12 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Retrieve cases by their IDs.
          * @summary Retrieve Cases By Ids
-         * @param {CaseDbRetrieveCasesByIdsRequestBody} retrieveCasesByIdsRequestBody 
+         * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveCasesByIds(retrieveCasesByIdsRequestBody: CaseDbRetrieveCasesByIdsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCase>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveCasesByIds(retrieveCasesByIdsRequestBody, options);
+        async retrieveCasesByIds(retrieveCasesByIdRequestBody: CaseDbRetrieveCasesByIdRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCase>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveCasesByIds(retrieveCasesByIdRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveCasesByIds']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -20506,12 +20547,12 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Given a list of case IDs, check which of the cases are owned by the user or the user has access to. Returns a list of case IDs that the user owns or has access to.
          * @summary Retrieve Whether The CaseDbUser Owns The Cases
-         * @param {CaseDbRetrieveCasesByIdsRequestBody} retrieveCasesByIdsRequestBody 
+         * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveIsOwnCases(retrieveCasesByIdsRequestBody: CaseDbRetrieveCasesByIdsRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: boolean; }>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveIsOwnCases(retrieveCasesByIdsRequestBody, options);
+        async retrieveIsOwnCases(retrieveCasesByIdRequestBody: CaseDbRetrieveCasesByIdRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<{ [key: string]: boolean; }>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveIsOwnCases(retrieveCasesByIdRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveIsOwnCases']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -22289,12 +22330,12 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Replace the CaseTypes in a CaseDbCaseTypeSet with the provided list of members, keeping the set in sync for downstream access policies and presets.
      * @summary Update Association Between Casetypeset And Casetype
      * @param {string} caseTypeSetId 
-     * @param {CaseDbUpdateCaseTypeSetCaseTypesRequestBody} updateCaseTypeSetCaseTypesRequestBody 
+     * @param {CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody} caseTypeSetCaseTypeUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetsPutCaseTypes(caseTypeSetId: string, updateCaseTypeSetCaseTypesRequestBody: CaseDbUpdateCaseTypeSetCaseTypesRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetsPutCaseTypes(caseTypeSetId, updateCaseTypeSetCaseTypesRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetsPutCaseTypes(caseTypeSetId: string, caseTypeSetCaseTypeUpdateAssociationRequestBody: CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetsPutCaseTypes(caseTypeSetId, caseTypeSetCaseTypeUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22857,12 +22898,12 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      * Replace the columns in a CaseDbColSet with the provided members so read/write scopes and UI column groupings stay aligned.
      * @summary Update Association Between Colset And CaseDbCol
      * @param {string} colSetId 
-     * @param {CaseDbUpdateColSetColsRequestBody} updateColSetColsRequestBody 
+     * @param {CaseDbColSetColUpdateAssociationRequestBody} colSetColUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetsPutCols(colSetId: string, updateColSetColsRequestBody: CaseDbUpdateColSetColsRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetsPutCols(colSetId, updateColSetColsRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetsPutCols(colSetId: string, colSetColUpdateAssociationRequestBody: CaseDbColSetColUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetsPutCols(colSetId, colSetColUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23696,7 +23737,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Retrieve statistics for a set of CaseTypes. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
+     * Retrieve statistics for a set of CaseSets. Each of the parameters, when provided, will further filter the cases that are considered for the statistics.
      * @summary Retrieve CaseDbCase Set Statistics
      * @param {CaseDbRetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
      * @param {*} [options] Override http request option.
@@ -23720,12 +23761,12 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Retrieve cases by their IDs.
      * @summary Retrieve Cases By Ids
-     * @param {CaseDbRetrieveCasesByIdsRequestBody} retrieveCasesByIdsRequestBody 
+     * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public retrieveCasesByIds(retrieveCasesByIdsRequestBody: CaseDbRetrieveCasesByIdsRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).retrieveCasesByIds(retrieveCasesByIdsRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public retrieveCasesByIds(retrieveCasesByIdRequestBody: CaseDbRetrieveCasesByIdRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).retrieveCasesByIds(retrieveCasesByIdRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23746,12 +23787,12 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Given a list of case IDs, check which of the cases are owned by the user or the user has access to. Returns a list of case IDs that the user owns or has access to.
      * @summary Retrieve Whether The CaseDbUser Owns The Cases
-     * @param {CaseDbRetrieveCasesByIdsRequestBody} retrieveCasesByIdsRequestBody 
+     * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public retrieveIsOwnCases(retrieveCasesByIdsRequestBody: CaseDbRetrieveCasesByIdsRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).retrieveIsOwnCases(retrieveCasesByIdsRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public retrieveIsOwnCases(retrieveCasesByIdRequestBody: CaseDbRetrieveCasesByIdRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).retrieveIsOwnCases(retrieveCasesByIdRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -29005,15 +29046,15 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
          * Set the etiological agents for a disease by replacing existing disease–agent links with the provided etiologies, then return the updated list.
          * @summary CaseDbDisease Etiologicalagent
          * @param {string} diseaseId 
-         * @param {CaseDbUpdateDiseaseEtiologicalAgentRequestBody} updateDiseaseEtiologicalAgentRequestBody 
+         * @param {CaseDbDiseaseEtiologicalAgentUpdateAssociationRequestBody} diseaseEtiologicalAgentUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        diseasesPutEtiologicalAgents: async (diseaseId: string, updateDiseaseEtiologicalAgentRequestBody: CaseDbUpdateDiseaseEtiologicalAgentRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        diseasesPutEtiologicalAgents: async (diseaseId: string, diseaseEtiologicalAgentUpdateAssociationRequestBody: CaseDbDiseaseEtiologicalAgentUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'diseaseId' is not null or undefined
             assertParamExists('diseasesPutEtiologicalAgents', 'diseaseId', diseaseId)
-            // verify required parameter 'updateDiseaseEtiologicalAgentRequestBody' is not null or undefined
-            assertParamExists('diseasesPutEtiologicalAgents', 'updateDiseaseEtiologicalAgentRequestBody', updateDiseaseEtiologicalAgentRequestBody)
+            // verify required parameter 'diseaseEtiologicalAgentUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('diseasesPutEtiologicalAgents', 'diseaseEtiologicalAgentUpdateAssociationRequestBody', diseaseEtiologicalAgentUpdateAssociationRequestBody)
             const localVarPath = `/v1/diseases/{disease_id}/etiological_agents`
                 .replace(`{${"disease_id"}}`, encodeURIComponent(String(diseaseId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -29033,7 +29074,7 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateDiseaseEtiologicalAgentRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(diseaseEtiologicalAgentUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -30664,12 +30705,12 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
          * Set the etiological agents for a disease by replacing existing disease–agent links with the provided etiologies, then return the updated list.
          * @summary CaseDbDisease Etiologicalagent
          * @param {string} diseaseId 
-         * @param {CaseDbUpdateDiseaseEtiologicalAgentRequestBody} updateDiseaseEtiologicalAgentRequestBody 
+         * @param {CaseDbDiseaseEtiologicalAgentUpdateAssociationRequestBody} diseaseEtiologicalAgentUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async diseasesPutEtiologicalAgents(diseaseId: string, updateDiseaseEtiologicalAgentRequestBody: CaseDbUpdateDiseaseEtiologicalAgentRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiology>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesPutEtiologicalAgents(diseaseId, updateDiseaseEtiologicalAgentRequestBody, options);
+        async diseasesPutEtiologicalAgents(diseaseId: string, diseaseEtiologicalAgentUpdateAssociationRequestBody: CaseDbDiseaseEtiologicalAgentUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbEtiology>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesPutEtiologicalAgents(diseaseId, diseaseEtiologicalAgentUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesPutEtiologicalAgents']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31589,12 +31630,12 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      * Set the etiological agents for a disease by replacing existing disease–agent links with the provided etiologies, then return the updated list.
      * @summary CaseDbDisease Etiologicalagent
      * @param {string} diseaseId 
-     * @param {CaseDbUpdateDiseaseEtiologicalAgentRequestBody} updateDiseaseEtiologicalAgentRequestBody 
+     * @param {CaseDbDiseaseEtiologicalAgentUpdateAssociationRequestBody} diseaseEtiologicalAgentUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public diseasesPutEtiologicalAgents(diseaseId: string, updateDiseaseEtiologicalAgentRequestBody: CaseDbUpdateDiseaseEtiologicalAgentRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).diseasesPutEtiologicalAgents(diseaseId, updateDiseaseEtiologicalAgentRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public diseasesPutEtiologicalAgents(diseaseId: string, diseaseEtiologicalAgentUpdateAssociationRequestBody: CaseDbDiseaseEtiologicalAgentUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).diseasesPutEtiologicalAgents(diseaseId, diseaseEtiologicalAgentUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -33238,15 +33279,15 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
-         * @param {CaseDbUpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
+         * @param {CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsPutDataCollections: async (dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: CaseDbUpdateDataCollectionSetDataCollectionRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsPutDataCollections: async (dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'dataCollectionSetId' is not null or undefined
             assertParamExists('dataCollectionSetsPutDataCollections', 'dataCollectionSetId', dataCollectionSetId)
-            // verify required parameter 'updateDataCollectionSetDataCollectionRequestBody' is not null or undefined
-            assertParamExists('dataCollectionSetsPutDataCollections', 'updateDataCollectionSetDataCollectionRequestBody', updateDataCollectionSetDataCollectionRequestBody)
+            // verify required parameter 'dataCollectionSetDataCollectionUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('dataCollectionSetsPutDataCollections', 'dataCollectionSetDataCollectionUpdateAssociationRequestBody', dataCollectionSetDataCollectionUpdateAssociationRequestBody)
             const localVarPath = `/v1/data_collection_sets/{data_collection_set_id}/data_collections`
                 .replace(`{${"data_collection_set_id"}}`, encodeURIComponent(String(dataCollectionSetId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -33266,7 +33307,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateDataCollectionSetDataCollectionRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(dataCollectionSetDataCollectionUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -34262,13 +34303,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Creates and returns a CaseDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A CaseDbUser
-         * @param {CaseDbUserInvitationRequestBody} userInvitationRequestBody 
+         * @param {CaseDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        inviteUser: async (userInvitationRequestBody: CaseDbUserInvitationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'userInvitationRequestBody' is not null or undefined
-            assertParamExists('inviteUser', 'userInvitationRequestBody', userInvitationRequestBody)
+        inviteUser: async (inviteUserRequestBody: CaseDbInviteUserRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'inviteUserRequestBody' is not null or undefined
+            assertParamExists('inviteUser', 'inviteUserRequestBody', inviteUserRequestBody)
             const localVarPath = `/v1/invite_user`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34287,7 +34328,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userInvitationRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(inviteUserRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -35661,15 +35702,15 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
          * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset CaseDbOrganization
          * @param {string} organizationSetId 
-         * @param {CaseDbUpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
+         * @param {CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsPutOrganizations: async (organizationSetId: string, updateOrganizationSetOrganizationRequestBody: CaseDbUpdateOrganizationSetOrganizationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsPutOrganizations: async (organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'organizationSetId' is not null or undefined
             assertParamExists('organizationSetsPutOrganizations', 'organizationSetId', organizationSetId)
-            // verify required parameter 'updateOrganizationSetOrganizationRequestBody' is not null or undefined
-            assertParamExists('organizationSetsPutOrganizations', 'updateOrganizationSetOrganizationRequestBody', updateOrganizationSetOrganizationRequestBody)
+            // verify required parameter 'organizationSetOrganizationUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('organizationSetsPutOrganizations', 'organizationSetOrganizationUpdateAssociationRequestBody', organizationSetOrganizationUpdateAssociationRequestBody)
             const localVarPath = `/v1/organization_sets/{organization_set_id}/organizations`
                 .replace(`{${"organization_set_id"}}`, encodeURIComponent(String(organizationSetId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -35689,7 +35730,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateOrganizationSetOrganizationRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationSetOrganizationUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -36114,18 +36155,18 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         * See router description.
          * @summary Update Association Between CaseDbOrganization And Identifierissuer
          * @param {string} organizationId 
-         * @param {CaseDbUpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+         * @param {CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsPutIdentifierIssuers: async (organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: CaseDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsPutIdentifierIssuers: async (organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'organizationId' is not null or undefined
             assertParamExists('organizationsPutIdentifierIssuers', 'organizationId', organizationId)
-            // verify required parameter 'updateOrganizationIdentifierIssuerLinksRequestBody' is not null or undefined
-            assertParamExists('organizationsPutIdentifierIssuers', 'updateOrganizationIdentifierIssuerLinksRequestBody', updateOrganizationIdentifierIssuerLinksRequestBody)
+            // verify required parameter 'organizationIdentifierIssuerUpdateAssociationRequestBody' is not null or undefined
+            assertParamExists('organizationsPutIdentifierIssuers', 'organizationIdentifierIssuerUpdateAssociationRequestBody', organizationIdentifierIssuerUpdateAssociationRequestBody)
             const localVarPath = `/v1/organizations/{organization_id}/identifier_issuers`
                 .replace(`{${"organization_id"}}`, encodeURIComponent(String(organizationId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -36145,7 +36186,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateOrganizationIdentifierIssuerLinksRequestBody, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(organizationIdentifierIssuerUpdateAssociationRequestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -37248,7 +37289,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         * See router description.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37278,7 +37319,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         * See router description.
          * @summary Userme Permissions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -38285,12 +38326,12 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
-         * @param {CaseDbUpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
+         * @param {CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsPutDataCollections(dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: CaseDbUpdateDataCollectionSetDataCollectionRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPutDataCollections(dataCollectionSetId, updateDataCollectionSetDataCollectionRequestBody, options);
+        async dataCollectionSetsPutDataCollections(dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbDataCollectionSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsPutDataCollections(dataCollectionSetId, dataCollectionSetDataCollectionUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsPutDataCollections']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -38651,12 +38692,12 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Creates and returns a CaseDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A CaseDbUser
-         * @param {CaseDbUserInvitationRequestBody} userInvitationRequestBody 
+         * @param {CaseDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async inviteUser(userInvitationRequestBody: CaseDbUserInvitationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseDbUserInvitation>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUser(userInvitationRequestBody, options);
+        async inviteUser(inviteUserRequestBody: CaseDbInviteUserRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CaseDbUserInvitation>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.inviteUser(inviteUserRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.inviteUser']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39153,12 +39194,12 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
          * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset CaseDbOrganization
          * @param {string} organizationSetId 
-         * @param {CaseDbUpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
+         * @param {CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsPutOrganizations(organizationSetId: string, updateOrganizationSetOrganizationRequestBody: CaseDbUpdateOrganizationSetOrganizationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSetMember>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPutOrganizations(organizationSetId, updateOrganizationSetOrganizationRequestBody, options);
+        async organizationSetsPutOrganizations(organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationSetMember>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsPutOrganizations(organizationSetId, organizationSetOrganizationUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsPutOrganizations']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39313,15 +39354,15 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * See router description.
          * @summary Update Association Between CaseDbOrganization And Identifierissuer
          * @param {string} organizationId 
-         * @param {CaseDbUpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+         * @param {CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: CaseDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationIdentifierIssuerLink>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPutIdentifierIssuers(organizationId, updateOrganizationIdentifierIssuerLinksRequestBody, options);
+        async organizationsPutIdentifierIssuers(organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbOrganizationIdentifierIssuerLink>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsPutIdentifierIssuers(organizationId, organizationIdentifierIssuerUpdateAssociationRequestBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsPutIdentifierIssuers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39720,7 +39761,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * See router description.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39732,7 +39773,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * See router description.
          * @summary Userme Permissions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40353,12 +40394,12 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
      * @summary Datacollectionset Datacollection
      * @param {string} dataCollectionSetId 
-     * @param {CaseDbUpdateDataCollectionSetDataCollectionRequestBody} updateDataCollectionSetDataCollectionRequestBody 
+     * @param {CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsPutDataCollections(dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: CaseDbUpdateDataCollectionSetDataCollectionRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsPutDataCollections(dataCollectionSetId, updateDataCollectionSetDataCollectionRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsPutDataCollections(dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsPutDataCollections(dataCollectionSetId, dataCollectionSetDataCollectionUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40665,12 +40706,12 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Creates and returns a CaseDbUserInvitation for a new user with a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
      * @summary Invite A CaseDbUser
-     * @param {CaseDbUserInvitationRequestBody} userInvitationRequestBody 
+     * @param {CaseDbInviteUserRequestBody} inviteUserRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public inviteUser(userInvitationRequestBody: CaseDbUserInvitationRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).inviteUser(userInvitationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public inviteUser(inviteUserRequestBody: CaseDbInviteUserRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).inviteUser(inviteUserRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41093,12 +41134,12 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
      * @summary Organizationset CaseDbOrganization
      * @param {string} organizationSetId 
-     * @param {CaseDbUpdateOrganizationSetOrganizationRequestBody} updateOrganizationSetOrganizationRequestBody 
+     * @param {CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsPutOrganizations(organizationSetId: string, updateOrganizationSetOrganizationRequestBody: CaseDbUpdateOrganizationSetOrganizationRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetsPutOrganizations(organizationSetId, updateOrganizationSetOrganizationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsPutOrganizations(organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetsPutOrganizations(organizationSetId, organizationSetOrganizationUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41229,15 +41270,15 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * 
+     * See router description.
      * @summary Update Association Between CaseDbOrganization And Identifierissuer
      * @param {string} organizationId 
-     * @param {CaseDbUpdateOrganizationIdentifierIssuerLinksRequestBody} updateOrganizationIdentifierIssuerLinksRequestBody 
+     * @param {CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: CaseDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationsPutIdentifierIssuers(organizationId, updateOrganizationIdentifierIssuerLinksRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsPutIdentifierIssuers(organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationsPutIdentifierIssuers(organizationId, organizationIdentifierIssuerUpdateAssociationRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41576,7 +41617,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * 
+     * See router description.
      * @summary Userme
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41586,7 +41627,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * 
+     * See router description.
      * @summary Userme Permissions
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
