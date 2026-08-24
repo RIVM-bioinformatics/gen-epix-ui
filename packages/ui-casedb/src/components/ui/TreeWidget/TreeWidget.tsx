@@ -51,9 +51,9 @@ import { TreeDescription } from '../TreeDescription';
 import { WidgetUnavailable } from '../WidgetUnavailable';
 import { PhylogeneticTree } from '../PhylogeneticTreeComponent';
 import type {
-  PhylogeneticTreeComponentPathClickEvent,
-  PhylogeneticTreeComponentViewState,
+  PhylogeneticTreePathClickEvent,
   PhylogeneticTreeRef,
+  PhylogeneticTreeViewState,
 } from '../PhylogeneticTreeComponent';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
@@ -105,7 +105,7 @@ export const TreeWidget = () => {
     caseIds: [],
     origin: null,
   }), []);
-  const initialTreeViewState = useMemo<PhylogeneticTreeComponentViewState>(() => {
+  const initialTreeViewState = useMemo<PhylogeneticTreeViewState>(() => {
     const widgetData = dashboardStore.getState().getWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE);
     return {
       horizontalScrollPosition: !isNaN(widgetData?.horizontalScrollPosition) ? widgetData.horizontalScrollPosition : 0,
@@ -260,7 +260,7 @@ export const TreeWidget = () => {
     }
   }, [isTreeLinked, shouldShowTree, sortByField]);
 
-  const updateEpiTreeWidgetDataDebounced = useDebouncedCallback((viewState: PhylogeneticTreeComponentViewState) => {
+  const updateEpiTreeWidgetDataDebounced = useDebouncedCallback((viewState: PhylogeneticTreeViewState) => {
     updateWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE, {
       horizontalScrollPosition: viewState.horizontalScrollPosition,
       verticalScrollPosition: viewState.verticalScrollPosition,
@@ -268,7 +268,7 @@ export const TreeWidget = () => {
     });
   }, 500);
 
-  const onTreeViewStateChange = useCallback((viewState: PhylogeneticTreeComponentViewState) => {
+  const onTreeViewStateChange = useCallback((viewState: PhylogeneticTreeViewState) => {
     updateEpiTreeWidgetDataDebounced(viewState);
   }, [updateEpiTreeWidgetDataDebounced]);
 
@@ -317,7 +317,7 @@ export const TreeWidget = () => {
     resetZoomLevelAndScrollPosition();
   }, [resetZoomLevelAndScrollPosition, treeFilterStepOut]);
 
-  const onTreePathClick = useCallback(({ mouseEvent, pathProperties }: PhylogeneticTreeComponentPathClickEvent) => {
+  const onTreePathClick = useCallback(({ mouseEvent, pathProperties }: PhylogeneticTreePathClickEvent) => {
     setZoomInMenuItemConfig(null);
     setExtraLeafInfoId(null);
 

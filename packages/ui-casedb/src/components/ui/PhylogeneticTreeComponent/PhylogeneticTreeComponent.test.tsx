@@ -21,9 +21,9 @@ import type { CaseDbConfig } from '../../../models/config';
 import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 import type {
-  PhylogeneticTreeComponentPathClickEvent,
-  PhylogeneticTreeComponentViewState,
+  PhylogeneticTreePathClickEvent,
   PhylogeneticTreeRef,
+  PhylogeneticTreeViewState,
 } from './PhylogeneticTreeComponent';
 import { PhylogeneticTree } from './PhylogeneticTreeComponent';
 
@@ -46,8 +46,8 @@ type RenderTreeOptions = {
   newick?: string;
   onCanvasChange?: (canvas?: HTMLCanvasElement) => void;
   onLinkStateChange?: (isLinked: boolean) => void;
-  onPathClick?: (event: PhylogeneticTreeComponentPathClickEvent) => void;
-  onViewStateChange?: (viewState: PhylogeneticTreeComponentViewState) => void;
+  onPathClick?: (event: PhylogeneticTreePathClickEvent) => void;
+  onViewStateChange?: (viewState: PhylogeneticTreeViewState) => void;
   ref?: { current: null | PhylogeneticTreeRef };
   shouldShowDistances?: boolean;
   shouldShowSupportLinesWhenUnlinked?: boolean;
@@ -506,7 +506,7 @@ describe('PhylogeneticTreeComponent', () => {
     const externalScrollSubject = new Subject<{ origin: HTMLElement; position: number }>({ origin: externalOrigin, position: 0 });
     const ref = createComponentRef();
     const onLinkStateChange = vi.fn();
-    const viewStates: PhylogeneticTreeComponentViewState[] = [];
+    const viewStates: PhylogeneticTreeViewState[] = [];
     const { renderResult } = await renderTree({
       externalScrollSubject,
       height: 240,
@@ -653,7 +653,7 @@ describe('PhylogeneticTreeComponent', () => {
       expect(onPathClick).toHaveBeenCalledTimes(1);
     });
 
-    const clickEvent = onPathClick.mock.calls[0][0] as PhylogeneticTreeComponentPathClickEvent;
+    const clickEvent = onPathClick.mock.calls[0][0] as PhylogeneticTreePathClickEvent;
 
     expect(clickEvent.mouseEvent.type).toBe('mouseup');
     expect(clickEvent.pathProperties.subTreeLeaveNames).toHaveLength(1);
@@ -668,7 +668,7 @@ describe('PhylogeneticTreeComponent', () => {
   });
 
   test('pans by dragging and keeps small horizontal deltas clamped at zoom level 1', async () => {
-    const viewStates: PhylogeneticTreeComponentViewState[] = [];
+    const viewStates: PhylogeneticTreeViewState[] = [];
     const { canvas } = await renderTree({
       height: 240,
       newick: LARGE_TREE_NEWICK,
@@ -704,7 +704,7 @@ describe('PhylogeneticTreeComponent', () => {
     const externalScrollSubject = new Subject<{ origin: HTMLElement; position: number }>({ origin: externalOrigin, position: 48 });
     const onLinkStateChange = vi.fn();
     const ref = createComponentRef();
-    const viewStates: PhylogeneticTreeComponentViewState[] = [];
+    const viewStates: PhylogeneticTreeViewState[] = [];
     const { canvas } = await renderTree({
       externalScrollSubject,
       height: 240,
@@ -788,7 +788,7 @@ describe('PhylogeneticTreeComponent', () => {
     const externalVisibleRangeSubject = new Subject({ endIndex: 0, startIndex: 0 });
     const leafOrder = ['LeafF', 'LeafE', 'LeafD', 'LeafC', 'LeafB', 'LeafA'];
     const ref = createComponentRef();
-    const viewStates: PhylogeneticTreeComponentViewState[] = [];
+    const viewStates: PhylogeneticTreeViewState[] = [];
     const { canvas, layout } = await renderTree({
       externalVisibleRangeSubject,
       height: 240,
@@ -841,7 +841,7 @@ describe('PhylogeneticTreeComponent', () => {
     const externalVisibleRangeSubject = new Subject({ endIndex: 5, startIndex: 5 });
     const leafOrder = ['LeafF', 'LeafE', 'LeafD', 'LeafC', 'LeafB', 'LeafA'];
     const ref = createComponentRef();
-    const viewStates: PhylogeneticTreeComponentViewState[] = [];
+    const viewStates: PhylogeneticTreeViewState[] = [];
     const { canvas, layout } = await renderTree({
       externalVisibleRangeSubject,
       height: 240,
@@ -887,7 +887,7 @@ describe('PhylogeneticTreeComponent', () => {
   test('redraws the canvas when the device pixel ratio changes', async () => {
     const originalDevicePixelRatio = DevicePixelRatioService.getInstance().data;
     const ref = createComponentRef();
-    const viewStates: PhylogeneticTreeComponentViewState[] = [];
+    const viewStates: PhylogeneticTreeViewState[] = [];
     const tree = parseTree(LARGE_TREE_NEWICK);
     const leafOrder = NewickUtil.getSortedNames(tree);
     const ariaLabel = `Phylogenetic tree ${ariaLabelCounter++}`;

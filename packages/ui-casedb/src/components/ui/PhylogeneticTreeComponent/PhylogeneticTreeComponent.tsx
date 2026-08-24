@@ -38,15 +38,9 @@ import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 // NOTE: this component has the Component suffix in order to prevent a name collision with the PhylogeneticTree model in the api package.
 
-export type PhylogeneticTreeComponentPathClickEvent = {
+export type PhylogeneticTreePathClickEvent = {
   mouseEvent: MouseEvent;
   pathProperties: TreePathProperties;
-};
-
-export type PhylogeneticTreeComponentViewState = {
-  horizontalScrollPosition: number;
-  verticalScrollPosition: number;
-  zoomLevel: number;
 };
 
 export type PhylogeneticTreeProps = {
@@ -54,13 +48,13 @@ export type PhylogeneticTreeProps = {
   readonly externalScrollSubject?: Subject<LinkedScrollSubjectValue>;
   readonly externalVisibleRangeSubject?: Subject<LineListRangeSubjectValue>;
   readonly highlightingSubject?: Subject<Highlighting>;
-  readonly initialViewState?: Partial<PhylogeneticTreeComponentViewState>;
+  readonly initialViewState?: Partial<PhylogeneticTreeViewState>;
   readonly itemHeight: number;
   readonly leafOrder: string[];
   readonly onCanvasChange?: (canvas?: HTMLCanvasElement) => void;
   readonly onLinkStateChange?: (isLinked: boolean) => void;
-  readonly onPathClick?: (event: PhylogeneticTreeComponentPathClickEvent) => void;
-  readonly onViewStateChange?: (viewState: PhylogeneticTreeComponentViewState) => void;
+  readonly onPathClick?: (event: PhylogeneticTreePathClickEvent) => void;
+  readonly onViewStateChange?: (viewState: PhylogeneticTreeViewState) => void;
   readonly ref?: Ref<PhylogeneticTreeRef>;
   readonly shouldShowDistances: boolean;
   readonly shouldShowSupportLinesWhenUnlinked: boolean;
@@ -73,6 +67,12 @@ export interface PhylogeneticTreeRef {
   syncExternalScrollToVisibleTree: () => void;
   unlink: (viewState: { positionX: number; positionY: number; zoomLevel: number }) => void;
 }
+
+export type PhylogeneticTreeViewState = {
+  horizontalScrollPosition: number;
+  verticalScrollPosition: number;
+  zoomLevel: number;
+};
 
 export const PhylogeneticTree = ({
   ariaLabel,
@@ -115,6 +115,14 @@ export const PhylogeneticTree = ({
 
   const headerHeight = ConfigService.getInstance<CaseDbConfig>().config.tree.HEADER_HEIGHT;
   const treePadding = ConfigService.getInstance<CaseDbConfig>().config.tree.TREE_PADDING;
+  const backgroundColor = theme.palette.background.paper;
+  const dimFn = theme['gen-epix-ui-casedb'].tree.dimFn;
+  const fontFamily = theme.typography.fontFamily;
+  const scaleColor = theme.palette.text.primary;
+  const supportLineColorLinked = theme['gen-epix-ui-casedb'].tree.supportLineColorLinked;
+  const supportLineColorUnlinked = theme['gen-epix-ui-casedb'].tree.supportLineColorUnlinked;
+  const treeColor = theme['gen-epix-ui-casedb'].tree.color;
+  const treeFont = theme['gen-epix-ui-casedb'].tree.font;
   const treeCanvasWidth = width;
   const treeCanvasHeight = Math.max(0, height - headerHeight);
   const combinedCanvasHeight = Math.max(0, height);
@@ -422,26 +430,33 @@ export const PhylogeneticTree = ({
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(() => {
         TreeUtil.drawTreeCanvas({
+          backgroundColor,
           canvas: treeCanvas,
           devicePixelRatio,
+          dimFn,
           externalRange,
           externalScrollPosition,
+          fontFamily,
           geneticTreeWidth: tree.maxBranchLength,
           headerHeight,
           highlightedNodeNames: highlighting?.caseIds,
           horizontalScrollPosition,
           isLinked,
           itemHeight,
+          nodeNameColors: stratification?.caseIdColors,
           pixelToGeneticDistanceRatio,
           regularFillColorSupportLine: ConfigService.getInstance<CaseDbConfig>().config.tree.REGULAR_FILL_COLOR_SUPPORT_LINE,
+          scaleColor,
           shouldShowDistances,
           shouldShowSupportLinesWhenUnlinked,
-          stratification,
-          theme,
+          supportLineColorLinked,
+          supportLineColorUnlinked,
           tickerMarkScale,
           treeAssembly,
           treeCanvasHeight,
           treeCanvasWidth,
+          treeColor,
+          treeFont,
           treePadding,
           verticalScrollPosition,
           zoomLevel,
@@ -490,25 +505,32 @@ export const PhylogeneticTree = ({
       cancelAnimationFrame(animationFrameId);
     };
   }, [
+    backgroundColor,
     devicePixelRatio,
+    dimFn,
     effectiveHighlightingSubject,
     externalScrollSubject,
     externalVisibleRangeSubject,
+    fontFamily,
     getTickerMarkScale,
     headerHeight,
     isLinked,
     itemHeight,
     pixelToGeneticDistanceRatio,
+    scaleColor,
     scrollPositionSubject,
     shouldShowDistances,
     shouldShowSupportLinesWhenUnlinked,
     stratification,
-    theme,
+    supportLineColorLinked,
+    supportLineColorUnlinked,
     tree,
     treeAssembly,
     treeCanvas,
     treeCanvasHeight,
     treeCanvasWidth,
+    treeColor,
+    treeFont,
     treePadding,
     zoomLevelSubject,
   ]);
