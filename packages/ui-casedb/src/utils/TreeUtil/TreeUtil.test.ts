@@ -1,25 +1,15 @@
 import { Decimal } from 'decimal.js';
-import {
-  afterAll,
-  beforeAll,
-  vi,
-} from 'vitest';
+import { vi } from 'vitest';
 import type { Theme } from '@mui/material/styles';
-import { CaseDbColType } from '@gen-epix/api-casedb';
-import type { CaseDbTreeAlgorithm } from '@gen-epix/api-casedb';
 import type { ArgumentTypes } from '@gen-epix/ui';
-import { ConfigService } from '@gen-epix/ui';
 
-import { DataService } from '../../classes/services/DataService';
 import { STRATIFICATION_MODE } from '../../models/stratification';
 import type { Stratification } from '../../models/stratification';
-import type { TreeConfiguration } from '../../models/dashboard';
 import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
 } from '../../models/tree';
-import type { CaseDbConfig } from '../../models/config';
 
 import { TreeUtil } from './TreeUtil';
 
@@ -70,17 +60,25 @@ const getExternalLeafSorting = (rootNode: TreeNode): string[] => {
 };
 
 const assembleTreeForTest = (params: {
+  ancestorDotRadius?: number;
   externalLeafSorting?: string[];
   itemHeight: number;
+  leafDotRadius?: number;
+  minimumDistancePercentageToShowLabel?: number;
   pixelToGeneticDistanceRatio: number;
   rootNode: TreeNode;
   treeCanvasWidth: number;
+  treePadding?: number;
 }): TreeAssembly => {
-  const { externalLeafSorting, ...rest } = params;
+  const { ancestorDotRadius = 3, externalLeafSorting, leafDotRadius = 4, minimumDistancePercentageToShowLabel = 5, treePadding = 10, ...rest } = params;
 
   return TreeUtil.assembleTree({
     ...rest,
+    ancestorDotRadius,
     externalLeafSorting: externalLeafSorting ?? getExternalLeafSorting(params.rootNode),
+    leafDotRadius,
+    minimumDistancePercentageToShowLabel,
+    treePadding,
   });
 };
 
@@ -158,24 +156,17 @@ describe('TreeUtil', () => {
   });
 
   describe('getTickMarkScale', () => {
-    beforeAll(() => {
-      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
-        tree: {
-          MAX_SCALE_WIDTH_PX: 144,
-          MIN_SCALE_WIDTH_PX: 48,
-          SCALE_INCREMENTS: [1, 2, 5, 10, 20, 50],
-        },
-      } as CaseDbConfig);
-    });
-
-    afterAll(() => {
-      vi.restoreAllMocks();
-    });
+    const MAX_SCALE_WIDTH_PX = 144;
+    const MIN_SCALE_WIDTH_PX = 48;
+    const SCALE_INCREMENTS = [1, 2, 5, 10, 20, 50];
 
     it('returns [0,0,0] when treeWidthMinusPadding is 0', () => {
       expect(TreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(80),
+        maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: 1,
+        minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+        scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 0,
         zoomLevel: 1,
       })).toEqual([0, 0, 0]);
@@ -184,7 +175,10 @@ describe('TreeUtil', () => {
     it('returns [0,0,0] when minGeneticScaleUnit is 0', () => {
       expect(TreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(80),
+        maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: 0,
+        minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+        scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 1,
       })).toEqual([0, 0, 0]);
@@ -196,7 +190,10 @@ describe('TreeUtil', () => {
       // minNumLines(9) > 2 -> minNumLines = 2 -> maxNumLines === 2 -> [2, 1, 1]
       expect(TreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(0.8),
+        maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: 1,
+        minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+        scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 1,
       })).toEqual([2, 1, 1]);
@@ -209,7 +206,10 @@ describe('TreeUtil', () => {
       // numLines=4, increment=1: product=4, leftover=0 -> [5, 1, 1]
       expect(TreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(4),
+        maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: 1,
+        minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+        scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 1,
       })).toEqual([5, 1, 1]);
@@ -220,7 +220,10 @@ describe('TreeUtil', () => {
       // numLines=16, increment=5: product=80, leftover=0 -> [17, 5, 5]
       expect(TreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(80),
+        maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: 5,
+        minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+        scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 1,
       })).toEqual([17, 5, 5]);
@@ -231,7 +234,10 @@ describe('TreeUtil', () => {
       // numLines=8, increment=10: product=80, leftover=0 -> [9, 10, 1]
       expect(TreeUtil.getTickMarkScale({
         geneticTreeWidth: new Decimal(80),
+        maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
         minGeneticScaleUnit: 1,
+        minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+        scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 2,
       })).toEqual([9, 10, 1]);
@@ -241,19 +247,28 @@ describe('TreeUtil', () => {
       const cases: Array<[ArgumentTypes<typeof TreeUtil.getTickMarkScale>[0], [number, number, number]]> = [
         [{
           geneticTreeWidth: new Decimal(16),
+          maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
           minGeneticScaleUnit: 1,
+          minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+          scaleIncrements: SCALE_INCREMENTS,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,
         }, [17, 1, 1]],
         [{
           geneticTreeWidth: new Decimal(80),
+          maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
           minGeneticScaleUnit: 1,
+          minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+          scaleIncrements: SCALE_INCREMENTS,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,
         }, [17, 5, 1]],
         [{
           geneticTreeWidth: new Decimal(150),
+          maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
           minGeneticScaleUnit: 1,
+          minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+          scaleIncrements: SCALE_INCREMENTS,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,
         }, [16, 10, 1]],
@@ -792,27 +807,8 @@ describe('TreeUtil', () => {
 
   describe('assembleTree', () => {
     const TABLE_ROW_HEIGHT = 30;
-    const TREE_PADDING = 10;
-    const LEAF_DOT_RADIUS = 4;
-    const ANCESTOR_DOT_RADIUS = 3;
-    const MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL = 5;
     const pixelToGeneticDistanceRatio = 100;
     const treeCanvasWidth = 800;
-
-    beforeAll(() => {
-      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
-        tree: {
-          ANCESTOR_DOT_RADIUS,
-          LEAF_DOT_RADIUS,
-          MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL,
-          TREE_PADDING,
-        },
-      } as CaseDbConfig);
-    });
-
-    afterAll(() => {
-      vi.restoreAllMocks();
-    });
 
     it('returns an assembly with empty arrays for a single leaf (no ancestors)', () => {
       // leaf a: distance=0, bl=2 -> leafXPxEnd=210, leafYPx=15, leafXPxStart=10
@@ -1148,22 +1144,10 @@ describe('TreeUtil', () => {
     const TREE_PADDING = 10;
     const HEADER_HEIGHT = 40;
 
-    beforeAll(() => {
-      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
-        tree: {
-          HEADER_HEIGHT,
-          TREE_PADDING,
-        },
-      } as CaseDbConfig);
-    });
-
-    afterAll(() => {
-      vi.restoreAllMocks();
-    });
-
     it('clamps positionY to 0 when linked at zoom=1 and treeHeight < treeCanvasHeight', () => {
       const result = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: true,
         positionX: 0,
@@ -1171,6 +1155,7 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 200,
+        treePadding: TREE_PADDING,
       });
       expect(result.newPositionY).toBe(0);
     });
@@ -1179,6 +1164,7 @@ describe('TreeUtil', () => {
       // treeHeight=600, treeCanvasHeight=300, devicePixelRatio=1 -> max=300
       const clamped = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: true,
         positionX: 0,
@@ -1186,11 +1172,13 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 600,
+        treePadding: TREE_PADDING,
       });
       expect(clamped.newPositionY).toBe(300);
 
       const atMin = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: true,
         positionX: 0,
@@ -1198,6 +1186,7 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 600,
+        treePadding: TREE_PADDING,
       });
       expect(atMin.newPositionY).toBe(0);
     });
@@ -1205,6 +1194,7 @@ describe('TreeUtil', () => {
     it('passes positionY through unchanged when within linked bounds', () => {
       const result = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: true,
         positionX: 0,
@@ -1212,6 +1202,7 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 600,
+        treePadding: TREE_PADDING,
       });
       expect(result.newPositionY).toBe(150);
     });
@@ -1220,6 +1211,7 @@ describe('TreeUtil', () => {
       // positionYMin = -300 + 10 + 40 = -250; positionYMax = 600 - 10 - 40 = 550
       const clampedMax = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: false,
         positionX: 0,
@@ -1227,11 +1219,13 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 600,
+        treePadding: TREE_PADDING,
       });
       expect(clampedMax.newPositionY).toBe(550);
 
       const clampedMin = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: false,
         positionX: 0,
@@ -1239,6 +1233,7 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 600,
+        treePadding: TREE_PADDING,
       });
       expect(clampedMin.newPositionY).toBe(-250);
     });
@@ -1247,6 +1242,7 @@ describe('TreeUtil', () => {
       // positionXMin = -400 + 2*10 = -380; positionXMax = 400 - 2*10 = 380
       const maxClamped = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: false,
         positionX: 999,
@@ -1254,11 +1250,13 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 600,
+        treePadding: TREE_PADDING,
       });
       expect(maxClamped.newPositionX).toBe(380);
 
       const minClamped = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: false,
         positionX: -999,
@@ -1266,6 +1264,7 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 600,
+        treePadding: TREE_PADDING,
       });
       expect(minClamped.newPositionX).toBe(-380);
     });
@@ -1273,6 +1272,7 @@ describe('TreeUtil', () => {
     it('passes positionX through unchanged when within bounds', () => {
       const result = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 1,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: false,
         positionX: 100,
@@ -1280,6 +1280,7 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 600,
+        treePadding: TREE_PADDING,
       });
       expect(result.newPositionX).toBe(100);
     });
@@ -1289,6 +1290,7 @@ describe('TreeUtil', () => {
       // positionYMax = (600*4) - (300*4) - 0 = 1200; positionY=999 < 1200 -> no clamping
       const result = TreeUtil.getSanitizedScrollPosition({
         devicePixelRatio: 4,
+        headerHeight: HEADER_HEIGHT,
         internalZoomLevel: 1,
         isLinked: true,
         positionX: 0,
@@ -1296,6 +1298,7 @@ describe('TreeUtil', () => {
         treeCanvasHeight: 300,
         treeCanvasWidth: 400,
         treeHeight: 600,
+        treePadding: TREE_PADDING,
       });
       expect(result.newPositionY).toBe(999);
     });
@@ -1352,19 +1355,6 @@ describe('TreeUtil', () => {
     const TREE_PADDING_GUIDES = 10;
     const REGULAR_FILL_COLOR = '#dddddd';
 
-    beforeAll(() => {
-      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
-        tree: {
-          REGULAR_FILL_COLOR_SUPPORT_LINE: REGULAR_FILL_COLOR,
-          TREE_PADDING: TREE_PADDING_GUIDES,
-        },
-      } as CaseDbConfig);
-    });
-
-    afterAll(() => {
-      vi.restoreAllMocks();
-    });
-
     const makeGuidesCtx = () => ({
       beginPath: vi.fn(),
       closePath: vi.fn(),
@@ -1391,7 +1381,9 @@ describe('TreeUtil', () => {
         geneticTreeWidth: new Decimal(0),
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
+        regularFillColorSupportLine: REGULAR_FILL_COLOR,
         tickerMarkScale: [0, 0, 0],
+        treePadding: TREE_PADDING_GUIDES,
         zoomLevel: 1,
       });
 
@@ -1414,7 +1406,9 @@ describe('TreeUtil', () => {
         geneticTreeWidth: new Decimal(10),
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
+        regularFillColorSupportLine: REGULAR_FILL_COLOR,
         tickerMarkScale: [3, 5, 1],
+        treePadding: TREE_PADDING_GUIDES,
         zoomLevel: 1,
       });
 
@@ -1440,7 +1434,9 @@ describe('TreeUtil', () => {
         geneticTreeWidth: new Decimal(10),
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
+        regularFillColorSupportLine: REGULAR_FILL_COLOR,
         tickerMarkScale: [3, 5, 1],
+        treePadding: TREE_PADDING_GUIDES,
         zoomLevel: 1,
       });
 
@@ -1463,8 +1459,10 @@ describe('TreeUtil', () => {
         geneticTreeWidth: new Decimal(10),
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
+        regularFillColorSupportLine: REGULAR_FILL_COLOR,
         startY: 40,
         tickerMarkScale: [3, 5, 1],
+        treePadding: TREE_PADDING_GUIDES,
         zoomLevel: 1,
       });
 
@@ -1476,19 +1474,6 @@ describe('TreeUtil', () => {
   describe('drawScale', () => {
     const TREE_PADDING_SCALE = 10;
     const HEADER_HEIGHT_SCALE = 40;
-
-    beforeAll(() => {
-      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
-        tree: {
-          HEADER_HEIGHT: HEADER_HEIGHT_SCALE,
-          TREE_PADDING: TREE_PADDING_SCALE,
-        },
-      } as CaseDbConfig);
-    });
-
-    afterAll(() => {
-      vi.restoreAllMocks();
-    });
 
     const makeScaleCtx = () => ({
       beginPath: vi.fn(),
@@ -1519,10 +1504,12 @@ describe('TreeUtil', () => {
         canvas,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(10),
+        headerHeight: HEADER_HEIGHT_SCALE,
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
         theme: makeScaleTheme(),
         tickerMarkScale: [3, 5, 1],
+        treePadding: TREE_PADDING_SCALE,
         zoomLevel: 1,
       });
 
@@ -1544,10 +1531,12 @@ describe('TreeUtil', () => {
         canvas,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(10),
+        headerHeight: HEADER_HEIGHT_SCALE,
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
         theme: makeScaleTheme(),
         tickerMarkScale: [3, 5, 1],
+        treePadding: TREE_PADDING_SCALE,
         zoomLevel: 1,
       });
 
@@ -1568,10 +1557,12 @@ describe('TreeUtil', () => {
         canvas,
         devicePixelRatio: 1,
         geneticTreeWidth: new Decimal(5),
+        headerHeight: HEADER_HEIGHT_SCALE,
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
         theme: makeScaleTheme(),
         tickerMarkScale: [1, 5, 1],
+        treePadding: TREE_PADDING_SCALE,
         zoomLevel: 1,
       });
 
@@ -1582,25 +1573,6 @@ describe('TreeUtil', () => {
   describe('drawTreeCanvas', () => {
     const TREE_PADDING_CANVAS = 10;
     const REGULAR_FILL_CANVAS = '#eeeeee';
-
-    beforeAll(() => {
-      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
-        lineList: {
-          TABLE_ROW_HEIGHT: 30,
-        },
-        tree: {
-          ANCESTOR_DOT_RADIUS: 3,
-          LEAF_DOT_RADIUS: 4,
-          MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL: 5,
-          REGULAR_FILL_COLOR_SUPPORT_LINE: REGULAR_FILL_CANVAS,
-          TREE_PADDING: TREE_PADDING_CANVAS,
-        },
-      } as CaseDbConfig);
-    });
-
-    afterAll(() => {
-      vi.restoreAllMocks();
-    });
 
     const makeTreeCanvasCtx = () => ({
       beginPath: vi.fn(),
@@ -1672,6 +1644,7 @@ describe('TreeUtil', () => {
         isLinked: false,
         itemHeight: 30,
         pixelToGeneticDistanceRatio: 100,
+        regularFillColorSupportLine: REGULAR_FILL_CANVAS,
         shouldShowDistances: false,
         shouldShowSupportLinesWhenUnlinked: false,
         stratification: null,
@@ -1680,6 +1653,7 @@ describe('TreeUtil', () => {
         treeAssembly: makeEmptyAssembly(),
         treeCanvasHeight: 100,
         treeCanvasWidth: 200,
+        treePadding: TREE_PADDING_CANVAS,
         verticalScrollPosition: 0,
         zoomLevel: 1,
       });
@@ -1707,6 +1681,7 @@ describe('TreeUtil', () => {
         isLinked: false,
         itemHeight: 30,
         pixelToGeneticDistanceRatio: 100,
+        regularFillColorSupportLine: REGULAR_FILL_CANVAS,
         shouldShowDistances: false,
         shouldShowSupportLinesWhenUnlinked: false,
         stratification: null,
@@ -1715,6 +1690,7 @@ describe('TreeUtil', () => {
         treeAssembly: makeEmptyAssembly(),
         treeCanvasHeight: 100,
         treeCanvasWidth: 200,
+        treePadding: TREE_PADDING_CANVAS,
         verticalScrollPosition: 0,
         zoomLevel: 1,
       });
@@ -1743,6 +1719,7 @@ describe('TreeUtil', () => {
         isLinked: false,
         itemHeight: 30,
         pixelToGeneticDistanceRatio: 100,
+        regularFillColorSupportLine: REGULAR_FILL_CANVAS,
         shouldShowDistances: false,
         shouldShowSupportLinesWhenUnlinked: false,
         stratification: null,
@@ -1751,6 +1728,7 @@ describe('TreeUtil', () => {
         treeAssembly: makeEmptyAssembly(),
         treeCanvasHeight: 100,
         treeCanvasWidth: 200,
+        treePadding: TREE_PADDING_CANVAS,
         verticalScrollPosition: 0,
         zoomLevel: 1,
       });
@@ -1778,6 +1756,7 @@ describe('TreeUtil', () => {
         isLinked: false,
         itemHeight: 30,
         pixelToGeneticDistanceRatio: 100,
+        regularFillColorSupportLine: REGULAR_FILL_CANVAS,
         shouldShowDistances: false,
         shouldShowSupportLinesWhenUnlinked: false,
         stratification: null,
@@ -1786,6 +1765,7 @@ describe('TreeUtil', () => {
         treeAssembly: makeEmptyAssembly(),
         treeCanvasHeight: 100,
         treeCanvasWidth: 200,
+        treePadding: TREE_PADDING_CANVAS,
         verticalScrollPosition: 0,
         zoomLevel: 2,
       });
@@ -1990,165 +1970,6 @@ describe('TreeUtil', () => {
       });
 
       expect(result).toBeUndefined();
-    });
-  });
-
-  describe('getTreeConfigurationId', () => {
-    it('concatenates col, refCol, protocol and algorithm IDs separated by underscores', () => {
-      const config: Omit<TreeConfiguration, 'computedId'> = {
-        col: { id: 'col1' } as TreeConfiguration['col'],
-        geneticDistanceProtocol: { id: 'gdp1' } as TreeConfiguration['geneticDistanceProtocol'],
-        refCol: { id: 'rc1' } as TreeConfiguration['refCol'],
-        treeAlgorithm: { id: 'algo1' } as TreeConfiguration['treeAlgorithm'],
-      };
-      expect(TreeUtil.getTreeConfigurationId(config)).toBe('col1_rc1_gdp1_algo1');
-    });
-
-    it('handles different ID values correctly', () => {
-      const config: Omit<TreeConfiguration, 'computedId'> = {
-        col: { id: 'my-col' } as TreeConfiguration['col'],
-        geneticDistanceProtocol: { id: 'proto-x' } as TreeConfiguration['geneticDistanceProtocol'],
-        refCol: { id: 'my-ref' } as TreeConfiguration['refCol'],
-        treeAlgorithm: { id: 'nj-algo' } as TreeConfiguration['treeAlgorithm'],
-      };
-      expect(TreeUtil.getTreeConfigurationId(config)).toBe('my-col_my-ref_proto-x_nj-algo');
-    });
-  });
-
-  describe('getTreeConfigurationLabel', () => {
-    it('returns "protocolName - algorithmName"', () => {
-      const config: TreeConfiguration = {
-        col: { id: 'c1' } as TreeConfiguration['col'],
-        computedId: 'test',
-        geneticDistanceProtocol: { id: 'g1', name: 'My Protocol' } as TreeConfiguration['geneticDistanceProtocol'],
-        refCol: { id: 'r1' } as TreeConfiguration['refCol'],
-        treeAlgorithm: { id: 'a1', name: 'NJ Algorithm' } as TreeConfiguration['treeAlgorithm'],
-      };
-      expect(TreeUtil.getTreeConfigurationLabel(config)).toBe('My Protocol - NJ Algorithm');
-    });
-
-    it('works with different protocol and algorithm names', () => {
-      const config: TreeConfiguration = {
-        col: { id: 'c1' } as TreeConfiguration['col'],
-        computedId: 'x',
-        geneticDistanceProtocol: { id: 'g1', name: 'Hamming' } as TreeConfiguration['geneticDistanceProtocol'],
-        refCol: { id: 'r1' } as TreeConfiguration['refCol'],
-        treeAlgorithm: { id: 'a1', name: 'UPGMA' } as TreeConfiguration['treeAlgorithm'],
-      };
-      expect(TreeUtil.getTreeConfigurationLabel(config)).toBe('Hamming - UPGMA');
-    });
-  });
-
-  describe('getTreeConfigurations', () => {
-    let savedTreeAlgorithms: CaseDbTreeAlgorithm[];
-
-    const mockAlgo1: CaseDbTreeAlgorithm = {
-      code: 'NJ',
-      id: 'algo-nj',
-      is_ultrametric: false,
-      name: 'Neighbour Joining',
-      seqdb_tree_algorithm_id: 'seqdb1',
-      tree_algorithm_class_id: 'class1',
-    };
-
-    const mockAlgo2: CaseDbTreeAlgorithm = {
-      code: 'UPGMA',
-      id: 'algo-upgma',
-      is_ultrametric: true,
-      name: 'UPGMA',
-      seqdb_tree_algorithm_id: 'seqdb2',
-      tree_algorithm_class_id: 'class1',
-    };
-
-    beforeAll(() => {
-      savedTreeAlgorithms = DataService.getInstance().data.treeAlgorithms;
-      DataService.getInstance().data.treeAlgorithms = [mockAlgo1, mockAlgo2];
-    });
-
-    afterAll(() => {
-      DataService.getInstance().data.treeAlgorithms = savedTreeAlgorithms;
-    });
-
-    it('returns empty array when no GENETIC_DISTANCE cols exist', () => {
-      const completeCaseType = {
-        cols: {},
-        genetic_distance_protocols: {},
-        ref_cols: {},
-        tree_algorithms: {},
-      } as unknown as Parameters<typeof TreeUtil.getTreeConfigurations>[0];
-
-      expect(TreeUtil.getTreeConfigurations(completeCaseType)).toEqual([]);
-    });
-
-    it('returns one entry per (col × algorithm) pair', () => {
-      const completeCaseType = {
-        cols: {
-          col1: { id: 'col1', ref_col_id: 'rc1', tree_algorithm_codes: ['NJ', 'UPGMA'] },
-        },
-        genetic_distance_protocols: {
-          gdp1: { id: 'gdp1', name: 'Protocol 1' },
-        },
-        ref_cols: {
-          rc1: { col_type: CaseDbColType.GENETIC_DISTANCE, genetic_distance_protocol_id: 'gdp1', id: 'rc1' },
-        },
-        tree_algorithms: {
-          NJ: mockAlgo1,
-          UPGMA: mockAlgo2,
-        },
-      } as unknown as Parameters<typeof TreeUtil.getTreeConfigurations>[0];
-
-      const result = TreeUtil.getTreeConfigurations(completeCaseType);
-
-      expect(result).toHaveLength(2);
-      expect(result[0].col.id).toBe('col1');
-      expect(result[0].treeAlgorithm).toBe(mockAlgo1);
-      expect(result[1].treeAlgorithm).toBe(mockAlgo2);
-    });
-
-    it('sets computedId using getTreeConfigurationId', () => {
-      const completeCaseType = {
-        cols: {
-          col1: { id: 'col1', ref_col_id: 'rc1', tree_algorithm_codes: ['NJ'] },
-        },
-        genetic_distance_protocols: {
-          gdp1: { id: 'gdp1', name: 'Protocol 1' },
-        },
-        ref_cols: {
-          rc1: { col_type: CaseDbColType.GENETIC_DISTANCE, genetic_distance_protocol_id: 'gdp1', id: 'rc1' },
-        },
-        tree_algorithms: {
-          NJ: mockAlgo1,
-        },
-      } as unknown as Parameters<typeof TreeUtil.getTreeConfigurations>[0];
-
-      const result = TreeUtil.getTreeConfigurations(completeCaseType);
-
-      expect(result[0].computedId).toBe('col1_rc1_gdp1_algo-nj');
-    });
-
-    it('sorts algorithms according to DataService.getInstance().data.treeAlgorithms order', () => {
-      // DataService order: [mockAlgo1(NJ), mockAlgo2(UPGMA)]
-      // col specifies UPGMA first, then NJ -> result should be sorted to NJ then UPGMA
-      const completeCaseType = {
-        cols: {
-          col1: { id: 'col1', ref_col_id: 'rc1', tree_algorithm_codes: ['UPGMA', 'NJ'] },
-        },
-        genetic_distance_protocols: {
-          gdp1: { id: 'gdp1', name: 'Protocol 1' },
-        },
-        ref_cols: {
-          rc1: { col_type: CaseDbColType.GENETIC_DISTANCE, genetic_distance_protocol_id: 'gdp1', id: 'rc1' },
-        },
-        tree_algorithms: {
-          NJ: mockAlgo1,
-          UPGMA: mockAlgo2,
-        },
-      } as unknown as Parameters<typeof TreeUtil.getTreeConfigurations>[0];
-
-      const result = TreeUtil.getTreeConfigurations(completeCaseType);
-
-      expect(result[0].treeAlgorithm.code).toBe('NJ');
-      expect(result[1].treeAlgorithm.code).toBe('UPGMA');
     });
   });
 

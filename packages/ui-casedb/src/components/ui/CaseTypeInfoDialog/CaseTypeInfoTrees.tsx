@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 
 import { TreeDescription } from '../TreeDescription';
-import { TreeUtil } from '../../../utils/TreeUtil';
+import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 
 import { CaseTypeInfoColAccessRights } from './CaseTypeInfoColAccessRights';
 
@@ -20,7 +20,7 @@ export type CaseTypeInfoTreesProps = {
   readonly completeCaseType: CaseDbCompleteCaseType;
 };
 export const CaseTypeInfoTrees = ({ completeCaseType }: CaseTypeInfoTreesProps) => {
-  const treeConfigurations = useMemo(() => TreeUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
+  const treeConfigurations = useMemo(() => TreeWidgetUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
   const { t } = useTranslation();
   const theme = useTheme();
 

@@ -62,7 +62,7 @@ import {
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { TreeUtil } from '../../../utils/TreeUtil';
+import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 import type {
   CaseDbSimilarCaseWithIsOwnCase,
   FindSimilarCasesChartDataPoint,
@@ -106,7 +106,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   const treeConfiguration = dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE).treeConfiguration;
   const setFindSimilarCasesResults = useStore(dashboardStore, (state) => state.setFindSimilarCasesResults);
   const findSimilarCasesResults = useStore(dashboardStore, (state) => state.findSimilarCasesResults);
-  const treeConfigurations = useMemo(() => TreeUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
+  const treeConfigurations = useMemo(() => TreeWidgetUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
   const [formData, setFormData] = useState<FormFields>(null);
 
   const schema = useMemo(() => object<FormFields>().shape({

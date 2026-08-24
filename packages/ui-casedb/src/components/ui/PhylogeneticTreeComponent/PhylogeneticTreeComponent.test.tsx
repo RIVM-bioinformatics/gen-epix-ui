@@ -22,10 +22,10 @@ import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 import type {
   PhylogeneticTreeComponentPathClickEvent,
-  PhylogeneticTreeComponentRef,
   PhylogeneticTreeComponentViewState,
+  PhylogeneticTreeRef,
 } from './PhylogeneticTreeComponent';
-import { PhylogeneticTreeComponent } from './PhylogeneticTreeComponent';
+import { PhylogeneticTree } from './PhylogeneticTreeComponent';
 
 const DEFAULT_HEIGHT = 320;
 const DEFAULT_ITEM_HEIGHT = 32;
@@ -48,7 +48,7 @@ type RenderTreeOptions = {
   onLinkStateChange?: (isLinked: boolean) => void;
   onPathClick?: (event: PhylogeneticTreeComponentPathClickEvent) => void;
   onViewStateChange?: (viewState: PhylogeneticTreeComponentViewState) => void;
-  ref?: { current: null | PhylogeneticTreeComponentRef };
+  ref?: { current: null | PhylogeneticTreeRef };
   shouldShowDistances?: boolean;
   shouldShowSupportLinesWhenUnlinked?: boolean;
   stratification?: Stratification;
@@ -79,7 +79,7 @@ type TreeLayoutNode = {
   y: number;
 };
 
-const createComponentRef = (): { current: null | PhylogeneticTreeComponentRef } => {
+const createComponentRef = (): { current: null | PhylogeneticTreeRef } => {
   return { current: null };
 };
 
@@ -288,7 +288,7 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
         width: `${options.width}px`,
       }}
     >
-      <PhylogeneticTreeComponent
+      <PhylogeneticTree
         ariaLabel={options.ariaLabel}
         externalScrollSubject={options.externalScrollSubject}
         externalVisibleRangeSubject={options.externalVisibleRangeSubject}

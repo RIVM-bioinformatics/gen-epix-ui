@@ -30,7 +30,7 @@ import {
 } from '@gen-epix/ui';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { TreeUtil } from '../../../utils/TreeUtil';
+import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 
 
 export interface RemoveFindSimilarCasesResultDialogOpenProps {
@@ -55,7 +55,7 @@ export const RemoveFindSimilarCasesResultDialog = withDialog<RemoveFindSimilarCa
   const formId = useId();
   const dashboardStore = use(DashboardStoreContext);
   const setFindSimilarCasesResults = useStore(dashboardStore, (state) => state.setFindSimilarCasesResults);
-  const treeConfigurations = useMemo(() => TreeUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
+  const treeConfigurations = useMemo(() => TreeWidgetUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
   const findSimilarCasesResults = useStore(dashboardStore, (state) => state.findSimilarCasesResults);
   const [intermediateFindSimilarCasesResults, setIntermediateFindSimilarCasesResults] = useState(findSimilarCasesResults);
 

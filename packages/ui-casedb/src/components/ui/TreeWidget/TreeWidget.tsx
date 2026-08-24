@@ -44,16 +44,16 @@ import type { Highlighting } from '../../../models/caseDb';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import { TreeUtil } from '../../../utils/TreeUtil';
+import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { TreeDescription } from '../TreeDescription';
 import { WidgetUnavailable } from '../WidgetUnavailable';
-import { PhylogeneticTreeComponent } from '../PhylogeneticTreeComponent';
+import { PhylogeneticTree } from '../PhylogeneticTreeComponent';
 import type {
   PhylogeneticTreeComponentPathClickEvent,
-  PhylogeneticTreeComponentRef,
   PhylogeneticTreeComponentViewState,
+  PhylogeneticTreeRef,
 } from '../PhylogeneticTreeComponent';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
@@ -73,7 +73,7 @@ export const TreeWidget = () => {
   const { t } = useTranslation();
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [isTreeLinked, setIsTreeLinked] = useState(true);
-  const treeRef = useRef<PhylogeneticTreeComponentRef>(null);
+  const treeRef = useRef<PhylogeneticTreeRef>(null);
   const dashboardStore = use(DashboardStoreContext);
   const dashboardContext = use(DashboardContext);
   const userProfileStore = use(UserProfileStoreContext);
@@ -118,7 +118,7 @@ export const TreeWidget = () => {
     return sortedData.map(c => c.id);
   }, [sortedData]);
 
-  const treeConfigurations = useMemo(() => TreeUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
+  const treeConfigurations = useMemo(() => TreeWidgetUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
 
   const treeCanvasAriaLabel = useMemo(() => {
     if (!treeConfiguration) {
@@ -418,14 +418,14 @@ export const TreeWidget = () => {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           perform();
         },
-        label: TreeUtil.getTreeConfigurationLabel(config),
+        label: TreeWidgetUtil.getTreeConfigurationLabel(config),
         tooltip: (
           <TreeDescription
             treeConfiguration={config}
           />
         ),
       })) ?? [],
-      label: treeConfiguration ? t('Tree: {{algorithm}}', { algorithm: TreeUtil.getTreeConfigurationLabel(treeConfiguration) }) : t`Tree`,
+      label: treeConfiguration ? t('Tree: {{algorithm}}', { algorithm: TreeWidgetUtil.getTreeConfigurationLabel(treeConfiguration) }) : t`Tree`,
       tooltip: treeConfiguration
         ? (
           <TreeDescription
@@ -554,7 +554,7 @@ export const TreeWidget = () => {
           />
         )}
         {!isTreeUnavailable && shouldShowTree && (
-          <PhylogeneticTreeComponent
+          <PhylogeneticTree
             ariaLabel={treeCanvasAriaLabel}
             externalScrollSubject={dashboardContext.linkedScrollSubject}
             externalVisibleRangeSubject={dashboardContext.lineListRangeSubject}

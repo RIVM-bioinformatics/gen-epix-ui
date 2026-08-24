@@ -4,23 +4,17 @@ import intersection from 'lodash/intersection';
 import last from 'lodash/last';
 import round from 'lodash/round';
 import type { Theme } from '@mui/material';
-import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
-import { CaseDbColType } from '@gen-epix/api-casedb';
 import {
-  ConfigService,
   NumberUtil,
   StringUtil,
 } from '@gen-epix/ui';
 
 import type { Stratification } from '../../models/stratification';
-import type { TreeConfiguration } from '../../models/dashboard';
-import { DataService } from '../../classes/services/DataService';
 import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
 } from '../../models/tree';
-import type { CaseDbConfig } from '../../models/config';
 
 type NodeAssemblyResult = {
   caseIds: string[];
@@ -34,11 +28,15 @@ type SanitizeResult = { node: TreeNode; nodesToMove: TreeNode[] };
 type TickerMarkScale = [number, number, number];
 
 type TreeAssemblyContext = {
+  ancestorDotRadius: number;
   itemHeight: number;
+  leafDotRadius: number;
+  minimumDistancePercentageToShowLabel: number;
   pixelToGeneticDistanceRatio: number;
   rootNode: TreeNode;
   treeAssembly: TreeAssembly;
   treeCanvasWidth: number;
+  treePadding: number;
 };
 
 export class TreeUtil {
@@ -57,8 +55,8 @@ export class TreeUtil {
    * @param params.externalLeafSorting - Custom sorting order of leaf nodes by name, derived from external ordering (e.g. table row order). Must contain all leaf node names.
    * @returns A fully populated {@link TreeAssembly} ready for rendering.
    */
-  public static assembleTree(params: { externalLeafSorting: string[]; itemHeight: number; pixelToGeneticDistanceRatio: number; rootNode: TreeNode; treeCanvasWidth: number }): TreeAssembly {
-    const { externalLeafSorting, itemHeight, pixelToGeneticDistanceRatio, rootNode, treeCanvasWidth } = params;
+  public static assembleTree(params: { ancestorDotRadius: number; externalLeafSorting: string[]; itemHeight: number; leafDotRadius: number; minimumDistancePercentageToShowLabel: number; pixelToGeneticDistanceRatio: number; rootNode: TreeNode; treeCanvasWidth: number; treePadding: number }): TreeAssembly {
+    const { ancestorDotRadius, externalLeafSorting, itemHeight, leafDotRadius, minimumDistancePercentageToShowLabel, pixelToGeneticDistanceRatio, rootNode, treeCanvasWidth, treePadding } = params;
     let leafIndex = 0;
     const treeAssembly: TreeAssembly = {
       ancestorNodes: [],
@@ -74,11 +72,15 @@ export class TreeUtil {
     };
 
     const treeAssemblyContext: TreeAssemblyContext = {
+      ancestorDotRadius,
       itemHeight,
+      leafDotRadius,
+      minimumDistancePercentageToShowLabel,
       pixelToGeneticDistanceRatio,
       rootNode,
       treeAssembly,
       treeCanvasWidth,
+      treePadding,
     };
 
     const traverseTree = (node: TreeNode, distance = 0): NodeAssemblyResult => {
@@ -171,13 +173,14 @@ export class TreeUtil {
    * @param params.paddingBottom - Bottom inset in pixels to leave blank (default 0).
    * @param params.zoomLevel - Current zoom level.
    * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels.
+   * @param params.regularFillColorSupportLine - Color to use for the guide lines (default from config).
    */
-  public static drawGuides(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; endY?: number; geneticTreeWidth: Decimal; horizontalScrollPosition: number; paddingBottom?: number; paddingTop?: number; pixelToGeneticDistanceRatio: number; startY?: number; tickerMarkScale: TickerMarkScale; zoomLevel: number }): void {
-    const { canvas, devicePixelRatio, endY, geneticTreeWidth, horizontalScrollPosition = 0, paddingBottom = 0, paddingTop = 0, pixelToGeneticDistanceRatio, startY, tickerMarkScale, zoomLevel } = params;
+  public static drawGuides(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; endY?: number; geneticTreeWidth: Decimal; horizontalScrollPosition: number; paddingBottom?: number; paddingTop?: number; pixelToGeneticDistanceRatio: number; regularFillColorSupportLine: string; startY?: number; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
+    const { canvas, devicePixelRatio, endY, geneticTreeWidth, horizontalScrollPosition = 0, paddingBottom = 0, paddingTop = 0, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY, tickerMarkScale, treePadding, zoomLevel } = params;
     const canvasHeight = canvas.clientHeight || canvas.height / devicePixelRatio;
 
     TreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
-      ctx.strokeStyle = ConfigService.getInstance<CaseDbConfig>().config.tree.REGULAR_FILL_COLOR_SUPPORT_LINE;
+      ctx.strokeStyle = regularFillColorSupportLine;
       ctx.setLineDash([3, 1]);
       TreeUtil.forEachScaleLine({
         callback: (x) => {
@@ -193,6 +196,7 @@ export class TreeUtil {
         horizontalScrollPosition,
         pixelToGeneticDistanceRatio,
         tickerMarkScale,
+        treePadding,
         zoomLevel,
       });
       ctx.setLineDash([0, 0]);
@@ -214,8 +218,8 @@ export class TreeUtil {
    * @param params.devicePixelRatio - Screen DPR.
    * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels.
    */
-  public static drawScale(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; geneticTreeWidth: Decimal; horizontalScrollPosition: number; pixelToGeneticDistanceRatio: number; theme: Theme; tickerMarkScale: TickerMarkScale; zoomLevel: number }): void {
-    const { canvas, devicePixelRatio, geneticTreeWidth, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel } = params;
+  public static drawScale(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; geneticTreeWidth: Decimal; headerHeight: number; horizontalScrollPosition: number; pixelToGeneticDistanceRatio: number; theme: Theme; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
+    const { canvas, devicePixelRatio, geneticTreeWidth, headerHeight, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, theme, tickerMarkScale, treePadding, zoomLevel } = params;
     TreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.fillStyle = theme.palette.text.primary;
       TreeUtil.forEachScaleLine({
@@ -224,7 +228,7 @@ export class TreeUtil {
           ctx.textAlign = 'center';
           ctx.font = `bold 11px ${theme.typography.fontFamily}`;
           const label = new Decimal(tickerMarkScale[1]).times((numberOfLines - 1) - i).toNumber();
-          ctx.fillText(NumberUtil.toStringWithPrecision(label, tickerMarkScale[2]), x, ConfigService.getInstance<CaseDbConfig>().config.tree.HEADER_HEIGHT * 0.61);
+          ctx.fillText(NumberUtil.toStringWithPrecision(label, tickerMarkScale[2]), x, headerHeight * 0.61);
           ctx.closePath();
         },
         devicePixelRatio,
@@ -232,6 +236,7 @@ export class TreeUtil {
         horizontalScrollPosition,
         pixelToGeneticDistanceRatio,
         tickerMarkScale,
+        treePadding,
         zoomLevel,
       });
     });
@@ -439,6 +444,7 @@ export class TreeUtil {
     isLinked: boolean;
     itemHeight: number;
     pixelToGeneticDistanceRatio: number;
+    regularFillColorSupportLine: string;
     shouldShowDistances: boolean;
     shouldShowSupportLinesWhenUnlinked: boolean;
     stratification: Stratification;
@@ -447,10 +453,11 @@ export class TreeUtil {
     treeAssembly: TreeAssembly;
     treeCanvasHeight: number;
     treeCanvasWidth: number;
+    treePadding: number;
     verticalScrollPosition: number;
     zoomLevel: number;
   }): void {
-    const { canvas, devicePixelRatio, externalRange, externalScrollPosition = 0, geneticTreeWidth, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, pixelToGeneticDistanceRatio, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, verticalScrollPosition, zoomLevel } = params;
+    const { canvas, devicePixelRatio, externalRange, externalScrollPosition = 0, geneticTreeWidth, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, pixelToGeneticDistanceRatio, regularFillColorSupportLine, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, stratification, theme, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, treePadding, verticalScrollPosition, zoomLevel } = params;
     const ctx = TreeUtil.getCanvasContext(canvas);
     ctx.reset();
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -459,12 +466,12 @@ export class TreeUtil {
     ctx.imageSmoothingQuality = 'high';
 
     TreeUtil.drawBackground({ canvas, devicePixelRatio, theme, treeCanvasHeight: treeCanvasHeight + headerHeight, treeCanvasWidth });
-    TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight + treeCanvasHeight, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, startY: headerHeight, tickerMarkScale, zoomLevel });
+    TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight + treeCanvasHeight, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: headerHeight, tickerMarkScale, treePadding, zoomLevel });
 
     if (headerHeight > 0) {
-      TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, startY: headerHeight * 0.7, tickerMarkScale, zoomLevel });
-      TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight * 0.3, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, startY: 0, tickerMarkScale, zoomLevel });
-      TreeUtil.drawScale({ canvas, devicePixelRatio, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, theme, tickerMarkScale, zoomLevel });
+      TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: headerHeight * 0.7, tickerMarkScale, treePadding, zoomLevel });
+      TreeUtil.drawGuides({ canvas, devicePixelRatio, endY: headerHeight * 0.3, geneticTreeWidth, horizontalScrollPosition, pixelToGeneticDistanceRatio, regularFillColorSupportLine, startY: 0, tickerMarkScale, treePadding, zoomLevel });
+      TreeUtil.drawScale({ canvas, devicePixelRatio, geneticTreeWidth, headerHeight, horizontalScrollPosition, pixelToGeneticDistanceRatio, theme, tickerMarkScale, treePadding, zoomLevel });
       TreeUtil.drawDivider({ canvas, devicePixelRatio, y: 0 });
       TreeUtil.drawDivider({ canvas, devicePixelRatio, y: headerHeight - 1 });
     }
@@ -638,12 +645,12 @@ export class TreeUtil {
    * @param params.isLinked - Whether the tree is linked to the case list scroll position.
    * @returns Clamped `{ newPositionX, newPositionY }` values.
    */
-  public static getSanitizedScrollPosition(params: { devicePixelRatio: number; internalZoomLevel: number; isLinked: boolean; positionX: number; positionY: number; treeCanvasHeight: number; treeCanvasWidth: number; treeHeight: number }): { newPositionX: number; newPositionY: number } {
-    const { devicePixelRatio, internalZoomLevel, isLinked, positionX, positionY, treeCanvasHeight, treeCanvasWidth, treeHeight } = params;
+  public static getSanitizedScrollPosition(params: { devicePixelRatio: number; headerHeight: number; internalZoomLevel: number; isLinked: boolean; positionX: number; positionY: number; treeCanvasHeight: number; treeCanvasWidth: number; treeHeight: number; treePadding: number }): { newPositionX: number; newPositionY: number } {
+    const { devicePixelRatio, headerHeight, internalZoomLevel, isLinked, positionX, positionY, treeCanvasHeight, treeCanvasWidth, treeHeight, treePadding } = params;
     let positionYMax: number;
     let positionYMin: number;
 
-    const relativeTreePadding = ((ConfigService.getInstance<CaseDbConfig>().config.tree.TREE_PADDING) * devicePixelRatio);
+    const relativeTreePadding = treePadding * devicePixelRatio;
 
     if (isLinked && internalZoomLevel === 1) {
       if (treeHeight < treeCanvasHeight) {
@@ -670,8 +677,8 @@ export class TreeUtil {
         positionYMax = (treeHeight * devicePixelRatio) - ((treeCanvasHeight) * devicePixelRatio) - divePixelRatioOffset;
       }
     } else {
-      positionYMin = (-treeCanvasHeight * devicePixelRatio) + relativeTreePadding + (ConfigService.getInstance<CaseDbConfig>().config.tree.HEADER_HEIGHT * devicePixelRatio);
-      positionYMax = ((treeHeight / internalZoomLevel) * devicePixelRatio) - relativeTreePadding - (ConfigService.getInstance<CaseDbConfig>().config.tree.HEADER_HEIGHT * devicePixelRatio);
+      positionYMin = (-treeCanvasHeight * devicePixelRatio) + relativeTreePadding + (headerHeight * devicePixelRatio);
+      positionYMax = ((treeHeight / internalZoomLevel) * devicePixelRatio) - relativeTreePadding - (headerHeight * devicePixelRatio);
     }
     const newPositionY = Math.max(Math.min(positionYMax, positionY), positionYMin);
 
@@ -738,15 +745,15 @@ export class TreeUtil {
    * @returns A {@link TickerMarkScale} tuple: `[numberOfLines, geneticDistancePerLine, minGeneticScaleUnit]`.
    *   Returns `[0, 0, 0]` when any required input is falsy.
    */
-  public static getTickMarkScale(params: { geneticTreeWidth: Decimal; minGeneticScaleUnit: number; treeWidthMinusPadding: number; zoomLevel: number }): TickerMarkScale {
-    const { geneticTreeWidth, minGeneticScaleUnit, treeWidthMinusPadding, zoomLevel } = params;
+  public static getTickMarkScale(params: { geneticTreeWidth: Decimal; maxScaleWidthPx: number; minGeneticScaleUnit: number; minScaleWidthPx: number; scaleIncrements: number[]; treeWidthMinusPadding: number; zoomLevel: number }): TickerMarkScale {
+    const { geneticTreeWidth, maxScaleWidthPx, minGeneticScaleUnit, minScaleWidthPx, scaleIncrements, treeWidthMinusPadding, zoomLevel } = params;
     if (!treeWidthMinusPadding || !geneticTreeWidth || !minGeneticScaleUnit) {
       return [0, 0, 0];
     }
     const width = treeWidthMinusPadding / zoomLevel;
 
-    let minNumLines = Math.floor(width / ConfigService.getInstance<CaseDbConfig>().config.tree.MAX_SCALE_WIDTH_PX) + 1;
-    let maxNumLines = Math.ceil(width / ConfigService.getInstance<CaseDbConfig>().config.tree.MIN_SCALE_WIDTH_PX) + 1;
+    let minNumLines = Math.floor(width / maxScaleWidthPx) + 1;
+    let maxNumLines = Math.ceil(width / minScaleWidthPx) + 1;
 
     if (geneticTreeWidth.div(minGeneticScaleUnit).add(1).lessThan(maxNumLines)) {
       maxNumLines = Math.max(geneticTreeWidth.div(minGeneticScaleUnit).ceil().toNumber(), 2);
@@ -760,7 +767,7 @@ export class TreeUtil {
 
     const geneticTreeWidthDecimal = new Decimal(geneticTreeWidth);
     const multiplier = new Decimal(10).pow(geneticTreeWidthDecimal.log(10).floor().minus(1));
-    const multipliedIncrements = ConfigService.getInstance<CaseDbConfig>().config.tree.SCALE_INCREMENTS.map(i => new Decimal(i).times(multiplier));
+    const multipliedIncrements = scaleIncrements.map(i => new Decimal(i).times(multiplier));
 
     let bestCombination: [Decimal, Decimal, Decimal] = [new Decimal(0), new Decimal(0), new Decimal(Infinity)];
 
@@ -778,70 +785,6 @@ export class TreeUtil {
     }
 
     return [bestCombination[0].add(1).toNumber(), bestCombination[1].toNumber(), minGeneticScaleUnit];
-  }
-
-  /**
-   * Produces a stable, unique string ID for a tree configuration by
-   * concatenating the IDs of its column, reference column, genetic distance
-   * protocol, and tree algorithm.
-   *
-   * @param treeConfiguration - The configuration to identify (without a pre-existing `computedId`).
-   * @returns A string of the form `"colId_refColId_protocolId_algorithmId"`.
-   */
-  public static getTreeConfigurationId(treeConfiguration: Omit<TreeConfiguration, 'computedId'>): string {
-    return `${treeConfiguration.col.id}_${treeConfiguration.refCol.id}_${treeConfiguration.geneticDistanceProtocol.id}_${treeConfiguration.treeAlgorithm.id}`;
-  }
-
-  /**
-   * Returns a human-readable display label for a tree configuration.
-   *
-   * @param config - The tree configuration to label.
-   * @returns A string of the form `"<protocolName> - <algorithmName>"`.
-   */
-  public static getTreeConfigurationLabel(config: TreeConfiguration): string {
-    return `${config.geneticDistanceProtocol.name} - ${config.treeAlgorithm.name}`;
-  }
-
-  /**
-   * Derives all possible tree configurations for the given case type.
-   *
-   * Iterates over all columns of type `GENETIC_DISTANCE`, then for each column
-   * produces one {@link TreeConfiguration} per available tree algorithm.
-   * Algorithms are sorted by their canonical order from `DataService`.
-   *
-   * @param completeCaseType - The fully-loaded case type containing columns,
-   *   reference columns, genetic distance protocols, and tree algorithms.
-   * @returns An array of tree configurations, one per (column × algorithm) pair.
-   */
-  public static getTreeConfigurations(completeCaseType: CaseDbCompleteCaseType): TreeConfiguration[] {
-    const treeConfigurations: TreeConfiguration[] = [];
-
-    const geneticDistanceCols = Object.values(completeCaseType.cols).filter(col => {
-      const refCol = completeCaseType.ref_cols[col.ref_col_id];
-      return refCol.col_type === CaseDbColType.GENETIC_DISTANCE;
-    });
-
-    const sortedTreeAlgorithmCodes = DataService.getInstance().data.treeAlgorithms.map(x => x.code);
-
-    geneticDistanceCols.forEach(col => {
-      const refCol = completeCaseType.ref_cols[col.ref_col_id];
-      const geneticDistanceProtocol = completeCaseType.genetic_distance_protocols[refCol.genetic_distance_protocol_id];
-      const treeAlgorithms = [...col.tree_algorithm_codes].sort((a, b) => {
-        return sortedTreeAlgorithmCodes.indexOf(a) - sortedTreeAlgorithmCodes.indexOf(b);
-      }).map(treeAlgorithmCode => completeCaseType.tree_algorithms[treeAlgorithmCode]);
-
-      treeAlgorithms.forEach(treeAlgorithm => {
-        treeConfigurations.push({
-          col,
-          computedId: TreeUtil.getTreeConfigurationId({ col, geneticDistanceProtocol, refCol, treeAlgorithm }),
-          geneticDistanceProtocol,
-          refCol,
-          treeAlgorithm,
-        });
-      });
-    });
-
-    return treeConfigurations;
   }
 
   /**
@@ -964,7 +907,7 @@ export class TreeUtil {
     if (node.children.every(child => (child.branchLength?.toNumber() ?? 0) > 0)) {
       // add circle at beginning of the line representing the node itself
       const circlePath = new Path2D();
-      circlePath.arc(ancestorXPxEnd, ancestorYPx, ConfigService.getInstance<CaseDbConfig>().config.tree.ANCESTOR_DOT_RADIUS, 0, 2 * Math.PI, false);
+      circlePath.arc(ancestorXPxEnd, ancestorYPx, treeAssemblyContext.ancestorDotRadius, 0, 2 * Math.PI, false);
       treeAssemblyContext.treeAssembly.ancestorNodes.push({ nodeNames: [node.name, ...caseIds], shape: circlePath });
       treeAssemblyContext.treeAssembly.nodePathPropertiesMap.set(circlePath, {
         subTreeLeaveNames: node.subTreeLeaveNames,
@@ -995,7 +938,7 @@ export class TreeUtil {
    */
   private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0, externalSortingIndex = 0): NodeAssemblyResult {
     const leafX = distance + (node.branchLength?.toNumber() ?? 0);
-    const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + ConfigService.getInstance<CaseDbConfig>().config.tree.TREE_PADDING;
+    const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + treeAssemblyContext.treePadding;
     const leafYPx = ((leafIndex) * treeAssemblyContext.itemHeight) + (treeAssemblyContext.itemHeight / 2);
     const leafXPxDistance = (node.branchLength?.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
     const leafXPxStart = leafXPxEnd - leafXPxDistance;
@@ -1021,7 +964,7 @@ export class TreeUtil {
 
     // add a dot to represent the node
     const circlePath = new Path2D();
-    circlePath.arc(leafXPxEnd, leafYPx, ConfigService.getInstance<CaseDbConfig>().config.tree.LEAF_DOT_RADIUS, 0, 2 * Math.PI, false);
+    circlePath.arc(leafXPxEnd, leafYPx, treeAssemblyContext.leafDotRadius, 0, 2 * Math.PI, false);
     circlePath.closePath();
 
     treeAssemblyContext.treeAssembly.nodePathPropertiesMap.set(circlePath, {
@@ -1087,8 +1030,8 @@ export class TreeUtil {
    * @param params.horizontalScrollPosition - Current horizontal scroll offset in pixels (default 0).
    * @param params.callback - Called for each line with `(x, index, numberOfLines)`.
    */
-  private static forEachScaleLine(params: { callback: (x: number, i: number, numberOfLines: number) => void; devicePixelRatio: number; geneticTreeWidth: Decimal; horizontalScrollPosition?: number; pixelToGeneticDistanceRatio: number; tickerMarkScale: TickerMarkScale; zoomLevel: number }): void {
-    const { callback, devicePixelRatio, geneticTreeWidth, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, tickerMarkScale, zoomLevel } = params;
+  private static forEachScaleLine(params: { callback: (x: number, i: number, numberOfLines: number) => void; devicePixelRatio: number; geneticTreeWidth: Decimal; horizontalScrollPosition?: number; pixelToGeneticDistanceRatio: number; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
+    const { callback, devicePixelRatio, geneticTreeWidth, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, tickerMarkScale, treePadding, zoomLevel } = params;
 
     const numberOfLines = tickerMarkScale[0];
     const tickerGeneticWidth = tickerMarkScale[1];
@@ -1098,7 +1041,7 @@ export class TreeUtil {
     const offset = totalTickerWidth.minus(geneticTreeWidthPx);
 
     for (let i = 0; i < numberOfLines; i++) {
-      const x = new Decimal(i).times(tickerWidth).plus(new Decimal(ConfigService.getInstance<CaseDbConfig>().config.tree.TREE_PADDING).div(zoomLevel)).minus(offset).minus(new Decimal(horizontalScrollPosition).div(devicePixelRatio)).toNumber();
+      const x = new Decimal(i).times(tickerWidth).plus(new Decimal(treePadding).div(zoomLevel)).minus(offset).minus(new Decimal(horizontalScrollPosition).div(devicePixelRatio)).toNumber();
       callback(x, i, numberOfLines);
     }
   }
@@ -1133,7 +1076,7 @@ export class TreeUtil {
     if (!treeAssemblyContext.rootNode.maxBranchLength || treeAssemblyContext.rootNode.maxBranchLength.toNumber() === 0 || !branchLength || branchLength.toNumber() === 0) {
       return null;
     }
-    if (branchLength.div(treeAssemblyContext.rootNode.maxBranchLength).mul(100).lessThan(ConfigService.getInstance<CaseDbConfig>().config.tree.MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL)) {
+    if (branchLength.div(treeAssemblyContext.rootNode.maxBranchLength).mul(100).lessThan(treeAssemblyContext.minimumDistancePercentageToShowLabel)) {
       return null;
     }
     return String(round(branchLength.toNumber(), labelPrecision));

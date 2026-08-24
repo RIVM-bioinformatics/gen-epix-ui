@@ -43,7 +43,13 @@ export type PhylogeneticTreeComponentPathClickEvent = {
   pathProperties: TreePathProperties;
 };
 
-export type PhylogeneticTreeComponentProps = {
+export type PhylogeneticTreeComponentViewState = {
+  horizontalScrollPosition: number;
+  verticalScrollPosition: number;
+  zoomLevel: number;
+};
+
+export type PhylogeneticTreeProps = {
   readonly ariaLabel: string;
   readonly externalScrollSubject?: Subject<LinkedScrollSubjectValue>;
   readonly externalVisibleRangeSubject?: Subject<LineListRangeSubjectValue>;
@@ -55,26 +61,20 @@ export type PhylogeneticTreeComponentProps = {
   readonly onLinkStateChange?: (isLinked: boolean) => void;
   readonly onPathClick?: (event: PhylogeneticTreeComponentPathClickEvent) => void;
   readonly onViewStateChange?: (viewState: PhylogeneticTreeComponentViewState) => void;
-  readonly ref?: Ref<PhylogeneticTreeComponentRef>;
+  readonly ref?: Ref<PhylogeneticTreeRef>;
   readonly shouldShowDistances: boolean;
   readonly shouldShowSupportLinesWhenUnlinked: boolean;
   readonly stratification?: Stratification;
   readonly tree?: TreeNode;
 };
 
-export interface PhylogeneticTreeComponentRef {
+export interface PhylogeneticTreeRef {
   link: (verticalPosition?: number) => void;
   syncExternalScrollToVisibleTree: () => void;
   unlink: (viewState: { positionX: number; positionY: number; zoomLevel: number }) => void;
 }
 
-export type PhylogeneticTreeComponentViewState = {
-  horizontalScrollPosition: number;
-  verticalScrollPosition: number;
-  zoomLevel: number;
-};
-
-export const PhylogeneticTreeComponent = ({
+export const PhylogeneticTree = ({
   ariaLabel,
   externalScrollSubject,
   externalVisibleRangeSubject,
@@ -91,7 +91,7 @@ export const PhylogeneticTreeComponent = ({
   shouldShowSupportLinesWhenUnlinked,
   stratification,
   tree,
-}: PhylogeneticTreeComponentProps) => {
+}: PhylogeneticTreeProps) => {
   const theme = useTheme();
   const scrollbarSize = useScrollbarSize();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -114,10 +114,11 @@ export const PhylogeneticTreeComponent = ({
   const effectiveHighlightingSubject = highlightingSubject ?? fallbackHighlightingSubject;
 
   const headerHeight = ConfigService.getInstance<CaseDbConfig>().config.tree.HEADER_HEIGHT;
+  const treePadding = ConfigService.getInstance<CaseDbConfig>().config.tree.TREE_PADDING;
   const treeCanvasWidth = width;
   const treeCanvasHeight = Math.max(0, height - headerHeight);
   const combinedCanvasHeight = Math.max(0, height);
-  const treeWidthMinusPadding = treeCanvasWidth - (2 * ConfigService.getInstance<CaseDbConfig>().config.tree.TREE_PADDING);
+  const treeWidthMinusPadding = treeCanvasWidth - (2 * treePadding);
   const pixelToGeneticDistanceRatio = tree?.maxBranchLength ? treeWidthMinusPadding / tree.maxBranchLength.toNumber() : null;
   const treeHeight = tree?.size ? (tree.size * itemHeight) + scrollbarSize : itemHeight;
 
@@ -233,6 +234,7 @@ export const PhylogeneticTreeComponent = ({
 
     const { newPositionX, newPositionY } = TreeUtil.getSanitizedScrollPosition({
       devicePixelRatio,
+      headerHeight,
       internalZoomLevel,
       isLinked,
       positionX,
@@ -240,6 +242,7 @@ export const PhylogeneticTreeComponent = ({
       treeCanvasHeight,
       treeCanvasWidth,
       treeHeight,
+      treePadding,
     });
 
     const positionYChanged = newPositionY !== canvasScrollSubject.data.y;
@@ -252,7 +255,7 @@ export const PhylogeneticTreeComponent = ({
     if (isLinked && internalZoomLevel === 1 && positionYChanged) {
       updateExternalScrollSubjectDebounced(newPositionY);
     }
-  }, [canvasScrollSubject, devicePixelRatio, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, updateExternalScrollSubjectDebounced]);
+  }, [canvasScrollSubject, devicePixelRatio, headerHeight, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, treePadding, updateExternalScrollSubjectDebounced]);
 
   useEffect(() => {
     updateScrollPosition({
@@ -325,9 +328,13 @@ export const PhylogeneticTreeComponent = ({
   });
 
   const getTickerMarkScale = useCallback((zoomLevel: number) => {
+    const { MAX_SCALE_WIDTH_PX, MIN_SCALE_WIDTH_PX, SCALE_INCREMENTS } = ConfigService.getInstance<CaseDbConfig>().config.tree;
     return TreeUtil.getTickMarkScale({
       geneticTreeWidth: tree?.maxBranchLength,
+      maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
       minGeneticScaleUnit: TreeUtil.getMinGeneticScaleUnit(tree),
+      minScaleWidthPx: MIN_SCALE_WIDTH_PX,
+      scaleIncrements: SCALE_INCREMENTS,
       treeWidthMinusPadding,
       zoomLevel,
     });
@@ -385,13 +392,17 @@ export const PhylogeneticTreeComponent = ({
     }
 
     setTreeAssembly(TreeUtil.assembleTree({
+      ancestorDotRadius: ConfigService.getInstance<CaseDbConfig>().config.tree.ANCESTOR_DOT_RADIUS,
       externalLeafSorting: leafOrder,
       itemHeight,
+      leafDotRadius: ConfigService.getInstance<CaseDbConfig>().config.tree.LEAF_DOT_RADIUS,
+      minimumDistancePercentageToShowLabel: ConfigService.getInstance<CaseDbConfig>().config.tree.MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL,
       pixelToGeneticDistanceRatio,
       rootNode: tree,
       treeCanvasWidth,
+      treePadding,
     }));
-  }, [itemHeight, leafOrder, pixelToGeneticDistanceRatio, tree, treeCanvasWidth]);
+  }, [itemHeight, leafOrder, pixelToGeneticDistanceRatio, tree, treeCanvasWidth, treePadding]);
 
   useEffect(() => {
     if (!treeCanvas || !treeAssembly || !tree) {
@@ -422,6 +433,7 @@ export const PhylogeneticTreeComponent = ({
           isLinked,
           itemHeight,
           pixelToGeneticDistanceRatio,
+          regularFillColorSupportLine: ConfigService.getInstance<CaseDbConfig>().config.tree.REGULAR_FILL_COLOR_SUPPORT_LINE,
           shouldShowDistances,
           shouldShowSupportLinesWhenUnlinked,
           stratification,
@@ -430,6 +442,7 @@ export const PhylogeneticTreeComponent = ({
           treeAssembly,
           treeCanvasHeight,
           treeCanvasWidth,
+          treePadding,
           verticalScrollPosition,
           zoomLevel,
         });
@@ -496,6 +509,7 @@ export const PhylogeneticTreeComponent = ({
     treeCanvas,
     treeCanvasHeight,
     treeCanvasWidth,
+    treePadding,
     zoomLevelSubject,
   ]);
 
