@@ -1,5 +1,6 @@
 {
   "packages/ui": "2.10.0",
+  "packages/ui-core": "2.10.0",
   "packages/ui-casedb": "2.11.0",
   "packages/ui-omopdb": "2.9.0",
   "packages/ui-seqdb": "2.9.0",
