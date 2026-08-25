@@ -15,11 +15,7 @@ import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
 import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
-import type {
-  Highlighting,
-  LineListRangeSubjectValue,
-  LinkedScrollSubjectValue,
-} from '../../../models/caseDb';
+import type { Highlighting } from '../../../models/caseDb';
 import type {
   TreeAssembly,
   TreeNode,
@@ -29,6 +25,16 @@ import { TreeUtil } from '../../../utils/TreeUtil';
 import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 // NOTE: this component has the Component suffix in order to prevent a name collision with the PhylogeneticTree model in the api package.
+
+export type PhylogeneticTreeExternalScrollSubjectValue = {
+  origin: HTMLElement;
+  position: number;
+};
+
+export type PhylogeneticTreeExternalVisibleRangeSubjectValue = {
+  endIndex: number;
+  startIndex: number;
+};
 
 export type PhylogeneticTreePathClickEvent = {
   mouseEvent: MouseEvent;
@@ -40,8 +46,8 @@ export type PhylogeneticTreeProps = {
   readonly ariaLabel: string;
   readonly backgroundColor: string;
   readonly dimFn: (color: string) => string;
-  readonly externalScrollSubject?: Subject<LinkedScrollSubjectValue>;
-  readonly externalVisibleRangeSubject?: Subject<LineListRangeSubjectValue>;
+  readonly externalScrollSubject?: Subject<PhylogeneticTreeExternalScrollSubjectValue>;
+  readonly externalVisibleRangeSubject?: Subject<PhylogeneticTreeExternalVisibleRangeSubjectValue>;
   readonly fontFamily: string;
   readonly headerHeight: number;
   readonly highlightingSubject?: Subject<Highlighting>;

@@ -16,6 +16,8 @@ import { NewickUtil } from '../../../utils/NewickUtil';
 import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 import type {
+  PhylogeneticTreeExternalScrollSubjectValue,
+  PhylogeneticTreeExternalVisibleRangeSubjectValue,
   PhylogeneticTreePathClickEvent,
   PhylogeneticTreeRef,
   PhylogeneticTreeViewState,
@@ -53,8 +55,8 @@ const TREE_PADDING = 20;
 let ariaLabelCounter = 0;
 
 type RenderTreeOptions = {
-  externalScrollSubject?: Subject<{ origin: HTMLElement; position: number }>;
-  externalVisibleRangeSubject?: Subject<{ endIndex: number; startIndex: number }>;
+  externalScrollSubject?: Subject<PhylogeneticTreeExternalScrollSubjectValue>;
+  externalVisibleRangeSubject?: Subject<PhylogeneticTreeExternalVisibleRangeSubjectValue>;
   height?: number;
   highlightingSubject?: Subject<Highlighting>;
   itemHeight?: number;
