@@ -71,6 +71,7 @@ type ZoomInMenuItemConfig = {
 export const TreeWidget = () => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const treeConfig = ConfigService.getInstance<CaseDbConfig>().config.tree;
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [isTreeLinked, setIsTreeLinked] = useState(true);
   const treeRef = useRef<PhylogeneticTreeRef>(null);
@@ -555,22 +556,45 @@ export const TreeWidget = () => {
         )}
         {!isTreeUnavailable && shouldShowTree && (
           <PhylogeneticTree
+            ancestorDotRadius={treeConfig.ANCESTOR_DOT_RADIUS}
             ariaLabel={treeCanvasAriaLabel}
+            backgroundColor={theme.palette.background.paper}
+            dimFn={theme['gen-epix-ui-casedb'].tree.dimFn}
             externalScrollSubject={dashboardContext.linkedScrollSubject}
             externalVisibleRangeSubject={dashboardContext.lineListRangeSubject}
+            fontFamily={theme.typography.fontFamily}
+            headerHeight={treeConfig.HEADER_HEIGHT}
             highlightingSubject={dashboardContext.highlightSubject}
             initialViewState={initialTreeViewState}
             itemHeight={ConfigService.getInstance<CaseDbConfig>().config.lineList.TABLE_ROW_HEIGHT}
+            leafDotRadius={treeConfig.LEAF_DOT_RADIUS}
             leafOrder={sortedLeafNames}
+            linkedScrollDebounceDelayMs={treeConfig.LINKED_SCROLL_DEBOUNCE_DELAY_MS}
+            maxScaleWidthPx={treeConfig.MAX_SCALE_WIDTH_PX}
+            maxZoomLevel={treeConfig.MAX_ZOOM_LEVEL}
+            maxZoomSpeed={treeConfig.MAX_ZOOM_SPEED}
+            minimumDistancePercentageToShowLabel={treeConfig.MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL}
+            minScaleWidthPx={treeConfig.MIN_SCALE_WIDTH_PX}
+            minZoomLevel={treeConfig.MIN_ZOOM_LEVEL}
+            minZoomSpeed={treeConfig.MIN_ZOOM_SPEED}
             onCanvasChange={onTreeCanvasChange}
             onLinkStateChange={onLinkStateChange}
             onPathClick={onTreePathClick}
             onViewStateChange={onTreeViewStateChange}
+            panningThreshold={treeConfig.PANNING_THRESHOLD}
             ref={treeRef}
+            regularFillColorSupportLine={treeConfig.REGULAR_FILL_COLOR_SUPPORT_LINE}
+            scaleColor={theme.palette.text.primary}
+            scaleIncrements={treeConfig.SCALE_INCREMENTS}
             shouldShowDistances={isShowDistancesEnabled}
             shouldShowSupportLinesWhenUnlinked={isShowSupportLinesWhenUnlinkedEnabled}
             stratification={stratification}
+            supportLineColorLinked={theme['gen-epix-ui-casedb'].tree.supportLineColorLinked}
+            supportLineColorUnlinked={theme['gen-epix-ui-casedb'].tree.supportLineColorUnlinked}
             tree={tree}
+            treeColor={theme['gen-epix-ui-casedb'].tree.color}
+            treeFont={theme['gen-epix-ui-casedb'].tree.font}
+            treePadding={treeConfig.TREE_PADDING}
           />
         )}
       </Box>

@@ -4,18 +4,15 @@ import {
   test,
   vi,
 } from 'vitest';
-import { ConfigService } from '@gen-epix/ui';
-import { customRender } from '@gen-epix/ui/test-lib';
+import { lighten } from '@mui/material';
+import { render } from 'vitest-browser-react';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
 
 import type { Highlighting } from '../../../models/caseDb';
-import type { Stratification } from '../../../models/stratification';
-import { STRATIFICATION_MODE } from '../../../models/stratification';
 import type { TreeNode } from '../../../models/tree';
 import { TreeUtil } from '../../../utils/TreeUtil';
 import { NewickUtil } from '../../../utils/NewickUtil';
-import type { CaseDbConfig } from '../../../models/config';
 import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 import type {
@@ -25,12 +22,33 @@ import type {
 } from './PhylogeneticTreeComponent';
 import { PhylogeneticTree } from './PhylogeneticTreeComponent';
 
+const ANCESTOR_DOT_RADIUS = 3;
+const BACKGROUND_COLOR = '#fff';
 const DEFAULT_HEIGHT = 320;
 const DEFAULT_ITEM_HEIGHT = 32;
 const DEFAULT_WIDTH = 640;
-const HEADER_HEIGHT = ConfigService.getInstance<CaseDbConfig>().config.tree.HEADER_HEIGHT;
-const LARGE_TREE_NEWICK = '(A:1,B:1,C:1,D:1,E:1,F:1,G:1,H:1,I:1,J:1);';
-const TREE_PADDING = ConfigService.getInstance<CaseDbConfig>().config.tree.TREE_PADDING;
+const DIM_FN = (color: string) => lighten(color, 0.8);
+const FONT_FAMILY = 'Roboto Flex';
+const HEADER_HEIGHT = 32;
+const LARGE_TREE_NEWICK = '(A:1,B:1,C:1,D:1,E:1,F:1,G:1,H:1,I:1,J:1):';
+const LEAF_DOT_RADIUS = 5;
+const LINKED_SCROLL_DEBOUNCE_DELAY_MS = 500;
+const MAX_SCALE_WIDTH_PX = 144;
+const MAX_ZOOM_LEVEL = 20;
+const MAX_ZOOM_SPEED = 0.25;
+const MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL = 1;
+const MIN_SCALE_WIDTH_PX = 48;
+const MIN_ZOOM_LEVEL = 0.1;
+const MIN_ZOOM_SPEED = 0.1;
+const PANNING_THRESHOLD = 25;
+const REGULAR_FILL_COLOR_SUPPORT_LINE = '#E0E6F1';
+const SCALE_COLOR = 'rgba(0, 0, 0, 0.87)';
+const SCALE_INCREMENTS = [1, 2, 5, 10, 20, 50];
+const SUPPORT_LINE_COLOR_LINKED = '#000';
+const SUPPORT_LINE_COLOR_UNLINKED = lighten('#000', 0.75);
+const TREE_COLOR = '#000';
+const TREE_FONT = 'bold 0.7rem "Noto Sans Mono"';
+const TREE_PADDING = 20;
 
 let ariaLabelCounter = 0;
 
@@ -42,6 +60,7 @@ type RenderTreeOptions = {
   itemHeight?: number;
   leafOrder?: string[];
   newick?: string;
+  nodeNameColors?: { [key: string]: string } | null;
   onCanvasChange?: (canvas?: HTMLCanvasElement) => void;
   onLinkStateChange?: (isLinked: boolean) => void;
   onPathClick?: (event: PhylogeneticTreePathClickEvent) => void;
@@ -49,7 +68,6 @@ type RenderTreeOptions = {
   ref?: { current: null | PhylogeneticTreeRef };
   shouldShowDistances?: boolean;
   shouldShowSupportLinesWhenUnlinked?: boolean;
-  stratification?: Stratification;
   tree?: TreeNode;
   width?: number;
 };
@@ -287,21 +305,44 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
       }}
     >
       <PhylogeneticTree
+        ancestorDotRadius={ANCESTOR_DOT_RADIUS}
         ariaLabel={options.ariaLabel}
+        backgroundColor={BACKGROUND_COLOR}
+        dimFn={DIM_FN}
         externalScrollSubject={options.externalScrollSubject}
         externalVisibleRangeSubject={options.externalVisibleRangeSubject}
+        fontFamily={FONT_FAMILY}
+        headerHeight={HEADER_HEIGHT}
         highlightingSubject={options.highlightingSubject}
         itemHeight={options.itemHeight}
+        leafDotRadius={LEAF_DOT_RADIUS}
         leafOrder={options.leafOrder}
+        linkedScrollDebounceDelayMs={LINKED_SCROLL_DEBOUNCE_DELAY_MS}
+        maxScaleWidthPx={MAX_SCALE_WIDTH_PX}
+        maxZoomLevel={MAX_ZOOM_LEVEL}
+        maxZoomSpeed={MAX_ZOOM_SPEED}
+        minimumDistancePercentageToShowLabel={MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL}
+        minScaleWidthPx={MIN_SCALE_WIDTH_PX}
+        minZoomLevel={MIN_ZOOM_LEVEL}
+        minZoomSpeed={MIN_ZOOM_SPEED}
+        nodeNameColors={options.nodeNameColors}
         onCanvasChange={options.onCanvasChange}
         onLinkStateChange={options.onLinkStateChange}
         onPathClick={options.onPathClick}
         onViewStateChange={options.onViewStateChange}
+        panningThreshold={PANNING_THRESHOLD}
         ref={options.ref}
+        regularFillColorSupportLine={REGULAR_FILL_COLOR_SUPPORT_LINE}
+        scaleColor={SCALE_COLOR}
+        scaleIncrements={SCALE_INCREMENTS}
         shouldShowDistances={options.shouldShowDistances ?? false}
         shouldShowSupportLinesWhenUnlinked={options.shouldShowSupportLinesWhenUnlinked ?? false}
-        stratification={options.stratification}
+        supportLineColorLinked={SUPPORT_LINE_COLOR_LINKED}
+        supportLineColorUnlinked={SUPPORT_LINE_COLOR_UNLINKED}
         tree={options.tree}
+        treeColor={TREE_COLOR}
+        treeFont={TREE_FONT}
+        treePadding={TREE_PADDING}
       />
     </div>
   );
@@ -324,7 +365,7 @@ const renderTree = async (options: RenderTreeOptions = {}) => {
     tree,
     width,
   };
-  const renderResult = await customRender(createTreeElement(resolvedOptions));
+  const renderResult = await render(createTreeElement(resolvedOptions));
 
   if (tree?.size) {
     await waitForAssertion(() => {
@@ -418,15 +459,14 @@ describe('PhylogeneticTreeComponent', () => {
 
   test('renders a sanitized tree, applies stratification colors, and cleans up the canvas callback', async () => {
     const onCanvasChange = vi.fn();
-    const stratification: Stratification = {
-      caseIdColors: Object.fromEntries([['LeafB', '#ff0000']]),
-      colorForIsMissing: '#999999',
-      mode: STRATIFICATION_MODE.SELECTION,
+    const nodeNameColors = {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      LeafB: '#ff0000',
     };
     const { canvas, layout, renderResult } = await renderTree({
       newick: '(((LeafA:1,LeafB:1):0,LeafC:2):0,LeafD:3);',
+      nodeNameColors,
       onCanvasChange,
-      stratification,
     });
 
     expect(canvas).toBeInstanceOf(HTMLCanvasElement);
@@ -889,7 +929,7 @@ describe('PhylogeneticTreeComponent', () => {
     const tree = parseTree(LARGE_TREE_NEWICK);
     const leafOrder = NewickUtil.getSortedNames(tree);
     const ariaLabel = `Phylogenetic tree ${ariaLabelCounter++}`;
-    const renderResult = await customRender(createTreeElement({
+    const renderResult = await render(createTreeElement({
       ariaLabel,
       height: DEFAULT_HEIGHT,
       itemHeight: DEFAULT_ITEM_HEIGHT,
