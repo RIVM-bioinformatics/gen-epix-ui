@@ -26,6 +26,7 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui';
 import {
+  AuthenticationService,
   Autocomplete,
   ConfigService,
   DownloadUtil,
@@ -93,6 +94,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
 
   const onDownloadFastaButtonClick = useCallback(() => {
     DownloadUtil.downloadAsMultiPartForm({
+      accessToken: AuthenticationService.getInstance().authContextProps?.user?.access_token ?? '',
       action: `${ConfigService.getInstance().config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),

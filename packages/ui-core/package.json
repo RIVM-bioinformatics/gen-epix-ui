@@ -1,0 +1,165 @@
+{
+  "name": "@gen-epix/ui-core",
+  "version": "2.10.0",
+  "license": "EUPL-1.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
+  },
+  "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
+  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "files": [
+      "dist"
+    ],
+    "access": "public",
+    "exports": {
+      "./classes/Subject": {
+        "import": "./dist/classes/Subject/index.js",
+        "types": "./dist/classes/Subject/index.d.ts"
+      },
+      "./classes/abstracts/EventBusAbstract": {
+        "import": "./dist/classes/abstracts/EventBusAbstract/index.js",
+        "types": "./dist/classes/abstracts/EventBusAbstract/index.d.ts"
+      },
+      "./classes/abstracts/SubscribableAbstract": {
+        "import": "./dist/classes/abstracts/SubscribableAbstract/index.js",
+        "types": "./dist/classes/abstracts/SubscribableAbstract/index.d.ts"
+      },
+      "./classes/services/DevicePixelRatioService": {
+        "import": "./dist/classes/services/DevicePixelRatioService/index.js",
+        "types": "./dist/classes/services/DevicePixelRatioService/index.d.ts"
+      },
+      "./classes/services/KeyboardShortcutService": {
+        "import": "./dist/classes/services/KeyboardShortcutService/index.js",
+        "types": "./dist/classes/services/KeyboardShortcutService/index.d.ts"
+      },
+      "./classes/services/WindowService": {
+        "import": "./dist/classes/services/WindowService/index.js",
+        "types": "./dist/classes/services/WindowService/index.d.ts"
+      },
+      "./models/generic": {
+        "import": "./dist/models/generic.js",
+        "types": "./dist/models/generic.d.ts"
+      },
+      "./models/testId": {
+        "import": "./dist/models/testId.js",
+        "types": "./dist/models/testId.d.ts"
+      },
+      "./utils/DownloadUtil": {
+        "import": "./dist/utils/DownloadUtil/index.js",
+        "types": "./dist/utils/DownloadUtil/index.d.ts"
+      },
+      "./utils/HmrUtil": {
+        "import": "./dist/utils/HmrUtil/index.js",
+        "types": "./dist/utils/HmrUtil/index.d.ts"
+      },
+      "./utils/NumberUtil": {
+        "import": "./dist/utils/NumberUtil/index.js",
+        "types": "./dist/utils/NumberUtil/index.d.ts"
+      },
+      "./utils/ObjectUtil": {
+        "import": "./dist/utils/ObjectUtil/index.js",
+        "types": "./dist/utils/ObjectUtil/index.d.ts"
+      },
+      "./utils/StringUtil": {
+        "import": "./dist/utils/StringUtil/index.js",
+        "types": "./dist/utils/StringUtil/index.d.ts"
+      }
+    }
+  },
+  "exports": {
+    "./classes/Subject": {
+      "import": "./src/classes/Subject/index.ts",
+      "types": "./src/classes/Subject/index.ts"
+    },
+    "./classes/abstracts/EventBusAbstract": {
+      "import": "./src/classes/abstracts/EventBusAbstract/index.ts",
+      "types": "./src/classes/abstracts/EventBusAbstract/index.ts"
+    },
+    "./classes/abstracts/SubscribableAbstract": {
+      "import": "./src/classes/abstracts/SubscribableAbstract/index.ts",
+      "types": "./src/classes/abstracts/SubscribableAbstract/index.ts"
+    },
+    "./classes/services/DevicePixelRatioService": {
+      "import": "./src/classes/services/DevicePixelRatioService/index.ts",
+      "types": "./src/classes/services/DevicePixelRatioService/index.ts"
+    },
+    "./classes/services/KeyboardShortcutService": {
+      "import": "./src/classes/services/KeyboardShortcutService/index.ts",
+      "types": "./src/classes/services/KeyboardShortcutService/index.ts"
+    },
+    "./classes/services/WindowService": {
+      "import": "./src/classes/services/WindowService/index.ts",
+      "types": "./src/classes/services/WindowService/index.ts"
+    },
+    "./models/generic": {
+      "import": "./src/models/generic.ts",
+      "types": "./src/models/generic.ts"
+    },
+    "./models/testId": {
+      "import": "./src/models/testId.ts",
+      "types": "./src/models/testId.ts"
+    },
+    "./utils/DownloadUtil": {
+      "import": "./src/utils/DownloadUtil/index.ts",
+      "types": "./src/utils/DownloadUtil/index.ts"
+    },
+    "./utils/HmrUtil": {
+      "import": "./src/utils/HmrUtil/index.ts",
+      "types": "./src/utils/HmrUtil/index.ts"
+    },
+    "./utils/NumberUtil": {
+      "import": "./src/utils/NumberUtil/index.ts",
+      "types": "./src/utils/NumberUtil/index.ts"
+    },
+    "./utils/ObjectUtil": {
+      "import": "./src/utils/ObjectUtil/index.ts",
+      "types": "./src/utils/ObjectUtil/index.ts"
+    },
+    "./utils/StringUtil": {
+      "import": "./src/utils/StringUtil/index.ts",
+      "types": "./src/utils/StringUtil/index.ts"
+    }
+  },
+  "scripts": {
+    "generate-exports": "node scripts/update-exports.js",
+    "build": "vite build",
+    "build-publish": "pnpm build && pnpm publish --access=public",
+    "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
+    "add-missing-translations": "translation-util ./",
+    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run && pnpm run test-missing-translations",
+    "test": "vitest --coverage",
+    "test-run": "vitest run --passWithNoTests --coverage",
+    "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
+    "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
+    "check-types": "tsc --noemit"
+  },
+  "peerDependencies": {
+    "axios": "1.18.1",
+    "uuid": "14.0.1",
+    "lodash": "4.18.1",
+    "date-fns": "4.4.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@gen-epix/eslint-config": "0.4.1",
+    "@types/lodash": "4.17.18",
+    "vite": "8.1.3",
+    "typescript": "6.0.3",
+    "vitest": "4.1.9",
+    "eslint": "10.6.0",
+    "vite-plugin-dts": "5.0.3",
+    "axios": "1.18.1",
+    "uuid": "14.0.1",
+    "lodash": "4.18.1",
+    "date-fns": "4.4.0"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ]
+}

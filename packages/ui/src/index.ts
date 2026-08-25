@@ -50,7 +50,6 @@ export * from './models/auth';
 export * from './models/config';
 export * from './models/data';
 export * from './models/dataHooks';
-export * from './models/environment';
 export * from './models/filter';
 export * from './models/form';
 export * from './models/generic';
