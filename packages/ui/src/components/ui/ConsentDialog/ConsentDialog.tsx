@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
 import type {
@@ -8,7 +9,6 @@ import type {
   WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export interface ConsentDialogOpenProps {
   //

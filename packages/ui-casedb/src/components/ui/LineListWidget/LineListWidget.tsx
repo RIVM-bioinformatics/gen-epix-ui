@@ -38,14 +38,14 @@ import type {
 } from '@gen-epix/ui';
 import {
   ConfigService,
-  StringUtil,
-  Subject,
   Table,
   TABLE_COLUMN_FROZEN,
   TableUtil,
 } from '@gen-epix/ui';
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { LegendaItem } from '../LegendaItem';

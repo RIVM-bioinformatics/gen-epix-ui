@@ -2,13 +2,13 @@ import { createRoot } from 'react-dom/client';
 import {
   ConfigService,
   I18nService,
-  WindowService,
 } from '@gen-epix/ui';
 import {
   OmopDbApp,
   setupOmopDb,
 } from '@gen-epix/ui-omopdb';
 import type { OmopDbConfig } from '@gen-epix/ui-omopdb';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 

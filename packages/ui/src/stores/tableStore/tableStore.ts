@@ -10,12 +10,14 @@ import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { UnwrapArray } from '@gen-epix/ui-core/models/generic';
+import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
 } from '../../classes/abstracts/FilterAbstract';
-import { WindowService } from '../../classes/services/WindowService';
 import type { TableEvent } from '../../classes/TableEventBus';
 import { TableEventBus } from '../../classes/TableEventBus';
 import type {
@@ -23,14 +25,12 @@ import type {
   Filters,
   FilterValues,
 } from '../../models/filter';
-import type { UnwrapArray } from '../../models/generic';
 import type {
   TableColumn,
   TableColumnDimension,
   TableColumnVisualSettings,
   TableSortDirection,
 } from '../../models/table';
-import { ObjectUtil } from '../../utils/ObjectUtil';
 import { TableUtil } from '../../utils/TableUtil';
 
 

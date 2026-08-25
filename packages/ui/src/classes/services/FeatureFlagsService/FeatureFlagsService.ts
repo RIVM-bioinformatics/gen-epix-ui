@@ -1,6 +1,5 @@
 import type { CommonDbFeatureFlagsResponseBody } from '@gen-epix/api-commondb';
-
-import { HmrUtil } from '../../../utils/HmrUtil';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 export class FeatureFlagsService {
   private static __instance: FeatureFlagsService;

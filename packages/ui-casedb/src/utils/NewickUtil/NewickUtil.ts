@@ -1,6 +1,6 @@
 import { Decimal } from 'decimal.js';
 import sum from 'lodash/sum';
-import { StringUtil } from '@gen-epix/ui';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import type { TreeNode } from '../../models/tree';
 

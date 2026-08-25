@@ -6,8 +6,7 @@ import {
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTranslation } from 'react-i18next';
-
-import { TestIdUtil } from '../../../../utils/TestIdUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 export type DatePickerInputAdornmentProps = {
   readonly disabled: boolean;

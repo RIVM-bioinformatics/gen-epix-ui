@@ -1,6 +1,6 @@
 import { Decimal } from 'decimal.js';
 import { vi } from 'vitest';
-import type { ArgumentTypes } from '@gen-epix/ui';
+import type { ArgumentTypes } from '@gen-epix/ui-core/models/generic';
 
 import type {
   TreeAssembly,

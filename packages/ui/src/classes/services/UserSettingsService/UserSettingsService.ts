@@ -1,4 +1,4 @@
-import { HmrUtil } from '../../../utils/HmrUtil';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 export class UserSettingsService {
   private static __instance: UserSettingsService;

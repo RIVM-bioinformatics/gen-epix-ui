@@ -17,10 +17,10 @@ import {
   object,
   string,
 } from 'yup';
+import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { ObjectUtil } from '../ObjectUtil';
 import { DATE_FORMAT } from '../../data/date';
 
 export class FormUtil {

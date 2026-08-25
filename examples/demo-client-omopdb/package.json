@@ -20,6 +20,7 @@
     "@emotion/styled": "11.14.1",
     "@gen-epix/api-omopdb": "workspace:^",
     "@gen-epix/ui": "workspace:^",
+    "@gen-epix/ui-core": "workspace:^",
     "@gen-epix/ui-omopdb": "workspace:^",
     "@mui/icons-material": "9.2.0",
     "@mui/material": "9.2.0",

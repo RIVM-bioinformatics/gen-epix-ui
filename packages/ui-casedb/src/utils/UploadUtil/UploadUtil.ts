@@ -43,11 +43,11 @@ import type {
 import {
   DATE_FORMAT,
   FORM_FIELD_DEFINITION_TYPE,
-  ObjectUtil,
   QueryClientService,
-  StringUtil,
-  ValidationUtil,
 } from '@gen-epix/ui';
+import { ValidationUtil } from '@gen-epix/ui-core/utils/ValidationUtil';
+import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';

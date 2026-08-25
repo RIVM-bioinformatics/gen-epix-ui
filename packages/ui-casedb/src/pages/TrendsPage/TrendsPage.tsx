@@ -1,7 +1,5 @@
-import {
-  PageContainer,
-  TestIdUtil,
-} from '@gen-epix/ui';
+import { PageContainer } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useTranslation } from 'react-i18next';
 
 

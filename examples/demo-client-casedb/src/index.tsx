@@ -2,13 +2,13 @@ import { createRoot } from 'react-dom/client';
 import {
   ConfigService,
   I18nService,
-  WindowService,
 } from '@gen-epix/ui';
 import {
   CaseDbApp,
   setupCaseDb,
 } from '@gen-epix/ui-casedb';
 import type { CaseDbConfig } from '@gen-epix/ui-casedb';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 

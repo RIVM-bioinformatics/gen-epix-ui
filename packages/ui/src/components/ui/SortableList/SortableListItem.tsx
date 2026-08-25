@@ -11,8 +11,7 @@ import {
   Box,
   useTheme,
 } from '@mui/material';
-
-import { TestIdUtil } from '../../../utils/TestIdUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { SortableListItemContextProvider } from './context/SortableListItemContextProvider';
 

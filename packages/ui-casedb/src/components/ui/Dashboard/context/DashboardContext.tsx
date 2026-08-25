@@ -1,6 +1,6 @@
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import { createContext } from 'react';
-import type { Subject } from '@gen-epix/ui';
+import type { Subject } from '@gen-epix/ui-core/classes/Subject';
 
 import type {
   Highlighting,

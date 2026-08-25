@@ -1,6 +1,6 @@
 import type { CaseDbCaseSetMember } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { HmrUtil } from '@gen-epix/ui';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 import { CASEDB_QUERY_KEY } from '../../../../data/query';
 import { LineListServiceAbstract } from '../LineListServiceAbstract';

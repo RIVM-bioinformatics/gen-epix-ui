@@ -2,8 +2,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-
-import type { SubscribableAbstract } from '../../classes/abstracts/SubscribableAbstract';
+import type { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
 
 type UseSubscribableKwArgs<TSubjectData> = {
   readonly callback?: (data: TSubjectData, prevData: TSubjectData) => void;

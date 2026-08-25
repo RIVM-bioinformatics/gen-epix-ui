@@ -44,6 +44,9 @@ importers:
       '@gen-epix/ui-casedb':
         specifier: workspace:^
         version: link:../../packages/ui-casedb
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../../packages/ui-core
       '@mui/icons-material':
         specifier: 9.2.0
         version: 9.2.0(@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
@@ -159,6 +162,9 @@ importers:
       '@gen-epix/ui':
         specifier: workspace:^
         version: link:../../packages/ui
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../../packages/ui-core
       '@gen-epix/ui-omopdb':
         specifier: workspace:^
         version: link:../../packages/ui-omopdb
@@ -274,6 +280,9 @@ importers:
       '@gen-epix/ui':
         specifier: workspace:^
         version: link:../../packages/ui
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../../packages/ui-core
       '@gen-epix/ui-seqdb':
         specifier: workspace:^
         version: link:../../packages/ui-seqdb
@@ -539,6 +548,9 @@ importers:
       '@gen-epix/translation-util':
         specifier: 0.1.1
         version: 0.1.1
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../ui-core
       '@hookform/resolvers':
         specifier: 5.4.0
         version: 5.4.0(react-hook-form@7.80.0(react@19.2.7))
@@ -827,6 +839,9 @@ importers:
       '@gen-epix/ui':
         specifier: workspace:^
         version: link:../ui
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../ui-core
       '@hookform/resolvers':
         specifier: 5.4.0
         version: 5.4.0(react-hook-form@7.80.0(react@19.2.7))
@@ -1018,6 +1033,10 @@ importers:
         version: 4.1.9(@types/node@26.1.0)(@vitest/browser-playwright@4.1.9)(@vitest/coverage-v8@4.1.9)(jsdom@29.1.1)(vite@8.1.3(@types/node@26.1.0)(yaml@2.8.0))
 
   packages/ui-omopdb:
+    dependencies:
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../ui-core
     devDependencies:
       '@emotion/cache':
         specifier: 11.14.0
@@ -1154,6 +1173,9 @@ importers:
       '@gen-epix/ui':
         specifier: workspace:^
         version: link:../ui
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../ui-core
       '@microsoft/api-extractor':
         specifier: 7.58.9
         version: 7.58.9(@types/node@26.1.0)

@@ -2,13 +2,13 @@ import { createRoot } from 'react-dom/client';
 import {
   ConfigService,
   I18nService,
-  WindowService,
 } from '@gen-epix/ui';
 import {
   SeqDbApp,
   setupSeqDb,
 } from '@gen-epix/ui-seqdb';
 import type { SeqDbConfig } from '@gen-epix/ui-seqdb';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 

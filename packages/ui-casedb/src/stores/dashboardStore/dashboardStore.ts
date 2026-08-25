@@ -23,7 +23,6 @@ import {
   createTableStorePersistConfiguration,
   FILTER_MODE,
   NotificationService,
-  ObjectUtil,
   QueryClientService,
 } from '@gen-epix/ui';
 import type {
@@ -34,6 +33,7 @@ import type {
   TableStoreState,
 } from '@gen-epix/ui';
 import cloneDeep from 'lodash/cloneDeep';
+import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 
 import type { FindSimilarCasesResult } from '../../models/caseDb';
 import type { TreeWidgetDataPersistable } from '../../models/dashboard';

@@ -11,9 +11,9 @@ import {
   useId,
   useState,
 } from 'react';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { ApplicationBarActionsFeedbackItem } from './ApplicationBarActionsFeedbackItem';
 import { ApplicationBarActionsInfoItem } from './ApplicationBarActionsInfotem';

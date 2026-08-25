@@ -15,9 +15,9 @@ import {
 } from '@gen-epix/api-casedb';
 import {
   COMMON_QUERY_KEY,
-  HmrUtil,
   QueryClientService,
 } from '@gen-epix/ui';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CASEDB_QUERY_KEY } from '../../../data/query';

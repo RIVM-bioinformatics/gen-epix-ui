@@ -40,13 +40,13 @@ import {
 } from 'react-hook-form';
 import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import type {
   AutoCompleteOption,
   AutocompleteSelectAllContextData,
 } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
-import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 

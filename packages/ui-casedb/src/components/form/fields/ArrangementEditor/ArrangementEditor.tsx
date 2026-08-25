@@ -33,9 +33,9 @@ import {
   FormFieldHelperText,
   FormFieldLoadingIndicator,
   FormUtil,
-  StringUtil,
-  TestIdUtil,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { DASHBOARD_ARRANGEMENT_ORIENTATION } from '../../../../models/dashboard';
 import type { DashboardArrangement } from '../../../../models/dashboard';

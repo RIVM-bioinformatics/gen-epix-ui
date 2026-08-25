@@ -4,10 +4,8 @@ import {
   useMemo,
 } from 'react';
 import noop from 'lodash/noop';
-import {
-  PageContainer,
-  TestIdUtil,
-} from '@gen-epix/ui';
+import { PageContainer } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { Upload } from '../../components/ui/Upload';
 import {

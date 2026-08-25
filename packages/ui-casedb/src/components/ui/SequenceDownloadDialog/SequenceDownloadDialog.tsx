@@ -29,10 +29,10 @@ import {
   AuthenticationService,
   Autocomplete,
   ConfigService,
-  DownloadUtil,
-  StringUtil,
   withDialog,
 } from '@gen-epix/ui';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 

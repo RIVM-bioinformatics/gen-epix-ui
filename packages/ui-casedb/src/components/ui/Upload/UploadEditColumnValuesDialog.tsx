@@ -11,9 +11,9 @@ import type {
 import {
   FormUtil,
   GenericForm,
-  TestIdUtil,
   withDialog,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import type { ReactElement } from 'react';
 import {
   useCallback,

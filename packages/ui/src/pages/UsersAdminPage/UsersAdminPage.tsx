@@ -26,6 +26,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
@@ -38,7 +39,6 @@ import type {
   TableRowParams,
 } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageProps } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';

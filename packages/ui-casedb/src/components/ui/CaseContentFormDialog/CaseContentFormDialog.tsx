@@ -9,10 +9,8 @@ import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui';
-import {
-  TestIdUtil,
-  withDialog,
-} from '@gen-epix/ui';
+import { withDialog } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import SaveIcon from '@mui/icons-material/Save';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 

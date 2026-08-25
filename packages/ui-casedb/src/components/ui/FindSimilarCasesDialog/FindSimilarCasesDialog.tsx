@@ -54,10 +54,10 @@ import {
   QueryClientService,
   ResponseHandler,
   SchemaUtil,
-  TestIdUtil,
   useQueryMemo,
   withDialog,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';

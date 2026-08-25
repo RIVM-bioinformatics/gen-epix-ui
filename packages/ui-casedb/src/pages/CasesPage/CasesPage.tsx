@@ -44,10 +44,10 @@ import {
   TableSidebarMenu,
   TableStoreContextProvider,
   TableUtil,
-  TestIdUtil,
   useInitializeTableStore,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';
 import { CaseTypeInfoDialogWithLoader } from '../../components/ui/CaseTypeInfoDialog';

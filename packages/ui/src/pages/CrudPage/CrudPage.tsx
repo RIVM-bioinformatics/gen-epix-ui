@@ -26,6 +26,7 @@ import type {
 } from 'react-hook-form';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { CommonDbPermissionType } from '@gen-epix/api-commondb';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
 
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { ConfigService } from '../../classes/services/ConfigService';
@@ -52,7 +53,6 @@ import type {
   TableRowParams,
   TableSortDirection,
 } from '../../models/table';
-import type { PropsWithTestIdAttributes } from '../../models/testId';
 import {
   createTableStore,
   TableStoreContextProvider,

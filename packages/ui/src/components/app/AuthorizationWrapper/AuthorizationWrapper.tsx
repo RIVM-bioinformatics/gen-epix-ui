@@ -7,10 +7,10 @@ import { useMatches } from 'react-router-dom';
 import type { UIMatch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import last from 'lodash/last';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../../utils/LoadableUtil';

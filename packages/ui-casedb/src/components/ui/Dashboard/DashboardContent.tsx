@@ -21,12 +21,12 @@ import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui';
 import {
   ConfigService,
   EpiContactDetailsDialog,
-  KeyboardShortcutService,
   SidebarMenu,
   SidebarMenuItem,
   TableFiltersSidebarItem,
   TableFiltersSidebarItemIcon,
 } from '@gen-epix/ui';
+import { KeyboardShortcutService } from '@gen-epix/ui-core/classes/services/KeyboardShortcutService';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import type { CaseSetInfoDialogRefMethods } from '../CaseSetInfoDialog';

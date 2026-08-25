@@ -2,13 +2,13 @@ import 'reflect-metadata';
 import type { InternalAxiosRequestConfig } from 'axios';
 import type { AuthContextProps } from 'react-oidc-context';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
 
-import { HmrUtil } from '../../../utils/HmrUtil';
 import { AuthorizationService } from '../AuthorizationService';
-import { WindowService } from '../WindowService';
-import { Subject } from '../../Subject';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
-import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
 import type { AuthState } from '../../../models/auth';
 import { oidcStore } from '../../../stores/oidcStore';
 

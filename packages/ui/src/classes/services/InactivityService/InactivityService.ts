@@ -1,9 +1,9 @@
 import throttle from 'lodash/throttle';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
+import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
-import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
-import { Subject } from '../../Subject';
-import { HmrUtil } from '../../../utils/HmrUtil';
 import { AuthenticationService } from '../AuthenticationService';
 import { ConfigService } from '../ConfigService';
 import { LogService } from '../LogService';

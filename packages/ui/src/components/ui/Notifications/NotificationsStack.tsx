@@ -4,10 +4,10 @@ import {
   Box,
   Snackbar,
 } from '@mui/material';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { NotificationService } from '../../../classes/services/NotificationService';
 import { useSubscribable } from '../../../hooks/useSubscribable';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { NotificationItem } from './NotificationItem';
 

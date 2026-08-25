@@ -33,9 +33,9 @@ import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 import isFinite from 'lodash/isFinite';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { FormUtil } from '../../../../utils/FormUtil';
-import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 

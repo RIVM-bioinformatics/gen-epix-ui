@@ -11,10 +11,7 @@ import type {
   FormGroupDefinition,
   FormGroupMessage,
 } from '@gen-epix/ui';
-import {
-  FORM_FIELD_DEFINITION_TYPE,
-  StringUtil,
-} from '@gen-epix/ui';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui';
 import { isValid } from 'date-fns';
 import { t } from 'i18next';
 import type { ObjectSchema } from 'yup';
@@ -22,6 +19,7 @@ import {
   object,
   string,
 } from 'yup';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { DataService } from '../../classes/services/DataService';
 import { AbacUtil } from '../AbacUtil';

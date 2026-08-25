@@ -11,8 +11,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/WarningAmber';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import type { ReactElement } from 'react';
-
-import { TestIdUtil } from '../../../../utils/TestIdUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 export type FormFieldHelperTextProps = {
   readonly errorMessage?: string;

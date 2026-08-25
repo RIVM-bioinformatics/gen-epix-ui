@@ -14,12 +14,12 @@ import {
 import { useDebouncedCallback } from 'use-debounce';
 import {
   ConfigService,
-  DevicePixelRatioService,
-  Subject,
   useDimensions,
   useScrollbarSize,
   useSubscribable,
 } from '@gen-epix/ui';
+import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
 
 import type {
   Highlighting,

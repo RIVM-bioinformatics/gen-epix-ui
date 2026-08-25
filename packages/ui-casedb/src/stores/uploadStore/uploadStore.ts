@@ -14,8 +14,8 @@ import type {
 import {
   NotificationService,
   QueryClientService,
-  StringUtil,
 } from '@gen-epix/ui';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import type {
   UploadMappedColumn,

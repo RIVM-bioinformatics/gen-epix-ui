@@ -23,10 +23,10 @@ import type {
 import { useFormContext } from 'react-hook-form';
 import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { NumberUtil } from '@gen-epix/ui-core/utils/NumberUtil';
 
 import { FormUtil } from '../../../../utils/FormUtil';
-import { TestIdUtil } from '../../../../utils/TestIdUtil';
-import { NumberUtil } from '../../../../utils/NumberUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';
 

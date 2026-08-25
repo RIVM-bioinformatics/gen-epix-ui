@@ -25,11 +25,11 @@ import {
   QueryClientService,
   ResponseHandler,
   Spinner,
-  TestIdUtil,
   useDeleteMutation,
   useQueryMemo,
   withDialog,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CASEDB_QUERY_KEY } from '../../../data/query';

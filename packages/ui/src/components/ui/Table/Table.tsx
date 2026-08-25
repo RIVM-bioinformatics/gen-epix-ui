@@ -45,10 +45,12 @@ import type {
 import { TableVirtuoso } from 'react-virtuoso';
 import { useDebouncedCallback } from 'use-debounce';
 import { useShallow } from 'zustand/shallow';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { Subject } from '@gen-epix/ui-core/classes/Subject';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
-import { WindowService } from '../../../classes/services/WindowService';
 import { useScrollbarSize } from '../../../hooks/useScrollbarSize';
 import type {
   HasCellDataFn,
@@ -62,8 +64,6 @@ import type {
 } from '../../../models/table';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import type { Subject } from '../../../classes/Subject';
 
 import { TableCellAsyncContent } from './TableCellAsyncContent';
 import { TableHeaderCell } from './TableHeaderCell';

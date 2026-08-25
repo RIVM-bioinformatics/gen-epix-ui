@@ -25,10 +25,10 @@ import {
   DataUtil,
   LoadableUtil,
   ResponseHandler,
-  TestIdUtil,
   useArray,
   withDialog,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
 import {

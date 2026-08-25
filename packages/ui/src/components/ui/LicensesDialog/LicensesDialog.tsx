@@ -26,15 +26,15 @@ import FolderIcon from '@mui/icons-material/Folder';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import axios from 'axios';
 import type { CommonDbPackageMetadata } from '@gen-epix/api-commondb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
-import { WindowService } from '../../../classes/services/WindowService';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { QueryClientService } from '../../../classes/services/QueryClientService';

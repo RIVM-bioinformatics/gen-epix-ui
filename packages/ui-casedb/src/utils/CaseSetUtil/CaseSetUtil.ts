@@ -1,8 +1,6 @@
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import {
-  StringUtil,
-  WindowService,
-} from '@gen-epix/ui';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 
 export class CaseSetUtil {

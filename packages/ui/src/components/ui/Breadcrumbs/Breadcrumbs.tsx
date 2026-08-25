@@ -4,9 +4,9 @@ import {
   Breadcrumbs as MuiBreadcrumbs,
   useTheme,
 } from '@mui/material';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { Breadcrumb } from './Breadcrumb';
 

@@ -15,12 +15,12 @@ import {
   Box,
   Button,
 } from '@mui/material';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import { WindowService } from '../../../classes/services/WindowService';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { outagesStore } from '../../../stores/outagesStore';
 import { OutageUtil } from '../../../utils/OutageUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { useArray } from '../../../hooks/useArray';
 import { FeatureFlagsService } from '../../../classes/services/FeatureFlagsService';
 import { I18nService } from '../../../classes/services/I18nService';

@@ -4,8 +4,7 @@ import type {
   UserManagerSettings,
 } from 'oidc-client-ts';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
-
-import { WindowService } from '../../classes/services/WindowService';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 export class UserManagerUtil {
   public static readonly userManager: UserManager;

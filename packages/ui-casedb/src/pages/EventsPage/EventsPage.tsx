@@ -38,11 +38,11 @@ import {
   TableSidebarMenu,
   TableStoreContextProvider,
   TableUtil,
-  TestIdUtil,
   useArray,
   useInitializeTableStore,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import type { CaseSetInfoDialogRefMethods } from '../../components/ui/CaseSetInfoDialog';

@@ -5,8 +5,7 @@ import {
   vi,
 } from 'vitest';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
-
-import { WindowService } from '../../classes/services/WindowService';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { UserManagerUtil } from './UserManagerUtil';
 

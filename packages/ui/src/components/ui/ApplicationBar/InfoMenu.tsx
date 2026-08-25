@@ -17,13 +17,13 @@ import CopyrightIcon from '@mui/icons-material/Copyright';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DoneIcon from '@mui/icons-material/Done';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import type { LicensesDialogRefMethods } from '../LicensesDialog';
 import { LicensesDialog } from '../LicensesDialog';
 import { BackendVersionService } from '../../../classes/services/BackendVersionService';
 import { ConfigService } from '../../../classes/services/ConfigService';
-import { StringUtil } from '../../../utils/StringUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 type InfoMenuProps = {
   readonly anchorElement: HTMLElement;

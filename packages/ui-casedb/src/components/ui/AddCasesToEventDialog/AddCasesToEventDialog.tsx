@@ -37,12 +37,12 @@ import {
   QueryClientService,
   ResponseHandler,
   Select,
-  TestIdUtil,
   useArray,
   useEditMutation,
   useQueryMemo,
   withDialog,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import {
   useCaseSetOptionsQuery,

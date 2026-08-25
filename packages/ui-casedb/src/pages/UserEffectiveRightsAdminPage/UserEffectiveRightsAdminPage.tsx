@@ -31,11 +31,11 @@ import {
   TableSidebarMenu,
   TableStoreContextProvider,
   TableUtil,
-  TestIdUtil,
   useArray,
   useInitializeTableStore,
   useItemQuery,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import type {
   UsersEffectiveRightsDetailsDialogOpenProps,

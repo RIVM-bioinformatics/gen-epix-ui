@@ -25,9 +25,9 @@ import type {
 import {
   Stepper,
   STEPPER_DIRECTION,
-  TestIdUtil,
   withDialog,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';

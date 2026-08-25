@@ -3,8 +3,8 @@ import { Box } from '@mui/material';
 import {
   ConfigService,
   PageContainer,
-  TestIdUtil,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { HomePageTrends } from '../../components/ui/HomePageTrends';
 

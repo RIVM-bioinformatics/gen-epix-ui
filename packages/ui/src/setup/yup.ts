@@ -8,8 +8,7 @@ import {
   string,
 } from 'yup';
 import { t } from 'i18next';
-
-import { ValidationUtil } from '../utils/ValidationUtil';
+import { ValidationUtil } from '@gen-epix/ui-core/utils/ValidationUtil';
 
 type CustomValidation = {
   assertCallback: (value: string, ...args: unknown[]) => boolean;

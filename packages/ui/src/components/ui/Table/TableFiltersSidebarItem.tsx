@@ -26,6 +26,7 @@ import {
 } from 'react-hook-form';
 import CloseIcon from '@mui/icons-material/Close';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { SidebarItem } from '../Sidebar';
 import type { SidebarItemSharedProps } from '../Sidebar';
@@ -37,7 +38,6 @@ import type {
 } from '../../../models/filter';
 import type { MenuItemData } from '../../../models/nestedMenu';
 import { useTableStoreContext } from '../../../stores/tableStore';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { TableFilter } from './TableFilter';
 

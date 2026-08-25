@@ -36,10 +36,10 @@ import type {
 import intersection from 'lodash/intersection';
 import { useTranslation } from 'react-i18next';
 import { useDebouncedCallback } from 'use-debounce';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import type { TransferListOption } from '../../../../models/form';
 import { FormUtil } from '../../../../utils/FormUtil';
-import { TestIdUtil } from '../../../../utils/TestIdUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 
 export type TransferListProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {

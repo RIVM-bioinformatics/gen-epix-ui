@@ -3,10 +3,8 @@ import first from 'lodash/first';
 import intersection from 'lodash/intersection';
 import last from 'lodash/last';
 import round from 'lodash/round';
-import {
-  NumberUtil,
-  StringUtil,
-} from '@gen-epix/ui';
+import { NumberUtil } from '@gen-epix/ui-core/utils/NumberUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import type {
   TreeAssembly,

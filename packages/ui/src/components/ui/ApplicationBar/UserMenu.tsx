@@ -18,13 +18,13 @@ import KeyIcon from '@mui/icons-material/Key';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { Confirmation } from '../Confirmation';
 import type { ConfirmationRefMethods } from '../Confirmation';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { LogService } from '../../../classes/services/LogService';
-import { StringUtil } from '../../../utils/StringUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { MyPermissionsDialogRefMethods } from '../MyPermissionsDialog';
 import { MyPermissionsDialog } from '../MyPermissionsDialog';
 import { DataUtil } from '../../../utils/DataUtil';

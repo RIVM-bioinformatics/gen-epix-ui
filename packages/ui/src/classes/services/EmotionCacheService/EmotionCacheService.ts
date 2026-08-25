@@ -1,8 +1,8 @@
 import type { EmotionCache } from '@emotion/cache';
 import createCache from '@emotion/cache';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 import { ConfigService } from '../ConfigService';
-import { HmrUtil } from '../../../utils/HmrUtil';
 
 
 export class EmotionCacheService {

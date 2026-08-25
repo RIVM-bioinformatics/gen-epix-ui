@@ -3,10 +3,10 @@ import { CircularProgress } from '@mui/material';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { AuthState } from '../../models/auth';
 
 export const PostLoginPage = () => {

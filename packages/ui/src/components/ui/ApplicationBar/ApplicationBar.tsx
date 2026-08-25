@@ -6,9 +6,9 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 import { ApplicationBarNavigationMenu } from './ApplicationBarNavigationMenu';
 import { ApplicationBarActions } from './ApplicationBarActions';

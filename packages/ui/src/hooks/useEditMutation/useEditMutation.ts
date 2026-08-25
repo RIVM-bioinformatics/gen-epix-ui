@@ -5,12 +5,12 @@ import {
   useMemo,
   useRef,
 } from 'react';
+import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 import type { GenericData } from '../../models/data';
 import { NotificationUtil } from '../../utils/NotificationUtil';
-import { ObjectUtil } from '../../utils/ObjectUtil';
 
 export type MutationContextEdit<TData> = { item?: TData; notificationKey?: string; previousData?: TData[] };
 

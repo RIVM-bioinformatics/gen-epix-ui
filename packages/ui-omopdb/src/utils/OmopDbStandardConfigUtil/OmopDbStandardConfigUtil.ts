@@ -1,9 +1,9 @@
 import {
   I18nService,
   StandardConfigUtil,
-  WindowService,
 } from '@gen-epix/ui';
 import { t } from 'i18next';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import type { OmopDbConfig } from '../../models/config';
 

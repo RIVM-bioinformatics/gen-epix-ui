@@ -26,8 +26,8 @@ import {
   MenuDataUtil,
   NestedDropdown,
   Spinner,
-  TestIdUtil,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { WidgetMenu } from '../WidgetMenu';
 import { WidgetHeaderIconButton } from '../WidgetHeaderIconButton';

@@ -21,9 +21,9 @@ import type {
 } from 'react';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { CopyToClipboardButton } from '../CopyToClipboardButton';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export type DialogAction = DialogActionButton | ReactElement;
 

@@ -30,9 +30,9 @@ import {
   FORM_FIELD_DEFINITION_TYPE,
   SchemaUtil,
   TableUtil,
-  TestIdUtil,
   useArray,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import {
   useCaseTypeMapQuery,

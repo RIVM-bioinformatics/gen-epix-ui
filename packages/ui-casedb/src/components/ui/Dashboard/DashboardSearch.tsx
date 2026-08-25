@@ -25,7 +25,7 @@ import { useStore } from 'zustand';
 import type { FuseResult } from 'fuse.js';
 import Fuse from 'fuse.js';
 import { useTranslation } from 'react-i18next';
-import { TestIdUtil } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';

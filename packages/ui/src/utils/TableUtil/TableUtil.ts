@@ -8,6 +8,7 @@ import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import {
   DEFAULT_FILTER_GROUP,
@@ -42,7 +43,6 @@ import {
   TABLE_COLUMN_FROZEN,
 } from '../../models/table';
 import { DATE_FORMAT } from '../../data/date';
-import { StringUtil } from '../StringUtil';
 import { ConfigService } from '../../classes/services/ConfigService';
 
 export class TableUtil {

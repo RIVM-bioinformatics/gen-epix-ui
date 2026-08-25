@@ -19,6 +19,7 @@ import type {
 } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { useDebouncedCallback } from 'use-debounce';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { GenericForm } from '../../components/form/helpers/GenericForm';
 import type { DialogAction } from '../../components/ui/Dialog';
@@ -29,7 +30,6 @@ import type {
 import { withDialog } from '../../hoc/withDialog';
 import type { GenericData } from '../../models/data';
 import { FormUtil } from '../../utils/FormUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { FormFieldDefinition } from '../../models/form';
 
 

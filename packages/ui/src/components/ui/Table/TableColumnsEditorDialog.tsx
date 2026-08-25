@@ -10,8 +10,8 @@ import {
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import type { UniqueIdentifier } from '@dnd-kit/core';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { withDialog } from '../../../hoc/withDialog';
 import type {
   WithDialogRefMethods,

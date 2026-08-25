@@ -18,6 +18,8 @@ import {
 } from '@mui/material';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
@@ -30,7 +32,6 @@ import { Spinner } from '../../ui/Spinner';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
 import type { IdentityProviderWithAvailability } from '../../../models/auth';
 import { ConfigService } from '../../../classes/services/ConfigService';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ApplicationBootstrap } from '../ApplicationBootstrap';
@@ -40,7 +41,6 @@ import { QueryClientService } from '../../../classes/services/QueryClientService
 import { COMMON_QUERY_KEY } from '../../../data/query';
 import { RouterService } from '../../../classes/services/RouterService';
 import { ApiService } from '../../../classes/services/ApiService';
-import { WindowService } from '../../../classes/services/WindowService';
 
 
 export const RouterRoot = () => {

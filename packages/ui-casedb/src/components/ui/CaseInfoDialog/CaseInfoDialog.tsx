@@ -32,13 +32,13 @@ import {
   QueryClientService,
   ResponseHandler,
   Spinner,
-  TestIdUtil,
   useArray,
   useDeleteMutation,
   useItemQuery,
   useQueryMemo,
   withDialog,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { Typography } from '@mui/material';
 
 import type { CaseAbacContext } from '../../../context/caseAbac';

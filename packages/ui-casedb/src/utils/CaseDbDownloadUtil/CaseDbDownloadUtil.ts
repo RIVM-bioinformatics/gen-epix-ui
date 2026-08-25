@@ -15,12 +15,12 @@ import type {
 import {
   ConfigService,
   DATE_FORMAT,
-  DownloadUtil,
   LogService,
   NotificationService,
   QueryClientService,
-  StringUtil,
 } from '@gen-epix/ui';
+import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';

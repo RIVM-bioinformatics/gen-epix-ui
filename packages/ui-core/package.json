@@ -69,6 +69,14 @@
       "./utils/StringUtil": {
         "import": "./dist/utils/StringUtil/index.js",
         "types": "./dist/utils/StringUtil/index.d.ts"
+      },
+      "./utils/TestIdUtil": {
+        "import": "./dist/utils/TestIdUtil/index.js",
+        "types": "./dist/utils/TestIdUtil/index.d.ts"
+      },
+      "./utils/ValidationUtil": {
+        "import": "./dist/utils/ValidationUtil/index.js",
+        "types": "./dist/utils/ValidationUtil/index.d.ts"
       }
     }
   },
@@ -124,15 +132,21 @@
     "./utils/StringUtil": {
       "import": "./src/utils/StringUtil/index.ts",
       "types": "./src/utils/StringUtil/index.ts"
+    },
+    "./utils/TestIdUtil": {
+      "import": "./src/utils/TestIdUtil/index.ts",
+      "types": "./src/utils/TestIdUtil/index.ts"
+    },
+    "./utils/ValidationUtil": {
+      "import": "./src/utils/ValidationUtil/index.ts",
+      "types": "./src/utils/ValidationUtil/index.ts"
     }
   },
   "scripts": {
     "generate-exports": "node scripts/update-exports.js",
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public",
-    "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
-    "add-missing-translations": "translation-util ./",
-    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run && pnpm run test-missing-translations",
+    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run",
     "test": "vitest --coverage",
     "test-run": "vitest run --passWithNoTests --coverage",
     "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",

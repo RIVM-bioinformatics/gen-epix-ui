@@ -5,10 +5,10 @@ import {
 } from '@mui/material';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 
 export const PostLogoutPage = () => {
   const { t } = useTranslation();

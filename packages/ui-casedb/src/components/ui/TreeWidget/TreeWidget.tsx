@@ -29,9 +29,9 @@ import type { MenuItemData } from '@gen-epix/ui';
 import {
   ConfigService,
   Spinner,
-  Subject,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
 
 import { EventBusService } from '../../../classes/services/EventBusService';
 import type {

@@ -8,11 +8,11 @@ import {
   FORM_FIELD_DEFINITION_TYPE,
   I18nService,
   StandardConfigUtil,
-  WindowService,
 } from '@gen-epix/ui';
 import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
 import { t } from 'i18next';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import type { CaseDbConfig } from '../../models/config';
 import { DASHBOARD_COMPONENT_NAME } from '../../data/dashboard';

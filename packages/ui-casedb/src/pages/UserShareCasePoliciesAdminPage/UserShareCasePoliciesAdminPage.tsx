@@ -25,10 +25,10 @@ import {
   CrudPage,
   FORM_FIELD_DEFINITION_TYPE,
   TableUtil,
-  TestIdUtil,
   useArray,
   useUserOptionsQuery,
 } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { useColSetsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';

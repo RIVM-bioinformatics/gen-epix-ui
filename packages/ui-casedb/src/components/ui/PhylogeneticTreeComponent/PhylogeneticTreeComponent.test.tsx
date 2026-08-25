@@ -4,12 +4,10 @@ import {
   test,
   vi,
 } from 'vitest';
-import {
-  ConfigService,
-  DevicePixelRatioService,
-  Subject,
-} from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 import { customRender } from '@gen-epix/ui/test-lib';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
 
 import type { Highlighting } from '../../../models/caseDb';
 import type { Stratification } from '../../../models/stratification';

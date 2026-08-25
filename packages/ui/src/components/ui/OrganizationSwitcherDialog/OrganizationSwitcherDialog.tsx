@@ -21,11 +21,12 @@ import {
   object,
   string,
 } from 'yup';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { NotificationService } from '../../../classes/services/NotificationService';
-import { WindowService } from '../../../classes/services/WindowService';
 import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
 import { useArray } from '../../../hooks/useArray';
 import type {
@@ -33,7 +34,6 @@ import type {
   WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { Autocomplete } from '../../form/fields/Autocomplete';
 import { ApiService } from '../../../classes/services/ApiService';
 
