@@ -30,10 +30,10 @@ import {
   QueryClientService,
   ResponseHandler,
   RouterService,
-  useArray,
   useQueryMemo,
   withPermissions,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';

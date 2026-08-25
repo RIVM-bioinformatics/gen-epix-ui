@@ -43,12 +43,12 @@ import {
   QueryClientService,
   ResponseHandler,
   SchemaUtil,
-  useArray,
   useCreateMutation,
   useItemQuery,
   withDialog,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';

@@ -11,10 +11,8 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useTranslation } from 'react-i18next';
-import {
-  ResponseHandler,
-  useArray,
-} from '@gen-epix/ui';
+import { ResponseHandler } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import {
   createUploadStore,

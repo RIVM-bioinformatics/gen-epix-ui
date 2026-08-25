@@ -26,6 +26,7 @@ const pkg = JSON.parse(raw);
 // index.ts-based entries (classes, utils)
 const indexBasedKeys = globSync([
   join(srcDir, 'classes', '**', 'index.ts'),
+  join(srcDir, 'hooks', '**', 'index.ts'),
   join(srcDir, 'utils', '**', 'index.ts'),
 ]).map((file) => relative(srcDir, dirname(file)));
 

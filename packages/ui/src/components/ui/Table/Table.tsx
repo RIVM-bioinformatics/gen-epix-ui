@@ -48,10 +48,10 @@ import { useShallow } from 'zustand/shallow';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import type { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
-import { useScrollbarSize } from '../../../hooks/useScrollbarSize';
 import type {
   HasCellDataFn,
   TableColumn,

@@ -30,8 +30,8 @@ import {
   FORM_FIELD_DEFINITION_TYPE,
   GenericForm,
   ResponseHandler,
-  useArray,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { FileSelector } from '../FileSelector';
 import { UploadUtil } from '../../../utils/UploadUtil';

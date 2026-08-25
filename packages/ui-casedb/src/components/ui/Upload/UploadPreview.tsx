@@ -38,10 +38,10 @@ import {
   QueryClientService,
   ResponseHandler,
   TableStoreContextProvider,
-  useArray,
   useQueryMemo,
 } from '@gen-epix/ui';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { UploadStoreContext } from '../../../stores/uploadStore';
 import { withEpiCompleteCaseTypeLoader } from '../CompletCaseTypeLoader/withEpiCompleteCaseTypeLoader';

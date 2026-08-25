@@ -11,9 +11,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
 import { NotificationService } from '../../../classes/services/NotificationService';
-import { useSubscribable } from '../../../hooks/useSubscribable';
 
 import { NotificationItem } from './NotificationItem';
 

@@ -29,11 +29,11 @@ import {
   GenericForm,
   PageContainer,
   ResponseHandler,
-  useArray,
   useItemQuery,
   useOrganizationMapQuery,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';

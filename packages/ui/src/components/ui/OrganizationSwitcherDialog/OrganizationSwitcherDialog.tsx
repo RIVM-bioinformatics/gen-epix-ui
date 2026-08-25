@@ -23,12 +23,12 @@ import {
 } from 'yup';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { NotificationService } from '../../../classes/services/NotificationService';
 import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
-import { useArray } from '../../../hooks/useArray';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,

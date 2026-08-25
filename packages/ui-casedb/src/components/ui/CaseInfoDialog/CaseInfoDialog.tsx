@@ -32,7 +32,6 @@ import {
   QueryClientService,
   ResponseHandler,
   Spinner,
-  useArray,
   useDeleteMutation,
   useItemQuery,
   useQueryMemo,
@@ -40,6 +39,7 @@ import {
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { Typography } from '@mui/material';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import type { CaseAbacContext } from '../../../context/caseAbac';
 import { CaseAbacContextProvider } from '../../../context/caseAbac';

@@ -27,9 +27,9 @@ import {
   FORM_FIELD_DEFINITION_TYPE,
   GenericForm,
   ResponseHandler,
-  useArray,
   useItemQuery,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import {
   useCaseTypeOptionsQuery,

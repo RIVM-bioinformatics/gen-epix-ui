@@ -16,11 +16,11 @@ import { useAuth } from 'react-oidc-context';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';
-import { useSubscribable } from '../../../hooks/useSubscribable';
 import type { AuthState } from '../../../models/auth';
 import type { ConsentDialogRefMethods } from '../../ui/ConsentDialog';
 import { ConsentDialog } from '../../ui/ConsentDialog';

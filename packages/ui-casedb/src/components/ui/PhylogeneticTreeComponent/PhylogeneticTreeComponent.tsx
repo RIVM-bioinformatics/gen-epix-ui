@@ -12,14 +12,12 @@ import {
   useState,
 } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import {
-  ConfigService,
-  useDimensions,
-  useScrollbarSize,
-  useSubscribable,
-} from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
+import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
+import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
 import type {
   Highlighting,

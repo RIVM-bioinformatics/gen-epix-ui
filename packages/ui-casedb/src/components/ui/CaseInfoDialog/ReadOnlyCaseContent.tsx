@@ -13,8 +13,8 @@ import type { CaseDbCase } from '@gen-epix/api-casedb';
 import {
   GenericErrorMessage,
   ResponseHandler,
-  useArray,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
 

@@ -18,9 +18,9 @@ import {
   NavLink,
   QueryClientService,
   ResponseHandler,
-  useArray,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';

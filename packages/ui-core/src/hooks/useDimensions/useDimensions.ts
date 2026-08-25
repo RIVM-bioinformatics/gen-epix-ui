@@ -6,7 +6,8 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+
+import { WindowService } from '../../classes/services/WindowService';
 
 
 type Dimensions = { height: number; width: number };

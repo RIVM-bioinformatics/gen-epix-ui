@@ -42,6 +42,22 @@
         "import": "./dist/classes/services/WindowService/index.js",
         "types": "./dist/classes/services/WindowService/index.d.ts"
       },
+      "./hooks/useArray": {
+        "import": "./dist/hooks/useArray/index.js",
+        "types": "./dist/hooks/useArray/index.d.ts"
+      },
+      "./hooks/useDimensions": {
+        "import": "./dist/hooks/useDimensions/index.js",
+        "types": "./dist/hooks/useDimensions/index.d.ts"
+      },
+      "./hooks/useScrollbarSize": {
+        "import": "./dist/hooks/useScrollbarSize/index.js",
+        "types": "./dist/hooks/useScrollbarSize/index.d.ts"
+      },
+      "./hooks/useSubscribable": {
+        "import": "./dist/hooks/useSubscribable/index.js",
+        "types": "./dist/hooks/useSubscribable/index.d.ts"
+      },
       "./models/generic": {
         "import": "./dist/models/generic.js",
         "types": "./dist/models/generic.d.ts"
@@ -105,6 +121,22 @@
       "import": "./src/classes/services/WindowService/index.ts",
       "types": "./src/classes/services/WindowService/index.ts"
     },
+    "./hooks/useArray": {
+      "import": "./src/hooks/useArray/index.ts",
+      "types": "./src/hooks/useArray/index.ts"
+    },
+    "./hooks/useDimensions": {
+      "import": "./src/hooks/useDimensions/index.ts",
+      "types": "./src/hooks/useDimensions/index.ts"
+    },
+    "./hooks/useScrollbarSize": {
+      "import": "./src/hooks/useScrollbarSize/index.ts",
+      "types": "./src/hooks/useScrollbarSize/index.ts"
+    },
+    "./hooks/useSubscribable": {
+      "import": "./src/hooks/useSubscribable/index.ts",
+      "types": "./src/hooks/useSubscribable/index.ts"
+    },
     "./models/generic": {
       "import": "./src/models/generic.ts",
       "types": "./src/models/generic.ts"
@@ -155,23 +187,26 @@
   },
   "peerDependencies": {
     "axios": "1.18.1",
-    "uuid": "14.0.1",
+    "date-fns": "4.4.0",
     "lodash": "4.18.1",
-    "date-fns": "4.4.0"
+    "react": "19.2.7",
+    "uuid": "14.0.1"
   },
   "dependencies": {},
   "devDependencies": {
     "@gen-epix/eslint-config": "0.4.1",
     "@types/lodash": "4.17.18",
-    "vite": "8.1.3",
-    "typescript": "6.0.3",
-    "vitest": "4.1.9",
-    "eslint": "10.6.0",
-    "vite-plugin-dts": "5.0.3",
+    "@types/react": "19.2.17",
     "axios": "1.18.1",
-    "uuid": "14.0.1",
+    "date-fns": "4.4.0",
+    "eslint": "10.6.0",
     "lodash": "4.18.1",
-    "date-fns": "4.4.0"
+    "react": "19.2.7",
+    "typescript": "6.0.3",
+    "uuid": "14.0.1",
+    "vite-plugin-dts": "5.0.3",
+    "vite": "8.1.3",
+    "vitest": "4.1.9"
   },
   "browserslist": [
     "last 2 Chrome versions"

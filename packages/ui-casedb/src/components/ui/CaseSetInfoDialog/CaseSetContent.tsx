@@ -14,8 +14,8 @@ import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import {
   DATE_FORMAT,
   ResponseHandler,
-  useArray,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';

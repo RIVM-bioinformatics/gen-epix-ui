@@ -52,9 +52,9 @@ import {
 import type { MenuItemData } from '@gen-epix/ui';
 import {
   QueryClientService,
-  useDimensions,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
 
 import { DataService } from '../../../classes/services/DataService';
 import { EventBusService } from '../../../classes/services/EventBusService';

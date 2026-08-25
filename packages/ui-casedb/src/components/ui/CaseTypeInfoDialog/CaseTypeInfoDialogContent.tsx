@@ -15,8 +15,8 @@ import type { WithDialogRenderProps } from '@gen-epix/ui';
 import {
   ResponseHandler,
   RichTextEditorContent,
-  useArray,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import type { CaseTypeAbacContext } from '../../../context/caseTypeAbac';
 import { CaseTypeAbacContextProvider } from '../../../context/caseTypeAbac';

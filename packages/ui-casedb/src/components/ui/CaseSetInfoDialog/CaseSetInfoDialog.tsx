@@ -30,13 +30,13 @@ import {
   ResponseHandler,
   RouterService,
   Spinner,
-  useArray,
   useDeleteMutation,
   useItemQuery,
   useQueryMemo,
   withDialog,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import type { CaseAbacContext } from '../../../context/caseAbac';
 import { CaseAbacContextProvider } from '../../../context/caseAbac';

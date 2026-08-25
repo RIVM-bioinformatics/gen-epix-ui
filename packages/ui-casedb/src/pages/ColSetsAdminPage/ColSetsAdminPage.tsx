@@ -29,9 +29,9 @@ import {
   FORM_FIELD_DEFINITION_TYPE,
   SchemaUtil,
   TableUtil,
-  useArray,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';

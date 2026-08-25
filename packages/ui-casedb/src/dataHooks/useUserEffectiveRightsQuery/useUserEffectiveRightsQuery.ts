@@ -15,9 +15,9 @@ import type { UseMap } from '@gen-epix/ui';
 import {
   COMMON_QUERY_KEY,
   LoadableUtil,
-  useArray,
   useItemQuery,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import type { UserEffectiveRight } from '../../models/caseAccess';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';

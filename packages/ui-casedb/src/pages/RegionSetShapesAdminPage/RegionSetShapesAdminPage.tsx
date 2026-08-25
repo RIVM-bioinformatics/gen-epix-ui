@@ -26,9 +26,9 @@ import {
   CrudPage,
   FORM_FIELD_DEFINITION_TYPE,
   TableUtil,
-  useArray,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useRegionSetsMapQuery } from '../../dataHooks/useRegionSetsQuery';
 import { CASEDB_QUERY_KEY } from '../../data/query';

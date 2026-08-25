@@ -18,9 +18,9 @@ import {
   TableHeader,
   TableStoreContextProvider,
   TableUtil,
-  useArray,
   useInitializeTableStore,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useOrganizationAccessCasePoliciesQuery } from '../../../dataHooks/useOrganizationAccessCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../../../dataHooks/useUserAccessCasePoliciesQuery';

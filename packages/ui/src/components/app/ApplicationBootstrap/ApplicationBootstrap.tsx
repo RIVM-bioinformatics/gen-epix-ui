@@ -17,11 +17,11 @@ import {
 } from '@mui/material';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { outagesStore } from '../../../stores/outagesStore';
 import { OutageUtil } from '../../../utils/OutageUtil';
-import { useArray } from '../../../hooks/useArray';
 import { FeatureFlagsService } from '../../../classes/services/FeatureFlagsService';
 import { I18nService } from '../../../classes/services/I18nService';
 import { QueryClientService } from '../../../classes/services/QueryClientService';

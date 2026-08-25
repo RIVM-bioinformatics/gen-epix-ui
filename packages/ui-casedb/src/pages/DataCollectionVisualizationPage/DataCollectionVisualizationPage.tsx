@@ -37,11 +37,11 @@ import {
   LoadableUtil,
   PageContainer,
   ResponseHandler,
-  useArray,
   useOrganizationMapQuery,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrganizationAccessCasePoliciesQuery';

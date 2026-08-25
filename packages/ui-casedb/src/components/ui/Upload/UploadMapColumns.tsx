@@ -32,9 +32,9 @@ import {
   GenericForm,
   ResponseHandler,
   Select,
-  useArray,
   useIdentifierIssuerOwnOrganizationOptionsQuery,
 } from '@gen-epix/ui';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useColMapQuery } from '../../../dataHooks/useColsQuery';
 import type { UploadMappedColumnsFormFields } from '../../../models/upload';

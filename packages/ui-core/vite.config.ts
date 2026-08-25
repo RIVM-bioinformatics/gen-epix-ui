@@ -38,6 +38,7 @@ const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<str
   // index.ts-based entries (classes, utils): key = component directory
   globSync([
     join(srcDir, 'classes', '**', 'index.ts'),
+    join(srcDir, 'hooks', '**', 'index.ts'),
     join(srcDir, 'utils', '**', 'index.ts'),
   ]).forEach((file) => {
     const relKey = dirname(file).replace(`${srcDir}/`, '');

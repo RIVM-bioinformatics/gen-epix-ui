@@ -27,6 +27,7 @@ import {
 } from '@mui/material';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
@@ -42,7 +43,6 @@ import { TableUtil } from '../../utils/TableUtil';
 import type { CrudPageProps } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
-import { useArray } from '../../hooks/useArray';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 import type { OmitWithMetaData } from '../../models/data';
 import { SchemaUtil } from '../../utils/SchemaUtil';

@@ -8,11 +8,11 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
   PageContainer,
   ResponseHandler,
-  useArray,
   useItemQuery,
   useUpdateBreadcrumb,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { Dashboard } from '../../components/ui/Dashboard';
 import { CASEDB_QUERY_KEY } from '../../data/query';
