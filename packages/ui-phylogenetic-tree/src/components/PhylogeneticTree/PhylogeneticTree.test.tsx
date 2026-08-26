@@ -9,9 +9,9 @@ import { render } from 'vitest-browser-react';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
 
-import type { TreeNode } from '../../../models/tree';
-import { TreeUtil } from '../../../utils/TreeUtil';
-import { NewickUtil } from '../../../utils/NewickUtil';
+import type { TreeNode } from '../../models/tree';
+import { TreeUtil } from '../../utils/TreeUtil';
+import { NewickUtil } from '../../utils/NewickUtil';
 
 import type {
   PhylogeneticTreeHighlightedNodeNamesSubjectValue,

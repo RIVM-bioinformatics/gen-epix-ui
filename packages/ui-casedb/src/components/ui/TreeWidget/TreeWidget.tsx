@@ -32,6 +32,13 @@ import {
   useQueryMemo,
 } from '@gen-epix/ui';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { PhylogeneticTree } from '@gen-epix/ui-phylogenetic-tree/components/PhylogeneticTree';
+import type {
+  PhylogeneticTreeHighlightedNodeNamesSubjectValue,
+  PhylogeneticTreePathClickEvent,
+  PhylogeneticTreeRef,
+  PhylogeneticTreeViewState,
+} from '@gen-epix/ui-phylogenetic-tree/components/PhylogeneticTree';
 
 import { EventBusService } from '../../../classes/services/EventBusService';
 import type {
@@ -49,13 +56,6 @@ import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { TreeDescription } from '../TreeDescription';
 import { WidgetUnavailable } from '../WidgetUnavailable';
-import { PhylogeneticTree } from '../PhylogeneticTree';
-import type {
-  PhylogeneticTreeHighlightedNodeNamesSubjectValue,
-  PhylogeneticTreePathClickEvent,
-  PhylogeneticTreeRef,
-  PhylogeneticTreeViewState,
-} from '../PhylogeneticTree';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';

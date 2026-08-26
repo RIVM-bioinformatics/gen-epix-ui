@@ -19,8 +19,8 @@ import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../../models/tree';
-import { TreeUtil } from '../../../utils/TreeUtil';
+} from '../../models/tree';
+import { TreeUtil } from '../../utils/TreeUtil';
 
 export type PhylogeneticTreeHighlightedNodeNamesSubjectValue = {
   highlightedNodeNames: string[];

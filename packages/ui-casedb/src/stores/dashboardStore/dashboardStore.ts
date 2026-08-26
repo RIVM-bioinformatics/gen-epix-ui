@@ -34,6 +34,9 @@ import type {
 } from '@gen-epix/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
+import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree';
+import { NewickUtil } from '@gen-epix/ui-phylogenetic-tree/utils/NewickUtil';
+import { TreeUtil } from '@gen-epix/ui-phylogenetic-tree/utils/TreeUtil';
 
 import type { FindSimilarCasesResult } from '../../models/caseDb';
 import type { TreeWidgetDataPersistable } from '../../models/dashboard';
@@ -42,14 +45,11 @@ import type {
   Stratification,
 } from '../../models/stratification';
 import { STRATIFICATION_MODE } from '../../models/stratification';
-import type { TreeNode } from '../../models/tree';
 import {
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
 } from '../../utils/CaseTypeUtil';
 import { FilterUtil } from '../../utils/FilterUtil';
-import { NewickUtil } from '../../utils/NewickUtil';
-import { TreeUtil } from '../../utils/TreeUtil';
 import type { CaseDbConfig } from '../../models/config';
 import { CASEDB_QUERY_KEY } from '../../data/query';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
