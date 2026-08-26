@@ -22,16 +22,6 @@ import type {
 } from '../../../models/tree';
 import { TreeUtil } from '../../../utils/TreeUtil';
 
-export type PhylogeneticTreeExternalScrollSubjectValue = {
-  origin: HTMLElement;
-  position: number;
-};
-
-export type PhylogeneticTreeExternalVisibleRangeSubjectValue = {
-  endIndex: number;
-  startIndex: number;
-};
-
 export type PhylogeneticTreeHighlightedNodeNamesSubjectValue = {
   highlightedNodeNames: string[];
 };
@@ -46,15 +36,12 @@ export type PhylogeneticTreeProps = {
   readonly ariaLabel: string;
   readonly backgroundColor: string;
   readonly dimFn: (color: string) => string;
-  readonly externalScrollSubject?: Subject<PhylogeneticTreeExternalScrollSubjectValue>;
-  readonly externalVisibleRangeSubject?: Subject<PhylogeneticTreeExternalVisibleRangeSubjectValue>;
   readonly fontFamily: string;
   readonly headerHeight: number;
   readonly highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
   readonly initialViewState?: Partial<PhylogeneticTreeViewState>;
   readonly itemHeight: number;
   readonly leafDotRadius: number;
-  readonly leafOrder: string[];
   readonly linkedScrollDebounceDelayMs: number;
   readonly maxScaleWidthPx: number;
   readonly maxZoomLevel: number;
@@ -73,21 +60,29 @@ export type PhylogeneticTreeProps = {
   readonly regularFillColorSupportLine: string;
   readonly scaleColor: string;
   readonly scaleIncrements: number[];
+  readonly scrollSubject?: Subject<PhylogeneticTreeScrollSubjectValue>;
   readonly shouldShowDistances: boolean;
   readonly shouldShowSupportLinesWhenUnlinked: boolean;
+  readonly sortedLeafNames: string[];
   readonly supportLineColorLinked: string;
   readonly supportLineColorUnlinked: string;
   readonly tree?: TreeNode;
   readonly treeColor: string;
   readonly treeFont: string;
   readonly treePadding: number;
+  readonly visibleRangeSubject?: Subject<PhylogeneticTreeVisibleRangeSubjectValue>;
 };
 
 export interface PhylogeneticTreeRef {
   link: (verticalPosition?: number) => void;
-  syncExternalScrollToVisibleTree: () => void;
+  syncScrollToVisibleTree: () => void;
   unlink: (viewState: { positionX: number; positionY: number; zoomLevel: number }) => void;
 }
+
+export type PhylogeneticTreeScrollSubjectValue = {
+  origin: HTMLElement;
+  position: number;
+};
 
 export type PhylogeneticTreeViewState = {
   horizontalScrollPosition: number;
@@ -95,20 +90,22 @@ export type PhylogeneticTreeViewState = {
   zoomLevel: number;
 };
 
+export type PhylogeneticTreeVisibleRangeSubjectValue = {
+  endIndex: number;
+  startIndex: number;
+};
+
 export const PhylogeneticTree = ({
   ancestorDotRadius,
   ariaLabel,
   backgroundColor,
   dimFn,
-  externalScrollSubject,
-  externalVisibleRangeSubject,
   fontFamily,
   headerHeight,
   highlightedNodeNamesSubject,
   initialViewState,
   itemHeight,
   leafDotRadius,
-  leafOrder,
   linkedScrollDebounceDelayMs,
   maxScaleWidthPx,
   maxZoomLevel,
@@ -127,14 +124,17 @@ export const PhylogeneticTree = ({
   regularFillColorSupportLine,
   scaleColor,
   scaleIncrements,
+  scrollSubject,
   shouldShowDistances,
   shouldShowSupportLinesWhenUnlinked,
+  sortedLeafNames,
   supportLineColorLinked,
   supportLineColorUnlinked,
   tree,
   treeColor,
   treeFont,
   treePadding,
+  visibleRangeSubject,
 }: PhylogeneticTreeProps) => {
   const scrollbarSize = useScrollbarSize();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -240,23 +240,23 @@ export const PhylogeneticTree = ({
     };
   }, [canvasScrollSubject, scrollPositionSubject]);
 
-  const emitExternalScrollPosition = useCallback((position: number) => {
-    if (!externalScrollSubject || !scrollContainerRef.current) {
+  const emitScrollPosition = useCallback((position: number) => {
+    if (!scrollSubject || !scrollContainerRef.current) {
       return;
     }
 
-    externalScrollSubject.next({
+    scrollSubject.next({
       origin: scrollContainerRef.current,
       position,
     });
-  }, [externalScrollSubject]);
+  }, [scrollSubject]);
 
-  const updateExternalScrollSubjectDebounced = useDebouncedCallback((position: number) => {
-    if (!externalScrollSubject || !scrollContainerRef.current) {
+  const updateScrollSubjectDebounced = useDebouncedCallback((position: number) => {
+    if (!scrollSubject || !scrollContainerRef.current) {
       return;
     }
 
-    externalScrollSubject.next({
+    scrollSubject.next({
       origin: scrollContainerRef.current,
       position: position / devicePixelRatio,
     });
@@ -289,9 +289,9 @@ export const PhylogeneticTree = ({
     });
 
     if (isLinked && internalZoomLevel === 1 && positionYChanged) {
-      updateExternalScrollSubjectDebounced(newPositionY);
+      updateScrollSubjectDebounced(newPositionY);
     }
-  }, [canvasScrollSubject, devicePixelRatio, headerHeight, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, treePadding, updateExternalScrollSubjectDebounced]);
+  }, [canvasScrollSubject, devicePixelRatio, headerHeight, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, treePadding, updateScrollSubjectDebounced]);
 
   useEffect(() => {
     updateScrollPosition({
@@ -302,7 +302,7 @@ export const PhylogeneticTree = ({
   }, [canvasScrollSubject, updateScrollPosition, zoomLevelSubject]);
 
   const link = useCallback((verticalPosition?: number) => {
-    const nextVerticalPosition = verticalPosition ?? externalScrollSubject?.data?.position ?? 0;
+    const nextVerticalPosition = verticalPosition ?? scrollSubject?.data?.position ?? 0;
 
     zoomLevelSubject.next(1);
     setIsLinked(true);
@@ -313,9 +313,9 @@ export const PhylogeneticTree = ({
     });
 
     if (verticalPosition !== undefined) {
-      emitExternalScrollPosition(nextVerticalPosition);
+      emitScrollPosition(nextVerticalPosition);
     }
-  }, [emitExternalScrollPosition, externalScrollSubject, updateScrollPosition, zoomLevelSubject]);
+  }, [emitScrollPosition, scrollSubject, updateScrollPosition, zoomLevelSubject]);
 
   const unlink = useCallback((viewState: { positionX: number; positionY: number; zoomLevel: number }) => {
     setIsLinked(false);
@@ -327,7 +327,7 @@ export const PhylogeneticTree = ({
     });
   }, [updateScrollPosition, zoomLevelSubject]);
 
-  const syncExternalScrollToVisibleTree = useCallback(() => {
+  const syncScrollToVisibleTree = useCallback(() => {
     if (!tree?.size) {
       link(0);
       return;
@@ -347,9 +347,9 @@ export const PhylogeneticTree = ({
 
   useImperativeHandle(ref, () => ({
     link,
-    syncExternalScrollToVisibleTree,
+    syncScrollToVisibleTree,
     unlink,
-  }), [link, syncExternalScrollToVisibleTree, unlink]);
+  }), [link, syncScrollToVisibleTree, unlink]);
 
   const devicePixelRatioServiceCallback = useCallback((newDevicePixelRatio: number, previousDevicePixelRatio: number) => {
     canvasScrollSubject.next({
@@ -385,27 +385,27 @@ export const PhylogeneticTree = ({
   }, [devicePixelRatio, treeAssembly]);
 
   useEffect(() => {
-    if (!externalScrollSubject) {
+    if (!scrollSubject) {
       return;
     }
 
-    let externalScrollData = externalScrollSubject.data;
+    let scrollData = scrollSubject.data;
     let zoomLevel = zoomLevelSubject.data;
 
     const update = () => {
-      if (!externalScrollData || externalScrollData.origin === scrollContainerRef.current) {
+      if (!scrollData || scrollData.origin === scrollContainerRef.current) {
         return;
       }
       if (isLinked && zoomLevel === 1) {
         canvasScrollSubject.next({
           x: canvasScrollSubject.data.x * devicePixelRatio,
-          y: externalScrollData.position * devicePixelRatio,
+          y: scrollData.position * devicePixelRatio,
         });
       }
     };
 
-    const unsubscribeFromExternalScrollSubject = externalScrollSubject.subscribe((data) => {
-      externalScrollData = data;
+    const unsubscribeFromScrollSubject = scrollSubject.subscribe((data) => {
+      scrollData = data;
       update();
     });
 
@@ -415,10 +415,10 @@ export const PhylogeneticTree = ({
     });
 
     return () => {
-      unsubscribeFromExternalScrollSubject();
+      unsubscribeFromScrollSubject();
       unsubscribeFromZoomLevelSubject();
     };
-  }, [canvasScrollSubject, devicePixelRatio, externalScrollSubject, isLinked, zoomLevelSubject]);
+  }, [canvasScrollSubject, devicePixelRatio, scrollSubject, isLinked, zoomLevelSubject]);
 
   useEffect(() => {
     if (!tree || !pixelToGeneticDistanceRatio) {
@@ -428,16 +428,16 @@ export const PhylogeneticTree = ({
 
     setTreeAssembly(TreeUtil.assembleTree({
       ancestorDotRadius,
-      externalLeafSorting: leafOrder,
       itemHeight,
       leafDotRadius,
       minimumDistancePercentageToShowLabel,
       pixelToGeneticDistanceRatio,
       rootNode: tree,
+      sortedLeafNames,
       treeCanvasWidth,
       treePadding,
     }));
-  }, [ancestorDotRadius, itemHeight, leafDotRadius, leafOrder, minimumDistancePercentageToShowLabel, pixelToGeneticDistanceRatio, tree, treeCanvasWidth, treePadding]);
+  }, [ancestorDotRadius, itemHeight, leafDotRadius, sortedLeafNames, minimumDistancePercentageToShowLabel, pixelToGeneticDistanceRatio, tree, treeCanvasWidth, treePadding]);
 
   useEffect(() => {
     if (!treeCanvas || !treeAssembly || !tree) {
@@ -448,10 +448,10 @@ export const PhylogeneticTree = ({
     let zoomLevel: number = zoomLevelSubject.data;
     let tickerMarkScale = getTickerMarkScale(zoomLevel);
     let highlightedNodeNames: string[] = highlightedNodeNamesSubject?.data?.highlightedNodeNames ?? [];
-    let externalScrollPosition = externalScrollSubject?.data?.position ?? 0;
+    let scrollPosition = scrollSubject?.data?.position ?? 0;
     let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
     let verticalScrollPosition = scrollPositionSubject.data.vertical;
-    let externalRange = externalVisibleRangeSubject?.data;
+    let range = visibleRangeSubject?.data;
 
     const render = () => {
       cancelAnimationFrame(animationFrameId);
@@ -461,8 +461,6 @@ export const PhylogeneticTree = ({
           canvas: treeCanvas,
           devicePixelRatio,
           dimFn,
-          externalRange,
-          externalScrollPosition,
           fontFamily,
           geneticTreeWidth: tree.maxBranchLength,
           headerHeight,
@@ -472,8 +470,10 @@ export const PhylogeneticTree = ({
           itemHeight,
           nodeNameColors,
           pixelToGeneticDistanceRatio,
+          range,
           regularFillColorSupportLine,
           scaleColor,
+          scrollPosition,
           shouldShowDistances,
           shouldShowSupportLinesWhenUnlinked,
           supportLineColorLinked,
@@ -508,16 +508,16 @@ export const PhylogeneticTree = ({
       render();
     });
 
-    const unsubscribeFromExternalScrollSubject = externalScrollSubject?.subscribe((data) => {
+    const unsubscribeFromScrollSubject = scrollSubject?.subscribe((data) => {
       if (data.origin === scrollContainerRef.current) {
         return;
       }
-      externalScrollPosition = data.position;
+      scrollPosition = data.position;
       render();
     });
 
-    const unsubscribeFromExternalVisibleRangeSubject = externalVisibleRangeSubject?.subscribe((data) => {
-      externalRange = data;
+    const unsubscribeFromVisibleRangeSubject = visibleRangeSubject?.subscribe((data) => {
+      range = data;
       render();
     });
 
@@ -525,10 +525,10 @@ export const PhylogeneticTree = ({
 
     return () => {
       unsubscribeFromHighlighting();
-      unsubscribeFromExternalScrollSubject?.();
+      unsubscribeFromScrollSubject?.();
       unsubscribeFromScrollPositionSubject();
       unsubscribeFromZoomLevelSubject();
-      unsubscribeFromExternalVisibleRangeSubject?.();
+      unsubscribeFromVisibleRangeSubject?.();
       cancelAnimationFrame(animationFrameId);
     };
   }, [
@@ -536,8 +536,8 @@ export const PhylogeneticTree = ({
     devicePixelRatio,
     dimFn,
     highlightedNodeNamesSubject,
-    externalScrollSubject,
-    externalVisibleRangeSubject,
+    scrollSubject,
+    visibleRangeSubject,
     fontFamily,
     getTickerMarkScale,
     headerHeight,
@@ -693,7 +693,7 @@ export const PhylogeneticTree = ({
       if (newZoomLevel !== 1) {
         updateScrollPosition({ internalZoomLevel: newZoomLevel, positionX: newScrollPositionX, positionY: newScrollPositionY });
       } else {
-        updateScrollPosition({ internalZoomLevel: 1, positionX: newScrollPositionX, positionY: externalScrollSubject?.data?.position ?? 0 });
+        updateScrollPosition({ internalZoomLevel: 1, positionX: newScrollPositionX, positionY: scrollSubject?.data?.position ?? 0 });
       }
     };
 
@@ -723,7 +723,7 @@ export const PhylogeneticTree = ({
   }, [
     canvasScrollSubject,
     highlightedNodeNamesSubject,
-    externalScrollSubject,
+    scrollSubject,
     getPathPropertiesFromCanvas,
     headerHeight,
     maxZoomLevel,

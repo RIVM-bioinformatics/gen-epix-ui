@@ -48,11 +48,11 @@ export class TreeUtil {
    * @param params.treeCanvasWidth - Width of the tree canvas in pixels, used for support lines.
    * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
    * @param params.itemHeight - Height of each row/item in pixels.
-   * @param params.externalLeafSorting - Custom sorting order of leaf nodes by name, derived from external ordering (e.g. table row order). Must contain all leaf node names.
+   * @param params.sortedLeafNames - Custom sorting order of leaf nodes by name, derived from ordering (e.g. table row order). Must contain all leaf node names.
    * @returns A fully populated {@link TreeAssembly} ready for rendering.
    */
-  public static assembleTree(params: { ancestorDotRadius: number; externalLeafSorting: string[]; itemHeight: number; leafDotRadius: number; minimumDistancePercentageToShowLabel: number; pixelToGeneticDistanceRatio: number; rootNode: TreeNode; treeCanvasWidth: number; treePadding: number }): TreeAssembly {
-    const { ancestorDotRadius, externalLeafSorting, itemHeight, leafDotRadius, minimumDistancePercentageToShowLabel, pixelToGeneticDistanceRatio, rootNode, treeCanvasWidth, treePadding } = params;
+  public static assembleTree(params: { ancestorDotRadius: number; itemHeight: number; leafDotRadius: number; minimumDistancePercentageToShowLabel: number; pixelToGeneticDistanceRatio: number; rootNode: TreeNode; sortedLeafNames: string[]; treeCanvasWidth: number; treePadding: number }): TreeAssembly {
+    const { ancestorDotRadius, itemHeight, leafDotRadius, minimumDistancePercentageToShowLabel, pixelToGeneticDistanceRatio, rootNode, sortedLeafNames, treeCanvasWidth, treePadding } = params;
     let leafIndex = 0;
     const treeAssembly: TreeAssembly = {
       ancestorNodes: [],
@@ -89,7 +89,7 @@ export class TreeUtil {
       });
 
       if (!node.children?.length) {
-        const result = TreeUtil.assembleLeafNode(treeAssemblyContext, node, distance, leafIndex, externalLeafSorting.indexOf(node.name));
+        const result = TreeUtil.assembleLeafNode(treeAssemblyContext, node, distance, leafIndex, sortedLeafNames.indexOf(node.name));
         leafIndex++;
         return result;
       }
@@ -271,14 +271,14 @@ export class TreeUtil {
     canvas: HTMLCanvasElement;
     devicePixelRatio: number;
     dimFn: (color: string) => string;
-    externalRange: { endIndex: number; startIndex: number };
-    externalScrollPosition?: number;
     headerHeight?: number;
     highlightedNodeNames: string[];
     horizontalScrollPosition: number;
     isLinked: boolean;
     itemHeight: number;
     nodeNameColors: { [key: string]: string } | null;
+    range: { endIndex: number; startIndex: number };
+    scrollPosition?: number;
     shouldShowDistances: boolean;
     shouldShowSupportLinesWhenUnlinked: boolean;
     supportLineColorLinked: string;
@@ -289,7 +289,7 @@ export class TreeUtil {
     verticalScrollPosition: number;
     zoomLevel: number;
   }): void {
-    const { canvas, devicePixelRatio, dimFn, externalRange, externalScrollPosition = 0, headerHeight = 0, highlightedNodeNames = [], horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel } = params;
+    const { canvas, devicePixelRatio, dimFn, headerHeight = 0, highlightedNodeNames = [], horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, range, scrollPosition = 0, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel } = params;
     const ctx = TreeUtil.getCanvasContext(canvas);
     const bodyStartY = headerHeight * devicePixelRatio;
     const setRegularTransform = () => {
@@ -330,22 +330,22 @@ export class TreeUtil {
         ctx.stroke(shape);
       });
 
-      if (externalRange) {
+      if (range) {
         treeAssembly.supportLines.forEach(({ fromX, fromY, nodeName, toX, toY }) => {
           // a) leaf node is visible in the tree canvas viewport
           const canvasBodyHeight = canvas.height - bodyStartY;
           const leafScreenY = (fromY / zoomLevel) * devicePixelRatio - verticalScrollPosition;
           const isLeafVisible = leafScreenY >= 0 && leafScreenY <= canvasBodyHeight;
 
-          // b) end position is within the external range
-          const externalSortingIndex = itemHeight > 0 ? Math.floor(toY / itemHeight) : -1;
-          const isEndInExternalRange = externalRange &&
-            externalSortingIndex >= externalRange.startIndex &&
-            externalSortingIndex <= externalRange.endIndex;
+          // b) end position is within the range
+          const sortingIndex = itemHeight > 0 ? Math.floor(toY / itemHeight) : -1;
+          const isEndInRange = range &&
+            sortingIndex >= range.startIndex &&
+            sortingIndex <= range.endIndex;
 
           const isHighlighted = highlightedNodeNames.length && highlightedNodeNames.includes(nodeName);
 
-          if (!isLeafVisible && !isEndInExternalRange) {
+          if (!isLeafVisible && !isEndInRange) {
             return;
           }
 
@@ -364,7 +364,7 @@ export class TreeUtil {
           }
           ctx.moveTo(fromX, fromY);
           setTransFormForSupportLine();
-          ctx.lineTo(toX + (horizontalScrollPosition / devicePixelRatio), toY - externalScrollPosition);
+          ctx.lineTo(toX + (horizontalScrollPosition / devicePixelRatio), toY - scrollPosition);
           setRegularTransform();
           ctx.stroke();
           ctx.setLineDash([]);
@@ -451,8 +451,6 @@ export class TreeUtil {
     canvas: HTMLCanvasElement;
     devicePixelRatio: number;
     dimFn: (color: string) => string;
-    externalRange: { endIndex: number; startIndex: number };
-    externalScrollPosition?: number;
     fontFamily: string;
     geneticTreeWidth: Decimal;
     headerHeight?: number;
@@ -462,8 +460,10 @@ export class TreeUtil {
     itemHeight: number;
     nodeNameColors: { [key: string]: string } | null;
     pixelToGeneticDistanceRatio: number;
+    range: { endIndex: number; startIndex: number };
     regularFillColorSupportLine: string;
     scaleColor: string;
+    scrollPosition?: number;
     shouldShowDistances: boolean;
     shouldShowSupportLinesWhenUnlinked: boolean;
     supportLineColorLinked: string;
@@ -478,7 +478,7 @@ export class TreeUtil {
     verticalScrollPosition: number;
     zoomLevel: number;
   }): void {
-    const { backgroundColor, canvas, devicePixelRatio, dimFn, externalRange, externalScrollPosition = 0, fontFamily, geneticTreeWidth, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, pixelToGeneticDistanceRatio, regularFillColorSupportLine, scaleColor, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, treeColor, treeFont, treePadding, verticalScrollPosition, zoomLevel } = params;
+    const { backgroundColor, canvas, devicePixelRatio, dimFn, fontFamily, geneticTreeWidth, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, pixelToGeneticDistanceRatio, range, regularFillColorSupportLine, scaleColor, scrollPosition = 0, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, treeColor, treeFont, treePadding, verticalScrollPosition, zoomLevel } = params;
     const ctx = TreeUtil.getCanvasContext(canvas);
     ctx.reset();
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -497,7 +497,7 @@ export class TreeUtil {
       TreeUtil.drawDivider({ canvas, devicePixelRatio, y: headerHeight - 1 });
     }
 
-    TreeUtil.drawTree({ canvas, devicePixelRatio, dimFn, externalRange, externalScrollPosition, headerHeight, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel });
+    TreeUtil.drawTree({ canvas, devicePixelRatio, dimFn, headerHeight, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, range, scrollPosition, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel });
   }
 
   /**
@@ -954,10 +954,10 @@ export class TreeUtil {
    * @param node - The leaf tree node to assemble.
    * @param distance - Accumulated genetic distance from the root to the start of this node's branch.
    * @param leafIndex - Zero-based vertical index of this leaf, determining its Y position.
-   * @param externalSortingIndex - External sorting index of this leaf derived from linked view order. Used to draw the support line.
+   * @param sortingIndex - Sorting index of this leaf derived from linked view order. Used to draw the support line.
    * @returns The pixel coordinates of the branch start and the node name, for use by the parent.
    */
-  private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0, externalSortingIndex = 0): NodeAssemblyResult {
+  private static assembleLeafNode(treeAssemblyContext: TreeAssemblyContext, node: TreeNode, distance = 0, leafIndex = 0, sortingIndex = 0): NodeAssemblyResult {
     const leafX = distance + (node.branchLength?.toNumber() ?? 0);
     const leafXPxEnd = leafX * treeAssemblyContext.pixelToGeneticDistanceRatio + treeAssemblyContext.treePadding;
     const leafYPx = ((leafIndex) * treeAssemblyContext.itemHeight) + (treeAssemblyContext.itemHeight / 2);
@@ -980,7 +980,7 @@ export class TreeUtil {
       treeAssemblyContext.treeAssembly.distanceTexts.push({ nodeNames: [node.name], text: label, x: (leafXPxStart + leafXPxEnd) / 2, y: leafYPx + 12 });
     }
     // add horizontal support line to max width
-    const supportLineToYpx = externalSortingIndex * treeAssemblyContext.itemHeight + (treeAssemblyContext.itemHeight / 2);
+    const supportLineToYpx = sortingIndex * treeAssemblyContext.itemHeight + (treeAssemblyContext.itemHeight / 2);
     treeAssemblyContext.treeAssembly.supportLines.push({ fromX: leafXPxEnd, fromY: leafYPx, nodeName: node.name, toX: treeAssemblyContext.treeCanvasWidth, toY: supportLineToYpx });
 
     // add a dot to represent the node

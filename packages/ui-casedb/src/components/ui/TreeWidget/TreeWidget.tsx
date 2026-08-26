@@ -286,7 +286,7 @@ export const TreeWidget = () => {
   const linkLineListToTree = useCallback(() => {
     const perform = async () => {
       await setSorting(null, null);
-      treeRef.current?.syncExternalScrollToVisibleTree();
+      treeRef.current?.syncScrollToVisibleTree();
     };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -594,15 +594,12 @@ export const TreeWidget = () => {
             ariaLabel={treeCanvasAriaLabel}
             backgroundColor={theme.palette.background.paper}
             dimFn={theme['gen-epix-ui-casedb'].tree.dimFn}
-            externalScrollSubject={dashboardContext.linkedScrollSubject}
-            externalVisibleRangeSubject={dashboardContext.lineListRangeSubject}
             fontFamily={theme.typography.fontFamily}
             headerHeight={treeConfig.HEADER_HEIGHT}
             highlightedNodeNamesSubject={phylogeneticTreeHighlightedNodeNamesSubject}
             initialViewState={initialTreeViewState}
             itemHeight={ConfigService.getInstance<CaseDbConfig>().config.lineList.TABLE_ROW_HEIGHT}
             leafDotRadius={treeConfig.LEAF_DOT_RADIUS}
-            leafOrder={sortedLeafNames}
             linkedScrollDebounceDelayMs={treeConfig.LINKED_SCROLL_DEBOUNCE_DELAY_MS}
             maxScaleWidthPx={treeConfig.MAX_SCALE_WIDTH_PX}
             maxZoomLevel={treeConfig.MAX_ZOOM_LEVEL}
@@ -621,14 +618,17 @@ export const TreeWidget = () => {
             regularFillColorSupportLine={treeConfig.REGULAR_FILL_COLOR_SUPPORT_LINE}
             scaleColor={theme.palette.text.primary}
             scaleIncrements={treeConfig.SCALE_INCREMENTS}
+            scrollSubject={dashboardContext.linkedScrollSubject}
             shouldShowDistances={isShowDistancesEnabled}
             shouldShowSupportLinesWhenUnlinked={isShowSupportLinesWhenUnlinkedEnabled}
+            sortedLeafNames={sortedLeafNames}
             supportLineColorLinked={theme['gen-epix-ui-casedb'].tree.supportLineColorLinked}
             supportLineColorUnlinked={theme['gen-epix-ui-casedb'].tree.supportLineColorUnlinked}
             tree={tree}
             treeColor={theme['gen-epix-ui-casedb'].tree.color}
             treeFont={theme['gen-epix-ui-casedb'].tree.font}
             treePadding={treeConfig.TREE_PADDING}
+            visibleRangeSubject={dashboardContext.lineListRangeSubject}
           />
         )}
       </Box>

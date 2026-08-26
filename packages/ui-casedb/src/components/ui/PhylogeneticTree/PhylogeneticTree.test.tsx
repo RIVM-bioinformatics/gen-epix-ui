@@ -14,12 +14,12 @@ import { TreeUtil } from '../../../utils/TreeUtil';
 import { NewickUtil } from '../../../utils/NewickUtil';
 
 import type {
-  PhylogeneticTreeExternalScrollSubjectValue,
-  PhylogeneticTreeExternalVisibleRangeSubjectValue,
   PhylogeneticTreeHighlightedNodeNamesSubjectValue,
   PhylogeneticTreePathClickEvent,
   PhylogeneticTreeRef,
+  PhylogeneticTreeScrollSubjectValue,
   PhylogeneticTreeViewState,
+  PhylogeneticTreeVisibleRangeSubjectValue,
 } from './PhylogeneticTree';
 import { PhylogeneticTree } from './PhylogeneticTree';
 
@@ -54,12 +54,11 @@ const TREE_PADDING = 20;
 let ariaLabelCounter = 0;
 
 type RenderTreeOptions = {
-  externalScrollSubject?: Subject<PhylogeneticTreeExternalScrollSubjectValue>;
-  externalVisibleRangeSubject?: Subject<PhylogeneticTreeExternalVisibleRangeSubjectValue>;
+  externalScrollSubject?: Subject<PhylogeneticTreeScrollSubjectValue>;
+  externalVisibleRangeSubject?: Subject<PhylogeneticTreeVisibleRangeSubjectValue>;
   height?: number;
   highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
   itemHeight?: number;
-  leafOrder?: string[];
   newick?: string;
   nodeNameColors?: { [key: string]: string } | null;
   onCanvasChange?: (canvas?: HTMLCanvasElement) => void;
@@ -69,6 +68,7 @@ type RenderTreeOptions = {
   ref?: { current: null | PhylogeneticTreeRef };
   shouldShowDistances?: boolean;
   shouldShowSupportLinesWhenUnlinked?: boolean;
+  sortedLeafNames?: string[];
   tree?: TreeNode;
   width?: number;
 };
@@ -77,7 +77,7 @@ type ResolvedRenderTreeOptions = {
   ariaLabel: string;
   height: number;
   itemHeight: number;
-  leafOrder: string[];
+  sortedLeafNames: string[];
   width: number;
 } & RenderTreeOptions;
 
@@ -221,8 +221,8 @@ const getSupportLine = (layout: TreeLayout, nodeName: string) => {
   return supportLine;
 };
 
-const createTreeLayout = (params: { itemHeight: number; leafOrder: string[]; tree: TreeNode; width: number }): TreeLayout => {
-  const { itemHeight, leafOrder, tree, width } = params;
+const createTreeLayout = (params: { itemHeight: number; sortedLeafNames: string[]; tree: TreeNode; width: number }): TreeLayout => {
+  const { itemHeight, sortedLeafNames, tree, width } = params;
   const pixelToGeneticDistanceRatio = (width - (2 * TREE_PADDING)) / tree.maxBranchLength.toNumber();
   const positions = new Map<string, TreeLayoutNode>();
   const supportLines = new Map<string, { fromX: number; fromY: number; toX: number; toY: number }>();
@@ -250,7 +250,7 @@ const createTreeLayout = (params: { itemHeight: number; leafOrder: string[]; tre
         fromX: dotX,
         fromY: y,
         toX: width,
-        toY: (leafOrder.indexOf(node.name) * itemHeight) + (itemHeight / 2),
+        toY: (sortedLeafNames.indexOf(node.name) * itemHeight) + (itemHeight / 2),
       });
 
       leafIndex++;
@@ -310,14 +310,11 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
         ariaLabel={options.ariaLabel}
         backgroundColor={BACKGROUND_COLOR}
         dimFn={DIM_FN}
-        externalScrollSubject={options.externalScrollSubject}
-        externalVisibleRangeSubject={options.externalVisibleRangeSubject}
         fontFamily={FONT_FAMILY}
         headerHeight={HEADER_HEIGHT}
         highlightedNodeNamesSubject={options.highlightedNodeNamesSubject}
         itemHeight={options.itemHeight}
         leafDotRadius={LEAF_DOT_RADIUS}
-        leafOrder={options.leafOrder}
         linkedScrollDebounceDelayMs={LINKED_SCROLL_DEBOUNCE_DELAY_MS}
         maxScaleWidthPx={MAX_SCALE_WIDTH_PX}
         maxZoomLevel={MAX_ZOOM_LEVEL}
@@ -336,14 +333,17 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
         regularFillColorSupportLine={REGULAR_FILL_COLOR_SUPPORT_LINE}
         scaleColor={SCALE_COLOR}
         scaleIncrements={SCALE_INCREMENTS}
+        scrollSubject={options.externalScrollSubject}
         shouldShowDistances={options.shouldShowDistances ?? false}
         shouldShowSupportLinesWhenUnlinked={options.shouldShowSupportLinesWhenUnlinked ?? false}
+        sortedLeafNames={options.sortedLeafNames}
         supportLineColorLinked={SUPPORT_LINE_COLOR_LINKED}
         supportLineColorUnlinked={SUPPORT_LINE_COLOR_UNLINKED}
         tree={options.tree}
         treeColor={TREE_COLOR}
         treeFont={TREE_FONT}
         treePadding={TREE_PADDING}
+        visibleRangeSubject={options.externalVisibleRangeSubject}
       />
     </div>
   );
@@ -356,13 +356,13 @@ const renderTree = async (options: RenderTreeOptions = {}) => {
   const tree = Object.prototype.hasOwnProperty.call(options, 'tree')
     ? options.tree
     : parseTree(options.newick ?? '(LeafA:1,LeafB:2);');
-  const leafOrder = options.leafOrder ?? (tree ? NewickUtil.getSortedNames(tree) : []);
+  const sortedLeafNames = options.sortedLeafNames ?? (tree ? NewickUtil.getSortedNames(tree) : []);
   const resolvedOptions: ResolvedRenderTreeOptions = {
     ...options,
     ariaLabel: `Phylogenetic tree ${ariaLabelCounter++}`,
     height,
     itemHeight,
-    leafOrder,
+    sortedLeafNames,
     tree,
     width,
   };
@@ -385,7 +385,7 @@ const renderTree = async (options: RenderTreeOptions = {}) => {
     canvas: canvas instanceof HTMLCanvasElement ? canvas : null,
     height,
     itemHeight,
-    layout: tree ? createTreeLayout({ itemHeight, leafOrder, tree, width }) : null,
+    layout: tree ? createTreeLayout({ itemHeight, sortedLeafNames, tree, width }) : null,
     renderResult,
     resolvedOptions,
     tree,
@@ -620,7 +620,7 @@ describe('PhylogeneticTree', () => {
       unlinkedVerticalScrollPosition = lastViewState?.verticalScrollPosition ?? 0;
     });
 
-    ref.current?.syncExternalScrollToVisibleTree();
+    ref.current?.syncScrollToVisibleTree();
 
     await waitForAssertion(() => {
       const lastViewState = getLast(viewStates);
@@ -820,19 +820,19 @@ describe('PhylogeneticTree', () => {
 
   test('draws unlinked support lines for offscreen leaves when the external range matches', async () => {
     const externalVisibleRangeSubject = new Subject({ endIndex: 0, startIndex: 0 });
-    const leafOrder = ['LeafF', 'LeafE', 'LeafD', 'LeafC', 'LeafB', 'LeafA'];
+    const sortedLeafNames = ['LeafF', 'LeafE', 'LeafD', 'LeafC', 'LeafB', 'LeafA'];
     const ref = createComponentRef();
     const viewStates: PhylogeneticTreeViewState[] = [];
     const { canvas, layout } = await renderTree({
       externalVisibleRangeSubject,
       height: 240,
-      leafOrder,
       newick: '(LeafA:1,LeafB:10,LeafC:10,LeafD:10,LeafE:10,LeafF:10);',
       onViewStateChange: (viewState) => {
         viewStates.push(viewState);
       },
       ref,
       shouldShowSupportLinesWhenUnlinked: true,
+      sortedLeafNames,
     });
 
     expect(canvas).toBeInstanceOf(HTMLCanvasElement);
@@ -873,19 +873,19 @@ describe('PhylogeneticTree', () => {
 
   test('suppresses unlinked support lines when disabled', async () => {
     const externalVisibleRangeSubject = new Subject({ endIndex: 5, startIndex: 5 });
-    const leafOrder = ['LeafF', 'LeafE', 'LeafD', 'LeafC', 'LeafB', 'LeafA'];
+    const sortedLeafNames = ['LeafF', 'LeafE', 'LeafD', 'LeafC', 'LeafB', 'LeafA'];
     const ref = createComponentRef();
     const viewStates: PhylogeneticTreeViewState[] = [];
     const { canvas, layout } = await renderTree({
       externalVisibleRangeSubject,
       height: 240,
-      leafOrder,
       newick: '(LeafA:1,LeafB:10,LeafC:10,LeafD:10,LeafE:10,LeafF:10);',
       onViewStateChange: (viewState) => {
         viewStates.push(viewState);
       },
       ref,
       shouldShowSupportLinesWhenUnlinked: false,
+      sortedLeafNames,
     });
 
     expect(canvas).toBeInstanceOf(HTMLCanvasElement);
@@ -923,17 +923,17 @@ describe('PhylogeneticTree', () => {
     const ref = createComponentRef();
     const viewStates: PhylogeneticTreeViewState[] = [];
     const tree = parseTree(LARGE_TREE_NEWICK);
-    const leafOrder = NewickUtil.getSortedNames(tree);
+    const sortedLeafNames = NewickUtil.getSortedNames(tree);
     const ariaLabel = `Phylogenetic tree ${ariaLabelCounter++}`;
     const renderResult = await render(createTreeElement({
       ariaLabel,
       height: DEFAULT_HEIGHT,
       itemHeight: DEFAULT_ITEM_HEIGHT,
-      leafOrder,
       onViewStateChange: (viewState) => {
         viewStates.push(viewState);
       },
       ref,
+      sortedLeafNames,
       tree,
       width: DEFAULT_WIDTH,
     }));
