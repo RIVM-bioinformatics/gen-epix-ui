@@ -37,8 +37,8 @@ import { createRoot } from 'react-dom/client';
 import {
   ConfigService,
   I18nService,
-  WindowService,
 } from '@gen-epix/ui';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   SeqDbApp,
   setupSeqDb,
