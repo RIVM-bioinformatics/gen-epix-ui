@@ -28,13 +28,14 @@ import {
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-
-import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
   FormFieldDefinition,
   OptionBase,
-} from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
+
+import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
   TableColumn,
   TableRowParams,
@@ -51,7 +52,6 @@ import type { ConfirmationRefMethods } from '../../components/ui/Confirmation';
 import { Confirmation } from '../../components/ui/Confirmation';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { SchemaUtil } from '../../utils/SchemaUtil';
 
 export type UsersAdminPageProps = {
   subPages?: CrudPageProps<OmitWithMetaData<CommonDbUser, 'organization_id' | 'organization'>, CommonDbUser>['subPages'];

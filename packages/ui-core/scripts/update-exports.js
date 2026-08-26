@@ -31,7 +31,7 @@ const indexBasedKeys = globSync([
 ]).map((file) => relative(srcDir, dirname(file)));
 
 // flat .ts entries (models): key = file path without extension
-const flatKeys = globSync([join(srcDir, 'models', '*.ts')])
+const flatKeys = globSync([join(srcDir, 'models', '*.ts'), join(srcDir, 'data', '*.ts')])
   .filter((file) => !file.endsWith('/index.ts'))
   .map((file) => relative(srcDir, file).replace(/\.ts$/, ''));
 

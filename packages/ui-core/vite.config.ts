@@ -46,7 +46,7 @@ const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<str
   });
 
   // flat .ts entries (models): key = file path without extension
-  globSync([join(srcDir, 'models', '*.ts')])
+  globSync([join(srcDir, 'models', '*.ts'), join(srcDir, 'data', '*.ts')])
     .filter((file) => !file.endsWith('/index.ts'))
     .forEach((file) => {
       const relKey = file.replace(`${srcDir}/`, '').replace(/\.ts$/, '');

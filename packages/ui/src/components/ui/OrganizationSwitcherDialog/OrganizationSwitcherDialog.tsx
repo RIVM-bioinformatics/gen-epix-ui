@@ -24,6 +24,7 @@ import {
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
@@ -34,7 +35,6 @@ import type {
   WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
-import { Autocomplete } from '../../form/fields/Autocomplete';
 import { ApiService } from '../../../classes/services/ApiService';
 
 export interface OrganizationSwitcherDialogOpenProps {
