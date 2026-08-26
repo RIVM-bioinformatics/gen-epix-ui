@@ -20,9 +20,9 @@ import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
 import { ApiService } from '../../classes/services/ApiService';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<CommonDbSite, 'organization_id' | 'organization'>;
 

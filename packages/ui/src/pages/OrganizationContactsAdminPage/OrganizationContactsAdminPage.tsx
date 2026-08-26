@@ -18,9 +18,9 @@ import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
 import { ApiService } from '../../classes/services/ApiService';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 // Note: site_id is given in the route params
 type FormFields = OmitWithMetaData<CommonDbContact, 'site_id' | 'site'>;

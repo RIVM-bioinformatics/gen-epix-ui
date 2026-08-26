@@ -1,6 +1,6 @@
 {
   "name": "@gen-epix/ui-phylogenetic-tree",
-  "version": "2.10.0",
+  "version": "0.0.1",
   "license": "EUPL-1.2",
   "repository": {
     "type": "git",
@@ -55,7 +55,7 @@
     }
   },
   "scripts": {
-    "generate-exports": "node scripts/update-exports.js",
+    "update-exports": "node scripts/update-exports.js",
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public",
     "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run",
@@ -66,23 +66,22 @@
     "check-types": "tsc --noemit"
   },
   "peerDependencies": {
-    "react": "*",
     "@gen-epix/ui-core": "*",
-    "@mui/material": "*"
+    "@mui/material": "*",
+    "react": "*"
   },
   "dependencies": {
-    "use-debounce": "10.1.1",
     "decimal.js": "10.6.0",
     "lodash": "4.18.1",
-    "uuid": "14.0.1"
+    "use-debounce": "10.1.1"
   },
   "devDependencies": {
     "@gen-epix/eslint-config": "0.4.1",
     "@gen-epix/ui-core": "workspace:^",
     "@mui/material": "9.2.0",
     "@types/lodash": "4.17.18",
-    "@types/react": "19.2.17",
     "@types/node": "26.1.0",
+    "@types/react": "19.2.17",
     "@vitejs/plugin-react": "6.0.3",
     "@vitest/browser-playwright": "4.1.9",
     "@vitest/coverage-v8": "4.1.9",

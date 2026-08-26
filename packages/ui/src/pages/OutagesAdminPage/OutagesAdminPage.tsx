@@ -24,9 +24,9 @@ import { TableUtil } from '../../utils/TableUtil';
 import { CrudPage } from '../CrudPage';
 import { DATE_FORMAT } from '../../data/date';
 import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
 import { ApiService } from '../../classes/services/ApiService';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<CommonDbOutage>;
 

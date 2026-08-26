@@ -21,7 +21,6 @@ import {
   COMMON_QUERY_KEY,
   ConfigService,
   createTableStore,
-  DataUtil,
   PageContainer,
   ResponseHandler,
   RouterService,
@@ -33,6 +32,7 @@ import {
   TableUtil,
   useInitializeTableStore,
   useItemQuery,
+  UserUtil,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
@@ -286,7 +286,7 @@ export const UserEffectiveRightsAdminPage = () => {
         contentActions={(<TableMenu />)}
         contentHeader={(
           <TableCaption
-            caption={user ? t('{{userName}} effective rights', { userName: DataUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
+            caption={user ? t('{{userName}} effective rights', { userName: UserUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
             component={'h2'}
             variant={'h2'}
           />

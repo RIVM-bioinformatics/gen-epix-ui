@@ -30,9 +30,9 @@ import { AuthorizationService } from '../../classes/services/AuthorizationServic
 import { useIdentifierIssuerOptionsQuery } from '../../dataHooks/useIdentifierIssuerQuery';
 import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOrganizationIdentifierIssuerLinksQuery';
 import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
 import { ApiService } from '../../classes/services/ApiService';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 type FormFields = OmitWithMetaData<TableData>;
 

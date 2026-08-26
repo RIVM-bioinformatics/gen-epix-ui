@@ -32,7 +32,6 @@ import type {
 import {
   ConfigService,
   createTableStore,
-  DataUtil,
   DATE_FORMAT,
   PageContainer,
   QueryClientService,
@@ -47,6 +46,7 @@ import {
   useInitializeTableStore,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';

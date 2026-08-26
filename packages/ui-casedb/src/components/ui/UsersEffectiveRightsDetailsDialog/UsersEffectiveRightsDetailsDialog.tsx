@@ -22,9 +22,9 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui';
 import {
-  DataUtil,
   LoadableUtil,
   ResponseHandler,
+  UserUtil,
   withDialog,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
@@ -119,7 +119,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
   }, []);
 
   useEffect(() => {
-    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id, userName: DataUtil.getUserDisplayValue(user, t) }));
+    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id, userName: UserUtil.getUserDisplayValue(user, t) }));
   }, [dataCollectionsMapQuery.map, onTitleChange, t, user, userEffectiveRight.data_collection_id]);
 
   useEffect(() => {

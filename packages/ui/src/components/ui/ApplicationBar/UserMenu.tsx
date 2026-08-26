@@ -27,7 +27,7 @@ import { AuthorizationService } from '../../../classes/services/AuthorizationSer
 import { LogService } from '../../../classes/services/LogService';
 import type { MyPermissionsDialogRefMethods } from '../MyPermissionsDialog';
 import { MyPermissionsDialog } from '../MyPermissionsDialog';
-import { DataUtil } from '../../../utils/DataUtil';
+import { UserUtil } from '../../../utils/UserUtil';
 
 import { UserOrganizationAdminMenuItem } from './UserOrganizationAdminMenuItem';
 import { UserOwnOrganizationMenuItem } from './UserOwnOrganizationMenuItem';
@@ -66,7 +66,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   }, [auth]);
 
   const userName = useMemo(() => {
-    return DataUtil.getUserDisplayValue(AuthorizationService.getInstance().user, t);
+    return UserUtil.getUserDisplayValue(AuthorizationService.getInstance().user, t);
   }, [t]);
 
   const userRoles = useMemo(() => {

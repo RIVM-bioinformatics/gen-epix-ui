@@ -1,15 +1,4 @@
-import type { CommonDbUser } from '@gen-epix/api-commondb';
-import type { TFunction } from 'i18next';
-
 export class DataUtil {
-
-  public static getUserDisplayValue(user: CommonDbUser, t: TFunction<'translation', undefined>): string {
-    if (!user) {
-      return t`Unknown user`;
-    }
-    return `${user.name} (${user.key})`;
-  }
-
   public static rankSortComperatorFactory<TSecondarySorKey extends keyof TItem, TItem extends { rank?: number }>(secondarySortKeyOrFn?: ((item: TItem) => string) | TSecondarySorKey) {
     return (a: TItem, b: TItem): number => {
       const rankComparison = (a.rank ?? 0) - (b.rank ?? 0);

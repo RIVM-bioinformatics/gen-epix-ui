@@ -10,8 +10,8 @@ import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { AuthenticationService } from '../AuthenticationService';
 import { ConfigService } from '../ConfigService';
-import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { ApiService } from '../ApiService';
+import { AxiosUtil } from '../../../utils/AxiosUtil';
 
 type LogServiceItem = {
   detail?: unknown;

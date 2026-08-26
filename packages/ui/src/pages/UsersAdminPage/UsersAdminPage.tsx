@@ -45,13 +45,13 @@ import { CrudPage } from '../CrudPage';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
 import { COMMON_QUERY_KEY } from '../../data/query';
 import { ApiService } from '../../classes/services/ApiService';
 import type { ConfirmationRefMethods } from '../../components/ui/Confirmation';
 import { Confirmation } from '../../components/ui/Confirmation';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
+import { SchemaUtil } from '../../utils/SchemaUtil';
 
 export type UsersAdminPageProps = {
   subPages?: CrudPageProps<OmitWithMetaData<CommonDbUser, 'organization_id' | 'organization'>, CommonDbUser>['subPages'];

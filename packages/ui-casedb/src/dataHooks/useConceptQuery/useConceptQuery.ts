@@ -9,10 +9,10 @@ import type {
 } from '@gen-epix/ui';
 import {
   DataHookUtil,
-  DataUtil,
   QueryClientService,
   useQueryMemo,
 } from '@gen-epix/ui';
+import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 
 import { useConceptSetMapQuery } from '../useConceptSetsQuery';
 import { CASEDB_QUERY_KEY } from '../../data/query';

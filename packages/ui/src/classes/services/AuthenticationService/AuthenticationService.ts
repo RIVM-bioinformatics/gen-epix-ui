@@ -8,9 +8,9 @@ import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
 
 import { AuthorizationService } from '../AuthorizationService';
-import { AxiosUtil } from '../../../utils/AxiosUtil';
 import type { AuthState } from '../../../models/auth';
 import { oidcStore } from '../../../stores/oidcStore';
+import { AxiosUtil } from '../../../utils/AxiosUtil';
 
 export const createdAtMetaDataKey = Symbol('createdAt');
 
