@@ -9,20 +9,19 @@ import { render } from 'vitest-browser-react';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
 
-import type { Highlighting } from '../../../models/caseDb';
 import type { TreeNode } from '../../../models/tree';
 import { TreeUtil } from '../../../utils/TreeUtil';
 import { NewickUtil } from '../../../utils/NewickUtil';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
 
 import type {
   PhylogeneticTreeExternalScrollSubjectValue,
   PhylogeneticTreeExternalVisibleRangeSubjectValue,
+  PhylogeneticTreeHighlightedNodeNamesSubjectValue,
   PhylogeneticTreePathClickEvent,
   PhylogeneticTreeRef,
   PhylogeneticTreeViewState,
-} from './PhylogeneticTreeComponent';
-import { PhylogeneticTree } from './PhylogeneticTreeComponent';
+} from './PhylogeneticTree';
+import { PhylogeneticTree } from './PhylogeneticTree';
 
 const ANCESTOR_DOT_RADIUS = 3;
 const BACKGROUND_COLOR = '#fff';
@@ -58,7 +57,7 @@ type RenderTreeOptions = {
   externalScrollSubject?: Subject<PhylogeneticTreeExternalScrollSubjectValue>;
   externalVisibleRangeSubject?: Subject<PhylogeneticTreeExternalVisibleRangeSubjectValue>;
   height?: number;
-  highlightingSubject?: Subject<Highlighting>;
+  highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
   itemHeight?: number;
   leafOrder?: string[];
   newick?: string;
@@ -315,7 +314,7 @@ const createTreeElement = (options: ResolvedRenderTreeOptions) => {
         externalVisibleRangeSubject={options.externalVisibleRangeSubject}
         fontFamily={FONT_FAMILY}
         headerHeight={HEADER_HEIGHT}
-        highlightingSubject={options.highlightingSubject}
+        highlightedNodeNamesSubject={options.highlightedNodeNamesSubject}
         itemHeight={options.itemHeight}
         leafDotRadius={LEAF_DOT_RADIUS}
         leafOrder={options.leafOrder}
@@ -443,7 +442,7 @@ const dispatchCanvasMouseOut = (canvas: HTMLCanvasElement) => {
   canvas.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, cancelable: true }));
 };
 
-describe('PhylogeneticTreeComponent', () => {
+describe('PhylogeneticTree', () => {
   test('does not render a canvas without a tree and reports an undefined canvas', async () => {
     const onCanvasChange = vi.fn();
     const { ariaLabel, canvas, renderResult } = await renderTree({ onCanvasChange, tree: undefined });
@@ -499,12 +498,11 @@ describe('PhylogeneticTreeComponent', () => {
   });
 
   test('draws highlighted distance labels only when enabled', async () => {
-    const highlightingSubject = new Subject<Highlighting>({
-      caseIds: ['LeafA'],
-      origin: DASHBOARD_COMPONENT_NAME.TREE,
+    const highlightedNodeNamesSubject = new Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>({
+      highlightedNodeNames: ['LeafA'],
     });
     const { ariaLabel, canvas, layout, renderResult, resolvedOptions } = await renderTree({
-      highlightingSubject,
+      highlightedNodeNamesSubject,
       newick: '(LeafA:5,LeafB:10);',
       shouldShowDistances: true,
     });
@@ -641,13 +639,12 @@ describe('PhylogeneticTreeComponent', () => {
   });
 
   test('highlights hovered nodes and emits path clicks for generated internal nodes', async () => {
-    const highlightingSubject = new Subject<Highlighting>({
-      caseIds: [],
-      origin: null,
+    const highlightedNodeNamesSubject = new Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>({
+      highlightedNodeNames: [],
     });
     const onPathClick = vi.fn();
     const { canvas, layout, tree } = await renderTree({
-      highlightingSubject,
+      highlightedNodeNamesSubject,
       newick: '((LeafA:1,LeafB:1):1,LeafC:2);',
       onPathClick,
     });
@@ -668,9 +665,8 @@ describe('PhylogeneticTreeComponent', () => {
     dispatchCanvasMouseEvent(canvas, 'mousemove', leafA.dotX, toCanvasY(leafA.y));
 
     await waitForAssertion(() => {
-      expect(highlightingSubject.data.caseIds).toHaveLength(1);
-      expect(['LeafA', 'LeafB', 'LeafC']).toContain(highlightingSubject.data.caseIds[0]);
-      expect(highlightingSubject.data.origin).toBe(DASHBOARD_COMPONENT_NAME.TREE);
+      expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toHaveLength(1);
+      expect(['LeafA', 'LeafB', 'LeafC']).toContain(highlightedNodeNamesSubject.data.highlightedNodeNames[0]);
       expect(canvas.style.cursor).toBe('pointer');
     });
 
@@ -678,8 +674,7 @@ describe('PhylogeneticTreeComponent', () => {
     dispatchCanvasMouseEvent(canvas, 'mousemove', leafA.dotX, 5);
 
     await waitForAssertion(() => {
-      expect(highlightingSubject.data.caseIds).toEqual([]);
-      expect(highlightingSubject.data.origin).toBe(DASHBOARD_COMPONENT_NAME.TREE);
+      expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toEqual([]);
       expect(canvas.style.cursor).toBe('default');
     });
 
@@ -702,8 +697,7 @@ describe('PhylogeneticTreeComponent', () => {
     dispatchCanvasMouseOut(canvas);
 
     await waitForAssertion(() => {
-      expect(highlightingSubject.data.caseIds).toEqual([]);
-      expect(highlightingSubject.data.origin).toBe(DASHBOARD_COMPONENT_NAME.TREE);
+      expect(highlightedNodeNamesSubject.data.highlightedNodeNames).toEqual([]);
     });
   });
 

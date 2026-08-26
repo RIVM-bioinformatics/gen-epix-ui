@@ -49,12 +49,13 @@ import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { TreeDescription } from '../TreeDescription';
 import { WidgetUnavailable } from '../WidgetUnavailable';
-import { PhylogeneticTree } from '../PhylogeneticTreeComponent';
+import { PhylogeneticTree } from '../PhylogeneticTree';
 import type {
+  PhylogeneticTreeHighlightedNodeNamesSubjectValue,
   PhylogeneticTreePathClickEvent,
   PhylogeneticTreeRef,
   PhylogeneticTreeViewState,
-} from '../PhylogeneticTreeComponent';
+} from '../PhylogeneticTree';
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
@@ -525,6 +526,39 @@ export const TreeWidget = () => {
     setIsTreeLinked(linked);
   }, [setIsTreeLinked]);
 
+  const phylogeneticTreeHighlightedNodeNamesSubject = useMemo(() => {
+    const subject = new Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>({
+      highlightedNodeNames: dashboardContext.highlightSubject.data.caseIds,
+    });
+    return subject;
+  }, [dashboardContext.highlightSubject.data.caseIds]);
+
+  useEffect(() => {
+    const unsubscribe = phylogeneticTreeHighlightedNodeNamesSubject.subscribe((data) => {
+      dashboardContext.highlight({
+        caseIds: data.highlightedNodeNames,
+        origin: DASHBOARD_COMPONENT_NAME.TREE,
+      });
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [phylogeneticTreeHighlightedNodeNamesSubject, dashboardContext]);
+
+  useEffect(() => {
+    const unsubscribe = dashboardContext.highlightSubject.subscribe(data => {
+      if (data.origin === DASHBOARD_COMPONENT_NAME.TREE) {
+        return;
+      }
+      phylogeneticTreeHighlightedNodeNamesSubject.next({
+        highlightedNodeNames: data.caseIds,
+      });
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [dashboardContext.highlightSubject, phylogeneticTreeHighlightedNodeNamesSubject]);
+
   return (
     <DashboardWidget
       expandDisabled={isTreeUnavailable}
@@ -564,7 +598,7 @@ export const TreeWidget = () => {
             externalVisibleRangeSubject={dashboardContext.lineListRangeSubject}
             fontFamily={theme.typography.fontFamily}
             headerHeight={treeConfig.HEADER_HEIGHT}
-            highlightingSubject={dashboardContext.highlightSubject}
+            highlightedNodeNamesSubject={phylogeneticTreeHighlightedNodeNamesSubject}
             initialViewState={initialTreeViewState}
             itemHeight={ConfigService.getInstance<CaseDbConfig>().config.lineList.TABLE_ROW_HEIGHT}
             leafDotRadius={treeConfig.LEAF_DOT_RADIUS}
@@ -577,6 +611,7 @@ export const TreeWidget = () => {
             minScaleWidthPx={treeConfig.MIN_SCALE_WIDTH_PX}
             minZoomLevel={treeConfig.MIN_ZOOM_LEVEL}
             minZoomSpeed={treeConfig.MIN_ZOOM_SPEED}
+            nodeNameColors={stratification?.caseIdColors}
             onCanvasChange={onTreeCanvasChange}
             onLinkStateChange={onLinkStateChange}
             onPathClick={onTreePathClick}
@@ -588,7 +623,6 @@ export const TreeWidget = () => {
             scaleIncrements={treeConfig.SCALE_INCREMENTS}
             shouldShowDistances={isShowDistancesEnabled}
             shouldShowSupportLinesWhenUnlinked={isShowSupportLinesWhenUnlinkedEnabled}
-            stratification={stratification}
             supportLineColorLinked={theme['gen-epix-ui-casedb'].tree.supportLineColorLinked}
             supportLineColorUnlinked={theme['gen-epix-ui-casedb'].tree.supportLineColorUnlinked}
             tree={tree}

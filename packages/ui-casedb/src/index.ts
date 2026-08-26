@@ -136,7 +136,7 @@ export * from './components/ui/TreeWidget';
 export * from './components/ui/TreeDescription';
 export * from './components/ui/SequenceDownloadDialog';
 export * from './components/ui/RemoveCasesFromEventDialog';
-export * from './components/ui/PhylogeneticTreeComponent';
+export * from './components/ui/PhylogeneticTree';
 export * from './components/ui/PanelSeparator';
 export * from './components/ui/MapWidget';
 export * from './components/ui/LineListWidget';

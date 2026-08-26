@@ -15,16 +15,12 @@ import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
 import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
-import type { Highlighting } from '../../../models/caseDb';
 import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
 } from '../../../models/tree';
 import { TreeUtil } from '../../../utils/TreeUtil';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
-
-// NOTE: this component has the Component suffix in order to prevent a name collision with the PhylogeneticTree model in the api package.
 
 export type PhylogeneticTreeExternalScrollSubjectValue = {
   origin: HTMLElement;
@@ -34,6 +30,10 @@ export type PhylogeneticTreeExternalScrollSubjectValue = {
 export type PhylogeneticTreeExternalVisibleRangeSubjectValue = {
   endIndex: number;
   startIndex: number;
+};
+
+export type PhylogeneticTreeHighlightedNodeNamesSubjectValue = {
+  highlightedNodeNames: string[];
 };
 
 export type PhylogeneticTreePathClickEvent = {
@@ -50,7 +50,7 @@ export type PhylogeneticTreeProps = {
   readonly externalVisibleRangeSubject?: Subject<PhylogeneticTreeExternalVisibleRangeSubjectValue>;
   readonly fontFamily: string;
   readonly headerHeight: number;
-  readonly highlightingSubject?: Subject<Highlighting>;
+  readonly highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
   readonly initialViewState?: Partial<PhylogeneticTreeViewState>;
   readonly itemHeight: number;
   readonly leafDotRadius: number;
@@ -104,7 +104,7 @@ export const PhylogeneticTree = ({
   externalVisibleRangeSubject,
   fontFamily,
   headerHeight,
-  highlightingSubject,
+  highlightedNodeNamesSubject,
   initialViewState,
   itemHeight,
   leafDotRadius,
@@ -145,16 +145,11 @@ export const PhylogeneticTree = ({
   const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioService.getInstance().data);
   const [isLinked, setIsLinked] = useState(true);
   const canvasScrollSubject = useMemo(() => new Subject<{ x: number; y: number }>({ x: 0, y: 0 }), []);
-  const fallbackHighlightingSubject = useMemo(() => new Subject<Highlighting>({
-    caseIds: [],
-    origin: null,
-  }), []);
   const zoomLevelSubject = useMemo(() => new Subject<number>(!isNaN(initialViewState?.zoomLevel) ? initialViewState.zoomLevel : 1), [initialViewState]);
   const scrollPositionSubject = useMemo(() => new Subject<{ horizontal: number; vertical: number }>({
     horizontal: !isNaN(initialViewState?.horizontalScrollPosition) ? initialViewState.horizontalScrollPosition : 0,
     vertical: !isNaN(initialViewState?.verticalScrollPosition) ? initialViewState.verticalScrollPosition : 0,
   }), [initialViewState]);
-  const effectiveHighlightingSubject = highlightingSubject ?? fallbackHighlightingSubject;
 
   const treeCanvasWidth = width;
   const treeCanvasHeight = Math.max(0, height - headerHeight);
@@ -452,7 +447,7 @@ export const PhylogeneticTree = ({
     let animationFrameId: number;
     let zoomLevel: number = zoomLevelSubject.data;
     let tickerMarkScale = getTickerMarkScale(zoomLevel);
-    let highlighting: Highlighting = effectiveHighlightingSubject.data;
+    let highlightedNodeNames: string[] = highlightedNodeNamesSubject?.data?.highlightedNodeNames ?? [];
     let externalScrollPosition = externalScrollSubject?.data?.position ?? 0;
     let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
     let verticalScrollPosition = scrollPositionSubject.data.vertical;
@@ -471,7 +466,7 @@ export const PhylogeneticTree = ({
           fontFamily,
           geneticTreeWidth: tree.maxBranchLength,
           headerHeight,
-          highlightedNodeNames: highlighting?.caseIds,
+          highlightedNodeNames,
           horizontalScrollPosition,
           isLinked,
           itemHeight,
@@ -496,10 +491,10 @@ export const PhylogeneticTree = ({
       });
     };
 
-    const unsubscribeFromHighlighting = effectiveHighlightingSubject.subscribe((data) => {
-      highlighting = data;
+    const unsubscribeFromHighlighting = highlightedNodeNamesSubject ? highlightedNodeNamesSubject.subscribe((data) => {
+      highlightedNodeNames = data.highlightedNodeNames;
       render();
-    });
+    }) : (): null => null;
 
     const unsubscribeFromScrollPositionSubject = scrollPositionSubject.subscribe((data) => {
       horizontalScrollPosition = data.horizontal;
@@ -540,7 +535,7 @@ export const PhylogeneticTree = ({
     backgroundColor,
     devicePixelRatio,
     dimFn,
-    effectiveHighlightingSubject,
+    highlightedNodeNamesSubject,
     externalScrollSubject,
     externalVisibleRangeSubject,
     fontFamily,
@@ -584,10 +579,9 @@ export const PhylogeneticTree = ({
     let followMouse = false;
 
     const clearHighlighting = () => {
-      if (effectiveHighlightingSubject.data?.caseIds?.length) {
-        effectiveHighlightingSubject.next({
-          caseIds: [],
-          origin: DASHBOARD_COMPONENT_NAME.TREE,
+      if (highlightedNodeNamesSubject?.data?.highlightedNodeNames?.length) {
+        highlightedNodeNamesSubject.next({
+          highlightedNodeNames: [],
         });
       }
     };
@@ -636,9 +630,8 @@ export const PhylogeneticTree = ({
       const pathProperties = getPathPropertiesFromCanvas(treeCanvas, event);
       if (pathProperties) {
         treeCanvas.style.cursor = 'pointer';
-        effectiveHighlightingSubject.next({
-          caseIds: pathProperties.subTreeLeaveNames,
-          origin: DASHBOARD_COMPONENT_NAME.TREE,
+        highlightedNodeNamesSubject?.next({
+          highlightedNodeNames: pathProperties.subTreeLeaveNames,
         });
       } else {
         treeCanvas.style.cursor = 'default';
@@ -729,7 +722,7 @@ export const PhylogeneticTree = ({
     };
   }, [
     canvasScrollSubject,
-    effectiveHighlightingSubject,
+    highlightedNodeNamesSubject,
     externalScrollSubject,
     getPathPropertiesFromCanvas,
     headerHeight,
