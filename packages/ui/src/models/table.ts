@@ -4,10 +4,9 @@ import type {
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
+import type { OptionBase } from '@gen-epix/ui-form/models/form';
 
 import type { DATE_FORMAT } from '../data/date';
-
-import type { OptionBase } from './form';
 
 export enum FIXED_COLUMN_ID {
   ACTIONS = 'ACTIONS',

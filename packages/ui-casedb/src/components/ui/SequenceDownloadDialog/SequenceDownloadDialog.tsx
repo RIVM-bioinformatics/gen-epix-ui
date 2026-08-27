@@ -21,18 +21,18 @@ import {
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type {
-  AutoCompleteOption,
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui';
 import {
   AuthenticationService,
-  Autocomplete,
   ConfigService,
   withDialog,
 } from '@gen-epix/ui';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
+import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
+import type { AutoCompleteOption } from '@gen-epix/ui-form/models/form';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 

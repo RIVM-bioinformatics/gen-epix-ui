@@ -15,7 +15,7 @@ import {
   startOfQuarter,
   startOfYear,
 } from 'date-fns';
-import { DATE_FORMAT } from '@gen-epix/ui';
+import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
 
 import type {
   FindSimilarCasesChartDataPoint,

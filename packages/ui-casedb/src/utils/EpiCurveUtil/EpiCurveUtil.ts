@@ -18,8 +18,8 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import { DATE_FORMAT } from '@gen-epix/ui';
 import type { Theme } from '@mui/material';
+import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { FilterUtil } from '../FilterUtil';

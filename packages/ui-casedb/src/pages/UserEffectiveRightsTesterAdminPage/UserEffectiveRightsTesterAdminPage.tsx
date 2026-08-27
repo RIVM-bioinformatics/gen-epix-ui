@@ -22,11 +22,8 @@ import {
 import noop from 'lodash/noop';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
-import type { FormFieldDefinition } from '@gen-epix/ui';
 import {
   COMMON_QUERY_KEY,
-  FORM_FIELD_DEFINITION_TYPE,
-  GenericForm,
   PageContainer,
   ResponseHandler,
   useItemQuery,
@@ -34,6 +31,9 @@ import {
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';

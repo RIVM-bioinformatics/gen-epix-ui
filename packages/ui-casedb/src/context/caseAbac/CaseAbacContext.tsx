@@ -6,7 +6,7 @@ import type {
   CaseDbCaseSetRights,
   CaseDbDataCollection,
 } from '@gen-epix/api-casedb';
-import type { OptionBase } from '@gen-epix/ui';
+import type { OptionBase } from '@gen-epix/ui-form/models/form';
 
 export type CaseAbacContext = {
   createdInDataCollection?: CaseDbDataCollection;

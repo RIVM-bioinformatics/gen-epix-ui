@@ -22,14 +22,14 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { FormFieldDefinition } from '@gen-epix/ui';
 import {
-  FORM_FIELD_DEFINITION_TYPE,
-  GenericForm,
   ResponseHandler,
   useItemQuery,
 } from '@gen-epix/ui';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import {
   useCaseTypeOptionsQuery,

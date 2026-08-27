@@ -40,24 +40,26 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type {
-  AutoCompleteOption,
   DialogAction,
-  FormFieldDefinition,
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui';
 import {
   ConfigService,
-  DATE_FORMAT,
-  FORM_FIELD_DEFINITION_TYPE,
-  GenericForm,
   QueryClientService,
   ResponseHandler,
-  SchemaUtil,
   useQueryMemo,
   withDialog,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type {
+  AutoCompleteOption,
+  FormFieldDefinition,
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
+import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
 
 import { CASEDB_QUERY_KEY } from '../../../data/query';
 import type { CaseDbConfig } from '../../../models/config';

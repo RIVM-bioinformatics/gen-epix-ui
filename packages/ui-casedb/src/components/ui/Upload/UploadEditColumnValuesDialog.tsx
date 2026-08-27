@@ -8,11 +8,7 @@ import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui';
-import {
-  FormUtil,
-  GenericForm,
-  withDialog,
-} from '@gen-epix/ui';
+import { withDialog } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import type { ReactElement } from 'react';
 import {
@@ -28,6 +24,8 @@ import {
   AlertTitle,
   Box,
 } from '@mui/material';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
 
 import { CaseTypeFormUtil } from '../../../utils/CaseTypeFormUtil';
 

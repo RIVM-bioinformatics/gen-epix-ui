@@ -14,13 +14,13 @@ import type {
 } from '@gen-epix/api-casedb';
 import {
   ConfigService,
-  DATE_FORMAT,
   LogService,
   NotificationService,
   QueryClientService,
 } from '@gen-epix/ui';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';

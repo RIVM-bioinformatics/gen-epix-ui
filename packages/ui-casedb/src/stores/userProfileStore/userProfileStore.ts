@@ -3,11 +3,9 @@ import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware';
-import {
-  ConfigService,
-  FormUtil,
-} from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui';
 import cloneDeep from 'lodash/cloneDeep';
+import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
 
 import type { DashboardArrangementConfig } from '../../models/dashboard';
 import { DashboardUtil } from '../../utils/DashboardUtil';

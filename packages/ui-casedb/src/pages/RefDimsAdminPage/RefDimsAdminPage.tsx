@@ -20,18 +20,18 @@ import {
 } from '@gen-epix/api-casedb';
 import type {
   CrudPageSubPage,
-  FormFieldDefinition,
   OmitWithMetaData,
   TableColumn,
 } from '@gen-epix/ui';
 import {
   AuthorizationService,
   CrudPage,
-  FORM_FIELD_DEFINITION_TYPE,
-  SchemaUtil,
   TableUtil,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { useDimTypeOptionsQuery } from '../../dataHooks/useDimTypesQuery';
 import { CASEDB_QUERY_KEY } from '../../data/query';

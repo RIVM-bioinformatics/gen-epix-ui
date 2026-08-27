@@ -3,9 +3,7 @@ import {
   subDays,
 } from 'date-fns';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import type { FormFieldDefinition } from '@gen-epix/ui';
 import {
-  FORM_FIELD_DEFINITION_TYPE,
   I18nService,
   StandardConfigUtil,
 } from '@gen-epix/ui';
@@ -13,6 +11,8 @@ import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
 import { t } from 'i18next';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import type { CaseDbConfig } from '../../models/config';
 import { DASHBOARD_COMPONENT_NAME } from '../../data/dashboard';

@@ -26,7 +26,6 @@ import type {
 import {
   ConfigService,
   createTableStore,
-  DATE_FORMAT,
   LoadableUtil,
   PageContainer,
   QueryClientService,
@@ -43,6 +42,7 @@ import {
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import type { CaseSetInfoDialogRefMethods } from '../../components/ui/CaseSetInfoDialog';

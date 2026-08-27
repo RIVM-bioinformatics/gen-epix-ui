@@ -728,6 +728,9 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
+      '@gen-epix/ui-form':
+        specifier: workspace:^
+        version: link:../ui-form
       '@gen-epix/ui-phylogenetic-tree':
         specifier: workspace:^
         version: link:../ui-phylogenetic-tree
@@ -1136,6 +1139,9 @@ importers:
       '@gen-epix/ui':
         specifier: workspace:^
         version: link:../ui
+      '@gen-epix/ui-form':
+        specifier: workspace:^
+        version: link:../ui-form
       '@microsoft/api-extractor':
         specifier: 7.58.9
         version: 7.58.9(@types/node@26.1.0)
@@ -1317,6 +1323,9 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
+      '@gen-epix/ui-form':
+        specifier: workspace:^
+        version: link:../ui-form
       '@microsoft/api-extractor':
         specifier: 7.58.9
         version: 7.58.9(@types/node@26.1.0)

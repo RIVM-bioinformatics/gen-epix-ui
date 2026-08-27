@@ -30,25 +30,27 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type {
-  AutoCompleteOption,
   DialogAction,
-  FormFieldDefinition,
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui';
 import {
-  FORM_FIELD_DEFINITION_TYPE,
-  GenericForm,
   LoadableUtil,
   QueryClientService,
   ResponseHandler,
-  SchemaUtil,
   useCreateMutation,
   useItemQuery,
   withDialog,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type {
+  AutoCompleteOption,
+  FormFieldDefinition,
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';

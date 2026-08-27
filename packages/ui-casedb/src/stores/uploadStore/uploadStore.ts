@@ -7,15 +7,15 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import type {
-  AutoCompleteOption,
-  OptionBase,
-} from '@gen-epix/ui';
 import {
   NotificationService,
   QueryClientService,
 } from '@gen-epix/ui';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import type {
+  AutoCompleteOption,
+  OptionBase,
+} from '@gen-epix/ui-form/models/form';
 
 import type {
   UploadMappedColumn,

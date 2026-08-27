@@ -13,12 +13,10 @@ import {
   CaseDbDimType,
 } from '@gen-epix/api-casedb';
 import type {
-  AutoCompleteOption,
   FilterDimension,
   Filters,
 } from '@gen-epix/ui';
 import {
-  DATE_FORMAT,
   DateFilter,
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
@@ -27,6 +25,8 @@ import {
   NumberRangeFilter,
   TextFilter,
 } from '@gen-epix/ui';
+import type { AutoCompleteOption } from '@gen-epix/ui-form/models/form';
+import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
 
 import {
   CaseTypeUtil,

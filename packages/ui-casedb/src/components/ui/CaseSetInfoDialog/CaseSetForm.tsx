@@ -13,19 +13,17 @@ import {
 } from 'yup';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type {
-  FormFieldDefinition,
-  OmitWithMetaData,
-} from '@gen-epix/ui';
+import type { OmitWithMetaData } from '@gen-epix/ui';
 import {
-  FORM_FIELD_DEFINITION_TYPE,
-  FormUtil,
-  GenericForm,
   QueryClientService,
-  SchemaUtil,
   Spinner,
   useEditMutation,
 } from '@gen-epix/ui';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { CreateEventDialogSuccessNotificationMessage } from '../CreateEventDialog/CreateEventDialogSuccessNotificationMessage';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';

@@ -16,17 +16,17 @@ import {
   CaseDbOntologyApi,
 } from '@gen-epix/api-casedb';
 import type {
-  FormFieldDefinition,
   OmitWithMetaData,
   TableColumn,
 } from '@gen-epix/ui';
 import {
   CrudPage,
-  FORM_FIELD_DEFINITION_TYPE,
   TableUtil,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';

@@ -66,7 +66,6 @@ export * from './dataHooks/useOrganizationAdminPoliciesQuery';
 export * from './dataHooks/useInviteUserConstraintsQuery';
 export * from './dataHooks/useIdentifierIssuerQuery';
 export * from './dataHooks/useIdentifierIssuerOwnOrganizationQuery';
-export * from './data/date';
 export * from './data/query';
 export * from './components/ui/UserInactivityConfirmation';
 export * from './components/ui/UserFeedbackDialog';

@@ -9,10 +9,8 @@ import type {
   CaseDbCase,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import {
-  FormUtil,
-  GenericForm,
-} from '@gen-epix/ui';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
 
 import { CaseTypeFormUtil } from '../../../utils/CaseTypeFormUtil';
 

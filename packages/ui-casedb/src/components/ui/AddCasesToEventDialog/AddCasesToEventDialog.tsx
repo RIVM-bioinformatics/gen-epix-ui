@@ -32,17 +32,17 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui';
 import {
-  Autocomplete,
-  FormUtil,
   QueryClientService,
   ResponseHandler,
-  Select,
   useEditMutation,
   useQueryMemo,
   withDialog,
 } from '@gen-epix/ui';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
+import { Select } from '@gen-epix/ui-form/components/fields/Select';
+import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
 
 import {
   useCaseSetOptionsQuery,

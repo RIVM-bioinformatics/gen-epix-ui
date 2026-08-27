@@ -25,14 +25,12 @@ import {
   CaseDbCaseTypeSetCategoryPurpose,
 } from '@gen-epix/api-casedb';
 import type {
-  OptionBase,
   TableColumn,
   TableRowParams,
 } from '@gen-epix/ui';
 import {
   ConfigService,
   createTableStore,
-  DATE_FORMAT,
   PageContainer,
   QueryClientService,
   ResponseHandler,
@@ -48,6 +46,8 @@ import {
 } from '@gen-epix/ui';
 import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
+import type { OptionBase } from '@gen-epix/ui-form/models/form';
 
 import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';
 import { CaseTypeInfoDialogWithLoader } from '../../components/ui/CaseTypeInfoDialog';
