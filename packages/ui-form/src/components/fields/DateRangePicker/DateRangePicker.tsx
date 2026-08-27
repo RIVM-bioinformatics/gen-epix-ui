@@ -51,7 +51,7 @@ import {
 } from 'date-fns/locale';
 import isEqual from 'lodash/isEqual';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { FormUtil } from '../../../utils/FormUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
@@ -337,7 +337,7 @@ export const DateRangePicker = <TFieldValues extends FieldValues, TName extends 
             />
           </Box>
         </LocalizationProvider>
-        { !!loading && <FormFieldLoadingIndicator />}
+        {!!loading && <FormFieldLoadingIndicator />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             errorMessage={errorMessage}

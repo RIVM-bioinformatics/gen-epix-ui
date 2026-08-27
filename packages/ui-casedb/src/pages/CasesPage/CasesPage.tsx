@@ -46,7 +46,7 @@ import {
 } from '@gen-epix/ui';
 import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 import type { OptionBase } from '@gen-epix/ui-form/models/form';
 
 import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';
@@ -54,7 +54,7 @@ import { CaseTypeInfoDialogWithLoader } from '../../components/ui/CaseTypeInfoDi
 import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
 import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import { CaseDbDownloadUtil } from '../../utils/CaseDbDownloadUtil';
 
 

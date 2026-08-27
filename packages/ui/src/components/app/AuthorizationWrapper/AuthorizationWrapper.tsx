@@ -17,7 +17,7 @@ import { LoadableUtil } from '../../../utils/LoadableUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../../data/query';
+import { COMMON_QUERY_KEY } from '../../../constants/query';
 import { ApiService } from '../../../classes/services/ApiService';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {

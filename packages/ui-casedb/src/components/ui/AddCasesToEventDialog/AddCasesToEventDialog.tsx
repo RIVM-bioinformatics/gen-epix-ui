@@ -52,7 +52,7 @@ import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollection
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { CasesAlreadyInCaseSetWarning } from '../CasesAlreadyInCaseSetWarning';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 import { CaseDbDataUtil } from '../../../utils/CaseDbDataUtil';
 
 import { AddCasesToEventDialogSuccessNotificationMessage } from './AddCasesToEventDialogSuccessNotificationMessage';

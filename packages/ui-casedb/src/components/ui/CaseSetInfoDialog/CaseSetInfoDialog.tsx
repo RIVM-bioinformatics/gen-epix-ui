@@ -47,7 +47,7 @@ import {
   useDataCollectionsQuery,
 } from '../../../dataHooks/useDataCollectionsQuery';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 import { CaseSetDescription } from './CaseSetDescription';
 import { CaseSetSharingForm } from './CaseSetSharingForm';

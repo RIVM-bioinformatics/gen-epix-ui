@@ -25,7 +25,7 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 export type CaseCaseSetInfoProps = {
   readonly caseDbCase: CaseDbCase;

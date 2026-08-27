@@ -34,7 +34,7 @@ import {
 } from '../../../models/stratification';
 import { ContextMenu } from '../ContextMenu';
 import type { ContextMenuConfigWithAnchor } from '../ContextMenu';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 
 export type LegendaItemProps = {

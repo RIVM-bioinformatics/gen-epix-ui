@@ -35,7 +35,7 @@ import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 type FormFields = OmitWithMetaData<TableData>;
 

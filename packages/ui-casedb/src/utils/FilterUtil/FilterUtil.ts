@@ -26,7 +26,7 @@ import {
   TextFilter,
 } from '@gen-epix/ui';
 import type { AutoCompleteOption } from '@gen-epix/ui-form/models/form';
-import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import {
   CaseTypeUtil,

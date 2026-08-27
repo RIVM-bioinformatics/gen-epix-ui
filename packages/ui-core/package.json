@@ -42,9 +42,9 @@
         "import": "./dist/classes/services/WindowService/index.js",
         "types": "./dist/classes/services/WindowService/index.d.ts"
       },
-      "./data/date": {
-        "import": "./dist/data/date.js",
-        "types": "./dist/data/date.d.ts"
+      "./constants/date": {
+        "import": "./dist/constants/date.js",
+        "types": "./dist/constants/date.d.ts"
       },
       "./hooks/useArray": {
         "import": "./dist/hooks/useArray/index.js",
@@ -129,9 +129,9 @@
       "import": "./src/classes/services/WindowService/index.ts",
       "types": "./src/classes/services/WindowService/index.ts"
     },
-    "./data/date": {
-      "import": "./src/data/date.ts",
-      "types": "./src/data/date.ts"
+    "./constants/date": {
+      "import": "./src/constants/date.ts",
+      "types": "./src/constants/date.ts"
     },
     "./hooks/useArray": {
       "import": "./src/hooks/useArray/index.ts",

@@ -31,7 +31,7 @@ import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 export type CaseSharingFormProps = {
   readonly caseDbCase: CaseDbCase;

@@ -35,7 +35,7 @@ import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { useCaseTypeSetCategoryOptionsQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 type FormFields = OmitWithMetaData<TableData, 'case_type_set_category'>;
 

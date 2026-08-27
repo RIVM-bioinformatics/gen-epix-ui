@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { ConfigService } from '../../classes/services/ConfigService';
 import { CopyToClipboardButton } from '../../components/ui/CopyToClipboardButton';
@@ -21,7 +22,6 @@ import type {
   WithDialogRenderProps,
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
-import { DATE_FORMAT } from '../../data/date';
 
 export interface UserInvitationShareDialogOpenProps {
   item: CommonDbUserInvitation;

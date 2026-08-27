@@ -65,7 +65,7 @@ import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
 import { CASE_INFO_DIALOG_TAB_NAME } from '../CaseInfoDialog';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { LineListIsOwnCaseService } from '../../../classes/services/LineListService/LineListIsOwnCaseService';
 

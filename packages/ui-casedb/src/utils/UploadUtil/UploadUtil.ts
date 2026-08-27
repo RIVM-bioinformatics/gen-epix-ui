@@ -45,7 +45,7 @@ import type {
   OptionBase,
 } from '@gen-epix/ui-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
-import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
@@ -58,7 +58,7 @@ import type {
 } from '../../models/upload';
 import { FileUtil } from '../FileUtil';
 import { UploadError } from '../../classes/errors';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 export class UploadUtil {
   public static readonly caseDateColumnAliases = ['_case_date', 'case date', 'case_date', 'casedate', 'case.date'];

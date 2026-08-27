@@ -28,7 +28,7 @@ import {
 } from '@gen-epix/ui';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 import { CaseContentForm } from '../CaseContentForm';
 
 export type CaseInfoFormProps = {

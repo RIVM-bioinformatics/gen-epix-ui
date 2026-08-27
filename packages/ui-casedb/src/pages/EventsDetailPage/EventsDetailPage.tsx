@@ -15,7 +15,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { Dashboard } from '../../components/ui/Dashboard';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import { useCaseTypeMapQuery } from '../../dataHooks/useCaseTypesQuery';
 
 export const EventsDetailPage = () => {

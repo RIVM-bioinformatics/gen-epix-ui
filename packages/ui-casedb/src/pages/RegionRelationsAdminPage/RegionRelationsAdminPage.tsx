@@ -30,7 +30,7 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import {
   useRegionMapQuery,
   useRegionOptionsQuery,

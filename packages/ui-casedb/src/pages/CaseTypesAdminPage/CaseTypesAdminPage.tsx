@@ -37,7 +37,7 @@ import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 type FormFields = CaseDbCaseTypeProps & OmitWithMetaData<CaseDbCaseType, 'disease' | 'etiological_agent' | 'props'>;
 

@@ -14,7 +14,7 @@ import {
 } from '@gen-epix/ui';
 
 import { DataService } from '../../../classes/services/DataService';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 
 export type CompletCaseTypeLoaderProps = PropsWithChildren<{

@@ -19,7 +19,7 @@ import {
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseTypeRowValue } from '../../models/caseDb';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import type { CaseDbConfig } from '../../models/config';
 
 export class CaseUtil {

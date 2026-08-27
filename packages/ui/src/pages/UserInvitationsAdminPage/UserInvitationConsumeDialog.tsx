@@ -30,7 +30,7 @@ import { AuthenticationService } from '../../classes/services/AuthenticationServ
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
 
 export interface UserInvitationConsumeDialogOpenProps {

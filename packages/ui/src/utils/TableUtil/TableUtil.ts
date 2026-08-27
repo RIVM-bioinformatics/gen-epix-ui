@@ -10,6 +10,7 @@ import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import type { OptionBase } from '@gen-epix/ui-form/models/form';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import {
   DEFAULT_FILTER_GROUP,
@@ -42,7 +43,6 @@ import {
   FIXED_COLUMN_ID,
   TABLE_COLUMN_FROZEN,
 } from '../../models/table';
-import { DATE_FORMAT } from '../../data/date';
 import { ConfigService } from '../../classes/services/ConfigService';
 
 export class TableUtil {

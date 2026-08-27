@@ -67,10 +67,10 @@ import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { WidgetUnavailable } from '../WidgetUnavailable';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import type { MapWidgetData } from '../../../models/dashboard';
 

@@ -31,7 +31,7 @@ import { OutageList } from '../../ui/OutageList';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { Spinner } from '../../ui/Spinner';
-import { COMMON_QUERY_KEY } from '../../../data/query';
+import { COMMON_QUERY_KEY } from '../../../constants/query';
 import { ApiService } from '../../../classes/services/ApiService';
 
 

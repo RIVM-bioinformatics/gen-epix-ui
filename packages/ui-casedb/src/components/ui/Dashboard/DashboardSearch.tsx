@@ -29,7 +29,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 
 import { DashboardContext } from './context/DashboardContext';
 import type { DashboardSearchMode } from './DashboardSearchSettings';

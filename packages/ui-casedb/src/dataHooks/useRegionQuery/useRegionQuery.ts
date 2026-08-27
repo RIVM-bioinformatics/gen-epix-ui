@@ -14,7 +14,7 @@ import {
 } from '@gen-epix/ui';
 
 import { useRegionSetsMapQuery } from '../useRegionSetsQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 
 export const useRegionQuery = (): UseQueryResult<CaseDbRegion[]> => {

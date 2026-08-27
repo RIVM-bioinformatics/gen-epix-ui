@@ -50,7 +50,7 @@ import {
   useDataCollectionsQuery,
 } from '../../../dataHooks/useDataCollectionsQuery';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 import { CaseCaseSetInfo } from './CaseCaseSetInfo';
 import { CaseInfoForm } from './CaseInfoForm';

@@ -13,7 +13,7 @@ import type { MenuItemData } from '@gen-epix/ui';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { WidgetMenu } from '../WidgetMenu';
 import { EventBusService } from '../../../classes/services/EventBusService';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 import type { TreeWidgetData } from '../../../models/dashboard';
 
 export const LineListWidgetSecondaryMenu = () => {

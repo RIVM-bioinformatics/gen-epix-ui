@@ -41,7 +41,7 @@ import {
 } from '@mui/material';
 import intersection from 'lodash/intersection';
 
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { DashboardWidget } from '../Dashboard';

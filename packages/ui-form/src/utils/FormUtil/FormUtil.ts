@@ -18,7 +18,7 @@ import {
   string,
 } from 'yup';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import type { FormFieldDefinition } from '../../models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';

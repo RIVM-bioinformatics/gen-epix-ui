@@ -15,7 +15,7 @@ import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import type { CaseDbConfig } from '../../models/config';
-import { DASHBOARD_COMPONENT_NAME } from '../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard';
 import { EpiCurveWidget } from '../../components/ui/EpiCurveWidget';
 import { LineListWidget } from '../../components/ui/LineListWidget';
 import { MapWidget } from '../../components/ui/MapWidget';

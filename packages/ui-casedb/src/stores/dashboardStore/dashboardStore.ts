@@ -51,11 +51,11 @@ import {
 } from '../../utils/CaseTypeUtil';
 import { FilterUtil } from '../../utils/FilterUtil';
 import type { CaseDbConfig } from '../../models/config';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
 import { TreeFilter } from '../../classes/filters/TreeFilter';
 import { StratificationUtil } from '../../utils/StratificationUtil';
-import { DASHBOARD_COMPONENT_NAME } from '../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard';
 
 export interface CreateDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;

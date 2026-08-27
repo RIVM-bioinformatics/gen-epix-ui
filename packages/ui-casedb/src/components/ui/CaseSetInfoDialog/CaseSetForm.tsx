@@ -29,7 +29,7 @@ import { CreateEventDialogSuccessNotificationMessage } from '../CreateEventDialo
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 export type CaseSetFormProps = {
   readonly caseSet: CaseDbCaseSet;

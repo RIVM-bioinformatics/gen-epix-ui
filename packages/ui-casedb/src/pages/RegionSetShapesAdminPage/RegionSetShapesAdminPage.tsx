@@ -31,7 +31,7 @@ import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import { useRegionSetsMapQuery } from '../../dataHooks/useRegionSetsQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 // Note: region_set_id is given in the route params
 type FormFields = OmitWithMetaData<CaseDbRegionSetShape, 'region_set_id' | 'region_set'>;

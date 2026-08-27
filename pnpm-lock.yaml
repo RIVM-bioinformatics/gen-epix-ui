@@ -946,6 +946,9 @@ importers:
       '@gen-epix/eslint-config':
         specifier: 0.4.1
         version: 0.4.1(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.62.1(eslint@10.6.0)(typescript@6.0.3))(eslint@10.6.0))(eslint@10.6.0)(typescript@6.0.3)(vitest@4.1.9)
+      '@gen-epix/translation-util':
+        specifier: 0.1.1
+        version: 0.1.1
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core

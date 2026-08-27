@@ -191,6 +191,8 @@
     }
   },
   "scripts": {
+    "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
+    "add-missing-translations": "translation-util ./",
     "update-exports": "node scripts/update-exports.js",
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public",
@@ -260,6 +262,7 @@
   "devDependencies": {
     "@gen-epix/eslint-config": "0.4.1",
     "@gen-epix/ui-core": "workspace:^",
+    "@gen-epix/translation-util": "0.1.1",
     "@mui/icons-material": "9.2.0",
     "@mui/material": "9.2.0",
     "@mui/x-date-pickers": "9.8.0",

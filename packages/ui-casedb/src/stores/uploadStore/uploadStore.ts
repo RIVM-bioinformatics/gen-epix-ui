@@ -23,7 +23,7 @@ import type {
 } from '../../models/upload';
 import { UPLOAD_STEP } from '../../models/upload';
 import { UploadUtil } from '../../utils/UploadUtil';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 export const STEP_ORDER_UPLOAD = [
   UPLOAD_STEP.SELECT_FILE,

@@ -63,7 +63,7 @@ import type { DialogAction } from '../../components/ui/Dialog';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import type { COMMON_QUERY_KEY } from '../../data/query';
+import type { COMMON_QUERY_KEY } from '../../constants/query';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';

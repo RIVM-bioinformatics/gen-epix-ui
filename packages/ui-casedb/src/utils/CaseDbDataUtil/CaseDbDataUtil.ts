@@ -9,7 +9,7 @@ import type {
   CaseDbRefDim,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 import type { OptionBase } from '@gen-epix/ui-form/models/form';
 
 export class CaseDbDataUtil {

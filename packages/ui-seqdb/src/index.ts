@@ -9,5 +9,4 @@ export * from './routes';
 export * from './pages/HomePage';
 export * from './models/config';
 export * from './models/theme';
-export * from './data/query';
 export * from './components/app/SeqDbApp';

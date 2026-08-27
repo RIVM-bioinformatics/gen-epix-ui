@@ -28,7 +28,7 @@ import {
 } from '@gen-epix/ui';
 
 import { CaseSummary } from '../CaseSummary';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 import { CasesAlreadyInCaseSetWarningCaseSetLink } from './CasesAlreadyInCaseSetWarningCaseSetLink';
 

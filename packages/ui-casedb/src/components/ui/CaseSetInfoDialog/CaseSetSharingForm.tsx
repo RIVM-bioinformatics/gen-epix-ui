@@ -30,7 +30,7 @@ import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 
 export type CaseSetSharingFormProps = {

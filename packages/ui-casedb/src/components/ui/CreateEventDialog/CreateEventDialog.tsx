@@ -59,7 +59,7 @@ import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { CasesAlreadyInCaseSetWarning } from '../CasesAlreadyInCaseSetWarning';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 import { CreateEventDialogSuccessNotificationMessage } from './CreateEventDialogSuccessNotificationMessage';
 

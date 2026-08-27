@@ -36,7 +36,7 @@ import {
 } from 'date-fns/locale';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { FormUtil } from '../../../utils/FormUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
@@ -172,7 +172,7 @@ export const DatePicker = <TFieldValues extends FieldValues, TName extends Path<
             views={views as MuiDatePickerProps['views']}
           />
         </LocalizationProvider>
-        { !!loading && <FormFieldLoadingIndicator /> }
+        {!!loading && <FormFieldLoadingIndicator />}
         <FormHelperText sx={{ ml: 0 }}>
           <FormFieldHelperText
             errorMessage={errorMessage}

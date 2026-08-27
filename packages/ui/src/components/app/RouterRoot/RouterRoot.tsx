@@ -38,7 +38,7 @@ import { ApplicationBootstrap } from '../ApplicationBootstrap';
 import { AuthenticationWrapper } from '../AuthenticationWrapper';
 import { AuthorizationWrapper } from '../AuthorizationWrapper';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../../data/query';
+import { COMMON_QUERY_KEY } from '../../../constants/query';
 import { RouterService } from '../../../classes/services/RouterService';
 import { ApiService } from '../../../classes/services/ApiService';
 
@@ -184,7 +184,7 @@ export const RouterRoot = () => {
             <UserInactivityConfirmation />
             <NotificationsStack />
             <StrictMode>
-              {location?.pathname === '/' ? <HomePage /> : <Outlet /> }
+              {location?.pathname === '/' ? <HomePage /> : <Outlet />}
             </StrictMode>
           </AuthorizationWrapper>
         </ApplicationBootstrap>

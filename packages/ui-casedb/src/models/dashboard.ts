@@ -1,4 +1,3 @@
-import type { FormFieldDefinition } from '@gen-epix/ui';
 import type { FunctionComponent } from 'react';
 import type { FieldValues } from 'react-hook-form';
 import type {
@@ -7,6 +6,7 @@ import type {
   CaseDbRefCol,
   CaseDbTreeAlgorithm,
 } from '@gen-epix/api-casedb';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
 
 export enum DASHBOARD_ARRANGEMENT_ORIENTATION {
   HORIZONTAL = 'horizontal',

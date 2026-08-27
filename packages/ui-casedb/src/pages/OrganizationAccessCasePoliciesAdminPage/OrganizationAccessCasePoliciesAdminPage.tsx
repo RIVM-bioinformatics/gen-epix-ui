@@ -33,7 +33,7 @@ import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import { useOrganizationCasePolicyNameFactory } from '../../hooks/useOrganizationCasePolicyNameFactory';
 
 type FormFields = OmitWithMetaData<CaseDbOrganizationAccessCasePolicy, 'case_type_set' | 'data_collection' | 'organization' | 'read_col_set' | 'write_col_set'>;

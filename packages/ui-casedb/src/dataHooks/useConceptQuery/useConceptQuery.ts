@@ -15,7 +15,7 @@ import {
 import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 
 import { useConceptSetMapQuery } from '../useConceptSetsQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 export const useConceptQuery = (): UseQueryResult<CaseDbConcept[]> => {
   return useQueryMemo({

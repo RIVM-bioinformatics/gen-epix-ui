@@ -3,7 +3,7 @@ import type { CommonDbOrganizationIdentifierIssuerLink } from '@gen-epix/api-com
 
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
 
 

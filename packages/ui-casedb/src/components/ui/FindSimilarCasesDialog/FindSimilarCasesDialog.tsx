@@ -59,9 +59,9 @@ import type {
 } from '@gen-epix/ui-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/data/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
@@ -71,7 +71,7 @@ import type {
   FindSimilarCasesOrganizationFilter,
 } from '../../../models/caseDb';
 import type { TreeWidgetDataPersistable } from '../../../models/dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 
 import { FindSimilarCasesDialogDateRangeChart } from './FindSimilarCasesDialogDateRangeChart';
 
