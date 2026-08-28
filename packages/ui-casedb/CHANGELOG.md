@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v3.0.0...ui-casedb-v3.0.1) (2026-08-28)
+
+
+### Bug Fixes
+
+* make react-i18next a peer dependency in ui-casedb ([60e0868](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/60e0868208fbac9518d8ddd4377e10e19d885d4b))
+
 ## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.11.0...ui-casedb-v3.0.0) (2026-08-28)
 
 
