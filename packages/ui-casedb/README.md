@@ -62,6 +62,7 @@ const init = async () => {
         bundles: [
           '/locale/en.json',
           '/locale/ui/en.json',
+          '/locale/ui-form/en.json',
           '/locale/ui-casedb/en.json',
         ],
         code: 'en',
@@ -70,6 +71,7 @@ const init = async () => {
         bundles: [
           '/locale/nl.json',
           '/locale/ui/nl.json',
+          '/locale/ui-form/nl.json',
           '/locale/ui-casedb/nl.json',
         ],
         code: 'nl',
