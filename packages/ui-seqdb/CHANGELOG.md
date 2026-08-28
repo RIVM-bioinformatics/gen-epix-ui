@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v3.0.0...ui-seqdb-v3.0.1) (2026-08-28)
+
+
+### Bug Fixes
+
+* make react-i18next a peer dependency ([cbd0b86](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/cbd0b8609772783005c75e45dab116a46f4f1826))
+
 ## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.9.0...ui-seqdb-v3.0.0) (2026-08-28)
 
 
