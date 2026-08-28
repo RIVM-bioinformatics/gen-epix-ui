@@ -1054,6 +1054,7 @@
     "i18next": "*",
     "react": "*",
     "react-dom": "*",
+    "react-i18next": "*",
     "yup": "*"
   },
   "dependencies": {
@@ -1067,7 +1068,6 @@
     "oidc-client-ts": "3.5.0",
     "react-error-boundary": "6.1.2",
     "react-hook-form": "7.80.0",
-    "react-i18next": "17.0.8",
     "react-oidc-context": "3.3.1",
     "react-router-dom": "7.18.1",
     "react-router": "8.1.0",
@@ -1108,6 +1108,7 @@
     "jsdom": "29.1.1",
     "playwright": "1.61.1",
     "react-dom": "19.2.7",
+    "react-i18next": "17.0.8",
     "react": "19.2.7",
     "typescript": "6.0.3",
     "vite-plugin-dts": "5.0.3",
