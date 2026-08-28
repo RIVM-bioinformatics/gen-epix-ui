@@ -60,8 +60,8 @@ pkg.exports = {
     componentKeys.map((key) => [
       `./${key}`,
       flatKeySet.has(key)
-        ? { import: `./src/${key}.ts`, types: `./src/${key}.ts` }
-        : { import: `./src/${key}/index.ts`, types: `./src/${key}/index.ts` },
+        ? { types: `./src/${key}.ts`, import: `./src/${key}.ts` }
+        : { types: `./src/${key}/index.ts`, import: `./src/${key}/index.ts` },
     ]),
   ),
 };
@@ -73,8 +73,8 @@ pkg.publishConfig.exports = {
     componentKeys.map((key) => [
       `./${key}`,
       flatKeySet.has(key)
-        ? { import: `./dist/${key}.js`, types: `./dist/${key}.d.ts` }
-        : { import: `./dist/${key}/index.js`, types: `./dist/${key}/index.d.ts` },
+        ? { types: `./dist/${key}.d.ts`, import: `./dist/${key}.js` }
+        : { types: `./dist/${key}/index.d.ts`,import: `./dist/${key}/index.js` },
     ]),
   ),
 };

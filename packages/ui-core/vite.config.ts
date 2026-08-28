@@ -91,7 +91,6 @@ export default defineConfig({
       formats: ['es'],
     },
     rolldownOptions: {
-      external: peerDependencyExternalPatterns,
       output: {
         chunkFileNames: '_chunks/[name].js',
       },

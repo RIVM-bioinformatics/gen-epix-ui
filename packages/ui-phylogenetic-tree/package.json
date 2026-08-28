@@ -19,39 +19,39 @@
     "access": "public",
     "exports": {
       "./components/PhylogeneticTree": {
-        "import": "./dist/components/PhylogeneticTree/index.js",
-        "types": "./dist/components/PhylogeneticTree/index.d.ts"
+        "types": "./dist/components/PhylogeneticTree/index.d.ts",
+        "import": "./dist/components/PhylogeneticTree/index.js"
       },
       "./models/tree": {
-        "import": "./dist/models/tree.js",
-        "types": "./dist/models/tree.d.ts"
+        "types": "./dist/models/tree.d.ts",
+        "import": "./dist/models/tree.js"
       },
       "./utils/NewickUtil": {
-        "import": "./dist/utils/NewickUtil/index.js",
-        "types": "./dist/utils/NewickUtil/index.d.ts"
+        "types": "./dist/utils/NewickUtil/index.d.ts",
+        "import": "./dist/utils/NewickUtil/index.js"
       },
       "./utils/TreeUtil": {
-        "import": "./dist/utils/TreeUtil/index.js",
-        "types": "./dist/utils/TreeUtil/index.d.ts"
+        "types": "./dist/utils/TreeUtil/index.d.ts",
+        "import": "./dist/utils/TreeUtil/index.js"
       }
     }
   },
   "exports": {
     "./components/PhylogeneticTree": {
-      "import": "./src/components/PhylogeneticTree/index.ts",
-      "types": "./src/components/PhylogeneticTree/index.ts"
+      "types": "./src/components/PhylogeneticTree/index.ts",
+      "import": "./src/components/PhylogeneticTree/index.ts"
     },
     "./models/tree": {
-      "import": "./src/models/tree.ts",
-      "types": "./src/models/tree.ts"
+      "types": "./src/models/tree.ts",
+      "import": "./src/models/tree.ts"
     },
     "./utils/NewickUtil": {
-      "import": "./src/utils/NewickUtil/index.ts",
-      "types": "./src/utils/NewickUtil/index.ts"
+      "types": "./src/utils/NewickUtil/index.ts",
+      "import": "./src/utils/NewickUtil/index.ts"
     },
     "./utils/TreeUtil": {
-      "import": "./src/utils/TreeUtil/index.ts",
-      "types": "./src/utils/TreeUtil/index.ts"
+      "types": "./src/utils/TreeUtil/index.ts",
+      "import": "./src/utils/TreeUtil/index.ts"
     }
   },
   "scripts": {

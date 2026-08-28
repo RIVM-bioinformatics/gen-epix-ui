@@ -19,652 +19,652 @@
         "types": "./dist/ui-casedb.d.ts"
       },
       "./classes/errors": {
-        "import": "./dist/classes/errors/index.js",
-        "types": "./dist/classes/errors/index.d.ts"
+        "types": "./dist/classes/errors/index.d.ts",
+        "import": "./dist/classes/errors/index.js"
       },
       "./classes/services/DataService": {
-        "import": "./dist/classes/services/DataService/index.js",
-        "types": "./dist/classes/services/DataService/index.d.ts"
+        "types": "./dist/classes/services/DataService/index.d.ts",
+        "import": "./dist/classes/services/DataService/index.js"
       },
       "./classes/services/EventBusService": {
-        "import": "./dist/classes/services/EventBusService/index.js",
-        "types": "./dist/classes/services/EventBusService/index.d.ts"
+        "types": "./dist/classes/services/EventBusService/index.d.ts",
+        "import": "./dist/classes/services/EventBusService/index.js"
       },
       "./classes/services/LineListService/LineListCaseSetMembersService": {
-        "import": "./dist/classes/services/LineListService/LineListCaseSetMembersService/index.js",
-        "types": "./dist/classes/services/LineListService/LineListCaseSetMembersService/index.d.ts"
+        "types": "./dist/classes/services/LineListService/LineListCaseSetMembersService/index.d.ts",
+        "import": "./dist/classes/services/LineListService/LineListCaseSetMembersService/index.js"
       },
       "./classes/services/LineListService/LineListIsOwnCaseService": {
-        "import": "./dist/classes/services/LineListService/LineListIsOwnCaseService/index.js",
-        "types": "./dist/classes/services/LineListService/LineListIsOwnCaseService/index.d.ts"
+        "types": "./dist/classes/services/LineListService/LineListIsOwnCaseService/index.d.ts",
+        "import": "./dist/classes/services/LineListService/LineListIsOwnCaseService/index.js"
       },
       "./classes/services/LineListService/LineListServiceAbstract": {
-        "import": "./dist/classes/services/LineListService/LineListServiceAbstract/index.js",
-        "types": "./dist/classes/services/LineListService/LineListServiceAbstract/index.d.ts"
+        "types": "./dist/classes/services/LineListService/LineListServiceAbstract/index.d.ts",
+        "import": "./dist/classes/services/LineListService/LineListServiceAbstract/index.js"
       },
       "./components/app/CaseDbApp": {
-        "import": "./dist/components/app/CaseDbApp/index.js",
-        "types": "./dist/components/app/CaseDbApp/index.d.ts"
+        "types": "./dist/components/app/CaseDbApp/index.d.ts",
+        "import": "./dist/components/app/CaseDbApp/index.js"
       },
       "./components/form/fields/ArrangementEditor": {
-        "import": "./dist/components/form/fields/ArrangementEditor/index.js",
-        "types": "./dist/components/form/fields/ArrangementEditor/index.d.ts"
+        "types": "./dist/components/form/fields/ArrangementEditor/index.d.ts",
+        "import": "./dist/components/form/fields/ArrangementEditor/index.js"
       },
       "./components/ui/AddCasesToEventDialog": {
-        "import": "./dist/components/ui/AddCasesToEventDialog/index.js",
-        "types": "./dist/components/ui/AddCasesToEventDialog/index.d.ts"
+        "types": "./dist/components/ui/AddCasesToEventDialog/index.d.ts",
+        "import": "./dist/components/ui/AddCasesToEventDialog/index.js"
       },
       "./components/ui/CaseContentForm": {
-        "import": "./dist/components/ui/CaseContentForm/index.js",
-        "types": "./dist/components/ui/CaseContentForm/index.d.ts"
+        "types": "./dist/components/ui/CaseContentForm/index.d.ts",
+        "import": "./dist/components/ui/CaseContentForm/index.js"
       },
       "./components/ui/CaseContentFormDialog": {
-        "import": "./dist/components/ui/CaseContentFormDialog/index.js",
-        "types": "./dist/components/ui/CaseContentFormDialog/index.d.ts"
+        "types": "./dist/components/ui/CaseContentFormDialog/index.d.ts",
+        "import": "./dist/components/ui/CaseContentFormDialog/index.js"
       },
       "./components/ui/CaseInfoDialog": {
-        "import": "./dist/components/ui/CaseInfoDialog/index.js",
-        "types": "./dist/components/ui/CaseInfoDialog/index.d.ts"
+        "types": "./dist/components/ui/CaseInfoDialog/index.d.ts",
+        "import": "./dist/components/ui/CaseInfoDialog/index.js"
       },
       "./components/ui/CaseSetInfoDialog": {
-        "import": "./dist/components/ui/CaseSetInfoDialog/index.js",
-        "types": "./dist/components/ui/CaseSetInfoDialog/index.d.ts"
+        "types": "./dist/components/ui/CaseSetInfoDialog/index.d.ts",
+        "import": "./dist/components/ui/CaseSetInfoDialog/index.js"
       },
       "./components/ui/CaseSummary": {
-        "import": "./dist/components/ui/CaseSummary/index.js",
-        "types": "./dist/components/ui/CaseSummary/index.d.ts"
+        "types": "./dist/components/ui/CaseSummary/index.d.ts",
+        "import": "./dist/components/ui/CaseSummary/index.js"
       },
       "./components/ui/CaseTypeInfoDialog": {
-        "import": "./dist/components/ui/CaseTypeInfoDialog/index.js",
-        "types": "./dist/components/ui/CaseTypeInfoDialog/index.d.ts"
+        "types": "./dist/components/ui/CaseTypeInfoDialog/index.d.ts",
+        "import": "./dist/components/ui/CaseTypeInfoDialog/index.js"
       },
       "./components/ui/CasesAlreadyInCaseSetWarning": {
-        "import": "./dist/components/ui/CasesAlreadyInCaseSetWarning/index.js",
-        "types": "./dist/components/ui/CasesAlreadyInCaseSetWarning/index.d.ts"
+        "types": "./dist/components/ui/CasesAlreadyInCaseSetWarning/index.d.ts",
+        "import": "./dist/components/ui/CasesAlreadyInCaseSetWarning/index.js"
       },
       "./components/ui/CompletCaseTypeLoader": {
-        "import": "./dist/components/ui/CompletCaseTypeLoader/index.js",
-        "types": "./dist/components/ui/CompletCaseTypeLoader/index.d.ts"
+        "types": "./dist/components/ui/CompletCaseTypeLoader/index.d.ts",
+        "import": "./dist/components/ui/CompletCaseTypeLoader/index.js"
       },
       "./components/ui/ContextMenu": {
-        "import": "./dist/components/ui/ContextMenu/index.js",
-        "types": "./dist/components/ui/ContextMenu/index.d.ts"
+        "types": "./dist/components/ui/ContextMenu/index.d.ts",
+        "import": "./dist/components/ui/ContextMenu/index.js"
       },
       "./components/ui/CreateEventDialog": {
-        "import": "./dist/components/ui/CreateEventDialog/index.js",
-        "types": "./dist/components/ui/CreateEventDialog/index.d.ts"
+        "types": "./dist/components/ui/CreateEventDialog/index.d.ts",
+        "import": "./dist/components/ui/CreateEventDialog/index.js"
       },
       "./components/ui/CustomTabPanel": {
-        "import": "./dist/components/ui/CustomTabPanel/index.js",
-        "types": "./dist/components/ui/CustomTabPanel/index.d.ts"
+        "types": "./dist/components/ui/CustomTabPanel/index.d.ts",
+        "import": "./dist/components/ui/CustomTabPanel/index.js"
       },
       "./components/ui/Dashboard": {
-        "import": "./dist/components/ui/Dashboard/index.js",
-        "types": "./dist/components/ui/Dashboard/index.d.ts"
+        "types": "./dist/components/ui/Dashboard/index.d.ts",
+        "import": "./dist/components/ui/Dashboard/index.js"
       },
       "./components/ui/DashboardEditCases": {
-        "import": "./dist/components/ui/DashboardEditCases/index.js",
-        "types": "./dist/components/ui/DashboardEditCases/index.d.ts"
+        "types": "./dist/components/ui/DashboardEditCases/index.d.ts",
+        "import": "./dist/components/ui/DashboardEditCases/index.js"
       },
       "./components/ui/DashboardStoreLoader": {
-        "import": "./dist/components/ui/DashboardStoreLoader/index.js",
-        "types": "./dist/components/ui/DashboardStoreLoader/index.d.ts"
+        "types": "./dist/components/ui/DashboardStoreLoader/index.d.ts",
+        "import": "./dist/components/ui/DashboardStoreLoader/index.js"
       },
       "./components/ui/DataCollectionAccessInfo": {
-        "import": "./dist/components/ui/DataCollectionAccessInfo/index.js",
-        "types": "./dist/components/ui/DataCollectionAccessInfo/index.d.ts"
+        "types": "./dist/components/ui/DataCollectionAccessInfo/index.d.ts",
+        "import": "./dist/components/ui/DataCollectionAccessInfo/index.js"
       },
       "./components/ui/EpiCurveWidget": {
-        "import": "./dist/components/ui/EpiCurveWidget/index.js",
-        "types": "./dist/components/ui/EpiCurveWidget/index.d.ts"
+        "types": "./dist/components/ui/EpiCurveWidget/index.d.ts",
+        "import": "./dist/components/ui/EpiCurveWidget/index.js"
       },
       "./components/ui/FileSelector": {
-        "import": "./dist/components/ui/FileSelector/index.js",
-        "types": "./dist/components/ui/FileSelector/index.d.ts"
+        "types": "./dist/components/ui/FileSelector/index.d.ts",
+        "import": "./dist/components/ui/FileSelector/index.js"
       },
       "./components/ui/FindSimilarCasesDialog": {
-        "import": "./dist/components/ui/FindSimilarCasesDialog/index.js",
-        "types": "./dist/components/ui/FindSimilarCasesDialog/index.d.ts"
+        "types": "./dist/components/ui/FindSimilarCasesDialog/index.d.ts",
+        "import": "./dist/components/ui/FindSimilarCasesDialog/index.js"
       },
       "./components/ui/Grouping": {
-        "import": "./dist/components/ui/Grouping/index.js",
-        "types": "./dist/components/ui/Grouping/index.d.ts"
+        "types": "./dist/components/ui/Grouping/index.d.ts",
+        "import": "./dist/components/ui/Grouping/index.js"
       },
       "./components/ui/HistogramWidget": {
-        "import": "./dist/components/ui/HistogramWidget/index.js",
-        "types": "./dist/components/ui/HistogramWidget/index.d.ts"
+        "types": "./dist/components/ui/HistogramWidget/index.d.ts",
+        "import": "./dist/components/ui/HistogramWidget/index.js"
       },
       "./components/ui/HomePageTrends": {
-        "import": "./dist/components/ui/HomePageTrends/index.js",
-        "types": "./dist/components/ui/HomePageTrends/index.d.ts"
+        "types": "./dist/components/ui/HomePageTrends/index.d.ts",
+        "import": "./dist/components/ui/HomePageTrends/index.js"
       },
       "./components/ui/LegendaItem": {
-        "import": "./dist/components/ui/LegendaItem/index.js",
-        "types": "./dist/components/ui/LegendaItem/index.d.ts"
+        "types": "./dist/components/ui/LegendaItem/index.d.ts",
+        "import": "./dist/components/ui/LegendaItem/index.js"
       },
       "./components/ui/LineListWidget": {
-        "import": "./dist/components/ui/LineListWidget/index.js",
-        "types": "./dist/components/ui/LineListWidget/index.d.ts"
+        "types": "./dist/components/ui/LineListWidget/index.d.ts",
+        "import": "./dist/components/ui/LineListWidget/index.js"
       },
       "./components/ui/MapWidget": {
-        "import": "./dist/components/ui/MapWidget/index.js",
-        "types": "./dist/components/ui/MapWidget/index.d.ts"
+        "types": "./dist/components/ui/MapWidget/index.d.ts",
+        "import": "./dist/components/ui/MapWidget/index.js"
       },
       "./components/ui/PanelSeparator": {
-        "import": "./dist/components/ui/PanelSeparator/index.js",
-        "types": "./dist/components/ui/PanelSeparator/index.d.ts"
+        "types": "./dist/components/ui/PanelSeparator/index.d.ts",
+        "import": "./dist/components/ui/PanelSeparator/index.js"
       },
       "./components/ui/RemoveCasesFromEventDialog": {
-        "import": "./dist/components/ui/RemoveCasesFromEventDialog/index.js",
-        "types": "./dist/components/ui/RemoveCasesFromEventDialog/index.d.ts"
+        "types": "./dist/components/ui/RemoveCasesFromEventDialog/index.d.ts",
+        "import": "./dist/components/ui/RemoveCasesFromEventDialog/index.js"
       },
       "./components/ui/SequenceDownloadDialog": {
-        "import": "./dist/components/ui/SequenceDownloadDialog/index.js",
-        "types": "./dist/components/ui/SequenceDownloadDialog/index.d.ts"
+        "types": "./dist/components/ui/SequenceDownloadDialog/index.d.ts",
+        "import": "./dist/components/ui/SequenceDownloadDialog/index.js"
       },
       "./components/ui/TreeDescription": {
-        "import": "./dist/components/ui/TreeDescription/index.js",
-        "types": "./dist/components/ui/TreeDescription/index.d.ts"
+        "types": "./dist/components/ui/TreeDescription/index.d.ts",
+        "import": "./dist/components/ui/TreeDescription/index.js"
       },
       "./components/ui/TreeWidget": {
-        "import": "./dist/components/ui/TreeWidget/index.js",
-        "types": "./dist/components/ui/TreeWidget/index.d.ts"
+        "types": "./dist/components/ui/TreeWidget/index.d.ts",
+        "import": "./dist/components/ui/TreeWidget/index.js"
       },
       "./components/ui/Upload": {
-        "import": "./dist/components/ui/Upload/index.js",
-        "types": "./dist/components/ui/Upload/index.d.ts"
+        "types": "./dist/components/ui/Upload/index.d.ts",
+        "import": "./dist/components/ui/Upload/index.js"
       },
       "./components/ui/UserRightsDialog": {
-        "import": "./dist/components/ui/UserRightsDialog/index.js",
-        "types": "./dist/components/ui/UserRightsDialog/index.d.ts"
+        "types": "./dist/components/ui/UserRightsDialog/index.d.ts",
+        "import": "./dist/components/ui/UserRightsDialog/index.js"
       },
       "./components/ui/UsersEffectiveRightsDetailsDialog": {
-        "import": "./dist/components/ui/UsersEffectiveRightsDetailsDialog/index.js",
-        "types": "./dist/components/ui/UsersEffectiveRightsDetailsDialog/index.d.ts"
+        "types": "./dist/components/ui/UsersEffectiveRightsDetailsDialog/index.d.ts",
+        "import": "./dist/components/ui/UsersEffectiveRightsDetailsDialog/index.js"
       },
       "./components/ui/Warning": {
-        "import": "./dist/components/ui/Warning/index.js",
-        "types": "./dist/components/ui/Warning/index.d.ts"
+        "types": "./dist/components/ui/Warning/index.d.ts",
+        "import": "./dist/components/ui/Warning/index.js"
       },
       "./components/ui/WidgetHeaderIconButton": {
-        "import": "./dist/components/ui/WidgetHeaderIconButton/index.js",
-        "types": "./dist/components/ui/WidgetHeaderIconButton/index.d.ts"
+        "types": "./dist/components/ui/WidgetHeaderIconButton/index.d.ts",
+        "import": "./dist/components/ui/WidgetHeaderIconButton/index.js"
       },
       "./components/ui/WidgetMenu": {
-        "import": "./dist/components/ui/WidgetMenu/index.js",
-        "types": "./dist/components/ui/WidgetMenu/index.d.ts"
+        "types": "./dist/components/ui/WidgetMenu/index.d.ts",
+        "import": "./dist/components/ui/WidgetMenu/index.js"
       },
       "./components/ui/WidgetUnavailable": {
-        "import": "./dist/components/ui/WidgetUnavailable/index.js",
-        "types": "./dist/components/ui/WidgetUnavailable/index.d.ts"
+        "types": "./dist/components/ui/WidgetUnavailable/index.d.ts",
+        "import": "./dist/components/ui/WidgetUnavailable/index.js"
       },
       "./constants/dashboard": {
-        "import": "./dist/constants/dashboard.js",
-        "types": "./dist/constants/dashboard.d.ts"
+        "types": "./dist/constants/dashboard.d.ts",
+        "import": "./dist/constants/dashboard.js"
       },
       "./constants/query": {
-        "import": "./dist/constants/query.js",
-        "types": "./dist/constants/query.d.ts"
+        "types": "./dist/constants/query.d.ts",
+        "import": "./dist/constants/query.js"
       },
       "./dataHooks/useAssemblyProtocolsQuery": {
-        "import": "./dist/dataHooks/useAssemblyProtocolsQuery/index.js",
-        "types": "./dist/dataHooks/useAssemblyProtocolsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useAssemblyProtocolsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useAssemblyProtocolsQuery/index.js"
       },
       "./dataHooks/useCaseRightsQuery": {
-        "import": "./dist/dataHooks/useCaseRightsQuery/index.js",
-        "types": "./dist/dataHooks/useCaseRightsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseRightsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseRightsQuery/index.js"
       },
       "./dataHooks/useCaseSetCategoriesQuery": {
-        "import": "./dist/dataHooks/useCaseSetCategoriesQuery/index.js",
-        "types": "./dist/dataHooks/useCaseSetCategoriesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseSetCategoriesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseSetCategoriesQuery/index.js"
       },
       "./dataHooks/useCaseSetRightsQuery": {
-        "import": "./dist/dataHooks/useCaseSetRightsQuery/index.js",
-        "types": "./dist/dataHooks/useCaseSetRightsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseSetRightsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseSetRightsQuery/index.js"
       },
       "./dataHooks/useCaseSetStatsQuery": {
-        "import": "./dist/dataHooks/useCaseSetStatsQuery/index.js",
-        "types": "./dist/dataHooks/useCaseSetStatsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseSetStatsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseSetStatsQuery/index.js"
       },
       "./dataHooks/useCaseSetStatusesQuery": {
-        "import": "./dist/dataHooks/useCaseSetStatusesQuery/index.js",
-        "types": "./dist/dataHooks/useCaseSetStatusesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseSetStatusesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseSetStatusesQuery/index.js"
       },
       "./dataHooks/useCaseSetsQuery": {
-        "import": "./dist/dataHooks/useCaseSetsQuery/index.js",
-        "types": "./dist/dataHooks/useCaseSetsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseSetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseSetsQuery/index.js"
       },
       "./dataHooks/useCaseTypeSetCategoriesQuery": {
-        "import": "./dist/dataHooks/useCaseTypeSetCategoriesQuery/index.js",
-        "types": "./dist/dataHooks/useCaseTypeSetCategoriesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseTypeSetCategoriesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseTypeSetCategoriesQuery/index.js"
       },
       "./dataHooks/useCaseTypeSetCategoryPurposeQuery": {
-        "import": "./dist/dataHooks/useCaseTypeSetCategoryPurposeQuery/index.js",
-        "types": "./dist/dataHooks/useCaseTypeSetCategoryPurposeQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseTypeSetCategoryPurposeQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseTypeSetCategoryPurposeQuery/index.js"
       },
       "./dataHooks/useCaseTypeSetMembersQuery": {
-        "import": "./dist/dataHooks/useCaseTypeSetMembersQuery/index.js",
-        "types": "./dist/dataHooks/useCaseTypeSetMembersQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseTypeSetMembersQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseTypeSetMembersQuery/index.js"
       },
       "./dataHooks/useCaseTypeSetsQuery": {
-        "import": "./dist/dataHooks/useCaseTypeSetsQuery/index.js",
-        "types": "./dist/dataHooks/useCaseTypeSetsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseTypeSetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseTypeSetsQuery/index.js"
       },
       "./dataHooks/useCaseTypeStatsQuery": {
-        "import": "./dist/dataHooks/useCaseTypeStatsQuery/index.js",
-        "types": "./dist/dataHooks/useCaseTypeStatsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseTypeStatsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseTypeStatsQuery/index.js"
       },
       "./dataHooks/useCaseTypesQuery": {
-        "import": "./dist/dataHooks/useCaseTypesQuery/index.js",
-        "types": "./dist/dataHooks/useCaseTypesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useCaseTypesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useCaseTypesQuery/index.js"
       },
       "./dataHooks/useColSetMembersQuery": {
-        "import": "./dist/dataHooks/useColSetMembersQuery/index.js",
-        "types": "./dist/dataHooks/useColSetMembersQuery/index.d.ts"
+        "types": "./dist/dataHooks/useColSetMembersQuery/index.d.ts",
+        "import": "./dist/dataHooks/useColSetMembersQuery/index.js"
       },
       "./dataHooks/useColSetsQuery": {
-        "import": "./dist/dataHooks/useColSetsQuery/index.js",
-        "types": "./dist/dataHooks/useColSetsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useColSetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useColSetsQuery/index.js"
       },
       "./dataHooks/useColTypesQuery": {
-        "import": "./dist/dataHooks/useColTypesQuery/index.js",
-        "types": "./dist/dataHooks/useColTypesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useColTypesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useColTypesQuery/index.js"
       },
       "./dataHooks/useColsQuery": {
-        "import": "./dist/dataHooks/useColsQuery/index.js",
-        "types": "./dist/dataHooks/useColsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useColsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useColsQuery/index.js"
       },
       "./dataHooks/useConceptQuery": {
-        "import": "./dist/dataHooks/useConceptQuery/index.js",
-        "types": "./dist/dataHooks/useConceptQuery/index.d.ts"
+        "types": "./dist/dataHooks/useConceptQuery/index.d.ts",
+        "import": "./dist/dataHooks/useConceptQuery/index.js"
       },
       "./dataHooks/useConceptRelationTypeQuery": {
-        "import": "./dist/dataHooks/useConceptRelationTypeQuery/index.js",
-        "types": "./dist/dataHooks/useConceptRelationTypeQuery/index.d.ts"
+        "types": "./dist/dataHooks/useConceptRelationTypeQuery/index.d.ts",
+        "import": "./dist/dataHooks/useConceptRelationTypeQuery/index.js"
       },
       "./dataHooks/useConceptSetTypeQuery": {
-        "import": "./dist/dataHooks/useConceptSetTypeQuery/index.js",
-        "types": "./dist/dataHooks/useConceptSetTypeQuery/index.d.ts"
+        "types": "./dist/dataHooks/useConceptSetTypeQuery/index.d.ts",
+        "import": "./dist/dataHooks/useConceptSetTypeQuery/index.js"
       },
       "./dataHooks/useConceptSetsQuery": {
-        "import": "./dist/dataHooks/useConceptSetsQuery/index.js",
-        "types": "./dist/dataHooks/useConceptSetsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useConceptSetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useConceptSetsQuery/index.js"
       },
       "./dataHooks/useDataCollectionSetMembersQuery": {
-        "import": "./dist/dataHooks/useDataCollectionSetMembersQuery/index.js",
-        "types": "./dist/dataHooks/useDataCollectionSetMembersQuery/index.d.ts"
+        "types": "./dist/dataHooks/useDataCollectionSetMembersQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDataCollectionSetMembersQuery/index.js"
       },
       "./dataHooks/useDataCollectionsQuery": {
-        "import": "./dist/dataHooks/useDataCollectionsQuery/index.js",
-        "types": "./dist/dataHooks/useDataCollectionsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useDataCollectionsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDataCollectionsQuery/index.js"
       },
       "./dataHooks/useDimTypesQuery": {
-        "import": "./dist/dataHooks/useDimTypesQuery/index.js",
-        "types": "./dist/dataHooks/useDimTypesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useDimTypesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDimTypesQuery/index.js"
       },
       "./dataHooks/useDimsQuery": {
-        "import": "./dist/dataHooks/useDimsQuery/index.js",
-        "types": "./dist/dataHooks/useDimsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useDimsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDimsQuery/index.js"
       },
       "./dataHooks/useDiseasesQuery": {
-        "import": "./dist/dataHooks/useDiseasesQuery/index.js",
-        "types": "./dist/dataHooks/useDiseasesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useDiseasesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useDiseasesQuery/index.js"
       },
       "./dataHooks/useEtiologicalAgentsQuery": {
-        "import": "./dist/dataHooks/useEtiologicalAgentsQuery/index.js",
-        "types": "./dist/dataHooks/useEtiologicalAgentsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useEtiologicalAgentsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useEtiologicalAgentsQuery/index.js"
       },
       "./dataHooks/useGeneticDistanceProtocolsQuery": {
-        "import": "./dist/dataHooks/useGeneticDistanceProtocolsQuery/index.js",
-        "types": "./dist/dataHooks/useGeneticDistanceProtocolsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useGeneticDistanceProtocolsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useGeneticDistanceProtocolsQuery/index.js"
       },
       "./dataHooks/useOrganizationAccessCasePoliciesQuery": {
-        "import": "./dist/dataHooks/useOrganizationAccessCasePoliciesQuery/index.js",
-        "types": "./dist/dataHooks/useOrganizationAccessCasePoliciesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useOrganizationAccessCasePoliciesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useOrganizationAccessCasePoliciesQuery/index.js"
       },
       "./dataHooks/useOrganizationShareCasePoliciesQuery": {
-        "import": "./dist/dataHooks/useOrganizationShareCasePoliciesQuery/index.js",
-        "types": "./dist/dataHooks/useOrganizationShareCasePoliciesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useOrganizationShareCasePoliciesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useOrganizationShareCasePoliciesQuery/index.js"
       },
       "./dataHooks/useRefColsQuery": {
-        "import": "./dist/dataHooks/useRefColsQuery/index.js",
-        "types": "./dist/dataHooks/useRefColsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useRefColsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useRefColsQuery/index.js"
       },
       "./dataHooks/useRefColsValidationRulesQuery": {
-        "import": "./dist/dataHooks/useRefColsValidationRulesQuery/index.js",
-        "types": "./dist/dataHooks/useRefColsValidationRulesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useRefColsValidationRulesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useRefColsValidationRulesQuery/index.js"
       },
       "./dataHooks/useRefDimsQuery": {
-        "import": "./dist/dataHooks/useRefDimsQuery/index.js",
-        "types": "./dist/dataHooks/useRefDimsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useRefDimsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useRefDimsQuery/index.js"
       },
       "./dataHooks/useRegionQuery": {
-        "import": "./dist/dataHooks/useRegionQuery/index.js",
-        "types": "./dist/dataHooks/useRegionQuery/index.d.ts"
+        "types": "./dist/dataHooks/useRegionQuery/index.d.ts",
+        "import": "./dist/dataHooks/useRegionQuery/index.js"
       },
       "./dataHooks/useRegionRelationTypeQuery": {
-        "import": "./dist/dataHooks/useRegionRelationTypeQuery/index.js",
-        "types": "./dist/dataHooks/useRegionRelationTypeQuery/index.d.ts"
+        "types": "./dist/dataHooks/useRegionRelationTypeQuery/index.d.ts",
+        "import": "./dist/dataHooks/useRegionRelationTypeQuery/index.js"
       },
       "./dataHooks/useRegionSetsQuery": {
-        "import": "./dist/dataHooks/useRegionSetsQuery/index.js",
-        "types": "./dist/dataHooks/useRegionSetsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useRegionSetsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useRegionSetsQuery/index.js"
       },
       "./dataHooks/useSequencingProtocolsQuery": {
-        "import": "./dist/dataHooks/useSequencingProtocolsQuery/index.js",
-        "types": "./dist/dataHooks/useSequencingProtocolsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useSequencingProtocolsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useSequencingProtocolsQuery/index.js"
       },
       "./dataHooks/useTreeAlgorithmCodesQuery": {
-        "import": "./dist/dataHooks/useTreeAlgorithmCodesQuery/index.js",
-        "types": "./dist/dataHooks/useTreeAlgorithmCodesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useTreeAlgorithmCodesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useTreeAlgorithmCodesQuery/index.js"
       },
       "./dataHooks/useUserAccessCasePoliciesQuery": {
-        "import": "./dist/dataHooks/useUserAccessCasePoliciesQuery/index.js",
-        "types": "./dist/dataHooks/useUserAccessCasePoliciesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useUserAccessCasePoliciesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useUserAccessCasePoliciesQuery/index.js"
       },
       "./dataHooks/useUserEffectiveRightsQuery": {
-        "import": "./dist/dataHooks/useUserEffectiveRightsQuery/index.js",
-        "types": "./dist/dataHooks/useUserEffectiveRightsQuery/index.d.ts"
+        "types": "./dist/dataHooks/useUserEffectiveRightsQuery/index.d.ts",
+        "import": "./dist/dataHooks/useUserEffectiveRightsQuery/index.js"
       },
       "./dataHooks/useUserShareCasePoliciesQuery": {
-        "import": "./dist/dataHooks/useUserShareCasePoliciesQuery/index.js",
-        "types": "./dist/dataHooks/useUserShareCasePoliciesQuery/index.d.ts"
+        "types": "./dist/dataHooks/useUserShareCasePoliciesQuery/index.d.ts",
+        "import": "./dist/dataHooks/useUserShareCasePoliciesQuery/index.js"
       },
       "./hooks/useOrganizationCasePolicyNameFactory": {
-        "import": "./dist/hooks/useOrganizationCasePolicyNameFactory/index.js",
-        "types": "./dist/hooks/useOrganizationCasePolicyNameFactory/index.d.ts"
+        "types": "./dist/hooks/useOrganizationCasePolicyNameFactory/index.d.ts",
+        "import": "./dist/hooks/useOrganizationCasePolicyNameFactory/index.js"
       },
       "./hooks/useUserCasePolicyNameFactory": {
-        "import": "./dist/hooks/useUserCasePolicyNameFactory/index.js",
-        "types": "./dist/hooks/useUserCasePolicyNameFactory/index.d.ts"
+        "types": "./dist/hooks/useUserCasePolicyNameFactory/index.d.ts",
+        "import": "./dist/hooks/useUserCasePolicyNameFactory/index.js"
       },
       "./models/caseAccess": {
-        "import": "./dist/models/caseAccess.js",
-        "types": "./dist/models/caseAccess.d.ts"
+        "types": "./dist/models/caseAccess.d.ts",
+        "import": "./dist/models/caseAccess.js"
       },
       "./models/caseDb": {
-        "import": "./dist/models/caseDb.js",
-        "types": "./dist/models/caseDb.d.ts"
+        "types": "./dist/models/caseDb.d.ts",
+        "import": "./dist/models/caseDb.js"
       },
       "./models/config": {
-        "import": "./dist/models/config.js",
-        "types": "./dist/models/config.d.ts"
+        "types": "./dist/models/config.d.ts",
+        "import": "./dist/models/config.js"
       },
       "./models/dashboard": {
-        "import": "./dist/models/dashboard.js",
-        "types": "./dist/models/dashboard.d.ts"
+        "types": "./dist/models/dashboard.d.ts",
+        "import": "./dist/models/dashboard.js"
       },
       "./models/stratification": {
-        "import": "./dist/models/stratification.js",
-        "types": "./dist/models/stratification.d.ts"
+        "types": "./dist/models/stratification.d.ts",
+        "import": "./dist/models/stratification.js"
       },
       "./models/theme": {
-        "import": "./dist/models/theme.js",
-        "types": "./dist/models/theme.d.ts"
+        "types": "./dist/models/theme.d.ts",
+        "import": "./dist/models/theme.js"
       },
       "./models/upload": {
-        "import": "./dist/models/upload.js",
-        "types": "./dist/models/upload.d.ts"
+        "types": "./dist/models/upload.d.ts",
+        "import": "./dist/models/upload.js"
       },
       "./pages/CaseDbUsersAdminPage": {
-        "import": "./dist/pages/CaseDbUsersAdminPage/index.js",
-        "types": "./dist/pages/CaseDbUsersAdminPage/index.d.ts"
+        "types": "./dist/pages/CaseDbUsersAdminPage/index.d.ts",
+        "import": "./dist/pages/CaseDbUsersAdminPage/index.js"
       },
       "./pages/CaseSetCategoryAdminPage": {
-        "import": "./dist/pages/CaseSetCategoryAdminPage/index.js",
-        "types": "./dist/pages/CaseSetCategoryAdminPage/index.d.ts"
+        "types": "./dist/pages/CaseSetCategoryAdminPage/index.d.ts",
+        "import": "./dist/pages/CaseSetCategoryAdminPage/index.js"
       },
       "./pages/CaseSetStatusAdminPage": {
-        "import": "./dist/pages/CaseSetStatusAdminPage/index.js",
-        "types": "./dist/pages/CaseSetStatusAdminPage/index.d.ts"
+        "types": "./dist/pages/CaseSetStatusAdminPage/index.d.ts",
+        "import": "./dist/pages/CaseSetStatusAdminPage/index.js"
       },
       "./pages/CaseTypeSetCategoriesAdminPage": {
-        "import": "./dist/pages/CaseTypeSetCategoriesAdminPage/index.js",
-        "types": "./dist/pages/CaseTypeSetCategoriesAdminPage/index.d.ts"
+        "types": "./dist/pages/CaseTypeSetCategoriesAdminPage/index.d.ts",
+        "import": "./dist/pages/CaseTypeSetCategoriesAdminPage/index.js"
       },
       "./pages/CaseTypeSetsAdminPage": {
-        "import": "./dist/pages/CaseTypeSetsAdminPage/index.js",
-        "types": "./dist/pages/CaseTypeSetsAdminPage/index.d.ts"
+        "types": "./dist/pages/CaseTypeSetsAdminPage/index.d.ts",
+        "import": "./dist/pages/CaseTypeSetsAdminPage/index.js"
       },
       "./pages/CaseTypesAdminPage": {
-        "import": "./dist/pages/CaseTypesAdminPage/index.js",
-        "types": "./dist/pages/CaseTypesAdminPage/index.d.ts"
+        "types": "./dist/pages/CaseTypesAdminPage/index.d.ts",
+        "import": "./dist/pages/CaseTypesAdminPage/index.js"
       },
       "./pages/CasesDetailPage": {
-        "import": "./dist/pages/CasesDetailPage/index.js",
-        "types": "./dist/pages/CasesDetailPage/index.d.ts"
+        "types": "./dist/pages/CasesDetailPage/index.d.ts",
+        "import": "./dist/pages/CasesDetailPage/index.js"
       },
       "./pages/CasesPage": {
-        "import": "./dist/pages/CasesPage/index.js",
-        "types": "./dist/pages/CasesPage/index.d.ts"
+        "types": "./dist/pages/CasesPage/index.d.ts",
+        "import": "./dist/pages/CasesPage/index.js"
       },
       "./pages/ColSetsAdminPage": {
-        "import": "./dist/pages/ColSetsAdminPage/index.js",
-        "types": "./dist/pages/ColSetsAdminPage/index.d.ts"
+        "types": "./dist/pages/ColSetsAdminPage/index.d.ts",
+        "import": "./dist/pages/ColSetsAdminPage/index.js"
       },
       "./pages/ColsAdminPage": {
-        "import": "./dist/pages/ColsAdminPage/index.js",
-        "types": "./dist/pages/ColsAdminPage/index.d.ts"
+        "types": "./dist/pages/ColsAdminPage/index.d.ts",
+        "import": "./dist/pages/ColsAdminPage/index.js"
       },
       "./pages/ConceptRelationsAdminPage": {
-        "import": "./dist/pages/ConceptRelationsAdminPage/index.js",
-        "types": "./dist/pages/ConceptRelationsAdminPage/index.d.ts"
+        "types": "./dist/pages/ConceptRelationsAdminPage/index.d.ts",
+        "import": "./dist/pages/ConceptRelationsAdminPage/index.js"
       },
       "./pages/ConceptSetsAdminPage": {
-        "import": "./dist/pages/ConceptSetsAdminPage/index.js",
-        "types": "./dist/pages/ConceptSetsAdminPage/index.d.ts"
+        "types": "./dist/pages/ConceptSetsAdminPage/index.d.ts",
+        "import": "./dist/pages/ConceptSetsAdminPage/index.js"
       },
       "./pages/ConceptsAdminPage": {
-        "import": "./dist/pages/ConceptsAdminPage/index.js",
-        "types": "./dist/pages/ConceptsAdminPage/index.d.ts"
+        "types": "./dist/pages/ConceptsAdminPage/index.d.ts",
+        "import": "./dist/pages/ConceptsAdminPage/index.js"
       },
       "./pages/DataCollectionSetsAdminPage": {
-        "import": "./dist/pages/DataCollectionSetsAdminPage/index.js",
-        "types": "./dist/pages/DataCollectionSetsAdminPage/index.d.ts"
+        "types": "./dist/pages/DataCollectionSetsAdminPage/index.d.ts",
+        "import": "./dist/pages/DataCollectionSetsAdminPage/index.js"
       },
       "./pages/DataCollectionVisualizationPage": {
-        "import": "./dist/pages/DataCollectionVisualizationPage/index.js",
-        "types": "./dist/pages/DataCollectionVisualizationPage/index.d.ts"
+        "types": "./dist/pages/DataCollectionVisualizationPage/index.d.ts",
+        "import": "./dist/pages/DataCollectionVisualizationPage/index.js"
       },
       "./pages/DataCollectionsAdminPage": {
-        "import": "./dist/pages/DataCollectionsAdminPage/index.js",
-        "types": "./dist/pages/DataCollectionsAdminPage/index.d.ts"
+        "types": "./dist/pages/DataCollectionsAdminPage/index.d.ts",
+        "import": "./dist/pages/DataCollectionsAdminPage/index.js"
       },
       "./pages/DimsAdminPage": {
-        "import": "./dist/pages/DimsAdminPage/index.js",
-        "types": "./dist/pages/DimsAdminPage/index.d.ts"
+        "types": "./dist/pages/DimsAdminPage/index.d.ts",
+        "import": "./dist/pages/DimsAdminPage/index.js"
       },
       "./pages/DiseasesAdminPage": {
-        "import": "./dist/pages/DiseasesAdminPage/index.js",
-        "types": "./dist/pages/DiseasesAdminPage/index.d.ts"
+        "types": "./dist/pages/DiseasesAdminPage/index.d.ts",
+        "import": "./dist/pages/DiseasesAdminPage/index.js"
       },
       "./pages/EtiologicalAgentsAdminPage": {
-        "import": "./dist/pages/EtiologicalAgentsAdminPage/index.js",
-        "types": "./dist/pages/EtiologicalAgentsAdminPage/index.d.ts"
+        "types": "./dist/pages/EtiologicalAgentsAdminPage/index.d.ts",
+        "import": "./dist/pages/EtiologicalAgentsAdminPage/index.js"
       },
       "./pages/EtiologiesAdminPage": {
-        "import": "./dist/pages/EtiologiesAdminPage/index.js",
-        "types": "./dist/pages/EtiologiesAdminPage/index.d.ts"
+        "types": "./dist/pages/EtiologiesAdminPage/index.d.ts",
+        "import": "./dist/pages/EtiologiesAdminPage/index.js"
       },
       "./pages/EventsDetailPage": {
-        "import": "./dist/pages/EventsDetailPage/index.js",
-        "types": "./dist/pages/EventsDetailPage/index.d.ts"
+        "types": "./dist/pages/EventsDetailPage/index.d.ts",
+        "import": "./dist/pages/EventsDetailPage/index.js"
       },
       "./pages/EventsPage": {
-        "import": "./dist/pages/EventsPage/index.js",
-        "types": "./dist/pages/EventsPage/index.d.ts"
+        "types": "./dist/pages/EventsPage/index.d.ts",
+        "import": "./dist/pages/EventsPage/index.js"
       },
       "./pages/HomePage": {
-        "import": "./dist/pages/HomePage/index.js",
-        "types": "./dist/pages/HomePage/index.d.ts"
+        "types": "./dist/pages/HomePage/index.d.ts",
+        "import": "./dist/pages/HomePage/index.js"
       },
       "./pages/OrganizationAccessCasePoliciesAdminPage": {
-        "import": "./dist/pages/OrganizationAccessCasePoliciesAdminPage/index.js",
-        "types": "./dist/pages/OrganizationAccessCasePoliciesAdminPage/index.d.ts"
+        "types": "./dist/pages/OrganizationAccessCasePoliciesAdminPage/index.d.ts",
+        "import": "./dist/pages/OrganizationAccessCasePoliciesAdminPage/index.js"
       },
       "./pages/OrganizationShareCasePoliciesAdminPage": {
-        "import": "./dist/pages/OrganizationShareCasePoliciesAdminPage/index.js",
-        "types": "./dist/pages/OrganizationShareCasePoliciesAdminPage/index.d.ts"
+        "types": "./dist/pages/OrganizationShareCasePoliciesAdminPage/index.d.ts",
+        "import": "./dist/pages/OrganizationShareCasePoliciesAdminPage/index.js"
       },
       "./pages/RefColsAdminPage": {
-        "import": "./dist/pages/RefColsAdminPage/index.js",
-        "types": "./dist/pages/RefColsAdminPage/index.d.ts"
+        "types": "./dist/pages/RefColsAdminPage/index.d.ts",
+        "import": "./dist/pages/RefColsAdminPage/index.js"
       },
       "./pages/RefDimsAdminPage": {
-        "import": "./dist/pages/RefDimsAdminPage/index.js",
-        "types": "./dist/pages/RefDimsAdminPage/index.d.ts"
+        "types": "./dist/pages/RefDimsAdminPage/index.d.ts",
+        "import": "./dist/pages/RefDimsAdminPage/index.js"
       },
       "./pages/RegionRelationsAdminPage": {
-        "import": "./dist/pages/RegionRelationsAdminPage/index.js",
-        "types": "./dist/pages/RegionRelationsAdminPage/index.d.ts"
+        "types": "./dist/pages/RegionRelationsAdminPage/index.d.ts",
+        "import": "./dist/pages/RegionRelationsAdminPage/index.js"
       },
       "./pages/RegionSetShapesAdminPage": {
-        "import": "./dist/pages/RegionSetShapesAdminPage/index.js",
-        "types": "./dist/pages/RegionSetShapesAdminPage/index.d.ts"
+        "types": "./dist/pages/RegionSetShapesAdminPage/index.d.ts",
+        "import": "./dist/pages/RegionSetShapesAdminPage/index.js"
       },
       "./pages/RegionSetsAdminPage": {
-        "import": "./dist/pages/RegionSetsAdminPage/index.js",
-        "types": "./dist/pages/RegionSetsAdminPage/index.d.ts"
+        "types": "./dist/pages/RegionSetsAdminPage/index.d.ts",
+        "import": "./dist/pages/RegionSetsAdminPage/index.js"
       },
       "./pages/RegionsAdminPage": {
-        "import": "./dist/pages/RegionsAdminPage/index.js",
-        "types": "./dist/pages/RegionsAdminPage/index.d.ts"
+        "types": "./dist/pages/RegionsAdminPage/index.d.ts",
+        "import": "./dist/pages/RegionsAdminPage/index.js"
       },
       "./pages/TrendsPage": {
-        "import": "./dist/pages/TrendsPage/index.js",
-        "types": "./dist/pages/TrendsPage/index.d.ts"
+        "types": "./dist/pages/TrendsPage/index.d.ts",
+        "import": "./dist/pages/TrendsPage/index.js"
       },
       "./pages/UploadPage": {
-        "import": "./dist/pages/UploadPage/index.js",
-        "types": "./dist/pages/UploadPage/index.d.ts"
+        "types": "./dist/pages/UploadPage/index.d.ts",
+        "import": "./dist/pages/UploadPage/index.js"
       },
       "./pages/UserAccessCasePoliciesAdminPage": {
-        "import": "./dist/pages/UserAccessCasePoliciesAdminPage/index.js",
-        "types": "./dist/pages/UserAccessCasePoliciesAdminPage/index.d.ts"
+        "types": "./dist/pages/UserAccessCasePoliciesAdminPage/index.d.ts",
+        "import": "./dist/pages/UserAccessCasePoliciesAdminPage/index.js"
       },
       "./pages/UserEffectiveRightsAdminPage": {
-        "import": "./dist/pages/UserEffectiveRightsAdminPage/index.js",
-        "types": "./dist/pages/UserEffectiveRightsAdminPage/index.d.ts"
+        "types": "./dist/pages/UserEffectiveRightsAdminPage/index.d.ts",
+        "import": "./dist/pages/UserEffectiveRightsAdminPage/index.js"
       },
       "./pages/UserEffectiveRightsTesterAdminPage": {
-        "import": "./dist/pages/UserEffectiveRightsTesterAdminPage/index.js",
-        "types": "./dist/pages/UserEffectiveRightsTesterAdminPage/index.d.ts"
+        "types": "./dist/pages/UserEffectiveRightsTesterAdminPage/index.d.ts",
+        "import": "./dist/pages/UserEffectiveRightsTesterAdminPage/index.js"
       },
       "./pages/UserShareCasePoliciesAdminPage": {
-        "import": "./dist/pages/UserShareCasePoliciesAdminPage/index.js",
-        "types": "./dist/pages/UserShareCasePoliciesAdminPage/index.d.ts"
+        "types": "./dist/pages/UserShareCasePoliciesAdminPage/index.d.ts",
+        "import": "./dist/pages/UserShareCasePoliciesAdminPage/index.js"
       },
       "./routes": {
-        "import": "./dist/routes/index.js",
-        "types": "./dist/routes/index.d.ts"
+        "types": "./dist/routes/index.d.ts",
+        "import": "./dist/routes/index.js"
       },
       "./setup/setup": {
-        "import": "./dist/setup/setup.js",
-        "types": "./dist/setup/setup.d.ts"
+        "types": "./dist/setup/setup.d.ts",
+        "import": "./dist/setup/setup.js"
       },
       "./stores/dashboardStore": {
-        "import": "./dist/stores/dashboardStore/index.js",
-        "types": "./dist/stores/dashboardStore/index.d.ts"
+        "types": "./dist/stores/dashboardStore/index.d.ts",
+        "import": "./dist/stores/dashboardStore/index.js"
       },
       "./stores/uploadStore": {
-        "import": "./dist/stores/uploadStore/index.js",
-        "types": "./dist/stores/uploadStore/index.d.ts"
+        "types": "./dist/stores/uploadStore/index.d.ts",
+        "import": "./dist/stores/uploadStore/index.js"
       },
       "./stores/userProfileStore": {
-        "import": "./dist/stores/userProfileStore/index.js",
-        "types": "./dist/stores/userProfileStore/index.d.ts"
+        "types": "./dist/stores/userProfileStore/index.d.ts",
+        "import": "./dist/stores/userProfileStore/index.js"
       },
       "./theme/demoTheme": {
-        "import": "./dist/theme/demoTheme/index.js",
-        "types": "./dist/theme/demoTheme/index.d.ts"
+        "types": "./dist/theme/demoTheme/index.d.ts",
+        "import": "./dist/theme/demoTheme/index.js"
       },
       "./utils/AbacUtil": {
-        "import": "./dist/utils/AbacUtil/index.js",
-        "types": "./dist/utils/AbacUtil/index.d.ts"
+        "types": "./dist/utils/AbacUtil/index.d.ts",
+        "import": "./dist/utils/AbacUtil/index.js"
       },
       "./utils/CaseDbDataUtil": {
-        "import": "./dist/utils/CaseDbDataUtil/index.js",
-        "types": "./dist/utils/CaseDbDataUtil/index.d.ts"
+        "types": "./dist/utils/CaseDbDataUtil/index.d.ts",
+        "import": "./dist/utils/CaseDbDataUtil/index.js"
       },
       "./utils/CaseDbDownloadUtil": {
-        "import": "./dist/utils/CaseDbDownloadUtil/index.js",
-        "types": "./dist/utils/CaseDbDownloadUtil/index.d.ts"
+        "types": "./dist/utils/CaseDbDownloadUtil/index.d.ts",
+        "import": "./dist/utils/CaseDbDownloadUtil/index.js"
       },
       "./utils/CaseDbStandardConfigUtil": {
-        "import": "./dist/utils/CaseDbStandardConfigUtil/index.js",
-        "types": "./dist/utils/CaseDbStandardConfigUtil/index.d.ts"
+        "types": "./dist/utils/CaseDbStandardConfigUtil/index.d.ts",
+        "import": "./dist/utils/CaseDbStandardConfigUtil/index.js"
       },
       "./utils/CaseDbTableUtil": {
-        "import": "./dist/utils/CaseDbTableUtil/index.js",
-        "types": "./dist/utils/CaseDbTableUtil/index.d.ts"
+        "types": "./dist/utils/CaseDbTableUtil/index.d.ts",
+        "import": "./dist/utils/CaseDbTableUtil/index.js"
       },
       "./utils/CaseSelectionUtil": {
-        "import": "./dist/utils/CaseSelectionUtil/index.js",
-        "types": "./dist/utils/CaseSelectionUtil/index.d.ts"
+        "types": "./dist/utils/CaseSelectionUtil/index.d.ts",
+        "import": "./dist/utils/CaseSelectionUtil/index.js"
       },
       "./utils/CaseSetUtil": {
-        "import": "./dist/utils/CaseSetUtil/index.js",
-        "types": "./dist/utils/CaseSetUtil/index.d.ts"
+        "types": "./dist/utils/CaseSetUtil/index.d.ts",
+        "import": "./dist/utils/CaseSetUtil/index.js"
       },
       "./utils/CaseTypeFormUtil": {
-        "import": "./dist/utils/CaseTypeFormUtil/index.js",
-        "types": "./dist/utils/CaseTypeFormUtil/index.d.ts"
+        "types": "./dist/utils/CaseTypeFormUtil/index.d.ts",
+        "import": "./dist/utils/CaseTypeFormUtil/index.js"
       },
       "./utils/CaseTypeUtil": {
-        "import": "./dist/utils/CaseTypeUtil/index.js",
-        "types": "./dist/utils/CaseTypeUtil/index.d.ts"
+        "types": "./dist/utils/CaseTypeUtil/index.d.ts",
+        "import": "./dist/utils/CaseTypeUtil/index.js"
       },
       "./utils/CaseUtil": {
-        "import": "./dist/utils/CaseUtil/index.js",
-        "types": "./dist/utils/CaseUtil/index.d.ts"
+        "types": "./dist/utils/CaseUtil/index.d.ts",
+        "import": "./dist/utils/CaseUtil/index.js"
       },
       "./utils/DashboardUtil": {
-        "import": "./dist/utils/DashboardUtil/index.js",
-        "types": "./dist/utils/DashboardUtil/index.d.ts"
+        "types": "./dist/utils/DashboardUtil/index.d.ts",
+        "import": "./dist/utils/DashboardUtil/index.js"
       },
       "./utils/DataSetUtil": {
-        "import": "./dist/utils/DataSetUtil/index.js",
-        "types": "./dist/utils/DataSetUtil/index.d.ts"
+        "types": "./dist/utils/DataSetUtil/index.d.ts",
+        "import": "./dist/utils/DataSetUtil/index.js"
       },
       "./utils/EffectiveRightsUtil": {
-        "import": "./dist/utils/EffectiveRightsUtil/index.js",
-        "types": "./dist/utils/EffectiveRightsUtil/index.d.ts"
+        "types": "./dist/utils/EffectiveRightsUtil/index.d.ts",
+        "import": "./dist/utils/EffectiveRightsUtil/index.js"
       },
       "./utils/EpiCurveUtil": {
-        "import": "./dist/utils/EpiCurveUtil/index.js",
-        "types": "./dist/utils/EpiCurveUtil/index.d.ts"
+        "types": "./dist/utils/EpiCurveUtil/index.d.ts",
+        "import": "./dist/utils/EpiCurveUtil/index.js"
       },
       "./utils/FileUtil": {
-        "import": "./dist/utils/FileUtil/index.js",
-        "types": "./dist/utils/FileUtil/index.d.ts"
+        "types": "./dist/utils/FileUtil/index.d.ts",
+        "import": "./dist/utils/FileUtil/index.js"
       },
       "./utils/FilterUtil": {
-        "import": "./dist/utils/FilterUtil/index.js",
-        "types": "./dist/utils/FilterUtil/index.d.ts"
+        "types": "./dist/utils/FilterUtil/index.d.ts",
+        "import": "./dist/utils/FilterUtil/index.js"
       },
       "./utils/FindSimilarCasesUtil": {
-        "import": "./dist/utils/FindSimilarCasesUtil/index.js",
-        "types": "./dist/utils/FindSimilarCasesUtil/index.d.ts"
+        "types": "./dist/utils/FindSimilarCasesUtil/index.d.ts",
+        "import": "./dist/utils/FindSimilarCasesUtil/index.js"
       },
       "./utils/HistogramUtil": {
-        "import": "./dist/utils/HistogramUtil/index.js",
-        "types": "./dist/utils/HistogramUtil/index.d.ts"
+        "types": "./dist/utils/HistogramUtil/index.d.ts",
+        "import": "./dist/utils/HistogramUtil/index.js"
       },
       "./utils/MapUtil": {
-        "import": "./dist/utils/MapUtil/index.js",
-        "types": "./dist/utils/MapUtil/index.d.ts"
+        "types": "./dist/utils/MapUtil/index.d.ts",
+        "import": "./dist/utils/MapUtil/index.js"
       },
       "./utils/StratificationUtil": {
-        "import": "./dist/utils/StratificationUtil/index.js",
-        "types": "./dist/utils/StratificationUtil/index.d.ts"
+        "types": "./dist/utils/StratificationUtil/index.d.ts",
+        "import": "./dist/utils/StratificationUtil/index.js"
       },
       "./utils/TreeWidgetUtil": {
-        "import": "./dist/utils/TreeWidgetUtil/index.js",
-        "types": "./dist/utils/TreeWidgetUtil/index.d.ts"
+        "types": "./dist/utils/TreeWidgetUtil/index.d.ts",
+        "import": "./dist/utils/TreeWidgetUtil/index.js"
       },
       "./utils/UploadUtil": {
-        "import": "./dist/utils/UploadUtil/index.js",
-        "types": "./dist/utils/UploadUtil/index.d.ts"
+        "types": "./dist/utils/UploadUtil/index.d.ts",
+        "import": "./dist/utils/UploadUtil/index.js"
       }
     }
   },
@@ -673,652 +673,652 @@
       "types": "./src/@types/ui-casedb.d.ts"
     },
     "./classes/errors": {
-      "import": "./src/classes/errors/index.ts",
-      "types": "./src/classes/errors/index.ts"
+      "types": "./src/classes/errors/index.ts",
+      "import": "./src/classes/errors/index.ts"
     },
     "./classes/services/DataService": {
-      "import": "./src/classes/services/DataService/index.ts",
-      "types": "./src/classes/services/DataService/index.ts"
+      "types": "./src/classes/services/DataService/index.ts",
+      "import": "./src/classes/services/DataService/index.ts"
     },
     "./classes/services/EventBusService": {
-      "import": "./src/classes/services/EventBusService/index.ts",
-      "types": "./src/classes/services/EventBusService/index.ts"
+      "types": "./src/classes/services/EventBusService/index.ts",
+      "import": "./src/classes/services/EventBusService/index.ts"
     },
     "./classes/services/LineListService/LineListCaseSetMembersService": {
-      "import": "./src/classes/services/LineListService/LineListCaseSetMembersService/index.ts",
-      "types": "./src/classes/services/LineListService/LineListCaseSetMembersService/index.ts"
+      "types": "./src/classes/services/LineListService/LineListCaseSetMembersService/index.ts",
+      "import": "./src/classes/services/LineListService/LineListCaseSetMembersService/index.ts"
     },
     "./classes/services/LineListService/LineListIsOwnCaseService": {
-      "import": "./src/classes/services/LineListService/LineListIsOwnCaseService/index.ts",
-      "types": "./src/classes/services/LineListService/LineListIsOwnCaseService/index.ts"
+      "types": "./src/classes/services/LineListService/LineListIsOwnCaseService/index.ts",
+      "import": "./src/classes/services/LineListService/LineListIsOwnCaseService/index.ts"
     },
     "./classes/services/LineListService/LineListServiceAbstract": {
-      "import": "./src/classes/services/LineListService/LineListServiceAbstract/index.ts",
-      "types": "./src/classes/services/LineListService/LineListServiceAbstract/index.ts"
+      "types": "./src/classes/services/LineListService/LineListServiceAbstract/index.ts",
+      "import": "./src/classes/services/LineListService/LineListServiceAbstract/index.ts"
     },
     "./components/app/CaseDbApp": {
-      "import": "./src/components/app/CaseDbApp/index.ts",
-      "types": "./src/components/app/CaseDbApp/index.ts"
+      "types": "./src/components/app/CaseDbApp/index.ts",
+      "import": "./src/components/app/CaseDbApp/index.ts"
     },
     "./components/form/fields/ArrangementEditor": {
-      "import": "./src/components/form/fields/ArrangementEditor/index.ts",
-      "types": "./src/components/form/fields/ArrangementEditor/index.ts"
+      "types": "./src/components/form/fields/ArrangementEditor/index.ts",
+      "import": "./src/components/form/fields/ArrangementEditor/index.ts"
     },
     "./components/ui/AddCasesToEventDialog": {
-      "import": "./src/components/ui/AddCasesToEventDialog/index.ts",
-      "types": "./src/components/ui/AddCasesToEventDialog/index.ts"
+      "types": "./src/components/ui/AddCasesToEventDialog/index.ts",
+      "import": "./src/components/ui/AddCasesToEventDialog/index.ts"
     },
     "./components/ui/CaseContentForm": {
-      "import": "./src/components/ui/CaseContentForm/index.ts",
-      "types": "./src/components/ui/CaseContentForm/index.ts"
+      "types": "./src/components/ui/CaseContentForm/index.ts",
+      "import": "./src/components/ui/CaseContentForm/index.ts"
     },
     "./components/ui/CaseContentFormDialog": {
-      "import": "./src/components/ui/CaseContentFormDialog/index.ts",
-      "types": "./src/components/ui/CaseContentFormDialog/index.ts"
+      "types": "./src/components/ui/CaseContentFormDialog/index.ts",
+      "import": "./src/components/ui/CaseContentFormDialog/index.ts"
     },
     "./components/ui/CaseInfoDialog": {
-      "import": "./src/components/ui/CaseInfoDialog/index.ts",
-      "types": "./src/components/ui/CaseInfoDialog/index.ts"
+      "types": "./src/components/ui/CaseInfoDialog/index.ts",
+      "import": "./src/components/ui/CaseInfoDialog/index.ts"
     },
     "./components/ui/CaseSetInfoDialog": {
-      "import": "./src/components/ui/CaseSetInfoDialog/index.ts",
-      "types": "./src/components/ui/CaseSetInfoDialog/index.ts"
+      "types": "./src/components/ui/CaseSetInfoDialog/index.ts",
+      "import": "./src/components/ui/CaseSetInfoDialog/index.ts"
     },
     "./components/ui/CaseSummary": {
-      "import": "./src/components/ui/CaseSummary/index.ts",
-      "types": "./src/components/ui/CaseSummary/index.ts"
+      "types": "./src/components/ui/CaseSummary/index.ts",
+      "import": "./src/components/ui/CaseSummary/index.ts"
     },
     "./components/ui/CaseTypeInfoDialog": {
-      "import": "./src/components/ui/CaseTypeInfoDialog/index.ts",
-      "types": "./src/components/ui/CaseTypeInfoDialog/index.ts"
+      "types": "./src/components/ui/CaseTypeInfoDialog/index.ts",
+      "import": "./src/components/ui/CaseTypeInfoDialog/index.ts"
     },
     "./components/ui/CasesAlreadyInCaseSetWarning": {
-      "import": "./src/components/ui/CasesAlreadyInCaseSetWarning/index.ts",
-      "types": "./src/components/ui/CasesAlreadyInCaseSetWarning/index.ts"
+      "types": "./src/components/ui/CasesAlreadyInCaseSetWarning/index.ts",
+      "import": "./src/components/ui/CasesAlreadyInCaseSetWarning/index.ts"
     },
     "./components/ui/CompletCaseTypeLoader": {
-      "import": "./src/components/ui/CompletCaseTypeLoader/index.ts",
-      "types": "./src/components/ui/CompletCaseTypeLoader/index.ts"
+      "types": "./src/components/ui/CompletCaseTypeLoader/index.ts",
+      "import": "./src/components/ui/CompletCaseTypeLoader/index.ts"
     },
     "./components/ui/ContextMenu": {
-      "import": "./src/components/ui/ContextMenu/index.ts",
-      "types": "./src/components/ui/ContextMenu/index.ts"
+      "types": "./src/components/ui/ContextMenu/index.ts",
+      "import": "./src/components/ui/ContextMenu/index.ts"
     },
     "./components/ui/CreateEventDialog": {
-      "import": "./src/components/ui/CreateEventDialog/index.ts",
-      "types": "./src/components/ui/CreateEventDialog/index.ts"
+      "types": "./src/components/ui/CreateEventDialog/index.ts",
+      "import": "./src/components/ui/CreateEventDialog/index.ts"
     },
     "./components/ui/CustomTabPanel": {
-      "import": "./src/components/ui/CustomTabPanel/index.ts",
-      "types": "./src/components/ui/CustomTabPanel/index.ts"
+      "types": "./src/components/ui/CustomTabPanel/index.ts",
+      "import": "./src/components/ui/CustomTabPanel/index.ts"
     },
     "./components/ui/Dashboard": {
-      "import": "./src/components/ui/Dashboard/index.ts",
-      "types": "./src/components/ui/Dashboard/index.ts"
+      "types": "./src/components/ui/Dashboard/index.ts",
+      "import": "./src/components/ui/Dashboard/index.ts"
     },
     "./components/ui/DashboardEditCases": {
-      "import": "./src/components/ui/DashboardEditCases/index.ts",
-      "types": "./src/components/ui/DashboardEditCases/index.ts"
+      "types": "./src/components/ui/DashboardEditCases/index.ts",
+      "import": "./src/components/ui/DashboardEditCases/index.ts"
     },
     "./components/ui/DashboardStoreLoader": {
-      "import": "./src/components/ui/DashboardStoreLoader/index.ts",
-      "types": "./src/components/ui/DashboardStoreLoader/index.ts"
+      "types": "./src/components/ui/DashboardStoreLoader/index.ts",
+      "import": "./src/components/ui/DashboardStoreLoader/index.ts"
     },
     "./components/ui/DataCollectionAccessInfo": {
-      "import": "./src/components/ui/DataCollectionAccessInfo/index.ts",
-      "types": "./src/components/ui/DataCollectionAccessInfo/index.ts"
+      "types": "./src/components/ui/DataCollectionAccessInfo/index.ts",
+      "import": "./src/components/ui/DataCollectionAccessInfo/index.ts"
     },
     "./components/ui/EpiCurveWidget": {
-      "import": "./src/components/ui/EpiCurveWidget/index.ts",
-      "types": "./src/components/ui/EpiCurveWidget/index.ts"
+      "types": "./src/components/ui/EpiCurveWidget/index.ts",
+      "import": "./src/components/ui/EpiCurveWidget/index.ts"
     },
     "./components/ui/FileSelector": {
-      "import": "./src/components/ui/FileSelector/index.ts",
-      "types": "./src/components/ui/FileSelector/index.ts"
+      "types": "./src/components/ui/FileSelector/index.ts",
+      "import": "./src/components/ui/FileSelector/index.ts"
     },
     "./components/ui/FindSimilarCasesDialog": {
-      "import": "./src/components/ui/FindSimilarCasesDialog/index.ts",
-      "types": "./src/components/ui/FindSimilarCasesDialog/index.ts"
+      "types": "./src/components/ui/FindSimilarCasesDialog/index.ts",
+      "import": "./src/components/ui/FindSimilarCasesDialog/index.ts"
     },
     "./components/ui/Grouping": {
-      "import": "./src/components/ui/Grouping/index.ts",
-      "types": "./src/components/ui/Grouping/index.ts"
+      "types": "./src/components/ui/Grouping/index.ts",
+      "import": "./src/components/ui/Grouping/index.ts"
     },
     "./components/ui/HistogramWidget": {
-      "import": "./src/components/ui/HistogramWidget/index.ts",
-      "types": "./src/components/ui/HistogramWidget/index.ts"
+      "types": "./src/components/ui/HistogramWidget/index.ts",
+      "import": "./src/components/ui/HistogramWidget/index.ts"
     },
     "./components/ui/HomePageTrends": {
-      "import": "./src/components/ui/HomePageTrends/index.ts",
-      "types": "./src/components/ui/HomePageTrends/index.ts"
+      "types": "./src/components/ui/HomePageTrends/index.ts",
+      "import": "./src/components/ui/HomePageTrends/index.ts"
     },
     "./components/ui/LegendaItem": {
-      "import": "./src/components/ui/LegendaItem/index.ts",
-      "types": "./src/components/ui/LegendaItem/index.ts"
+      "types": "./src/components/ui/LegendaItem/index.ts",
+      "import": "./src/components/ui/LegendaItem/index.ts"
     },
     "./components/ui/LineListWidget": {
-      "import": "./src/components/ui/LineListWidget/index.ts",
-      "types": "./src/components/ui/LineListWidget/index.ts"
+      "types": "./src/components/ui/LineListWidget/index.ts",
+      "import": "./src/components/ui/LineListWidget/index.ts"
     },
     "./components/ui/MapWidget": {
-      "import": "./src/components/ui/MapWidget/index.ts",
-      "types": "./src/components/ui/MapWidget/index.ts"
+      "types": "./src/components/ui/MapWidget/index.ts",
+      "import": "./src/components/ui/MapWidget/index.ts"
     },
     "./components/ui/PanelSeparator": {
-      "import": "./src/components/ui/PanelSeparator/index.ts",
-      "types": "./src/components/ui/PanelSeparator/index.ts"
+      "types": "./src/components/ui/PanelSeparator/index.ts",
+      "import": "./src/components/ui/PanelSeparator/index.ts"
     },
     "./components/ui/RemoveCasesFromEventDialog": {
-      "import": "./src/components/ui/RemoveCasesFromEventDialog/index.ts",
-      "types": "./src/components/ui/RemoveCasesFromEventDialog/index.ts"
+      "types": "./src/components/ui/RemoveCasesFromEventDialog/index.ts",
+      "import": "./src/components/ui/RemoveCasesFromEventDialog/index.ts"
     },
     "./components/ui/SequenceDownloadDialog": {
-      "import": "./src/components/ui/SequenceDownloadDialog/index.ts",
-      "types": "./src/components/ui/SequenceDownloadDialog/index.ts"
+      "types": "./src/components/ui/SequenceDownloadDialog/index.ts",
+      "import": "./src/components/ui/SequenceDownloadDialog/index.ts"
     },
     "./components/ui/TreeDescription": {
-      "import": "./src/components/ui/TreeDescription/index.ts",
-      "types": "./src/components/ui/TreeDescription/index.ts"
+      "types": "./src/components/ui/TreeDescription/index.ts",
+      "import": "./src/components/ui/TreeDescription/index.ts"
     },
     "./components/ui/TreeWidget": {
-      "import": "./src/components/ui/TreeWidget/index.ts",
-      "types": "./src/components/ui/TreeWidget/index.ts"
+      "types": "./src/components/ui/TreeWidget/index.ts",
+      "import": "./src/components/ui/TreeWidget/index.ts"
     },
     "./components/ui/Upload": {
-      "import": "./src/components/ui/Upload/index.ts",
-      "types": "./src/components/ui/Upload/index.ts"
+      "types": "./src/components/ui/Upload/index.ts",
+      "import": "./src/components/ui/Upload/index.ts"
     },
     "./components/ui/UserRightsDialog": {
-      "import": "./src/components/ui/UserRightsDialog/index.ts",
-      "types": "./src/components/ui/UserRightsDialog/index.ts"
+      "types": "./src/components/ui/UserRightsDialog/index.ts",
+      "import": "./src/components/ui/UserRightsDialog/index.ts"
     },
     "./components/ui/UsersEffectiveRightsDetailsDialog": {
-      "import": "./src/components/ui/UsersEffectiveRightsDetailsDialog/index.ts",
-      "types": "./src/components/ui/UsersEffectiveRightsDetailsDialog/index.ts"
+      "types": "./src/components/ui/UsersEffectiveRightsDetailsDialog/index.ts",
+      "import": "./src/components/ui/UsersEffectiveRightsDetailsDialog/index.ts"
     },
     "./components/ui/Warning": {
-      "import": "./src/components/ui/Warning/index.ts",
-      "types": "./src/components/ui/Warning/index.ts"
+      "types": "./src/components/ui/Warning/index.ts",
+      "import": "./src/components/ui/Warning/index.ts"
     },
     "./components/ui/WidgetHeaderIconButton": {
-      "import": "./src/components/ui/WidgetHeaderIconButton/index.ts",
-      "types": "./src/components/ui/WidgetHeaderIconButton/index.ts"
+      "types": "./src/components/ui/WidgetHeaderIconButton/index.ts",
+      "import": "./src/components/ui/WidgetHeaderIconButton/index.ts"
     },
     "./components/ui/WidgetMenu": {
-      "import": "./src/components/ui/WidgetMenu/index.ts",
-      "types": "./src/components/ui/WidgetMenu/index.ts"
+      "types": "./src/components/ui/WidgetMenu/index.ts",
+      "import": "./src/components/ui/WidgetMenu/index.ts"
     },
     "./components/ui/WidgetUnavailable": {
-      "import": "./src/components/ui/WidgetUnavailable/index.ts",
-      "types": "./src/components/ui/WidgetUnavailable/index.ts"
+      "types": "./src/components/ui/WidgetUnavailable/index.ts",
+      "import": "./src/components/ui/WidgetUnavailable/index.ts"
     },
     "./constants/dashboard": {
-      "import": "./src/constants/dashboard.ts",
-      "types": "./src/constants/dashboard.ts"
+      "types": "./src/constants/dashboard.ts",
+      "import": "./src/constants/dashboard.ts"
     },
     "./constants/query": {
-      "import": "./src/constants/query.ts",
-      "types": "./src/constants/query.ts"
+      "types": "./src/constants/query.ts",
+      "import": "./src/constants/query.ts"
     },
     "./dataHooks/useAssemblyProtocolsQuery": {
-      "import": "./src/dataHooks/useAssemblyProtocolsQuery/index.ts",
-      "types": "./src/dataHooks/useAssemblyProtocolsQuery/index.ts"
+      "types": "./src/dataHooks/useAssemblyProtocolsQuery/index.ts",
+      "import": "./src/dataHooks/useAssemblyProtocolsQuery/index.ts"
     },
     "./dataHooks/useCaseRightsQuery": {
-      "import": "./src/dataHooks/useCaseRightsQuery/index.ts",
-      "types": "./src/dataHooks/useCaseRightsQuery/index.ts"
+      "types": "./src/dataHooks/useCaseRightsQuery/index.ts",
+      "import": "./src/dataHooks/useCaseRightsQuery/index.ts"
     },
     "./dataHooks/useCaseSetCategoriesQuery": {
-      "import": "./src/dataHooks/useCaseSetCategoriesQuery/index.ts",
-      "types": "./src/dataHooks/useCaseSetCategoriesQuery/index.ts"
+      "types": "./src/dataHooks/useCaseSetCategoriesQuery/index.ts",
+      "import": "./src/dataHooks/useCaseSetCategoriesQuery/index.ts"
     },
     "./dataHooks/useCaseSetRightsQuery": {
-      "import": "./src/dataHooks/useCaseSetRightsQuery/index.ts",
-      "types": "./src/dataHooks/useCaseSetRightsQuery/index.ts"
+      "types": "./src/dataHooks/useCaseSetRightsQuery/index.ts",
+      "import": "./src/dataHooks/useCaseSetRightsQuery/index.ts"
     },
     "./dataHooks/useCaseSetStatsQuery": {
-      "import": "./src/dataHooks/useCaseSetStatsQuery/index.ts",
-      "types": "./src/dataHooks/useCaseSetStatsQuery/index.ts"
+      "types": "./src/dataHooks/useCaseSetStatsQuery/index.ts",
+      "import": "./src/dataHooks/useCaseSetStatsQuery/index.ts"
     },
     "./dataHooks/useCaseSetStatusesQuery": {
-      "import": "./src/dataHooks/useCaseSetStatusesQuery/index.ts",
-      "types": "./src/dataHooks/useCaseSetStatusesQuery/index.ts"
+      "types": "./src/dataHooks/useCaseSetStatusesQuery/index.ts",
+      "import": "./src/dataHooks/useCaseSetStatusesQuery/index.ts"
     },
     "./dataHooks/useCaseSetsQuery": {
-      "import": "./src/dataHooks/useCaseSetsQuery/index.ts",
-      "types": "./src/dataHooks/useCaseSetsQuery/index.ts"
+      "types": "./src/dataHooks/useCaseSetsQuery/index.ts",
+      "import": "./src/dataHooks/useCaseSetsQuery/index.ts"
     },
     "./dataHooks/useCaseTypeSetCategoriesQuery": {
-      "import": "./src/dataHooks/useCaseTypeSetCategoriesQuery/index.ts",
-      "types": "./src/dataHooks/useCaseTypeSetCategoriesQuery/index.ts"
+      "types": "./src/dataHooks/useCaseTypeSetCategoriesQuery/index.ts",
+      "import": "./src/dataHooks/useCaseTypeSetCategoriesQuery/index.ts"
     },
     "./dataHooks/useCaseTypeSetCategoryPurposeQuery": {
-      "import": "./src/dataHooks/useCaseTypeSetCategoryPurposeQuery/index.ts",
-      "types": "./src/dataHooks/useCaseTypeSetCategoryPurposeQuery/index.ts"
+      "types": "./src/dataHooks/useCaseTypeSetCategoryPurposeQuery/index.ts",
+      "import": "./src/dataHooks/useCaseTypeSetCategoryPurposeQuery/index.ts"
     },
     "./dataHooks/useCaseTypeSetMembersQuery": {
-      "import": "./src/dataHooks/useCaseTypeSetMembersQuery/index.ts",
-      "types": "./src/dataHooks/useCaseTypeSetMembersQuery/index.ts"
+      "types": "./src/dataHooks/useCaseTypeSetMembersQuery/index.ts",
+      "import": "./src/dataHooks/useCaseTypeSetMembersQuery/index.ts"
     },
     "./dataHooks/useCaseTypeSetsQuery": {
-      "import": "./src/dataHooks/useCaseTypeSetsQuery/index.ts",
-      "types": "./src/dataHooks/useCaseTypeSetsQuery/index.ts"
+      "types": "./src/dataHooks/useCaseTypeSetsQuery/index.ts",
+      "import": "./src/dataHooks/useCaseTypeSetsQuery/index.ts"
     },
     "./dataHooks/useCaseTypeStatsQuery": {
-      "import": "./src/dataHooks/useCaseTypeStatsQuery/index.ts",
-      "types": "./src/dataHooks/useCaseTypeStatsQuery/index.ts"
+      "types": "./src/dataHooks/useCaseTypeStatsQuery/index.ts",
+      "import": "./src/dataHooks/useCaseTypeStatsQuery/index.ts"
     },
     "./dataHooks/useCaseTypesQuery": {
-      "import": "./src/dataHooks/useCaseTypesQuery/index.ts",
-      "types": "./src/dataHooks/useCaseTypesQuery/index.ts"
+      "types": "./src/dataHooks/useCaseTypesQuery/index.ts",
+      "import": "./src/dataHooks/useCaseTypesQuery/index.ts"
     },
     "./dataHooks/useColSetMembersQuery": {
-      "import": "./src/dataHooks/useColSetMembersQuery/index.ts",
-      "types": "./src/dataHooks/useColSetMembersQuery/index.ts"
+      "types": "./src/dataHooks/useColSetMembersQuery/index.ts",
+      "import": "./src/dataHooks/useColSetMembersQuery/index.ts"
     },
     "./dataHooks/useColSetsQuery": {
-      "import": "./src/dataHooks/useColSetsQuery/index.ts",
-      "types": "./src/dataHooks/useColSetsQuery/index.ts"
+      "types": "./src/dataHooks/useColSetsQuery/index.ts",
+      "import": "./src/dataHooks/useColSetsQuery/index.ts"
     },
     "./dataHooks/useColTypesQuery": {
-      "import": "./src/dataHooks/useColTypesQuery/index.ts",
-      "types": "./src/dataHooks/useColTypesQuery/index.ts"
+      "types": "./src/dataHooks/useColTypesQuery/index.ts",
+      "import": "./src/dataHooks/useColTypesQuery/index.ts"
     },
     "./dataHooks/useColsQuery": {
-      "import": "./src/dataHooks/useColsQuery/index.ts",
-      "types": "./src/dataHooks/useColsQuery/index.ts"
+      "types": "./src/dataHooks/useColsQuery/index.ts",
+      "import": "./src/dataHooks/useColsQuery/index.ts"
     },
     "./dataHooks/useConceptQuery": {
-      "import": "./src/dataHooks/useConceptQuery/index.ts",
-      "types": "./src/dataHooks/useConceptQuery/index.ts"
+      "types": "./src/dataHooks/useConceptQuery/index.ts",
+      "import": "./src/dataHooks/useConceptQuery/index.ts"
     },
     "./dataHooks/useConceptRelationTypeQuery": {
-      "import": "./src/dataHooks/useConceptRelationTypeQuery/index.ts",
-      "types": "./src/dataHooks/useConceptRelationTypeQuery/index.ts"
+      "types": "./src/dataHooks/useConceptRelationTypeQuery/index.ts",
+      "import": "./src/dataHooks/useConceptRelationTypeQuery/index.ts"
     },
     "./dataHooks/useConceptSetTypeQuery": {
-      "import": "./src/dataHooks/useConceptSetTypeQuery/index.ts",
-      "types": "./src/dataHooks/useConceptSetTypeQuery/index.ts"
+      "types": "./src/dataHooks/useConceptSetTypeQuery/index.ts",
+      "import": "./src/dataHooks/useConceptSetTypeQuery/index.ts"
     },
     "./dataHooks/useConceptSetsQuery": {
-      "import": "./src/dataHooks/useConceptSetsQuery/index.ts",
-      "types": "./src/dataHooks/useConceptSetsQuery/index.ts"
+      "types": "./src/dataHooks/useConceptSetsQuery/index.ts",
+      "import": "./src/dataHooks/useConceptSetsQuery/index.ts"
     },
     "./dataHooks/useDataCollectionSetMembersQuery": {
-      "import": "./src/dataHooks/useDataCollectionSetMembersQuery/index.ts",
-      "types": "./src/dataHooks/useDataCollectionSetMembersQuery/index.ts"
+      "types": "./src/dataHooks/useDataCollectionSetMembersQuery/index.ts",
+      "import": "./src/dataHooks/useDataCollectionSetMembersQuery/index.ts"
     },
     "./dataHooks/useDataCollectionsQuery": {
-      "import": "./src/dataHooks/useDataCollectionsQuery/index.ts",
-      "types": "./src/dataHooks/useDataCollectionsQuery/index.ts"
+      "types": "./src/dataHooks/useDataCollectionsQuery/index.ts",
+      "import": "./src/dataHooks/useDataCollectionsQuery/index.ts"
     },
     "./dataHooks/useDimTypesQuery": {
-      "import": "./src/dataHooks/useDimTypesQuery/index.ts",
-      "types": "./src/dataHooks/useDimTypesQuery/index.ts"
+      "types": "./src/dataHooks/useDimTypesQuery/index.ts",
+      "import": "./src/dataHooks/useDimTypesQuery/index.ts"
     },
     "./dataHooks/useDimsQuery": {
-      "import": "./src/dataHooks/useDimsQuery/index.ts",
-      "types": "./src/dataHooks/useDimsQuery/index.ts"
+      "types": "./src/dataHooks/useDimsQuery/index.ts",
+      "import": "./src/dataHooks/useDimsQuery/index.ts"
     },
     "./dataHooks/useDiseasesQuery": {
-      "import": "./src/dataHooks/useDiseasesQuery/index.ts",
-      "types": "./src/dataHooks/useDiseasesQuery/index.ts"
+      "types": "./src/dataHooks/useDiseasesQuery/index.ts",
+      "import": "./src/dataHooks/useDiseasesQuery/index.ts"
     },
     "./dataHooks/useEtiologicalAgentsQuery": {
-      "import": "./src/dataHooks/useEtiologicalAgentsQuery/index.ts",
-      "types": "./src/dataHooks/useEtiologicalAgentsQuery/index.ts"
+      "types": "./src/dataHooks/useEtiologicalAgentsQuery/index.ts",
+      "import": "./src/dataHooks/useEtiologicalAgentsQuery/index.ts"
     },
     "./dataHooks/useGeneticDistanceProtocolsQuery": {
-      "import": "./src/dataHooks/useGeneticDistanceProtocolsQuery/index.ts",
-      "types": "./src/dataHooks/useGeneticDistanceProtocolsQuery/index.ts"
+      "types": "./src/dataHooks/useGeneticDistanceProtocolsQuery/index.ts",
+      "import": "./src/dataHooks/useGeneticDistanceProtocolsQuery/index.ts"
     },
     "./dataHooks/useOrganizationAccessCasePoliciesQuery": {
-      "import": "./src/dataHooks/useOrganizationAccessCasePoliciesQuery/index.ts",
-      "types": "./src/dataHooks/useOrganizationAccessCasePoliciesQuery/index.ts"
+      "types": "./src/dataHooks/useOrganizationAccessCasePoliciesQuery/index.ts",
+      "import": "./src/dataHooks/useOrganizationAccessCasePoliciesQuery/index.ts"
     },
     "./dataHooks/useOrganizationShareCasePoliciesQuery": {
-      "import": "./src/dataHooks/useOrganizationShareCasePoliciesQuery/index.ts",
-      "types": "./src/dataHooks/useOrganizationShareCasePoliciesQuery/index.ts"
+      "types": "./src/dataHooks/useOrganizationShareCasePoliciesQuery/index.ts",
+      "import": "./src/dataHooks/useOrganizationShareCasePoliciesQuery/index.ts"
     },
     "./dataHooks/useRefColsQuery": {
-      "import": "./src/dataHooks/useRefColsQuery/index.ts",
-      "types": "./src/dataHooks/useRefColsQuery/index.ts"
+      "types": "./src/dataHooks/useRefColsQuery/index.ts",
+      "import": "./src/dataHooks/useRefColsQuery/index.ts"
     },
     "./dataHooks/useRefColsValidationRulesQuery": {
-      "import": "./src/dataHooks/useRefColsValidationRulesQuery/index.ts",
-      "types": "./src/dataHooks/useRefColsValidationRulesQuery/index.ts"
+      "types": "./src/dataHooks/useRefColsValidationRulesQuery/index.ts",
+      "import": "./src/dataHooks/useRefColsValidationRulesQuery/index.ts"
     },
     "./dataHooks/useRefDimsQuery": {
-      "import": "./src/dataHooks/useRefDimsQuery/index.ts",
-      "types": "./src/dataHooks/useRefDimsQuery/index.ts"
+      "types": "./src/dataHooks/useRefDimsQuery/index.ts",
+      "import": "./src/dataHooks/useRefDimsQuery/index.ts"
     },
     "./dataHooks/useRegionQuery": {
-      "import": "./src/dataHooks/useRegionQuery/index.ts",
-      "types": "./src/dataHooks/useRegionQuery/index.ts"
+      "types": "./src/dataHooks/useRegionQuery/index.ts",
+      "import": "./src/dataHooks/useRegionQuery/index.ts"
     },
     "./dataHooks/useRegionRelationTypeQuery": {
-      "import": "./src/dataHooks/useRegionRelationTypeQuery/index.ts",
-      "types": "./src/dataHooks/useRegionRelationTypeQuery/index.ts"
+      "types": "./src/dataHooks/useRegionRelationTypeQuery/index.ts",
+      "import": "./src/dataHooks/useRegionRelationTypeQuery/index.ts"
     },
     "./dataHooks/useRegionSetsQuery": {
-      "import": "./src/dataHooks/useRegionSetsQuery/index.ts",
-      "types": "./src/dataHooks/useRegionSetsQuery/index.ts"
+      "types": "./src/dataHooks/useRegionSetsQuery/index.ts",
+      "import": "./src/dataHooks/useRegionSetsQuery/index.ts"
     },
     "./dataHooks/useSequencingProtocolsQuery": {
-      "import": "./src/dataHooks/useSequencingProtocolsQuery/index.ts",
-      "types": "./src/dataHooks/useSequencingProtocolsQuery/index.ts"
+      "types": "./src/dataHooks/useSequencingProtocolsQuery/index.ts",
+      "import": "./src/dataHooks/useSequencingProtocolsQuery/index.ts"
     },
     "./dataHooks/useTreeAlgorithmCodesQuery": {
-      "import": "./src/dataHooks/useTreeAlgorithmCodesQuery/index.ts",
-      "types": "./src/dataHooks/useTreeAlgorithmCodesQuery/index.ts"
+      "types": "./src/dataHooks/useTreeAlgorithmCodesQuery/index.ts",
+      "import": "./src/dataHooks/useTreeAlgorithmCodesQuery/index.ts"
     },
     "./dataHooks/useUserAccessCasePoliciesQuery": {
-      "import": "./src/dataHooks/useUserAccessCasePoliciesQuery/index.ts",
-      "types": "./src/dataHooks/useUserAccessCasePoliciesQuery/index.ts"
+      "types": "./src/dataHooks/useUserAccessCasePoliciesQuery/index.ts",
+      "import": "./src/dataHooks/useUserAccessCasePoliciesQuery/index.ts"
     },
     "./dataHooks/useUserEffectiveRightsQuery": {
-      "import": "./src/dataHooks/useUserEffectiveRightsQuery/index.ts",
-      "types": "./src/dataHooks/useUserEffectiveRightsQuery/index.ts"
+      "types": "./src/dataHooks/useUserEffectiveRightsQuery/index.ts",
+      "import": "./src/dataHooks/useUserEffectiveRightsQuery/index.ts"
     },
     "./dataHooks/useUserShareCasePoliciesQuery": {
-      "import": "./src/dataHooks/useUserShareCasePoliciesQuery/index.ts",
-      "types": "./src/dataHooks/useUserShareCasePoliciesQuery/index.ts"
+      "types": "./src/dataHooks/useUserShareCasePoliciesQuery/index.ts",
+      "import": "./src/dataHooks/useUserShareCasePoliciesQuery/index.ts"
     },
     "./hooks/useOrganizationCasePolicyNameFactory": {
-      "import": "./src/hooks/useOrganizationCasePolicyNameFactory/index.ts",
-      "types": "./src/hooks/useOrganizationCasePolicyNameFactory/index.ts"
+      "types": "./src/hooks/useOrganizationCasePolicyNameFactory/index.ts",
+      "import": "./src/hooks/useOrganizationCasePolicyNameFactory/index.ts"
     },
     "./hooks/useUserCasePolicyNameFactory": {
-      "import": "./src/hooks/useUserCasePolicyNameFactory/index.ts",
-      "types": "./src/hooks/useUserCasePolicyNameFactory/index.ts"
+      "types": "./src/hooks/useUserCasePolicyNameFactory/index.ts",
+      "import": "./src/hooks/useUserCasePolicyNameFactory/index.ts"
     },
     "./models/caseAccess": {
-      "import": "./src/models/caseAccess.ts",
-      "types": "./src/models/caseAccess.ts"
+      "types": "./src/models/caseAccess.ts",
+      "import": "./src/models/caseAccess.ts"
     },
     "./models/caseDb": {
-      "import": "./src/models/caseDb.ts",
-      "types": "./src/models/caseDb.ts"
+      "types": "./src/models/caseDb.ts",
+      "import": "./src/models/caseDb.ts"
     },
     "./models/config": {
-      "import": "./src/models/config.ts",
-      "types": "./src/models/config.ts"
+      "types": "./src/models/config.ts",
+      "import": "./src/models/config.ts"
     },
     "./models/dashboard": {
-      "import": "./src/models/dashboard.ts",
-      "types": "./src/models/dashboard.ts"
+      "types": "./src/models/dashboard.ts",
+      "import": "./src/models/dashboard.ts"
     },
     "./models/stratification": {
-      "import": "./src/models/stratification.ts",
-      "types": "./src/models/stratification.ts"
+      "types": "./src/models/stratification.ts",
+      "import": "./src/models/stratification.ts"
     },
     "./models/theme": {
-      "import": "./src/models/theme.ts",
-      "types": "./src/models/theme.ts"
+      "types": "./src/models/theme.ts",
+      "import": "./src/models/theme.ts"
     },
     "./models/upload": {
-      "import": "./src/models/upload.ts",
-      "types": "./src/models/upload.ts"
+      "types": "./src/models/upload.ts",
+      "import": "./src/models/upload.ts"
     },
     "./pages/CaseDbUsersAdminPage": {
-      "import": "./src/pages/CaseDbUsersAdminPage/index.ts",
-      "types": "./src/pages/CaseDbUsersAdminPage/index.ts"
+      "types": "./src/pages/CaseDbUsersAdminPage/index.ts",
+      "import": "./src/pages/CaseDbUsersAdminPage/index.ts"
     },
     "./pages/CaseSetCategoryAdminPage": {
-      "import": "./src/pages/CaseSetCategoryAdminPage/index.ts",
-      "types": "./src/pages/CaseSetCategoryAdminPage/index.ts"
+      "types": "./src/pages/CaseSetCategoryAdminPage/index.ts",
+      "import": "./src/pages/CaseSetCategoryAdminPage/index.ts"
     },
     "./pages/CaseSetStatusAdminPage": {
-      "import": "./src/pages/CaseSetStatusAdminPage/index.ts",
-      "types": "./src/pages/CaseSetStatusAdminPage/index.ts"
+      "types": "./src/pages/CaseSetStatusAdminPage/index.ts",
+      "import": "./src/pages/CaseSetStatusAdminPage/index.ts"
     },
     "./pages/CaseTypeSetCategoriesAdminPage": {
-      "import": "./src/pages/CaseTypeSetCategoriesAdminPage/index.ts",
-      "types": "./src/pages/CaseTypeSetCategoriesAdminPage/index.ts"
+      "types": "./src/pages/CaseTypeSetCategoriesAdminPage/index.ts",
+      "import": "./src/pages/CaseTypeSetCategoriesAdminPage/index.ts"
     },
     "./pages/CaseTypeSetsAdminPage": {
-      "import": "./src/pages/CaseTypeSetsAdminPage/index.ts",
-      "types": "./src/pages/CaseTypeSetsAdminPage/index.ts"
+      "types": "./src/pages/CaseTypeSetsAdminPage/index.ts",
+      "import": "./src/pages/CaseTypeSetsAdminPage/index.ts"
     },
     "./pages/CaseTypesAdminPage": {
-      "import": "./src/pages/CaseTypesAdminPage/index.ts",
-      "types": "./src/pages/CaseTypesAdminPage/index.ts"
+      "types": "./src/pages/CaseTypesAdminPage/index.ts",
+      "import": "./src/pages/CaseTypesAdminPage/index.ts"
     },
     "./pages/CasesDetailPage": {
-      "import": "./src/pages/CasesDetailPage/index.ts",
-      "types": "./src/pages/CasesDetailPage/index.ts"
+      "types": "./src/pages/CasesDetailPage/index.ts",
+      "import": "./src/pages/CasesDetailPage/index.ts"
     },
     "./pages/CasesPage": {
-      "import": "./src/pages/CasesPage/index.ts",
-      "types": "./src/pages/CasesPage/index.ts"
+      "types": "./src/pages/CasesPage/index.ts",
+      "import": "./src/pages/CasesPage/index.ts"
     },
     "./pages/ColSetsAdminPage": {
-      "import": "./src/pages/ColSetsAdminPage/index.ts",
-      "types": "./src/pages/ColSetsAdminPage/index.ts"
+      "types": "./src/pages/ColSetsAdminPage/index.ts",
+      "import": "./src/pages/ColSetsAdminPage/index.ts"
     },
     "./pages/ColsAdminPage": {
-      "import": "./src/pages/ColsAdminPage/index.ts",
-      "types": "./src/pages/ColsAdminPage/index.ts"
+      "types": "./src/pages/ColsAdminPage/index.ts",
+      "import": "./src/pages/ColsAdminPage/index.ts"
     },
     "./pages/ConceptRelationsAdminPage": {
-      "import": "./src/pages/ConceptRelationsAdminPage/index.ts",
-      "types": "./src/pages/ConceptRelationsAdminPage/index.ts"
+      "types": "./src/pages/ConceptRelationsAdminPage/index.ts",
+      "import": "./src/pages/ConceptRelationsAdminPage/index.ts"
     },
     "./pages/ConceptSetsAdminPage": {
-      "import": "./src/pages/ConceptSetsAdminPage/index.ts",
-      "types": "./src/pages/ConceptSetsAdminPage/index.ts"
+      "types": "./src/pages/ConceptSetsAdminPage/index.ts",
+      "import": "./src/pages/ConceptSetsAdminPage/index.ts"
     },
     "./pages/ConceptsAdminPage": {
-      "import": "./src/pages/ConceptsAdminPage/index.ts",
-      "types": "./src/pages/ConceptsAdminPage/index.ts"
+      "types": "./src/pages/ConceptsAdminPage/index.ts",
+      "import": "./src/pages/ConceptsAdminPage/index.ts"
     },
     "./pages/DataCollectionSetsAdminPage": {
-      "import": "./src/pages/DataCollectionSetsAdminPage/index.ts",
-      "types": "./src/pages/DataCollectionSetsAdminPage/index.ts"
+      "types": "./src/pages/DataCollectionSetsAdminPage/index.ts",
+      "import": "./src/pages/DataCollectionSetsAdminPage/index.ts"
     },
     "./pages/DataCollectionVisualizationPage": {
-      "import": "./src/pages/DataCollectionVisualizationPage/index.ts",
-      "types": "./src/pages/DataCollectionVisualizationPage/index.ts"
+      "types": "./src/pages/DataCollectionVisualizationPage/index.ts",
+      "import": "./src/pages/DataCollectionVisualizationPage/index.ts"
     },
     "./pages/DataCollectionsAdminPage": {
-      "import": "./src/pages/DataCollectionsAdminPage/index.ts",
-      "types": "./src/pages/DataCollectionsAdminPage/index.ts"
+      "types": "./src/pages/DataCollectionsAdminPage/index.ts",
+      "import": "./src/pages/DataCollectionsAdminPage/index.ts"
     },
     "./pages/DimsAdminPage": {
-      "import": "./src/pages/DimsAdminPage/index.ts",
-      "types": "./src/pages/DimsAdminPage/index.ts"
+      "types": "./src/pages/DimsAdminPage/index.ts",
+      "import": "./src/pages/DimsAdminPage/index.ts"
     },
     "./pages/DiseasesAdminPage": {
-      "import": "./src/pages/DiseasesAdminPage/index.ts",
-      "types": "./src/pages/DiseasesAdminPage/index.ts"
+      "types": "./src/pages/DiseasesAdminPage/index.ts",
+      "import": "./src/pages/DiseasesAdminPage/index.ts"
     },
     "./pages/EtiologicalAgentsAdminPage": {
-      "import": "./src/pages/EtiologicalAgentsAdminPage/index.ts",
-      "types": "./src/pages/EtiologicalAgentsAdminPage/index.ts"
+      "types": "./src/pages/EtiologicalAgentsAdminPage/index.ts",
+      "import": "./src/pages/EtiologicalAgentsAdminPage/index.ts"
     },
     "./pages/EtiologiesAdminPage": {
-      "import": "./src/pages/EtiologiesAdminPage/index.ts",
-      "types": "./src/pages/EtiologiesAdminPage/index.ts"
+      "types": "./src/pages/EtiologiesAdminPage/index.ts",
+      "import": "./src/pages/EtiologiesAdminPage/index.ts"
     },
     "./pages/EventsDetailPage": {
-      "import": "./src/pages/EventsDetailPage/index.ts",
-      "types": "./src/pages/EventsDetailPage/index.ts"
+      "types": "./src/pages/EventsDetailPage/index.ts",
+      "import": "./src/pages/EventsDetailPage/index.ts"
     },
     "./pages/EventsPage": {
-      "import": "./src/pages/EventsPage/index.ts",
-      "types": "./src/pages/EventsPage/index.ts"
+      "types": "./src/pages/EventsPage/index.ts",
+      "import": "./src/pages/EventsPage/index.ts"
     },
     "./pages/HomePage": {
-      "import": "./src/pages/HomePage/index.ts",
-      "types": "./src/pages/HomePage/index.ts"
+      "types": "./src/pages/HomePage/index.ts",
+      "import": "./src/pages/HomePage/index.ts"
     },
     "./pages/OrganizationAccessCasePoliciesAdminPage": {
-      "import": "./src/pages/OrganizationAccessCasePoliciesAdminPage/index.ts",
-      "types": "./src/pages/OrganizationAccessCasePoliciesAdminPage/index.ts"
+      "types": "./src/pages/OrganizationAccessCasePoliciesAdminPage/index.ts",
+      "import": "./src/pages/OrganizationAccessCasePoliciesAdminPage/index.ts"
     },
     "./pages/OrganizationShareCasePoliciesAdminPage": {
-      "import": "./src/pages/OrganizationShareCasePoliciesAdminPage/index.ts",
-      "types": "./src/pages/OrganizationShareCasePoliciesAdminPage/index.ts"
+      "types": "./src/pages/OrganizationShareCasePoliciesAdminPage/index.ts",
+      "import": "./src/pages/OrganizationShareCasePoliciesAdminPage/index.ts"
     },
     "./pages/RefColsAdminPage": {
-      "import": "./src/pages/RefColsAdminPage/index.ts",
-      "types": "./src/pages/RefColsAdminPage/index.ts"
+      "types": "./src/pages/RefColsAdminPage/index.ts",
+      "import": "./src/pages/RefColsAdminPage/index.ts"
     },
     "./pages/RefDimsAdminPage": {
-      "import": "./src/pages/RefDimsAdminPage/index.ts",
-      "types": "./src/pages/RefDimsAdminPage/index.ts"
+      "types": "./src/pages/RefDimsAdminPage/index.ts",
+      "import": "./src/pages/RefDimsAdminPage/index.ts"
     },
     "./pages/RegionRelationsAdminPage": {
-      "import": "./src/pages/RegionRelationsAdminPage/index.ts",
-      "types": "./src/pages/RegionRelationsAdminPage/index.ts"
+      "types": "./src/pages/RegionRelationsAdminPage/index.ts",
+      "import": "./src/pages/RegionRelationsAdminPage/index.ts"
     },
     "./pages/RegionSetShapesAdminPage": {
-      "import": "./src/pages/RegionSetShapesAdminPage/index.ts",
-      "types": "./src/pages/RegionSetShapesAdminPage/index.ts"
+      "types": "./src/pages/RegionSetShapesAdminPage/index.ts",
+      "import": "./src/pages/RegionSetShapesAdminPage/index.ts"
     },
     "./pages/RegionSetsAdminPage": {
-      "import": "./src/pages/RegionSetsAdminPage/index.ts",
-      "types": "./src/pages/RegionSetsAdminPage/index.ts"
+      "types": "./src/pages/RegionSetsAdminPage/index.ts",
+      "import": "./src/pages/RegionSetsAdminPage/index.ts"
     },
     "./pages/RegionsAdminPage": {
-      "import": "./src/pages/RegionsAdminPage/index.ts",
-      "types": "./src/pages/RegionsAdminPage/index.ts"
+      "types": "./src/pages/RegionsAdminPage/index.ts",
+      "import": "./src/pages/RegionsAdminPage/index.ts"
     },
     "./pages/TrendsPage": {
-      "import": "./src/pages/TrendsPage/index.ts",
-      "types": "./src/pages/TrendsPage/index.ts"
+      "types": "./src/pages/TrendsPage/index.ts",
+      "import": "./src/pages/TrendsPage/index.ts"
     },
     "./pages/UploadPage": {
-      "import": "./src/pages/UploadPage/index.ts",
-      "types": "./src/pages/UploadPage/index.ts"
+      "types": "./src/pages/UploadPage/index.ts",
+      "import": "./src/pages/UploadPage/index.ts"
     },
     "./pages/UserAccessCasePoliciesAdminPage": {
-      "import": "./src/pages/UserAccessCasePoliciesAdminPage/index.ts",
-      "types": "./src/pages/UserAccessCasePoliciesAdminPage/index.ts"
+      "types": "./src/pages/UserAccessCasePoliciesAdminPage/index.ts",
+      "import": "./src/pages/UserAccessCasePoliciesAdminPage/index.ts"
     },
     "./pages/UserEffectiveRightsAdminPage": {
-      "import": "./src/pages/UserEffectiveRightsAdminPage/index.ts",
-      "types": "./src/pages/UserEffectiveRightsAdminPage/index.ts"
+      "types": "./src/pages/UserEffectiveRightsAdminPage/index.ts",
+      "import": "./src/pages/UserEffectiveRightsAdminPage/index.ts"
     },
     "./pages/UserEffectiveRightsTesterAdminPage": {
-      "import": "./src/pages/UserEffectiveRightsTesterAdminPage/index.ts",
-      "types": "./src/pages/UserEffectiveRightsTesterAdminPage/index.ts"
+      "types": "./src/pages/UserEffectiveRightsTesterAdminPage/index.ts",
+      "import": "./src/pages/UserEffectiveRightsTesterAdminPage/index.ts"
     },
     "./pages/UserShareCasePoliciesAdminPage": {
-      "import": "./src/pages/UserShareCasePoliciesAdminPage/index.ts",
-      "types": "./src/pages/UserShareCasePoliciesAdminPage/index.ts"
+      "types": "./src/pages/UserShareCasePoliciesAdminPage/index.ts",
+      "import": "./src/pages/UserShareCasePoliciesAdminPage/index.ts"
     },
     "./routes": {
-      "import": "./src/routes/index.ts",
-      "types": "./src/routes/index.ts"
+      "types": "./src/routes/index.ts",
+      "import": "./src/routes/index.ts"
     },
     "./setup/setup": {
-      "import": "./src/setup/setup.ts",
-      "types": "./src/setup/setup.ts"
+      "types": "./src/setup/setup.ts",
+      "import": "./src/setup/setup.ts"
     },
     "./stores/dashboardStore": {
-      "import": "./src/stores/dashboardStore/index.ts",
-      "types": "./src/stores/dashboardStore/index.ts"
+      "types": "./src/stores/dashboardStore/index.ts",
+      "import": "./src/stores/dashboardStore/index.ts"
     },
     "./stores/uploadStore": {
-      "import": "./src/stores/uploadStore/index.ts",
-      "types": "./src/stores/uploadStore/index.ts"
+      "types": "./src/stores/uploadStore/index.ts",
+      "import": "./src/stores/uploadStore/index.ts"
     },
     "./stores/userProfileStore": {
-      "import": "./src/stores/userProfileStore/index.ts",
-      "types": "./src/stores/userProfileStore/index.ts"
+      "types": "./src/stores/userProfileStore/index.ts",
+      "import": "./src/stores/userProfileStore/index.ts"
     },
     "./theme/demoTheme": {
-      "import": "./src/theme/demoTheme/index.ts",
-      "types": "./src/theme/demoTheme/index.ts"
+      "types": "./src/theme/demoTheme/index.ts",
+      "import": "./src/theme/demoTheme/index.ts"
     },
     "./utils/AbacUtil": {
-      "import": "./src/utils/AbacUtil/index.ts",
-      "types": "./src/utils/AbacUtil/index.ts"
+      "types": "./src/utils/AbacUtil/index.ts",
+      "import": "./src/utils/AbacUtil/index.ts"
     },
     "./utils/CaseDbDataUtil": {
-      "import": "./src/utils/CaseDbDataUtil/index.ts",
-      "types": "./src/utils/CaseDbDataUtil/index.ts"
+      "types": "./src/utils/CaseDbDataUtil/index.ts",
+      "import": "./src/utils/CaseDbDataUtil/index.ts"
     },
     "./utils/CaseDbDownloadUtil": {
-      "import": "./src/utils/CaseDbDownloadUtil/index.ts",
-      "types": "./src/utils/CaseDbDownloadUtil/index.ts"
+      "types": "./src/utils/CaseDbDownloadUtil/index.ts",
+      "import": "./src/utils/CaseDbDownloadUtil/index.ts"
     },
     "./utils/CaseDbStandardConfigUtil": {
-      "import": "./src/utils/CaseDbStandardConfigUtil/index.ts",
-      "types": "./src/utils/CaseDbStandardConfigUtil/index.ts"
+      "types": "./src/utils/CaseDbStandardConfigUtil/index.ts",
+      "import": "./src/utils/CaseDbStandardConfigUtil/index.ts"
     },
     "./utils/CaseDbTableUtil": {
-      "import": "./src/utils/CaseDbTableUtil/index.ts",
-      "types": "./src/utils/CaseDbTableUtil/index.ts"
+      "types": "./src/utils/CaseDbTableUtil/index.ts",
+      "import": "./src/utils/CaseDbTableUtil/index.ts"
     },
     "./utils/CaseSelectionUtil": {
-      "import": "./src/utils/CaseSelectionUtil/index.ts",
-      "types": "./src/utils/CaseSelectionUtil/index.ts"
+      "types": "./src/utils/CaseSelectionUtil/index.ts",
+      "import": "./src/utils/CaseSelectionUtil/index.ts"
     },
     "./utils/CaseSetUtil": {
-      "import": "./src/utils/CaseSetUtil/index.ts",
-      "types": "./src/utils/CaseSetUtil/index.ts"
+      "types": "./src/utils/CaseSetUtil/index.ts",
+      "import": "./src/utils/CaseSetUtil/index.ts"
     },
     "./utils/CaseTypeFormUtil": {
-      "import": "./src/utils/CaseTypeFormUtil/index.ts",
-      "types": "./src/utils/CaseTypeFormUtil/index.ts"
+      "types": "./src/utils/CaseTypeFormUtil/index.ts",
+      "import": "./src/utils/CaseTypeFormUtil/index.ts"
     },
     "./utils/CaseTypeUtil": {
-      "import": "./src/utils/CaseTypeUtil/index.ts",
-      "types": "./src/utils/CaseTypeUtil/index.ts"
+      "types": "./src/utils/CaseTypeUtil/index.ts",
+      "import": "./src/utils/CaseTypeUtil/index.ts"
     },
     "./utils/CaseUtil": {
-      "import": "./src/utils/CaseUtil/index.ts",
-      "types": "./src/utils/CaseUtil/index.ts"
+      "types": "./src/utils/CaseUtil/index.ts",
+      "import": "./src/utils/CaseUtil/index.ts"
     },
     "./utils/DashboardUtil": {
-      "import": "./src/utils/DashboardUtil/index.ts",
-      "types": "./src/utils/DashboardUtil/index.ts"
+      "types": "./src/utils/DashboardUtil/index.ts",
+      "import": "./src/utils/DashboardUtil/index.ts"
     },
     "./utils/DataSetUtil": {
-      "import": "./src/utils/DataSetUtil/index.ts",
-      "types": "./src/utils/DataSetUtil/index.ts"
+      "types": "./src/utils/DataSetUtil/index.ts",
+      "import": "./src/utils/DataSetUtil/index.ts"
     },
     "./utils/EffectiveRightsUtil": {
-      "import": "./src/utils/EffectiveRightsUtil/index.ts",
-      "types": "./src/utils/EffectiveRightsUtil/index.ts"
+      "types": "./src/utils/EffectiveRightsUtil/index.ts",
+      "import": "./src/utils/EffectiveRightsUtil/index.ts"
     },
     "./utils/EpiCurveUtil": {
-      "import": "./src/utils/EpiCurveUtil/index.ts",
-      "types": "./src/utils/EpiCurveUtil/index.ts"
+      "types": "./src/utils/EpiCurveUtil/index.ts",
+      "import": "./src/utils/EpiCurveUtil/index.ts"
     },
     "./utils/FileUtil": {
-      "import": "./src/utils/FileUtil/index.ts",
-      "types": "./src/utils/FileUtil/index.ts"
+      "types": "./src/utils/FileUtil/index.ts",
+      "import": "./src/utils/FileUtil/index.ts"
     },
     "./utils/FilterUtil": {
-      "import": "./src/utils/FilterUtil/index.ts",
-      "types": "./src/utils/FilterUtil/index.ts"
+      "types": "./src/utils/FilterUtil/index.ts",
+      "import": "./src/utils/FilterUtil/index.ts"
     },
     "./utils/FindSimilarCasesUtil": {
-      "import": "./src/utils/FindSimilarCasesUtil/index.ts",
-      "types": "./src/utils/FindSimilarCasesUtil/index.ts"
+      "types": "./src/utils/FindSimilarCasesUtil/index.ts",
+      "import": "./src/utils/FindSimilarCasesUtil/index.ts"
     },
     "./utils/HistogramUtil": {
-      "import": "./src/utils/HistogramUtil/index.ts",
-      "types": "./src/utils/HistogramUtil/index.ts"
+      "types": "./src/utils/HistogramUtil/index.ts",
+      "import": "./src/utils/HistogramUtil/index.ts"
     },
     "./utils/MapUtil": {
-      "import": "./src/utils/MapUtil/index.ts",
-      "types": "./src/utils/MapUtil/index.ts"
+      "types": "./src/utils/MapUtil/index.ts",
+      "import": "./src/utils/MapUtil/index.ts"
     },
     "./utils/StratificationUtil": {
-      "import": "./src/utils/StratificationUtil/index.ts",
-      "types": "./src/utils/StratificationUtil/index.ts"
+      "types": "./src/utils/StratificationUtil/index.ts",
+      "import": "./src/utils/StratificationUtil/index.ts"
     },
     "./utils/TreeWidgetUtil": {
-      "import": "./src/utils/TreeWidgetUtil/index.ts",
-      "types": "./src/utils/TreeWidgetUtil/index.ts"
+      "types": "./src/utils/TreeWidgetUtil/index.ts",
+      "import": "./src/utils/TreeWidgetUtil/index.ts"
     },
     "./utils/UploadUtil": {
-      "import": "./src/utils/UploadUtil/index.ts",
-      "types": "./src/utils/UploadUtil/index.ts"
+      "types": "./src/utils/UploadUtil/index.ts",
+      "import": "./src/utils/UploadUtil/index.ts"
     }
   },
   "scripts": {

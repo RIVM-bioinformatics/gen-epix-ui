@@ -22,92 +22,92 @@
         "types": "./dist/ui-form.d.ts"
       },
       "./components/fields/Autocomplete": {
-        "import": "./dist/components/fields/Autocomplete/index.js",
-        "types": "./dist/components/fields/Autocomplete/index.d.ts"
+        "types": "./dist/components/fields/Autocomplete/index.d.ts",
+        "import": "./dist/components/fields/Autocomplete/index.js"
       },
       "./components/fields/CheckboxGroup": {
-        "import": "./dist/components/fields/CheckboxGroup/index.js",
-        "types": "./dist/components/fields/CheckboxGroup/index.d.ts"
+        "types": "./dist/components/fields/CheckboxGroup/index.d.ts",
+        "import": "./dist/components/fields/CheckboxGroup/index.js"
       },
       "./components/fields/DatePicker": {
-        "import": "./dist/components/fields/DatePicker/index.js",
-        "types": "./dist/components/fields/DatePicker/index.d.ts"
+        "types": "./dist/components/fields/DatePicker/index.d.ts",
+        "import": "./dist/components/fields/DatePicker/index.js"
       },
       "./components/fields/DateRangePicker": {
-        "import": "./dist/components/fields/DateRangePicker/index.js",
-        "types": "./dist/components/fields/DateRangePicker/index.d.ts"
+        "types": "./dist/components/fields/DateRangePicker/index.d.ts",
+        "import": "./dist/components/fields/DateRangePicker/index.js"
       },
       "./components/fields/NumberField": {
-        "import": "./dist/components/fields/NumberField/index.js",
-        "types": "./dist/components/fields/NumberField/index.d.ts"
+        "types": "./dist/components/fields/NumberField/index.d.ts",
+        "import": "./dist/components/fields/NumberField/index.js"
       },
       "./components/fields/NumberRangeInput": {
-        "import": "./dist/components/fields/NumberRangeInput/index.js",
-        "types": "./dist/components/fields/NumberRangeInput/index.d.ts"
+        "types": "./dist/components/fields/NumberRangeInput/index.d.ts",
+        "import": "./dist/components/fields/NumberRangeInput/index.js"
       },
       "./components/fields/RadioGroup": {
-        "import": "./dist/components/fields/RadioGroup/index.js",
-        "types": "./dist/components/fields/RadioGroup/index.d.ts"
+        "types": "./dist/components/fields/RadioGroup/index.d.ts",
+        "import": "./dist/components/fields/RadioGroup/index.js"
       },
       "./components/fields/RichTextEditor": {
-        "import": "./dist/components/fields/RichTextEditor/index.js",
-        "types": "./dist/components/fields/RichTextEditor/index.d.ts"
+        "types": "./dist/components/fields/RichTextEditor/index.d.ts",
+        "import": "./dist/components/fields/RichTextEditor/index.js"
       },
       "./components/fields/Select": {
-        "import": "./dist/components/fields/Select/index.js",
-        "types": "./dist/components/fields/Select/index.d.ts"
+        "types": "./dist/components/fields/Select/index.d.ts",
+        "import": "./dist/components/fields/Select/index.js"
       },
       "./components/fields/Switch": {
-        "import": "./dist/components/fields/Switch/index.js",
-        "types": "./dist/components/fields/Switch/index.d.ts"
+        "types": "./dist/components/fields/Switch/index.d.ts",
+        "import": "./dist/components/fields/Switch/index.js"
       },
       "./components/fields/TextField": {
-        "import": "./dist/components/fields/TextField/index.js",
-        "types": "./dist/components/fields/TextField/index.d.ts"
+        "types": "./dist/components/fields/TextField/index.d.ts",
+        "import": "./dist/components/fields/TextField/index.js"
       },
       "./components/fields/ToggleButtonGroup": {
-        "import": "./dist/components/fields/ToggleButtonGroup/index.js",
-        "types": "./dist/components/fields/ToggleButtonGroup/index.d.ts"
+        "types": "./dist/components/fields/ToggleButtonGroup/index.d.ts",
+        "import": "./dist/components/fields/ToggleButtonGroup/index.js"
       },
       "./components/fields/TransferList": {
-        "import": "./dist/components/fields/TransferList/index.js",
-        "types": "./dist/components/fields/TransferList/index.d.ts"
+        "types": "./dist/components/fields/TransferList/index.d.ts",
+        "import": "./dist/components/fields/TransferList/index.js"
       },
       "./components/fields/UploadButton": {
-        "import": "./dist/components/fields/UploadButton/index.js",
-        "types": "./dist/components/fields/UploadButton/index.d.ts"
+        "types": "./dist/components/fields/UploadButton/index.d.ts",
+        "import": "./dist/components/fields/UploadButton/index.js"
       },
       "./components/helpers/FormFieldHelperText": {
-        "import": "./dist/components/helpers/FormFieldHelperText/index.js",
-        "types": "./dist/components/helpers/FormFieldHelperText/index.d.ts"
+        "types": "./dist/components/helpers/FormFieldHelperText/index.d.ts",
+        "import": "./dist/components/helpers/FormFieldHelperText/index.js"
       },
       "./components/helpers/FormFieldLoadingIndicator": {
-        "import": "./dist/components/helpers/FormFieldLoadingIndicator/index.js",
-        "types": "./dist/components/helpers/FormFieldLoadingIndicator/index.d.ts"
+        "types": "./dist/components/helpers/FormFieldLoadingIndicator/index.d.ts",
+        "import": "./dist/components/helpers/FormFieldLoadingIndicator/index.js"
       },
       "./components/helpers/GenericForm": {
-        "import": "./dist/components/helpers/GenericForm/index.js",
-        "types": "./dist/components/helpers/GenericForm/index.d.ts"
+        "types": "./dist/components/helpers/GenericForm/index.d.ts",
+        "import": "./dist/components/helpers/GenericForm/index.js"
       },
       "./hooks/useIsFormFieldRequiredFromSchema": {
-        "import": "./dist/hooks/useIsFormFieldRequiredFromSchema/index.js",
-        "types": "./dist/hooks/useIsFormFieldRequiredFromSchema/index.d.ts"
+        "types": "./dist/hooks/useIsFormFieldRequiredFromSchema/index.d.ts",
+        "import": "./dist/hooks/useIsFormFieldRequiredFromSchema/index.js"
       },
       "./models/form": {
-        "import": "./dist/models/form.js",
-        "types": "./dist/models/form.d.ts"
+        "types": "./dist/models/form.d.ts",
+        "import": "./dist/models/form.js"
       },
       "./setup/setup": {
-        "import": "./dist/setup/setup.js",
-        "types": "./dist/setup/setup.d.ts"
+        "types": "./dist/setup/setup.d.ts",
+        "import": "./dist/setup/setup.js"
       },
       "./utils/FormUtil": {
-        "import": "./dist/utils/FormUtil/index.js",
-        "types": "./dist/utils/FormUtil/index.d.ts"
+        "types": "./dist/utils/FormUtil/index.d.ts",
+        "import": "./dist/utils/FormUtil/index.js"
       },
       "./utils/SchemaUtil": {
-        "import": "./dist/utils/SchemaUtil/index.js",
-        "types": "./dist/utils/SchemaUtil/index.d.ts"
+        "types": "./dist/utils/SchemaUtil/index.d.ts",
+        "import": "./dist/utils/SchemaUtil/index.js"
       }
     }
   },
@@ -116,92 +116,92 @@
       "types": "./src/@types/ui-form.d.ts"
     },
     "./components/fields/Autocomplete": {
-      "import": "./src/components/fields/Autocomplete/index.ts",
-      "types": "./src/components/fields/Autocomplete/index.ts"
+      "types": "./src/components/fields/Autocomplete/index.ts",
+      "import": "./src/components/fields/Autocomplete/index.ts"
     },
     "./components/fields/CheckboxGroup": {
-      "import": "./src/components/fields/CheckboxGroup/index.ts",
-      "types": "./src/components/fields/CheckboxGroup/index.ts"
+      "types": "./src/components/fields/CheckboxGroup/index.ts",
+      "import": "./src/components/fields/CheckboxGroup/index.ts"
     },
     "./components/fields/DatePicker": {
-      "import": "./src/components/fields/DatePicker/index.ts",
-      "types": "./src/components/fields/DatePicker/index.ts"
+      "types": "./src/components/fields/DatePicker/index.ts",
+      "import": "./src/components/fields/DatePicker/index.ts"
     },
     "./components/fields/DateRangePicker": {
-      "import": "./src/components/fields/DateRangePicker/index.ts",
-      "types": "./src/components/fields/DateRangePicker/index.ts"
+      "types": "./src/components/fields/DateRangePicker/index.ts",
+      "import": "./src/components/fields/DateRangePicker/index.ts"
     },
     "./components/fields/NumberField": {
-      "import": "./src/components/fields/NumberField/index.ts",
-      "types": "./src/components/fields/NumberField/index.ts"
+      "types": "./src/components/fields/NumberField/index.ts",
+      "import": "./src/components/fields/NumberField/index.ts"
     },
     "./components/fields/NumberRangeInput": {
-      "import": "./src/components/fields/NumberRangeInput/index.ts",
-      "types": "./src/components/fields/NumberRangeInput/index.ts"
+      "types": "./src/components/fields/NumberRangeInput/index.ts",
+      "import": "./src/components/fields/NumberRangeInput/index.ts"
     },
     "./components/fields/RadioGroup": {
-      "import": "./src/components/fields/RadioGroup/index.ts",
-      "types": "./src/components/fields/RadioGroup/index.ts"
+      "types": "./src/components/fields/RadioGroup/index.ts",
+      "import": "./src/components/fields/RadioGroup/index.ts"
     },
     "./components/fields/RichTextEditor": {
-      "import": "./src/components/fields/RichTextEditor/index.ts",
-      "types": "./src/components/fields/RichTextEditor/index.ts"
+      "types": "./src/components/fields/RichTextEditor/index.ts",
+      "import": "./src/components/fields/RichTextEditor/index.ts"
     },
     "./components/fields/Select": {
-      "import": "./src/components/fields/Select/index.ts",
-      "types": "./src/components/fields/Select/index.ts"
+      "types": "./src/components/fields/Select/index.ts",
+      "import": "./src/components/fields/Select/index.ts"
     },
     "./components/fields/Switch": {
-      "import": "./src/components/fields/Switch/index.ts",
-      "types": "./src/components/fields/Switch/index.ts"
+      "types": "./src/components/fields/Switch/index.ts",
+      "import": "./src/components/fields/Switch/index.ts"
     },
     "./components/fields/TextField": {
-      "import": "./src/components/fields/TextField/index.ts",
-      "types": "./src/components/fields/TextField/index.ts"
+      "types": "./src/components/fields/TextField/index.ts",
+      "import": "./src/components/fields/TextField/index.ts"
     },
     "./components/fields/ToggleButtonGroup": {
-      "import": "./src/components/fields/ToggleButtonGroup/index.ts",
-      "types": "./src/components/fields/ToggleButtonGroup/index.ts"
+      "types": "./src/components/fields/ToggleButtonGroup/index.ts",
+      "import": "./src/components/fields/ToggleButtonGroup/index.ts"
     },
     "./components/fields/TransferList": {
-      "import": "./src/components/fields/TransferList/index.ts",
-      "types": "./src/components/fields/TransferList/index.ts"
+      "types": "./src/components/fields/TransferList/index.ts",
+      "import": "./src/components/fields/TransferList/index.ts"
     },
     "./components/fields/UploadButton": {
-      "import": "./src/components/fields/UploadButton/index.ts",
-      "types": "./src/components/fields/UploadButton/index.ts"
+      "types": "./src/components/fields/UploadButton/index.ts",
+      "import": "./src/components/fields/UploadButton/index.ts"
     },
     "./components/helpers/FormFieldHelperText": {
-      "import": "./src/components/helpers/FormFieldHelperText/index.ts",
-      "types": "./src/components/helpers/FormFieldHelperText/index.ts"
+      "types": "./src/components/helpers/FormFieldHelperText/index.ts",
+      "import": "./src/components/helpers/FormFieldHelperText/index.ts"
     },
     "./components/helpers/FormFieldLoadingIndicator": {
-      "import": "./src/components/helpers/FormFieldLoadingIndicator/index.ts",
-      "types": "./src/components/helpers/FormFieldLoadingIndicator/index.ts"
+      "types": "./src/components/helpers/FormFieldLoadingIndicator/index.ts",
+      "import": "./src/components/helpers/FormFieldLoadingIndicator/index.ts"
     },
     "./components/helpers/GenericForm": {
-      "import": "./src/components/helpers/GenericForm/index.ts",
-      "types": "./src/components/helpers/GenericForm/index.ts"
+      "types": "./src/components/helpers/GenericForm/index.ts",
+      "import": "./src/components/helpers/GenericForm/index.ts"
     },
     "./hooks/useIsFormFieldRequiredFromSchema": {
-      "import": "./src/hooks/useIsFormFieldRequiredFromSchema/index.ts",
-      "types": "./src/hooks/useIsFormFieldRequiredFromSchema/index.ts"
+      "types": "./src/hooks/useIsFormFieldRequiredFromSchema/index.ts",
+      "import": "./src/hooks/useIsFormFieldRequiredFromSchema/index.ts"
     },
     "./models/form": {
-      "import": "./src/models/form.ts",
-      "types": "./src/models/form.ts"
+      "types": "./src/models/form.ts",
+      "import": "./src/models/form.ts"
     },
     "./setup/setup": {
-      "import": "./src/setup/setup.ts",
-      "types": "./src/setup/setup.ts"
+      "types": "./src/setup/setup.ts",
+      "import": "./src/setup/setup.ts"
     },
     "./utils/FormUtil": {
-      "import": "./src/utils/FormUtil/index.ts",
-      "types": "./src/utils/FormUtil/index.ts"
+      "types": "./src/utils/FormUtil/index.ts",
+      "import": "./src/utils/FormUtil/index.ts"
     },
     "./utils/SchemaUtil": {
-      "import": "./src/utils/SchemaUtil/index.ts",
-      "types": "./src/utils/SchemaUtil/index.ts"
+      "types": "./src/utils/SchemaUtil/index.ts",
+      "import": "./src/utils/SchemaUtil/index.ts"
     }
   },
   "scripts": {

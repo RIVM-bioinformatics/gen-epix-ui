@@ -19,36 +19,36 @@
         "types": "./dist/ui-seqdb.d.ts"
       },
       "./components/app/SeqDbApp": {
-        "import": "./dist/components/app/SeqDbApp/index.js",
-        "types": "./dist/components/app/SeqDbApp/index.d.ts"
+        "types": "./dist/components/app/SeqDbApp/index.d.ts",
+        "import": "./dist/components/app/SeqDbApp/index.js"
       },
       "./models/config": {
-        "import": "./dist/models/config.js",
-        "types": "./dist/models/config.d.ts"
+        "types": "./dist/models/config.d.ts",
+        "import": "./dist/models/config.js"
       },
       "./models/theme": {
-        "import": "./dist/models/theme.js",
-        "types": "./dist/models/theme.d.ts"
+        "types": "./dist/models/theme.d.ts",
+        "import": "./dist/models/theme.js"
       },
       "./pages/HomePage": {
-        "import": "./dist/pages/HomePage/index.js",
-        "types": "./dist/pages/HomePage/index.d.ts"
+        "types": "./dist/pages/HomePage/index.d.ts",
+        "import": "./dist/pages/HomePage/index.js"
       },
       "./routes": {
-        "import": "./dist/routes/index.js",
-        "types": "./dist/routes/index.d.ts"
+        "types": "./dist/routes/index.d.ts",
+        "import": "./dist/routes/index.js"
       },
       "./setup/setup": {
-        "import": "./dist/setup/setup.js",
-        "types": "./dist/setup/setup.d.ts"
+        "types": "./dist/setup/setup.d.ts",
+        "import": "./dist/setup/setup.js"
       },
       "./theme/demoTheme": {
-        "import": "./dist/theme/demoTheme/index.js",
-        "types": "./dist/theme/demoTheme/index.d.ts"
+        "types": "./dist/theme/demoTheme/index.d.ts",
+        "import": "./dist/theme/demoTheme/index.js"
       },
       "./utils/SeqDbStandardConfigUtil": {
-        "import": "./dist/utils/SeqDbStandardConfigUtil/index.js",
-        "types": "./dist/utils/SeqDbStandardConfigUtil/index.d.ts"
+        "types": "./dist/utils/SeqDbStandardConfigUtil/index.d.ts",
+        "import": "./dist/utils/SeqDbStandardConfigUtil/index.js"
       }
     }
   },
@@ -57,36 +57,36 @@
       "types": "./src/@types/ui-seqdb.d.ts"
     },
     "./components/app/SeqDbApp": {
-      "import": "./src/components/app/SeqDbApp/index.ts",
-      "types": "./src/components/app/SeqDbApp/index.ts"
+      "types": "./src/components/app/SeqDbApp/index.ts",
+      "import": "./src/components/app/SeqDbApp/index.ts"
     },
     "./models/config": {
-      "import": "./src/models/config.ts",
-      "types": "./src/models/config.ts"
+      "types": "./src/models/config.ts",
+      "import": "./src/models/config.ts"
     },
     "./models/theme": {
-      "import": "./src/models/theme.ts",
-      "types": "./src/models/theme.ts"
+      "types": "./src/models/theme.ts",
+      "import": "./src/models/theme.ts"
     },
     "./pages/HomePage": {
-      "import": "./src/pages/HomePage/index.ts",
-      "types": "./src/pages/HomePage/index.ts"
+      "types": "./src/pages/HomePage/index.ts",
+      "import": "./src/pages/HomePage/index.ts"
     },
     "./routes": {
-      "import": "./src/routes/index.ts",
-      "types": "./src/routes/index.ts"
+      "types": "./src/routes/index.ts",
+      "import": "./src/routes/index.ts"
     },
     "./setup/setup": {
-      "import": "./src/setup/setup.ts",
-      "types": "./src/setup/setup.ts"
+      "types": "./src/setup/setup.ts",
+      "import": "./src/setup/setup.ts"
     },
     "./theme/demoTheme": {
-      "import": "./src/theme/demoTheme/index.ts",
-      "types": "./src/theme/demoTheme/index.ts"
+      "types": "./src/theme/demoTheme/index.ts",
+      "import": "./src/theme/demoTheme/index.ts"
     },
     "./utils/SeqDbStandardConfigUtil": {
-      "import": "./src/utils/SeqDbStandardConfigUtil/index.ts",
-      "types": "./src/utils/SeqDbStandardConfigUtil/index.ts"
+      "types": "./src/utils/SeqDbStandardConfigUtil/index.ts",
+      "import": "./src/utils/SeqDbStandardConfigUtil/index.ts"
     }
   },
   "scripts": {

@@ -19,175 +19,175 @@
     "access": "public",
     "exports": {
       "./classes/Subject": {
-        "import": "./dist/classes/Subject/index.js",
-        "types": "./dist/classes/Subject/index.d.ts"
+        "types": "./dist/classes/Subject/index.d.ts",
+        "import": "./dist/classes/Subject/index.js"
       },
       "./classes/abstracts/EventBusAbstract": {
-        "import": "./dist/classes/abstracts/EventBusAbstract/index.js",
-        "types": "./dist/classes/abstracts/EventBusAbstract/index.d.ts"
+        "types": "./dist/classes/abstracts/EventBusAbstract/index.d.ts",
+        "import": "./dist/classes/abstracts/EventBusAbstract/index.js"
       },
       "./classes/abstracts/SubscribableAbstract": {
-        "import": "./dist/classes/abstracts/SubscribableAbstract/index.js",
-        "types": "./dist/classes/abstracts/SubscribableAbstract/index.d.ts"
+        "types": "./dist/classes/abstracts/SubscribableAbstract/index.d.ts",
+        "import": "./dist/classes/abstracts/SubscribableAbstract/index.js"
       },
       "./classes/services/DevicePixelRatioService": {
-        "import": "./dist/classes/services/DevicePixelRatioService/index.js",
-        "types": "./dist/classes/services/DevicePixelRatioService/index.d.ts"
+        "types": "./dist/classes/services/DevicePixelRatioService/index.d.ts",
+        "import": "./dist/classes/services/DevicePixelRatioService/index.js"
       },
       "./classes/services/KeyboardShortcutService": {
-        "import": "./dist/classes/services/KeyboardShortcutService/index.js",
-        "types": "./dist/classes/services/KeyboardShortcutService/index.d.ts"
+        "types": "./dist/classes/services/KeyboardShortcutService/index.d.ts",
+        "import": "./dist/classes/services/KeyboardShortcutService/index.js"
       },
       "./classes/services/WindowService": {
-        "import": "./dist/classes/services/WindowService/index.js",
-        "types": "./dist/classes/services/WindowService/index.d.ts"
+        "types": "./dist/classes/services/WindowService/index.d.ts",
+        "import": "./dist/classes/services/WindowService/index.js"
       },
       "./constants/date": {
-        "import": "./dist/constants/date.js",
-        "types": "./dist/constants/date.d.ts"
+        "types": "./dist/constants/date.d.ts",
+        "import": "./dist/constants/date.js"
       },
       "./hooks/useArray": {
-        "import": "./dist/hooks/useArray/index.js",
-        "types": "./dist/hooks/useArray/index.d.ts"
+        "types": "./dist/hooks/useArray/index.d.ts",
+        "import": "./dist/hooks/useArray/index.js"
       },
       "./hooks/useDimensions": {
-        "import": "./dist/hooks/useDimensions/index.js",
-        "types": "./dist/hooks/useDimensions/index.d.ts"
+        "types": "./dist/hooks/useDimensions/index.d.ts",
+        "import": "./dist/hooks/useDimensions/index.js"
       },
       "./hooks/useScrollbarSize": {
-        "import": "./dist/hooks/useScrollbarSize/index.js",
-        "types": "./dist/hooks/useScrollbarSize/index.d.ts"
+        "types": "./dist/hooks/useScrollbarSize/index.d.ts",
+        "import": "./dist/hooks/useScrollbarSize/index.js"
       },
       "./hooks/useSubscribable": {
-        "import": "./dist/hooks/useSubscribable/index.js",
-        "types": "./dist/hooks/useSubscribable/index.d.ts"
+        "types": "./dist/hooks/useSubscribable/index.d.ts",
+        "import": "./dist/hooks/useSubscribable/index.js"
       },
       "./models/generic": {
-        "import": "./dist/models/generic.js",
-        "types": "./dist/models/generic.d.ts"
+        "types": "./dist/models/generic.d.ts",
+        "import": "./dist/models/generic.js"
       },
       "./models/testId": {
-        "import": "./dist/models/testId.js",
-        "types": "./dist/models/testId.d.ts"
+        "types": "./dist/models/testId.d.ts",
+        "import": "./dist/models/testId.js"
       },
       "./utils/DataUtil": {
-        "import": "./dist/utils/DataUtil/index.js",
-        "types": "./dist/utils/DataUtil/index.d.ts"
+        "types": "./dist/utils/DataUtil/index.d.ts",
+        "import": "./dist/utils/DataUtil/index.js"
       },
       "./utils/DownloadUtil": {
-        "import": "./dist/utils/DownloadUtil/index.js",
-        "types": "./dist/utils/DownloadUtil/index.d.ts"
+        "types": "./dist/utils/DownloadUtil/index.d.ts",
+        "import": "./dist/utils/DownloadUtil/index.js"
       },
       "./utils/HmrUtil": {
-        "import": "./dist/utils/HmrUtil/index.js",
-        "types": "./dist/utils/HmrUtil/index.d.ts"
+        "types": "./dist/utils/HmrUtil/index.d.ts",
+        "import": "./dist/utils/HmrUtil/index.js"
       },
       "./utils/NumberUtil": {
-        "import": "./dist/utils/NumberUtil/index.js",
-        "types": "./dist/utils/NumberUtil/index.d.ts"
+        "types": "./dist/utils/NumberUtil/index.d.ts",
+        "import": "./dist/utils/NumberUtil/index.js"
       },
       "./utils/ObjectUtil": {
-        "import": "./dist/utils/ObjectUtil/index.js",
-        "types": "./dist/utils/ObjectUtil/index.d.ts"
+        "types": "./dist/utils/ObjectUtil/index.d.ts",
+        "import": "./dist/utils/ObjectUtil/index.js"
       },
       "./utils/StringUtil": {
-        "import": "./dist/utils/StringUtil/index.js",
-        "types": "./dist/utils/StringUtil/index.d.ts"
+        "types": "./dist/utils/StringUtil/index.d.ts",
+        "import": "./dist/utils/StringUtil/index.js"
       },
       "./utils/TestIdUtil": {
-        "import": "./dist/utils/TestIdUtil/index.js",
-        "types": "./dist/utils/TestIdUtil/index.d.ts"
+        "types": "./dist/utils/TestIdUtil/index.d.ts",
+        "import": "./dist/utils/TestIdUtil/index.js"
       },
       "./utils/ValidationUtil": {
-        "import": "./dist/utils/ValidationUtil/index.js",
-        "types": "./dist/utils/ValidationUtil/index.d.ts"
+        "types": "./dist/utils/ValidationUtil/index.d.ts",
+        "import": "./dist/utils/ValidationUtil/index.js"
       }
     }
   },
   "exports": {
     "./classes/Subject": {
-      "import": "./src/classes/Subject/index.ts",
-      "types": "./src/classes/Subject/index.ts"
+      "types": "./src/classes/Subject/index.ts",
+      "import": "./src/classes/Subject/index.ts"
     },
     "./classes/abstracts/EventBusAbstract": {
-      "import": "./src/classes/abstracts/EventBusAbstract/index.ts",
-      "types": "./src/classes/abstracts/EventBusAbstract/index.ts"
+      "types": "./src/classes/abstracts/EventBusAbstract/index.ts",
+      "import": "./src/classes/abstracts/EventBusAbstract/index.ts"
     },
     "./classes/abstracts/SubscribableAbstract": {
-      "import": "./src/classes/abstracts/SubscribableAbstract/index.ts",
-      "types": "./src/classes/abstracts/SubscribableAbstract/index.ts"
+      "types": "./src/classes/abstracts/SubscribableAbstract/index.ts",
+      "import": "./src/classes/abstracts/SubscribableAbstract/index.ts"
     },
     "./classes/services/DevicePixelRatioService": {
-      "import": "./src/classes/services/DevicePixelRatioService/index.ts",
-      "types": "./src/classes/services/DevicePixelRatioService/index.ts"
+      "types": "./src/classes/services/DevicePixelRatioService/index.ts",
+      "import": "./src/classes/services/DevicePixelRatioService/index.ts"
     },
     "./classes/services/KeyboardShortcutService": {
-      "import": "./src/classes/services/KeyboardShortcutService/index.ts",
-      "types": "./src/classes/services/KeyboardShortcutService/index.ts"
+      "types": "./src/classes/services/KeyboardShortcutService/index.ts",
+      "import": "./src/classes/services/KeyboardShortcutService/index.ts"
     },
     "./classes/services/WindowService": {
-      "import": "./src/classes/services/WindowService/index.ts",
-      "types": "./src/classes/services/WindowService/index.ts"
+      "types": "./src/classes/services/WindowService/index.ts",
+      "import": "./src/classes/services/WindowService/index.ts"
     },
     "./constants/date": {
-      "import": "./src/constants/date.ts",
-      "types": "./src/constants/date.ts"
+      "types": "./src/constants/date.ts",
+      "import": "./src/constants/date.ts"
     },
     "./hooks/useArray": {
-      "import": "./src/hooks/useArray/index.ts",
-      "types": "./src/hooks/useArray/index.ts"
+      "types": "./src/hooks/useArray/index.ts",
+      "import": "./src/hooks/useArray/index.ts"
     },
     "./hooks/useDimensions": {
-      "import": "./src/hooks/useDimensions/index.ts",
-      "types": "./src/hooks/useDimensions/index.ts"
+      "types": "./src/hooks/useDimensions/index.ts",
+      "import": "./src/hooks/useDimensions/index.ts"
     },
     "./hooks/useScrollbarSize": {
-      "import": "./src/hooks/useScrollbarSize/index.ts",
-      "types": "./src/hooks/useScrollbarSize/index.ts"
+      "types": "./src/hooks/useScrollbarSize/index.ts",
+      "import": "./src/hooks/useScrollbarSize/index.ts"
     },
     "./hooks/useSubscribable": {
-      "import": "./src/hooks/useSubscribable/index.ts",
-      "types": "./src/hooks/useSubscribable/index.ts"
+      "types": "./src/hooks/useSubscribable/index.ts",
+      "import": "./src/hooks/useSubscribable/index.ts"
     },
     "./models/generic": {
-      "import": "./src/models/generic.ts",
-      "types": "./src/models/generic.ts"
+      "types": "./src/models/generic.ts",
+      "import": "./src/models/generic.ts"
     },
     "./models/testId": {
-      "import": "./src/models/testId.ts",
-      "types": "./src/models/testId.ts"
+      "types": "./src/models/testId.ts",
+      "import": "./src/models/testId.ts"
     },
     "./utils/DataUtil": {
-      "import": "./src/utils/DataUtil/index.ts",
-      "types": "./src/utils/DataUtil/index.ts"
+      "types": "./src/utils/DataUtil/index.ts",
+      "import": "./src/utils/DataUtil/index.ts"
     },
     "./utils/DownloadUtil": {
-      "import": "./src/utils/DownloadUtil/index.ts",
-      "types": "./src/utils/DownloadUtil/index.ts"
+      "types": "./src/utils/DownloadUtil/index.ts",
+      "import": "./src/utils/DownloadUtil/index.ts"
     },
     "./utils/HmrUtil": {
-      "import": "./src/utils/HmrUtil/index.ts",
-      "types": "./src/utils/HmrUtil/index.ts"
+      "types": "./src/utils/HmrUtil/index.ts",
+      "import": "./src/utils/HmrUtil/index.ts"
     },
     "./utils/NumberUtil": {
-      "import": "./src/utils/NumberUtil/index.ts",
-      "types": "./src/utils/NumberUtil/index.ts"
+      "types": "./src/utils/NumberUtil/index.ts",
+      "import": "./src/utils/NumberUtil/index.ts"
     },
     "./utils/ObjectUtil": {
-      "import": "./src/utils/ObjectUtil/index.ts",
-      "types": "./src/utils/ObjectUtil/index.ts"
+      "types": "./src/utils/ObjectUtil/index.ts",
+      "import": "./src/utils/ObjectUtil/index.ts"
     },
     "./utils/StringUtil": {
-      "import": "./src/utils/StringUtil/index.ts",
-      "types": "./src/utils/StringUtil/index.ts"
+      "types": "./src/utils/StringUtil/index.ts",
+      "import": "./src/utils/StringUtil/index.ts"
     },
     "./utils/TestIdUtil": {
-      "import": "./src/utils/TestIdUtil/index.ts",
-      "types": "./src/utils/TestIdUtil/index.ts"
+      "types": "./src/utils/TestIdUtil/index.ts",
+      "import": "./src/utils/TestIdUtil/index.ts"
     },
     "./utils/ValidationUtil": {
-      "import": "./src/utils/ValidationUtil/index.ts",
-      "types": "./src/utils/ValidationUtil/index.ts"
+      "types": "./src/utils/ValidationUtil/index.ts",
+      "import": "./src/utils/ValidationUtil/index.ts"
     }
   },
   "scripts": {
