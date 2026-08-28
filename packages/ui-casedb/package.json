@@ -1354,6 +1354,7 @@
     "i18next": "*",
     "react": "*",
     "react-dom": "*",
+    "react-i18next": "*",
     "yup": "*"
   },
   "dependencies": {
@@ -1370,7 +1371,6 @@
     "lodash": "4.18.1",
     "react-error-boundary": "6.1.2",
     "react-hook-form": "7.80.0",
-    "react-i18next": "17.0.8",
     "react-resizable-panels": "4.12.0",
     "react-router-dom": "7.18.1",
     "react-router": "8.1.0",
@@ -1412,6 +1412,7 @@
     "playwright": "1.61.1",
     "react": "19.2.7",
     "react-dom": "19.2.7",
+    "react-i18next": "17.0.8",
     "@microsoft/api-extractor": "7.58.9",
     "typescript": "6.0.3",
     "vite": "8.1.3",
