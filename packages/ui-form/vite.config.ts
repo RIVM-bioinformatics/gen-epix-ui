@@ -13,6 +13,7 @@ import dts from 'vite-plugin-dts';
 import { defineConfig } from 'vitest/config';
 import type { Target } from 'vite-plugin-static-copy';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { esmExternalRequirePlugin } from 'vite';
 
 type PackageManifest = {
   peerDependencies?: Record<string, string>;
@@ -94,6 +95,11 @@ export default defineConfig({
       output: {
         chunkFileNames: '_chunks/[name].js',
       },
+      plugins: [
+        esmExternalRequirePlugin({
+          external: peerDependencyExternalPatterns,
+        }),
+      ],
       treeshake: true,
     },
     sourcemap: true,

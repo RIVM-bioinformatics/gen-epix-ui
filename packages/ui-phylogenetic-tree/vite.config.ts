@@ -13,6 +13,7 @@ import dts from 'vite-plugin-dts';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
+import { esmExternalRequirePlugin } from 'vite';
 
 type PackageManifest = {
   peerDependencies?: Record<string, string>;
@@ -83,6 +84,11 @@ export default defineConfig({
       output: {
         chunkFileNames: '_chunks/[name].js',
       },
+      plugins: [
+        esmExternalRequirePlugin({
+          external: peerDependencyExternalPatterns,
+        }),
+      ],
       treeshake: true,
     },
     sourcemap: true,

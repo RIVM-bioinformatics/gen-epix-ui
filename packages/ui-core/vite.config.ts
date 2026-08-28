@@ -9,6 +9,7 @@ import {
   join,
 } from 'path';
 
+import { esmExternalRequirePlugin } from 'vite';
 import dts from 'vite-plugin-dts';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import type { Target } from 'vite-plugin-static-copy';
@@ -94,6 +95,11 @@ export default defineConfig({
       output: {
         chunkFileNames: '_chunks/[name].js',
       },
+      plugins: [
+        esmExternalRequirePlugin({
+          external: peerDependencyExternalPatterns,
+        }),
+      ],
       treeshake: true,
     },
     sourcemap: true,
