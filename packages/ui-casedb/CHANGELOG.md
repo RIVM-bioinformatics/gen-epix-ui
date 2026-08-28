@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.11.0...ui-casedb-v3.0.0) (2026-08-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
+
+### Features
+
+* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
+* improve widget unavailable messages ([212d1bd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/212d1bd7c2cae5b90cb36b15e509454c24379d33))
+* improve widget unavailable messages ([fb88637](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fb88637198a096f0bb68444eaddc9498e48f6075))
+* update to latest API ([2220fb5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2220fb503410068571c18127b83bb075f18e8ccb))
+
+
+### Bug Fixes
+
+* add test attributes to search box and handle escape key better ([a98014e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a98014e4f2c0a565ea5c5df3d0f84db2005021ec))
+* fix CSP violation in Histogram Tooltip ([91dd304](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/91dd304f16ddb00d636db841d5b352e741df2965))
+
 ## [2.11.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.10.0...ui-casedb-v2.11.0) (2026-07-16)
 
 

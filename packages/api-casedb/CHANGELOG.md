@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v2.8.0...api-casedb-v3.0.0) (2026-08-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
+
+### Features
+
+* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
+* implement anonymize user (right to be forgotton) ([a0df919](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a0df9190cf5584c638cf66cf0ee20e7593319b93))
+* update to latest API ([2220fb5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2220fb503410068571c18127b83bb075f18e8ccb))
+
 ## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v2.7.0...api-casedb-v2.8.0) (2026-07-16)
 
 
