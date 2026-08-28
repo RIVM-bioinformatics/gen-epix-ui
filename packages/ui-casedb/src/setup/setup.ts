@@ -27,13 +27,10 @@ import {
 } from '../routes';
 
 export const setupCaseDb = () => {
-  const adminRoutes = createAdminRoutes();
-  const routes = createRoutes(adminRoutes);
-
   RouterService.getInstance().initialize({
-    adminRoutes: adminRoutes as MyNonIndexRouteObject[],
+    adminRoutes: () => createAdminRoutes() as MyNonIndexRouteObject[],
     homePageComponent: HomePage,
-    routes: routes as MyNonIndexRouteObject[],
+    routes: () => createRoutes(RouterService.getInstance().adminRoutes) as MyNonIndexRouteObject[],
   });
   QueryClientService.getInstance<CASEDB_QUERY_KEY & COMMON_QUERY_KEY>().initialize({
     queryKeyDependencies: [COMMON_QUERY_DEPENDENCIES, CASEDB_QUERY_DEPENDENCIES],
