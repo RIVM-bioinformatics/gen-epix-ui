@@ -1,6 +1,7 @@
 {
   "packages/ui": "3.0.0",
   "packages/ui-core": "2.0.0",
+  "packages/ui-form": "2.0.0",
   "packages/ui-phylogenetic-tree": "2.0.0",
   "packages/ui-casedb": "3.0.0",
   "packages/ui-omopdb": "3.0.0",
