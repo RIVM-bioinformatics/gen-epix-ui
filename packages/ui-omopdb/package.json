@@ -9,35 +9,88 @@
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
   "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
   "files": [
     "dist"
   ],
   "publishConfig": {
     "access": "public",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
     "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.js"
+      "./types": {
+        "types": "./dist/ui-omopdb.d.ts"
       },
-      "./client": {
-        "types": "./dist/ui.d.ts"
+      "./components/app/OmopDbApp": {
+        "import": "./dist/components/app/OmopDbApp/index.js",
+        "types": "./dist/components/app/OmopDbApp/index.d.ts"
+      },
+      "./models/config": {
+        "import": "./dist/models/config.js",
+        "types": "./dist/models/config.d.ts"
+      },
+      "./models/theme": {
+        "import": "./dist/models/theme.js",
+        "types": "./dist/models/theme.d.ts"
+      },
+      "./pages/HomePage": {
+        "import": "./dist/pages/HomePage/index.js",
+        "types": "./dist/pages/HomePage/index.d.ts"
+      },
+      "./routes": {
+        "import": "./dist/routes/index.js",
+        "types": "./dist/routes/index.d.ts"
+      },
+      "./setup/setup": {
+        "import": "./dist/setup/setup.js",
+        "types": "./dist/setup/setup.d.ts"
+      },
+      "./theme/demoTheme": {
+        "import": "./dist/theme/demoTheme/index.js",
+        "types": "./dist/theme/demoTheme/index.d.ts"
+      },
+      "./utils/OmopDbStandardConfigUtil": {
+        "import": "./dist/utils/OmopDbStandardConfigUtil/index.js",
+        "types": "./dist/utils/OmopDbStandardConfigUtil/index.d.ts"
       }
     }
   },
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts"
+    "./types": {
+      "types": "./src/@types/ui-omopdb.d.ts"
     },
-    "./client": {
-      "types": "./src/@types/ui.d.ts"
+    "./components/app/OmopDbApp": {
+      "import": "./src/components/app/OmopDbApp/index.ts",
+      "types": "./src/components/app/OmopDbApp/index.ts"
+    },
+    "./models/config": {
+      "import": "./src/models/config.ts",
+      "types": "./src/models/config.ts"
+    },
+    "./models/theme": {
+      "import": "./src/models/theme.ts",
+      "types": "./src/models/theme.ts"
+    },
+    "./pages/HomePage": {
+      "import": "./src/pages/HomePage/index.ts",
+      "types": "./src/pages/HomePage/index.ts"
+    },
+    "./routes": {
+      "import": "./src/routes/index.ts",
+      "types": "./src/routes/index.ts"
+    },
+    "./setup/setup": {
+      "import": "./src/setup/setup.ts",
+      "types": "./src/setup/setup.ts"
+    },
+    "./theme/demoTheme": {
+      "import": "./src/theme/demoTheme/index.ts",
+      "types": "./src/theme/demoTheme/index.ts"
+    },
+    "./utils/OmopDbStandardConfigUtil": {
+      "import": "./src/utils/OmopDbStandardConfigUtil/index.ts",
+      "types": "./src/utils/OmopDbStandardConfigUtil/index.ts"
     }
   },
   "scripts": {
+    "update-exports": "node scripts/update-exports.js",
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public",
     "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",

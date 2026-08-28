@@ -4,7 +4,7 @@ import { ApiService } from '@gen-epix/ui/classes/services/ApiService';
 import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui/constants/query';
 import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
-import { setup } from '@gen-epix/ui/setup/setup';
+import { setupUi } from '@gen-epix/ui/setup/setup';
 import {
   SeqDbAbacApi,
   SeqDbAuthApi,
@@ -41,5 +41,5 @@ export const setupSeqDb = () => {
     organizationApi: SeqDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
     systemApi: SeqDbSystemApi.getInstance(),
   });
-  setup();
+  setupUi();
 };

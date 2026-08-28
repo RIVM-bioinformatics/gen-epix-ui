@@ -9,15 +9,11 @@
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
   "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
   "files": [
     "dist"
   ],
   "publishConfig": {
     "access": "public",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
     "exports": {
       "./types": {
         "types": "./dist/ui-casedb.d.ts"

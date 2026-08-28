@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 
-import { setupSeqDb } from '../../setup';
+import { setupSeqDb } from '../../setup/setup';
 import { SeqDbStandardConfigUtil } from '../../utils/SeqDbStandardConfigUtil';
 import { createSeqDbDemoTheme } from '../../theme/demoTheme';
 

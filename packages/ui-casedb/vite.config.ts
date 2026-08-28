@@ -196,7 +196,7 @@ export default defineConfig({
           name: 'browser',
           server: {
             deps: {
-              inline: ['@gen-epix/ui', '@gen-epix/ui-phylogenetic-tree', '@gen-epix/ui-core', 'vitest-browser-react'],
+              inline: ['@gen-epix/ui', '@gen-epix/ui-phylogenetic-tree', '@gen-epix/ui-core', '@gen-epix/ui-form', 'vitest-browser-react'],
             },
           },
           setupFiles: ['./src/test/setup/setup-browser.ts'],

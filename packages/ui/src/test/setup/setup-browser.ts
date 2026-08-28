@@ -1,5 +1,5 @@
 import { ConfigService } from '../../classes/services/ConfigService';
-import { setup } from '../../setup/setup';
+import { setupUi } from '../../setup/setup';
 import { createDemoTheme } from '../../theme/demoTheme';
 import { StandardConfigUtil } from '../../utils/StandardConfigUtil';
 
@@ -20,7 +20,7 @@ export const setupTestEnvironment = () => {
     };
   }
 
-  setup();
+  setupUi();
 };
 
 setupTestEnvironment();

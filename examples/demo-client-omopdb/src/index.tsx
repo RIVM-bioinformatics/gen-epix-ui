@@ -1,14 +1,12 @@
 import { createRoot } from 'react-dom/client';
 import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import { I18nService } from '@gen-epix/ui/classes/services/I18nService';
-import {
-  OmopDbApp,
-  setupOmopDb,
-} from '@gen-epix/ui-omopdb';
-import type { OmopDbConfig } from '@gen-epix/ui-omopdb';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { OmopDbConfig } from '@gen-epix/ui-omopdb/models/config';
+import { OmopDbApp } from '@gen-epix/ui-omopdb/components/app/OmopDbApp';
+import { setupOmopDb } from '@gen-epix/ui-omopdb/setup/setup';
 
-import { ConfigUtil } from './utils/ConfigUtil';
+import { ConfigUtil } from './utils/ConfigUtil/ConfigUtil';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
