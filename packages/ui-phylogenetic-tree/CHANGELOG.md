@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v2.0.0...ui-phylogenetic-tree-v2.1.0) (2026-08-28)
+
+
+### Features
+
+* add esmExternalRequirePlugin ([e26062f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e26062f4180dab04dd46382d75ab4deb013cadda))
+
 ## [2.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v1.0.0...ui-phylogenetic-tree-v2.0.0) (2026-08-28)
 
 

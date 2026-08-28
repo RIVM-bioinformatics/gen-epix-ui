@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v3.0.1...ui-casedb-v3.1.0) (2026-08-28)
+
+
+### Features
+
+* add esmExternalRequirePlugin ([e26062f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e26062f4180dab04dd46382d75ab4deb013cadda))
+
 ## [3.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v3.0.0...ui-casedb-v3.0.1) (2026-08-28)
 
 
