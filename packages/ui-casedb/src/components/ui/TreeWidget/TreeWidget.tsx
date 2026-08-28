@@ -25,12 +25,10 @@ import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
 import type { CaseDbRetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui';
-import {
-  ConfigService,
-  Spinner,
-  useQueryMemo,
-} from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { Spinner } from '@gen-epix/ui/components/ui/Spinner';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { PhylogeneticTree } from '@gen-epix/ui-phylogenetic-tree/components/PhylogeneticTree';
 import type {

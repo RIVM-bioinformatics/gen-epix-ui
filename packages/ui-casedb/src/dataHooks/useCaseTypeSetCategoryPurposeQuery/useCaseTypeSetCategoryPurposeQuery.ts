@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CaseDbCaseTypeSetCategoryPurpose } from '@gen-epix/api-casedb';
-import type { UseOptions } from '@gen-epix/ui';
+import type { UseOptions } from '@gen-epix/ui/models/dataHooks';
 import type { OptionBase } from '@gen-epix/ui-form/models/form';
 
 export const caseTypeSetCategoryPurposePresentationValues: Record<CaseDbCaseTypeSetCategoryPurpose, string> = {

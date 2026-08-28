@@ -3,12 +3,12 @@ import type {
   CaseDbCase,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  DialogAction,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import { withDialog } from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import type { ReactElement } from 'react';
 import {

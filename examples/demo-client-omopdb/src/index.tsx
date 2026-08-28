@@ -1,8 +1,6 @@
 import { createRoot } from 'react-dom/client';
-import {
-  ConfigService,
-  I18nService,
-} from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { I18nService } from '@gen-epix/ui/classes/services/I18nService';
 import {
   OmopDbApp,
   setupOmopDb,

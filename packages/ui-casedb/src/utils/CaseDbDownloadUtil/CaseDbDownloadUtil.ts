@@ -12,12 +12,10 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import {
-  ConfigService,
-  LogService,
-  NotificationService,
-  QueryClientService,
-} from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { LogService } from '@gen-epix/ui/classes/services/LogService';
+import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';

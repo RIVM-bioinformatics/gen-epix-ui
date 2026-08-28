@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { ConfigService } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 
 import { setupOmopDb } from '../../setup';
 import { OmopDbStandardConfigUtil } from '../../utils/OmopDbStandardConfigUtil';

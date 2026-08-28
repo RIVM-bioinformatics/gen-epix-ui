@@ -26,18 +26,16 @@ import type {
   CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  DialogAction,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  QueryClientService,
-  ResponseHandler,
-  useEditMutation,
-  useQueryMemo,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useEditMutation } from '@gen-epix/ui/hooks/useEditMutation';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';

@@ -16,17 +16,17 @@ import {
 import { useStore } from 'zustand';
 import { produce } from 'immer';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
+import type { Step } from '@gen-epix/ui/components/ui/Stepper';
 import type {
-  DialogAction,
-  Step,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
 import {
   Stepper,
   STEPPER_DIRECTION,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/components/ui/Stepper';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';

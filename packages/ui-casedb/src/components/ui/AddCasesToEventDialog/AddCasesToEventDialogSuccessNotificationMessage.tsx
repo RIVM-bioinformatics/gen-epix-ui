@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { useCallback } from 'react';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import { RouterService } from '@gen-epix/ui';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
 
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 

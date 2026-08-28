@@ -1,10 +1,8 @@
 import type { ReactNode } from 'react';
 import { isValidElement } from 'react';
-import type { MenuItemData } from '@gen-epix/ui';
-import {
-  MenuDataUtil,
-  NestedDropdown,
-} from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import { MenuDataUtil } from '@gen-epix/ui/utils/MenuDataUtil';
+import { NestedDropdown } from '@gen-epix/ui/components/ui/NestedMenu';
 
 import { WidgetHeaderIconButton } from '../WidgetHeaderIconButton';
 

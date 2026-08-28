@@ -29,19 +29,17 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  DialogAction,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  LoadableUtil,
-  QueryClientService,
-  ResponseHandler,
-  useCreateMutation,
-  useItemQuery,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useCreateMutation } from '@gen-epix/ui/hooks/useCreateMutation';
+import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';

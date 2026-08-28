@@ -23,12 +23,10 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  AuthenticationService,
-  ConfigService,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { AuthenticationService } from '@gen-epix/ui/classes/services/AuthenticationService';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';

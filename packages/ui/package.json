@@ -9,8 +9,7 @@
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
   "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "types": "./src/@types/index.d.ts",
   "files": [
     "dist"
   ],
@@ -19,32 +18,1020 @@
       "dist"
     ],
     "access": "public",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
+    "types": "./dist/@types/index.d.ts",
     "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.js"
-      },
-      "./client": {
+      "./types": {
         "types": "./dist/ui.d.ts"
+      },
+      "./classes/TableEventBus": {
+        "import": "./dist/classes/TableEventBus/index.js",
+        "types": "./dist/classes/TableEventBus/index.d.ts"
+      },
+      "./classes/abstracts/FilterAbstract": {
+        "import": "./dist/classes/abstracts/FilterAbstract/index.js",
+        "types": "./dist/classes/abstracts/FilterAbstract/index.d.ts"
+      },
+      "./classes/filters": {
+        "import": "./dist/classes/filters/index.js",
+        "types": "./dist/classes/filters/index.d.ts"
+      },
+      "./classes/services/ApiService": {
+        "import": "./dist/classes/services/ApiService/index.js",
+        "types": "./dist/classes/services/ApiService/index.d.ts"
+      },
+      "./classes/services/AuthenticationService": {
+        "import": "./dist/classes/services/AuthenticationService/index.js",
+        "types": "./dist/classes/services/AuthenticationService/index.d.ts"
+      },
+      "./classes/services/AuthorizationService": {
+        "import": "./dist/classes/services/AuthorizationService/index.js",
+        "types": "./dist/classes/services/AuthorizationService/index.d.ts"
+      },
+      "./classes/services/BackendVersionService": {
+        "import": "./dist/classes/services/BackendVersionService/index.js",
+        "types": "./dist/classes/services/BackendVersionService/index.d.ts"
+      },
+      "./classes/services/BreadcrumbService": {
+        "import": "./dist/classes/services/BreadcrumbService/index.js",
+        "types": "./dist/classes/services/BreadcrumbService/index.d.ts"
+      },
+      "./classes/services/ConfigService": {
+        "import": "./dist/classes/services/ConfigService/index.js",
+        "types": "./dist/classes/services/ConfigService/index.d.ts"
+      },
+      "./classes/services/EmotionCacheService": {
+        "import": "./dist/classes/services/EmotionCacheService/index.js",
+        "types": "./dist/classes/services/EmotionCacheService/index.d.ts"
+      },
+      "./classes/services/FeatureFlagsService": {
+        "import": "./dist/classes/services/FeatureFlagsService/index.js",
+        "types": "./dist/classes/services/FeatureFlagsService/index.d.ts"
+      },
+      "./classes/services/I18nService": {
+        "import": "./dist/classes/services/I18nService/index.js",
+        "types": "./dist/classes/services/I18nService/index.d.ts"
+      },
+      "./classes/services/InactivityService": {
+        "import": "./dist/classes/services/InactivityService/index.js",
+        "types": "./dist/classes/services/InactivityService/index.d.ts"
+      },
+      "./classes/services/LogService": {
+        "import": "./dist/classes/services/LogService/index.js",
+        "types": "./dist/classes/services/LogService/index.d.ts"
+      },
+      "./classes/services/NavigationHistoryService": {
+        "import": "./dist/classes/services/NavigationHistoryService/index.js",
+        "types": "./dist/classes/services/NavigationHistoryService/index.d.ts"
+      },
+      "./classes/services/NotificationService": {
+        "import": "./dist/classes/services/NotificationService/index.js",
+        "types": "./dist/classes/services/NotificationService/index.d.ts"
+      },
+      "./classes/services/PageEventBusService": {
+        "import": "./dist/classes/services/PageEventBusService/index.js",
+        "types": "./dist/classes/services/PageEventBusService/index.d.ts"
+      },
+      "./classes/services/QueryClientService": {
+        "import": "./dist/classes/services/QueryClientService/index.js",
+        "types": "./dist/classes/services/QueryClientService/index.d.ts"
+      },
+      "./classes/services/RouterService": {
+        "import": "./dist/classes/services/RouterService/index.js",
+        "types": "./dist/classes/services/RouterService/index.d.ts"
+      },
+      "./classes/services/UserSettingsService": {
+        "import": "./dist/classes/services/UserSettingsService/index.js",
+        "types": "./dist/classes/services/UserSettingsService/index.d.ts"
+      },
+      "./components/app/App": {
+        "import": "./dist/components/app/App/index.js",
+        "types": "./dist/components/app/App/index.d.ts"
+      },
+      "./components/app/ApplicationBootstrap": {
+        "import": "./dist/components/app/ApplicationBootstrap/index.js",
+        "types": "./dist/components/app/ApplicationBootstrap/index.d.ts"
+      },
+      "./components/app/AuthenticationWrapper": {
+        "import": "./dist/components/app/AuthenticationWrapper/index.js",
+        "types": "./dist/components/app/AuthenticationWrapper/index.d.ts"
+      },
+      "./components/app/AuthorizationWrapper": {
+        "import": "./dist/components/app/AuthorizationWrapper/index.js",
+        "types": "./dist/components/app/AuthorizationWrapper/index.d.ts"
+      },
+      "./components/app/RouterRoot": {
+        "import": "./dist/components/app/RouterRoot/index.js",
+        "types": "./dist/components/app/RouterRoot/index.d.ts"
+      },
+      "./components/epi/EpiContactDetailsDialog": {
+        "import": "./dist/components/epi/EpiContactDetailsDialog/index.js",
+        "types": "./dist/components/epi/EpiContactDetailsDialog/index.d.ts"
+      },
+      "./components/filters/BooleanFilterField": {
+        "import": "./dist/components/filters/BooleanFilterField/index.js",
+        "types": "./dist/components/filters/BooleanFilterField/index.d.ts"
+      },
+      "./components/filters/DateFilterField": {
+        "import": "./dist/components/filters/DateFilterField/index.js",
+        "types": "./dist/components/filters/DateFilterField/index.d.ts"
+      },
+      "./components/filters/GeoFilterField": {
+        "import": "./dist/components/filters/GeoFilterField/index.js",
+        "types": "./dist/components/filters/GeoFilterField/index.d.ts"
+      },
+      "./components/filters/MultiSelectFilterField": {
+        "import": "./dist/components/filters/MultiSelectFilterField/index.js",
+        "types": "./dist/components/filters/MultiSelectFilterField/index.d.ts"
+      },
+      "./components/filters/NumberRangeFilterField": {
+        "import": "./dist/components/filters/NumberRangeFilterField/index.js",
+        "types": "./dist/components/filters/NumberRangeFilterField/index.d.ts"
+      },
+      "./components/filters/TextFilterField": {
+        "import": "./dist/components/filters/TextFilterField/index.js",
+        "types": "./dist/components/filters/TextFilterField/index.d.ts"
+      },
+      "./components/ui/ApplicationBar": {
+        "import": "./dist/components/ui/ApplicationBar/index.js",
+        "types": "./dist/components/ui/ApplicationBar/index.d.ts"
+      },
+      "./components/ui/ApplicationFooter": {
+        "import": "./dist/components/ui/ApplicationFooter/index.js",
+        "types": "./dist/components/ui/ApplicationFooter/index.d.ts"
+      },
+      "./components/ui/BackdropSpinner": {
+        "import": "./dist/components/ui/BackdropSpinner/index.js",
+        "types": "./dist/components/ui/BackdropSpinner/index.d.ts"
+      },
+      "./components/ui/Breadcrumbs": {
+        "import": "./dist/components/ui/Breadcrumbs/index.js",
+        "types": "./dist/components/ui/Breadcrumbs/index.d.ts"
+      },
+      "./components/ui/Confirmation": {
+        "import": "./dist/components/ui/Confirmation/index.js",
+        "types": "./dist/components/ui/Confirmation/index.d.ts"
+      },
+      "./components/ui/ConsentDialog": {
+        "import": "./dist/components/ui/ConsentDialog/index.js",
+        "types": "./dist/components/ui/ConsentDialog/index.d.ts"
+      },
+      "./components/ui/CopyToClipboardButton": {
+        "import": "./dist/components/ui/CopyToClipboardButton/index.js",
+        "types": "./dist/components/ui/CopyToClipboardButton/index.d.ts"
+      },
+      "./components/ui/Dialog": {
+        "import": "./dist/components/ui/Dialog/index.js",
+        "types": "./dist/components/ui/Dialog/index.d.ts"
+      },
+      "./components/ui/GenericErrorMessage": {
+        "import": "./dist/components/ui/GenericErrorMessage/index.js",
+        "types": "./dist/components/ui/GenericErrorMessage/index.d.ts"
+      },
+      "./components/ui/LicensesDialog": {
+        "import": "./dist/components/ui/LicensesDialog/index.js",
+        "types": "./dist/components/ui/LicensesDialog/index.d.ts"
+      },
+      "./components/ui/LinearProgressWithLabel": {
+        "import": "./dist/components/ui/LinearProgressWithLabel/index.js",
+        "types": "./dist/components/ui/LinearProgressWithLabel/index.d.ts"
+      },
+      "./components/ui/LoadingIndicator": {
+        "import": "./dist/components/ui/LoadingIndicator/index.js",
+        "types": "./dist/components/ui/LoadingIndicator/index.d.ts"
+      },
+      "./components/ui/MyPermissionsDialog": {
+        "import": "./dist/components/ui/MyPermissionsDialog/index.js",
+        "types": "./dist/components/ui/MyPermissionsDialog/index.d.ts"
+      },
+      "./components/ui/NavLink": {
+        "import": "./dist/components/ui/NavLink/index.js",
+        "types": "./dist/components/ui/NavLink/index.d.ts"
+      },
+      "./components/ui/NestedMenu": {
+        "import": "./dist/components/ui/NestedMenu/index.js",
+        "types": "./dist/components/ui/NestedMenu/index.d.ts"
+      },
+      "./components/ui/Notifications": {
+        "import": "./dist/components/ui/Notifications/index.js",
+        "types": "./dist/components/ui/Notifications/index.d.ts"
+      },
+      "./components/ui/OrganizationSwitcherDialog": {
+        "import": "./dist/components/ui/OrganizationSwitcherDialog/index.js",
+        "types": "./dist/components/ui/OrganizationSwitcherDialog/index.d.ts"
+      },
+      "./components/ui/OutageList": {
+        "import": "./dist/components/ui/OutageList/index.js",
+        "types": "./dist/components/ui/OutageList/index.d.ts"
+      },
+      "./components/ui/OutagesDialog": {
+        "import": "./dist/components/ui/OutagesDialog/index.js",
+        "types": "./dist/components/ui/OutagesDialog/index.d.ts"
+      },
+      "./components/ui/PageContainer": {
+        "import": "./dist/components/ui/PageContainer/index.js",
+        "types": "./dist/components/ui/PageContainer/index.d.ts"
+      },
+      "./components/ui/ResponseHandler": {
+        "import": "./dist/components/ui/ResponseHandler/index.js",
+        "types": "./dist/components/ui/ResponseHandler/index.d.ts"
+      },
+      "./components/ui/Sidebar": {
+        "import": "./dist/components/ui/Sidebar/index.js",
+        "types": "./dist/components/ui/Sidebar/index.d.ts"
+      },
+      "./components/ui/Spinner": {
+        "import": "./dist/components/ui/Spinner/index.js",
+        "types": "./dist/components/ui/Spinner/index.d.ts"
+      },
+      "./components/ui/Stepper": {
+        "import": "./dist/components/ui/Stepper/index.js",
+        "types": "./dist/components/ui/Stepper/index.d.ts"
+      },
+      "./components/ui/Table": {
+        "import": "./dist/components/ui/Table/index.js",
+        "types": "./dist/components/ui/Table/index.d.ts"
+      },
+      "./components/ui/UserFeedbackDialog": {
+        "import": "./dist/components/ui/UserFeedbackDialog/index.js",
+        "types": "./dist/components/ui/UserFeedbackDialog/index.d.ts"
+      },
+      "./components/ui/UserInactivityConfirmation": {
+        "import": "./dist/components/ui/UserInactivityConfirmation/index.js",
+        "types": "./dist/components/ui/UserInactivityConfirmation/index.d.ts"
+      },
+      "./constants/query": {
+        "import": "./dist/constants/query.js",
+        "types": "./dist/constants/query.d.ts"
+      },
+      "./dataHooks/useIdentifierIssuerOwnOrganizationQuery": {
+        "import": "./dist/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.js",
+        "types": "./dist/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.d.ts"
+      },
+      "./dataHooks/useIdentifierIssuerQuery": {
+        "import": "./dist/dataHooks/useIdentifierIssuerQuery/index.js",
+        "types": "./dist/dataHooks/useIdentifierIssuerQuery/index.d.ts"
+      },
+      "./dataHooks/useInviteUserConstraintsQuery": {
+        "import": "./dist/dataHooks/useInviteUserConstraintsQuery/index.js",
+        "types": "./dist/dataHooks/useInviteUserConstraintsQuery/index.d.ts"
+      },
+      "./dataHooks/useOrganizationAdminPoliciesQuery": {
+        "import": "./dist/dataHooks/useOrganizationAdminPoliciesQuery/index.js",
+        "types": "./dist/dataHooks/useOrganizationAdminPoliciesQuery/index.d.ts"
+      },
+      "./dataHooks/useOrganizationIdentifierIssuerLinksQuery": {
+        "import": "./dist/dataHooks/useOrganizationIdentifierIssuerLinksQuery/index.js",
+        "types": "./dist/dataHooks/useOrganizationIdentifierIssuerLinksQuery/index.d.ts"
+      },
+      "./dataHooks/useOrganizationsQuery": {
+        "import": "./dist/dataHooks/useOrganizationsQuery/index.js",
+        "types": "./dist/dataHooks/useOrganizationsQuery/index.d.ts"
+      },
+      "./dataHooks/useUsersQuery": {
+        "import": "./dist/dataHooks/useUsersQuery/index.js",
+        "types": "./dist/dataHooks/useUsersQuery/index.d.ts"
+      },
+      "./hoc/withDialog": {
+        "import": "./dist/hoc/withDialog/index.js",
+        "types": "./dist/hoc/withDialog/index.d.ts"
+      },
+      "./hoc/withPermissions": {
+        "import": "./dist/hoc/withPermissions/index.js",
+        "types": "./dist/hoc/withPermissions/index.d.ts"
+      },
+      "./hooks/useColumnsMenu": {
+        "import": "./dist/hooks/useColumnsMenu/index.js",
+        "types": "./dist/hooks/useColumnsMenu/index.d.ts"
+      },
+      "./hooks/useCreateMutation": {
+        "import": "./dist/hooks/useCreateMutation/index.js",
+        "types": "./dist/hooks/useCreateMutation/index.d.ts"
+      },
+      "./hooks/useDeleteMutation": {
+        "import": "./dist/hooks/useDeleteMutation/index.js",
+        "types": "./dist/hooks/useDeleteMutation/index.d.ts"
+      },
+      "./hooks/useEditMutation": {
+        "import": "./dist/hooks/useEditMutation/index.js",
+        "types": "./dist/hooks/useEditMutation/index.d.ts"
+      },
+      "./hooks/useInitializeTableStore": {
+        "import": "./dist/hooks/useInitializeTableStore/index.js",
+        "types": "./dist/hooks/useInitializeTableStore/index.d.ts"
+      },
+      "./hooks/useItemQuery": {
+        "import": "./dist/hooks/useItemQuery/index.js",
+        "types": "./dist/hooks/useItemQuery/index.d.ts"
+      },
+      "./hooks/useQueryMemo": {
+        "import": "./dist/hooks/useQueryMemo/index.js",
+        "types": "./dist/hooks/useQueryMemo/index.d.ts"
+      },
+      "./hooks/useUpdateBreadcrumb": {
+        "import": "./dist/hooks/useUpdateBreadcrumb/index.js",
+        "types": "./dist/hooks/useUpdateBreadcrumb/index.d.ts"
+      },
+      "./hooks/useUpdateDocumentTitle": {
+        "import": "./dist/hooks/useUpdateDocumentTitle/index.js",
+        "types": "./dist/hooks/useUpdateDocumentTitle/index.d.ts"
+      },
+      "./models/admin": {
+        "import": "./dist/models/admin.js",
+        "types": "./dist/models/admin.d.ts"
+      },
+      "./models/api": {
+        "import": "./dist/models/api.js",
+        "types": "./dist/models/api.d.ts"
+      },
+      "./models/auth": {
+        "import": "./dist/models/auth.js",
+        "types": "./dist/models/auth.d.ts"
+      },
+      "./models/config": {
+        "import": "./dist/models/config.js",
+        "types": "./dist/models/config.d.ts"
+      },
+      "./models/data": {
+        "import": "./dist/models/data.js",
+        "types": "./dist/models/data.d.ts"
+      },
+      "./models/dataHooks": {
+        "import": "./dist/models/dataHooks.js",
+        "types": "./dist/models/dataHooks.d.ts"
+      },
+      "./models/filter": {
+        "import": "./dist/models/filter.js",
+        "types": "./dist/models/filter.d.ts"
+      },
+      "./models/nestedMenu": {
+        "import": "./dist/models/nestedMenu.js",
+        "types": "./dist/models/nestedMenu.d.ts"
+      },
+      "./models/notification": {
+        "import": "./dist/models/notification.js",
+        "types": "./dist/models/notification.d.ts"
+      },
+      "./models/outage": {
+        "import": "./dist/models/outage.js",
+        "types": "./dist/models/outage.d.ts"
+      },
+      "./models/reactRouter": {
+        "import": "./dist/models/reactRouter.js",
+        "types": "./dist/models/reactRouter.d.ts"
+      },
+      "./models/table": {
+        "import": "./dist/models/table.js",
+        "types": "./dist/models/table.d.ts"
+      },
+      "./models/theme": {
+        "import": "./dist/models/theme.js",
+        "types": "./dist/models/theme.d.ts"
+      },
+      "./pages/AcceptInvitationPage": {
+        "import": "./dist/pages/AcceptInvitationPage/index.js",
+        "types": "./dist/pages/AcceptInvitationPage/index.d.ts"
+      },
+      "./pages/AdminPage": {
+        "import": "./dist/pages/AdminPage/index.js",
+        "types": "./dist/pages/AdminPage/index.d.ts"
+      },
+      "./pages/ChooseIdentityProviderPage": {
+        "import": "./dist/pages/ChooseIdentityProviderPage/index.js",
+        "types": "./dist/pages/ChooseIdentityProviderPage/index.d.ts"
+      },
+      "./pages/CrudPage": {
+        "import": "./dist/pages/CrudPage/index.js",
+        "types": "./dist/pages/CrudPage/index.d.ts"
+      },
+      "./pages/ErrorPage": {
+        "import": "./dist/pages/ErrorPage/index.js",
+        "types": "./dist/pages/ErrorPage/index.d.ts"
+      },
+      "./pages/IdentifierIssuersAdminPage": {
+        "import": "./dist/pages/IdentifierIssuersAdminPage/index.js",
+        "types": "./dist/pages/IdentifierIssuersAdminPage/index.d.ts"
+      },
+      "./pages/OrganizationAdminPoliciesAdminPage": {
+        "import": "./dist/pages/OrganizationAdminPoliciesAdminPage/index.js",
+        "types": "./dist/pages/OrganizationAdminPoliciesAdminPage/index.d.ts"
+      },
+      "./pages/OrganizationContactsAdminPage": {
+        "import": "./dist/pages/OrganizationContactsAdminPage/index.js",
+        "types": "./dist/pages/OrganizationContactsAdminPage/index.d.ts"
+      },
+      "./pages/OrganizationSitesAdminPage": {
+        "import": "./dist/pages/OrganizationSitesAdminPage/index.js",
+        "types": "./dist/pages/OrganizationSitesAdminPage/index.d.ts"
+      },
+      "./pages/OrganizationsAdminPage": {
+        "import": "./dist/pages/OrganizationsAdminPage/index.js",
+        "types": "./dist/pages/OrganizationsAdminPage/index.d.ts"
+      },
+      "./pages/OutagesAdminPage": {
+        "import": "./dist/pages/OutagesAdminPage/index.js",
+        "types": "./dist/pages/OutagesAdminPage/index.d.ts"
+      },
+      "./pages/PostLoginPage": {
+        "import": "./dist/pages/PostLoginPage/index.js",
+        "types": "./dist/pages/PostLoginPage/index.d.ts"
+      },
+      "./pages/PostLogoutPage": {
+        "import": "./dist/pages/PostLogoutPage/index.js",
+        "types": "./dist/pages/PostLogoutPage/index.d.ts"
+      },
+      "./pages/RouterErrorPage": {
+        "import": "./dist/pages/RouterErrorPage/index.js",
+        "types": "./dist/pages/RouterErrorPage/index.d.ts"
+      },
+      "./pages/UserInvitationsAdminPage": {
+        "import": "./dist/pages/UserInvitationsAdminPage/index.js",
+        "types": "./dist/pages/UserInvitationsAdminPage/index.d.ts"
+      },
+      "./pages/UsersAdminPage": {
+        "import": "./dist/pages/UsersAdminPage/index.js",
+        "types": "./dist/pages/UsersAdminPage/index.d.ts"
+      },
+      "./routes": {
+        "import": "./dist/routes/index.js",
+        "types": "./dist/routes/index.d.ts"
+      },
+      "./setup/setup": {
+        "import": "./dist/setup/setup.js",
+        "types": "./dist/setup/setup.d.ts"
+      },
+      "./setup/yup": {
+        "import": "./dist/setup/yup.js",
+        "types": "./dist/setup/yup.d.ts"
+      },
+      "./stores/oidcStore": {
+        "import": "./dist/stores/oidcStore/index.js",
+        "types": "./dist/stores/oidcStore/index.d.ts"
+      },
+      "./stores/outagesStore": {
+        "import": "./dist/stores/outagesStore/index.js",
+        "types": "./dist/stores/outagesStore/index.d.ts"
+      },
+      "./stores/tableStore": {
+        "import": "./dist/stores/tableStore/index.js",
+        "types": "./dist/stores/tableStore/index.d.ts"
+      },
+      "./theme/demoTheme": {
+        "import": "./dist/theme/demoTheme/index.js",
+        "types": "./dist/theme/demoTheme/index.d.ts"
+      },
+      "./utils/AxiosUtil": {
+        "import": "./dist/utils/AxiosUtil/index.js",
+        "types": "./dist/utils/AxiosUtil/index.d.ts"
+      },
+      "./utils/DataHookUtil": {
+        "import": "./dist/utils/DataHookUtil/index.js",
+        "types": "./dist/utils/DataHookUtil/index.d.ts"
+      },
+      "./utils/LoadableUtil": {
+        "import": "./dist/utils/LoadableUtil/index.js",
+        "types": "./dist/utils/LoadableUtil/index.d.ts"
+      },
+      "./utils/MenuDataUtil": {
+        "import": "./dist/utils/MenuDataUtil/index.js",
+        "types": "./dist/utils/MenuDataUtil/index.d.ts"
+      },
+      "./utils/NotificationUtil": {
+        "import": "./dist/utils/NotificationUtil/index.js",
+        "types": "./dist/utils/NotificationUtil/index.d.ts"
+      },
+      "./utils/OutageUtil": {
+        "import": "./dist/utils/OutageUtil/index.js",
+        "types": "./dist/utils/OutageUtil/index.d.ts"
+      },
+      "./utils/StandardConfigUtil": {
+        "import": "./dist/utils/StandardConfigUtil/index.js",
+        "types": "./dist/utils/StandardConfigUtil/index.d.ts"
+      },
+      "./utils/TableUtil": {
+        "import": "./dist/utils/TableUtil/index.js",
+        "types": "./dist/utils/TableUtil/index.d.ts"
+      },
+      "./utils/TimeUtil": {
+        "import": "./dist/utils/TimeUtil/index.js",
+        "types": "./dist/utils/TimeUtil/index.d.ts"
+      },
+      "./utils/UserManagerUtil": {
+        "import": "./dist/utils/UserManagerUtil/index.js",
+        "types": "./dist/utils/UserManagerUtil/index.d.ts"
+      },
+      "./utils/UserUtil": {
+        "import": "./dist/utils/UserUtil/index.js",
+        "types": "./dist/utils/UserUtil/index.d.ts"
       }
     }
   },
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts"
-    },
-    "./client": {
+    "./types": {
       "types": "./src/@types/ui.d.ts"
     },
-    "./test-lib": {
-      "types": "./src/test/lib/index.ts",
-      "import": "./src/test/lib/index.ts"
+    "./classes/TableEventBus": {
+      "import": "./src/classes/TableEventBus/index.ts",
+      "types": "./src/classes/TableEventBus/index.ts"
+    },
+    "./classes/abstracts/FilterAbstract": {
+      "import": "./src/classes/abstracts/FilterAbstract/index.ts",
+      "types": "./src/classes/abstracts/FilterAbstract/index.ts"
+    },
+    "./classes/filters": {
+      "import": "./src/classes/filters/index.ts",
+      "types": "./src/classes/filters/index.ts"
+    },
+    "./classes/services/ApiService": {
+      "import": "./src/classes/services/ApiService/index.ts",
+      "types": "./src/classes/services/ApiService/index.ts"
+    },
+    "./classes/services/AuthenticationService": {
+      "import": "./src/classes/services/AuthenticationService/index.ts",
+      "types": "./src/classes/services/AuthenticationService/index.ts"
+    },
+    "./classes/services/AuthorizationService": {
+      "import": "./src/classes/services/AuthorizationService/index.ts",
+      "types": "./src/classes/services/AuthorizationService/index.ts"
+    },
+    "./classes/services/BackendVersionService": {
+      "import": "./src/classes/services/BackendVersionService/index.ts",
+      "types": "./src/classes/services/BackendVersionService/index.ts"
+    },
+    "./classes/services/BreadcrumbService": {
+      "import": "./src/classes/services/BreadcrumbService/index.ts",
+      "types": "./src/classes/services/BreadcrumbService/index.ts"
+    },
+    "./classes/services/ConfigService": {
+      "import": "./src/classes/services/ConfigService/index.ts",
+      "types": "./src/classes/services/ConfigService/index.ts"
+    },
+    "./classes/services/EmotionCacheService": {
+      "import": "./src/classes/services/EmotionCacheService/index.ts",
+      "types": "./src/classes/services/EmotionCacheService/index.ts"
+    },
+    "./classes/services/FeatureFlagsService": {
+      "import": "./src/classes/services/FeatureFlagsService/index.ts",
+      "types": "./src/classes/services/FeatureFlagsService/index.ts"
+    },
+    "./classes/services/I18nService": {
+      "import": "./src/classes/services/I18nService/index.ts",
+      "types": "./src/classes/services/I18nService/index.ts"
+    },
+    "./classes/services/InactivityService": {
+      "import": "./src/classes/services/InactivityService/index.ts",
+      "types": "./src/classes/services/InactivityService/index.ts"
+    },
+    "./classes/services/LogService": {
+      "import": "./src/classes/services/LogService/index.ts",
+      "types": "./src/classes/services/LogService/index.ts"
+    },
+    "./classes/services/NavigationHistoryService": {
+      "import": "./src/classes/services/NavigationHistoryService/index.ts",
+      "types": "./src/classes/services/NavigationHistoryService/index.ts"
+    },
+    "./classes/services/NotificationService": {
+      "import": "./src/classes/services/NotificationService/index.ts",
+      "types": "./src/classes/services/NotificationService/index.ts"
+    },
+    "./classes/services/PageEventBusService": {
+      "import": "./src/classes/services/PageEventBusService/index.ts",
+      "types": "./src/classes/services/PageEventBusService/index.ts"
+    },
+    "./classes/services/QueryClientService": {
+      "import": "./src/classes/services/QueryClientService/index.ts",
+      "types": "./src/classes/services/QueryClientService/index.ts"
+    },
+    "./classes/services/RouterService": {
+      "import": "./src/classes/services/RouterService/index.ts",
+      "types": "./src/classes/services/RouterService/index.ts"
+    },
+    "./classes/services/UserSettingsService": {
+      "import": "./src/classes/services/UserSettingsService/index.ts",
+      "types": "./src/classes/services/UserSettingsService/index.ts"
+    },
+    "./components/app/App": {
+      "import": "./src/components/app/App/index.ts",
+      "types": "./src/components/app/App/index.ts"
+    },
+    "./components/app/ApplicationBootstrap": {
+      "import": "./src/components/app/ApplicationBootstrap/index.ts",
+      "types": "./src/components/app/ApplicationBootstrap/index.ts"
+    },
+    "./components/app/AuthenticationWrapper": {
+      "import": "./src/components/app/AuthenticationWrapper/index.ts",
+      "types": "./src/components/app/AuthenticationWrapper/index.ts"
+    },
+    "./components/app/AuthorizationWrapper": {
+      "import": "./src/components/app/AuthorizationWrapper/index.ts",
+      "types": "./src/components/app/AuthorizationWrapper/index.ts"
+    },
+    "./components/app/RouterRoot": {
+      "import": "./src/components/app/RouterRoot/index.ts",
+      "types": "./src/components/app/RouterRoot/index.ts"
+    },
+    "./components/epi/EpiContactDetailsDialog": {
+      "import": "./src/components/epi/EpiContactDetailsDialog/index.ts",
+      "types": "./src/components/epi/EpiContactDetailsDialog/index.ts"
+    },
+    "./components/filters/BooleanFilterField": {
+      "import": "./src/components/filters/BooleanFilterField/index.ts",
+      "types": "./src/components/filters/BooleanFilterField/index.ts"
+    },
+    "./components/filters/DateFilterField": {
+      "import": "./src/components/filters/DateFilterField/index.ts",
+      "types": "./src/components/filters/DateFilterField/index.ts"
+    },
+    "./components/filters/GeoFilterField": {
+      "import": "./src/components/filters/GeoFilterField/index.ts",
+      "types": "./src/components/filters/GeoFilterField/index.ts"
+    },
+    "./components/filters/MultiSelectFilterField": {
+      "import": "./src/components/filters/MultiSelectFilterField/index.ts",
+      "types": "./src/components/filters/MultiSelectFilterField/index.ts"
+    },
+    "./components/filters/NumberRangeFilterField": {
+      "import": "./src/components/filters/NumberRangeFilterField/index.ts",
+      "types": "./src/components/filters/NumberRangeFilterField/index.ts"
+    },
+    "./components/filters/TextFilterField": {
+      "import": "./src/components/filters/TextFilterField/index.ts",
+      "types": "./src/components/filters/TextFilterField/index.ts"
+    },
+    "./components/ui/ApplicationBar": {
+      "import": "./src/components/ui/ApplicationBar/index.ts",
+      "types": "./src/components/ui/ApplicationBar/index.ts"
+    },
+    "./components/ui/ApplicationFooter": {
+      "import": "./src/components/ui/ApplicationFooter/index.ts",
+      "types": "./src/components/ui/ApplicationFooter/index.ts"
+    },
+    "./components/ui/BackdropSpinner": {
+      "import": "./src/components/ui/BackdropSpinner/index.ts",
+      "types": "./src/components/ui/BackdropSpinner/index.ts"
+    },
+    "./components/ui/Breadcrumbs": {
+      "import": "./src/components/ui/Breadcrumbs/index.ts",
+      "types": "./src/components/ui/Breadcrumbs/index.ts"
+    },
+    "./components/ui/Confirmation": {
+      "import": "./src/components/ui/Confirmation/index.ts",
+      "types": "./src/components/ui/Confirmation/index.ts"
+    },
+    "./components/ui/ConsentDialog": {
+      "import": "./src/components/ui/ConsentDialog/index.ts",
+      "types": "./src/components/ui/ConsentDialog/index.ts"
+    },
+    "./components/ui/CopyToClipboardButton": {
+      "import": "./src/components/ui/CopyToClipboardButton/index.ts",
+      "types": "./src/components/ui/CopyToClipboardButton/index.ts"
+    },
+    "./components/ui/Dialog": {
+      "import": "./src/components/ui/Dialog/index.ts",
+      "types": "./src/components/ui/Dialog/index.ts"
+    },
+    "./components/ui/GenericErrorMessage": {
+      "import": "./src/components/ui/GenericErrorMessage/index.ts",
+      "types": "./src/components/ui/GenericErrorMessage/index.ts"
+    },
+    "./components/ui/LicensesDialog": {
+      "import": "./src/components/ui/LicensesDialog/index.ts",
+      "types": "./src/components/ui/LicensesDialog/index.ts"
+    },
+    "./components/ui/LinearProgressWithLabel": {
+      "import": "./src/components/ui/LinearProgressWithLabel/index.ts",
+      "types": "./src/components/ui/LinearProgressWithLabel/index.ts"
+    },
+    "./components/ui/LoadingIndicator": {
+      "import": "./src/components/ui/LoadingIndicator/index.ts",
+      "types": "./src/components/ui/LoadingIndicator/index.ts"
+    },
+    "./components/ui/MyPermissionsDialog": {
+      "import": "./src/components/ui/MyPermissionsDialog/index.ts",
+      "types": "./src/components/ui/MyPermissionsDialog/index.ts"
+    },
+    "./components/ui/NavLink": {
+      "import": "./src/components/ui/NavLink/index.ts",
+      "types": "./src/components/ui/NavLink/index.ts"
+    },
+    "./components/ui/NestedMenu": {
+      "import": "./src/components/ui/NestedMenu/index.ts",
+      "types": "./src/components/ui/NestedMenu/index.ts"
+    },
+    "./components/ui/Notifications": {
+      "import": "./src/components/ui/Notifications/index.ts",
+      "types": "./src/components/ui/Notifications/index.ts"
+    },
+    "./components/ui/OrganizationSwitcherDialog": {
+      "import": "./src/components/ui/OrganizationSwitcherDialog/index.ts",
+      "types": "./src/components/ui/OrganizationSwitcherDialog/index.ts"
+    },
+    "./components/ui/OutageList": {
+      "import": "./src/components/ui/OutageList/index.ts",
+      "types": "./src/components/ui/OutageList/index.ts"
+    },
+    "./components/ui/OutagesDialog": {
+      "import": "./src/components/ui/OutagesDialog/index.ts",
+      "types": "./src/components/ui/OutagesDialog/index.ts"
+    },
+    "./components/ui/PageContainer": {
+      "import": "./src/components/ui/PageContainer/index.ts",
+      "types": "./src/components/ui/PageContainer/index.ts"
+    },
+    "./components/ui/ResponseHandler": {
+      "import": "./src/components/ui/ResponseHandler/index.ts",
+      "types": "./src/components/ui/ResponseHandler/index.ts"
+    },
+    "./components/ui/Sidebar": {
+      "import": "./src/components/ui/Sidebar/index.ts",
+      "types": "./src/components/ui/Sidebar/index.ts"
+    },
+    "./components/ui/Spinner": {
+      "import": "./src/components/ui/Spinner/index.ts",
+      "types": "./src/components/ui/Spinner/index.ts"
+    },
+    "./components/ui/Stepper": {
+      "import": "./src/components/ui/Stepper/index.ts",
+      "types": "./src/components/ui/Stepper/index.ts"
+    },
+    "./components/ui/Table": {
+      "import": "./src/components/ui/Table/index.ts",
+      "types": "./src/components/ui/Table/index.ts"
+    },
+    "./components/ui/UserFeedbackDialog": {
+      "import": "./src/components/ui/UserFeedbackDialog/index.ts",
+      "types": "./src/components/ui/UserFeedbackDialog/index.ts"
+    },
+    "./components/ui/UserInactivityConfirmation": {
+      "import": "./src/components/ui/UserInactivityConfirmation/index.ts",
+      "types": "./src/components/ui/UserInactivityConfirmation/index.ts"
+    },
+    "./constants/query": {
+      "import": "./src/constants/query.ts",
+      "types": "./src/constants/query.ts"
+    },
+    "./dataHooks/useIdentifierIssuerOwnOrganizationQuery": {
+      "import": "./src/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.ts",
+      "types": "./src/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.ts"
+    },
+    "./dataHooks/useIdentifierIssuerQuery": {
+      "import": "./src/dataHooks/useIdentifierIssuerQuery/index.ts",
+      "types": "./src/dataHooks/useIdentifierIssuerQuery/index.ts"
+    },
+    "./dataHooks/useInviteUserConstraintsQuery": {
+      "import": "./src/dataHooks/useInviteUserConstraintsQuery/index.ts",
+      "types": "./src/dataHooks/useInviteUserConstraintsQuery/index.ts"
+    },
+    "./dataHooks/useOrganizationAdminPoliciesQuery": {
+      "import": "./src/dataHooks/useOrganizationAdminPoliciesQuery/index.ts",
+      "types": "./src/dataHooks/useOrganizationAdminPoliciesQuery/index.ts"
+    },
+    "./dataHooks/useOrganizationIdentifierIssuerLinksQuery": {
+      "import": "./src/dataHooks/useOrganizationIdentifierIssuerLinksQuery/index.ts",
+      "types": "./src/dataHooks/useOrganizationIdentifierIssuerLinksQuery/index.ts"
+    },
+    "./dataHooks/useOrganizationsQuery": {
+      "import": "./src/dataHooks/useOrganizationsQuery/index.ts",
+      "types": "./src/dataHooks/useOrganizationsQuery/index.ts"
+    },
+    "./dataHooks/useUsersQuery": {
+      "import": "./src/dataHooks/useUsersQuery/index.ts",
+      "types": "./src/dataHooks/useUsersQuery/index.ts"
+    },
+    "./hoc/withDialog": {
+      "import": "./src/hoc/withDialog/index.ts",
+      "types": "./src/hoc/withDialog/index.ts"
+    },
+    "./hoc/withPermissions": {
+      "import": "./src/hoc/withPermissions/index.ts",
+      "types": "./src/hoc/withPermissions/index.ts"
+    },
+    "./hooks/useColumnsMenu": {
+      "import": "./src/hooks/useColumnsMenu/index.ts",
+      "types": "./src/hooks/useColumnsMenu/index.ts"
+    },
+    "./hooks/useCreateMutation": {
+      "import": "./src/hooks/useCreateMutation/index.ts",
+      "types": "./src/hooks/useCreateMutation/index.ts"
+    },
+    "./hooks/useDeleteMutation": {
+      "import": "./src/hooks/useDeleteMutation/index.ts",
+      "types": "./src/hooks/useDeleteMutation/index.ts"
+    },
+    "./hooks/useEditMutation": {
+      "import": "./src/hooks/useEditMutation/index.ts",
+      "types": "./src/hooks/useEditMutation/index.ts"
+    },
+    "./hooks/useInitializeTableStore": {
+      "import": "./src/hooks/useInitializeTableStore/index.ts",
+      "types": "./src/hooks/useInitializeTableStore/index.ts"
+    },
+    "./hooks/useItemQuery": {
+      "import": "./src/hooks/useItemQuery/index.ts",
+      "types": "./src/hooks/useItemQuery/index.ts"
+    },
+    "./hooks/useQueryMemo": {
+      "import": "./src/hooks/useQueryMemo/index.ts",
+      "types": "./src/hooks/useQueryMemo/index.ts"
+    },
+    "./hooks/useUpdateBreadcrumb": {
+      "import": "./src/hooks/useUpdateBreadcrumb/index.ts",
+      "types": "./src/hooks/useUpdateBreadcrumb/index.ts"
+    },
+    "./hooks/useUpdateDocumentTitle": {
+      "import": "./src/hooks/useUpdateDocumentTitle/index.ts",
+      "types": "./src/hooks/useUpdateDocumentTitle/index.ts"
+    },
+    "./models/admin": {
+      "import": "./src/models/admin.ts",
+      "types": "./src/models/admin.ts"
+    },
+    "./models/api": {
+      "import": "./src/models/api.ts",
+      "types": "./src/models/api.ts"
+    },
+    "./models/auth": {
+      "import": "./src/models/auth.ts",
+      "types": "./src/models/auth.ts"
+    },
+    "./models/config": {
+      "import": "./src/models/config.ts",
+      "types": "./src/models/config.ts"
+    },
+    "./models/data": {
+      "import": "./src/models/data.ts",
+      "types": "./src/models/data.ts"
+    },
+    "./models/dataHooks": {
+      "import": "./src/models/dataHooks.ts",
+      "types": "./src/models/dataHooks.ts"
+    },
+    "./models/filter": {
+      "import": "./src/models/filter.ts",
+      "types": "./src/models/filter.ts"
+    },
+    "./models/nestedMenu": {
+      "import": "./src/models/nestedMenu.ts",
+      "types": "./src/models/nestedMenu.ts"
+    },
+    "./models/notification": {
+      "import": "./src/models/notification.ts",
+      "types": "./src/models/notification.ts"
+    },
+    "./models/outage": {
+      "import": "./src/models/outage.ts",
+      "types": "./src/models/outage.ts"
+    },
+    "./models/reactRouter": {
+      "import": "./src/models/reactRouter.ts",
+      "types": "./src/models/reactRouter.ts"
+    },
+    "./models/table": {
+      "import": "./src/models/table.ts",
+      "types": "./src/models/table.ts"
+    },
+    "./models/theme": {
+      "import": "./src/models/theme.ts",
+      "types": "./src/models/theme.ts"
+    },
+    "./pages/AcceptInvitationPage": {
+      "import": "./src/pages/AcceptInvitationPage/index.ts",
+      "types": "./src/pages/AcceptInvitationPage/index.ts"
+    },
+    "./pages/AdminPage": {
+      "import": "./src/pages/AdminPage/index.ts",
+      "types": "./src/pages/AdminPage/index.ts"
+    },
+    "./pages/ChooseIdentityProviderPage": {
+      "import": "./src/pages/ChooseIdentityProviderPage/index.ts",
+      "types": "./src/pages/ChooseIdentityProviderPage/index.ts"
+    },
+    "./pages/CrudPage": {
+      "import": "./src/pages/CrudPage/index.ts",
+      "types": "./src/pages/CrudPage/index.ts"
+    },
+    "./pages/ErrorPage": {
+      "import": "./src/pages/ErrorPage/index.ts",
+      "types": "./src/pages/ErrorPage/index.ts"
+    },
+    "./pages/IdentifierIssuersAdminPage": {
+      "import": "./src/pages/IdentifierIssuersAdminPage/index.ts",
+      "types": "./src/pages/IdentifierIssuersAdminPage/index.ts"
+    },
+    "./pages/OrganizationAdminPoliciesAdminPage": {
+      "import": "./src/pages/OrganizationAdminPoliciesAdminPage/index.ts",
+      "types": "./src/pages/OrganizationAdminPoliciesAdminPage/index.ts"
+    },
+    "./pages/OrganizationContactsAdminPage": {
+      "import": "./src/pages/OrganizationContactsAdminPage/index.ts",
+      "types": "./src/pages/OrganizationContactsAdminPage/index.ts"
+    },
+    "./pages/OrganizationSitesAdminPage": {
+      "import": "./src/pages/OrganizationSitesAdminPage/index.ts",
+      "types": "./src/pages/OrganizationSitesAdminPage/index.ts"
+    },
+    "./pages/OrganizationsAdminPage": {
+      "import": "./src/pages/OrganizationsAdminPage/index.ts",
+      "types": "./src/pages/OrganizationsAdminPage/index.ts"
+    },
+    "./pages/OutagesAdminPage": {
+      "import": "./src/pages/OutagesAdminPage/index.ts",
+      "types": "./src/pages/OutagesAdminPage/index.ts"
+    },
+    "./pages/PostLoginPage": {
+      "import": "./src/pages/PostLoginPage/index.ts",
+      "types": "./src/pages/PostLoginPage/index.ts"
+    },
+    "./pages/PostLogoutPage": {
+      "import": "./src/pages/PostLogoutPage/index.ts",
+      "types": "./src/pages/PostLogoutPage/index.ts"
+    },
+    "./pages/RouterErrorPage": {
+      "import": "./src/pages/RouterErrorPage/index.ts",
+      "types": "./src/pages/RouterErrorPage/index.ts"
+    },
+    "./pages/UserInvitationsAdminPage": {
+      "import": "./src/pages/UserInvitationsAdminPage/index.ts",
+      "types": "./src/pages/UserInvitationsAdminPage/index.ts"
+    },
+    "./pages/UsersAdminPage": {
+      "import": "./src/pages/UsersAdminPage/index.ts",
+      "types": "./src/pages/UsersAdminPage/index.ts"
+    },
+    "./routes": {
+      "import": "./src/routes/index.ts",
+      "types": "./src/routes/index.ts"
+    },
+    "./setup/setup": {
+      "import": "./src/setup/setup.ts",
+      "types": "./src/setup/setup.ts"
+    },
+    "./setup/yup": {
+      "import": "./src/setup/yup.ts",
+      "types": "./src/setup/yup.ts"
+    },
+    "./stores/oidcStore": {
+      "import": "./src/stores/oidcStore/index.ts",
+      "types": "./src/stores/oidcStore/index.ts"
+    },
+    "./stores/outagesStore": {
+      "import": "./src/stores/outagesStore/index.ts",
+      "types": "./src/stores/outagesStore/index.ts"
+    },
+    "./stores/tableStore": {
+      "import": "./src/stores/tableStore/index.ts",
+      "types": "./src/stores/tableStore/index.ts"
+    },
+    "./theme/demoTheme": {
+      "import": "./src/theme/demoTheme/index.ts",
+      "types": "./src/theme/demoTheme/index.ts"
+    },
+    "./utils/AxiosUtil": {
+      "import": "./src/utils/AxiosUtil/index.ts",
+      "types": "./src/utils/AxiosUtil/index.ts"
+    },
+    "./utils/DataHookUtil": {
+      "import": "./src/utils/DataHookUtil/index.ts",
+      "types": "./src/utils/DataHookUtil/index.ts"
+    },
+    "./utils/LoadableUtil": {
+      "import": "./src/utils/LoadableUtil/index.ts",
+      "types": "./src/utils/LoadableUtil/index.ts"
+    },
+    "./utils/MenuDataUtil": {
+      "import": "./src/utils/MenuDataUtil/index.ts",
+      "types": "./src/utils/MenuDataUtil/index.ts"
+    },
+    "./utils/NotificationUtil": {
+      "import": "./src/utils/NotificationUtil/index.ts",
+      "types": "./src/utils/NotificationUtil/index.ts"
+    },
+    "./utils/OutageUtil": {
+      "import": "./src/utils/OutageUtil/index.ts",
+      "types": "./src/utils/OutageUtil/index.ts"
+    },
+    "./utils/StandardConfigUtil": {
+      "import": "./src/utils/StandardConfigUtil/index.ts",
+      "types": "./src/utils/StandardConfigUtil/index.ts"
+    },
+    "./utils/TableUtil": {
+      "import": "./src/utils/TableUtil/index.ts",
+      "types": "./src/utils/TableUtil/index.ts"
+    },
+    "./utils/TimeUtil": {
+      "import": "./src/utils/TimeUtil/index.ts",
+      "types": "./src/utils/TimeUtil/index.ts"
+    },
+    "./utils/UserManagerUtil": {
+      "import": "./src/utils/UserManagerUtil/index.ts",
+      "types": "./src/utils/UserManagerUtil/index.ts"
+    },
+    "./utils/UserUtil": {
+      "import": "./src/utils/UserUtil/index.ts",
+      "types": "./src/utils/UserUtil/index.ts"
     }
   },
   "scripts": {
+    "update-exports": "node scripts/update-exports.js",
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public",
     "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",

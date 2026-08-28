@@ -51,7 +51,7 @@ import {
 } from 'date-fns';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
 import { CaseDbDimType } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';

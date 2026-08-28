@@ -11,6 +11,8 @@ import {
 
 import dts from 'vite-plugin-dts';
 import { defineConfig } from 'vitest/config';
+import type { Target } from 'vite-plugin-static-copy';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 type PackageManifest = {
   peerDependencies?: Record<string, string>;
@@ -37,8 +39,20 @@ const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<str
 
   // index.ts-based entries (classes, utils): key = component directory
   globSync([
+    join(srcDir, 'classes', '**', 'index.ts'),
+    join(srcDir, 'classes', '**', 'index.ts'),
     join(srcDir, 'components', '**', 'index.ts'),
+    join(srcDir, 'constants', '**', 'index.ts'),
+    join(srcDir, 'dataHooks', '**', 'index.ts'),
+    join(srcDir, 'hoc', '**', 'index.ts'),
     join(srcDir, 'hooks', '**', 'index.ts'),
+    join(srcDir, 'hooks', '**', 'index.ts'),
+    join(srcDir, 'locale', '**', 'index.ts'),
+    join(srcDir, 'pages', '**', 'index.ts'),
+    join(srcDir, 'routes', '**', 'index.ts'),
+    join(srcDir, 'stores', '**', 'index.ts'),
+    join(srcDir, 'theme', '**', 'index.ts'),
+    join(srcDir, 'utils', '**', 'index.ts'),
     join(srcDir, 'utils', '**', 'index.ts'),
   ]).forEach((file) => {
     const relKey = dirname(file).replace(`${srcDir}/`, '');
@@ -46,7 +60,7 @@ const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<str
   });
 
   // flat .ts entries (models): key = file path without extension
-  globSync([join(srcDir, 'models', '*.ts')])
+  globSync([join(srcDir, 'models', '*.ts'), join(srcDir, 'constants', '*.ts'), join(srcDir, 'setup', '*.ts')])
     .filter((file) => !file.endsWith('/index.ts'))
     .forEach((file) => {
       const relKey = file.replace(`${srcDir}/`, '').replace(/\.ts$/, '');
@@ -90,6 +104,27 @@ export default defineConfig({
       insertTypesEntry: false,
       tsconfigPath: './tsconfig.build.json',
     }),
+    viteStaticCopy({
+      targets: ([
+        {
+          dest: '@types',
+          rename: { stripBase: true },
+          src: [
+            './src/@types/**/*.d.ts',
+          ],
+        },
+        {
+          dest: './locale',
+          rename: { stripBase: true },
+          src: [
+            './src/locale',
+          ],
+        },
+      ] satisfies Target[]).filter((target) => {
+        const sources = Array.isArray(target.src) ? target.src : [target.src];
+        return sources.some((pattern) => globSync(pattern).length > 0);
+      }),
+    }),
   ],
   test: {
     coverage: {
@@ -111,14 +146,6 @@ export default defineConfig({
     },
     projects: [
       {
-        plugins: [
-          {
-            configResolved: () => {
-              // createIndex();
-            },
-            name: 'on-config-resolved',
-          },
-        ],
         test: {
           environment: 'jsdom',
           globals: true,

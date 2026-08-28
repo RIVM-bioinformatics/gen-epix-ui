@@ -8,7 +8,7 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { Theme } from '@mui/material';
-import { ConfigService } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config';

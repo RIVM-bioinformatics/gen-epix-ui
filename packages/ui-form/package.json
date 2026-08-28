@@ -18,6 +18,9 @@
     ],
     "access": "public",
     "exports": {
+      "./types": {
+        "types": "./dist/ui-form.d.ts"
+      },
       "./components/fields/Autocomplete": {
         "import": "./dist/components/fields/Autocomplete/index.js",
         "types": "./dist/components/fields/Autocomplete/index.d.ts"
@@ -94,6 +97,10 @@
         "import": "./dist/models/form.js",
         "types": "./dist/models/form.d.ts"
       },
+      "./setup/setup": {
+        "import": "./dist/setup/setup.js",
+        "types": "./dist/setup/setup.d.ts"
+      },
       "./utils/FormUtil": {
         "import": "./dist/utils/FormUtil/index.js",
         "types": "./dist/utils/FormUtil/index.d.ts"
@@ -105,6 +112,9 @@
     }
   },
   "exports": {
+    "./types": {
+      "types": "./src/@types/ui-form.d.ts"
+    },
     "./components/fields/Autocomplete": {
       "import": "./src/components/fields/Autocomplete/index.ts",
       "types": "./src/components/fields/Autocomplete/index.ts"
@@ -180,6 +190,10 @@
     "./models/form": {
       "import": "./src/models/form.ts",
       "types": "./src/models/form.ts"
+    },
+    "./setup/setup": {
+      "import": "./src/setup/setup.ts",
+      "types": "./src/setup/setup.ts"
     },
     "./utils/FormUtil": {
       "import": "./src/utils/FormUtil/index.ts",
@@ -313,6 +327,7 @@
     "react": "19.2.7",
     "typescript": "6.0.3",
     "vite-plugin-dts": "5.0.3",
+    "vite-plugin-static-copy": "4.1.1",
     "vite": "8.1.3",
     "vitest": "4.1.9",
     "yup": "1.7.1"

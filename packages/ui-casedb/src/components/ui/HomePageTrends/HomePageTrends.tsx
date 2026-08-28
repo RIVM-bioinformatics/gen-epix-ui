@@ -23,16 +23,14 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import {
-  AxiosUtil,
-  ConfigService,
-  LoadableUtil,
-  QueryClientService,
-  ResponseHandler,
-  RouterService,
-  useQueryMemo,
-  withPermissions,
-} from '@gen-epix/ui';
+import { AxiosUtil } from '@gen-epix/ui/utils/AxiosUtil';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { withPermissions } from '@gen-epix/ui/hoc/withPermissions';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';

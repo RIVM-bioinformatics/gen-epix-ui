@@ -4,12 +4,10 @@ import type {
   CaseDbUserAccessCasePolicy,
   CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
-import type { UseNameFactory } from '@gen-epix/ui';
-import {
-  DataHookUtil,
-  UserUtil,
-  useUsersMapQuery,
-} from '@gen-epix/ui';
+import type { UseNameFactory } from '@gen-epix/ui/models/dataHooks';
+import { DataHookUtil } from '@gen-epix/ui/utils/DataHookUtil';
+import { UserUtil } from '@gen-epix/ui/utils/UserUtil';
+import { useUsersMapQuery } from '@gen-epix/ui/dataHooks/useUsersQuery';
 
 import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';

@@ -49,11 +49,9 @@ import {
   CaseDbDimType,
   CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui';
-import {
-  QueryClientService,
-  useQueryMemo,
-} from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
 import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
 
 import { DataService } from '../../../classes/services/DataService';

@@ -11,8 +11,8 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
-import type { WithDialogRenderProps } from '@gen-epix/ui';
-import { ResponseHandler } from '@gen-epix/ui';
+import type { WithDialogRenderProps } from '@gen-epix/ui/hoc/withDialog';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { RichTextEditorContent } from '@gen-epix/ui-form/components/fields/RichTextEditor';
 

@@ -35,7 +35,7 @@ import {
   CaseDbSeqFileFormat,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
-import { QueryClientService } from '@gen-epix/ui';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import { ValidationUtil } from '@gen-epix/ui-core/utils/ValidationUtil';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';

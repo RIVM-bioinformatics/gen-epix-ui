@@ -1,7 +1,5 @@
-import {
-  I18nService,
-  StandardConfigUtil,
-} from '@gen-epix/ui';
+import { I18nService } from '@gen-epix/ui/classes/services/I18nService';
+import { StandardConfigUtil } from '@gen-epix/ui/utils/StandardConfigUtil';
 import { t } from 'i18next';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 

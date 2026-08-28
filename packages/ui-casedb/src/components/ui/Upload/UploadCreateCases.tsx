@@ -15,12 +15,10 @@ import {
   Container,
 } from '@mui/material';
 import { useStore } from 'zustand';
-import {
-  GenericErrorMessage,
-  InactivityService,
-  LinearProgressWithLabel,
-  RouterService,
-} from '@gen-epix/ui';
+import { GenericErrorMessage } from '@gen-epix/ui/components/ui/GenericErrorMessage';
+import { InactivityService } from '@gen-epix/ui/classes/services/InactivityService';
+import { LinearProgressWithLabel } from '@gen-epix/ui/components/ui/LinearProgressWithLabel';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { UploadError } from '../../../classes/errors';

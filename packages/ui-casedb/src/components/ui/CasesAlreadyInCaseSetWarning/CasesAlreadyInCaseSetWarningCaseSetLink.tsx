@@ -5,12 +5,10 @@ import {
 } from 'react';
 import { t } from 'i18next';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import type { ConfirmationRefMethods } from '@gen-epix/ui';
-import {
-  Confirmation,
-  ResponseHandler,
-  RouterService,
-} from '@gen-epix/ui';
+import type { ConfirmationRefMethods } from '@gen-epix/ui/components/ui/Confirmation';
+import { Confirmation } from '@gen-epix/ui/components/ui/Confirmation';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';

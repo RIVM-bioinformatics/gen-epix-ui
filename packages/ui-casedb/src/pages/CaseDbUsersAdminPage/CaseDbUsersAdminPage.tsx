@@ -6,11 +6,9 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import type { CrudPageSubPage } from '@gen-epix/ui';
-import {
-  AuthorizationService,
-  UsersAdminPage,
-} from '@gen-epix/ui';
+import type { CrudPageSubPage } from '@gen-epix/ui/pages/CrudPage';
+import { AuthorizationService } from '@gen-epix/ui/classes/services/AuthorizationService';
+import { UsersAdminPage } from '@gen-epix/ui/pages/UsersAdminPage';
 import {
   useMemo,
   useRef,

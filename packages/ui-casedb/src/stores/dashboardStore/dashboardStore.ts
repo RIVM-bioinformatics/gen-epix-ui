@@ -15,23 +15,23 @@ import type {
   CaseDbTypedCompositeFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import { AxiosUtil } from '@gen-epix/ui/utils/AxiosUtil';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import {
-  AxiosUtil,
-  ConfigService,
   createTableStoreActions,
   createTableStoreInitialState,
   createTableStorePersistConfiguration,
-  FILTER_MODE,
-  NotificationService,
-  QueryClientService,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/stores/tableStore';
+import { FILTER_MODE } from '@gen-epix/ui/classes/abstracts/FilterAbstract';
+import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import type {
   CreateTableStoreInitialStateKwArgs,
   CreateTableStoreKwArgs,
-  FilterValues,
   TableStoreActions,
   TableStoreState,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/stores/tableStore';
+import type { FilterValues } from '@gen-epix/ui/models/filter';
 import cloneDeep from 'lodash/cloneDeep';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree';

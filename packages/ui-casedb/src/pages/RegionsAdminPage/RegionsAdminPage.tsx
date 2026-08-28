@@ -13,14 +13,10 @@ import {
   CaseDbCommandName,
   CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
-import type {
-  OmitWithMetaData,
-  TableColumn,
-} from '@gen-epix/ui';
-import {
-  CrudPage,
-  TableUtil,
-} from '@gen-epix/ui';
+import type { OmitWithMetaData } from '@gen-epix/ui/models/data';
+import type { TableColumn } from '@gen-epix/ui/models/table';
+import { CrudPage } from '@gen-epix/ui/pages/CrudPage';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';

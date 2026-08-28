@@ -3,7 +3,7 @@ import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware';
-import { ConfigService } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
 

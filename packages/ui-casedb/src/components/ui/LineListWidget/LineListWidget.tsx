@@ -32,16 +32,14 @@ import type {
   GetTableCellRowComparatorProps,
   TableColumn,
   TableColumnText,
-  TableRef,
   TableRowAndColumnParams,
   TableRowParams,
-} from '@gen-epix/ui';
-import {
-  ConfigService,
-  Table,
-  TABLE_COLUMN_FROZEN,
-  TableUtil,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/models/table';
+import type { TableRef } from '@gen-epix/ui/components/ui/Table';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { Table } from '@gen-epix/ui/components/ui/Table';
+import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui/models/table';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';

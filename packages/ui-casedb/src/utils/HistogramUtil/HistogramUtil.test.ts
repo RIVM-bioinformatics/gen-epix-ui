@@ -14,7 +14,7 @@ import type {
   CaseDbConcept,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config';

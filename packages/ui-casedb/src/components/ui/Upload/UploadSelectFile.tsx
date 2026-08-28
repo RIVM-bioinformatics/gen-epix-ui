@@ -22,10 +22,8 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import {
-  ResponseHandler,
-  useItemQuery,
-} from '@gen-epix/ui';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
 import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';

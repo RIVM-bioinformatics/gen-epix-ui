@@ -1,4 +1,4 @@
-import type { EpiContactDetailsDialogOpenProps } from '@gen-epix/ui';
+import type { EpiContactDetailsDialogOpenProps } from '@gen-epix/ui/components/epi/EpiContactDetailsDialog';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
 import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';

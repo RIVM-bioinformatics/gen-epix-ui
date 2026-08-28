@@ -1,7 +1,7 @@
 import type { SeqDbApiPermission } from '@gen-epix/api-seqdb';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
-import { createRoutes as createCommonRoutes } from '@gen-epix/ui';
-import type { MyNonIndexRouteObject } from '@gen-epix/ui';
+import { createRoutes as createCommonRoutes } from '@gen-epix/ui/routes';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui/models/reactRouter';
 
 import { createAdminRoutes } from './adminRoutes';
 

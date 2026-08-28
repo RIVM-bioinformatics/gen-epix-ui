@@ -39,18 +39,16 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  DialogAction,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  ConfigService,
-  QueryClientService,
-  ResponseHandler,
-  useQueryMemo,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
 import type {

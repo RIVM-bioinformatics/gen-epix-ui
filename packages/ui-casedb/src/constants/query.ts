@@ -1,4 +1,4 @@
-import { COMMON_QUERY_KEY } from '@gen-epix/ui';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui/constants/query';
 
 export const CASEDB_QUERY_KEY = {
   ALLELE_PROFILES: 'ALLELE_PROFILES',

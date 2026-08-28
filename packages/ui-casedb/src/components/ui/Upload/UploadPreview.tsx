@@ -27,19 +27,17 @@ import {
   CaseDbEtlStatus,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
-import type {
-  ConfirmationRefMethods,
-  TableRowAndColumnParams,
-} from '@gen-epix/ui';
+import type { ConfirmationRefMethods } from '@gen-epix/ui/components/ui/Confirmation';
+import type { TableRowAndColumnParams } from '@gen-epix/ui/models/table';
+import { BackdropSpinner } from '@gen-epix/ui/components/ui/BackdropSpinner';
+import { Confirmation } from '@gen-epix/ui/components/ui/Confirmation';
 import {
-  BackdropSpinner,
-  Confirmation,
   createTableStore,
-  QueryClientService,
-  ResponseHandler,
   TableStoreContextProvider,
-  useQueryMemo,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/stores/tableStore';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 

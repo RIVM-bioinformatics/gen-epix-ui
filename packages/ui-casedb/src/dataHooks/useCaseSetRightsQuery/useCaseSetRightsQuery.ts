@@ -1,10 +1,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbCaseSetRights } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import {
-  QueryClientService,
-  useQueryMemo,
-} from '@gen-epix/ui';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
 
 import { CASEDB_QUERY_KEY } from '../../constants/query';
 

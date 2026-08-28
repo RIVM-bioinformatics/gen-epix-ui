@@ -11,12 +11,10 @@ import type {
   CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
-import type { UseMap } from '@gen-epix/ui';
-import {
-  COMMON_QUERY_KEY,
-  LoadableUtil,
-  useItemQuery,
-} from '@gen-epix/ui';
+import type { UseMap } from '@gen-epix/ui/models/dataHooks';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui/constants/query';
+import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
+import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import type { UserEffectiveRight } from '../../models/caseAccess';

@@ -26,11 +26,9 @@ import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
 import { useStore } from 'zustand';
 import difference from 'lodash/difference';
-import {
-  ConfigService,
-  ResponseHandler,
-  useIdentifierIssuerOwnOrganizationOptionsQuery,
-} from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useIdentifierIssuerOwnOrganizationOptionsQuery } from '@gen-epix/ui/dataHooks/useIdentifierIssuerOwnOrganizationQuery';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { Select } from '@gen-epix/ui-form/components/fields/Select';
 import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';

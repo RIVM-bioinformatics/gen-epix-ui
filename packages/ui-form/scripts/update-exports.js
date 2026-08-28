@@ -4,11 +4,13 @@
 // Run with: node scripts/update-exports.js  (or via pnpm run generate-exports)
 
 import {
+  existsSync,
   globSync,
   readFileSync,
   writeFileSync,
 } from 'fs';
 import {
+  basename,
   dirname,
   join,
   relative,
@@ -25,21 +27,39 @@ const pkg = JSON.parse(raw);
 
 // index.ts-based entries (classes, utils)
 const indexBasedKeys = globSync([
+  join(srcDir, 'classes', '**', 'index.ts'),
+  join(srcDir, 'classes', '**', 'index.ts'),
   join(srcDir, 'components', '**', 'index.ts'),
+  join(srcDir, 'constants', '**', 'index.ts'),
+  join(srcDir, 'dataHooks', '**', 'index.ts'),
+  join(srcDir, 'hoc', '**', 'index.ts'),
   join(srcDir, 'hooks', '**', 'index.ts'),
+  join(srcDir, 'hooks', '**', 'index.ts'),
+  join(srcDir, 'locale', '**', 'index.ts'),
+  join(srcDir, 'pages', '**', 'index.ts'),
+  join(srcDir, 'routes', '**', 'index.ts'),
+  join(srcDir, 'stores', '**', 'index.ts'),
+  join(srcDir, 'theme', '**', 'index.ts'),
+  join(srcDir, 'utils', '**', 'index.ts'),
   join(srcDir, 'utils', '**', 'index.ts'),
 ]).map((file) => relative(srcDir, dirname(file)));
 
 // flat .ts entries (models): key = file path without extension
-const flatKeys = globSync([join(srcDir, 'models', '*.ts')])
-  .filter((file) => !file.endsWith('/index.ts'))
+const flatKeys = globSync([join(srcDir, 'models', '*.ts'), join(srcDir, 'constants', '*.ts'), join(srcDir, 'setup', '*.ts')])
+  // .filter((file) => !file.endsWith('/index.ts'))
   .map((file) => relative(srcDir, file).replace(/\.ts$/, ''));
 
 const flatKeySet = new Set(flatKeys);
 const componentKeys = [...indexBasedKeys, ...flatKeys].sort();
 
+// Check for a types declaration file matching the package name (e.g., src/@types/ui.d.ts for @gen-epix/ui)
+const pkgBaseName = basename(pkg.name.replace(/^@[^/]+\//, ''));
+const typesDeclarationFile = join(srcDir, '@types', `${pkgBaseName}.d.ts`);
+const hasTypesEntry = existsSync(typesDeclarationFile);
+
 // exports: points to source files (used in workspace / dev)
 pkg.exports = {
+  ...(hasTypesEntry ? { './types': { types: `./src/@types/${pkgBaseName}.d.ts` } } : {}),
   ...Object.fromEntries(
     componentKeys.map((key) => [
       `./${key}`,
@@ -52,6 +72,7 @@ pkg.exports = {
 
 // publishConfig.exports: points to dist files (used after publish)
 pkg.publishConfig.exports = {
+  ...(hasTypesEntry ? { './types': { types: `./dist/${pkgBaseName}.d.ts` } } : {}),
   ...Object.fromEntries(
     componentKeys.map((key) => [
       `./${key}`,

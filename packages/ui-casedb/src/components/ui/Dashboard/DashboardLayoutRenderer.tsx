@@ -19,7 +19,7 @@ import {
 } from 'react-resizable-panels';
 import type { StoreApi } from 'zustand';
 import { useStore } from 'zustand';
-import { ConfigService } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';

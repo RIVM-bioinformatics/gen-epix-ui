@@ -18,16 +18,12 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import type {
-  CrudPageSubPage,
-  OmitWithMetaData,
-  TableColumn,
-} from '@gen-epix/ui';
-import {
-  AuthorizationService,
-  CrudPage,
-  TableUtil,
-} from '@gen-epix/ui';
+import type { CrudPageSubPage } from '@gen-epix/ui/pages/CrudPage';
+import type { OmitWithMetaData } from '@gen-epix/ui/models/data';
+import type { TableColumn } from '@gen-epix/ui/models/table';
+import { AuthorizationService } from '@gen-epix/ui/classes/services/AuthorizationService';
+import { CrudPage } from '@gen-epix/ui/pages/CrudPage';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';

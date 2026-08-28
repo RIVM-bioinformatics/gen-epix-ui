@@ -18,23 +18,21 @@ import type {
   CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type { ConfirmationRefMethods } from '@gen-epix/ui/components/ui/Confirmation';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  ConfirmationRefMethods,
-  DialogAction,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  Confirmation,
-  QueryClientService,
-  ResponseHandler,
-  RouterService,
-  Spinner,
-  useDeleteMutation,
-  useItemQuery,
-  useQueryMemo,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { Confirmation } from '@gen-epix/ui/components/ui/Confirmation';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import { Spinner } from '@gen-epix/ui/components/ui/Spinner';
+import { useDeleteMutation } from '@gen-epix/ui/hooks/useDeleteMutation';
+import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 

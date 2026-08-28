@@ -1,14 +1,10 @@
-import type {
-  COMMON_QUERY_KEY,
-  MyNonIndexRouteObject,
-} from '@gen-epix/ui';
-import {
-  ApiService,
-  COMMON_QUERY_DEPENDENCIES,
-  QueryClientService,
-  RouterService,
-  setup,
-} from '@gen-epix/ui';
+import type { COMMON_QUERY_KEY } from '@gen-epix/ui/constants/query';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui/models/reactRouter';
+import { ApiService } from '@gen-epix/ui/classes/services/ApiService';
+import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui/constants/query';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import { setup } from '@gen-epix/ui/setup/setup';
 import {
   SeqDbAbacApi,
   SeqDbAuthApi,

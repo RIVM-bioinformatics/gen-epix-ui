@@ -3,10 +3,8 @@ import {
   subDays,
 } from 'date-fns';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import {
-  I18nService,
-  StandardConfigUtil,
-} from '@gen-epix/ui';
+import { I18nService } from '@gen-epix/ui/classes/services/I18nService';
+import { StandardConfigUtil } from '@gen-epix/ui/utils/StandardConfigUtil';
 import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
 import { t } from 'i18next';

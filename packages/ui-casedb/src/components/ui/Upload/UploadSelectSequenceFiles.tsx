@@ -22,7 +22,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { ResponseHandler } from '@gen-epix/ui';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
 import type {

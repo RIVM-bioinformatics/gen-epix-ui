@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { ApplicationBar } from '@gen-epix/ui';
-import type { ApplicationHeaderProps } from '@gen-epix/ui';
+import { ApplicationBar } from '@gen-epix/ui/components/ui/ApplicationBar';
+import type { ApplicationHeaderProps } from '@gen-epix/ui/models/config';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import LogoLarge from '../../assets/logo/gen-epix-logo-large.svg?react';
