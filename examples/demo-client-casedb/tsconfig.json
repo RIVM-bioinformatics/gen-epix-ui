@@ -9,7 +9,7 @@
       "DOM.Iterable"
     ],
     "module": "ESNext",
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "experimentalDecorators": true,
     /* Bundler mode */
     "moduleResolution": "bundler",

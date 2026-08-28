@@ -459,10 +459,6 @@
         "import": "./dist/setup/setup.js",
         "types": "./dist/setup/setup.d.ts"
       },
-      "./setup/yup": {
-        "import": "./dist/setup/yup.js",
-        "types": "./dist/setup/yup.d.ts"
-      },
       "./stores/oidcStore": {
         "import": "./dist/stores/oidcStore/index.js",
         "types": "./dist/stores/oidcStore/index.d.ts"
@@ -964,10 +960,6 @@
     "./setup/setup": {
       "import": "./src/setup/setup.ts",
       "types": "./src/setup/setup.ts"
-    },
-    "./setup/yup": {
-      "import": "./src/setup/yup.ts",
-      "types": "./src/setup/yup.ts"
     },
     "./stores/oidcStore": {
       "import": "./src/stores/oidcStore/index.ts",
