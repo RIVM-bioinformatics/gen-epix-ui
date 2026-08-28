@@ -14,10 +14,10 @@ import type {
   PropsWithChildren,
   ReactElement,
 } from 'react';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
-import type { PropsWithTestIdAttributes } from '../../../models/testId';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export type SidebarItemProps = PropsWithTestIdAttributes<PropsWithChildren<{
   readonly closeIcon: ReactElement;

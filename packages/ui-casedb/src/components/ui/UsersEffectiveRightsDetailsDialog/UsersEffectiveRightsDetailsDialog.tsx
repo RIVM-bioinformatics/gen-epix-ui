@@ -16,19 +16,17 @@ import {
   useState,
 } from 'react';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  DialogAction,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  DataUtil,
-  LoadableUtil,
-  ResponseHandler,
-  TestIdUtil,
-  useArray,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { UserUtil } from '@gen-epix/ui/utils/UserUtil';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseTypeSetMembersQuery } from '../../../dataHooks/useCaseTypeSetMembersQuery';
 import {
@@ -119,7 +117,7 @@ export const UsersEffectiveRightsDetailsDialog = withDialog<UsersEffectiveRights
   }, []);
 
   useEffect(() => {
-    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id, userName: DataUtil.getUserDisplayValue(user, t) }));
+    onTitleChange(t('{{userName}} effective rights details for {{dataCollectionName}}', { dataCollectionName: dataCollectionsMapQuery.map.get(userEffectiveRight.data_collection_id)?.name ?? userEffectiveRight.data_collection_id, userName: UserUtil.getUserDisplayValue(user, t) }));
   }, [dataCollectionsMapQuery.map, onTitleChange, t, user, userEffectiveRight.data_collection_id]);
 
   useEffect(() => {

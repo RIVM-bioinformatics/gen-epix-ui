@@ -22,27 +22,29 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/models/table';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import {
-  ConfigService,
   createTableStore,
-  DATE_FORMAT,
-  LoadableUtil,
-  PageContainer,
-  QueryClientService,
-  ResponseHandler,
-  RouterService,
+  TableStoreContextProvider,
+} from '@gen-epix/ui/stores/tableStore';
+import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
+import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import {
   Table,
   TableCaption,
   TableMenu,
   TableSidebarMenu,
-  TableStoreContextProvider,
-  TableUtil,
-  TestIdUtil,
-  useArray,
-  useInitializeTableStore,
-  useQueryMemo,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/components/ui/Table';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import { useInitializeTableStore } from '@gen-epix/ui/hooks/useInitializeTableStore';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import type { CaseSetInfoDialogRefMethods } from '../../components/ui/CaseSetInfoDialog';
@@ -54,7 +56,7 @@ import { useCaseSetStatsMapQuery } from '../../dataHooks/useCaseSetStatsQuery';
 import { useCaseSetStatusOptionsQuery } from '../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { CaseSetUtil } from '../../utils/CaseSetUtil';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 
 type Row = CaseDbCaseSet & CaseDbCaseStats;

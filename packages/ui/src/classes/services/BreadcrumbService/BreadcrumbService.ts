@@ -1,9 +1,8 @@
 import omit from 'lodash/omit';
 import set from 'lodash/set';
-
-import { Subject } from '../../Subject';
-import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
-import { HmrUtil } from '../../../utils/HmrUtil';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 
 type SubjectData = Record<string, string>;

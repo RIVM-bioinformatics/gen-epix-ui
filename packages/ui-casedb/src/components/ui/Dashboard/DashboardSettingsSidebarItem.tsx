@@ -7,11 +7,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useMemo } from 'react';
-import type { SidebarItemSharedProps } from '@gen-epix/ui';
-import {
-  ConfigService,
-  SidebarItem,
-} from '@gen-epix/ui';
+import type { SidebarItemSharedProps } from '@gen-epix/ui/components/ui/Sidebar';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { SidebarItem } from '@gen-epix/ui/components/ui/Sidebar';
 
 import type { CaseDbConfig } from '../../../models/config';
 

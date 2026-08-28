@@ -6,6 +6,7 @@ import {
 import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import type { DialogAction } from '../../components/ui/Dialog';
 import type {
@@ -14,7 +15,6 @@ import type {
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
 import type { GenericData } from '../../models/data';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 
 
 export interface CrudPageDeleteDialogOpenProps<TData extends GenericData> {

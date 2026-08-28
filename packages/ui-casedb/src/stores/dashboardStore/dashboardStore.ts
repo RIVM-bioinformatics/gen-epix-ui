@@ -15,25 +15,28 @@ import type {
   CaseDbTypedCompositeFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import { AxiosUtil } from '@gen-epix/ui/utils/AxiosUtil';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import {
-  AxiosUtil,
-  ConfigService,
   createTableStoreActions,
   createTableStoreInitialState,
   createTableStorePersistConfiguration,
-  FILTER_MODE,
-  NotificationService,
-  ObjectUtil,
-  QueryClientService,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/stores/tableStore';
+import { FILTER_MODE } from '@gen-epix/ui/classes/abstracts/FilterAbstract';
+import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import type {
   CreateTableStoreInitialStateKwArgs,
   CreateTableStoreKwArgs,
-  FilterValues,
   TableStoreActions,
   TableStoreState,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/stores/tableStore';
+import type { FilterValues } from '@gen-epix/ui/models/filter';
 import cloneDeep from 'lodash/cloneDeep';
+import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
+import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree';
+import { NewickUtil } from '@gen-epix/ui-phylogenetic-tree/utils/NewickUtil';
+import { TreeUtil } from '@gen-epix/ui-phylogenetic-tree/utils/TreeUtil';
 
 import type { FindSimilarCasesResult } from '../../models/caseDb';
 import type { TreeWidgetDataPersistable } from '../../models/dashboard';
@@ -42,20 +45,17 @@ import type {
   Stratification,
 } from '../../models/stratification';
 import { STRATIFICATION_MODE } from '../../models/stratification';
-import type { TreeNode } from '../../models/tree';
 import {
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
 } from '../../utils/CaseTypeUtil';
 import { FilterUtil } from '../../utils/FilterUtil';
-import { NewickUtil } from '../../utils/NewickUtil';
-import { TreeUtil } from '../../utils/TreeUtil';
 import type { CaseDbConfig } from '../../models/config';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
 import { TreeFilter } from '../../classes/filters/TreeFilter';
 import { StratificationUtil } from '../../utils/StratificationUtil';
-import { DASHBOARD_COMPONENT_NAME } from '../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard';
 
 export interface CreateDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;

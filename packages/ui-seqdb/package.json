@@ -9,35 +9,88 @@
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
   "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
   "files": [
     "dist"
   ],
   "publishConfig": {
     "access": "public",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
     "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.js"
+      "./types": {
+        "types": "./dist/ui-seqdb.d.ts"
       },
-      "./client": {
-        "types": "./dist/ui.d.ts"
+      "./components/app/SeqDbApp": {
+        "import": "./dist/components/app/SeqDbApp/index.js",
+        "types": "./dist/components/app/SeqDbApp/index.d.ts"
+      },
+      "./models/config": {
+        "import": "./dist/models/config.js",
+        "types": "./dist/models/config.d.ts"
+      },
+      "./models/theme": {
+        "import": "./dist/models/theme.js",
+        "types": "./dist/models/theme.d.ts"
+      },
+      "./pages/HomePage": {
+        "import": "./dist/pages/HomePage/index.js",
+        "types": "./dist/pages/HomePage/index.d.ts"
+      },
+      "./routes": {
+        "import": "./dist/routes/index.js",
+        "types": "./dist/routes/index.d.ts"
+      },
+      "./setup/setup": {
+        "import": "./dist/setup/setup.js",
+        "types": "./dist/setup/setup.d.ts"
+      },
+      "./theme/demoTheme": {
+        "import": "./dist/theme/demoTheme/index.js",
+        "types": "./dist/theme/demoTheme/index.d.ts"
+      },
+      "./utils/SeqDbStandardConfigUtil": {
+        "import": "./dist/utils/SeqDbStandardConfigUtil/index.js",
+        "types": "./dist/utils/SeqDbStandardConfigUtil/index.d.ts"
       }
     }
   },
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts"
+    "./types": {
+      "types": "./src/@types/ui-seqdb.d.ts"
     },
-    "./client": {
-      "types": "./src/@types/ui.d.ts"
+    "./components/app/SeqDbApp": {
+      "import": "./src/components/app/SeqDbApp/index.ts",
+      "types": "./src/components/app/SeqDbApp/index.ts"
+    },
+    "./models/config": {
+      "import": "./src/models/config.ts",
+      "types": "./src/models/config.ts"
+    },
+    "./models/theme": {
+      "import": "./src/models/theme.ts",
+      "types": "./src/models/theme.ts"
+    },
+    "./pages/HomePage": {
+      "import": "./src/pages/HomePage/index.ts",
+      "types": "./src/pages/HomePage/index.ts"
+    },
+    "./routes": {
+      "import": "./src/routes/index.ts",
+      "types": "./src/routes/index.ts"
+    },
+    "./setup/setup": {
+      "import": "./src/setup/setup.ts",
+      "types": "./src/setup/setup.ts"
+    },
+    "./theme/demoTheme": {
+      "import": "./src/theme/demoTheme/index.ts",
+      "types": "./src/theme/demoTheme/index.ts"
+    },
+    "./utils/SeqDbStandardConfigUtil": {
+      "import": "./src/utils/SeqDbStandardConfigUtil/index.ts",
+      "types": "./src/utils/SeqDbStandardConfigUtil/index.ts"
     }
   },
   "scripts": {
+    "update-exports": "node scripts/update-exports.js",
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public",
     "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
@@ -50,25 +103,28 @@
     "check-types": "tsc --noemit"
   },
   "peerDependencies": {
-    "@emotion/cache": "11.14.0",
-    "@emotion/react": "11.14.0",
-    "@emotion/styled": "11.14.1",
+    "@emotion/cache": "*",
+    "@emotion/react": "*",
+    "@emotion/styled": "*",
     "@gen-epix/api-commondb": "workspace:^",
     "@gen-epix/api-seqdb": "workspace:^",
+    "@gen-epix/ui-core": "workspace:^",
     "@gen-epix/ui": "workspace:^",
-    "@mui/icons-material": "9.2.0",
-    "@mui/material": "9.2.0",
-    "@mui/styled-engine": "9.1.1",
-    "@mui/system": "9.2.0",
-    "@mui/utils": "9.2.0",
-    "@mui/x-date-pickers": "9.8.0",
-    "axios": "1.18.1",
-    "i18next": "26.3.4",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
-    "react-i18next": "17.0.8",
-    "vite": "8.1.3",
-    "yup": "1.7.1"
+    "@gen-epix/ui-form": "workspace:^",
+    "@mui/icons-material": "*",
+    "@mui/material": "*",
+    "@mui/styled-engine": "*",
+    "@mui/system": "*",
+    "@mui/utils": "*",
+    "@mui/x-date-pickers": "*",
+    "axios": "*",
+    "i18next": "*",
+    "react": "*",
+    "react-dom": "*",
+    "yup": "*"
+  },
+  "dependencies": {
+    "react-i18next": "17.0.8"
   },
   "devDependencies": {
     "@emotion/cache": "11.14.0",
@@ -76,9 +132,11 @@
     "@emotion/styled": "11.14.1",
     "@gen-epix/api-commondb": "workspace:^",
     "@gen-epix/api-seqdb": "workspace:^",
+    "@gen-epix/ui-core": "workspace:^",
     "@gen-epix/eslint-config": "0.4.1",
     "@gen-epix/translation-util": "0.1.1",
     "@gen-epix/ui": "workspace:^",
+    "@gen-epix/ui-form": "workspace:^",
     "@microsoft/api-extractor": "7.58.9",
     "@mui/icons-material": "9.2.0",
     "@mui/material": "9.2.0",
@@ -98,7 +156,6 @@
     "playwright": "1.61.1",
     "react": "19.2.7",
     "react-dom": "19.2.7",
-    "react-i18next": "17.0.8",
     "typescript": "6.0.3",
     "vite": "8.1.3",
     "vite-plugin-dts": "5.0.3",

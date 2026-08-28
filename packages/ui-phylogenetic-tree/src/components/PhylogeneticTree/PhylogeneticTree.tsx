@@ -1,0 +1,779 @@
+import { Box } from '@mui/material';
+import type { Ref } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { useDebouncedCallback } from 'use-debounce';
+import { DevicePixelRatioService } from '@gen-epix/ui-core/classes/services/DevicePixelRatioService';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
+import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
+import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
+
+import type {
+  TreeAssembly,
+  TreeNode,
+  TreePathProperties,
+} from '../../models/tree';
+import { TreeUtil } from '../../utils/TreeUtil';
+
+export type PhylogeneticTreeHighlightedNodeNamesSubjectValue = {
+  highlightedNodeNames: string[];
+};
+
+export type PhylogeneticTreePathClickEvent = {
+  mouseEvent: MouseEvent;
+  pathProperties: TreePathProperties;
+};
+
+export type PhylogeneticTreeProps = {
+  readonly ancestorDotRadius: number;
+  readonly ariaLabel: string;
+  readonly backgroundColor: string;
+  readonly dimFn: (color: string) => string;
+  readonly fontFamily: string;
+  readonly headerHeight: number;
+  readonly highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
+  readonly initialViewState?: Partial<PhylogeneticTreeViewState>;
+  readonly itemHeight: number;
+  readonly leafDotRadius: number;
+  readonly linkedScrollDebounceDelayMs: number;
+  readonly maxScaleWidthPx: number;
+  readonly maxZoomLevel: number;
+  readonly maxZoomSpeed: number;
+  readonly minimumDistancePercentageToShowLabel: number;
+  readonly minScaleWidthPx: number;
+  readonly minZoomLevel: number;
+  readonly minZoomSpeed: number;
+  readonly nodeNameColors?: { [key: string]: string } | null;
+  readonly onCanvasChange?: (canvas?: HTMLCanvasElement) => void;
+  readonly onLinkStateChange?: (isLinked: boolean) => void;
+  readonly onPathClick?: (event: PhylogeneticTreePathClickEvent) => void;
+  readonly onViewStateChange?: (viewState: PhylogeneticTreeViewState) => void;
+  readonly panningThreshold: number;
+  readonly ref?: Ref<PhylogeneticTreeRef>;
+  readonly regularFillColorSupportLine: string;
+  readonly scaleColor: string;
+  readonly scaleIncrements: number[];
+  readonly scrollSubject?: Subject<PhylogeneticTreeScrollSubjectValue>;
+  readonly shouldShowDistances: boolean;
+  readonly shouldShowSupportLinesWhenUnlinked: boolean;
+  readonly sortedLeafNames: string[];
+  readonly supportLineColorLinked: string;
+  readonly supportLineColorUnlinked: string;
+  readonly tree?: TreeNode;
+  readonly treeColor: string;
+  readonly treeFont: string;
+  readonly treePadding: number;
+  readonly visibleRangeSubject?: Subject<PhylogeneticTreeVisibleRangeSubjectValue>;
+};
+
+export interface PhylogeneticTreeRef {
+  link: (verticalPosition?: number) => void;
+  syncScrollToVisibleTree: () => void;
+  unlink: (viewState: { positionX: number; positionY: number; zoomLevel: number }) => void;
+}
+
+export type PhylogeneticTreeScrollSubjectValue = {
+  origin: HTMLElement;
+  position: number;
+};
+
+export type PhylogeneticTreeViewState = {
+  horizontalScrollPosition: number;
+  verticalScrollPosition: number;
+  zoomLevel: number;
+};
+
+export type PhylogeneticTreeVisibleRangeSubjectValue = {
+  endIndex: number;
+  startIndex: number;
+};
+
+export const PhylogeneticTree = ({
+  ancestorDotRadius,
+  ariaLabel,
+  backgroundColor,
+  dimFn,
+  fontFamily,
+  headerHeight,
+  highlightedNodeNamesSubject,
+  initialViewState,
+  itemHeight,
+  leafDotRadius,
+  linkedScrollDebounceDelayMs,
+  maxScaleWidthPx,
+  maxZoomLevel,
+  maxZoomSpeed,
+  minimumDistancePercentageToShowLabel,
+  minScaleWidthPx,
+  minZoomLevel,
+  minZoomSpeed,
+  nodeNameColors,
+  onCanvasChange,
+  onLinkStateChange,
+  onPathClick,
+  onViewStateChange,
+  panningThreshold,
+  ref,
+  regularFillColorSupportLine,
+  scaleColor,
+  scaleIncrements,
+  scrollSubject,
+  shouldShowDistances,
+  shouldShowSupportLinesWhenUnlinked,
+  sortedLeafNames,
+  supportLineColorLinked,
+  supportLineColorUnlinked,
+  tree,
+  treeColor,
+  treeFont,
+  treePadding,
+  visibleRangeSubject,
+}: PhylogeneticTreeProps) => {
+  const scrollbarSize = useScrollbarSize();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { dimensions: { height, width } } = useDimensions(containerRef);
+  const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
+  const [treeAssembly, setTreeAssembly] = useState<TreeAssembly>(null);
+  const [devicePixelRatio, setDevicePixelRatio] = useState<number>(DevicePixelRatioService.getInstance().data);
+  const [isLinked, setIsLinked] = useState(true);
+  const canvasScrollSubject = useMemo(() => new Subject<{ x: number; y: number }>({ x: 0, y: 0 }), []);
+  const zoomLevelSubject = useMemo(() => new Subject<number>(!isNaN(initialViewState?.zoomLevel) ? initialViewState.zoomLevel : 1), [initialViewState]);
+  const scrollPositionSubject = useMemo(() => new Subject<{ horizontal: number; vertical: number }>({
+    horizontal: !isNaN(initialViewState?.horizontalScrollPosition) ? initialViewState.horizontalScrollPosition : 0,
+    vertical: !isNaN(initialViewState?.verticalScrollPosition) ? initialViewState.verticalScrollPosition : 0,
+  }), [initialViewState]);
+
+  const treeCanvasWidth = width;
+  const treeCanvasHeight = Math.max(0, height - headerHeight);
+  const combinedCanvasHeight = Math.max(0, height);
+  const treeWidthMinusPadding = treeCanvasWidth - (2 * treePadding);
+  const pixelToGeneticDistanceRatio = tree?.maxBranchLength ? treeWidthMinusPadding / tree.maxBranchLength.toNumber() : null;
+  const treeHeight = tree?.size ? (tree.size * itemHeight) + scrollbarSize : itemHeight;
+
+  const handleTreeCanvasRef = useCallback((canvas: HTMLCanvasElement | null) => {
+    setTreeCanvas(canvas ?? undefined);
+  }, []);
+
+  useEffect(() => {
+    onLinkStateChange?.(isLinked);
+  }, [isLinked, onLinkStateChange]);
+
+  useEffect(() => {
+    if (!onCanvasChange) {
+      return;
+    }
+    onCanvasChange(treeCanvas);
+
+    return () => {
+      if (treeCanvas) {
+        onCanvasChange(undefined);
+      }
+    };
+  }, [treeCanvas, onCanvasChange]);
+
+  useEffect(() => {
+    if (!onViewStateChange) {
+      return;
+    }
+
+    const emitViewState = () => {
+      onViewStateChange({
+        horizontalScrollPosition: scrollPositionSubject.data.horizontal,
+        verticalScrollPosition: scrollPositionSubject.data.vertical,
+        zoomLevel: zoomLevelSubject.data,
+      });
+    };
+
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe(() => {
+      emitViewState();
+    });
+    const unsubscribeFromScrollPositionSubject = scrollPositionSubject.subscribe(() => {
+      emitViewState();
+    });
+
+    emitViewState();
+
+    return () => {
+      unsubscribeFromZoomLevelSubject();
+      unsubscribeFromScrollPositionSubject();
+    };
+  }, [onViewStateChange, scrollPositionSubject, zoomLevelSubject]);
+
+  useEffect(() => {
+    let zoomLevel = zoomLevelSubject.data;
+
+    const updateIsLinked = () => {
+      if (isLinked && zoomLevel !== 1) {
+        setIsLinked(false);
+      }
+    };
+
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
+      zoomLevel = data;
+      updateIsLinked();
+    });
+    updateIsLinked();
+
+    return () => {
+      unsubscribeFromZoomLevelSubject();
+    };
+  }, [isLinked, zoomLevelSubject]);
+
+  useEffect(() => {
+    const unsubscribe = canvasScrollSubject.subscribe((data) => {
+      scrollPositionSubject.next({
+        horizontal: !isNaN(data.x) ? data.x : scrollPositionSubject.data.horizontal,
+        vertical: !isNaN(data.y) ? data.y : scrollPositionSubject.data.vertical,
+      });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [canvasScrollSubject, scrollPositionSubject]);
+
+  const emitScrollPosition = useCallback((position: number) => {
+    if (!scrollSubject || !scrollContainerRef.current) {
+      return;
+    }
+
+    scrollSubject.next({
+      origin: scrollContainerRef.current,
+      position,
+    });
+  }, [scrollSubject]);
+
+  const updateScrollSubjectDebounced = useDebouncedCallback((position: number) => {
+    if (!scrollSubject || !scrollContainerRef.current) {
+      return;
+    }
+
+    scrollSubject.next({
+      origin: scrollContainerRef.current,
+      position: position / devicePixelRatio,
+    });
+  }, linkedScrollDebounceDelayMs, { leading: true, trailing: true });
+
+  const updateScrollPosition = useCallback((params: { internalZoomLevel: number; positionX: number; positionY: number }) => {
+    const { internalZoomLevel, positionX, positionY } = params;
+    if (internalZoomLevel === 0) {
+      throw new Error('internalZoomLevel cannot be 0');
+    }
+
+    const { newPositionX, newPositionY } = TreeUtil.getSanitizedScrollPosition({
+      devicePixelRatio,
+      headerHeight,
+      internalZoomLevel,
+      isLinked,
+      positionX,
+      positionY,
+      treeCanvasHeight,
+      treeCanvasWidth,
+      treeHeight,
+      treePadding,
+    });
+
+    const positionYChanged = newPositionY !== canvasScrollSubject.data.y;
+
+    canvasScrollSubject.next({
+      x: newPositionX,
+      y: newPositionY,
+    });
+
+    if (isLinked && internalZoomLevel === 1 && positionYChanged) {
+      updateScrollSubjectDebounced(newPositionY);
+    }
+  }, [canvasScrollSubject, devicePixelRatio, headerHeight, isLinked, treeCanvasHeight, treeCanvasWidth, treeHeight, treePadding, updateScrollSubjectDebounced]);
+
+  useEffect(() => {
+    updateScrollPosition({
+      internalZoomLevel: zoomLevelSubject.data,
+      positionX: canvasScrollSubject.data.x,
+      positionY: canvasScrollSubject.data.y,
+    });
+  }, [canvasScrollSubject, updateScrollPosition, zoomLevelSubject]);
+
+  const link = useCallback((verticalPosition?: number) => {
+    const nextVerticalPosition = verticalPosition ?? scrollSubject?.data?.position ?? 0;
+
+    zoomLevelSubject.next(1);
+    setIsLinked(true);
+    updateScrollPosition({
+      internalZoomLevel: 1,
+      positionX: 0,
+      positionY: nextVerticalPosition,
+    });
+
+    if (verticalPosition !== undefined) {
+      emitScrollPosition(nextVerticalPosition);
+    }
+  }, [emitScrollPosition, scrollSubject, updateScrollPosition, zoomLevelSubject]);
+
+  const unlink = useCallback((viewState: { positionX: number; positionY: number; zoomLevel: number }) => {
+    setIsLinked(false);
+    zoomLevelSubject.next(viewState.zoomLevel);
+    updateScrollPosition({
+      internalZoomLevel: viewState.zoomLevel,
+      positionX: viewState.positionX,
+      positionY: viewState.positionY,
+    });
+  }, [updateScrollPosition, zoomLevelSubject]);
+
+  const syncScrollToVisibleTree = useCallback(() => {
+    if (!tree?.size) {
+      link(0);
+      return;
+    }
+
+    const newScrollPosition = TreeUtil.getScrollPositionFromTreeVisibility({
+      itemHeight,
+      treeCanvasHeight,
+      treeHeight,
+      treeSize: tree.size,
+      verticalScrollPosition: scrollPositionSubject.data.vertical,
+      zoomLevel: zoomLevelSubject.data,
+    });
+
+    link(newScrollPosition);
+  }, [itemHeight, link, scrollPositionSubject, tree, treeCanvasHeight, treeHeight, zoomLevelSubject]);
+
+  useImperativeHandle(ref, () => ({
+    link,
+    syncScrollToVisibleTree,
+    unlink,
+  }), [link, syncScrollToVisibleTree, unlink]);
+
+  const devicePixelRatioServiceCallback = useCallback((newDevicePixelRatio: number, previousDevicePixelRatio: number) => {
+    canvasScrollSubject.next({
+      x: (canvasScrollSubject.data.x / previousDevicePixelRatio) * newDevicePixelRatio,
+      y: (canvasScrollSubject.data.y / previousDevicePixelRatio) * newDevicePixelRatio,
+    });
+    setDevicePixelRatio(newDevicePixelRatio);
+  }, [canvasScrollSubject]);
+
+  useSubscribable(DevicePixelRatioService.getInstance(), {
+    callback: devicePixelRatioServiceCallback,
+  });
+
+  const getTickerMarkScale = useCallback((zoomLevel: number) => {
+    return TreeUtil.getTickMarkScale({
+      geneticTreeWidth: tree?.maxBranchLength,
+      maxScaleWidthPx,
+      minGeneticScaleUnit: TreeUtil.getMinGeneticScaleUnit(tree),
+      minScaleWidthPx,
+      scaleIncrements,
+      treeWidthMinusPadding,
+      zoomLevel,
+    });
+  }, [maxScaleWidthPx, minScaleWidthPx, scaleIncrements, tree, treeWidthMinusPadding]);
+
+  const getPathPropertiesFromCanvas = useCallback((canvas: HTMLCanvasElement, event: MouseEvent): TreePathProperties => {
+    return TreeUtil.getPathPropertiesFromCanvas({
+      canvas,
+      devicePixelRatio,
+      event,
+      treeAssembly,
+    });
+  }, [devicePixelRatio, treeAssembly]);
+
+  useEffect(() => {
+    if (!scrollSubject) {
+      return;
+    }
+
+    let scrollData = scrollSubject.data;
+    let zoomLevel = zoomLevelSubject.data;
+
+    const update = () => {
+      if (!scrollData || scrollData.origin === scrollContainerRef.current) {
+        return;
+      }
+      if (isLinked && zoomLevel === 1) {
+        canvasScrollSubject.next({
+          x: canvasScrollSubject.data.x * devicePixelRatio,
+          y: scrollData.position * devicePixelRatio,
+        });
+      }
+    };
+
+    const unsubscribeFromScrollSubject = scrollSubject.subscribe((data) => {
+      scrollData = data;
+      update();
+    });
+
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
+      zoomLevel = data;
+      update();
+    });
+
+    return () => {
+      unsubscribeFromScrollSubject();
+      unsubscribeFromZoomLevelSubject();
+    };
+  }, [canvasScrollSubject, devicePixelRatio, scrollSubject, isLinked, zoomLevelSubject]);
+
+  useEffect(() => {
+    if (!tree || !pixelToGeneticDistanceRatio) {
+      setTreeAssembly(null);
+      return;
+    }
+
+    setTreeAssembly(TreeUtil.assembleTree({
+      ancestorDotRadius,
+      itemHeight,
+      leafDotRadius,
+      minimumDistancePercentageToShowLabel,
+      pixelToGeneticDistanceRatio,
+      rootNode: tree,
+      sortedLeafNames,
+      treeCanvasWidth,
+      treePadding,
+    }));
+  }, [ancestorDotRadius, itemHeight, leafDotRadius, sortedLeafNames, minimumDistancePercentageToShowLabel, pixelToGeneticDistanceRatio, tree, treeCanvasWidth, treePadding]);
+
+  useEffect(() => {
+    if (!treeCanvas || !treeAssembly || !tree) {
+      return;
+    }
+
+    let animationFrameId: number;
+    let zoomLevel: number = zoomLevelSubject.data;
+    let tickerMarkScale = getTickerMarkScale(zoomLevel);
+    let highlightedNodeNames: string[] = highlightedNodeNamesSubject?.data?.highlightedNodeNames ?? [];
+    let scrollPosition = scrollSubject?.data?.position ?? 0;
+    let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
+    let verticalScrollPosition = scrollPositionSubject.data.vertical;
+    let range = visibleRangeSubject?.data;
+
+    const render = () => {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(() => {
+        TreeUtil.drawTreeCanvas({
+          backgroundColor,
+          canvas: treeCanvas,
+          devicePixelRatio,
+          dimFn,
+          fontFamily,
+          geneticTreeWidth: tree.maxBranchLength,
+          headerHeight,
+          highlightedNodeNames,
+          horizontalScrollPosition,
+          isLinked,
+          itemHeight,
+          nodeNameColors,
+          pixelToGeneticDistanceRatio,
+          range,
+          regularFillColorSupportLine,
+          scaleColor,
+          scrollPosition,
+          shouldShowDistances,
+          shouldShowSupportLinesWhenUnlinked,
+          supportLineColorLinked,
+          supportLineColorUnlinked,
+          tickerMarkScale,
+          treeAssembly,
+          treeCanvasHeight,
+          treeCanvasWidth,
+          treeColor,
+          treeFont,
+          treePadding,
+          verticalScrollPosition,
+          zoomLevel,
+        });
+      });
+    };
+
+    const unsubscribeFromHighlighting = highlightedNodeNamesSubject ? highlightedNodeNamesSubject.subscribe((data) => {
+      highlightedNodeNames = data.highlightedNodeNames;
+      render();
+    }) : (): null => null;
+
+    const unsubscribeFromScrollPositionSubject = scrollPositionSubject.subscribe((data) => {
+      horizontalScrollPosition = data.horizontal;
+      verticalScrollPosition = data.vertical;
+      render();
+    });
+
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
+      zoomLevel = data;
+      tickerMarkScale = getTickerMarkScale(data);
+      render();
+    });
+
+    const unsubscribeFromScrollSubject = scrollSubject?.subscribe((data) => {
+      if (data.origin === scrollContainerRef.current) {
+        return;
+      }
+      scrollPosition = data.position;
+      render();
+    });
+
+    const unsubscribeFromVisibleRangeSubject = visibleRangeSubject?.subscribe((data) => {
+      range = data;
+      render();
+    });
+
+    render();
+
+    return () => {
+      unsubscribeFromHighlighting();
+      unsubscribeFromScrollSubject?.();
+      unsubscribeFromScrollPositionSubject();
+      unsubscribeFromZoomLevelSubject();
+      unsubscribeFromVisibleRangeSubject?.();
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [
+    backgroundColor,
+    devicePixelRatio,
+    dimFn,
+    highlightedNodeNamesSubject,
+    scrollSubject,
+    visibleRangeSubject,
+    fontFamily,
+    getTickerMarkScale,
+    headerHeight,
+    isLinked,
+    itemHeight,
+    pixelToGeneticDistanceRatio,
+    regularFillColorSupportLine,
+    scaleColor,
+    scrollPositionSubject,
+    shouldShowDistances,
+    shouldShowSupportLinesWhenUnlinked,
+    nodeNameColors,
+    supportLineColorLinked,
+    supportLineColorUnlinked,
+    tree,
+    treeAssembly,
+    treeCanvas,
+    treeCanvasHeight,
+    treeCanvasWidth,
+    treeColor,
+    treeFont,
+    treePadding,
+    zoomLevelSubject,
+  ]);
+
+  useEffect(() => {
+    if (!treeCanvas) {
+      return;
+    }
+
+    let zoomLevel = zoomLevelSubject.data;
+
+    let pos = {
+      currentX: 0,
+      currentY: 0,
+      x: 0,
+      y: 0,
+    };
+    let followMouse = false;
+
+    const clearHighlighting = () => {
+      if (highlightedNodeNamesSubject?.data?.highlightedNodeNames?.length) {
+        highlightedNodeNamesSubject.next({
+          highlightedNodeNames: [],
+        });
+      }
+    };
+
+    const isEventInHeader = (event: MouseEvent | WheelEvent) => event.offsetY < headerHeight;
+
+    const onMouseDown = (event: MouseEvent) => {
+      if (isEventInHeader(event)) {
+        treeCanvas.style.cursor = 'default';
+        return;
+      }
+
+      pos = {
+        currentX: canvasScrollSubject.data.x,
+        currentY: canvasScrollSubject.data.y,
+        x: event.clientX,
+        y: event.clientY,
+      };
+      followMouse = true;
+    };
+
+    const onMouseMove = (event: MouseEvent) => {
+      if (isEventInHeader(event)) {
+        followMouse = false;
+        treeCanvas.style.cursor = 'default';
+        clearHighlighting();
+        return;
+      }
+
+      if (followMouse) {
+        treeCanvas.style.cursor = 'move';
+
+        const deltaX = event.clientX - pos.x;
+        const deltaY = event.clientY - pos.y;
+        const scrollPositionX = pos.currentX - deltaX;
+        const scrollPositionY = pos.currentY - deltaY;
+
+        let sanitizedScrollPositionX = scrollPositionX;
+        if (zoomLevel === 1 && Math.abs(deltaX) < panningThreshold && pos.currentX === 0) {
+          sanitizedScrollPositionX = 0;
+        }
+        updateScrollPosition({ internalZoomLevel: zoomLevel, positionX: sanitizedScrollPositionX, positionY: scrollPositionY });
+        return;
+      }
+
+      const pathProperties = getPathPropertiesFromCanvas(treeCanvas, event);
+      if (pathProperties) {
+        treeCanvas.style.cursor = 'pointer';
+        highlightedNodeNamesSubject?.next({
+          highlightedNodeNames: pathProperties.subTreeLeaveNames,
+        });
+      } else {
+        treeCanvas.style.cursor = 'default';
+        clearHighlighting();
+      }
+    };
+
+    const onMouseUp = (event: MouseEvent) => {
+      followMouse = false;
+
+      if (isEventInHeader(event)) {
+        return;
+      }
+
+      const pathProperties = getPathPropertiesFromCanvas(treeCanvas, event);
+      if (pathProperties) {
+        onPathClick?.({
+          mouseEvent: event,
+          pathProperties,
+        });
+      }
+    };
+
+    const onMouseWheel = (event: WheelEvent) => {
+      event.preventDefault();
+
+      if (isEventInHeader(event)) {
+        return;
+      }
+
+      if (event.shiftKey) {
+        updateScrollPosition({ internalZoomLevel: zoomLevel, positionX: canvasScrollSubject.data.x + (event.deltaX || event.deltaY), positionY: canvasScrollSubject.data.y });
+        return;
+      }
+      if (event.metaKey || event.ctrlKey) {
+        updateScrollPosition({ internalZoomLevel: zoomLevel, positionX: canvasScrollSubject.data.x, positionY: canvasScrollSubject.data.y + (event.deltaX || event.deltaY) });
+        return;
+      }
+
+      const zoomSpeed = Math.min(maxZoomSpeed, Math.max(minZoomSpeed, treeHeight / treeCanvasHeight * 0.2));
+      const newZoomLevel = Math.min(maxZoomLevel, Math.max(minZoomLevel, zoomLevel + (event.deltaY > 0 ? zoomSpeed : -zoomSpeed)));
+      const treeBodyOffsetY = event.offsetY - headerHeight;
+
+      const newScrollPositionY = TreeUtil.getNewScrollPositionForZoomLevel({
+        currentZoomLevel: zoomLevel,
+        dimensionSize: treeHeight,
+        eventOffset: treeBodyOffsetY,
+        newZoomLevel,
+        scrollPosition: canvasScrollSubject.data.y,
+      });
+      const newScrollPositionX = TreeUtil.getNewScrollPositionForZoomLevel({
+        currentZoomLevel: zoomLevel,
+        dimensionSize: treeCanvasWidth,
+        eventOffset: event.offsetX,
+        newZoomLevel,
+        scrollPosition: canvasScrollSubject.data.x,
+      });
+      zoomLevelSubject.next(newZoomLevel);
+      if (newZoomLevel !== 1) {
+        updateScrollPosition({ internalZoomLevel: newZoomLevel, positionX: newScrollPositionX, positionY: newScrollPositionY });
+      } else {
+        updateScrollPosition({ internalZoomLevel: 1, positionX: newScrollPositionX, positionY: scrollSubject?.data?.position ?? 0 });
+      }
+    };
+
+    const onMouseOut = () => {
+      followMouse = false;
+      clearHighlighting();
+    };
+
+    const unsubscribeFromZoomLevelSubject = zoomLevelSubject.subscribe((data) => {
+      zoomLevel = data;
+    });
+
+    treeCanvas.addEventListener('mousemove', onMouseMove);
+    treeCanvas.addEventListener('mousedown', onMouseDown);
+    treeCanvas.addEventListener('mouseup', onMouseUp);
+    treeCanvas.addEventListener('mouseout', onMouseOut);
+    treeCanvas.addEventListener('wheel', onMouseWheel, { passive: false });
+
+    return () => {
+      treeCanvas.removeEventListener('mousemove', onMouseMove);
+      treeCanvas.removeEventListener('mousedown', onMouseDown);
+      treeCanvas.removeEventListener('mouseup', onMouseUp);
+      treeCanvas.removeEventListener('mouseout', onMouseOut);
+      treeCanvas.removeEventListener('wheel', onMouseWheel);
+      unsubscribeFromZoomLevelSubject();
+    };
+  }, [
+    canvasScrollSubject,
+    highlightedNodeNamesSubject,
+    scrollSubject,
+    getPathPropertiesFromCanvas,
+    headerHeight,
+    maxZoomLevel,
+    maxZoomSpeed,
+    minZoomLevel,
+    minZoomSpeed,
+    onPathClick,
+    panningThreshold,
+    treeCanvas,
+    treeCanvasHeight,
+    treeCanvasWidth,
+    treeHeight,
+    updateScrollPosition,
+    zoomLevelSubject,
+  ]);
+
+  const shouldRenderCanvas = !!tree && treeCanvasWidth > 0 && tree.size > 0;
+
+  return (
+    <Box
+      ref={containerRef}
+      sx={{
+        height: '100%',
+        overflow: 'clip',
+        position: 'relative',
+        width: '100%',
+      }}
+    >
+      <Box
+        ref={scrollContainerRef}
+        sx={{
+          height: combinedCanvasHeight,
+          overflowY: 'hidden',
+          position: 'absolute',
+          width: treeCanvasWidth,
+        }}
+      >
+        {shouldRenderCanvas && (
+          <Box
+            aria-label={ariaLabel}
+            component={'canvas'}
+            ref={handleTreeCanvasRef}
+            role={'figure'}
+            sx={{
+              height: combinedCanvasHeight,
+              width: treeCanvasWidth,
+            }}
+          />
+        )}
+      </Box>
+    </Box>
+  );
+};

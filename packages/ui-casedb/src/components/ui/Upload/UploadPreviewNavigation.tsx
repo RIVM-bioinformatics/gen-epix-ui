@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { use } from 'react';
-import { useTableStoreContext } from '@gen-epix/ui';
+import { useTableStoreContext } from '@gen-epix/ui/stores/tableStore';
 import type { CaseDbCaseUploadResult } from '@gen-epix/api-casedb';
 
 import { UploadStoreContext } from '../../../stores/uploadStore';

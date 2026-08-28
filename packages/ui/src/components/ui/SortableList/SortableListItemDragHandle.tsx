@@ -4,8 +4,7 @@ import {
 } from '@mui/material';
 import { use } from 'react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-
-import { TestIdUtil } from '../../../utils/TestIdUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { SortableListItemContext } from './context/SortableListItemContext';
 

@@ -1,5 +1,6 @@
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+
 import type { ConfigBase } from '../../../models/config';
-import { HmrUtil } from '../../../utils/HmrUtil';
 
 export class ConfigService<TConfig extends ConfigBase = ConfigBase> {
   private static __instance: ConfigService;

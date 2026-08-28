@@ -1,6 +1,6 @@
 import type { TFunction } from 'i18next';
 import type { CaseDbColType } from '@gen-epix/api-casedb';
-import type { ConfigBase } from '@gen-epix/ui';
+import type { ConfigBase } from '@gen-epix/ui/models/config';
 import type { Range } from 'colorjs.io';
 import type { FieldValues } from 'react-hook-form';
 

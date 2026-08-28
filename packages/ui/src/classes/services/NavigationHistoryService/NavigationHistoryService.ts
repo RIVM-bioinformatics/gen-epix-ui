@@ -1,4 +1,4 @@
-import { HmrUtil } from '../../../utils/HmrUtil';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 export class NavigationHistoryService {
   private static __instance: NavigationHistoryService;

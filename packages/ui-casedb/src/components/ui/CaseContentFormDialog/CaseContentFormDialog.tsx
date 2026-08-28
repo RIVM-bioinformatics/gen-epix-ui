@@ -4,15 +4,13 @@ import {
 } from 'react';
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  DialogAction,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  TestIdUtil,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import SaveIcon from '@mui/icons-material/Save';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 

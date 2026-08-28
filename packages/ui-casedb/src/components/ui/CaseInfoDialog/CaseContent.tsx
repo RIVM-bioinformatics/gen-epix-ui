@@ -19,11 +19,9 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui';
-import {
-  EpiContactDetailsDialog,
-  GenericErrorMessage,
-} from '@gen-epix/ui';
+import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui/components/epi/EpiContactDetailsDialog';
+import { EpiContactDetailsDialog } from '@gen-epix/ui/components/epi/EpiContactDetailsDialog';
+import { GenericErrorMessage } from '@gen-epix/ui/components/ui/GenericErrorMessage';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';

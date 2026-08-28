@@ -7,15 +7,13 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
+import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import type {
   AutoCompleteOption,
   OptionBase,
-} from '@gen-epix/ui';
-import {
-  NotificationService,
-  QueryClientService,
-  StringUtil,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui-form/models/form';
 
 import type {
   UploadMappedColumn,
@@ -23,7 +21,7 @@ import type {
 } from '../../models/upload';
 import { UPLOAD_STEP } from '../../models/upload';
 import { UploadUtil } from '../../utils/UploadUtil';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 export const STEP_ORDER_UPLOAD = [
   UPLOAD_STEP.SELECT_FILE,

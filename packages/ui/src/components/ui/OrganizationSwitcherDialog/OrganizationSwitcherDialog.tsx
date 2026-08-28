@@ -21,20 +21,20 @@ import {
   object,
   string,
 } from 'yup';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { NotificationService } from '../../../classes/services/NotificationService';
-import { WindowService } from '../../../classes/services/WindowService';
 import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
-import { useArray } from '../../../hooks/useArray';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import { Autocomplete } from '../../form/fields/Autocomplete';
 import { ApiService } from '../../../classes/services/ApiService';
 
 export interface OrganizationSwitcherDialogOpenProps {

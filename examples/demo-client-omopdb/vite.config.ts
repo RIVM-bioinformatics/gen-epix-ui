@@ -87,6 +87,13 @@ export default defineConfig({
           ],
         },
         {
+          dest: './locale/ui-form',
+          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
+          src: [
+            normalizePath(resolve(gitRootPath, 'packages', 'ui-form', 'src', 'locale', '*.json')),
+          ],
+        },
+        {
           dest: './locale/ui-omopdb',
           rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
           src: [

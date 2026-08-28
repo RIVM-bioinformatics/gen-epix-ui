@@ -1,4 +1,4 @@
-import { App } from '@gen-epix/ui';
+import { App } from '@gen-epix/ui/components/app/App';
 import { useMemo } from 'react';
 
 import { createUserProfileStore } from '../../../stores/userProfileStore';

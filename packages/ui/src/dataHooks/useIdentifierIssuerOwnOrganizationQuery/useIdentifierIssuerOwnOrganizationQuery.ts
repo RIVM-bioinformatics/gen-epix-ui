@@ -7,7 +7,7 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
 
 export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<CommonDbIdentifierIssuer[]> => {

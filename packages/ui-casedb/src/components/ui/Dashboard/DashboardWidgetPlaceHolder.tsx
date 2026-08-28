@@ -13,7 +13,7 @@ import {
   useState,
 } from 'react';
 import { useStore } from 'zustand';
-import { ConfigService } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 
 import type { CaseDbConfig } from '../../../models/config';
 import { DashboardUtil } from '../../../utils/DashboardUtil';

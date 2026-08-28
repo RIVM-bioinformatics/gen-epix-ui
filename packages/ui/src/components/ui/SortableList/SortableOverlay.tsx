@@ -5,8 +5,7 @@ import {
   DragOverlay,
 } from '@dnd-kit/core';
 import type { DropAnimation } from '@dnd-kit/core';
-
-import { TestIdUtil } from '../../../utils/TestIdUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 
 export const SortableOverlay = ({ children }: PropsWithChildren<unknown>) => {

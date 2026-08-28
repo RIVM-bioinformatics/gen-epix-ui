@@ -12,10 +12,10 @@ import {
 } from 'react';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useTranslation } from 'react-i18next';
+import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
 import { NotificationsDrawer } from '../Notifications';
 import { NotificationService } from '../../../classes/services/NotificationService';
-import { useSubscribable } from '../../../hooks/useSubscribable';
 
 
 export const ApplicationBarActionsNotificationsItem = () => {

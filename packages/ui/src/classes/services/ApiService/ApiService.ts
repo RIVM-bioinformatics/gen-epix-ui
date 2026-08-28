@@ -4,8 +4,8 @@ import type {
   CommonDbOrganizationApi,
   CommonDbSystemApi,
 } from '@gen-epix/api-commondb';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
-import { HmrUtil } from '../../../utils/HmrUtil';
 import type { BaseApi } from '../../../models/api';
 
 export class ApiService {

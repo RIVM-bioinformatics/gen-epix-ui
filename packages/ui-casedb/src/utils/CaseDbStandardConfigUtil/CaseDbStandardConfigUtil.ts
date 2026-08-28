@@ -3,19 +3,17 @@ import {
   subDays,
 } from 'date-fns';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import type { FormFieldDefinition } from '@gen-epix/ui';
-import {
-  FORM_FIELD_DEFINITION_TYPE,
-  I18nService,
-  StandardConfigUtil,
-  WindowService,
-} from '@gen-epix/ui';
+import { I18nService } from '@gen-epix/ui/classes/services/I18nService';
+import { StandardConfigUtil } from '@gen-epix/ui/utils/StandardConfigUtil';
 import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
 import { t } from 'i18next';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import type { CaseDbConfig } from '../../models/config';
-import { DASHBOARD_COMPONENT_NAME } from '../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard';
 import { EpiCurveWidget } from '../../components/ui/EpiCurveWidget';
 import { LineListWidget } from '../../components/ui/LineListWidget';
 import { MapWidget } from '../../components/ui/MapWidget';

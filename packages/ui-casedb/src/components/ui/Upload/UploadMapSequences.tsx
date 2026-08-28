@@ -24,14 +24,14 @@ import type {
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/models/table';
 import {
   createTableStore,
-  Table,
   TableStoreContextProvider,
-  TableUtil,
-  useInitializeTableStore,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/stores/tableStore';
+import { Table } from '@gen-epix/ui/components/ui/Table';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import { useInitializeTableStore } from '@gen-epix/ui/hooks/useInitializeTableStore';
 
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { UploadStoreContext } from '../../../stores/uploadStore';

@@ -16,21 +16,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '../../hoc/withDialog';
 import { withDialog } from '../../hoc/withDialog';
-import { TestIdUtil } from '../../utils/TestIdUtil';
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import { GenericForm } from '../../components/form/helpers/GenericForm';
 import { AuthenticationService } from '../../classes/services/AuthenticationService';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
 
 export interface UserInvitationConsumeDialogOpenProps {

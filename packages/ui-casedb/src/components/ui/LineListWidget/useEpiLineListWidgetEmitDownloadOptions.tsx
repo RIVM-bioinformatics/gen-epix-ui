@@ -11,7 +11,7 @@ import { EventBusService } from '../../../classes/services/EventBusService';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 
 export const useEpiLineListWidgetEmitDownloadOptions = () => {
   const { t } = useTranslation();

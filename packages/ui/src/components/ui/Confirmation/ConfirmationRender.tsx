@@ -5,13 +5,13 @@ import {
 } from 'react';
 import { DialogContentText } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import type { DialogAction } from '../Dialog/Dialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '../../../hoc/withDialog';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export interface ConfirmationProps<TOpenProps = never> extends WithDialogRenderProps<TOpenProps> {
   readonly body?: string;

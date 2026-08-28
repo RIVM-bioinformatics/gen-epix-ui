@@ -33,8 +33,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
-import { TestIdUtil } from '../../../utils/TestIdUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { SortableOverlay } from './SortableOverlay';
 import { SortableListItem } from './SortableListItem';

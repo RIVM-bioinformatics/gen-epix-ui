@@ -10,17 +10,19 @@ import type {
   CaseDbUser,
   CaseDbUserAccessCasePolicy,
 } from '@gen-epix/api-casedb';
-import type { TableColumn } from '@gen-epix/ui';
+import type { TableColumn } from '@gen-epix/ui/models/table';
 import {
   createTableStore,
-  ResponseHandler,
+  TableStoreContextProvider,
+} from '@gen-epix/ui/stores/tableStore';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import {
   Table,
   TableHeader,
-  TableStoreContextProvider,
-  TableUtil,
-  useArray,
-  useInitializeTableStore,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/components/ui/Table';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import { useInitializeTableStore } from '@gen-epix/ui/hooks/useInitializeTableStore';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useOrganizationAccessCasePoliciesQuery } from '../../../dataHooks/useOrganizationAccessCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../../../dataHooks/useUserAccessCasePoliciesQuery';

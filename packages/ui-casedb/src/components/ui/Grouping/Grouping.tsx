@@ -8,11 +8,9 @@ import { useStore } from 'zustand';
 import { useTranslation } from 'react-i18next';
 import { produce } from 'immer';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui';
-import {
-  ConfigService,
-  NestedDropdown,
-} from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { NestedDropdown } from '@gen-epix/ui/components/ui/NestedMenu';
 
 import { LegendaItem } from '../LegendaItem';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';

@@ -1,9 +1,7 @@
 import { useMemo } from 'react';
 import { CaseDbDimType } from '@gen-epix/api-casedb';
-import type {
-  OptionBase,
-  UseOptions,
-} from '@gen-epix/ui';
+import type { UseOptions } from '@gen-epix/ui/models/dataHooks';
+import type { OptionBase } from '@gen-epix/ui-form/models/form';
 
 
 export const dimTypePresentationValues: Record<CaseDbDimType, string> = {

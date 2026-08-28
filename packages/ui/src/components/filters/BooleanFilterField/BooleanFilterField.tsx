@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 import { useMemo } from 'react';
+import type { SelectOption } from '@gen-epix/ui-form/models/form';
+import { Select } from '@gen-epix/ui-form/components/fields/Select';
 
 import type { BooleanFilter } from '../../../classes/filters/BooleanFilter';
-import type { SelectOption } from '../../../models/form';
-import { Select } from '../../form/fields/Select';
 
 
 export type BooleanFilterFieldProps = {

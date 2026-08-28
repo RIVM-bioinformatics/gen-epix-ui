@@ -11,6 +11,7 @@ import {
   useEffect,
   useMemo,
 } from 'react';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import type {
   WithDialogRefMethods,
@@ -19,7 +20,6 @@ import type {
 import { withDialog } from '../../../hoc/withDialog';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ResponseHandler } from '../../ui/ResponseHandler';
-import { useArray } from '../../../hooks/useArray';
 import { ApiService } from '../../../classes/services/ApiService';
 
 export interface EpiContactDetailsDialogOpenProps {

@@ -29,26 +29,26 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  AutoCompleteOption,
-  DialogAction,
-  FormFieldDefinition,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  FORM_FIELD_DEFINITION_TYPE,
-  GenericForm,
-  LoadableUtil,
-  QueryClientService,
-  ResponseHandler,
-  SchemaUtil,
-  TestIdUtil,
-  useArray,
-  useCreateMutation,
-  useItemQuery,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useCreateMutation } from '@gen-epix/ui/hooks/useCreateMutation';
+import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type {
+  AutoCompleteOption,
+  FormFieldDefinition,
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
@@ -57,7 +57,7 @@ import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { CasesAlreadyInCaseSetWarning } from '../CasesAlreadyInCaseSetWarning';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 import { CreateEventDialogSuccessNotificationMessage } from './CreateEventDialogSuccessNotificationMessage';
 

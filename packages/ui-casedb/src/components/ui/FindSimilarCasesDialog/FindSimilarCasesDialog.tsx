@@ -39,37 +39,37 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  AutoCompleteOption,
-  DialogAction,
-  FormFieldDefinition,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  ConfigService,
-  DATE_FORMAT,
-  FORM_FIELD_DEFINITION_TYPE,
-  GenericForm,
-  QueryClientService,
-  ResponseHandler,
-  SchemaUtil,
-  TestIdUtil,
-  useQueryMemo,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type {
+  AutoCompleteOption,
+  FormFieldDefinition,
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { TreeUtil } from '../../../utils/TreeUtil';
+import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 import type {
   CaseDbSimilarCaseWithIsOwnCase,
   FindSimilarCasesChartDataPoint,
   FindSimilarCasesOrganizationFilter,
 } from '../../../models/caseDb';
 import type { TreeWidgetDataPersistable } from '../../../models/dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 
 import { FindSimilarCasesDialogDateRangeChart } from './FindSimilarCasesDialogDateRangeChart';
 
@@ -106,7 +106,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   const treeConfiguration = dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE).treeConfiguration;
   const setFindSimilarCasesResults = useStore(dashboardStore, (state) => state.setFindSimilarCasesResults);
   const findSimilarCasesResults = useStore(dashboardStore, (state) => state.findSimilarCasesResults);
-  const treeConfigurations = useMemo(() => TreeUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
+  const treeConfigurations = useMemo(() => TreeWidgetUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
   const [formData, setFormData] = useState<FormFields>(null);
 
   const schema = useMemo(() => object<FormFields>().shape({

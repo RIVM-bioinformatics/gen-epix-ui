@@ -21,7 +21,7 @@ import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
 import type { Stratification } from '../../../models/stratification';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 
 export interface EpiCurveStackedAreaChartProps {
   chartRef: Ref<EChartsReact>;

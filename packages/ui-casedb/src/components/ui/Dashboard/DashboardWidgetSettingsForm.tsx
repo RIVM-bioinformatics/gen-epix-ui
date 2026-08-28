@@ -18,11 +18,9 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import {
-  ConfigService,
-  FormUtil,
-  GenericForm,
-} from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
 
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import type { CaseDbConfig } from '../../../models/config';

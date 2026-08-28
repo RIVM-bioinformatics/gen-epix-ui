@@ -26,27 +26,27 @@ import {
   MenuItem,
 } from '@mui/material';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
-
-import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type {
   FormFieldDefinition,
   OptionBase,
-} from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
+
+import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
   TableColumn,
   TableRowParams,
 } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { CrudPageProps } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
-import { useArray } from '../../hooks/useArray';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
 import type { ConfirmationRefMethods } from '../../components/ui/Confirmation';
 import { Confirmation } from '../../components/ui/Confirmation';

@@ -11,13 +11,13 @@ import type {
   ReactNode,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
 
 import { Breadcrumbs } from '../Breadcrumbs';
 import { ConfigService } from '../../../classes/services/ConfigService';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
-import { WindowService } from '../../../classes/services/WindowService';
 import { useUpdateDocumentTitle } from '../../../hooks/useUpdateDocumentTitle';
-import type { PropsWithTestIdAttributes } from '../../../models/testId';
 import { ApplicationFooter } from '../ApplicationFooter/ApplicationFooter';
 
 export type PageContainerProps = PropsWithTestIdAttributes<{

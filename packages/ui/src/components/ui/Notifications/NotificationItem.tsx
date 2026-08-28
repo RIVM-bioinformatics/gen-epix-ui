@@ -9,8 +9,8 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 import { TimeUtil } from '../../../utils/TimeUtil';
 import type { Notification } from '../../../models/notification';
 

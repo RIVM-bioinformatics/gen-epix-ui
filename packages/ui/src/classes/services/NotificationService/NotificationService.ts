@@ -1,7 +1,8 @@
-import { StringUtil } from '../../../utils/StringUtil';
-import { SubscribableAbstract } from '../../abstracts/SubscribableAbstract';
-import { Subject } from '../../Subject';
-import { HmrUtil } from '../../../utils/HmrUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+
 import { ConfigService } from '../ConfigService';
 import type { Notification } from '../../../models/notification';
 

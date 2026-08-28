@@ -12,19 +12,17 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import {
-  ConfigService,
-  DATE_FORMAT,
-  DownloadUtil,
-  LogService,
-  NotificationService,
-  QueryClientService,
-  StringUtil,
-} from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { LogService } from '@gen-epix/ui/classes/services/LogService';
+import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 export class CaseDbDownloadUtil {
   public static downloadAsCsv(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {

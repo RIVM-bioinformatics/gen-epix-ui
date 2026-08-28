@@ -6,9 +6,9 @@ import {
 import remove from 'lodash/remove';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 import { ConfigService } from '../ConfigService';
-import { HmrUtil } from '../../../utils/HmrUtil';
 import type { GenericData } from '../../../models/data';
 
 export class QueryClientService<TQueryKey extends string = string> {

@@ -1,4 +1,5 @@
 import type { UseQueryResult } from '@tanstack/react-query';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import type {
   Loadable,
@@ -6,7 +7,6 @@ import type {
   UseNameFactory,
   UseOptions,
 } from '../../models/dataHooks';
-import { StringUtil } from '../StringUtil';
 import { LoadableUtil } from '../LoadableUtil';
 
 export class DataHookUtil {

@@ -17,7 +17,7 @@ import type {
   MouseEvent,
 } from 'react';
 import { useCallback } from 'react';
-import { TestIdUtil } from '@gen-epix/ui';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 export type DashboardSearchMode = 'exact-match' | 'fuzzy-match' | 'include-match' | 'prefix-exact-match' | 'suffix-exact-match';
 

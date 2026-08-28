@@ -13,20 +13,22 @@ import {
   CaseDbDimType,
 } from '@gen-epix/api-casedb';
 import type {
-  AutoCompleteOption,
   FilterDimension,
   Filters,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/models/filter';
 import {
-  DATE_FORMAT,
   DateFilter,
-  DEFAULT_FILTER_GROUP,
-  FILTER_MODE,
   GeoFilter,
   MultiSelectFilter,
   NumberRangeFilter,
   TextFilter,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/classes/filters';
+import {
+  DEFAULT_FILTER_GROUP,
+  FILTER_MODE,
+} from '@gen-epix/ui/classes/abstracts/FilterAbstract';
+import type { AutoCompleteOption } from '@gen-epix/ui-form/models/form';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import {
   CaseTypeUtil,

@@ -1,5 +1,5 @@
 import { ConfigService } from '../../classes/services/ConfigService';
-import { setup } from '../../setup/setup';
+import { setupUi } from '../../setup/setup';
 import { createDemoTheme } from '../../theme/demoTheme';
 import { StandardConfigUtil } from '../../utils/StandardConfigUtil';
 
@@ -11,7 +11,7 @@ export const setupTestEnvironment = () => {
     ...StandardConfigUtil.createConfig(),
     theme: createDemoTheme('light'),
   };
-  setup();
+  setupUi();
 
   vi.setConfig({
     testTimeout: 10000,

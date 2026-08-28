@@ -35,7 +35,7 @@ import {
   Box,
   useTheme,
 } from '@mui/material';
-import { ConfigService } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 
 import { FindSimilarCasesUtil } from '../../../utils/FindSimilarCasesUtil';
 import type {

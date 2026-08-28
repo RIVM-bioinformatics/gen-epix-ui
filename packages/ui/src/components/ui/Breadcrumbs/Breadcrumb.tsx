@@ -11,10 +11,10 @@ import {
   useMemo,
 } from 'react';
 import type { UIMatch } from 'react-router';
+import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
 import { BreadcrumbService } from '../../../classes/services/BreadcrumbService';
 import { RouterService } from '../../../classes/services/RouterService';
-import { useSubscribable } from '../../../hooks/useSubscribable';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 
 type BreadcrumbProps = {

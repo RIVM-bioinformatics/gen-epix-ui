@@ -23,7 +23,9 @@ This repository is a pnpm monorepo managed with [Lerna](https://lerna.js.org/). 
 
 | Package | Description |
 | --- | --- |
-| [`@gen-epix/ui`](packages/ui) | The core React component library shared across all Gen-EpiX applications. Contains UI components, data hooks, routing, forms, services, and state management. Built with [Vite](https://vitejs.dev/), [MUI](https://mui.com/), [TanStack Query](https://tanstack.com/query), [React Hook Form](https://react-hook-form.com/), [TipTap](https://tiptap.dev/), and [Zustand](https://zustand-demo.pmnd.rs/). |
+| [`@gen-epix/ui-core`](packages/ui-core) | Low-level, framework-agnostic primitives shared by all Gen-EpiX packages: event bus abstractions, `WindowService`, `KeyboardShortcutService`, generic hooks, and utility classes. No dependency on MUI or any application-level library. |
+| [`@gen-epix/ui`](packages/ui) | The core React component library shared across all Gen-EpiX applications. Contains UI components, data hooks, routing, forms, services, and state management. Built with [Vite](https://vitejs.dev/), [MUI](https://mui.com/), [TanStack Query](https://tanstack.com/query), [React Hook Form](https://react-hook-form.com/), [TipTap](https://tiptap.dev/), and [Zustand](https://zustand-demo.pmnd.rs/). Depends on `@gen-epix/ui-core`. |
+| [`@gen-epix/ui-phylogenetic-tree`](packages/ui-phylogenetic-tree) | Standalone phylogenetic tree visualization component (`PhylogeneticTree`), Newick parser (`NewickUtil`), and tree utilities (`TreeUtil`). Depends only on `@gen-epix/ui-core`, MUI, and React. |
 | [`@gen-epix/ui-casedb`](packages/ui-casedb) | Disease case management UI built on top of `@gen-epix/ui`. Provides the epidemiology dashboard, line list, phylogenetic tree, curve, and map widgets, as well as case/case-set/case-type admin pages. |
 | [`@gen-epix/ui-omopdb`](packages/ui-omopdb) | OMOP DB-specific UI components and pages built on top of `@gen-epix/ui`. |
 | [`@gen-epix/ui-seqdb`](packages/ui-seqdb) | Sequence DB-specific UI components and pages built on top of `@gen-epix/ui`. |

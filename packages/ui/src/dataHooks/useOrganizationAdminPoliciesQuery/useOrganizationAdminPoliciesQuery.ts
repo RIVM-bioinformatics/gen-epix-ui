@@ -12,10 +12,10 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useOrganizationMapQuery } from '../useOrganizationsQuery';
 import { useUsersMapQuery } from '../useUsersQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { DataUtil } from '../../utils/DataUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
+import { UserUtil } from '../../utils/UserUtil';
 
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrganizationAdminPolicy[]> => {
   return useQueryMemo({
@@ -44,7 +44,7 @@ export const useOrganizationAdminPolicyNameFactory = (): UseNameFactory<CommonDb
 
   return useMemo(() => {
     const getName = (item: CommonDbOrganizationAdminPolicy) => {
-      return `${organizationMapQuery.map.get(item.organization_id)?.name ?? item.organization_id} -> ${DataUtil.getUserDisplayValue(usersMapQuery.map.get(item.user_id), t)}`;
+      return `${organizationMapQuery.map.get(item.organization_id)?.name ?? item.organization_id} -> ${UserUtil.getUserDisplayValue(usersMapQuery.map.get(item.user_id), t)}`;
     };
     return DataHookUtil.createUseNameFactoryHook(getName, [organizationMapQuery, usersMapQuery]);
   }, [organizationMapQuery, t, usersMapQuery]);

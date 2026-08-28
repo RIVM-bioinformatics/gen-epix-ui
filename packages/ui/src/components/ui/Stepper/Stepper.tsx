@@ -10,8 +10,7 @@ import { useCallback } from 'react';
 import omit from 'lodash/omit';
 import { useTranslation } from 'react-i18next';
 import { visuallyHidden } from '@mui/utils';
-
-import { TestIdUtil } from '../../../utils/TestIdUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { STEPPER_DIRECTION } from './stepperModel';
 

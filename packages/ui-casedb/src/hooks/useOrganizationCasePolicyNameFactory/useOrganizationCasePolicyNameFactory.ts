@@ -3,11 +3,9 @@ import type {
   CaseDbOrganizationAccessCasePolicy,
   CaseDbOrganizationShareCasePolicy,
 } from '@gen-epix/api-casedb';
-import type { UseNameFactory } from '@gen-epix/ui';
-import {
-  DataHookUtil,
-  useOrganizationMapQuery,
-} from '@gen-epix/ui';
+import type { UseNameFactory } from '@gen-epix/ui/models/dataHooks';
+import { DataHookUtil } from '@gen-epix/ui/utils/DataHookUtil';
+import { useOrganizationMapQuery } from '@gen-epix/ui/dataHooks/useOrganizationsQuery';
 
 import { useCaseTypeSetsMapQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';

@@ -18,16 +18,16 @@ import KeyIcon from '@mui/icons-material/Key';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { Confirmation } from '../Confirmation';
 import type { ConfirmationRefMethods } from '../Confirmation';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { LogService } from '../../../classes/services/LogService';
-import { StringUtil } from '../../../utils/StringUtil';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 import type { MyPermissionsDialogRefMethods } from '../MyPermissionsDialog';
 import { MyPermissionsDialog } from '../MyPermissionsDialog';
-import { DataUtil } from '../../../utils/DataUtil';
+import { UserUtil } from '../../../utils/UserUtil';
 
 import { UserOrganizationAdminMenuItem } from './UserOrganizationAdminMenuItem';
 import { UserOwnOrganizationMenuItem } from './UserOwnOrganizationMenuItem';
@@ -66,7 +66,7 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   }, [auth]);
 
   const userName = useMemo(() => {
-    return DataUtil.getUserDisplayValue(AuthorizationService.getInstance().user, t);
+    return UserUtil.getUserDisplayValue(AuthorizationService.getInstance().user, t);
   }, [t]);
 
   const userRoles = useMemo(() => {

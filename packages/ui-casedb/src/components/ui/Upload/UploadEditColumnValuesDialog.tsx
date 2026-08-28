@@ -3,17 +3,13 @@ import type {
   CaseDbCase,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
 import type {
-  DialogAction,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  FormUtil,
-  GenericForm,
-  TestIdUtil,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import type { ReactElement } from 'react';
 import {
   useCallback,
@@ -28,6 +24,8 @@ import {
   AlertTitle,
   Box,
 } from '@mui/material';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
 
 import { CaseTypeFormUtil } from '../../../utils/CaseTypeFormUtil';
 

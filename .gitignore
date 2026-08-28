@@ -9,3 +9,4 @@ oidc-mock-server.config.json
 __screenshots__
 .vscode/chrome-debug-profile
 graphify-out
+.graphify-scope

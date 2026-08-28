@@ -20,21 +20,19 @@ import {
   CaseDbColType,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
+import type { OmitWithMetaData } from '@gen-epix/ui/models/data';
+import type { TableColumn } from '@gen-epix/ui/models/table';
+import { CrudPage } from '@gen-epix/ui/pages/CrudPage';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type {
   FormFieldDefinition,
-  OmitWithMetaData,
   OptionBase,
-  TableColumn,
-} from '@gen-epix/ui';
-import {
-  CrudPage,
-  DATE_FORMAT,
-  FORM_FIELD_DEFINITION_TYPE,
-  SchemaUtil,
-  TableUtil,
-  TestIdUtil,
-  useArray,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import {
   useColMapQuery,
@@ -56,7 +54,7 @@ import {
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { useRefDimMapQuery } from '../../dataHooks/useRefDimsQuery';
 import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 type FormFields = OmitWithMetaData<CaseDbCol, 'case_type' | 'dim' | 'props' | 'ref_col'>;
 

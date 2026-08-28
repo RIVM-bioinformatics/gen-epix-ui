@@ -9,10 +9,10 @@ import type {
 } from '../../models/dataHooks';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
-import { DataUtil } from '../../utils/DataUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
+import { UserUtil } from '../../utils/UserUtil';
 
 export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
   return useQueryMemo({
@@ -37,6 +37,6 @@ export const useUserOptionsQuery = (): UseOptions<string> => {
   const { t } = useTranslation();
 
   return useMemo(() => {
-    return DataHookUtil.createUseOptionsDataHook<CommonDbUser>(usersQuery, item => item.id, item => DataUtil.getUserDisplayValue(item, t));
+    return DataHookUtil.createUseOptionsDataHook<CommonDbUser>(usersQuery, item => item.id, item => UserUtil.getUserDisplayValue(item, t));
   }, [t, usersQuery]);
 };

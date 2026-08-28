@@ -17,8 +17,8 @@ import type { CaseDbUser } from '@gen-epix/api-casedb';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import { withDialog } from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 
 import { CustomTabPanel } from '../CustomTabPanel/CustomTabPanel';
 

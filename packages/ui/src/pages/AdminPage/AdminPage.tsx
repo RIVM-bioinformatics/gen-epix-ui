@@ -17,13 +17,13 @@ import {
   useCallback,
   useMemo,
 } from 'react';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ADMIN_PAGE_CATEGORY } from '../../models/admin';
 import type { MyNonIndexRouteObject } from '../../models/reactRouter';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 
 
 type Category = {

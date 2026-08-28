@@ -5,13 +5,13 @@ import type {
 } from 'axios';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import type { CommonDbLogItem } from '@gen-epix/api-commondb';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
-import { HmrUtil } from '../../../utils/HmrUtil';
 import { AuthenticationService } from '../AuthenticationService';
 import { ConfigService } from '../ConfigService';
-import { StringUtil } from '../../../utils/StringUtil';
-import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { ApiService } from '../ApiService';
+import { AxiosUtil } from '../../../utils/AxiosUtil';
 
 type LogServiceItem = {
   detail?: unknown;

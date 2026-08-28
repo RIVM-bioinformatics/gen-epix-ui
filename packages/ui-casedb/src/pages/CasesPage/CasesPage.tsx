@@ -25,36 +25,38 @@ import {
   CaseDbCaseTypeSetCategoryPurpose,
 } from '@gen-epix/api-casedb';
 import type {
-  OptionBase,
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/models/table';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import {
-  ConfigService,
   createTableStore,
-  DataUtil,
-  DATE_FORMAT,
-  PageContainer,
-  QueryClientService,
-  ResponseHandler,
-  RouterService,
+  TableStoreContextProvider,
+} from '@gen-epix/ui/stores/tableStore';
+import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import {
   Table,
   TableCaption,
   TableMenu,
   TableSidebarMenu,
-  TableStoreContextProvider,
-  TableUtil,
-  TestIdUtil,
-  useInitializeTableStore,
-  useQueryMemo,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/components/ui/Table';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import { useInitializeTableStore } from '@gen-epix/ui/hooks/useInitializeTableStore';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import type { OptionBase } from '@gen-epix/ui-form/models/form';
 
 import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';
 import { CaseTypeInfoDialogWithLoader } from '../../components/ui/CaseTypeInfoDialog';
 import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
 import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import { CaseDbDownloadUtil } from '../../utils/CaseDbDownloadUtil';
 
 

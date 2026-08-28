@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
-import { HmrUtil } from '../../../utils/HmrUtil';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 
 type HomePage = () => ReactElement;

@@ -7,14 +7,12 @@ import {
 import { useTranslation } from 'react-i18next';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import {
-  AxiosUtil,
-  ResponseHandler,
-  useItemQuery,
-} from '@gen-epix/ui';
+import { AxiosUtil } from '@gen-epix/ui/utils/AxiosUtil';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
 
 import { DataService } from '../../../classes/services/DataService';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 
 export type CompletCaseTypeLoaderProps = PropsWithChildren<{

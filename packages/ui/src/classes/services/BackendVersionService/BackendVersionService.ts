@@ -1,6 +1,5 @@
 import type { AxiosResponse } from 'axios';
-
-import { HmrUtil } from '../../../utils/HmrUtil';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 export class BackendVersionService {
   private static __instance: BackendVersionService;

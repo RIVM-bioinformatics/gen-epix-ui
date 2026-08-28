@@ -3,9 +3,9 @@ import {
   useTheme,
 } from '@mui/material';
 import type { PropsWithChildren } from 'react';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export type SidebarMenuProps = PropsWithChildren;
 

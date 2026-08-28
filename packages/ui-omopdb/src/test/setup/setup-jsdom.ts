@@ -1,9 +1,9 @@
 import { vi } from 'vitest';
-import { ConfigService } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 
-import { setupOmopDb } from '../../setup';
+import { setupOmopDb } from '../../setup/setup';
 import { OmopDbStandardConfigUtil } from '../../utils/OmopDbStandardConfigUtil';
-import { createOmopDbDemoTheme } from '../..';
+import { createOmopDbDemoTheme } from '../../theme/demoTheme';
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;

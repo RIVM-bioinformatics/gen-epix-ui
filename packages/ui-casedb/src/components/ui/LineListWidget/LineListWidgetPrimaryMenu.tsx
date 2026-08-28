@@ -16,14 +16,10 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import type {
-  MenuItemData,
-  TableColumn,
-} from '@gen-epix/ui';
-import {
-  AuthorizationService,
-  useColumnsMenu,
-} from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import type { TableColumn } from '@gen-epix/ui/models/table';
+import { AuthorizationService } from '@gen-epix/ui/classes/services/AuthorizationService';
+import { useColumnsMenu } from '@gen-epix/ui/hooks/useColumnsMenu';
 import last from 'lodash/last';
 
 import { EventBusService } from '../../../classes/services/EventBusService';

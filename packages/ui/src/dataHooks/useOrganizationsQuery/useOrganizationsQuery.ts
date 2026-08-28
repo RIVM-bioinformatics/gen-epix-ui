@@ -1,16 +1,16 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CommonDbOrganization } from '@gen-epix/api-commondb';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import type {
   UseMap,
   UseOptions,
 } from '../../models/dataHooks';
 import { DataHookUtil } from '../../utils/DataHookUtil';
-import { StringUtil } from '../../utils/StringUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
 
 export const useOrganizationsQuery = (): UseQueryResult<CommonDbOrganization[]> => {

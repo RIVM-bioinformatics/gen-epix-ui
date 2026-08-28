@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
+import { TextField } from '@gen-epix/ui-form/components/fields/TextField';
 
 import type { TextFilter } from '../../../classes/filters/TextFilter';
-import { TextField } from '../../form/fields/TextField';
 
 export type TextFilterFieldProps = {
   readonly filter: TextFilter;

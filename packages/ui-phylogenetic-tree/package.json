@@ -1,0 +1,100 @@
+{
+  "name": "@gen-epix/ui-phylogenetic-tree",
+  "version": "1.0.0",
+  "license": "EUPL-1.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
+  },
+  "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
+  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "files": [
+      "dist"
+    ],
+    "access": "public",
+    "exports": {
+      "./components/PhylogeneticTree": {
+        "import": "./dist/components/PhylogeneticTree/index.js",
+        "types": "./dist/components/PhylogeneticTree/index.d.ts"
+      },
+      "./models/tree": {
+        "import": "./dist/models/tree.js",
+        "types": "./dist/models/tree.d.ts"
+      },
+      "./utils/NewickUtil": {
+        "import": "./dist/utils/NewickUtil/index.js",
+        "types": "./dist/utils/NewickUtil/index.d.ts"
+      },
+      "./utils/TreeUtil": {
+        "import": "./dist/utils/TreeUtil/index.js",
+        "types": "./dist/utils/TreeUtil/index.d.ts"
+      }
+    }
+  },
+  "exports": {
+    "./components/PhylogeneticTree": {
+      "import": "./src/components/PhylogeneticTree/index.ts",
+      "types": "./src/components/PhylogeneticTree/index.ts"
+    },
+    "./models/tree": {
+      "import": "./src/models/tree.ts",
+      "types": "./src/models/tree.ts"
+    },
+    "./utils/NewickUtil": {
+      "import": "./src/utils/NewickUtil/index.ts",
+      "types": "./src/utils/NewickUtil/index.ts"
+    },
+    "./utils/TreeUtil": {
+      "import": "./src/utils/TreeUtil/index.ts",
+      "types": "./src/utils/TreeUtil/index.ts"
+    }
+  },
+  "scripts": {
+    "update-exports": "node scripts/update-exports.js",
+    "build": "vite build",
+    "build-publish": "pnpm build && pnpm publish --access=public",
+    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run",
+    "test": "vitest --coverage",
+    "test-run": "vitest run --passWithNoTests --coverage",
+    "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
+    "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
+    "check-types": "tsc --noemit"
+  },
+  "peerDependencies": {
+    "@gen-epix/ui-core": "workspace:^",
+    "@mui/material": "*",
+    "react": "*"
+  },
+  "dependencies": {
+    "decimal.js": "10.6.0",
+    "lodash": "4.18.1",
+    "use-debounce": "10.1.1"
+  },
+  "devDependencies": {
+    "@gen-epix/eslint-config": "0.4.1",
+    "@gen-epix/ui-core": "workspace:^",
+    "@mui/material": "9.2.0",
+    "@types/lodash": "4.17.18",
+    "@types/node": "26.1.0",
+    "@types/react": "19.2.17",
+    "@vitejs/plugin-react": "6.0.3",
+    "@vitest/browser-playwright": "4.1.9",
+    "@vitest/coverage-v8": "4.1.9",
+    "eslint": "10.6.0",
+    "jsdom": "29.1.1",
+    "playwright": "1.61.1",
+    "typescript": "6.0.3",
+    "vite-plugin-dts": "5.0.3",
+    "vite": "8.1.3",
+    "vitest-browser-react": "2.2.0",
+    "vitest": "4.1.9"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ]
+}

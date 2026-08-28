@@ -7,17 +7,17 @@ import { useMatches } from 'react-router-dom';
 import type { UIMatch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import last from 'lodash/last';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
-import { useArray } from '../../../hooks/useArray';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../../data/query';
+import { COMMON_QUERY_KEY } from '../../../constants/query';
 import { ApiService } from '../../../classes/services/ApiService';
 
 export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {

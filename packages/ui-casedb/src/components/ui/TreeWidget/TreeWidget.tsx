@@ -25,13 +25,18 @@ import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
 import type { CaseDbRetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui';
-import {
-  ConfigService,
-  Spinner,
-  Subject,
-  useQueryMemo,
-} from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { Spinner } from '@gen-epix/ui/components/ui/Spinner';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { PhylogeneticTree } from '@gen-epix/ui-phylogenetic-tree/components/PhylogeneticTree';
+import type {
+  PhylogeneticTreeHighlightedNodeNamesSubjectValue,
+  PhylogeneticTreePathClickEvent,
+  PhylogeneticTreeRef,
+  PhylogeneticTreeViewState,
+} from '@gen-epix/ui-phylogenetic-tree/components/PhylogeneticTree';
 
 import { EventBusService } from '../../../classes/services/EventBusService';
 import type {
@@ -44,22 +49,16 @@ import type { Highlighting } from '../../../models/caseDb';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import { TreeUtil } from '../../../utils/TreeUtil';
+import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { TreeDescription } from '../TreeDescription';
 import { WidgetUnavailable } from '../WidgetUnavailable';
-import { PhylogeneticTreeComponent } from '../PhylogeneticTreeComponent';
-import type {
-  PhylogeneticTreeComponentPathClickEvent,
-  PhylogeneticTreeComponentRef,
-  PhylogeneticTreeComponentViewState,
-} from '../PhylogeneticTreeComponent';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 import type { CaseDbConfig } from '../../../models/config';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
@@ -71,9 +70,10 @@ type ZoomInMenuItemConfig = {
 export const TreeWidget = () => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const treeConfig = ConfigService.getInstance<CaseDbConfig>().config.tree;
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [isTreeLinked, setIsTreeLinked] = useState(true);
-  const treeRef = useRef<PhylogeneticTreeComponentRef>(null);
+  const treeRef = useRef<PhylogeneticTreeRef>(null);
   const dashboardStore = use(DashboardStoreContext);
   const dashboardContext = use(DashboardContext);
   const userProfileStore = use(UserProfileStoreContext);
@@ -105,7 +105,7 @@ export const TreeWidget = () => {
     caseIds: [],
     origin: null,
   }), []);
-  const initialTreeViewState = useMemo<PhylogeneticTreeComponentViewState>(() => {
+  const initialTreeViewState = useMemo<PhylogeneticTreeViewState>(() => {
     const widgetData = dashboardStore.getState().getWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE);
     return {
       horizontalScrollPosition: !isNaN(widgetData?.horizontalScrollPosition) ? widgetData.horizontalScrollPosition : 0,
@@ -118,7 +118,7 @@ export const TreeWidget = () => {
     return sortedData.map(c => c.id);
   }, [sortedData]);
 
-  const treeConfigurations = useMemo(() => TreeUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
+  const treeConfigurations = useMemo(() => TreeWidgetUtil.getTreeConfigurations(completeCaseType), [completeCaseType]);
 
   const treeCanvasAriaLabel = useMemo(() => {
     if (!treeConfiguration) {
@@ -260,7 +260,7 @@ export const TreeWidget = () => {
     }
   }, [isTreeLinked, shouldShowTree, sortByField]);
 
-  const updateEpiTreeWidgetDataDebounced = useDebouncedCallback((viewState: PhylogeneticTreeComponentViewState) => {
+  const updateEpiTreeWidgetDataDebounced = useDebouncedCallback((viewState: PhylogeneticTreeViewState) => {
     updateWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE, {
       horizontalScrollPosition: viewState.horizontalScrollPosition,
       verticalScrollPosition: viewState.verticalScrollPosition,
@@ -268,7 +268,7 @@ export const TreeWidget = () => {
     });
   }, 500);
 
-  const onTreeViewStateChange = useCallback((viewState: PhylogeneticTreeComponentViewState) => {
+  const onTreeViewStateChange = useCallback((viewState: PhylogeneticTreeViewState) => {
     updateEpiTreeWidgetDataDebounced(viewState);
   }, [updateEpiTreeWidgetDataDebounced]);
 
@@ -284,7 +284,7 @@ export const TreeWidget = () => {
   const linkLineListToTree = useCallback(() => {
     const perform = async () => {
       await setSorting(null, null);
-      treeRef.current?.syncExternalScrollToVisibleTree();
+      treeRef.current?.syncScrollToVisibleTree();
     };
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -317,7 +317,7 @@ export const TreeWidget = () => {
     resetZoomLevelAndScrollPosition();
   }, [resetZoomLevelAndScrollPosition, treeFilterStepOut]);
 
-  const onTreePathClick = useCallback(({ mouseEvent, pathProperties }: PhylogeneticTreeComponentPathClickEvent) => {
+  const onTreePathClick = useCallback(({ mouseEvent, pathProperties }: PhylogeneticTreePathClickEvent) => {
     setZoomInMenuItemConfig(null);
     setExtraLeafInfoId(null);
 
@@ -418,14 +418,14 @@ export const TreeWidget = () => {
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           perform();
         },
-        label: TreeUtil.getTreeConfigurationLabel(config),
+        label: TreeWidgetUtil.getTreeConfigurationLabel(config),
         tooltip: (
           <TreeDescription
             treeConfiguration={config}
           />
         ),
       })) ?? [],
-      label: treeConfiguration ? t('Tree: {{algorithm}}', { algorithm: TreeUtil.getTreeConfigurationLabel(treeConfiguration) }) : t`Tree`,
+      label: treeConfiguration ? t('Tree: {{algorithm}}', { algorithm: TreeWidgetUtil.getTreeConfigurationLabel(treeConfiguration) }) : t`Tree`,
       tooltip: treeConfiguration
         ? (
           <TreeDescription
@@ -524,6 +524,39 @@ export const TreeWidget = () => {
     setIsTreeLinked(linked);
   }, [setIsTreeLinked]);
 
+  const phylogeneticTreeHighlightedNodeNamesSubject = useMemo(() => {
+    const subject = new Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>({
+      highlightedNodeNames: dashboardContext.highlightSubject.data.caseIds,
+    });
+    return subject;
+  }, [dashboardContext.highlightSubject.data.caseIds]);
+
+  useEffect(() => {
+    const unsubscribe = phylogeneticTreeHighlightedNodeNamesSubject.subscribe((data) => {
+      dashboardContext.highlight({
+        caseIds: data.highlightedNodeNames,
+        origin: DASHBOARD_COMPONENT_NAME.TREE,
+      });
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [phylogeneticTreeHighlightedNodeNamesSubject, dashboardContext]);
+
+  useEffect(() => {
+    const unsubscribe = dashboardContext.highlightSubject.subscribe(data => {
+      if (data.origin === DASHBOARD_COMPONENT_NAME.TREE) {
+        return;
+      }
+      phylogeneticTreeHighlightedNodeNamesSubject.next({
+        highlightedNodeNames: data.caseIds,
+      });
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [dashboardContext.highlightSubject, phylogeneticTreeHighlightedNodeNamesSubject]);
+
   return (
     <DashboardWidget
       expandDisabled={isTreeUnavailable}
@@ -554,23 +587,46 @@ export const TreeWidget = () => {
           />
         )}
         {!isTreeUnavailable && shouldShowTree && (
-          <PhylogeneticTreeComponent
+          <PhylogeneticTree
+            ancestorDotRadius={treeConfig.ANCESTOR_DOT_RADIUS}
             ariaLabel={treeCanvasAriaLabel}
-            externalScrollSubject={dashboardContext.linkedScrollSubject}
-            externalVisibleRangeSubject={dashboardContext.lineListRangeSubject}
-            highlightingSubject={dashboardContext.highlightSubject}
+            backgroundColor={theme.palette.background.paper}
+            dimFn={theme['gen-epix-ui-casedb'].tree.dimFn}
+            fontFamily={theme.typography.fontFamily}
+            headerHeight={treeConfig.HEADER_HEIGHT}
+            highlightedNodeNamesSubject={phylogeneticTreeHighlightedNodeNamesSubject}
             initialViewState={initialTreeViewState}
             itemHeight={ConfigService.getInstance<CaseDbConfig>().config.lineList.TABLE_ROW_HEIGHT}
-            leafOrder={sortedLeafNames}
+            leafDotRadius={treeConfig.LEAF_DOT_RADIUS}
+            linkedScrollDebounceDelayMs={treeConfig.LINKED_SCROLL_DEBOUNCE_DELAY_MS}
+            maxScaleWidthPx={treeConfig.MAX_SCALE_WIDTH_PX}
+            maxZoomLevel={treeConfig.MAX_ZOOM_LEVEL}
+            maxZoomSpeed={treeConfig.MAX_ZOOM_SPEED}
+            minimumDistancePercentageToShowLabel={treeConfig.MINIMUM_DISTANCE_PERCENTAGE_TO_SHOW_LABEL}
+            minScaleWidthPx={treeConfig.MIN_SCALE_WIDTH_PX}
+            minZoomLevel={treeConfig.MIN_ZOOM_LEVEL}
+            minZoomSpeed={treeConfig.MIN_ZOOM_SPEED}
+            nodeNameColors={stratification?.caseIdColors}
             onCanvasChange={onTreeCanvasChange}
             onLinkStateChange={onLinkStateChange}
             onPathClick={onTreePathClick}
             onViewStateChange={onTreeViewStateChange}
+            panningThreshold={treeConfig.PANNING_THRESHOLD}
             ref={treeRef}
+            regularFillColorSupportLine={treeConfig.REGULAR_FILL_COLOR_SUPPORT_LINE}
+            scaleColor={theme.palette.text.primary}
+            scaleIncrements={treeConfig.SCALE_INCREMENTS}
+            scrollSubject={dashboardContext.linkedScrollSubject}
             shouldShowDistances={isShowDistancesEnabled}
             shouldShowSupportLinesWhenUnlinked={isShowSupportLinesWhenUnlinkedEnabled}
-            stratification={stratification}
+            sortedLeafNames={sortedLeafNames}
+            supportLineColorLinked={theme['gen-epix-ui-casedb'].tree.supportLineColorLinked}
+            supportLineColorUnlinked={theme['gen-epix-ui-casedb'].tree.supportLineColorUnlinked}
             tree={tree}
+            treeColor={theme['gen-epix-ui-casedb'].tree.color}
+            treeFont={theme['gen-epix-ui-casedb'].tree.font}
+            treePadding={treeConfig.TREE_PADDING}
+            visibleRangeSubject={dashboardContext.lineListRangeSubject}
           />
         )}
       </Box>

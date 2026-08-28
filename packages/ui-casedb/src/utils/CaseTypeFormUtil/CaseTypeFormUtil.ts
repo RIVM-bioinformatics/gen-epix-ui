@@ -6,15 +6,6 @@ import {
   CaseDbColType,
   CaseDbDimType,
 } from '@gen-epix/api-casedb';
-import type {
-  FormFieldDefinition,
-  FormGroupDefinition,
-  FormGroupMessage,
-} from '@gen-epix/ui';
-import {
-  FORM_FIELD_DEFINITION_TYPE,
-  StringUtil,
-} from '@gen-epix/ui';
 import { isValid } from 'date-fns';
 import { t } from 'i18next';
 import type { ObjectSchema } from 'yup';
@@ -22,6 +13,13 @@ import {
   object,
   string,
 } from 'yup';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import type {
+  FormFieldDefinition,
+  FormGroupDefinition,
+  FormGroupMessage,
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import { DataService } from '../../classes/services/DataService';
 import { AbacUtil } from '../AbacUtil';

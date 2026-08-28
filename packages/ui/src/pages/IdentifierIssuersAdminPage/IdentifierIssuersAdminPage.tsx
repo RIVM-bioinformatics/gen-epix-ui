@@ -6,16 +6,16 @@ import { useTranslation } from 'react-i18next';
 import { object } from 'yup';
 import type { CommonDbIdentifierIssuer } from '@gen-epix/api-commondb';
 import { CommonDbCommandName } from '@gen-epix/api-commondb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
 
 type FormFields = OmitWithMetaData<CommonDbIdentifierIssuer>;

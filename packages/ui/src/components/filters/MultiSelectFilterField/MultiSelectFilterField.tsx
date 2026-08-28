@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
+import { CheckboxGroup } from '@gen-epix/ui-form/components/fields/CheckboxGroup';
+import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
 
 import type { MultiSelectFilter } from '../../../classes/filters/MultiSelectFilter';
-import { CheckboxGroup } from '../../form/fields/CheckboxGroup';
-import { Autocomplete } from '../../form/fields/Autocomplete';
 
 export type MultiSelectFilterFieldProps = {
   readonly filter: MultiSelectFilter;

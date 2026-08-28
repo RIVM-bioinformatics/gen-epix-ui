@@ -32,20 +32,18 @@ import type {
   GetTableCellRowComparatorProps,
   TableColumn,
   TableColumnText,
-  TableRef,
   TableRowAndColumnParams,
   TableRowParams,
-} from '@gen-epix/ui';
-import {
-  ConfigService,
-  StringUtil,
-  Subject,
-  Table,
-  TABLE_COLUMN_FROZEN,
-  TableUtil,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/models/table';
+import type { TableRef } from '@gen-epix/ui/components/ui/Table';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { Table } from '@gen-epix/ui/components/ui/Table';
+import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui/models/table';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { LegendaItem } from '../LegendaItem';
@@ -65,7 +63,7 @@ import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
 import { CASE_INFO_DIALOG_TAB_NAME } from '../CaseInfoDialog';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { LineListIsOwnCaseService } from '../../../classes/services/LineListService/LineListIsOwnCaseService';
 

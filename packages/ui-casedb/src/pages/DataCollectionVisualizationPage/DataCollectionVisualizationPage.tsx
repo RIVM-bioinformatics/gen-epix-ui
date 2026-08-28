@@ -33,15 +33,13 @@ import type {
 } from 'echarts';
 import type { AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
 import type { CaseDbOrganizationAccessCasePolicy } from '@gen-epix/api-casedb';
-import {
-  LoadableUtil,
-  PageContainer,
-  ResponseHandler,
-  StringUtil,
-  TestIdUtil,
-  useArray,
-  useOrganizationMapQuery,
-} from '@gen-epix/ui';
+import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
+import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useOrganizationMapQuery } from '@gen-epix/ui/dataHooks/useOrganizationsQuery';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useDataCollectionsMapQuery } from '../../dataHooks/useDataCollectionsQuery';
 import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrganizationAccessCasePoliciesQuery';

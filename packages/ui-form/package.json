@@ -1,0 +1,298 @@
+{
+  "name": "@gen-epix/ui-form",
+  "version": "1.0.0",
+  "license": "EUPL-1.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
+  },
+  "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
+  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "files": [
+      "dist"
+    ],
+    "access": "public",
+    "exports": {
+      "./types": {
+        "types": "./dist/ui-form.d.ts"
+      },
+      "./components/fields/Autocomplete": {
+        "import": "./dist/components/fields/Autocomplete/index.js",
+        "types": "./dist/components/fields/Autocomplete/index.d.ts"
+      },
+      "./components/fields/CheckboxGroup": {
+        "import": "./dist/components/fields/CheckboxGroup/index.js",
+        "types": "./dist/components/fields/CheckboxGroup/index.d.ts"
+      },
+      "./components/fields/DatePicker": {
+        "import": "./dist/components/fields/DatePicker/index.js",
+        "types": "./dist/components/fields/DatePicker/index.d.ts"
+      },
+      "./components/fields/DateRangePicker": {
+        "import": "./dist/components/fields/DateRangePicker/index.js",
+        "types": "./dist/components/fields/DateRangePicker/index.d.ts"
+      },
+      "./components/fields/NumberField": {
+        "import": "./dist/components/fields/NumberField/index.js",
+        "types": "./dist/components/fields/NumberField/index.d.ts"
+      },
+      "./components/fields/NumberRangeInput": {
+        "import": "./dist/components/fields/NumberRangeInput/index.js",
+        "types": "./dist/components/fields/NumberRangeInput/index.d.ts"
+      },
+      "./components/fields/RadioGroup": {
+        "import": "./dist/components/fields/RadioGroup/index.js",
+        "types": "./dist/components/fields/RadioGroup/index.d.ts"
+      },
+      "./components/fields/RichTextEditor": {
+        "import": "./dist/components/fields/RichTextEditor/index.js",
+        "types": "./dist/components/fields/RichTextEditor/index.d.ts"
+      },
+      "./components/fields/Select": {
+        "import": "./dist/components/fields/Select/index.js",
+        "types": "./dist/components/fields/Select/index.d.ts"
+      },
+      "./components/fields/Switch": {
+        "import": "./dist/components/fields/Switch/index.js",
+        "types": "./dist/components/fields/Switch/index.d.ts"
+      },
+      "./components/fields/TextField": {
+        "import": "./dist/components/fields/TextField/index.js",
+        "types": "./dist/components/fields/TextField/index.d.ts"
+      },
+      "./components/fields/ToggleButtonGroup": {
+        "import": "./dist/components/fields/ToggleButtonGroup/index.js",
+        "types": "./dist/components/fields/ToggleButtonGroup/index.d.ts"
+      },
+      "./components/fields/TransferList": {
+        "import": "./dist/components/fields/TransferList/index.js",
+        "types": "./dist/components/fields/TransferList/index.d.ts"
+      },
+      "./components/fields/UploadButton": {
+        "import": "./dist/components/fields/UploadButton/index.js",
+        "types": "./dist/components/fields/UploadButton/index.d.ts"
+      },
+      "./components/helpers/FormFieldHelperText": {
+        "import": "./dist/components/helpers/FormFieldHelperText/index.js",
+        "types": "./dist/components/helpers/FormFieldHelperText/index.d.ts"
+      },
+      "./components/helpers/FormFieldLoadingIndicator": {
+        "import": "./dist/components/helpers/FormFieldLoadingIndicator/index.js",
+        "types": "./dist/components/helpers/FormFieldLoadingIndicator/index.d.ts"
+      },
+      "./components/helpers/GenericForm": {
+        "import": "./dist/components/helpers/GenericForm/index.js",
+        "types": "./dist/components/helpers/GenericForm/index.d.ts"
+      },
+      "./hooks/useIsFormFieldRequiredFromSchema": {
+        "import": "./dist/hooks/useIsFormFieldRequiredFromSchema/index.js",
+        "types": "./dist/hooks/useIsFormFieldRequiredFromSchema/index.d.ts"
+      },
+      "./models/form": {
+        "import": "./dist/models/form.js",
+        "types": "./dist/models/form.d.ts"
+      },
+      "./setup/setup": {
+        "import": "./dist/setup/setup.js",
+        "types": "./dist/setup/setup.d.ts"
+      },
+      "./utils/FormUtil": {
+        "import": "./dist/utils/FormUtil/index.js",
+        "types": "./dist/utils/FormUtil/index.d.ts"
+      },
+      "./utils/SchemaUtil": {
+        "import": "./dist/utils/SchemaUtil/index.js",
+        "types": "./dist/utils/SchemaUtil/index.d.ts"
+      }
+    }
+  },
+  "exports": {
+    "./types": {
+      "types": "./src/@types/ui-form.d.ts"
+    },
+    "./components/fields/Autocomplete": {
+      "import": "./src/components/fields/Autocomplete/index.ts",
+      "types": "./src/components/fields/Autocomplete/index.ts"
+    },
+    "./components/fields/CheckboxGroup": {
+      "import": "./src/components/fields/CheckboxGroup/index.ts",
+      "types": "./src/components/fields/CheckboxGroup/index.ts"
+    },
+    "./components/fields/DatePicker": {
+      "import": "./src/components/fields/DatePicker/index.ts",
+      "types": "./src/components/fields/DatePicker/index.ts"
+    },
+    "./components/fields/DateRangePicker": {
+      "import": "./src/components/fields/DateRangePicker/index.ts",
+      "types": "./src/components/fields/DateRangePicker/index.ts"
+    },
+    "./components/fields/NumberField": {
+      "import": "./src/components/fields/NumberField/index.ts",
+      "types": "./src/components/fields/NumberField/index.ts"
+    },
+    "./components/fields/NumberRangeInput": {
+      "import": "./src/components/fields/NumberRangeInput/index.ts",
+      "types": "./src/components/fields/NumberRangeInput/index.ts"
+    },
+    "./components/fields/RadioGroup": {
+      "import": "./src/components/fields/RadioGroup/index.ts",
+      "types": "./src/components/fields/RadioGroup/index.ts"
+    },
+    "./components/fields/RichTextEditor": {
+      "import": "./src/components/fields/RichTextEditor/index.ts",
+      "types": "./src/components/fields/RichTextEditor/index.ts"
+    },
+    "./components/fields/Select": {
+      "import": "./src/components/fields/Select/index.ts",
+      "types": "./src/components/fields/Select/index.ts"
+    },
+    "./components/fields/Switch": {
+      "import": "./src/components/fields/Switch/index.ts",
+      "types": "./src/components/fields/Switch/index.ts"
+    },
+    "./components/fields/TextField": {
+      "import": "./src/components/fields/TextField/index.ts",
+      "types": "./src/components/fields/TextField/index.ts"
+    },
+    "./components/fields/ToggleButtonGroup": {
+      "import": "./src/components/fields/ToggleButtonGroup/index.ts",
+      "types": "./src/components/fields/ToggleButtonGroup/index.ts"
+    },
+    "./components/fields/TransferList": {
+      "import": "./src/components/fields/TransferList/index.ts",
+      "types": "./src/components/fields/TransferList/index.ts"
+    },
+    "./components/fields/UploadButton": {
+      "import": "./src/components/fields/UploadButton/index.ts",
+      "types": "./src/components/fields/UploadButton/index.ts"
+    },
+    "./components/helpers/FormFieldHelperText": {
+      "import": "./src/components/helpers/FormFieldHelperText/index.ts",
+      "types": "./src/components/helpers/FormFieldHelperText/index.ts"
+    },
+    "./components/helpers/FormFieldLoadingIndicator": {
+      "import": "./src/components/helpers/FormFieldLoadingIndicator/index.ts",
+      "types": "./src/components/helpers/FormFieldLoadingIndicator/index.ts"
+    },
+    "./components/helpers/GenericForm": {
+      "import": "./src/components/helpers/GenericForm/index.ts",
+      "types": "./src/components/helpers/GenericForm/index.ts"
+    },
+    "./hooks/useIsFormFieldRequiredFromSchema": {
+      "import": "./src/hooks/useIsFormFieldRequiredFromSchema/index.ts",
+      "types": "./src/hooks/useIsFormFieldRequiredFromSchema/index.ts"
+    },
+    "./models/form": {
+      "import": "./src/models/form.ts",
+      "types": "./src/models/form.ts"
+    },
+    "./setup/setup": {
+      "import": "./src/setup/setup.ts",
+      "types": "./src/setup/setup.ts"
+    },
+    "./utils/FormUtil": {
+      "import": "./src/utils/FormUtil/index.ts",
+      "types": "./src/utils/FormUtil/index.ts"
+    },
+    "./utils/SchemaUtil": {
+      "import": "./src/utils/SchemaUtil/index.ts",
+      "types": "./src/utils/SchemaUtil/index.ts"
+    }
+  },
+  "scripts": {
+    "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
+    "add-missing-translations": "translation-util ./",
+    "update-exports": "node scripts/update-exports.js",
+    "build": "vite build",
+    "build-publish": "pnpm build && pnpm publish --access=public",
+    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run",
+    "test": "vitest --coverage",
+    "test-run": "vitest run --passWithNoTests --coverage",
+    "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
+    "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
+    "check-types": "tsc --noemit"
+  },
+  "peerDependencies": {
+    "@gen-epix/ui-core": "workspace:^",
+    "@mui/icons-material": "*",
+    "@mui/material": "*",
+    "@mui/x-date-pickers": "*",
+    "i18next": "*",
+    "react": "*",
+    "yup": "*"
+  },
+  "dependencies": {
+    "@tiptap/core": "3.27.1",
+    "@tiptap/extension-blockquote": "3.27.1",
+    "@tiptap/extension-bold": "3.27.1",
+    "@tiptap/extension-bullet-list": "3.27.1",
+    "@tiptap/extension-code-block": "3.27.1",
+    "@tiptap/extension-color": "3.27.1",
+    "@tiptap/extension-document": "3.27.1",
+    "@tiptap/extension-dropcursor": "3.27.1",
+    "@tiptap/extension-font-family": "3.27.1",
+    "@tiptap/extension-gapcursor": "3.27.1",
+    "@tiptap/extension-hard-break": "3.27.1",
+    "@tiptap/extension-heading": "3.27.1",
+    "@tiptap/extension-highlight": "3.27.1",
+    "@tiptap/extension-history": "3.27.1",
+    "@tiptap/extension-horizontal-rule": "3.27.1",
+    "@tiptap/extension-image": "3.27.1",
+    "@tiptap/extension-italic": "3.27.1",
+    "@tiptap/extension-link": "3.27.1",
+    "@tiptap/extension-list-item": "3.27.1",
+    "@tiptap/extension-ordered-list": "3.27.1",
+    "@tiptap/extension-paragraph": "3.27.1",
+    "@tiptap/extension-placeholder": "3.27.1",
+    "@tiptap/extension-strike": "3.27.1",
+    "@tiptap/extension-subscript": "3.27.1",
+    "@tiptap/extension-superscript": "3.27.1",
+    "@tiptap/extension-table-cell": "3.27.1",
+    "@tiptap/extension-table-header": "3.27.1",
+    "@tiptap/extension-table-row": "3.27.1",
+    "@tiptap/extension-table": "3.27.1",
+    "@tiptap/extension-task-item": "3.27.1",
+    "@tiptap/extension-task-list": "3.27.1",
+    "@tiptap/extension-text-align": "3.27.1",
+    "@tiptap/extension-text-style": "3.27.1",
+    "@tiptap/extension-text": "3.27.1",
+    "@tiptap/extension-underline": "3.27.1",
+    "@tiptap/pm": "3.27.1",
+    "@tiptap/react": "3.27.1",
+    "classnames": "2.5.1",
+    "date-fns": "4.4.0",
+    "lodash": "4.18.1",
+    "mui-tiptap": "1.31.0",
+    "react-hook-form": "7.80.0",
+    "react-i18next": "17.0.8",
+    "use-debounce": "10.1.1",
+    "uuid": "14.0.1"
+  },
+  "devDependencies": {
+    "@gen-epix/eslint-config": "0.4.1",
+    "@gen-epix/ui-core": "workspace:^",
+    "@gen-epix/translation-util": "0.1.1",
+    "@mui/icons-material": "9.2.0",
+    "@mui/material": "9.2.0",
+    "@mui/x-date-pickers": "9.8.0",
+    "@types/lodash": "4.17.18",
+    "@types/react": "19.2.17",
+    "eslint": "10.6.0",
+    "i18next": "26.3.4",
+    "react": "19.2.7",
+    "typescript": "6.0.3",
+    "vite-plugin-dts": "5.0.3",
+    "vite-plugin-static-copy": "4.1.1",
+    "vite": "8.1.3",
+    "vitest": "4.1.9",
+    "yup": "1.7.1"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ]
+}

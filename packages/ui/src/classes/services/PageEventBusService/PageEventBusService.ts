@@ -1,9 +1,9 @@
 import type { CommonDbUser } from '@gen-epix/api-commondb';
+import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 import { ConfigService } from '../ConfigService';
-import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
-import { HmrUtil } from '../../../utils/HmrUtil';
-import { WindowService } from '../WindowService';
 
 type EpiEvent = {
   changePage: Page;

@@ -12,11 +12,11 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { AuthenticationService } from '../../classes/services/AuthenticationService';
 import { ConfigService } from '../../classes/services/ConfigService';
 import { PageContainer } from '../../components/ui/PageContainer';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 import type { IdentityProviderWithAvailability } from '../../models/auth';
 
 export type ChooseIdentityProviderPageProps = {

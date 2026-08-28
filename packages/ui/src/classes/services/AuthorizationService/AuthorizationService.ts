@@ -2,9 +2,9 @@ import type {
   CommonDbApiPermission,
   CommonDbUser,
 } from '@gen-epix/api-commondb';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
-import { HmrUtil } from '../../../utils/HmrUtil';
 import { PageEventBusService } from '../PageEventBusService';
 
 export class AuthorizationService {

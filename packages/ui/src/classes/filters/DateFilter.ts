@@ -10,11 +10,11 @@ import type {
   CommonDbTypedDateRangeFilter,
   CommonDbTypedPartialDateRangeFilter,
 } from '@gen-epix/api-commondb';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 import type { Filter } from '../../models/filter';
-import { DATE_FORMAT } from '../../data/date';
 
 export interface DateFilterKwArgs extends FilterAbstractKwArgs {
   backendFilterType?: 'DATE_RANGE' | 'PARTIAL_DATE_RANGE';

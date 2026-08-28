@@ -23,23 +23,21 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import {
-  AxiosUtil,
-  ConfigService,
-  LoadableUtil,
-  QueryClientService,
-  ResponseHandler,
-  RouterService,
-  useArray,
-  useQueryMemo,
-  withPermissions,
-} from '@gen-epix/ui';
+import { AxiosUtil } from '@gen-epix/ui/utils/AxiosUtil';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { withPermissions } from '@gen-epix/ui/hoc/withPermissions';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import type { CaseDbConfig } from '../../../models/config';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 import { HomePageTrendCard } from './HomePageTrendCard';
 
@@ -322,4 +320,5 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
     { command_name: CaseDbCommandName.RetrieveCaseTypeStatsCommand, permission_type: CaseDbPermissionType.EXECUTE },
     { command_name: CaseDbCommandName.CaseSetCrudCommand, permission_type: CaseDbPermissionType.READ },
     { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
-  ] });
+  ],
+});

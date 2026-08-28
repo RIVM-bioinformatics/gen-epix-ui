@@ -21,13 +21,11 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import type { MenuItemData } from '@gen-epix/ui';
-import {
-  MenuDataUtil,
-  NestedDropdown,
-  Spinner,
-  TestIdUtil,
-} from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import { MenuDataUtil } from '@gen-epix/ui/utils/MenuDataUtil';
+import { NestedDropdown } from '@gen-epix/ui/components/ui/NestedMenu';
+import { Spinner } from '@gen-epix/ui/components/ui/Spinner';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { WidgetMenu } from '../WidgetMenu';
 import { WidgetHeaderIconButton } from '../WidgetHeaderIconButton';

@@ -5,14 +5,12 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type {
   UseMap,
   UseOptions,
-} from '@gen-epix/ui';
-import {
-  DataHookUtil,
-  QueryClientService,
-  useQueryMemo,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/models/dataHooks';
+import { DataHookUtil } from '@gen-epix/ui/utils/DataHookUtil';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
 
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 export const useSequencingProtocolsQuery = (): UseQueryResult<CaseDbProtocol[]> => {
   return useQueryMemo({

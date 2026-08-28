@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 
 import { NotificationService } from '../../classes/services/NotificationService';
 import type { GenericData } from '../../models/data';
-import { StringUtil } from '../../utils/StringUtil';
 import { NotificationUtil } from '../../utils/NotificationUtil';
-import { ObjectUtil } from '../../utils/ObjectUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 
 

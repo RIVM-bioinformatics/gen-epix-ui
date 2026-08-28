@@ -3,10 +3,9 @@ import i18next, {
   use,
 } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-
-import { EventBusAbstract } from '../../abstracts/EventBusAbstract';
-import { HmrUtil } from '../../../utils/HmrUtil';
-import { WindowService } from '../WindowService';
+import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
+import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 export type LanguageConfig = {
   bundles: string[];

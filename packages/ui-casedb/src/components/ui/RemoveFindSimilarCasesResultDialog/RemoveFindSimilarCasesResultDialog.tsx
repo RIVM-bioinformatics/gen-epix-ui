@@ -16,21 +16,21 @@ import {
 import { useStore } from 'zustand';
 import { produce } from 'immer';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
+import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
+import type { Step } from '@gen-epix/ui/components/ui/Stepper';
 import type {
-  DialogAction,
-  Step,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
 import {
   Stepper,
   STEPPER_DIRECTION,
-  TestIdUtil,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/components/ui/Stepper';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { TreeUtil } from '../../../utils/TreeUtil';
+import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 
 
 export interface RemoveFindSimilarCasesResultDialogOpenProps {
@@ -55,7 +55,7 @@ export const RemoveFindSimilarCasesResultDialog = withDialog<RemoveFindSimilarCa
   const formId = useId();
   const dashboardStore = use(DashboardStoreContext);
   const setFindSimilarCasesResults = useStore(dashboardStore, (state) => state.setFindSimilarCasesResults);
-  const treeConfigurations = useMemo(() => TreeUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
+  const treeConfigurations = useMemo(() => TreeWidgetUtil.getTreeConfigurations(openProps.completeCaseType), [openProps.completeCaseType]);
   const findSimilarCasesResults = useStore(dashboardStore, (state) => state.findSimilarCasesResults);
   const [intermediateFindSimilarCasesResults, setIntermediateFindSimilarCasesResults] = useState(findSimilarCasesResults);
 

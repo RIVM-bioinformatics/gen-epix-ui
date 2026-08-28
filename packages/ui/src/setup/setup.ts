@@ -1,5 +1,5 @@
-import { setupYup } from './yup';
+import { setupYup } from '@gen-epix/ui-form/setup/setup';
 
-export const setup = () => {
+export const setupUi = () => {
   setupYup();
 };

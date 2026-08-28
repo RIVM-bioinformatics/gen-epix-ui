@@ -26,8 +26,8 @@ import type {
   CaseDbCol,
   CaseDbColType,
 } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui';
-import { ConfigService } from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import { useStore } from 'zustand';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -41,7 +41,7 @@ import {
 } from '@mui/material';
 import intersection from 'lodash/intersection';
 
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { DashboardWidget } from '../Dashboard';

@@ -1,5 +1,6 @@
+import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
+
 import type { HasCellDataFn } from '../../models/table';
-import { EventBusAbstract } from '../abstracts/EventBusAbstract';
 
 export type TableEvent<TRowData = unknown, TDataContext = null> = {
   columnOrderChange: string[];

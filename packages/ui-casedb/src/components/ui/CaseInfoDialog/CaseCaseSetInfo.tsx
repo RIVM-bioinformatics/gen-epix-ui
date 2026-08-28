@@ -14,18 +14,16 @@ import type {
   CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import {
-  NavLink,
-  QueryClientService,
-  ResponseHandler,
-  useArray,
-  useQueryMemo,
-} from '@gen-epix/ui';
+import { NavLink } from '@gen-epix/ui/components/ui/NavLink';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 export type CaseCaseSetInfoProps = {
   readonly caseDbCase: CaseDbCase;

@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
+import { DateRangePicker } from '@gen-epix/ui-form/components/fields/DateRangePicker';
 
 import type { DateFilter } from '../../../classes/filters/DateFilter';
-import { DateRangePicker } from '../../form/fields/DateRangePicker';
 
 
 export type DateFilterFieldProps = {

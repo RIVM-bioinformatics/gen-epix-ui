@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { Box } from '@mui/material';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import { NavLink } from '@gen-epix/ui';
+import { NavLink } from '@gen-epix/ui/components/ui/NavLink';
 
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
 

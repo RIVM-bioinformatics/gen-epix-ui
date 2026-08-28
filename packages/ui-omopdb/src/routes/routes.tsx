@@ -1,7 +1,7 @@
 import type { OmopDbApiPermission } from '@gen-epix/api-omopdb';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
-import { createRoutes as createCommonRoutes } from '@gen-epix/ui';
-import type { MyNonIndexRouteObject } from '@gen-epix/ui';
+import { createRoutes as createCommonRoutes } from '@gen-epix/ui/routes';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui/models/reactRouter';
 
 import { createAdminRoutes } from './adminRoutes';
 

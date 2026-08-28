@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { OutageList } from '../OutageList/OutageList';
 import type {
@@ -10,7 +11,6 @@ import type {
 } from '../../../hoc/withDialog';
 import { withDialog } from '../../../hoc/withDialog';
 import { outagesStore } from '../../../stores/outagesStore';
-import { TestIdUtil } from '../../../utils/TestIdUtil';
 
 export interface OutagesDialogOpenProps {
   //

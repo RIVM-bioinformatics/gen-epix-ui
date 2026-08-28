@@ -20,20 +20,18 @@ import {
   CaseDbColType,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
+import type { OmitWithMetaData } from '@gen-epix/ui/models/data';
+import type { TableColumn } from '@gen-epix/ui/models/table';
+import { CrudPage } from '@gen-epix/ui/pages/CrudPage';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type {
   FormFieldDefinition,
-  OmitWithMetaData,
   OptionBase,
-  TableColumn,
-} from '@gen-epix/ui';
-import {
-  CrudPage,
-  FORM_FIELD_DEFINITION_TYPE,
-  SchemaUtil,
-  TableUtil,
-  TestIdUtil,
-  useArray,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { useColTypeOptionsQuery } from '../../dataHooks/useColTypesQuery';
 import { useConceptSetOptionsQuery } from '../../dataHooks/useConceptSetsQuery';
@@ -43,7 +41,7 @@ import {
 } from '../../dataHooks/useRefDimsQuery';
 import { useGeneticDistanceProtocolOptionsQuery } from '../../dataHooks/useGeneticDistanceProtocolsQuery';
 import { useRegionSetOptionsQuery } from '../../dataHooks/useRegionSetsQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import { useRefColsValidationRulesQuery } from '../../dataHooks/useRefColsValidationRulesQuery';
 import { CaseDbDataUtil } from '../../utils/CaseDbDataUtil';
 

@@ -23,7 +23,7 @@ import {
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
-import { DATE_FORMAT } from '@gen-epix/ui';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { FileUtil } from '../../../utils/FileUtil';
 

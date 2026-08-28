@@ -26,6 +26,8 @@ import type {
 } from 'react-hook-form';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { CommonDbPermissionType } from '@gen-epix/api-commondb';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
 
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { ConfigService } from '../../classes/services/ConfigService';
@@ -52,18 +54,16 @@ import type {
   TableRowParams,
   TableSortDirection,
 } from '../../models/table';
-import type { PropsWithTestIdAttributes } from '../../models/testId';
 import {
   createTableStore,
   TableStoreContextProvider,
 } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 import type { DialogAction } from '../../components/ui/Dialog';
-import type { FormFieldDefinition } from '../../models/form';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import type { COMMON_QUERY_KEY } from '../../data/query';
+import type { COMMON_QUERY_KEY } from '../../constants/query';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';

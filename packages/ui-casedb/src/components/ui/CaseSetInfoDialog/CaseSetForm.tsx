@@ -13,25 +13,21 @@ import {
 } from 'yup';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type {
-  FormFieldDefinition,
-  OmitWithMetaData,
-} from '@gen-epix/ui';
-import {
-  FORM_FIELD_DEFINITION_TYPE,
-  FormUtil,
-  GenericForm,
-  QueryClientService,
-  SchemaUtil,
-  Spinner,
-  useEditMutation,
-} from '@gen-epix/ui';
+import type { OmitWithMetaData } from '@gen-epix/ui/models/data';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { Spinner } from '@gen-epix/ui/components/ui/Spinner';
+import { useEditMutation } from '@gen-epix/ui/hooks/useEditMutation';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { CreateEventDialogSuccessNotificationMessage } from '../CreateEventDialog/CreateEventDialogSuccessNotificationMessage';
 import { useCaseSetCategoryOptionsQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusOptionsQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 export type CaseSetFormProps = {
   readonly caseSet: CaseDbCaseSet;

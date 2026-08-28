@@ -22,6 +22,8 @@ The platform is currently in beta and is not yet intended for production use. Fe
 - Global state via [Zustand](https://zustand-demo.pmnd.rs/)
 - The `App` root component and the `setup` bootstrapping function
 
+Low-level, framework-agnostic primitives (services such as `WindowService`, utility classes, event bus abstractions, and generic hooks) live in `@gen-epix/ui-core`, which this package depends on.
+
 This package is not a standalone application. It is the foundation used by the domain-specific packages (`@gen-epix/ui-casedb`, `@gen-epix/ui-omopdb`, `@gen-epix/ui-seqdb`), each of which adds their own routes, pages, and API wiring on top.
 
 ## Installation
@@ -42,9 +44,9 @@ import {
   App,
   ConfigService,
   I18nService,
-  WindowService,
   setup,
 } from '@gen-epix/ui';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 

@@ -1,14 +1,10 @@
-import type {
-  COMMON_QUERY_KEY,
-  MyNonIndexRouteObject,
-} from '@gen-epix/ui';
-import {
-  ApiService,
-  COMMON_QUERY_DEPENDENCIES,
-  QueryClientService,
-  RouterService,
-  setup,
-} from '@gen-epix/ui';
+import type { COMMON_QUERY_KEY } from '@gen-epix/ui/constants/query';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui/models/reactRouter';
+import { ApiService } from '@gen-epix/ui/classes/services/ApiService';
+import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui/constants/query';
+import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import { setupUi } from '@gen-epix/ui/setup/setup';
 import {
   CaseDbAbacApi,
   CaseDbAuthApi,
@@ -18,8 +14,8 @@ import {
 } from '@gen-epix/api-casedb';
 import type { CommonDbOrganizationApi } from '@gen-epix/api-commondb';
 
-import type { CASEDB_QUERY_KEY } from '../data/query';
-import { CASEDB_QUERY_DEPENDENCIES } from '../data/query';
+import type { CASEDB_QUERY_KEY } from '../constants/query';
+import { CASEDB_QUERY_DEPENDENCIES } from '../constants/query';
 import { HomePage } from '../pages/HomePage';
 import {
   createAdminRoutes,
@@ -45,5 +41,5 @@ export const setupCaseDb = () => {
     organizationApi: CaseDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
     systemApi: CaseDbSystemApi.getInstance(),
   });
-  setup();
+  setupUi();
 };

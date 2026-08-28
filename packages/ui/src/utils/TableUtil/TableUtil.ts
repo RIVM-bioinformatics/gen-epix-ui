@@ -8,6 +8,9 @@ import type { ReactElement } from 'react';
 import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import type { OptionBase } from '@gen-epix/ui-form/models/form';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import {
   DEFAULT_FILTER_GROUP,
@@ -19,7 +22,6 @@ import { MultiSelectFilter } from '../../classes/filters/MultiSelectFilter';
 import { NumberRangeFilter } from '../../classes/filters/NumberRangeFilter';
 import { TextFilter } from '../../classes/filters/TextFilter';
 import type { Filters } from '../../models/filter';
-import type { OptionBase } from '../../models/form';
 import type {
   GetTableCellRowComparatorProps,
   GetTableCellValueProps,
@@ -41,8 +43,6 @@ import {
   FIXED_COLUMN_ID,
   TABLE_COLUMN_FROZEN,
 } from '../../models/table';
-import { DATE_FORMAT } from '../../data/date';
-import { StringUtil } from '../StringUtil';
 import { ConfigService } from '../../classes/services/ConfigService';
 
 export class TableUtil {

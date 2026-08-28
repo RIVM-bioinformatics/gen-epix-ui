@@ -51,8 +51,8 @@ import {
 } from 'date-fns';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
 import { CaseDbDimType } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui';
-import { DATE_FORMAT } from '@gen-epix/ui';
+import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
@@ -64,7 +64,7 @@ import { EventBusService } from '../../../classes/services/EventBusService';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../data/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import type {

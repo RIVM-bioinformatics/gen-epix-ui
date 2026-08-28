@@ -1,6 +1,6 @@
-import { ConfigService } from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 
-import { setupCaseDb } from '../../setup';
+import { setupCaseDb } from '../../setup/setup';
 import { CaseDbStandardConfigUtil } from '../../utils/CaseDbStandardConfigUtil';
 import { createCaseDbDemoTheme } from '../../theme/demoTheme';
 

@@ -22,14 +22,12 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { FormFieldDefinition } from '@gen-epix/ui';
-import {
-  FORM_FIELD_DEFINITION_TYPE,
-  GenericForm,
-  ResponseHandler,
-  useArray,
-  useItemQuery,
-} from '@gen-epix/ui';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import {
   useCaseTypeOptionsQuery,
@@ -39,7 +37,7 @@ import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollect
 import { useColsQuery } from '../../../dataHooks/useColsQuery';
 import { UploadUtil } from '../../../utils/UploadUtil';
 import { UploadStoreContext } from '../../../stores/uploadStore';
-import { CASEDB_QUERY_KEY } from '../../../data/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query';
 
 import { UploadNavigation } from './UploadNavigation';
 
@@ -148,13 +146,13 @@ export const UploadSelectFile = () => {
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     const fields: FormFieldDefinition<FormFields>[] = [
-        {
-          accept: '.csv,.tsv,.txt,.xlsx',
-          definition: FORM_FIELD_DEFINITION_TYPE.FILE,
-          label: t`File`,
-          name: 'fileList',
-          onChange: onFileListChange,
-        } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        accept: '.csv,.tsv,.txt,.xlsx',
+        definition: FORM_FIELD_DEFINITION_TYPE.FILE,
+        label: t`File`,
+        name: 'fileList',
+        onChange: onFileListChange,
+      } as const satisfies FormFieldDefinition<FormFields>,
     ];
 
     if (UploadUtil.isXlsxFile(fileName)) {
@@ -168,24 +166,24 @@ export const UploadSelectFile = () => {
     }
 
     fields.push(...[
-        {
-          definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
-          disabled: !fileList,
-          label: t`Case type`,
-          loading: caseTypeOptionsQuery.isLoading,
-          name: 'caseTypeId',
-          onChange: onCaseTypeIdChange,
-          options: caseTypeOptionsQuery.options,
-        } as const satisfies FormFieldDefinition<FormFields>,
-        {
-          definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-          disabled: !fileList || !caseTypeId,
-          label: t`Create in data collection`,
-          loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
-          name: 'createdInDataCollectionId',
-          onChange: onCreatedInDataCollectionIdChange,
-          options: createdInDataCollectionOptions,
-        } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        disabled: !fileList,
+        label: t`Case type`,
+        loading: caseTypeOptionsQuery.isLoading,
+        name: 'caseTypeId',
+        onChange: onCaseTypeIdChange,
+        options: caseTypeOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
+        disabled: !fileList || !caseTypeId,
+        label: t`Create in data collection`,
+        loading: dataCollectionOptionsQuery.isLoading || isCompleteCaseTypeLoading,
+        name: 'createdInDataCollectionId',
+        onChange: onCreatedInDataCollectionIdChange,
+        options: createdInDataCollectionOptions,
+      } as const satisfies FormFieldDefinition<FormFields>,
     ] as const);
 
     return fields;

@@ -8,8 +8,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 import type { CommonDbOutage } from '@gen-epix/api-commondb';
-
-import { DATE_FORMAT } from '../../../data/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 type OutageItemProps = {
   readonly outage: CommonDbOutage;

@@ -5,17 +5,15 @@ import {
   useMemo,
 } from 'react';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import {
-  PageContainer,
-  ResponseHandler,
-  TestIdUtil,
-  useArray,
-  useItemQuery,
-  useUpdateBreadcrumb,
-} from '@gen-epix/ui';
+import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
+import { useUpdateBreadcrumb } from '@gen-epix/ui/hooks/useUpdateBreadcrumb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { Dashboard } from '../../components/ui/Dashboard';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import { useCaseTypeMapQuery } from '../../dataHooks/useCaseTypesQuery';
 
 export const EventsDetailPage = () => {

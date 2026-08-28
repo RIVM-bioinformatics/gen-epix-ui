@@ -37,8 +37,8 @@ import { createRoot } from 'react-dom/client';
 import {
   ConfigService,
   I18nService,
-  WindowService,
 } from '@gen-epix/ui';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   SeqDbApp,
   setupSeqDb,
@@ -61,6 +61,7 @@ const init = async () => {
         bundles: [
           '/locale/en.json',
           '/locale/ui/en.json',
+          '/locale/ui-form/en.json',
           '/locale/ui-seqdb/en.json',
         ],
         code: 'en',
@@ -69,6 +70,7 @@ const init = async () => {
         bundles: [
           '/locale/nl.json',
           '/locale/ui/nl.json',
+          '/locale/ui-form/nl.json',
           '/locale/ui-seqdb/nl.json',
         ],
         code: 'nl',

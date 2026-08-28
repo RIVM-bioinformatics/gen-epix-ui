@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
+import { NumberRangeInput } from '@gen-epix/ui-form/components/fields/NumberRangeInput';
 
 import type { NumberRangeFilter } from '../../../classes/filters/NumberRangeFilter';
-import { NumberRangeInput } from '../../form/fields/NumberRangeInput';
 
 export type NumberRangeFilterFieldProps = {
   readonly filter: NumberRangeFilter;

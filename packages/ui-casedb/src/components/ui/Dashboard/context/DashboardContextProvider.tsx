@@ -5,7 +5,7 @@ import {
 } from 'react';
 import type { PropsWithChildren } from 'react';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import { Subject } from '@gen-epix/ui';
+import { Subject } from '@gen-epix/ui-core/classes/Subject';
 
 import type {
   Highlighting,

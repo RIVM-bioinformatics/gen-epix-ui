@@ -21,17 +21,16 @@ import {
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type {
-  AutoCompleteOption,
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui';
-import {
-  Autocomplete,
-  ConfigService,
-  DownloadUtil,
-  StringUtil,
-  withDialog,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/hoc/withDialog';
+import { AuthenticationService } from '@gen-epix/ui/classes/services/AuthenticationService';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
+import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
+import type { AutoCompleteOption } from '@gen-epix/ui-form/models/form';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 
@@ -93,6 +92,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
 
   const onDownloadFastaButtonClick = useCallback(() => {
     DownloadUtil.downloadAsMultiPartForm({
+      accessToken: AuthenticationService.getInstance().authContextProps?.user?.access_token ?? '',
       action: `${ConfigService.getInstance().config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),

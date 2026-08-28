@@ -26,7 +26,7 @@ This package is not a standalone application. It is intended to be used from a h
 ## Installation
 
 ```sh
-pnpm add @gen-epix/ui @gen-epix/ui-casedb @gen-epix/api-commondb @gen-epix/api-casedb
+pnpm add @gen-epix/ui-core @gen-epix/ui @gen-epix/ui-phylogenetic-tree @gen-epix/ui-casedb @gen-epix/api-commondb @gen-epix/api-casedb
 ```
 
 Refer to `package.json` for the full list of peer dependencies.
@@ -38,8 +38,8 @@ import { createRoot } from 'react-dom/client';
 import {
   ConfigService,
   I18nService,
-  WindowService,
 } from '@gen-epix/ui';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   CaseDbApp,
   setupCaseDb,
@@ -62,6 +62,7 @@ const init = async () => {
         bundles: [
           '/locale/en.json',
           '/locale/ui/en.json',
+          '/locale/ui-form/en.json',
           '/locale/ui-casedb/en.json',
         ],
         code: 'en',
@@ -70,6 +71,7 @@ const init = async () => {
         bundles: [
           '/locale/nl.json',
           '/locale/ui/nl.json',
+          '/locale/ui-form/nl.json',
           '/locale/ui-casedb/nl.json',
         ],
         code: 'nl',

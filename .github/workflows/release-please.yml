@@ -16,12 +16,16 @@ jobs:
     outputs:
       ui-release-created: ${{ steps.release.outputs['packages/ui--release_created'] }}
       ui-tag-name: ${{ steps.release.outputs['packages/ui--tag_name'] }}
+      ui-core-release-created: ${{ steps.release.outputs['packages/ui-core--release_created'] }}
+      ui-core-tag-name: ${{ steps.release.outputs['packages/ui-core--tag_name'] }}
       ui-casedb-release-created: ${{ steps.release.outputs['packages/ui-casedb--release_created'] }}
       ui-casedb-tag-name: ${{ steps.release.outputs['packages/ui-casedb--tag_name'] }}
       ui-omopdb-release-created: ${{ steps.release.outputs['packages/ui-omopdb--release_created'] }}
       ui-omopdb-tag-name: ${{ steps.release.outputs['packages/ui-omopdb--tag_name'] }}
       ui-seqdb-release-created: ${{ steps.release.outputs['packages/ui-seqdb--release_created'] }}
       ui-seqdb-tag-name: ${{ steps.release.outputs['packages/ui-seqdb--tag_name'] }}
+      ui-phylogenetic-tree-release-created: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--release_created'] }}
+      ui-phylogenetic-tree-tag-name: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--tag_name'] }}
       api-casedb-release-created: ${{ steps.release.outputs['packages/api-casedb--release_created'] }}
       api-casedb-tag-name: ${{ steps.release.outputs['packages/api-casedb--tag_name'] }}
       api-commondb-release-created: ${{ steps.release.outputs['packages/api-commondb--release_created'] }}
@@ -169,6 +173,72 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ needs.release-please.outputs.ui-tag-name }} gen-epix-ui.zip
+
+  publish-ui-phylogenetic-tree:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.ui-phylogenetic-tree-release-created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node-env
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Build
+        run: pnpm --filter @gen-epix/ui-phylogenetic-tree run build
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-phylogenetic-tree publish --access=public --no-git-checks
+
+      - name: Zip dist directory
+        run: zip -r gen-epix-ui-phylogenetic-tree.zip packages/ui-phylogenetic-tree/dist
+
+      - name: Upload release artifact to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ needs.release-please.outputs.ui-phylogenetic-tree-tag-name }} gen-epix-ui-phylogenetic-tree.zip
+
+  publish-ui-core:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.ui-core-release-created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node-env
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Build
+        run: pnpm --filter @gen-epix/ui-core run build
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-core publish --access=public --no-git-checks
+
+      - name: Zip dist directory
+        run: zip -r gen-epix-ui-core.zip packages/ui-core/dist
+
+      - name: Upload release artifact to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ needs.release-please.outputs.ui-core-tag-name }} gen-epix-ui-core.zip
 
   publish-api-casedb:
     needs: release-please

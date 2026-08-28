@@ -18,27 +18,27 @@ import MailIcon from '@mui/icons-material/Mail';
 import PasswordIcon from '@mui/icons-material/Password';
 import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 import { CommonDbCommandName } from '@gen-epix/api-commondb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import type {
+  FormFieldDefinition,
+  OptionBase,
+} from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
-import { useArray } from '../../hooks/useArray';
-import type {
-  FormFieldDefinition,
-  OptionBase,
-} from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
 import type {
   TableColumn,
   TableRowParams,
 } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
-import { TestIdUtil } from '../../utils/TestIdUtil';
 import { CrudPage } from '../CrudPage';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 import type { OmitWithMetaData } from '../../models/data';
-import { SchemaUtil } from '../../utils/SchemaUtil';
-import { COMMON_QUERY_KEY } from '../../data/query';
+import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
 
 import { UserInvitationShareDialog } from './UserInvitationShareDialog';

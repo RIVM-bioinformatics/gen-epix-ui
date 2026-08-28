@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
-import {
-  ConfigService,
-  PageContainer,
-  TestIdUtil,
-} from '@gen-epix/ui';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 
 export const HomePage = () => {

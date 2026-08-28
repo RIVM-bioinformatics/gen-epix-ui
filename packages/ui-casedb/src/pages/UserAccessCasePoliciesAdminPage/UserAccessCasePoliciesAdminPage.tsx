@@ -16,24 +16,20 @@ import {
   CaseDbAbacApi,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
-import type {
-  FormFieldDefinition,
-  OmitWithMetaData,
-  TableColumn,
-} from '@gen-epix/ui';
-import {
-  CrudPage,
-  FORM_FIELD_DEFINITION_TYPE,
-  TableUtil,
-  TestIdUtil,
-  useArray,
-  useUserOptionsQuery,
-} from '@gen-epix/ui';
+import type { OmitWithMetaData } from '@gen-epix/ui/models/data';
+import type { TableColumn } from '@gen-epix/ui/models/table';
+import { CrudPage } from '@gen-epix/ui/pages/CrudPage';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import { useUserOptionsQuery } from '@gen-epix/ui/dataHooks/useUsersQuery';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 import { useUserCasePolicyNameFactory } from '../../hooks/useUserCasePolicyNameFactory';
 
 type FormFields = OmitWithMetaData<CaseDbUserAccessCasePolicy, 'case_type_set' | 'data_collection' | 'read_col_set' | 'user' | 'write_col_set'>;

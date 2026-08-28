@@ -16,26 +16,28 @@ import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/models/table';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui/constants/query';
+import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import {
-  COMMON_QUERY_KEY,
-  ConfigService,
   createTableStore,
-  DataUtil,
-  PageContainer,
-  ResponseHandler,
-  RouterService,
+  TableStoreContextProvider,
+} from '@gen-epix/ui/stores/tableStore';
+import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
+import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import {
   Table,
   TableCaption,
   TableMenu,
   TableSidebarMenu,
-  TableStoreContextProvider,
-  TableUtil,
-  TestIdUtil,
-  useArray,
-  useInitializeTableStore,
-  useItemQuery,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui/components/ui/Table';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import { useInitializeTableStore } from '@gen-epix/ui/hooks/useInitializeTableStore';
+import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
+import { UserUtil } from '@gen-epix/ui/utils/UserUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import type {
   UsersEffectiveRightsDetailsDialogOpenProps,
@@ -286,7 +288,7 @@ export const UserEffectiveRightsAdminPage = () => {
         contentActions={(<TableMenu />)}
         contentHeader={(
           <TableCaption
-            caption={user ? t('{{userName}} effective rights', { userName: DataUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
+            caption={user ? t('{{userName}} effective rights', { userName: UserUtil.getUserDisplayValue(user, t) }) : t`⌛ Loading...`}
             component={'h2'}
             variant={'h2'}
           />

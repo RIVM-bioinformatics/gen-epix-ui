@@ -19,25 +19,21 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import type {
-  CrudPageSubPage,
-  FormFieldDefinition,
-  OmitWithMetaData,
-  TableColumn,
-} from '@gen-epix/ui';
-import {
-  AuthorizationService,
-  CrudPage,
-  FORM_FIELD_DEFINITION_TYPE,
-  SchemaUtil,
-  TableUtil,
-  TestIdUtil,
-  useArray,
-} from '@gen-epix/ui';
+import type { CrudPageSubPage } from '@gen-epix/ui/pages/CrudPage';
+import type { OmitWithMetaData } from '@gen-epix/ui/models/data';
+import type { TableColumn } from '@gen-epix/ui/models/table';
+import { AuthorizationService } from '@gen-epix/ui/classes/services/AuthorizationService';
+import { CrudPage } from '@gen-epix/ui/pages/CrudPage';
+import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
-import { CASEDB_QUERY_KEY } from '../../data/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 type FormFields = CaseDbCaseTypeProps & OmitWithMetaData<CaseDbCaseType, 'disease' | 'etiological_agent' | 'props'>;
 
