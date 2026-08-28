@@ -66,7 +66,7 @@
     "check-types": "tsc --noemit"
   },
   "peerDependencies": {
-    "@gen-epix/ui-core": "*",
+    "@gen-epix/ui-core": "workspace:^",
     "@mui/material": "*",
     "react": "*"
   },

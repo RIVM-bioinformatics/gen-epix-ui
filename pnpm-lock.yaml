@@ -520,6 +520,67 @@ importers:
         version: 4.1.1(vite@8.1.3(@types/node@26.1.0)(yaml@2.8.0))
 
   packages/ui:
+    dependencies:
+      '@hookform/resolvers':
+        specifier: 5.4.0
+        version: 5.4.0(react-hook-form@7.80.0(react@19.2.7))
+      '@tanstack/react-query':
+        specifier: 5.101.2
+        version: 5.101.2(react@19.2.7)
+      classnames:
+        specifier: 2.5.1
+        version: 2.5.1
+      clsx:
+        specifier: 2.1.1
+        version: 2.1.1
+      date-fns:
+        specifier: 4.4.0
+        version: 4.4.0
+      immer:
+        specifier: 11.1.9
+        version: 11.1.9
+      lodash:
+        specifier: 4.18.1
+        version: 4.18.1
+      oidc-client-ts:
+        specifier: 3.5.0
+        version: 3.5.0
+      react-error-boundary:
+        specifier: 6.1.2
+        version: 6.1.2(react@19.2.7)
+      react-hook-form:
+        specifier: 7.80.0
+        version: 7.80.0(react@19.2.7)
+      react-i18next:
+        specifier: 17.0.8
+        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
+      react-oidc-context:
+        specifier: 3.3.1
+        version: 3.3.1(oidc-client-ts@3.5.0)(react@19.2.7)
+      react-router:
+        specifier: 8.1.0
+        version: 8.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react-router-dom:
+        specifier: 7.18.1
+        version: 7.18.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react-virtuoso:
+        specifier: 4.18.10
+        version: 4.18.10(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      reflect-metadata:
+        specifier: 0.2.2
+        version: 0.2.2
+      use-cleanup-callback:
+        specifier: 1.3.0
+        version: 1.3.0(react@19.2.7)
+      use-debounce:
+        specifier: 10.1.1
+        version: 10.1.1(react@19.2.7)
+      uuid:
+        specifier: 14.0.1
+        version: 14.0.1
+      zustand:
+        specifier: 5.0.14
+        version: 5.0.14(@types/react@19.2.17)(immer@11.1.9)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
     devDependencies:
       '@dnd-kit/core':
         specifier: 6.3.1
@@ -554,9 +615,6 @@ importers:
       '@gen-epix/ui-form':
         specifier: workspace:^
         version: link:../ui-form
-      '@hookform/resolvers':
-        specifier: 5.4.0
-        version: 5.4.0(react-hook-form@7.80.0(react@19.2.7))
       '@microsoft/api-extractor':
         specifier: 7.58.9
         version: 7.58.9(@types/node@26.1.0)
@@ -575,9 +633,6 @@ importers:
       '@mui/utils':
         specifier: 9.2.0
         version: 9.2.0(@types/react@19.2.17)(react@19.2.7)
-      '@tanstack/react-query':
-        specifier: 5.101.2
-        version: 5.101.2(react@19.2.7)
       '@types/lodash':
         specifier: 4.17.24
         version: 4.17.24
@@ -599,33 +654,15 @@ importers:
       axios:
         specifier: 1.18.1
         version: 1.18.1(supports-color@5.5.0)
-      classnames:
-        specifier: 2.5.1
-        version: 2.5.1
-      clsx:
-        specifier: 2.1.1
-        version: 2.1.1
-      date-fns:
-        specifier: 4.4.0
-        version: 4.4.0
       eslint:
         specifier: 10.6.0
         version: 10.6.0
       i18next:
         specifier: 26.3.4
         version: 26.3.4(typescript@6.0.3)
-      immer:
-        specifier: 11.1.9
-        version: 11.1.9
       jsdom:
         specifier: 29.1.1
         version: 29.1.1
-      lodash:
-        specifier: 4.18.1
-        version: 4.18.1
-      oidc-client-ts:
-        specifier: 3.5.0
-        version: 3.5.0
       playwright:
         specifier: 1.61.1
         version: 1.61.1
@@ -635,42 +672,9 @@ importers:
       react-dom:
         specifier: 19.2.7
         version: 19.2.7(react@19.2.7)
-      react-error-boundary:
-        specifier: 6.1.2
-        version: 6.1.2(react@19.2.7)
-      react-hook-form:
-        specifier: 7.80.0
-        version: 7.80.0(react@19.2.7)
-      react-i18next:
-        specifier: 17.0.8
-        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
-      react-oidc-context:
-        specifier: 3.3.1
-        version: 3.3.1(oidc-client-ts@3.5.0)(react@19.2.7)
-      react-router:
-        specifier: 8.1.0
-        version: 8.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      react-router-dom:
-        specifier: 7.18.1
-        version: 7.18.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      react-virtuoso:
-        specifier: 4.18.10
-        version: 4.18.10(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      reflect-metadata:
-        specifier: 0.2.2
-        version: 0.2.2
       typescript:
         specifier: 6.0.3
         version: 6.0.3
-      use-cleanup-callback:
-        specifier: 1.3.0
-        version: 1.3.0(react@19.2.7)
-      use-debounce:
-        specifier: 10.1.1
-        version: 10.1.1(react@19.2.7)
-      uuid:
-        specifier: 14.0.1
-        version: 14.0.1
       vite:
         specifier: 8.1.3
         version: 8.1.3(@types/node@26.1.0)(yaml@2.8.0)
@@ -695,11 +699,75 @@ importers:
       yup:
         specifier: 1.7.1
         version: 1.7.1
+
+  packages/ui-casedb:
+    dependencies:
+      '@hookform/resolvers':
+        specifier: 5.4.0
+        version: 5.4.0(react-hook-form@7.80.0(react@19.2.7))
+      '@tanstack/react-query':
+        specifier: 5.101.2
+        version: 5.101.2(react@19.2.7)
+      colorjs.io:
+        specifier: 0.6.1
+        version: 0.6.1
+      csv:
+        specifier: 6.6.1
+        version: 6.6.1
+      date-fns:
+        specifier: 4.4.0
+        version: 4.4.0
+      decimal.js:
+        specifier: 10.6.0
+        version: 10.6.0
+      echarts:
+        specifier: 6.1.0
+        version: 6.1.0
+      echarts-for-react:
+        specifier: 3.0.6
+        version: 3.0.6(echarts@6.1.0)(react@19.2.7)
+      fuse.js:
+        specifier: 7.4.2
+        version: 7.4.2
+      immer:
+        specifier: 11.1.9
+        version: 11.1.9
+      lodash:
+        specifier: 4.18.1
+        version: 4.18.1
+      react-error-boundary:
+        specifier: 6.1.2
+        version: 6.1.2(react@19.2.7)
+      react-hook-form:
+        specifier: 7.80.0
+        version: 7.80.0(react@19.2.7)
+      react-i18next:
+        specifier: 17.0.8
+        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
+      react-resizable-panels:
+        specifier: 4.12.0
+        version: 4.12.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react-router:
+        specifier: 8.1.0
+        version: 8.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react-router-dom:
+        specifier: 7.18.1
+        version: 7.18.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react-virtuoso:
+        specifier: 4.18.10
+        version: 4.18.10(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      read-excel-file:
+        specifier: 9.2.0
+        version: 9.2.0
+      use-debounce:
+        specifier: 10.1.1
+        version: 10.1.1(react@19.2.7)
+      write-excel-file:
+        specifier: 4.1.1
+        version: 4.1.1
       zustand:
         specifier: 5.0.14
         version: 5.0.14(@types/react@19.2.17)(immer@11.1.9)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
-
-  packages/ui-casedb:
     devDependencies:
       '@emotion/cache':
         specifier: 11.14.0
@@ -734,9 +802,6 @@ importers:
       '@gen-epix/ui-phylogenetic-tree':
         specifier: workspace:^
         version: link:../ui-phylogenetic-tree
-      '@hookform/resolvers':
-        specifier: 5.4.0
-        version: 5.4.0(react-hook-form@7.80.0(react@19.2.7))
       '@microsoft/api-extractor':
         specifier: 7.58.9
         version: 7.58.9(@types/node@26.1.0)
@@ -758,9 +823,6 @@ importers:
       '@mui/x-date-pickers':
         specifier: 9.8.0
         version: 9.8.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@mui/system@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(date-fns@4.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@tanstack/react-query':
-        specifier: 5.101.2
-        version: 5.101.2(react@19.2.7)
       '@types/lodash':
         specifier: 4.17.24
         version: 4.17.24
@@ -782,42 +844,15 @@ importers:
       axios:
         specifier: 1.18.1
         version: 1.18.1(supports-color@5.5.0)
-      colorjs.io:
-        specifier: 0.6.1
-        version: 0.6.1
-      csv:
-        specifier: 6.6.1
-        version: 6.6.1
-      date-fns:
-        specifier: 4.4.0
-        version: 4.4.0
-      decimal.js:
-        specifier: 10.6.0
-        version: 10.6.0
-      echarts:
-        specifier: 6.1.0
-        version: 6.1.0
-      echarts-for-react:
-        specifier: 3.0.6
-        version: 3.0.6(echarts@6.1.0)(react@19.2.7)
       eslint:
         specifier: 10.6.0
         version: 10.6.0
-      fuse.js:
-        specifier: 7.4.2
-        version: 7.4.2
       i18next:
         specifier: 26.3.4
         version: 26.3.4(typescript@6.0.3)
-      immer:
-        specifier: 11.1.9
-        version: 11.1.9
       jsdom:
         specifier: 29.1.1
         version: 29.1.1
-      lodash:
-        specifier: 4.18.1
-        version: 4.18.1
       playwright:
         specifier: 1.61.1
         version: 1.61.1
@@ -827,36 +862,9 @@ importers:
       react-dom:
         specifier: 19.2.7
         version: 19.2.7(react@19.2.7)
-      react-error-boundary:
-        specifier: 6.1.2
-        version: 6.1.2(react@19.2.7)
-      react-hook-form:
-        specifier: 7.80.0
-        version: 7.80.0(react@19.2.7)
-      react-i18next:
-        specifier: 17.0.8
-        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
-      react-resizable-panels:
-        specifier: 4.12.0
-        version: 4.12.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      react-router:
-        specifier: 8.1.0
-        version: 8.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      react-router-dom:
-        specifier: 7.18.1
-        version: 7.18.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      react-virtuoso:
-        specifier: 4.18.10
-        version: 4.18.10(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      read-excel-file:
-        specifier: 9.2.0
-        version: 9.2.0
       typescript:
         specifier: 6.0.3
         version: 6.0.3
-      use-debounce:
-        specifier: 10.1.1
-        version: 10.1.1(react@19.2.7)
       vite:
         specifier: 8.1.3
         version: 8.1.3(@types/node@26.1.0)(yaml@2.8.0)
@@ -878,15 +886,9 @@ importers:
       vitest-browser-react:
         specifier: 2.2.0
         version: 2.2.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vitest@4.1.9)
-      write-excel-file:
-        specifier: 4.1.1
-        version: 4.1.1
       yup:
         specifier: 1.7.1
         version: 1.7.1
-      zustand:
-        specifier: 5.0.14
-        version: 5.0.14(@types/react@19.2.17)(immer@11.1.9)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
 
   packages/ui-core:
     dependencies:
@@ -930,40 +932,6 @@ importers:
 
   packages/ui-form:
     dependencies:
-      classnames:
-        specifier: 2.5.1
-        version: 2.5.1
-      date-fns:
-        specifier: 4.4.0
-        version: 4.4.0
-      lodash:
-        specifier: 4.18.1
-        version: 4.18.1
-      use-debounce:
-        specifier: 10.1.1
-        version: 10.1.1(react@19.2.7)
-      uuid:
-        specifier: 14.0.1
-        version: 14.0.1
-    devDependencies:
-      '@gen-epix/eslint-config':
-        specifier: 0.4.1
-        version: 0.4.1(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.62.1(eslint@10.6.0)(typescript@6.0.3))(eslint@10.6.0))(eslint@10.6.0)(typescript@6.0.3)(vitest@4.1.9)
-      '@gen-epix/translation-util':
-        specifier: 0.1.1
-        version: 0.1.1
-      '@gen-epix/ui-core':
-        specifier: workspace:^
-        version: link:../ui-core
-      '@mui/icons-material':
-        specifier: 9.2.0
-        version: 9.2.0(@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
-      '@mui/material':
-        specifier: 9.2.0
-        version: 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@mui/x-date-pickers':
-        specifier: 9.8.0
-        version: 9.8.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@mui/system@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(date-fns@4.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@tiptap/core':
         specifier: 3.27.1
         version: 3.27.1(@tiptap/pm@3.27.1)
@@ -1075,6 +1043,49 @@ importers:
       '@tiptap/react':
         specifier: 3.27.1
         version: 3.27.1(@floating-ui/dom@1.7.6)(@tiptap/core@3.27.1(@tiptap/pm@3.27.1))(@tiptap/pm@3.27.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      classnames:
+        specifier: 2.5.1
+        version: 2.5.1
+      date-fns:
+        specifier: 4.4.0
+        version: 4.4.0
+      lodash:
+        specifier: 4.18.1
+        version: 4.18.1
+      mui-tiptap:
+        specifier: 1.31.0
+        version: 1.31.0(4330b402f071a8b9896be152fa200620)
+      react-hook-form:
+        specifier: 7.80.0
+        version: 7.80.0(react@19.2.7)
+      react-i18next:
+        specifier: 17.0.8
+        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
+      use-debounce:
+        specifier: 10.1.1
+        version: 10.1.1(react@19.2.7)
+      uuid:
+        specifier: 14.0.1
+        version: 14.0.1
+    devDependencies:
+      '@gen-epix/eslint-config':
+        specifier: 0.4.1
+        version: 0.4.1(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.62.1(eslint@10.6.0)(typescript@6.0.3))(eslint@10.6.0))(eslint@10.6.0)(typescript@6.0.3)(vitest@4.1.9)
+      '@gen-epix/translation-util':
+        specifier: 0.1.1
+        version: 0.1.1
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../ui-core
+      '@mui/icons-material':
+        specifier: 9.2.0
+        version: 9.2.0(@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
+      '@mui/material':
+        specifier: 9.2.0
+        version: 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@mui/x-date-pickers':
+        specifier: 9.8.0
+        version: 9.8.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@mui/system@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(date-fns@4.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@types/lodash':
         specifier: 4.17.18
         version: 4.17.18
@@ -1087,18 +1098,9 @@ importers:
       i18next:
         specifier: 26.3.4
         version: 26.3.4(typescript@6.0.3)
-      mui-tiptap:
-        specifier: 1.31.0
-        version: 1.31.0(4330b402f071a8b9896be152fa200620)
       react:
         specifier: 19.2.7
         version: 19.2.7
-      react-hook-form:
-        specifier: 7.80.0
-        version: 7.80.0(react@19.2.7)
-      react-i18next:
-        specifier: 17.0.8
-        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -1123,6 +1125,9 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
+      react-i18next:
+        specifier: 17.0.8
+        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
     devDependencies:
       '@emotion/cache':
         specifier: 11.14.0
@@ -1208,9 +1213,6 @@ importers:
       react-dom:
         specifier: 19.2.7
         version: 19.2.7(react@19.2.7)
-      react-i18next:
-        specifier: 17.0.8
-        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -1304,6 +1306,10 @@ importers:
         version: 2.2.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vitest@4.1.9)
 
   packages/ui-seqdb:
+    dependencies:
+      react-i18next:
+        specifier: 17.0.8
+        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
     devDependencies:
       '@emotion/cache':
         specifier: 11.14.0
@@ -1392,9 +1398,6 @@ importers:
       react-dom:
         specifier: 19.2.7
         version: 19.2.7(react@19.2.7)
-      react-i18next:
-        specifier: 17.0.8
-        version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
