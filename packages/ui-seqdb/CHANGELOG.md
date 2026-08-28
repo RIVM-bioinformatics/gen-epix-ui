@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.9.0...ui-seqdb-v3.0.0) (2026-08-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
+
+### Features
+
+* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
+
 ## [2.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v2.8.0...ui-seqdb-v2.9.0) (2026-07-16)
 
 
