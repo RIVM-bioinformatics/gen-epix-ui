@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v2.1.0...ui-core-v2.1.1) (2026-08-28)
+
+
+### Bug Fixes
+
+* fix incorrect build ([443cd25](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/443cd254e2cfed5c51bf8a04295027504dac4840))
+
 ## [2.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v2.0.0...ui-core-v2.1.0) (2026-08-28)
 
 
