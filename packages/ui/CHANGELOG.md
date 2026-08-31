@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v3.1.1...ui-v3.1.2) (2026-08-31)
+
+
+### Bug Fixes
+
+* fix types export ([6373072](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/63730727164f5db5f49ad73ee210525c9e44d75b))
+
 ## [3.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v3.1.0...ui-v3.1.1) (2026-08-28)
 
 
