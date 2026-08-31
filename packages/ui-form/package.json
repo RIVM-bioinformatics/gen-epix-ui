@@ -19,7 +19,7 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/ui-form.d.ts"
+        "types": "./dist/@types/ui-form.d.ts"
       },
       "./components/fields/Autocomplete": {
         "types": "./dist/components/fields/Autocomplete/index.d.ts",

@@ -68,7 +68,7 @@ pkg.exports = {
 
 // publishConfig.exports: points to dist files (used after publish)
 pkg.publishConfig.exports = {
-  ...(hasTypesEntry ? { './types': { types: `./dist/${pkgBaseName}.d.ts` } } : {}),
+  ...(hasTypesEntry ? { './types': { types: `./dist/@types/${pkgBaseName}.d.ts` } } : {}),
   ...Object.fromEntries(
     componentKeys.map((key) => [
       `./${key}`,

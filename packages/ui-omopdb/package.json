@@ -16,7 +16,7 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/ui-omopdb.d.ts"
+        "types": "./dist/@types/ui-omopdb.d.ts"
       },
       "./components/app/OmopDbApp": {
         "types": "./dist/components/app/OmopDbApp/index.d.ts",

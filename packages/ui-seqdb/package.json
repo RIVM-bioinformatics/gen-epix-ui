@@ -16,7 +16,7 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/ui-seqdb.d.ts"
+        "types": "./dist/@types/ui-seqdb.d.ts"
       },
       "./components/app/SeqDbApp": {
         "types": "./dist/components/app/SeqDbApp/index.d.ts",

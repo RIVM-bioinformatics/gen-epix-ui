@@ -19,7 +19,7 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/ui.d.ts"
+        "types": "./dist/@types/ui.d.ts"
       },
       "./classes/TableEventBus": {
         "types": "./dist/classes/TableEventBus/index.d.ts",

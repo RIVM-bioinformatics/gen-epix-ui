@@ -16,7 +16,7 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/ui-casedb.d.ts"
+        "types": "./dist/@types/ui-casedb.d.ts"
       },
       "./classes/errors": {
         "types": "./dist/classes/errors/index.d.ts",
