@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v3.1.2...ui-seqdb-v3.1.3) (2026-08-31)
+
+
+### Bug Fixes
+
+* update package exports once more, fix /types export ([27e1d93](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/27e1d934e856f2164c0c76284226a541ff485b43))
+
 ## [3.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v3.1.1...ui-seqdb-v3.1.2) (2026-08-31)
 
 
