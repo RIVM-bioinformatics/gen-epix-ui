@@ -16,7 +16,8 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/@types/ui-casedb.d.ts"
+        "types": "./dist/@types/ui-casedb.d.ts",
+        "import": "./dist/@types/ui-casedb.d.ts"
       },
       "./classes/errors": {
         "types": "./dist/classes/errors/index.d.ts",
@@ -670,7 +671,8 @@
   },
   "exports": {
     "./types": {
-      "types": "./src/@types/ui-casedb.d.ts"
+      "types": "./src/@types/ui-casedb.d.ts",
+      "import": "./src/@types/ui-casedb.d.ts"
     },
     "./classes/errors": {
       "types": "./src/classes/errors/index.ts",

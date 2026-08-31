@@ -19,7 +19,8 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/@types/ui.d.ts"
+        "types": "./dist/@types/ui.d.ts",
+        "import": "./dist/@types/ui.d.ts"
       },
       "./classes/TableEventBus": {
         "types": "./dist/classes/TableEventBus/index.d.ts",
@@ -521,7 +522,8 @@
   },
   "exports": {
     "./types": {
-      "types": "./src/@types/ui.d.ts"
+      "types": "./src/@types/ui.d.ts",
+      "import": "./src/@types/ui.d.ts"
     },
     "./classes/TableEventBus": {
       "types": "./src/classes/TableEventBus/index.ts",

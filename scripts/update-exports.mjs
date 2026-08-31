@@ -55,7 +55,7 @@ const hasTypesEntry = existsSync(typesDeclarationFile);
 
 // exports: points to source files (used in workspace / dev)
 pkg.exports = {
-  ...(hasTypesEntry ? { './types': { types: `./src/@types/${pkgBaseName}.d.ts` } } : {}),
+  ...(hasTypesEntry ? { './types': { types: `./src/@types/${pkgBaseName}.d.ts`, import: `./src/@types/${pkgBaseName}.d.ts` } } : {}),
   ...Object.fromEntries(
     componentKeys.map((key) => [
       `./${key}`,
@@ -68,7 +68,7 @@ pkg.exports = {
 
 // publishConfig.exports: points to dist files (used after publish)
 pkg.publishConfig.exports = {
-  ...(hasTypesEntry ? { './types': { types: `./dist/@types/${pkgBaseName}.d.ts` } } : {}),
+  ...(hasTypesEntry ? { './types': { types: `./dist/@types/${pkgBaseName}.d.ts`, import: `./dist/@types/${pkgBaseName}.d.ts` } } : {}),
   ...Object.fromEntries(
     componentKeys.map((key) => [
       `./${key}`,

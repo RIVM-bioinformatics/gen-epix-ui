@@ -16,7 +16,8 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/@types/ui-seqdb.d.ts"
+        "types": "./dist/@types/ui-seqdb.d.ts",
+        "import": "./dist/@types/ui-seqdb.d.ts"
       },
       "./components/app/SeqDbApp": {
         "types": "./dist/components/app/SeqDbApp/index.d.ts",
@@ -54,7 +55,8 @@
   },
   "exports": {
     "./types": {
-      "types": "./src/@types/ui-seqdb.d.ts"
+      "types": "./src/@types/ui-seqdb.d.ts",
+      "import": "./src/@types/ui-seqdb.d.ts"
     },
     "./components/app/SeqDbApp": {
       "types": "./src/components/app/SeqDbApp/index.ts",

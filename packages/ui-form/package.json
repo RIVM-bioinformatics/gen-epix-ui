@@ -19,7 +19,8 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/@types/ui-form.d.ts"
+        "types": "./dist/@types/ui-form.d.ts",
+        "import": "./dist/@types/ui-form.d.ts"
       },
       "./components/fields/Autocomplete": {
         "types": "./dist/components/fields/Autocomplete/index.d.ts",
@@ -113,7 +114,8 @@
   },
   "exports": {
     "./types": {
-      "types": "./src/@types/ui-form.d.ts"
+      "types": "./src/@types/ui-form.d.ts",
+      "import": "./src/@types/ui-form.d.ts"
     },
     "./components/fields/Autocomplete": {
       "types": "./src/components/fields/Autocomplete/index.ts",

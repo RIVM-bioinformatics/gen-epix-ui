@@ -16,7 +16,8 @@
     "access": "public",
     "exports": {
       "./types": {
-        "types": "./dist/@types/ui-omopdb.d.ts"
+        "types": "./dist/@types/ui-omopdb.d.ts",
+        "import": "./dist/@types/ui-omopdb.d.ts"
       },
       "./components/app/OmopDbApp": {
         "types": "./dist/components/app/OmopDbApp/index.d.ts",
@@ -54,7 +55,8 @@
   },
   "exports": {
     "./types": {
-      "types": "./src/@types/ui-omopdb.d.ts"
+      "types": "./src/@types/ui-omopdb.d.ts",
+      "import": "./src/@types/ui-omopdb.d.ts"
     },
     "./components/app/OmopDbApp": {
       "types": "./src/components/app/OmopDbApp/index.ts",
