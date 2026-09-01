@@ -25,7 +25,7 @@ type PackageManifest = {
 
 const createPeerDependencyExternalPatterns = () => {
   const packageJson = JSON.parse(
-    readFileSync(join(__dirname, 'package.json'), 'utf8'),
+    readFileSync(join(import.meta.dirname, 'package.json'), 'utf8'),
   ) as PackageManifest;
 
   return Object.keys(packageJson.peerDependencies ?? {}).map((dependency) => {
@@ -42,7 +42,7 @@ const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<str
   const entries: Record<string, string> = {};
   const flatKeys = new Set<string>();
 
-  const srcDir = join(__dirname, 'src');
+  const srcDir = join(import.meta.dirname, 'src');
 
   // index.ts-based entries (classes, utils): key = component directory
   globSync([
@@ -62,7 +62,7 @@ const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<str
     join(srcDir, 'utils', '**', 'index.ts'),
   ]).forEach((file) => {
     const relKey = dirname(file).replace(`${srcDir}/`, '');
-    entries[relKey] = `./${file.replace(`${__dirname}/`, '')}`;
+    entries[relKey] = `./${file.replace(`${import.meta.dirname}/`, '')}`;
   });
 
   // flat .ts entries (models): key = file path without extension
@@ -70,7 +70,7 @@ const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<str
     .filter((file) => !file.endsWith('/index.ts'))
     .forEach((file) => {
       const relKey = file.replace(`${srcDir}/`, '').replace(/\.ts$/, '');
-      entries[relKey] = `./${file.replace(`${__dirname}/`, '')}`;
+      entries[relKey] = `./${file.replace(`${import.meta.dirname}/`, '')}`;
       flatKeys.add(relKey);
     });
 
@@ -188,7 +188,7 @@ export default defineConfig({
               { browser: 'chromium' },
             ],
             provider: playwright(),
-            screenshotDirectory: join(__dirname, '__screenshots__'),
+            screenshotDirectory: join(import.meta.dirname, '__screenshots__'),
             viewport: {
               height: 1080,
               width: 1920,

@@ -48,7 +48,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        app: resolve(__dirname, 'index.html'),
+        app: resolve(import.meta.dirname, 'index.html'),
       },
     },
   },
