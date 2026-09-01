@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-omopdb-v3.0.0...api-omopdb-v3.1.0) (2026-09-01)
+
+
+### Features
+
+* update dependencies ([d84eb74](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d84eb749eb95f385616ca6c0621e88128b15fd0d))
+
 ## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-omopdb-v2.8.0...api-omopdb-v3.0.0) (2026-08-28)
 
 

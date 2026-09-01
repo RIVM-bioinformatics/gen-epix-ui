@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v3.1.3...ui-seqdb-v3.2.0) (2026-09-01)
+
+
+### Features
+
+* update dependencies ([d84eb74](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d84eb749eb95f385616ca6c0621e88128b15fd0d))
+
 ## [3.1.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-seqdb-v3.1.2...ui-seqdb-v3.1.3) (2026-08-31)
 
 
