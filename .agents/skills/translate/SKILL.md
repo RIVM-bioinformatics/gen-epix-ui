@@ -2,15 +2,15 @@
 name: translate
 description: >-
   Run the add-missing-translations package script, translate missing locale JSON
-   values marked with the ⚠ missing translation marker, and stage all modified
-   .json files. Use when asked to fill missing translations, resolve
-  ⚠ translation markers, update locale JSON, or stage translation files.
+   values marked with the ⚠ missing translation marker, and leave changes
+   unstaged. Use when asked to fill missing translations, resolve ⚠ translation
+   markers, or update locale JSON.
 ---
 
 # Translate Missing Translations
 
-Fill missing translation placeholders in locale JSON files and stage the locale
-JSON changes for commit.
+Fill missing translation placeholders in locale JSON files without staging any
+changes.
 
 ## Workflow
 
@@ -58,16 +58,16 @@ JSON changes for commit.
    pnpm run validate
    ```
 
-6. Stage all modified `.json` files, and only those files:
+6. Review the modified locale JSON files without staging them:
 
    ```sh
-   git add -u -- '*.json'
+   git --no-pager diff -- '**/locale/*.json'
    ```
 
-7. Confirm the staged set contains only JSON files:
+7. Confirm the worktree changes are left unstaged:
 
    ```sh
-   git --no-pager diff --cached --name-only
+   git status --short
    ```
 
 ## Notes
@@ -75,5 +75,4 @@ JSON changes for commit.
 - Use `pnpm`, not `npm` or `yarn`, in this repository.
 - If `pnpm run add-missing-translations` rewrites files, inspect those changes
   before translating markers.
-- If no markers remain after running the script, still stage all modified
-   `.json` files as requested.
+- Do not run `git add` or otherwise stage translation changes in this workflow.

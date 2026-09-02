@@ -14,6 +14,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import type {
   CaseDbApiPermission,
   CaseDbRefCol,
+  CaseDbUnit,
 } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
@@ -34,7 +35,11 @@ import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
 import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
 
 import { useColTypeOptionsQuery } from '../../dataHooks/useColTypesQuery';
-import { useConceptSetOptionsQuery } from '../../dataHooks/useConceptSetsQuery';
+import { useUnitOptionsQuery } from '../../dataHooks/useUnitQuery/useUnit';
+import {
+  useConceptSetMapQuery,
+  useConceptSetOptionsQuery,
+} from '../../dataHooks/useConceptSetsQuery';
 import {
   useRefDimMapQuery,
   useRefDimOptionsQuery,
@@ -56,12 +61,14 @@ export const RefColsAdminPage = () => {
   const refDimMapQuery = useRefDimMapQuery();
   const colTypeOptionsQuery = useColTypeOptionsQuery();
   const conceptSetOptionsQuery = useConceptSetOptionsQuery();
+  const conceptSetMapQuery = useConceptSetMapQuery();
   const regionSetOptionsQuery = useRegionSetOptionsQuery();
+  const unitOptionsQuery = useUnitOptionsQuery();
   const geneticDistanceProtocolOptionsQuery = useGeneticDistanceProtocolOptionsQuery();
   const colsValidationRulesQuery = useRefColsValidationRulesQuery();
   const colTypeOptionsByDimIdCacheRef = useRef(new Map<string, OptionBase<string>[]>());
 
-  const loadables = useArray([refDimMapQuery, refDimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
+  const loadables = useArray([unitOptionsQuery, conceptSetMapQuery, refDimMapQuery, refDimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
     return (await CaseDbCaseApi.getInstance().refColsGetAll(null, null, { signal }))?.data;
@@ -90,10 +97,20 @@ export const RefColsAdminPage = () => {
     return item.label;
   }, []);
 
+  const colTypesThatRequireUnit = useMemo(() => [
+    CaseDbColType.INTERVAL,
+    CaseDbColType.DECIMAL_0,
+    CaseDbColType.DECIMAL_1,
+    CaseDbColType.DECIMAL_2,
+    CaseDbColType.DECIMAL_3,
+    CaseDbColType.DECIMAL_4,
+    CaseDbColType.DECIMAL_5,
+    CaseDbColType.DECIMAL_6] as CaseDbColType[], []);
+
   const schema = useMemo(() => {
     return object<FormFields>().shape({
       code: SchemaUtil.code,
-      code_suffix: string().alphaNumeric().required().max(100),
+      code_suffix: SchemaUtil.code,
       col_type: mixed<CaseDbColType>().required().oneOf(Object.values(CaseDbColType)),
       concept_set_id: string().when('col_type', {
         is: (colType: CaseDbColType) => CONCEPT_COL_TYPES.includes(colType),
@@ -129,8 +146,35 @@ export const RefColsAdminPage = () => {
         otherwise: () => string().url().max(1000).nullable().notRequired(),
         then: () => string().url().max(1000).required(),
       }),
+      unit: mixed<CaseDbUnit>().nullable()
+        .test({
+          message: t`Unit is required for this column type`,
+          name: 'unit-is-required-for-col-type',
+          test: (fieldValue, context) => {
+            const { col_type: colType } = context.parent as Partial<FormFields> | undefined;
+            if (colTypesThatRequireUnit.includes(colType)) {
+              return !!fieldValue;
+            }
+            return true;
+          },
+        })
+        .test({
+          message: t`Unit should match the unit of the selected concept set`,
+          name: 'unit-should-match-concept-set',
+          test: (fieldValue, context) => {
+            const { concept_set_id: conceptSetId } = context.parent as Partial<FormFields> | undefined;
+            if (!conceptSetId) {
+              return true;
+            }
+            const conceptSet = conceptSetMapQuery.map.get(conceptSetId);
+            if (!conceptSet?.unit) {
+              return true;
+            }
+            return fieldValue === conceptSet.unit;
+          },
+        }),
     });
-  }, []);
+  }, [colTypesThatRequireUnit, conceptSetMapQuery.map, t]);
 
   const getColTypeOptionsForDimId = useCallback((id: string): OptionBase<string>[] => {
     if (colTypeOptionsByDimIdCacheRef.current.has(id)) {
@@ -150,6 +194,15 @@ export const RefColsAdminPage = () => {
     if (values.col_type && values.concept_set_id && !CONCEPT_COL_TYPES.includes(values.col_type)) {
       formMethods.setValue('concept_set_id', null);
     }
+    if (values.col_type && values.unit && !colTypesThatRequireUnit.includes(values.col_type)) {
+      formMethods.setValue('unit', null);
+    }
+    if (values.concept_set_id) {
+      const conceptSetUnit = conceptSetMapQuery.map.get(values.concept_set_id)?.unit;
+      if (conceptSetUnit && values.unit !== conceptSetUnit) {
+        formMethods.setValue('unit', conceptSetUnit);
+      }
+    }
     if (values.col_type && values.region_set_id && values.col_type !== CaseDbColType.GEO_REGION) {
       formMethods.setValue('region_set_id', null);
     }
@@ -162,11 +215,13 @@ export const RefColsAdminPage = () => {
         formMethods.setValue('col_type', validColOptions.length === 1 ? validColOptions[0].value as CaseDbColType : null);
       }
     }
-  }, [getColTypeOptionsForDimId]);
+
+  }, [colTypesThatRequireUnit, conceptSetMapQuery.map, getColTypeOptionsForDimId]);
 
 
   const formFieldDefinitions = useCallback((item: CaseDbRefCol, values: FormFields): FormFieldDefinition<FormFields>[] => {
     const normalizedRefDimId = values?.ref_dim_id ?? item?.ref_dim_id ?? refDimId ?? null;
+    const normalizedColType = values?.col_type ?? item?.col_type ?? null;
 
     return [
       {
@@ -247,8 +302,16 @@ export const RefColsAdminPage = () => {
         name: 'schema_definition',
         rows: 10,
       } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        disabled: !normalizedColType || !colTypesThatRequireUnit.includes(normalizedColType),
+        label: t`Unit`,
+        loading: unitOptionsQuery.isLoading,
+        name: 'unit',
+        options: unitOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
     ] as const satisfies FormFieldDefinition<FormFields>[];
-  }, [colTypeOptionsQuery.isLoading, conceptSetOptionsQuery.options, refDimId, refDimOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, getColTypeOptionsForDimId, regionSetOptionsQuery.options, t]);
+  }, [refDimId, t, refDimOptionsQuery.options, colTypeOptionsQuery.isLoading, getColTypeOptionsForDimId, conceptSetOptionsQuery.options, regionSetOptionsQuery.options, geneticDistanceProtocolOptionsQuery.options, colTypesThatRequireUnit, unitOptionsQuery.isLoading, unitOptionsQuery.options]);
 
   const tableColumns = useMemo((): TableColumn<CaseDbRefCol>[] => {
     const columns: TableColumn<CaseDbRefCol>[] = [];
