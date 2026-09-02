@@ -81,6 +81,17 @@ Validate (lint, type-check, tests) across all packages:
 pnpm run validate
 ```
 
+Install Playwright browsers for browser-oriented tests from a package that declares
+Playwright, such as `@gen-epix/ui`:
+
+```sh
+pnpm --filter @gen-epix/ui exec playwright install
+```
+
+Running `pnpm exec playwright install` from the monorepo root fails because the
+root package does not declare a Playwright dependency, so pnpm cannot expose the
+`playwright` binary there.
+
 Regenerate API clients from their OpenAPI schemas:
 
 ```sh
