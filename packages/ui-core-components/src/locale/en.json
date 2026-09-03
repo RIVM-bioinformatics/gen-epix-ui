@@ -1,0 +1,18 @@
+{
+  "translation": {
+    "Cancel": "Cancel",
+    "Close": "Close",
+    "Close dialog": "Close dialog",
+    "Close dialog with title: {{title}}": "Close dialog with title: {{title}}",
+    "Completed: ": "Completed: ",
+    "Copied to clipboard": "Copied to clipboard",
+    "Copy to clipboard": "Copy to clipboard",
+    "Current: ": "Current: ",
+    "Error": "Error",
+    "Loading": "Loading",
+    "Menu": "Menu",
+    "OK": "OK",
+    "Optional": "Optional",
+    "This is taking longer than expected. We are still trying.": "This is taking longer than expected. We are still trying."
+  }
+}

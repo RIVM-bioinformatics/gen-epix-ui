@@ -1,0 +1,199 @@
+import {
+  useCallback,
+  useMemo,
+} from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  array,
+  object,
+  string,
+} from 'yup';
+import omit from 'lodash/omit';
+import type {
+  CommonDbApiPermission,
+  CommonDbOrganization,
+} from '@gen-epix/api-commondb';
+import {
+  CommonDbCommandName,
+  CommonDbPermissionType,
+} from '@gen-epix/api-commondb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
+
+import type { TableColumn } from '../../models/table';
+import { TableUtil } from '../../utils/TableUtil';
+import type { CrudPageSubPage } from '../CrudPage';
+import { CrudPage } from '../CrudPage';
+import { AuthorizationService } from '../../classes/services/AuthorizationService';
+import { useIdentifierIssuerOptionsQuery } from '../../dataHooks/useIdentifierIssuerQuery';
+import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOrganizationIdentifierIssuerLinksQuery';
+import type { OmitWithMetaData } from '../../models/data';
+import { COMMON_QUERY_KEY } from '../../constants/query';
+import { ApiService } from '../../classes/services/ApiService';
+
+type FormFields = OmitWithMetaData<TableData>;
+
+type TableData = { identifierIssuerIds: string[] } & CommonDbOrganization;
+
+export const OrganizationsAdminPage = () => {
+  const { t } = useTranslation();
+  const identifierIssuerOptionsQuery = useIdentifierIssuerOptionsQuery();
+  const organizationIdentifierIssuerLinksQuery = useOrganizationIdentifierIssuerLinksQuery();
+
+  const loadables = useArray([identifierIssuerOptionsQuery, organizationIdentifierIssuerLinksQuery]);
+
+  const fetchAll = useCallback(async (signal: AbortSignal) => {
+    return (await ApiService.getInstance().organizationApi.organizationsGetAll(null, null, { signal }))?.data;
+  }, []);
+
+  const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganization) => {
+    await ApiService.getInstance().organizationApi.organizationsPutIdentifierIssuers(item.id, {
+      organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
+        identifier_issuer_id,
+        organization_id: item.id,
+      })),
+    });
+    return (await ApiService.getInstance().organizationApi.organizationsPutOne(item.id, { id: item.id, ...variables })).data;
+  }, []);
+
+  const createOne = useCallback(async (variables: FormFields) => {
+    const resultItem = (await ApiService.getInstance().organizationApi.organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
+    await ApiService.getInstance().organizationApi.organizationsPutIdentifierIssuers(resultItem.id, {
+      organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
+        identifier_issuer_id,
+        organization_id: resultItem.id,
+      })),
+    });
+    return resultItem;
+  }, []);
+
+  const deleteOne = useCallback(async (item: CommonDbOrganization) => {
+    return await ApiService.getInstance().organizationApi.organizationsDeleteOne(item.id);
+  }, []);
+
+  const getName = useCallback((item: CommonDbOrganization) => {
+    return item.name;
+  }, []);
+
+  const schema = useMemo(() => {
+    return object<FormFields>().shape({
+      code: SchemaUtil.code,
+      description: SchemaUtil.description,
+      identifierIssuerIds: array().of(string().uuid4()).min(0).required(),
+      name: SchemaUtil.name,
+    });
+  }, []);
+
+  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
+    return [
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Name`,
+        name: 'name',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Description`,
+        multiline: true,
+        name: 'description',
+        rows: 5,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Code`,
+        name: 'code',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST,
+        label: t`Identifier issuers`,
+        loading: identifierIssuerOptionsQuery.isLoading,
+        name: 'identifierIssuerIds',
+        options: identifierIssuerOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
+  }, [identifierIssuerOptionsQuery.isLoading, identifierIssuerOptionsQuery.options, t]);
+
+  const tableColumns = useMemo((): TableColumn<TableData>[] => {
+    return [
+      TableUtil.createTextColumn<TableData>({ advancedSort: true, id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<TableData>({ id: 'code', name: t`Code` }),
+      {
+        displayValueGetter: (item) => `${item.row.identifierIssuerIds.length} / ${identifierIssuerOptionsQuery.options.length}`,
+        headerName: t`Identifier issuer count`,
+        id: 'numIdentifierIssuers',
+        isInitiallyVisible: true,
+        textAlign: 'right',
+        type: 'number',
+        valueGetter: (item) => item.row.identifierIssuerIds.length,
+        widthFlex: 0.5,
+      },
+    ];
+  }, [identifierIssuerOptionsQuery.options.length, t]);
+
+  const subPages = useMemo<CrudPageSubPage<CommonDbOrganization>[]>(() => {
+    if (!AuthorizationService.getInstance().doesUserHavePermission([
+      { command_name: CommonDbCommandName.SiteCrudCommand, permission_type: CommonDbPermissionType.READ },
+    ])) {
+      return [];
+    }
+
+    return [
+      {
+        getPathName: (item: CommonDbOrganization) => `/management/organizations/${item.id}/sites`,
+        label: t`Manage sites`,
+      } satisfies CrudPageSubPage<CommonDbOrganization>,
+    ];
+  }, [t]);
+
+  const convertToTableData = useCallback((items: CommonDbOrganization[]) => {
+    if (!items || !organizationIdentifierIssuerLinksQuery.data) {
+      return [];
+    }
+    return items.map<TableData>((item) => {
+      const identifierIssuerIds = organizationIdentifierIssuerLinksQuery.data.filter(link => link.organization_id === item.id).map(link => link.identifier_issuer_id);
+      return {
+        ...item,
+        identifierIssuerIds,
+      } satisfies TableData;
+    });
+  }, [organizationIdentifierIssuerLinksQuery.data]);
+
+  const associationQueryKeys = useMemo(() => [
+    [COMMON_QUERY_KEY.IDENTIFIER_ISSUER_LINKS],
+  ], []);
+
+  const extraPermissions = useMemo<CommonDbApiPermission[]>(() => [
+    { command_name: CommonDbCommandName.OrganizationIdentifierIssuerLinkUpdateAssociationCommand, permission_type: CommonDbPermissionType.EXECUTE },
+  ], []);
+
+  return (
+    <CrudPage<FormFields, CommonDbOrganization, TableData>
+      associationQueryKeys={associationQueryKeys}
+      convertToTableData={convertToTableData}
+      createItemDialogTitle={t`Create new organization`}
+      createOne={createOne}
+      crudCommandType={CommonDbCommandName.OrganizationCrudCommand}
+      defaultSortByField={'name'}
+      defaultSortDirection={'asc'}
+      deleteOne={deleteOne}
+      extraCreateOnePermissions={extraPermissions}
+      extraDeleteOnePermissions={extraPermissions}
+      extraUpdateOnePermissions={extraPermissions}
+      fetchAll={fetchAll}
+      formFieldDefinitions={formFieldDefinitions}
+      getName={getName}
+      itemName={t`Organization`}
+      loadables={loadables}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.ORGANIZATIONS}
+      schema={schema}
+      subPages={subPages}
+      tableColumns={tableColumns}
+      testIdAttributes={TestIdUtil.createAttributes('OrganizationsAdminPage')}
+      title={t`Organizations`}
+      updateOne={updateOne}
+    />
+  );
+};

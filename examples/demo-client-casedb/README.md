@@ -10,9 +10,9 @@ Gen-EpiX is platform for visualizing and analyzing genomic epidemiology data. It
 
 The platform is currently at the beta release stage and as such not yet usable for production. We are currently to get the platform released, for use in the Netherlands as the official national platform for laboratory-based surveillance of infectious diseases. Feel free to [contact us](mailto:ivo.van.walle@rivm.nl) if you are interested.
 
-## About @gen-epix/demo-client
+## About @gen-epix/demo-client-casedb
 
-`@gen-epix/demo-client` is a reference client application for the Gen-EpiX platform, built with [React](https://react.dev/), [Vite](https://vitejs.dev/), and [MUI (Material UI)](https://mui.com/). It demonstrates how to integrate and use the `@gen-epix/ui` component library within a real application.
+`@gen-epix/demo-client-casedb` is a reference client application for the Gen-EpiX platform, built with [React](https://react.dev/), [Vite](https://vitejs.dev/), and [MUI (Material UI)](https://mui.com/). It demonstrates how to integrate and use the `@gen-epix/ui-client-common` component library within a real application.
 
 Key characteristics:
 
@@ -22,7 +22,7 @@ Key characteristics:
 - **Routing** — uses [React Router](https://reactrouter.com/) for client-side navigation
 - **Development server** — served over HTTPS via Vite with local SSL certificates (mkcert)
 
-This package is not intended for production deployment. Its purpose is to showcase platform capabilities and serve as a starting point for building a production client on top of `@gen-epix/ui`.
+This package is not intended for production deployment. Its purpose is to showcase platform capabilities and serve as a starting point for building a production client on top of `@gen-epix/ui-client-common`.
 
 ## Installation
 

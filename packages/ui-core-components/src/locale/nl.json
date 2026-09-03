@@ -1,0 +1,18 @@
+{
+  "translation": {
+    "Cancel": "Annuleren",
+    "Close": "Sluiten",
+    "Close dialog": "Dialoog sluiten",
+    "Close dialog with title: {{title}}": "Dialoog met titel {{title}} sluiten",
+    "Completed: ": "Voltooid: ",
+    "Copied to clipboard": "Gekopieerd naar klembord",
+    "Copy to clipboard": "Kopieer naar klembord",
+    "Current: ": "Huidig: ",
+    "Error": "Fout",
+    "Loading": "Laden",
+    "Menu": "Menu",
+    "OK": "OK",
+    "Optional": "Optioneel",
+    "This is taking longer than expected. We are still trying.": "Dit duurt langer dan verwacht. We proberen het nog steeds."
+  }
+}

@@ -12,7 +12,7 @@ The platform is currently in beta and is not yet intended for production use. Fe
 
 ## About @gen-epix/ui-phylogenetic-tree
 
-`@gen-epix/ui-phylogenetic-tree` is a standalone React package that provides a phylogenetic tree visualization component for the Gen-EpiX platform. It has no dependency on the full `@gen-epix/ui` application framework.
+`@gen-epix/ui-phylogenetic-tree` is a standalone React package that provides a phylogenetic tree visualization component for the Gen-EpiX platform. It has no dependency on the full `@gen-epix/ui-client-common` application framework.
 
 - **Components** — `PhylogeneticTree` — an interactive, canvas-rendered phylogenetic tree viewer
 - **Models** — tree data types and interfaces (`tree`)

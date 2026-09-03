@@ -10,10 +10,10 @@ separate copy.
 Gen-EpiX UI is a pnpm/Lerna monorepo for the frontend libraries and demo clients
 of the Gen-EpiX genomic epidemiology platform.
 
-- `packages/ui`: core React component library shared by all Gen-EpiX frontends.
-- `packages/ui-casedb`: Case DB UI built on top of `@gen-epix/ui`.
-- `packages/ui-omopdb`: OMOP DB UI built on top of `@gen-epix/ui`.
-- `packages/ui-seqdb`: Sequence DB UI built on top of `@gen-epix/ui`.
+- `packages/ui-client-common`: core React component library shared by all Gen-EpiX frontends.
+- `packages/ui-client-casedb`: Case DB UI built on top of `@gen-epix/ui-client-common`.
+- `packages/ui-client-omopdb`: OMOP DB UI built on top of `@gen-epix/ui-client-common`.
+- `packages/ui-client-seqdb`: Sequence DB UI built on top of `@gen-epix/ui-client-common`.
 - `packages/api-casedb`: generated Case DB API client.
 - `packages/api-commondb`: generated Common DB API client.
 - `packages/api-omopdb`: generated OMOP DB API client.
@@ -102,12 +102,12 @@ pnpm run validate
 Run focused commands for one package:
 
 ```sh
-pnpm --filter @gen-epix/ui run lint
-pnpm --filter @gen-epix/ui run lint-fix
-pnpm --filter @gen-epix/ui run check-types
-pnpm --filter @gen-epix/ui run test-run
-pnpm --filter @gen-epix/ui run validate
-pnpm --filter @gen-epix/ui run build
+pnpm --filter @gen-epix/ui-client-common run lint
+pnpm --filter @gen-epix/ui-client-common run lint-fix
+pnpm --filter @gen-epix/ui-client-common run check-types
+pnpm --filter @gen-epix/ui-client-common run test-run
+pnpm --filter @gen-epix/ui-client-common run validate
+pnpm --filter @gen-epix/ui-client-common run build
 ```
 
 Other useful root commands:
@@ -157,7 +157,7 @@ pnpm run add-missing-translations
 ## React And UI Conventions
 
 - Match existing MUI-based design patterns and component composition.
-- Keep shared, domain-neutral UI in `packages/ui`.
+- Keep shared, domain-neutral UI in `packages/ui-client-common`.
 - Keep Case DB, OMOP DB, and Sequence DB behavior in their domain packages.
 - Prefer existing hooks, managers, services, routing helpers, table helpers,
  filter helpers, and form field components before adding new ones.

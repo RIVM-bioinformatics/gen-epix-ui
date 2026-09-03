@@ -5,33 +5,37 @@
   "bootstrap-sha": "35a7e75",
   "include-component-in-tag": true,
   "packages": {
-    "packages/ui": {
-      "package-name": "@gen-epix/ui",
-      "component": "ui"
+    "packages/ui-client-common": {
+      "package-name": "@gen-epix/ui-client-common",
+      "component": "ui-client-common"
     },
     "packages/ui-core": {
       "package-name": "@gen-epix/ui-core",
       "component": "ui-core"
     },
-    "packages/ui-casedb": {
-      "package-name": "@gen-epix/ui-casedb",
-      "component": "ui-casedb"
+    "packages/ui-core-components": {
+      "package-name": "@gen-epix/ui-core-components",
+      "component": "ui-core-components"
     },
-    "packages/ui-omopdb": {
-      "package-name": "@gen-epix/ui-omopdb",
-      "component": "ui-omopdb"
+    "packages/ui-client-casedb": {
+      "package-name": "@gen-epix/ui-client-casedb",
+      "component": "ui-client-casedb"
     },
-    "packages/ui-seqdb": {
-      "package-name": "@gen-epix/ui-seqdb",
-      "component": "ui-seqdb"
+    "packages/ui-client-omopdb": {
+      "package-name": "@gen-epix/ui-client-omopdb",
+      "component": "ui-client-omopdb"
+    },
+    "packages/ui-client-seqdb": {
+      "package-name": "@gen-epix/ui-client-seqdb",
+      "component": "ui-client-seqdb"
     },
     "packages/ui-phylogenetic-tree": {
       "package-name": "@gen-epix/ui-phylogenetic-tree",
       "component": "ui-phylogenetic-tree"
     },
-    "packages/ui-form": {
-      "package-name": "@gen-epix/ui-form",
-      "component": "ui-form"
+    "packages/ui-core-form": {
+      "package-name": "@gen-epix/ui-core-form",
+      "component": "ui-core-form"
     },
     "packages/api-casedb": {
       "package-name": "@gen-epix/api-casedb",

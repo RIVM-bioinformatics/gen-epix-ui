@@ -1,0 +1,223 @@
+import {
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  array,
+  object,
+  string,
+} from 'yup';
+import {
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+} from '@mui/material';
+import MailIcon from '@mui/icons-material/Mail';
+import PasswordIcon from '@mui/icons-material/Password';
+import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
+import { CommonDbCommandName } from '@gen-epix/api-commondb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import type {
+  FormFieldDefinition,
+  OptionBase,
+} from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
+
+import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
+import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
+import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
+import type {
+  TableColumn,
+  TableRowParams,
+} from '../../models/table';
+import { TableUtil } from '../../utils/TableUtil';
+import { CrudPage } from '../CrudPage';
+import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
+import type { OmitWithMetaData } from '../../models/data';
+import { COMMON_QUERY_KEY } from '../../constants/query';
+import { ApiService } from '../../classes/services/ApiService';
+
+import { UserInvitationShareDialog } from './UserInvitationShareDialog';
+import type { UserInvitationShareDialogRefMethods } from './UserInvitationShareDialog';
+import { UserInvitationConsumeDialog } from './UserInvitationConsumeDialog';
+import type { UserInvitationConsumeDialogRefMethods } from './UserInvitationConsumeDialog';
+
+type FormFields = OmitWithMetaData<CommonDbUserInvitation, 'email' | 'expires_at' | 'invited_by_user_id' | 'invited_by_user' | 'name' | 'organization' | 'token'>;
+
+export const UserInvitationsAdminPage = () => {
+  const { t } = useTranslation();
+  const organizationOptionsQuery = useOrganizationOptionsQuery();
+  const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
+  const userOptionsQuery = useUserOptionsQuery();
+  const organizationAdminPolicyMapQuery = useOrganizationAdminPolicyMapQuery();
+
+  const organizationOptions = useMemo<OptionBase<string>[]>(() => {
+    if (!organizationOptionsQuery?.options?.length || !inviteUserConstraintsQuery?.data) {
+      return [];
+    }
+    return organizationOptionsQuery.options.filter(option => inviteUserConstraintsQuery.data.organization_ids.includes(option.value));
+
+  }, [organizationOptionsQuery.options, inviteUserConstraintsQuery.data]);
+
+  const roleOptions = useMemo<OptionBase<string>[]>(() => {
+    if (!inviteUserConstraintsQuery?.data) {
+      return [];
+    }
+    return inviteUserConstraintsQuery.data.roles.map(role => ({
+      label: role,
+      value: role,
+    }));
+  }, [inviteUserConstraintsQuery.data]);
+
+  const loadables = useArray([inviteUserConstraintsQuery, organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyMapQuery]);
+
+  const userInvitationShareDialogRef = useRef<UserInvitationShareDialogRefMethods>(null);
+  const userInvitationConsumeDialogRef = useRef<UserInvitationConsumeDialogRefMethods>(null);
+
+  const fetchAll = useCallback(async (signal: AbortSignal) => {
+    return (await ApiService.getInstance().organizationApi.userInvitationsGetAll(null, null, { signal }))?.data;
+  }, []);
+
+  const deleteOne = useCallback(async (item: CommonDbUserInvitation) => {
+    return await ApiService.getInstance().organizationApi.userInvitationsDeleteOne(item.id);
+  }, []);
+
+  const createOne = useCallback(async (variables: FormFields) => {
+    return (await ApiService.getInstance().organizationApi.inviteUser({
+      ...variables,
+    })).data;
+  }, []);
+
+  const getName = useCallback((item: FormFields) => {
+    return item.key;
+  }, []);
+
+  const schema = useMemo(() => {
+    return object<FormFields>().shape({
+      description: SchemaUtil.description,
+      key: string().max(100).transform((value) => value === '' ? undefined : value as string),
+      organization_id: string().uuid4().required().max(100),
+      roles: array().min(1).required(),
+    });
+  }, []);
+
+  const onCreateSuccess = useCallback((item: CommonDbUserInvitation) => {
+    userInvitationShareDialogRef.current.open({ item });
+  }, []);
+
+  const customOnRowClick = useCallback((params: TableRowParams<CommonDbUserInvitation, null>) => {
+    userInvitationShareDialogRef.current.open({ item: params.row });
+  }, []);
+
+
+  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
+    const fields: FormFieldDefinition<FormFields>[] = [];
+
+    fields.push(
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        infoMessage: t`If known, fill in the user's key. This is typically the user's email address, but can be any string depending on the Identity Provider. Filling in a key makes the invitation more secure. If left empty, the invitation can be consumed by anyone with the invite link.`,
+        label: t`Key`,
+        name: 'key',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        label: t`Organization`,
+        loading: organizationOptionsQuery.isLoading,
+        name: 'organization_id',
+        options: organizationOptions,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        label: t`Roles`,
+        loading: inviteUserConstraintsQuery.isLoading,
+        multiple: true,
+        name: 'roles',
+        options: roleOptions,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Description`,
+        name: 'description',
+      } as const satisfies FormFieldDefinition<FormFields>,
+    );
+    return fields;
+  }, [t, organizationOptions, organizationOptionsQuery.isLoading, roleOptions, inviteUserConstraintsQuery.isLoading]);
+
+  const extraActionsFactory = useCallback((params: TableRowParams<CommonDbUserInvitation, null>) => {
+    return [
+      (
+        <MenuItem
+          key={'custom-action-1'}
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+          onClick={() => userInvitationShareDialogRef.current.open({ item: params.row })}
+        >
+          <ListItemIcon>
+            <MailIcon fontSize={'small'} />
+          </ListItemIcon>
+          <ListItemText>
+            {t`Send invitation`}
+          </ListItemText>
+        </MenuItem>
+      ),
+      (
+        <MenuItem
+          key={'custom-action-2'}
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+          onClick={() => userInvitationConsumeDialogRef.current.open({ item: params.row })}
+        >
+          <ListItemIcon>
+            <PasswordIcon fontSize={'small'} />
+          </ListItemIcon>
+          <ListItemText>
+            {t`Consume invitation (advanced)`}
+          </ListItemText>
+        </MenuItem>
+      ),
+    ];
+  }, [t]);
+
+  const tableColumns = useMemo((): TableColumn<CommonDbUserInvitation>[] => {
+    return [
+      TableUtil.createTextColumn<CommonDbUserInvitation>({ id: 'key', name: t`Key` }),
+      TableUtil.createOptionsColumn<CommonDbUserInvitation>({ id: 'organization_id', name: t`Organization`, options: organizationOptions }),
+      TableUtil.createOptionsColumn<CommonDbUserInvitation>({ id: 'invited_by_user_id', name: t`Invited by user`, options: userOptionsQuery.options }),
+      TableUtil.createOptionsColumn<CommonDbUserInvitation>({ id: 'roles', name: t`Roles`, options: roleOptions }),
+      TableUtil.createTextColumn<CommonDbUserInvitation>({ id: 'description', name: t`Description` }),
+      TableUtil.createDateColumn<CommonDbUserInvitation>({ id: 'expires_at', name: t`Expires` }),
+    ];
+  }, [t, organizationOptions, userOptionsQuery.options, roleOptions]);
+
+  return (
+    <>
+      <CrudPage<FormFields, CommonDbUserInvitation>
+        createItemButtonText={t`Invite user`}
+        createItemDialogTitle={t`Create new user invitation`}
+        createOne={createOne}
+        crudCommandType={CommonDbCommandName.UserInvitationCrudCommand}
+        customOnRowClick={customOnRowClick}
+        defaultSortByField={'key'}
+        defaultSortDirection={'asc'}
+        deleteOne={deleteOne}
+        extraActionsFactory={extraActionsFactory}
+        fetchAll={fetchAll}
+        formFieldDefinitions={formFieldDefinitions}
+        getName={getName}
+        itemName={t`User invitation`}
+        loadables={loadables}
+        onCreateSuccess={onCreateSuccess}
+        resourceQueryKeyBase={COMMON_QUERY_KEY.USER_INVITATIONS}
+        schema={schema}
+        tableColumns={tableColumns}
+        testIdAttributes={TestIdUtil.createAttributes('UserInvitationsAdminPage')}
+        title={t`User invitations`}
+      />
+      <UserInvitationShareDialog ref={userInvitationShareDialogRef} />
+      <UserInvitationConsumeDialog ref={userInvitationConsumeDialogRef} />
+    </>
+  );
+};

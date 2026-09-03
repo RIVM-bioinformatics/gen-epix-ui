@@ -20,7 +20,7 @@ The platform is currently in beta and is not yet intended for production use. Fe
 - **Models** — generic data models, test ID types
 - **Utilities** — `DataUtil`, `DownloadUtil`, `HmrUtil`, `NumberUtil`, `ObjectUtil`, `StringUtil`, `TestIdUtil`, `ValidationUtil`
 
-This package is a dependency of `@gen-epix/ui` and other Gen-EpiX packages. It has no dependency on MUI, React Router, TanStack Query, or any other application-level library.
+This package is a dependency of `@gen-epix/ui-client-common` and other Gen-EpiX packages. It has no dependency on MUI, React Router, TanStack Query, or any other application-level library.
 
 ## Installation
 

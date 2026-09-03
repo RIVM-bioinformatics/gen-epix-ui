@@ -24,7 +24,7 @@ The package exposes the following top-level API groups:
 - `SeqDbSeqApi`
 - `SeqDbSystemApi`
 
-It is consumed by `@gen-epix/ui-seqdb`, but can also be used independently in any application that needs direct access to the Sequence DB endpoints.
+It is consumed by `@gen-epix/ui-client-seqdb`, but can also be used independently in any application that needs direct access to the Sequence DB endpoints.
 
 ## Installation
 

@@ -25,7 +25,7 @@ The package exposes the following top-level API groups:
 - `CaseDbOrganizationApi`
 - `CaseDbSystemApi`
 
-It is consumed by `@gen-epix/ui-casedb`, but can also be used independently in any application that needs direct access to the Case DB endpoints.
+It is consumed by `@gen-epix/ui-client-casedb`, but can also be used independently in any application that needs direct access to the Case DB endpoints.
 
 ## Installation
 

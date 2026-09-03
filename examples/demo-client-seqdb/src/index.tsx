@@ -1,10 +1,10 @@
 import { createRoot } from 'react-dom/client';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
-import { I18nService } from '@gen-epix/ui/classes/services/I18nService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import type { SeqDbConfig } from '@gen-epix/ui-seqdb/models/config';
-import { SeqDbApp } from '@gen-epix/ui-seqdb/components/app/SeqDbApp';
-import { setupSeqDb } from '@gen-epix/ui-seqdb/setup/setup';
+import type { SeqDbConfig } from '@gen-epix/ui-client-seqdb/models/config';
+import { SeqDbApp } from '@gen-epix/ui-client-seqdb/components/app/SeqDbApp';
+import { setupSeqDb } from '@gen-epix/ui-client-seqdb/setup/setup';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 
@@ -19,18 +19,12 @@ const init = async () => {
       {
         bundles: [
           '/locale/en.json',
-          '/locale/ui/en.json',
-          '/locale/ui-form/en.json',
-          '/locale/ui-seqdb/en.json',
         ],
         code: 'en',
       },
       {
         bundles: [
           '/locale/nl.json',
-          '/locale/ui/nl.json',
-          '/locale/ui-form/nl.json',
-          '/locale/ui-seqdb/nl.json',
         ],
         code: 'nl',
       },

@@ -41,9 +41,9 @@ const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<str
   // index.ts-based entries (classes, utils): key = component directory
   globSync([
     join(srcDir, 'classes', '**', 'index.ts'),
-    join(srcDir, 'classes', '**', 'index.ts'),
     join(srcDir, 'components', '**', 'index.ts'),
     join(srcDir, 'constants', '**', 'index.ts'),
+    join(srcDir, 'context', '**', 'index.ts'),
     join(srcDir, 'dataHooks', '**', 'index.ts'),
     join(srcDir, 'hoc', '**', 'index.ts'),
     join(srcDir, 'hooks', '**', 'index.ts'),

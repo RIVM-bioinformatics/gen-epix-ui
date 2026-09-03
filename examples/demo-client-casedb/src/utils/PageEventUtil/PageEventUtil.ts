@@ -1,4 +1,4 @@
-import { PageEventBusService } from '@gen-epix/ui/classes/services/PageEventBusService';
+import { PageEventBusService } from '@gen-epix/ui-client-common/classes/services/PageEventBusService';
 
 export class PageEventUtil {
   public static setupPageEventReporting(): void {

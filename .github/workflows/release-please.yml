@@ -14,20 +14,22 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
-      ui-release-created: ${{ steps.release.outputs['packages/ui--release_created'] }}
-      ui-tag-name: ${{ steps.release.outputs['packages/ui--tag_name'] }}
+      ui-client-common-release-created: ${{ steps.release.outputs['packages/ui-client-common--release_created'] }}
+      ui-client-common-tag-name: ${{ steps.release.outputs['packages/ui-client-common--tag_name'] }}
       ui-core-release-created: ${{ steps.release.outputs['packages/ui-core--release_created'] }}
       ui-core-tag-name: ${{ steps.release.outputs['packages/ui-core--tag_name'] }}
-      ui-casedb-release-created: ${{ steps.release.outputs['packages/ui-casedb--release_created'] }}
-      ui-casedb-tag-name: ${{ steps.release.outputs['packages/ui-casedb--tag_name'] }}
-      ui-omopdb-release-created: ${{ steps.release.outputs['packages/ui-omopdb--release_created'] }}
-      ui-omopdb-tag-name: ${{ steps.release.outputs['packages/ui-omopdb--tag_name'] }}
-      ui-seqdb-release-created: ${{ steps.release.outputs['packages/ui-seqdb--release_created'] }}
-      ui-seqdb-tag-name: ${{ steps.release.outputs['packages/ui-seqdb--tag_name'] }}
+      ui-core-components-release-created: ${{ steps.release.outputs['packages/ui-core-components--release_created'] }}
+      ui-core-components-tag-name: ${{ steps.release.outputs['packages/ui-core-components--tag_name'] }}
+      ui-client-casedb-release-created: ${{ steps.release.outputs['packages/ui-client-casedb--release_created'] }}
+      ui-client-casedb-tag-name: ${{ steps.release.outputs['packages/ui-client-casedb--tag_name'] }}
+      ui-client-omopdb-release-created: ${{ steps.release.outputs['packages/ui-client-omopdb--release_created'] }}
+      ui-client-omopdb-tag-name: ${{ steps.release.outputs['packages/ui-client-omopdb--tag_name'] }}
+      ui-client-seqdb-release-created: ${{ steps.release.outputs['packages/ui-client-seqdb--release_created'] }}
+      ui-client-seqdb-tag-name: ${{ steps.release.outputs['packages/ui-client-seqdb--tag_name'] }}
       ui-phylogenetic-tree-release-created: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--release_created'] }}
       ui-phylogenetic-tree-tag-name: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--tag_name'] }}
-      ui-form-release-created: ${{ steps.release.outputs['packages/ui-form--release_created'] }}
-      ui-form-tag-name: ${{ steps.release.outputs['packages/ui-form--tag_name'] }}
+      ui-core-form-release-created: ${{ steps.release.outputs['packages/ui-core-form--release_created'] }}
+      ui-core-form-tag-name: ${{ steps.release.outputs['packages/ui-core-form--tag_name'] }}
       api-casedb-release-created: ${{ steps.release.outputs['packages/api-casedb--release_created'] }}
       api-casedb-tag-name: ${{ steps.release.outputs['packages/api-casedb--tag_name'] }}
       api-commondb-release-created: ${{ steps.release.outputs['packages/api-commondb--release_created'] }}
@@ -44,9 +46,9 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-  publish-ui-casedb:
+  publish-ui-client-casedb:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-casedb-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-client-casedb-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -64,22 +66,22 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-casedb run build
+        run: pnpm --filter @gen-epix/ui-client-casedb run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-casedb publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-client-casedb publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-casedb.zip packages/ui-casedb/dist
+        run: zip -r gen-epix-ui-client-casedb.zip packages/ui-client-casedb/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-casedb-tag-name }} gen-epix-ui-casedb.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-casedb-tag-name }} gen-epix-ui-client-casedb.zip
 
-  publish-ui-omopdb:
+  publish-ui-client-omopdb:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-omopdb-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-client-omopdb-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -97,22 +99,22 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-omopdb run build
+        run: pnpm --filter @gen-epix/ui-client-omopdb run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-omopdb publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-client-omopdb publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-omopdb.zip packages/ui-omopdb/dist
+        run: zip -r gen-epix-ui-client-omopdb.zip packages/ui-client-omopdb/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-omopdb-tag-name }} gen-epix-ui-omopdb.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-omopdb-tag-name }} gen-epix-ui-client-omopdb.zip
 
-  publish-ui-seqdb:
+  publish-ui-client-seqdb:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-seqdb-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-client-seqdb-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -130,22 +132,22 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-seqdb run build
+        run: pnpm --filter @gen-epix/ui-client-seqdb run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-seqdb publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-client-seqdb publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-seqdb.zip packages/ui-seqdb/dist
+        run: zip -r gen-epix-ui-client-seqdb.zip packages/ui-client-seqdb/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-seqdb-tag-name }} gen-epix-ui-seqdb.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-seqdb-tag-name }} gen-epix-ui-client-seqdb.zip
 
-  publish-ui:
+  publish-ui-client-common:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-client-common-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -163,18 +165,18 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui run build
+        run: pnpm --filter @gen-epix/ui-client-common run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-client-common publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui.zip packages/ui/dist
+        run: zip -r gen-epix-ui-client-common.zip packages/ui-client-common/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-tag-name }} gen-epix-ui.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-common-tag-name }} gen-epix-ui-client-common.zip
 
   publish-ui-phylogenetic-tree:
     needs: release-please
@@ -241,6 +243,39 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ needs.release-please.outputs.ui-core-tag-name }} gen-epix-ui-core.zip
+
+  publish-ui-core-components:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.ui-core-components-release-created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node-env
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Build
+        run: pnpm --filter @gen-epix/ui-core-components run build
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-core-components publish --access=public --no-git-checks
+
+      - name: Zip dist directory
+        run: zip -r gen-epix-ui-core-components.zip packages/ui-core-components/dist
+
+      - name: Upload release artifact to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ needs.release-please.outputs.ui-core-components-tag-name }} gen-epix-ui-core-components.zip
 
   publish-api-casedb:
     needs: release-please
@@ -374,9 +409,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ needs.release-please.outputs.api-omopdb-tag-name }} gen-epix-api-omopdb.zip
 
-  publish-ui-form:
+  publish-ui-core-form:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-form-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-core-form-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -394,15 +429,15 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-form run build
+        run: pnpm --filter @gen-epix/ui-core-form run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-form publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-core-form publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-form.zip packages/ui-form/dist
+        run: zip -r gen-epix-ui-core-form.zip packages/ui-core-form/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-form-tag-name }} gen-epix-ui-form.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-core-form-tag-name }} gen-epix-ui-core-form.zip

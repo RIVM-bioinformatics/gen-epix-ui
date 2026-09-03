@@ -5,8 +5,8 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
-import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 
 export const HomePageIntroduction = () => {
   const [t] = useTranslation();

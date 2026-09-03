@@ -1,0 +1,172 @@
+import { produce } from 'immer';
+import { useStore } from 'zustand';
+import { useShallow } from 'zustand/shallow';
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
+import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
+import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import {
+  useCallback,
+  useMemo,
+} from 'react';
+import { useTranslation } from 'react-i18next';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+
+import type { HasCellDataFn } from '../../models/table';
+import { useTableStoreContext } from '../../stores/tableStore';
+import { TableUtil } from '../../utils/TableUtil';
+
+
+export type UseColumnsMenuProps<TRowData, TDataContext = null> = {
+  readonly hasCellData?: HasCellDataFn<TRowData, TDataContext>;
+};
+
+export const useColumnsMenu = <TRowData, TDataContext = null>({ hasCellData }: UseColumnsMenuProps<TRowData, TDataContext>): MenuItemData => {
+  const tableStore = useTableStoreContext<TRowData, TDataContext>();
+  const emitTableEvent = useStore(tableStore, useShallow((state) => state.emitEvent));
+  const tableColumns = useStore(tableStore, useShallow((state) => state.columns));
+  const dataContext = useStore(tableStore, useShallow((state) => state.dataContext));
+  const visibleColumnIds = useStore(tableStore, useShallow((state) => state.getCurrentColumnVisualSettings().filter(c => c.isVisible).map(c => c.id)));
+  const columnDimensions = useStore(tableStore, useShallow((state) => state.columnDimensions));
+  const isCondensed = useStore(tableStore, useShallow((state) => state.isCondensed));
+  const sortedData = useStore(tableStore, useShallow((state) => state.sortedData));
+  const { t } = useTranslation();
+
+  const isCondensingSupported = useMemo(() => {
+    return tableColumns.some(c => c.cellColorGetter);
+  }, [tableColumns]);
+
+  const onColumnsEditorMenuItemClick = useCallback(() => {
+    emitTableEvent('openColumnsEditorDialog', hasCellData);
+  }, [emitTableEvent, hasCellData]);
+
+  const toggleItem = useCallback((columnId: string): void => {
+    const newVisibleColumnIds = produce(visibleColumnIds, (draft) => {
+      if (draft.includes(columnId)) {
+        return draft.filter(c => c !== columnId);
+      }
+      draft.push(columnId);
+      return draft;
+    });
+    emitTableEvent('columnVisibilityChange', newVisibleColumnIds);
+  }, [emitTableEvent, visibleColumnIds]);
+
+  const toggleDimension = useCallback((dimensionColumnIds: string[]): void => {
+    const areAllVisible = dimensionColumnIds.every(columnId => visibleColumnIds.includes(columnId));
+    const newVisibleColumnIds = produce(visibleColumnIds, (draft) => {
+      if (areAllVisible) {
+        return draft.filter(c => !dimensionColumnIds.includes(c));
+      }
+      dimensionColumnIds.forEach((columnId) => {
+        if (!draft.includes(columnId)) {
+          draft.push(columnId);
+        }
+      });
+      return draft;
+    });
+    emitTableEvent('columnVisibilityChange', newVisibleColumnIds);
+  }, [emitTableEvent, visibleColumnIds]);
+
+  const onHideColumnsWithoutDataClick = useCallback(() => {
+    emitTableEvent('columnVisibilityChange', TableUtil.getColumnIdsWithData<TRowData, TDataContext>({
+      dataContext,
+      hasCellData,
+      sortedData,
+      tableColumns,
+      visibleColumnIds,
+    }));
+
+  }, [emitTableEvent, hasCellData, sortedData, tableColumns, visibleColumnIds, dataContext]);
+
+  const onIsCondensedMenuItemClick = useCallback(() => {
+    emitTableEvent('condensedChange', !isCondensed);
+  }, [emitTableEvent, isCondensed]);
+
+  const menuItemData: MenuItemData = useMemo(() => {
+    const items: MenuItemData[] = [
+      isCondensingSupported ? {
+        autoCloseDisabled: true,
+        callback: () => onIsCondensedMenuItemClick(),
+        checked: isCondensed ? 'true' : 'false',
+        divider: true,
+        label: t`Condensed`,
+        rightIcon: isCondensed ? <ToggleOnOutlinedIcon /> : <ToggleOffOutlinedIcon />,
+      } : undefined,
+      {
+        callback: () => onColumnsEditorMenuItemClick(),
+        divider: true,
+        label: t`Change order / visibility`,
+      },
+      {
+        autoCloseDisabled: true,
+        callback: () => emitTableEvent('reset'),
+        label: t`Reset`,
+      },
+      {
+        autoCloseDisabled: true,
+        callback: () => {
+          emitTableEvent('columnVisibilityChange', [...tableColumns.map(c => c.id)]);
+        },
+        label: t`Show all`,
+      },
+      {
+        autoCloseDisabled: true,
+        callback: () => {
+          emitTableEvent('columnVisibilityChange', [...tableColumns.filter(c => c.frozen).map(c => c.id)]);
+        },
+        label: t`Hide all`,
+      },
+      {
+        autoCloseDisabled: true,
+        callback: () => onHideColumnsWithoutDataClick(),
+        divider: true,
+        label: t`Hide columns without data`,
+      },
+    ].filter(x => x) as MenuItemData[];
+
+    if (columnDimensions) {
+      columnDimensions.forEach((columnDimension) => {
+        const areAllVisible = columnDimension.columnIds.every(columnId => visibleColumnIds.includes(columnId));
+        const areSomeVisible = columnDimension.columnIds.some(columnId => visibleColumnIds.includes(columnId));
+        items.push({
+          autoCloseDisabled: true,
+          callback: () => toggleDimension(columnDimension.columnIds),
+          // eslint-disable-next-line no-nested-ternary
+          checked: areAllVisible ? 'true' : areSomeVisible ? 'mixed' : 'false',
+          items: columnDimension.columnIds.map((columnId) => {
+            const checked = visibleColumnIds.includes(columnId);
+            return {
+              autoCloseDisabled: true,
+              callback: () => toggleItem(columnId),
+              checked: checked ? 'true' : 'false',
+              label: tableColumns.find(c => c.id === columnId)?.headerName ?? '',
+              rightIcon: checked ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
+            };
+          }),
+          label: columnDimension.label,
+          // eslint-disable-next-line no-nested-ternary
+          rightIcon: areAllVisible ? <CheckBoxOutlinedIcon /> : areSomeVisible ? <IndeterminateCheckBoxIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
+        });
+      });
+    } else {
+      tableColumns.filter(c => !c.frozen).forEach((column) => {
+        const checked = visibleColumnIds.includes(column.id);
+        items.push({
+          autoCloseDisabled: true,
+          callback: () => toggleItem(column.id),
+          checked: checked ? 'true' : 'false',
+          label: column.headerName,
+          rightIcon: checked ? <CheckBoxOutlinedIcon /> : <CheckBoxOutlineBlankOutlinedIcon />,
+        });
+      });
+    }
+
+    return {
+      items,
+      label: t`Columns`,
+    };
+  }, [isCondensed, isCondensingSupported, t, columnDimensions, onIsCondensedMenuItemClick, onColumnsEditorMenuItemClick, emitTableEvent, tableColumns, onHideColumnsWithoutDataClick, visibleColumnIds, toggleDimension, toggleItem]);
+
+  return menuItemData;
+};

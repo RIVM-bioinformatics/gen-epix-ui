@@ -29,6 +29,7 @@ const indexBasedKeys = globSync([
   join(srcDir, 'classes', '**', 'index.ts'),
   join(srcDir, 'components', '**', 'index.ts'),
   join(srcDir, 'constants', '**', 'index.ts'),
+  join(srcDir, 'context', '**', 'index.ts'),
   join(srcDir, 'dataHooks', '**', 'index.ts'),
   join(srcDir, 'hoc', '**', 'index.ts'),
   join(srcDir, 'hooks', '**', 'index.ts'),
@@ -48,7 +49,7 @@ const flatKeys = globSync([join(srcDir, 'models', '*.ts'), join(srcDir, 'constan
 const flatKeySet = new Set(flatKeys);
 const componentKeys = [...indexBasedKeys, ...flatKeys].sort();
 
-// Check for a types declaration file matching the package name (e.g., src/@types/ui.d.ts for @gen-epix/ui)
+// Check for a types declaration file matching the package name (e.g., src/@types/ui-client-common.d.ts for @gen-epix/ui-client-common)
 const pkgBaseName = basename(pkg.name.replace(/^@[^/]+\//, ''));
 const typesDeclarationFile = join(srcDir, '@types', `${pkgBaseName}.d.ts`);
 const hasTypesEntry = existsSync(typesDeclarationFile);
