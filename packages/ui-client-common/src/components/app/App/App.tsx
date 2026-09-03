@@ -6,6 +6,9 @@ import {
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { RouterProvider } from 'react-router-dom';
+import { useMemo } from 'react';
+import { UiCoreComponentsContextProvider } from '@gen-epix/ui-core-components/context/uiCoreComponentsConfigContext';
+import type { UiCoreComponentsConfig } from '@gen-epix/ui-core-components/context/uiCoreComponentsConfigContext';
 
 import { BackendVersionService } from '../../../classes/services/BackendVersionService';
 import { ConfigService } from '../../../classes/services/ConfigService';
@@ -20,6 +23,17 @@ import { RouterService } from '../../../classes/services/RouterService';
 
 export const App = () => {
   const { config } = ConfigService.getInstance();
+
+  const uiCoreComponentsConfig = useMemo<UiCoreComponentsConfig>(() => {
+    const { DEFAULT_CIRCULAR_PROGRESS_SIZE, DEFAULT_TAKING_LONGER_TIMEOUT_MS } = config.spinner;
+
+    return {
+      spinner: {
+        defaultCircularProgressSize: DEFAULT_CIRCULAR_PROGRESS_SIZE,
+        defaultTakingLongerTimeoutMs: DEFAULT_TAKING_LONGER_TIMEOUT_MS,
+      },
+    };
+  }, [config.spinner]);
 
   const authenticationService = AuthenticationService.getInstance();
   const logService = LogService.getInstance();
@@ -50,15 +64,17 @@ export const App = () => {
   const emotionCacheService = EmotionCacheService.getInstance();
 
   return (
-    <QueryClientProvider client={queryQueryManager.queryClient}>
-      <CacheProvider value={emotionCacheService.emotionCache}>
-        <ThemeProvider theme={ConfigService.getInstance().config.theme}>
-          <CssBaseline />
-          <ErrorBoundary FallbackComponent={ErrorPage}>
-            <RouterProvider router={routerService.router} />
-          </ErrorBoundary>
-        </ThemeProvider>
-      </CacheProvider>
-    </QueryClientProvider>
+    <UiCoreComponentsContextProvider config={uiCoreComponentsConfig}>
+      <QueryClientProvider client={queryQueryManager.queryClient}>
+        <CacheProvider value={emotionCacheService.emotionCache}>
+          <ThemeProvider theme={ConfigService.getInstance().config.theme}>
+            <CssBaseline />
+            <ErrorBoundary FallbackComponent={ErrorPage}>
+              <RouterProvider router={routerService.router} />
+            </ErrorBoundary>
+          </ThemeProvider>
+        </CacheProvider>
+      </QueryClientProvider>
+    </UiCoreComponentsContextProvider>
   );
 };

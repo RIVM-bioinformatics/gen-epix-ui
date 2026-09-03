@@ -33,11 +33,11 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
   useEffect(() => {
     const handle = setTimeout(() => {
       setIsTakingLonger(true);
-    }, takingLongerTimeoutMs ?? uiCoreComponentsConfig.defaultTakingLongerTimeoutMs);
+    }, takingLongerTimeoutMs ?? uiCoreComponentsConfig.spinner.defaultTakingLongerTimeoutMs);
     return () => {
       clearTimeout(handle);
     };
-  }, [takingLongerTimeoutMs, uiCoreComponentsConfig.defaultTakingLongerTimeoutMs]);
+  }, [takingLongerTimeoutMs, uiCoreComponentsConfig.spinner.defaultTakingLongerTimeoutMs]);
 
   return (
     <Box
@@ -63,7 +63,7 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
       >
         <CircularProgress
           color={color}
-          size={size ?? uiCoreComponentsConfig.defaultCircularProgressSize}
+          size={size ?? uiCoreComponentsConfig.spinner.defaultCircularProgressSize}
         />
       </Box>
       <Box

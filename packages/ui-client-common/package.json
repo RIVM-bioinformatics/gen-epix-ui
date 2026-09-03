@@ -226,6 +226,10 @@
         "types": "./dist/constants/query.d.ts",
         "import": "./dist/constants/query.js"
       },
+      "./context/uiClientCommonConfigContext": {
+        "types": "./dist/context/uiClientCommonConfigContext/index.d.ts",
+        "import": "./dist/context/uiClientCommonConfigContext/index.js"
+      },
       "./dataHooks/useIdentifierIssuerOwnOrganizationQuery": {
         "types": "./dist/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.d.ts",
         "import": "./dist/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.js"
@@ -685,6 +689,10 @@
       "types": "./src/constants/query.ts",
       "import": "./src/constants/query.ts"
     },
+    "./context/uiClientCommonConfigContext": {
+      "types": "./src/context/uiClientCommonConfigContext/index.ts",
+      "import": "./src/context/uiClientCommonConfigContext/index.ts"
+    },
     "./dataHooks/useIdentifierIssuerOwnOrganizationQuery": {
       "types": "./src/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.ts",
       "import": "./src/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.ts"
@@ -1010,7 +1018,7 @@
     "@mui/system": "9.4.0",
     "@mui/utils": "9.4.0",
     "@types/lodash": "4.17.25",
-    "@types/node": "26.4.0",
+    "@types/node": "26.4.1",
     "@types/react": "19.2.18",
     "@vitejs/plugin-react": "6.1.1",
     "@vitest/browser-playwright": "4.1.11",
