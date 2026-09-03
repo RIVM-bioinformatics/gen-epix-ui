@@ -7,7 +7,7 @@ import {
   vi,
 } from 'vitest';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import type { FieldValues } from 'react-hook-form';
 
 import {

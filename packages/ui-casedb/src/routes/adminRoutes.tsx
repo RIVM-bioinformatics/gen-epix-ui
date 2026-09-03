@@ -4,10 +4,10 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import { ADMIN_PAGE_CATEGORY } from '@gen-epix/ui/models/admin';
-import { createAdminRoutes as createCommonAdminRoutes } from '@gen-epix/ui/routes';
-import { RouterErrorPage } from '@gen-epix/ui/pages/RouterErrorPage';
-import type { MyNonIndexRouteObject } from '@gen-epix/ui/models/reactRouter';
+import { ADMIN_PAGE_CATEGORY } from '@gen-epix/ui-client-common/models/admin';
+import { createAdminRoutes as createCommonAdminRoutes } from '@gen-epix/ui-client-common/routes';
+import { RouterErrorPage } from '@gen-epix/ui-client-common/pages/RouterErrorPage';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/reactRouter';
 import { t } from 'i18next';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 

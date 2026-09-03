@@ -15,18 +15,18 @@ import {
 import type {
   FilterDimension,
   Filters,
-} from '@gen-epix/ui/models/filter';
+} from '@gen-epix/ui-client-common/models/filter';
 import {
   DateFilter,
   GeoFilter,
   MultiSelectFilter,
   NumberRangeFilter,
   TextFilter,
-} from '@gen-epix/ui/classes/filters';
+} from '@gen-epix/ui-client-common/classes/filters';
 import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
-} from '@gen-epix/ui/classes/abstracts/FilterAbstract';
+} from '@gen-epix/ui-client-common/classes/abstracts/FilterAbstract';
 import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 

@@ -34,11 +34,11 @@ import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
-import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { useCreateMutation } from '@gen-epix/ui/hooks/useCreateMutation';
-import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
+import { LoadableUtil } from '@gen-epix/ui-client-common/utils/LoadableUtil';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { useCreateMutation } from '@gen-epix/ui-client-common/hooks/useCreateMutation';
+import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';

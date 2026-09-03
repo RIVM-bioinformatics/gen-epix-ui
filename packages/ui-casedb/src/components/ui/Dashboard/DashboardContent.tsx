@@ -17,17 +17,17 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import InfoIcon from '@mui/icons-material/Info';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui/components/epi/EpiContactDetailsDialog';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
-import { EpiContactDetailsDialog } from '@gen-epix/ui/components/epi/EpiContactDetailsDialog';
+import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui-client-common/components/epi/EpiContactDetailsDialog';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { EpiContactDetailsDialog } from '@gen-epix/ui-client-common/components/epi/EpiContactDetailsDialog';
 import {
   SidebarMenu,
   SidebarMenuItem,
-} from '@gen-epix/ui/components/ui/Sidebar';
+} from '@gen-epix/ui-client-common/components/ui/Sidebar';
 import {
   TableFiltersSidebarItem,
   TableFiltersSidebarItemIcon,
-} from '@gen-epix/ui/components/ui/Table';
+} from '@gen-epix/ui-client-common/components/ui/Table';
 import { KeyboardShortcutService } from '@gen-epix/ui-core/classes/services/KeyboardShortcutService';
 
 import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';

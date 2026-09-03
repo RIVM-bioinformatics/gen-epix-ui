@@ -103,7 +103,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    // All peer dependencies of @gen-epix/ui should be deduplicated to the local node_modules version
+    // All peer dependencies of @gen-epix/ui-client-common should be deduplicated to the local node_modules version
     // This is to prevent issues with multiple versions of the same package (replaces explicit path aliases
     // which caused rolldown CJS `require` errors in Vite 8)
     dedupe: [

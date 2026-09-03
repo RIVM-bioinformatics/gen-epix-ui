@@ -38,12 +38,12 @@ importers:
       '@gen-epix/api-casedb':
         specifier: workspace:^
         version: link:../../packages/api-casedb
-      '@gen-epix/ui':
-        specifier: workspace:^
-        version: link:../../packages/ui
       '@gen-epix/ui-casedb':
         specifier: workspace:^
         version: link:../../packages/ui-casedb
+      '@gen-epix/ui-client-common':
+        specifier: workspace:^
+        version: link:../../packages/ui-client-common
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../../packages/ui-core
@@ -159,9 +159,9 @@ importers:
       '@gen-epix/api-omopdb':
         specifier: workspace:^
         version: link:../../packages/api-omopdb
-      '@gen-epix/ui':
+      '@gen-epix/ui-client-common':
         specifier: workspace:^
-        version: link:../../packages/ui
+        version: link:../../packages/ui-client-common
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../../packages/ui-core
@@ -277,9 +277,9 @@ importers:
       '@gen-epix/api-seqdb':
         specifier: workspace:^
         version: link:../../packages/api-seqdb
-      '@gen-epix/ui':
+      '@gen-epix/ui-client-common':
         specifier: workspace:^
-        version: link:../../packages/ui
+        version: link:../../packages/ui-client-common
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../../packages/ui-core
@@ -519,7 +519,200 @@ importers:
         specifier: 4.1.1
         version: 4.1.1(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
 
-  packages/ui:
+  packages/ui-casedb:
+    dependencies:
+      '@hookform/resolvers':
+        specifier: 5.9.1
+        version: 5.9.1(@sinclair/typebox@0.34.49)(@standard-schema/spec@1.1.0)(ajv@8.20.0)(react-hook-form@7.87.0(react@19.2.8))(yup@1.7.1)(zod@4.4.3)
+      '@tanstack/react-query':
+        specifier: 5.102.8
+        version: 5.102.8(react@19.2.8)
+      colorjs.io:
+        specifier: 0.7.1
+        version: 0.7.1
+      csv:
+        specifier: 6.6.3
+        version: 6.6.3
+      date-fns:
+        specifier: 4.4.0
+        version: 4.4.0
+      decimal.js:
+        specifier: 10.6.0
+        version: 10.6.0
+      echarts:
+        specifier: 6.1.0
+        version: 6.1.0
+      echarts-for-react:
+        specifier: 3.0.6
+        version: 3.0.6(echarts@6.1.0)(react@19.2.8)
+      fuse.js:
+        specifier: 7.5.0
+        version: 7.5.0
+      immer:
+        specifier: 11.1.18
+        version: 11.1.18
+      lodash:
+        specifier: 4.18.1
+        version: 4.18.1
+      react-error-boundary:
+        specifier: 6.1.4
+        version: 6.1.4(@types/react@19.2.18)(react@19.2.8)
+      react-hook-form:
+        specifier: 7.87.0
+        version: 7.87.0(react@19.2.8)
+      react-resizable-panels:
+        specifier: 4.12.3
+        version: 4.12.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      react-router:
+        specifier: 8.3.1
+        version: 8.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      react-router-dom:
+        specifier: 7.18.3
+        version: 7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      react-virtuoso:
+        specifier: 4.18.12
+        version: 4.18.12(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      read-excel-file:
+        specifier: 9.3.10
+        version: 9.3.10
+      use-debounce:
+        specifier: 10.1.1
+        version: 10.1.1(react@19.2.8)
+      write-excel-file:
+        specifier: 4.1.1
+        version: 4.1.1
+      zustand:
+        specifier: 5.0.15
+        version: 5.0.15(@types/react@19.2.18)(immer@11.1.18)(react@19.2.8)(use-sync-external-store@1.6.0(react@19.2.8))
+    devDependencies:
+      '@emotion/cache':
+        specifier: 11.14.0
+        version: 11.14.0
+      '@emotion/react':
+        specifier: 11.14.0
+        version: 11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2)
+      '@emotion/styled':
+        specifier: 11.14.1
+        version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2)
+      '@gen-epix/api-casedb':
+        specifier: workspace:^
+        version: link:../api-casedb
+      '@gen-epix/api-commondb':
+        specifier: workspace:^
+        version: link:../api-commondb
+      '@gen-epix/eslint-config':
+        specifier: 0.5.0
+        version: 0.5.0(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.69.0(eslint@10.9.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(eslint@10.9.1(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.9.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3)(vitest@4.1.11)
+      '@gen-epix/translation-util':
+        specifier: 0.2.0
+        version: 0.2.0
+      '@gen-epix/ui-client-common':
+        specifier: workspace:^
+        version: link:../ui-client-common
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../ui-core
+      '@gen-epix/ui-core-components':
+        specifier: workspace:^
+        version: link:../ui-core-components
+      '@gen-epix/ui-core-form':
+        specifier: workspace:^
+        version: link:../ui-core-form
+      '@gen-epix/ui-phylogenetic-tree':
+        specifier: workspace:^
+        version: link:../ui-phylogenetic-tree
+      '@microsoft/api-extractor':
+        specifier: 7.59.0
+        version: 7.59.0(@types/node@26.4.0)
+      '@mui/icons-material':
+        specifier: 9.4.0
+        version: 9.4.0(@mui/material@9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react@19.2.18)(react@19.2.8)
+      '@mui/material':
+        specifier: 9.4.0
+        version: 9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@mui/styled-engine':
+        specifier: 9.4.0
+        version: 9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(react@19.2.8)
+      '@mui/system':
+        specifier: 9.4.0
+        version: 9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)
+      '@mui/utils':
+        specifier: 9.4.0
+        version: 9.4.0(@types/react@19.2.18)(react@19.2.8)
+      '@mui/x-date-pickers':
+        specifier: 9.12.0
+        version: 9.12.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@mui/material@9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@mui/system@9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8))(@types/react@19.2.18)(date-fns@4.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@types/lodash':
+        specifier: 4.17.25
+        version: 4.17.25
+      '@types/node':
+        specifier: 26.4.0
+        version: 26.4.0
+      '@types/react':
+        specifier: 19.2.18
+        version: 19.2.18
+      '@vitejs/plugin-react':
+        specifier: 6.1.1
+        version: 6.1.1(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
+      '@vitest/browser-playwright':
+        specifier: 4.1.11
+        version: 4.1.11(playwright@1.62.1)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))(vitest@4.1.11)
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
+      axios:
+        specifier: 1.20.0
+        version: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
+      eslint:
+        specifier: 10.9.1
+        version: 10.9.1(supports-color@10.2.2)
+      i18next:
+        specifier: 26.4.1
+        version: 26.4.1(typescript@6.0.3)
+      jsdom:
+        specifier: 30.0.1
+        version: 30.0.1
+      playwright:
+        specifier: 1.62.1
+        version: 1.62.1
+      react:
+        specifier: 19.2.8
+        version: 19.2.8
+      react-dom:
+        specifier: 19.2.8
+        version: 19.2.8(react@19.2.8)
+      react-i18next:
+        specifier: 17.0.13
+        version: 17.0.13(i18next@26.4.1(typescript@6.0.3))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
+      vite:
+        specifier: 8.2.2
+        version: 8.2.2(@types/node@26.4.0)(yaml@2.9.0)
+      vite-plugin-dts:
+        specifier: 5.1.0
+        version: 5.1.0(@microsoft/api-extractor@7.59.0(@types/node@26.4.0))(rolldown@1.2.6)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
+      vite-plugin-lib-inject-css:
+        specifier: 2.2.2
+        version: 2.2.2(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
+      vite-plugin-static-copy:
+        specifier: 4.1.1
+        version: 4.1.1(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
+      vite-plugin-svgr:
+        specifier: 5.2.0
+        version: 5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
+      vitest-browser-react:
+        specifier: 2.2.0
+        version: 2.2.0(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(vitest@4.1.11)
+      yup:
+        specifier: 1.7.1
+        version: 1.7.1
+
+  packages/ui-client-common:
     dependencies:
       '@hookform/resolvers':
         specifier: 5.9.1
@@ -630,199 +823,6 @@ importers:
       '@mui/utils':
         specifier: 9.4.0
         version: 9.4.0(@types/react@19.2.18)(react@19.2.8)
-      '@types/lodash':
-        specifier: 4.17.25
-        version: 4.17.25
-      '@types/node':
-        specifier: 26.4.0
-        version: 26.4.0
-      '@types/react':
-        specifier: 19.2.18
-        version: 19.2.18
-      '@vitejs/plugin-react':
-        specifier: 6.1.1
-        version: 6.1.1(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
-      '@vitest/browser-playwright':
-        specifier: 4.1.11
-        version: 4.1.11(playwright@1.62.1)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))(vitest@4.1.11)
-      '@vitest/coverage-v8':
-        specifier: 4.1.11
-        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
-      axios:
-        specifier: 1.20.0
-        version: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
-      eslint:
-        specifier: 10.9.1
-        version: 10.9.1(supports-color@10.2.2)
-      i18next:
-        specifier: 26.4.1
-        version: 26.4.1(typescript@6.0.3)
-      jsdom:
-        specifier: 30.0.1
-        version: 30.0.1
-      playwright:
-        specifier: 1.62.1
-        version: 1.62.1
-      react:
-        specifier: 19.2.8
-        version: 19.2.8
-      react-dom:
-        specifier: 19.2.8
-        version: 19.2.8(react@19.2.8)
-      react-i18next:
-        specifier: 17.0.13
-        version: 17.0.13(i18next@26.4.1(typescript@6.0.3))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)
-      typescript:
-        specifier: 6.0.3
-        version: 6.0.3
-      vite:
-        specifier: 8.2.2
-        version: 8.2.2(@types/node@26.4.0)(yaml@2.9.0)
-      vite-plugin-dts:
-        specifier: 5.1.0
-        version: 5.1.0(@microsoft/api-extractor@7.59.0(@types/node@26.4.0))(rolldown@1.2.6)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
-      vite-plugin-lib-inject-css:
-        specifier: 2.2.2
-        version: 2.2.2(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
-      vite-plugin-static-copy:
-        specifier: 4.1.1
-        version: 4.1.1(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
-      vite-plugin-svgr:
-        specifier: 5.2.0
-        version: 5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
-      vitest:
-        specifier: 4.1.11
-        version: 4.1.11(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
-      vitest-browser-react:
-        specifier: 2.2.0
-        version: 2.2.0(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(vitest@4.1.11)
-      yup:
-        specifier: 1.7.1
-        version: 1.7.1
-
-  packages/ui-casedb:
-    dependencies:
-      '@hookform/resolvers':
-        specifier: 5.9.1
-        version: 5.9.1(@sinclair/typebox@0.34.49)(@standard-schema/spec@1.1.0)(ajv@8.20.0)(react-hook-form@7.87.0(react@19.2.8))(yup@1.7.1)(zod@4.4.3)
-      '@tanstack/react-query':
-        specifier: 5.102.8
-        version: 5.102.8(react@19.2.8)
-      colorjs.io:
-        specifier: 0.7.1
-        version: 0.7.1
-      csv:
-        specifier: 6.6.3
-        version: 6.6.3
-      date-fns:
-        specifier: 4.4.0
-        version: 4.4.0
-      decimal.js:
-        specifier: 10.6.0
-        version: 10.6.0
-      echarts:
-        specifier: 6.1.0
-        version: 6.1.0
-      echarts-for-react:
-        specifier: 3.0.6
-        version: 3.0.6(echarts@6.1.0)(react@19.2.8)
-      fuse.js:
-        specifier: 7.5.0
-        version: 7.5.0
-      immer:
-        specifier: 11.1.18
-        version: 11.1.18
-      lodash:
-        specifier: 4.18.1
-        version: 4.18.1
-      react-error-boundary:
-        specifier: 6.1.4
-        version: 6.1.4(@types/react@19.2.18)(react@19.2.8)
-      react-hook-form:
-        specifier: 7.87.0
-        version: 7.87.0(react@19.2.8)
-      react-resizable-panels:
-        specifier: 4.12.3
-        version: 4.12.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      react-router:
-        specifier: 8.3.1
-        version: 8.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      react-router-dom:
-        specifier: 7.18.3
-        version: 7.18.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      react-virtuoso:
-        specifier: 4.18.12
-        version: 4.18.12(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      read-excel-file:
-        specifier: 9.3.10
-        version: 9.3.10
-      use-debounce:
-        specifier: 10.1.1
-        version: 10.1.1(react@19.2.8)
-      write-excel-file:
-        specifier: 4.1.1
-        version: 4.1.1
-      zustand:
-        specifier: 5.0.15
-        version: 5.0.15(@types/react@19.2.18)(immer@11.1.18)(react@19.2.8)(use-sync-external-store@1.6.0(react@19.2.8))
-    devDependencies:
-      '@emotion/cache':
-        specifier: 11.14.0
-        version: 11.14.0
-      '@emotion/react':
-        specifier: 11.14.0
-        version: 11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2)
-      '@emotion/styled':
-        specifier: 11.14.1
-        version: 11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2)
-      '@gen-epix/api-casedb':
-        specifier: workspace:^
-        version: link:../api-casedb
-      '@gen-epix/api-commondb':
-        specifier: workspace:^
-        version: link:../api-commondb
-      '@gen-epix/eslint-config':
-        specifier: 0.5.0
-        version: 0.5.0(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.69.0(eslint@10.9.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(eslint@10.9.1(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.9.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3)(vitest@4.1.11)
-      '@gen-epix/translation-util':
-        specifier: 0.2.0
-        version: 0.2.0
-      '@gen-epix/ui':
-        specifier: workspace:^
-        version: link:../ui
-      '@gen-epix/ui-core':
-        specifier: workspace:^
-        version: link:../ui-core
-      '@gen-epix/ui-core-components':
-        specifier: workspace:^
-        version: link:../ui-core-components
-      '@gen-epix/ui-core-form':
-        specifier: workspace:^
-        version: link:../ui-core-form
-      '@gen-epix/ui-phylogenetic-tree':
-        specifier: workspace:^
-        version: link:../ui-phylogenetic-tree
-      '@microsoft/api-extractor':
-        specifier: 7.59.0
-        version: 7.59.0(@types/node@26.4.0)
-      '@mui/icons-material':
-        specifier: 9.4.0
-        version: 9.4.0(@mui/material@9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react@19.2.18)(react@19.2.8)
-      '@mui/material':
-        specifier: 9.4.0
-        version: 9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@mui/styled-engine':
-        specifier: 9.4.0
-        version: 9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(react@19.2.8)
-      '@mui/system':
-        specifier: 9.4.0
-        version: 9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)
-      '@mui/utils':
-        specifier: 9.4.0
-        version: 9.4.0(@types/react@19.2.18)(react@19.2.8)
-      '@mui/x-date-pickers':
-        specifier: 9.12.0
-        version: 9.12.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@mui/material@9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@mui/system@9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8))(@types/react@19.2.18)(date-fns@4.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@types/lodash':
         specifier: 4.17.25
         version: 4.17.25
@@ -1220,9 +1220,9 @@ importers:
       '@gen-epix/translation-util':
         specifier: 0.2.0
         version: 0.2.0
-      '@gen-epix/ui':
+      '@gen-epix/ui-client-common':
         specifier: workspace:^
-        version: link:../ui
+        version: link:../ui-client-common
       '@gen-epix/ui-core-form':
         specifier: workspace:^
         version: link:../ui-core-form
@@ -1404,9 +1404,9 @@ importers:
       '@gen-epix/translation-util':
         specifier: 0.2.0
         version: 0.2.0
-      '@gen-epix/ui':
+      '@gen-epix/ui-client-common':
         specifier: workspace:^
-        version: link:../ui
+        version: link:../ui-client-common
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
@@ -3226,9 +3226,6 @@ packages:
 
   '@types/node@20.19.43':
     resolution: {integrity: sha512-6oYBAi5ikg4Pl+kGsoYtawUMBT2zZMCvPNF7pVLnHZfd1zf38DRiWn/gT01RYCdUqkv7Fhr+C9ot4/tb+2sVvA==}
-
-  '@types/node@26.1.0':
-    resolution: {integrity: sha512-O0A1G3xPGy4w7AgQdAQYUlQ+BKk2Oovw8eRpofyp5KdBZULnbe+WqaOVNrm705SHphCiG4XHsACrSmPu1f+Kgw==}
 
   '@types/node@26.4.0':
     resolution: {integrity: sha512-faiGnoIrLH/V8cibOMEAZ8pMw6oXqSukl29ra4mN8GdaB2ZewzeaLj+INpV5N+Z1eKWzY+IzaIZH2EIR6YZRNQ==}
@@ -9399,15 +9396,11 @@ snapshots:
 
   '@types/mute-stream@0.0.4':
     dependencies:
-      '@types/node': 26.1.0
+      '@types/node': 26.4.0
 
   '@types/node@20.19.43':
     dependencies:
       undici-types: 6.21.0
-
-  '@types/node@26.1.0':
-    dependencies:
-      undici-types: 8.3.0
 
   '@types/node@26.4.0':
     dependencies:

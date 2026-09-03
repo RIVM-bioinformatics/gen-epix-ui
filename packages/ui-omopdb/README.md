@@ -12,7 +12,7 @@ The platform is currently in beta and is not yet intended for production use. Fe
 
 ## About @gen-epix/ui-omopdb
 
-`@gen-epix/ui-omopdb` extends `@gen-epix/ui` with the OMOP DB frontend module. It exports:
+`@gen-epix/ui-omopdb` extends `@gen-epix/ui-client-common` with the OMOP DB frontend module. It exports:
 
 - `OmopDbApp` — the root application component
 - `setupOmopDb` — the bootstrapping function that registers routes, query keys, and API wiring
@@ -25,7 +25,7 @@ This package is not a standalone application. It is intended to be used from a h
 ## Installation
 
 ```sh
-pnpm add @gen-epix/ui @gen-epix/ui-omopdb @gen-epix/api-commondb @gen-epix/api-omopdb
+pnpm add @gen-epix/ui-client-common @gen-epix/ui-omopdb @gen-epix/api-commondb @gen-epix/api-omopdb
 ```
 
 Refer to `package.json` for the full list of peer dependencies.
@@ -37,7 +37,7 @@ import { createRoot } from 'react-dom/client';
 import {
   ConfigService,
   I18nService,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui-client-common';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   OmopDbApp,

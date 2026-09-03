@@ -24,8 +24,8 @@ import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
-import { AuthenticationService } from '@gen-epix/ui/classes/services/AuthenticationService';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { AuthenticationService } from '@gen-epix/ui-client-common/classes/services/AuthenticationService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';

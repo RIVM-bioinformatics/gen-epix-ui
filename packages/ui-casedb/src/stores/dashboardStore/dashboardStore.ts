@@ -15,23 +15,23 @@ import type {
   CaseDbTypedCompositeFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { AxiosUtil } from '@gen-epix/ui/utils/AxiosUtil';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { AxiosUtil } from '@gen-epix/ui-client-common/utils/AxiosUtil';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import {
   createTableStoreActions,
   createTableStoreInitialState,
   createTableStorePersistConfiguration,
-} from '@gen-epix/ui/stores/tableStore';
-import { FILTER_MODE } from '@gen-epix/ui/classes/abstracts/FilterAbstract';
-import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+} from '@gen-epix/ui-client-common/stores/tableStore';
+import { FILTER_MODE } from '@gen-epix/ui-client-common/classes/abstracts/FilterAbstract';
+import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import type {
   CreateTableStoreInitialStateKwArgs,
   CreateTableStoreKwArgs,
   TableStoreActions,
   TableStoreState,
-} from '@gen-epix/ui/stores/tableStore';
-import type { FilterValues } from '@gen-epix/ui/models/filter';
+} from '@gen-epix/ui-client-common/stores/tableStore';
+import type { FilterValues } from '@gen-epix/ui-client-common/models/filter';
 import cloneDeep from 'lodash/cloneDeep';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree';

@@ -21,11 +21,11 @@ import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
-import { useDeleteMutation } from '@gen-epix/ui/hooks/useDeleteMutation';
-import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { useDeleteMutation } from '@gen-epix/ui-client-common/hooks/useDeleteMutation';
+import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 

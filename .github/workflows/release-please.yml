@@ -14,8 +14,8 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
-      ui-release-created: ${{ steps.release.outputs['packages/ui--release_created'] }}
-      ui-tag-name: ${{ steps.release.outputs['packages/ui--tag_name'] }}
+      ui-client-common-release-created: ${{ steps.release.outputs['packages/ui-client-common--release_created'] }}
+      ui-client-common-tag-name: ${{ steps.release.outputs['packages/ui-client-common--tag_name'] }}
       ui-core-release-created: ${{ steps.release.outputs['packages/ui-core--release_created'] }}
       ui-core-tag-name: ${{ steps.release.outputs['packages/ui-core--tag_name'] }}
       ui-core-components-release-created: ${{ steps.release.outputs['packages/ui-core-components--release_created'] }}
@@ -145,9 +145,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ needs.release-please.outputs.ui-seqdb-tag-name }} gen-epix-ui-seqdb.zip
 
-  publish-ui:
+  publish-ui-client-common:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-client-common-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -165,18 +165,18 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui run build
+        run: pnpm --filter @gen-epix/ui-client-common run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-client-common publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui.zip packages/ui/dist
+        run: zip -r gen-epix-ui-client-common.zip packages/ui-client-common/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-tag-name }} gen-epix-ui.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-common-tag-name }} gen-epix-ui-client-common.zip
 
   publish-ui-phylogenetic-tree:
     needs: release-please

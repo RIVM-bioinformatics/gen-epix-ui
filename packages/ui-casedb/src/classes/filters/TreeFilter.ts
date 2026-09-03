@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import type { CommonDbFiltersInner } from '@gen-epix/api-commondb';
-import type { Filter } from '@gen-epix/ui/models/filter';
-import { FilterAbstract } from '@gen-epix/ui/classes/abstracts/FilterAbstract';
+import type { Filter } from '@gen-epix/ui-client-common/models/filter';
+import { FilterAbstract } from '@gen-epix/ui-client-common/classes/abstracts/FilterAbstract';
 
 export class TreeFilter extends FilterAbstract<string> implements Filter<string, string> {
   public filterValue: string = null;

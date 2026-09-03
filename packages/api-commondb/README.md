@@ -14,7 +14,7 @@ The platform is currently in beta and is not yet intended for production use. Fe
 
 `@gen-epix/api-commondb` is the auto-generated TypeScript types package for the Gen-EpiX Common DB backend. It is generated from the backend OpenAPI schema and exports shared interfaces, enums, and type aliases that are used across all other Gen-EpiX API clients and UI packages.
 
-Unlike the other `api-*` packages, `@gen-epix/api-commondb` does not expose API client classes. It is a pure types package — its exports are consumed by `@gen-epix/ui`, `@gen-epix/ui-casedb`, `@gen-epix/ui-omopdb`, `@gen-epix/ui-seqdb`, and the other `api-*` packages.
+Unlike the other `api-*` packages, `@gen-epix/api-commondb` does not expose API client classes. It is a pure types package — its exports are consumed by `@gen-epix/ui-client-common`, `@gen-epix/ui-casedb`, `@gen-epix/ui-omopdb`, `@gen-epix/ui-seqdb`, and the other `api-*` packages.
 
 ## Installation
 

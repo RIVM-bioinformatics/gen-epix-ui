@@ -1,4 +1,4 @@
-# @gen-epix/ui [beta]
+# @gen-epix/ui-client-common [beta]
 
 ![gen-epix-logo](https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/gen-epix_logo_full.svg)
 
@@ -10,9 +10,9 @@ Gen-EpiX is a platform for visualizing and analyzing genomic epidemiology data. 
 
 The platform is currently in beta and is not yet intended for production use. Feel free to [contact us](mailto:ivo.van.walle@rivm.nl) if you are interested.
 
-## About @gen-epix/ui
+## About @gen-epix/ui-client-common
 
-`@gen-epix/ui` is the core React component library shared by all Gen-EpiX frontend applications. It provides:
+`@gen-epix/ui-client-common` is the core React component library shared by all Gen-EpiX frontend applications. It provides:
 
 - UI components (application bar, sidebar, breadcrumbs, tables, forms, notifications, dialogs, …)
 - Application services (`ConfigService`, `RouterService`, `AuthenticationService`, `AuthorizationService`, `I18nService`, `NotificationService`, …)
@@ -29,14 +29,14 @@ This package is not a standalone application. It is the foundation used by the d
 ## Installation
 
 ```sh
-pnpm add @gen-epix/ui
+pnpm add @gen-epix/ui-client-common
 ```
 
 Refer to `package.json` for the full list of peer dependencies that your host application must also install.
 
 ## Usage
 
-The example below shows the minimal bootstrap for a host application that uses `@gen-epix/ui` directly (without a domain package on top). Domain-specific packages like `@gen-epix/ui-casedb` wrap this pattern — see their READMEs for the recommended usage.
+The example below shows the minimal bootstrap for a host application that uses `@gen-epix/ui-client-common` directly (without a domain package on top). Domain-specific packages like `@gen-epix/ui-casedb` wrap this pattern — see their READMEs for the recommended usage.
 
 ```tsx
 import { createRoot } from 'react-dom/client';
@@ -45,7 +45,7 @@ import {
   ConfigService,
   I18nService,
   setup,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui-client-common';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';

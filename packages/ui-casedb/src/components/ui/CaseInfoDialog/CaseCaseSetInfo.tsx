@@ -14,10 +14,10 @@ import type {
   CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { NavLink } from '@gen-epix/ui/components/ui/NavLink';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { NavLink } from '@gen-epix/ui-client-common/components/ui/NavLink';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';

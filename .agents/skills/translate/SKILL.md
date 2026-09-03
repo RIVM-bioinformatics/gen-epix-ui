@@ -47,7 +47,7 @@ changes.
    the owning package's validation when only one package changed, for example:
 
    ```sh
-   pnpm --filter @gen-epix/ui run test-missing-translations
+   pnpm --filter @gen-epix/ui-client-common run test-missing-translations
    ```
 
    If several packages or examples changed, run the root translation validation

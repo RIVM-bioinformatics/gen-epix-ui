@@ -16,26 +16,26 @@ import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui/models/table';
-import { COMMON_QUERY_KEY } from '@gen-epix/ui/constants/query';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+} from '@gen-epix/ui-client-common/models/table';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import {
   createTableStore,
   TableStoreContextProvider,
-} from '@gen-epix/ui/stores/tableStore';
-import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+} from '@gen-epix/ui-client-common/stores/tableStore';
+import { PageContainer } from '@gen-epix/ui-client-common/components/ui/PageContainer';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 import {
   Table,
   TableCaption,
   TableMenu,
   TableSidebarMenu,
-} from '@gen-epix/ui/components/ui/Table';
-import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
-import { useInitializeTableStore } from '@gen-epix/ui/hooks/useInitializeTableStore';
-import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
-import { UserUtil } from '@gen-epix/ui/utils/UserUtil';
+} from '@gen-epix/ui-client-common/components/ui/Table';
+import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
+import { useInitializeTableStore } from '@gen-epix/ui-client-common/hooks/useInitializeTableStore';
+import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
+import { UserUtil } from '@gen-epix/ui-client-common/utils/UserUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 

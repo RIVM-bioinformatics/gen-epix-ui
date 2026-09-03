@@ -7,8 +7,8 @@ import { t } from 'i18next';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';

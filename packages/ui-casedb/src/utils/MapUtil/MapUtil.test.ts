@@ -6,7 +6,7 @@ import {
   it,
   vi,
 } from 'vitest';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 
 import type { CaseDbConfig } from '../../models/config';
 

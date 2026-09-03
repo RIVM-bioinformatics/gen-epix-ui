@@ -1,4 +1,4 @@
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
 import type { CASEDB_QUERY_KEY } from '../../../../constants/query';
 

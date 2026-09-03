@@ -7,7 +7,7 @@ import {
   Tooltip,
   useTheme,
 } from '@mui/material';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { useStore } from 'zustand';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import type {

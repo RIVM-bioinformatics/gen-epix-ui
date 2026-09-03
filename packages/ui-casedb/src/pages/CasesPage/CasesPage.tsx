@@ -27,25 +27,25 @@ import {
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui/models/table';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+} from '@gen-epix/ui-client-common/models/table';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import {
   createTableStore,
   TableStoreContextProvider,
-} from '@gen-epix/ui/stores/tableStore';
-import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+} from '@gen-epix/ui-client-common/stores/tableStore';
+import { PageContainer } from '@gen-epix/ui-client-common/components/ui/PageContainer';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 import {
   Table,
   TableCaption,
   TableMenu,
   TableSidebarMenu,
-} from '@gen-epix/ui/components/ui/Table';
-import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
-import { useInitializeTableStore } from '@gen-epix/ui/hooks/useInitializeTableStore';
-import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+} from '@gen-epix/ui-client-common/components/ui/Table';
+import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
+import { useInitializeTableStore } from '@gen-epix/ui-client-common/hooks/useInitializeTableStore';
+import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';

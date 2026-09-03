@@ -2,7 +2,7 @@ import type {
   CaseDbCase,
   CaseDbCaseSet,
 } from '@gen-epix/api-casedb';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { Box } from '@mui/system';
 import {
   use,

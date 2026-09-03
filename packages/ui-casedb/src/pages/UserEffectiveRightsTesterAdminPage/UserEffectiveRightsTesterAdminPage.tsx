@@ -22,11 +22,11 @@ import {
 import noop from 'lodash/noop';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
-import { COMMON_QUERY_KEY } from '@gen-epix/ui/constants/query';
-import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
-import { useOrganizationMapQuery } from '@gen-epix/ui/dataHooks/useOrganizationsQuery';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+import { PageContainer } from '@gen-epix/ui-client-common/components/ui/PageContainer';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
+import { useOrganizationMapQuery } from '@gen-epix/ui-client-common/dataHooks/useOrganizationsQuery';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';

@@ -1,4 +1,4 @@
-import { PageContainer } from '@gen-epix/ui/components/ui/PageContainer';
+import { PageContainer } from '@gen-epix/ui-client-common/components/ui/PageContainer';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useTranslation } from 'react-i18next';
 

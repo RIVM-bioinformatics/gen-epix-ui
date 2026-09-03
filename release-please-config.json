@@ -5,9 +5,9 @@
   "bootstrap-sha": "35a7e75",
   "include-component-in-tag": true,
   "packages": {
-    "packages/ui": {
-      "package-name": "@gen-epix/ui",
-      "component": "ui"
+    "packages/ui-client-common": {
+      "package-name": "@gen-epix/ui-client-common",
+      "component": "ui-client-common"
     },
     "packages/ui-core": {
       "package-name": "@gen-epix/ui-core",

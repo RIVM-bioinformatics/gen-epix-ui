@@ -27,7 +27,7 @@ import type {
   CaseDbColType,
 } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { useStore } from 'zustand';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';

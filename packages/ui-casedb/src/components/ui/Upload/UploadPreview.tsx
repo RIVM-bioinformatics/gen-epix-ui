@@ -28,16 +28,16 @@ import {
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
 import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
-import type { TableRowAndColumnParams } from '@gen-epix/ui/models/table';
+import type { TableRowAndColumnParams } from '@gen-epix/ui-client-common/models/table';
 import { BackdropSpinner } from '@gen-epix/ui-core-components/components/BackdropSpinner';
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 import {
   createTableStore,
   TableStoreContextProvider,
-} from '@gen-epix/ui/stores/tableStore';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+} from '@gen-epix/ui-client-common/stores/tableStore';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 

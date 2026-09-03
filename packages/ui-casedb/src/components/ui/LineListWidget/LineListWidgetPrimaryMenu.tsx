@@ -17,9 +17,9 @@ import {
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import type { TableColumn } from '@gen-epix/ui/models/table';
-import { AuthorizationService } from '@gen-epix/ui/classes/services/AuthorizationService';
-import { useColumnsMenu } from '@gen-epix/ui/hooks/useColumnsMenu';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
+import { useColumnsMenu } from '@gen-epix/ui-client-common/hooks/useColumnsMenu';
 import last from 'lodash/last';
 
 import { EventBusService } from '../../../classes/services/EventBusService';

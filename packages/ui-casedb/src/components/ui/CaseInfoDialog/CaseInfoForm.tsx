@@ -21,8 +21,8 @@ import {
   CaseDbEtlStatus,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
-import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';

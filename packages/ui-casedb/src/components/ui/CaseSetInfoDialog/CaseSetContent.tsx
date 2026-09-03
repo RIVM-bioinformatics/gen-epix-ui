@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 

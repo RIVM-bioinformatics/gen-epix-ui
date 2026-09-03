@@ -50,8 +50,8 @@ import {
   CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
-import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
 
 import { DataService } from '../../../classes/services/DataService';

@@ -22,7 +22,7 @@ import {
   useMemo,
 } from 'react';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { MenuDataUtil } from '@gen-epix/ui/utils/MenuDataUtil';
+import { MenuDataUtil } from '@gen-epix/ui-client-common/utils/MenuDataUtil';
 import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';

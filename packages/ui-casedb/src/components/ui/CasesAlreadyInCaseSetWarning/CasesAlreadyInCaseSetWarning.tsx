@@ -20,10 +20,10 @@ import {
   CaseDbCaseApi,
   CaseDbLogLevel,
 } from '@gen-epix/api-casedb';
-import { LogService } from '@gen-epix/ui/classes/services/LogService';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { LogService } from '@gen-epix/ui-client-common/classes/services/LogService';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 
 import { CaseSummary } from '../CaseSummary';
 import { CASEDB_QUERY_KEY } from '../../../constants/query';

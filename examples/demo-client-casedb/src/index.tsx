@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
-import { I18nService } from '@gen-epix/ui/classes/services/I18nService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import type { CaseDbConfig } from '@gen-epix/ui-casedb/models/config';
 import { CaseDbApp } from '@gen-epix/ui-casedb/components/app/CaseDbApp';

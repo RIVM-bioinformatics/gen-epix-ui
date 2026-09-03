@@ -21,9 +21,9 @@ import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
-import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { UserUtil } from '@gen-epix/ui/utils/UserUtil';
+import { LoadableUtil } from '@gen-epix/ui-client-common/utils/LoadableUtil';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { UserUtil } from '@gen-epix/ui-client-common/utils/UserUtil';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';

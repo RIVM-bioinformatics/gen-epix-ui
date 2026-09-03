@@ -1,4 +1,4 @@
-import type { GenEpixUiTheme } from '@gen-epix/ui/models/theme';
+import type { GenEpixUiTheme } from '@gen-epix/ui-client-common/models/theme';
 
 export interface GenEpixCaseDbUiTheme extends GenEpixUiTheme {
   'gen-epix-ui-casedb': {

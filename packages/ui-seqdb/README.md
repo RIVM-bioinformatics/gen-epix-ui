@@ -12,7 +12,7 @@ The platform is currently in beta and is not yet intended for production use. Fe
 
 ## About @gen-epix/ui-seqdb
 
-`@gen-epix/ui-seqdb` extends `@gen-epix/ui` with the Sequence DB frontend module. It exports:
+`@gen-epix/ui-seqdb` extends `@gen-epix/ui-client-common` with the Sequence DB frontend module. It exports:
 
 - `SeqDbApp` — the root application component
 - `setupSeqDb` — the bootstrapping function that registers routes, query keys, and API wiring
@@ -25,7 +25,7 @@ This package is not a standalone application. It is intended to be used from a h
 ## Installation
 
 ```sh
-pnpm add @gen-epix/ui @gen-epix/ui-seqdb @gen-epix/api-commondb @gen-epix/api-seqdb
+pnpm add @gen-epix/ui-client-common @gen-epix/ui-seqdb @gen-epix/api-commondb @gen-epix/api-seqdb
 ```
 
 Refer to `package.json` for the full list of peer dependencies.
@@ -37,7 +37,7 @@ import { createRoot } from 'react-dom/client';
 import {
   ConfigService,
   I18nService,
-} from '@gen-epix/ui';
+} from '@gen-epix/ui-client-common';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   SeqDbApp,

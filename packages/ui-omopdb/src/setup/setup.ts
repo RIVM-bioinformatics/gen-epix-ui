@@ -1,9 +1,9 @@
-import type { COMMON_QUERY_KEY } from '@gen-epix/ui/constants/query';
-import type { MyNonIndexRouteObject } from '@gen-epix/ui/models/reactRouter';
-import { ApiService } from '@gen-epix/ui/classes/services/ApiService';
-import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui/constants/query';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
-import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
+import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/reactRouter';
+import { ApiService } from '@gen-epix/ui-client-common/classes/services/ApiService';
+import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/query';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 import {
   OmopDbAbacApi,
   OmopDbAuthApi,
@@ -12,7 +12,7 @@ import {
   OmopDbSystemApi,
 } from '@gen-epix/api-omopdb';
 import type { CommonDbOrganizationApi } from '@gen-epix/api-commondb';
-import { setupUi } from '@gen-epix/ui/setup/setup';
+import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
 
 import { HomePage } from '../pages/HomePage';
 import {

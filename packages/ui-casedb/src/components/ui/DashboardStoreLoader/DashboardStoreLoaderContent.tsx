@@ -9,8 +9,8 @@ import type {
   CaseDbCaseSet,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import type { TableColumnDimension } from '@gen-epix/ui/models/table';
-import { TableStoreContextProvider } from '@gen-epix/ui/stores/tableStore';
+import type { TableColumnDimension } from '@gen-epix/ui-client-common/models/table';
+import { TableStoreContextProvider } from '@gen-epix/ui-client-common/stores/tableStore';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import {

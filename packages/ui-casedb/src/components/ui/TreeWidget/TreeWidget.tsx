@@ -26,9 +26,9 @@ import { useDebouncedCallback } from 'use-debounce';
 import type { CaseDbRetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
-import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
+import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { PhylogeneticTree } from '@gen-epix/ui-phylogenetic-tree/components/PhylogeneticTree';
 import type {

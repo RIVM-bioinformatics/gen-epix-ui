@@ -20,8 +20,8 @@ import {
 import type { BoxProps } from '@mui/material';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';

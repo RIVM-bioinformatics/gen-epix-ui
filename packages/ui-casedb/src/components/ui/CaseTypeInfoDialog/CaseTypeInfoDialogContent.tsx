@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import type { WithDialogRenderProps } from '@gen-epix/ui-core-components/hoc/withDialog';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { RichTextEditorContent } from '@gen-epix/ui-core-form/components/fields/RichTextEditor';
 

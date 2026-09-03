@@ -30,15 +30,15 @@ import type {
   TableColumnParams,
   TableRowAndColumnParams,
   TableRowParams,
-} from '@gen-epix/ui/models/table';
-import type { TableStore } from '@gen-epix/ui/stores/tableStore';
+} from '@gen-epix/ui-client-common/models/table';
+import type { TableStore } from '@gen-epix/ui-client-common/stores/tableStore';
 import {
   Table,
   TableMenu,
-} from '@gen-epix/ui/components/ui/Table';
-import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui/models/table';
-import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
-import { useInitializeTableStore } from '@gen-epix/ui/hooks/useInitializeTableStore';
+} from '@gen-epix/ui-client-common/components/ui/Table';
+import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui-client-common/models/table';
+import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
+import { useInitializeTableStore } from '@gen-epix/ui-client-common/hooks/useInitializeTableStore';
 
 import { CaseUtil } from '../../../utils/CaseUtil';
 import type { CaseContentFormDialogRefMethods } from '../CaseContentFormDialog';

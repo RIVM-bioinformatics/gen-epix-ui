@@ -1,4 +1,4 @@
-import { createDemoThemeOptions } from '@gen-epix/ui/theme/demoTheme';
+import { createDemoThemeOptions } from '@gen-epix/ui-client-common/theme/demoTheme';
 import type {
   PaletteMode,
   Theme,

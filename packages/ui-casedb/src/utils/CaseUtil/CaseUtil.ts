@@ -11,9 +11,9 @@ import {
   CaseDbCaseApi,
   CaseDbColType,
 } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
-import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseTypeRowValue } from '../../models/caseDb';

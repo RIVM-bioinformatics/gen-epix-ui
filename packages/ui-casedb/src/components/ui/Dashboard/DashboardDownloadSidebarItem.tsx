@@ -12,9 +12,9 @@ import {
   useEffect,
   useState,
 } from 'react';
-import type { SidebarItemSharedProps } from '@gen-epix/ui/components/ui/Sidebar';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
-import { SidebarItem } from '@gen-epix/ui/components/ui/Sidebar';
+import type { SidebarItemSharedProps } from '@gen-epix/ui-client-common/components/ui/Sidebar';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { SidebarItem } from '@gen-epix/ui-client-common/components/ui/Sidebar';
 
 import type {
   DownloadConfig,

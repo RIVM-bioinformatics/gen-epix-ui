@@ -7,8 +7,8 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import type {
   AutoCompleteOption,

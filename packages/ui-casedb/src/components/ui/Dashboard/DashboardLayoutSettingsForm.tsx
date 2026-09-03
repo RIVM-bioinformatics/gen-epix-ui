@@ -17,7 +17,7 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import noop from 'lodash/noop';
 
 import { ArrangementEditor } from '../../form/fields/ArrangementEditor';

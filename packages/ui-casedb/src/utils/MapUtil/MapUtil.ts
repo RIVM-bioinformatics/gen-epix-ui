@@ -7,7 +7,7 @@ import type {
   CaseDbCol,
   CaseDbRegion,
 } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import type { UnwrapArray } from '@gen-epix/ui-core/models/generic';
 
 import type { CaseDbConfig } from '../../models/config';

@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useTranslation } from 'react-i18next';
-import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import {

@@ -18,7 +18,7 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 

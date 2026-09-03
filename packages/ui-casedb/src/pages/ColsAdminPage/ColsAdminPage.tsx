@@ -20,10 +20,10 @@ import {
   CaseDbColType,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
-import type { OmitWithMetaData } from '@gen-epix/ui/models/data';
-import type { TableColumn } from '@gen-epix/ui/models/table';
-import { CrudPage } from '@gen-epix/ui/pages/CrudPage';
-import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
+import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type {

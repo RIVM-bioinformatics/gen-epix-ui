@@ -6,9 +6,9 @@ import {
 } from '@gen-epix/api-casedb';
 import { t } from 'i18next';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
-import { createRoutes as createCommonRoutes } from '@gen-epix/ui/routes';
-import { RouterErrorPage } from '@gen-epix/ui/pages/RouterErrorPage';
-import type { MyNonIndexRouteObject } from '@gen-epix/ui/models/reactRouter';
+import { createRoutes as createCommonRoutes } from '@gen-epix/ui-client-common/routes';
+import { RouterErrorPage } from '@gen-epix/ui-client-common/pages/RouterErrorPage';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/reactRouter';
 
 import { CasesDetailPage } from '../pages/CasesDetailPage';
 import { CasesPage } from '../pages/CasesPage';

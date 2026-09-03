@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { produce } from 'immer';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 
 import { LegendaItem } from '../LegendaItem';

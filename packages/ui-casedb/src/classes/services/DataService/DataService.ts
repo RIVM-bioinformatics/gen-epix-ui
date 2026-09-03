@@ -13,8 +13,8 @@ import {
   CaseDbOntologyApi,
   CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
-import { COMMON_QUERY_KEY } from '@gen-epix/ui/constants/query';
-import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
