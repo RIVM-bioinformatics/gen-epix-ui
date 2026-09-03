@@ -7,13 +7,13 @@ import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-
-import type { DialogAction } from '../../components/ui/Dialog';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../hoc/withDialog';
-import { withDialog } from '../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+
 import type { GenericData } from '../../models/data';
 
 

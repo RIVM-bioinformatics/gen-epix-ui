@@ -16,15 +16,15 @@ import {
   useState,
 } from 'react';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
-import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui/hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
 import { LoadableUtil } from '@gen-epix/ui/utils/LoadableUtil';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { UserUtil } from '@gen-epix/ui/utils/UserUtil';
-import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 

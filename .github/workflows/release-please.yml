@@ -18,6 +18,8 @@ jobs:
       ui-tag-name: ${{ steps.release.outputs['packages/ui--tag_name'] }}
       ui-core-release-created: ${{ steps.release.outputs['packages/ui-core--release_created'] }}
       ui-core-tag-name: ${{ steps.release.outputs['packages/ui-core--tag_name'] }}
+      ui-core-components-release-created: ${{ steps.release.outputs['packages/ui-core-components--release_created'] }}
+      ui-core-components-tag-name: ${{ steps.release.outputs['packages/ui-core-components--tag_name'] }}
       ui-casedb-release-created: ${{ steps.release.outputs['packages/ui-casedb--release_created'] }}
       ui-casedb-tag-name: ${{ steps.release.outputs['packages/ui-casedb--tag_name'] }}
       ui-omopdb-release-created: ${{ steps.release.outputs['packages/ui-omopdb--release_created'] }}
@@ -26,8 +28,8 @@ jobs:
       ui-seqdb-tag-name: ${{ steps.release.outputs['packages/ui-seqdb--tag_name'] }}
       ui-phylogenetic-tree-release-created: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--release_created'] }}
       ui-phylogenetic-tree-tag-name: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--tag_name'] }}
-      ui-core-form-components-release-created: ${{ steps.release.outputs['packages/ui-core-form-components--release_created'] }}
-      ui-core-form-components-tag-name: ${{ steps.release.outputs['packages/ui-core-form-components--tag_name'] }}
+      ui-core-form-release-created: ${{ steps.release.outputs['packages/ui-core-form--release_created'] }}
+      ui-core-form-tag-name: ${{ steps.release.outputs['packages/ui-core-form--tag_name'] }}
       api-casedb-release-created: ${{ steps.release.outputs['packages/api-casedb--release_created'] }}
       api-casedb-tag-name: ${{ steps.release.outputs['packages/api-casedb--tag_name'] }}
       api-commondb-release-created: ${{ steps.release.outputs['packages/api-commondb--release_created'] }}
@@ -242,6 +244,39 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ needs.release-please.outputs.ui-core-tag-name }} gen-epix-ui-core.zip
 
+  publish-ui-core-components:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.ui-core-components-release-created == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node-env
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Build
+        run: pnpm --filter @gen-epix/ui-core-components run build
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-core-components publish --access=public --no-git-checks
+
+      - name: Zip dist directory
+        run: zip -r gen-epix-ui-core-components.zip packages/ui-core-components/dist
+
+      - name: Upload release artifact to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ needs.release-please.outputs.ui-core-components-tag-name }} gen-epix-ui-core-components.zip
+
   publish-api-casedb:
     needs: release-please
     if: ${{ needs.release-please.outputs.api-casedb-release-created == 'true' }}
@@ -374,9 +409,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ needs.release-please.outputs.api-omopdb-tag-name }} gen-epix-api-omopdb.zip
 
-  publish-ui-core-form-components:
+  publish-ui-core-form:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-core-form-components-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-core-form-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -394,15 +429,15 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-core-form-components run build
+        run: pnpm --filter @gen-epix/ui-core-form run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-core-form-components publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-core-form publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-core-form-components.zip packages/ui-core-form-components/dist
+        run: zip -r gen-epix-ui-core-form.zip packages/ui-core-form/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-core-form-components-tag-name }} gen-epix-ui-core-form-components.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-core-form-tag-name }} gen-epix-ui-core-form.zip

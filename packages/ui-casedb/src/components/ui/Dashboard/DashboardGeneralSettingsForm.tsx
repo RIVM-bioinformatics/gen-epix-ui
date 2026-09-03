@@ -17,7 +17,7 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { Switch } from '../../../../../ui-core-form-components/src/components/fields/Switch';
+import { Switch } from '@gen-epix/ui-core-form/components/fields/Switch';
 
 import type { DashboardGeneralSettings } from '../../../stores/userProfileStore';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';

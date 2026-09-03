@@ -16,17 +16,17 @@ import type {
   CaseDbTypedCompositeFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui/hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
 import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { Spinner } from '@gen-epix/ui/components/ui/Spinner';
+import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { useDeleteMutation } from '@gen-epix/ui/hooks/useDeleteMutation';
 import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
-import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';

@@ -13,12 +13,12 @@ import {
   TableRow,
 } from '@mui/material';
 import { CommonDbPermissionType } from '@gen-epix/api-commondb';
-
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 
 

@@ -5,7 +5,7 @@ import {
 import type { BoxProps } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import { RichTextEditorContent } from '../../../../../ui-core-form-components/src/components/fields/RichTextEditor';
+import { RichTextEditorContent } from '@gen-epix/ui-core-form/components/fields/RichTextEditor';
 
 
 export type CaseSetDescriptionProps = {

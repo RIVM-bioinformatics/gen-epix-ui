@@ -1,4 +1,4 @@
-import type { MenuItemData } from '../../models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
 
 export class MenuDataUtil {
 

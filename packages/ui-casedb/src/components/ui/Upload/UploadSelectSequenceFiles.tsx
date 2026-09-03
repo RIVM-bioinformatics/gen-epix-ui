@@ -24,12 +24,12 @@ import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
 import type {
   FormFieldDefinition,
   SelectOption,
-} from '../../../../../ui-core-form-components/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../../ui-core-form-components/src/models/form';
+} from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
 
 import { FileSelector } from '../FileSelector';
 import { UploadUtil } from '../../../utils/UploadUtil';
@@ -165,29 +165,29 @@ export const UploadSelectSequenceFiles = () => {
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
     return [
-        {
-          definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-          label: t`Genome files: assembly protocol`,
-          loading: assemblyProtocolOptionsQuery.isLoading,
-          name: 'assemblyProtocolId',
-          onChange: onAssemblyProtocolChange,
-          options: assemblyProtocolOptionsQuery.options,
-        } as const satisfies FormFieldDefinition<FormFields>,
-        {
-          definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-          label: t`Reads files: sequencing protocol`,
-          loading: sequencingProtocolOptionsQuery.isLoading,
-          name: 'sequencingProtocolId',
-          onChange: onSequencingProtocolChange,
-          options: sequencingProtocolOptionsQuery.options,
-        } as const satisfies FormFieldDefinition<FormFields>,
-        {
-          definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
-          label: t`Sample ID column`,
-          name: 'sampleIdColId',
-          onChange: onSampleIdColIdChange,
-          options: sampleIdColIdOptions,
-        } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
+        label: t`Genome files: assembly protocol`,
+        loading: assemblyProtocolOptionsQuery.isLoading,
+        name: 'assemblyProtocolId',
+        onChange: onAssemblyProtocolChange,
+        options: assemblyProtocolOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
+        label: t`Reads files: sequencing protocol`,
+        loading: sequencingProtocolOptionsQuery.isLoading,
+        name: 'sequencingProtocolId',
+        onChange: onSequencingProtocolChange,
+        options: sequencingProtocolOptionsQuery.options,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.SELECT,
+        label: t`Sample ID column`,
+        name: 'sampleIdColId',
+        onChange: onSampleIdColIdChange,
+        options: sampleIdColIdOptions,
+      } as const satisfies FormFieldDefinition<FormFields>,
     ];
   }, [assemblyProtocolOptionsQuery.isLoading, assemblyProtocolOptionsQuery.options, onAssemblyProtocolChange, onSampleIdColIdChange, onSequencingProtocolChange, sampleIdColIdOptions, sequencingProtocolOptionsQuery.isLoading, sequencingProtocolOptionsQuery.options, t]);
 

@@ -7,9 +7,9 @@ import { object } from 'yup';
 import type { CommonDbIdentifierIssuer } from '@gen-epix/api-commondb';
 import { CommonDbCommandName } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
-import { SchemaUtil } from '../../../../ui-core-form-components/src/utils/SchemaUtil';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';

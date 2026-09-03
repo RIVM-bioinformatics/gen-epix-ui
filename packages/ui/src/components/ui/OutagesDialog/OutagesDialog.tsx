@@ -3,13 +3,13 @@ import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 import { useStore } from 'zustand';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-
-import { OutageList } from '../OutageList/OutageList';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+
+import { OutageList } from '../OutageList/OutageList';
 import { outagesStore } from '../../../stores/outagesStore';
 
 export interface OutagesDialogOpenProps {

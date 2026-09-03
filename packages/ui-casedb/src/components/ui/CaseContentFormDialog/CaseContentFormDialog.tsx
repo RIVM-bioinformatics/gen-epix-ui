@@ -4,12 +4,12 @@ import {
 } from 'react';
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui/hoc/withDialog';
-import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import SaveIcon from '@mui/icons-material/Save';
 import type { CaseDbCase } from '@gen-epix/api-casedb';

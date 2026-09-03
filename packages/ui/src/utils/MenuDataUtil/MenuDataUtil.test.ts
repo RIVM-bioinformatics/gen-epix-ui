@@ -3,8 +3,7 @@ import {
   expect,
   it,
 } from 'vitest';
-
-import type { MenuItemData } from '../../models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
 
 import { MenuDataUtil } from './MenuDataUtil';
 

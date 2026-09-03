@@ -5,9 +5,9 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
+import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 
-import type { ConfirmationRefMethods } from '../Confirmation';
-import { Confirmation } from '../Confirmation';
 import type { InactivityState } from '../../../classes/services/InactivityService';
 import { InactivityService } from '../../../classes/services/InactivityService';
 

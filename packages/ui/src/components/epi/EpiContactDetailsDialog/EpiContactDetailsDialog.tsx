@@ -12,12 +12,12 @@ import {
   useMemo,
 } from 'react';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { ApiService } from '../../../classes/services/ApiService';

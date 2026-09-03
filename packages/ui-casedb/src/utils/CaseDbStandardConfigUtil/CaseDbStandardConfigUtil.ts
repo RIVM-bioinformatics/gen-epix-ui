@@ -9,8 +9,8 @@ import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
 import { t } from 'i18next';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
 
 import type { CaseDbConfig } from '../../models/config';
 import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard';

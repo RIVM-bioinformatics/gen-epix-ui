@@ -9,7 +9,7 @@ import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
-import type { OptionBase } from '../../../../ui-core-form-components/src/models/form';
+import type { OptionBase } from '@gen-epix/ui-core-form/models/form';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import {

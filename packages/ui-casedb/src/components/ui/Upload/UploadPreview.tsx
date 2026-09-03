@@ -27,10 +27,10 @@ import {
   CaseDbEtlStatus,
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
-import type { ConfirmationRefMethods } from '@gen-epix/ui/components/ui/Confirmation';
+import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
 import type { TableRowAndColumnParams } from '@gen-epix/ui/models/table';
-import { BackdropSpinner } from '@gen-epix/ui/components/ui/BackdropSpinner';
-import { Confirmation } from '@gen-epix/ui/components/ui/Confirmation';
+import { BackdropSpinner } from '@gen-epix/ui-core-components/components/BackdropSpinner';
+import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 import {
   createTableStore,
   TableStoreContextProvider,

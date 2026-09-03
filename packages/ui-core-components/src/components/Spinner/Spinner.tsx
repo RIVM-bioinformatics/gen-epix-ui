@@ -37,7 +37,7 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
     return () => {
       clearTimeout(handle);
     };
-  }, [takingLongerTimeoutMs]);
+  }, [takingLongerTimeoutMs, uiCoreComponentsConfig.defaultTakingLongerTimeoutMs]);
 
   return (
     <Box

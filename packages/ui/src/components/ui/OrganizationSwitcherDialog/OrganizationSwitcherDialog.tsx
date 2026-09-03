@@ -24,17 +24,17 @@ import {
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { Autocomplete } from '../../../../../ui-core-form-components/src/components/fields/Autocomplete';
+import { Autocomplete } from '@gen-epix/ui-core-form/components/fields/Autocomplete';
+import type {
+  WithDialogRefMethods,
+  WithDialogRenderProps,
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { NotificationService } from '../../../classes/services/NotificationService';
 import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
-import type {
-  WithDialogRefMethods,
-  WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
 import { ApiService } from '../../../classes/services/ApiService';
 
 export interface OrganizationSwitcherDialogOpenProps {

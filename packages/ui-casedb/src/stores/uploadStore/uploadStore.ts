@@ -13,7 +13,7 @@ import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import type {
   AutoCompleteOption,
   OptionBase,
-} from '../../../../ui-core-form-components/src/models/form';
+} from '@gen-epix/ui-core-form/models/form';
 
 import type {
   UploadMappedColumn,

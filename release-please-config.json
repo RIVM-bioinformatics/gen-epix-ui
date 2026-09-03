@@ -13,6 +13,10 @@
       "package-name": "@gen-epix/ui-core",
       "component": "ui-core"
     },
+    "packages/ui-core-components": {
+      "package-name": "@gen-epix/ui-core-components",
+      "component": "ui-core-components"
+    },
     "packages/ui-casedb": {
       "package-name": "@gen-epix/ui-casedb",
       "component": "ui-casedb"
@@ -29,9 +33,9 @@
       "package-name": "@gen-epix/ui-phylogenetic-tree",
       "component": "ui-phylogenetic-tree"
     },
-    "packages/ui-core-form-components": {
-      "package-name": "@gen-epix/ui-core-form-components",
-      "component": "ui-core-form-components"
+    "packages/ui-core-form": {
+      "package-name": "@gen-epix/ui-core-form",
+      "component": "ui-core-form"
     },
     "packages/api-casedb": {
       "package-name": "@gen-epix/api-casedb",

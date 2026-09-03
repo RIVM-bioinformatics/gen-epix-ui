@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { NumberRangeInput } from '../../../../../ui-core-form-components/src/components/fields/NumberRangeInput';
+import { NumberRangeInput } from '@gen-epix/ui-core-form/components/fields/NumberRangeInput';
 
 import type { NumberRangeFilter } from '../../../classes/filters/NumberRangeFilter';
 

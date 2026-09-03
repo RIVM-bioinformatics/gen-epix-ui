@@ -23,7 +23,7 @@ import {
 } from '@gen-epix/api-casedb';
 import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
 import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
-import { Spinner } from '@gen-epix/ui/components/ui/Spinner';
+import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CASEDB_QUERY_KEY } from '../../../constants/query';

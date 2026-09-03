@@ -1,4 +1,4 @@
-import { setupYup } from '../../../ui-core-form-components/src/setup/setup';
+import { setupYup } from '@gen-epix/ui-core-form/setup/setup';
 
 export const setupUi = () => {
   setupYup();

@@ -27,7 +27,8 @@ import type {
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { CommonDbPermissionType } from '@gen-epix/api-commondb';
 import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
-import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { ConfigService } from '../../classes/services/ConfigService';
@@ -59,7 +60,6 @@ import {
   TableStoreContextProvider,
 } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
-import type { DialogAction } from '../../components/ui/Dialog';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';

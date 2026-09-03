@@ -6,7 +6,7 @@ import type {
   CaseDbRefCol,
   CaseDbTreeAlgorithm,
 } from '@gen-epix/api-casedb';
-import type { FormFieldDefinition } from '../../../ui-core-form-components/src/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
 
 export enum DASHBOARD_ARRANGEMENT_ORIENTATION {
   HORIZONTAL = 'horizontal',

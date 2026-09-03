@@ -2,13 +2,13 @@ import { useTranslation } from 'react-i18next';
 import type { ReactElement } from 'react';
 import { useEffect } from 'react';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-
-import { ConfigService } from '../../../classes/services/ConfigService';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+
+import { ConfigService } from '../../../classes/services/ConfigService';
 
 export interface ConsentDialogOpenProps {
   //

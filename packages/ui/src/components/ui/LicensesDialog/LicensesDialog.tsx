@@ -28,13 +28,13 @@ import axios from 'axios';
 import type { CommonDbPackageMetadata } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-
-import { ConfigService } from '../../../classes/services/ConfigService';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+
+import { ConfigService } from '../../../classes/services/ConfigService';
 import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { QueryClientService } from '../../../classes/services/QueryClientService';

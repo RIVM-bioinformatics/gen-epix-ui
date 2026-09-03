@@ -49,7 +49,7 @@ import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
 import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
-import type { OptionBase } from '../../../../ui-core-form-components/src/models/form';
+import type { OptionBase } from '@gen-epix/ui-core-form/models/form';
 
 import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';
 import { CaseTypeInfoDialogWithLoader } from '../../components/ui/CaseTypeInfoDialog';

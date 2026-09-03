@@ -4,8 +4,8 @@ import type {
   ReactNode,
 } from 'react';
 import type { CircularProgressProps } from '@mui/material';
+import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
-import { Spinner } from '../Spinner';
 import { GenericErrorMessage } from '../GenericErrorMessage';
 import type { Loadable } from '../../../models/dataHooks';
 import { LoadableUtil } from '../../../utils/LoadableUtil';

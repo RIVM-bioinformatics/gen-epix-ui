@@ -16,7 +16,7 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
 import type { TableColumn } from '@gen-epix/ui/models/table';
 import { AuthorizationService } from '@gen-epix/ui/classes/services/AuthorizationService';
 import { useColumnsMenu } from '@gen-epix/ui/hooks/useColumnsMenu';

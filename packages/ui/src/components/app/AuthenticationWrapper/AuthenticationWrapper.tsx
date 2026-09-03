@@ -17,6 +17,7 @@ import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
+import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { ConfigService } from '../../../classes/services/ConfigService';
@@ -25,7 +26,6 @@ import type { AuthState } from '../../../models/auth';
 import type { ConsentDialogRefMethods } from '../../ui/ConsentDialog';
 import { ConsentDialog } from '../../ui/ConsentDialog';
 import { PageContainer } from '../../ui/PageContainer';
-import { Spinner } from '../../ui/Spinner';
 
 export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation();

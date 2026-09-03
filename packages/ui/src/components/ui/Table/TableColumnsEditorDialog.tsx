@@ -11,12 +11,12 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import type { UniqueIdentifier } from '@dnd-kit/core';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-
-import { withDialog } from '../../../hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+
 import type {
   HasCellDataFn,
   TableColumn,

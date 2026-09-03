@@ -39,24 +39,24 @@ import type {
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui/hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
 import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
-import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
 import type {
   AutoCompleteOption,
   FormFieldDefinition,
-} from '../../../../../ui-core-form-components/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../../ui-core-form-components/src/models/form';
-import { SchemaUtil } from '../../../../../ui-core-form-components/src/utils/SchemaUtil';
+} from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { CASEDB_QUERY_KEY } from '../../../constants/query';

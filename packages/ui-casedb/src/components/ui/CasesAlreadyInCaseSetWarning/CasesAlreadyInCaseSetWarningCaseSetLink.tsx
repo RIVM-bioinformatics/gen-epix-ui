@@ -5,8 +5,8 @@ import {
 } from 'react';
 import { t } from 'i18next';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
-import type { ConfirmationRefMethods } from '@gen-epix/ui/components/ui/Confirmation';
-import { Confirmation } from '@gen-epix/ui/components/ui/Confirmation';
+import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
+import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { RouterService } from '@gen-epix/ui/classes/services/RouterService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';

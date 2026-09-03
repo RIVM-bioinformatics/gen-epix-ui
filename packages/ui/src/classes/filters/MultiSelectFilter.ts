@@ -2,7 +2,7 @@ import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
 import isNumber from 'lodash/isNumber';
 import type { CommonDbTypedStringSetFilter } from '@gen-epix/api-commondb';
-import type { AutoCompleteOption } from '../../../../ui-core-form-components/src/models/form';
+import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
 
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
 import { FilterAbstract } from '../abstracts/FilterAbstract';

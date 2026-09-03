@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { CaseDbRegionRelationType } from '@gen-epix/api-casedb';
 import type { UseOptions } from '@gen-epix/ui/models/dataHooks';
-import type { OptionBase } from '../../../../ui-core-form-components/src/models/form';
+import type { OptionBase } from '@gen-epix/ui-core-form/models/form';
 
 
 export const regionRelationTypePresentationValues: Partial<Record<CaseDbRegionRelationType, string>> = {

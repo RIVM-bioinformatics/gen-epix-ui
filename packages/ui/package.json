@@ -158,29 +158,13 @@
         "types": "./dist/components/ui/ApplicationFooter/index.d.ts",
         "import": "./dist/components/ui/ApplicationFooter/index.js"
       },
-      "./components/ui/BackdropSpinner": {
-        "types": "./dist/components/ui/BackdropSpinner/index.d.ts",
-        "import": "./dist/components/ui/BackdropSpinner/index.js"
-      },
       "./components/ui/Breadcrumbs": {
         "types": "./dist/components/ui/Breadcrumbs/index.d.ts",
         "import": "./dist/components/ui/Breadcrumbs/index.js"
       },
-      "./components/ui/Confirmation": {
-        "types": "./dist/components/ui/Confirmation/index.d.ts",
-        "import": "./dist/components/ui/Confirmation/index.js"
-      },
       "./components/ui/ConsentDialog": {
         "types": "./dist/components/ui/ConsentDialog/index.d.ts",
         "import": "./dist/components/ui/ConsentDialog/index.js"
-      },
-      "./components/ui/CopyToClipboardButton": {
-        "types": "./dist/components/ui/CopyToClipboardButton/index.d.ts",
-        "import": "./dist/components/ui/CopyToClipboardButton/index.js"
-      },
-      "./components/ui/Dialog": {
-        "types": "./dist/components/ui/Dialog/index.d.ts",
-        "import": "./dist/components/ui/Dialog/index.js"
       },
       "./components/ui/GenericErrorMessage": {
         "types": "./dist/components/ui/GenericErrorMessage/index.d.ts",
@@ -190,14 +174,6 @@
         "types": "./dist/components/ui/LicensesDialog/index.d.ts",
         "import": "./dist/components/ui/LicensesDialog/index.js"
       },
-      "./components/ui/LinearProgressWithLabel": {
-        "types": "./dist/components/ui/LinearProgressWithLabel/index.d.ts",
-        "import": "./dist/components/ui/LinearProgressWithLabel/index.js"
-      },
-      "./components/ui/LoadingIndicator": {
-        "types": "./dist/components/ui/LoadingIndicator/index.d.ts",
-        "import": "./dist/components/ui/LoadingIndicator/index.js"
-      },
       "./components/ui/MyPermissionsDialog": {
         "types": "./dist/components/ui/MyPermissionsDialog/index.d.ts",
         "import": "./dist/components/ui/MyPermissionsDialog/index.js"
@@ -205,10 +181,6 @@
       "./components/ui/NavLink": {
         "types": "./dist/components/ui/NavLink/index.d.ts",
         "import": "./dist/components/ui/NavLink/index.js"
-      },
-      "./components/ui/NestedMenu": {
-        "types": "./dist/components/ui/NestedMenu/index.d.ts",
-        "import": "./dist/components/ui/NestedMenu/index.js"
       },
       "./components/ui/Notifications": {
         "types": "./dist/components/ui/Notifications/index.d.ts",
@@ -237,14 +209,6 @@
       "./components/ui/Sidebar": {
         "types": "./dist/components/ui/Sidebar/index.d.ts",
         "import": "./dist/components/ui/Sidebar/index.js"
-      },
-      "./components/ui/Spinner": {
-        "types": "./dist/components/ui/Spinner/index.d.ts",
-        "import": "./dist/components/ui/Spinner/index.js"
-      },
-      "./components/ui/Stepper": {
-        "types": "./dist/components/ui/Stepper/index.d.ts",
-        "import": "./dist/components/ui/Stepper/index.js"
       },
       "./components/ui/Table": {
         "types": "./dist/components/ui/Table/index.d.ts",
@@ -289,10 +253,6 @@
       "./dataHooks/useUsersQuery": {
         "types": "./dist/dataHooks/useUsersQuery/index.d.ts",
         "import": "./dist/dataHooks/useUsersQuery/index.js"
-      },
-      "./hoc/withDialog": {
-        "types": "./dist/hoc/withDialog/index.d.ts",
-        "import": "./dist/hoc/withDialog/index.js"
       },
       "./hoc/withPermissions": {
         "types": "./dist/hoc/withPermissions/index.d.ts",
@@ -361,10 +321,6 @@
       "./models/filter": {
         "types": "./dist/models/filter.d.ts",
         "import": "./dist/models/filter.js"
-      },
-      "./models/nestedMenu": {
-        "types": "./dist/models/nestedMenu.d.ts",
-        "import": "./dist/models/nestedMenu.js"
       },
       "./models/notification": {
         "types": "./dist/models/notification.d.ts",
@@ -661,29 +617,13 @@
       "types": "./src/components/ui/ApplicationFooter/index.ts",
       "import": "./src/components/ui/ApplicationFooter/index.ts"
     },
-    "./components/ui/BackdropSpinner": {
-      "types": "./src/components/ui/BackdropSpinner/index.ts",
-      "import": "./src/components/ui/BackdropSpinner/index.ts"
-    },
     "./components/ui/Breadcrumbs": {
       "types": "./src/components/ui/Breadcrumbs/index.ts",
       "import": "./src/components/ui/Breadcrumbs/index.ts"
     },
-    "./components/ui/Confirmation": {
-      "types": "./src/components/ui/Confirmation/index.ts",
-      "import": "./src/components/ui/Confirmation/index.ts"
-    },
     "./components/ui/ConsentDialog": {
       "types": "./src/components/ui/ConsentDialog/index.ts",
       "import": "./src/components/ui/ConsentDialog/index.ts"
-    },
-    "./components/ui/CopyToClipboardButton": {
-      "types": "./src/components/ui/CopyToClipboardButton/index.ts",
-      "import": "./src/components/ui/CopyToClipboardButton/index.ts"
-    },
-    "./components/ui/Dialog": {
-      "types": "./src/components/ui/Dialog/index.ts",
-      "import": "./src/components/ui/Dialog/index.ts"
     },
     "./components/ui/GenericErrorMessage": {
       "types": "./src/components/ui/GenericErrorMessage/index.ts",
@@ -693,14 +633,6 @@
       "types": "./src/components/ui/LicensesDialog/index.ts",
       "import": "./src/components/ui/LicensesDialog/index.ts"
     },
-    "./components/ui/LinearProgressWithLabel": {
-      "types": "./src/components/ui/LinearProgressWithLabel/index.ts",
-      "import": "./src/components/ui/LinearProgressWithLabel/index.ts"
-    },
-    "./components/ui/LoadingIndicator": {
-      "types": "./src/components/ui/LoadingIndicator/index.ts",
-      "import": "./src/components/ui/LoadingIndicator/index.ts"
-    },
     "./components/ui/MyPermissionsDialog": {
       "types": "./src/components/ui/MyPermissionsDialog/index.ts",
       "import": "./src/components/ui/MyPermissionsDialog/index.ts"
@@ -708,10 +640,6 @@
     "./components/ui/NavLink": {
       "types": "./src/components/ui/NavLink/index.ts",
       "import": "./src/components/ui/NavLink/index.ts"
-    },
-    "./components/ui/NestedMenu": {
-      "types": "./src/components/ui/NestedMenu/index.ts",
-      "import": "./src/components/ui/NestedMenu/index.ts"
     },
     "./components/ui/Notifications": {
       "types": "./src/components/ui/Notifications/index.ts",
@@ -740,14 +668,6 @@
     "./components/ui/Sidebar": {
       "types": "./src/components/ui/Sidebar/index.ts",
       "import": "./src/components/ui/Sidebar/index.ts"
-    },
-    "./components/ui/Spinner": {
-      "types": "./src/components/ui/Spinner/index.ts",
-      "import": "./src/components/ui/Spinner/index.ts"
-    },
-    "./components/ui/Stepper": {
-      "types": "./src/components/ui/Stepper/index.ts",
-      "import": "./src/components/ui/Stepper/index.ts"
     },
     "./components/ui/Table": {
       "types": "./src/components/ui/Table/index.ts",
@@ -792,10 +712,6 @@
     "./dataHooks/useUsersQuery": {
       "types": "./src/dataHooks/useUsersQuery/index.ts",
       "import": "./src/dataHooks/useUsersQuery/index.ts"
-    },
-    "./hoc/withDialog": {
-      "types": "./src/hoc/withDialog/index.ts",
-      "import": "./src/hoc/withDialog/index.ts"
     },
     "./hoc/withPermissions": {
       "types": "./src/hoc/withPermissions/index.ts",
@@ -864,10 +780,6 @@
     "./models/filter": {
       "types": "./src/models/filter.ts",
       "import": "./src/models/filter.ts"
-    },
-    "./models/nestedMenu": {
-      "types": "./src/models/nestedMenu.ts",
-      "import": "./src/models/nestedMenu.ts"
     },
     "./models/notification": {
       "types": "./src/models/notification.ts",
@@ -1044,7 +956,8 @@
     "@emotion/styled": "*",
     "@gen-epix/api-commondb": "workspace:^",
     "@gen-epix/ui-core": "workspace:^",
-    "@gen-epix/ui-core-form-components": "workspace:^",
+    "@gen-epix/ui-core-components": "workspace:^",
+    "@gen-epix/ui-core-form": "workspace:^",
     "@mui/icons-material": "*",
     "@mui/material": "*",
     "@mui/styled-engine": "*",
@@ -1088,7 +1001,8 @@
     "@gen-epix/eslint-config": "0.5.0",
     "@gen-epix/translation-util": "0.2.0",
     "@gen-epix/ui-core": "workspace:^",
-    "@gen-epix/ui-core-form-components": "workspace:^",
+    "@gen-epix/ui-core-components": "workspace:^",
+    "@gen-epix/ui-core-form": "workspace:^",
     "@microsoft/api-extractor": "7.59.0",
     "@mui/icons-material": "9.4.0",
     "@mui/material": "9.4.0",

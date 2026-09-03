@@ -27,16 +27,16 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
 
 import { SidebarItem } from '../Sidebar';
 import type { SidebarItemSharedProps } from '../Sidebar';
-import { NestedDropdown } from '../NestedMenu';
 import type {
   FilterDimension,
   Filters,
   FilterValues,
 } from '../../../models/filter';
-import type { MenuItemData } from '../../../models/nestedMenu';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 import { TableFilter } from './TableFilter';

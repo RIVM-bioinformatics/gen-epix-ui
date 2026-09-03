@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
+import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
@@ -28,7 +29,6 @@ import { NavigationHistoryService } from '../../../classes/services/NavigationHi
 import { ChooseIdentityProviderPage } from '../../../pages/ChooseIdentityProviderPage';
 import { UserManagerUtil } from '../../../utils/UserManagerUtil';
 import { NotificationsStack } from '../../ui/Notifications';
-import { Spinner } from '../../ui/Spinner';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
 import type { IdentityProviderWithAvailability } from '../../../models/auth';
 import { ConfigService } from '../../../classes/services/ConfigService';

@@ -21,20 +21,20 @@ import type {
   CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { ConfirmationRefMethods } from '@gen-epix/ui/components/ui/Confirmation';
-import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
+import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui/hoc/withDialog';
-import { Confirmation } from '@gen-epix/ui/components/ui/Confirmation';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
-import { Spinner } from '@gen-epix/ui/components/ui/Spinner';
+import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { useDeleteMutation } from '@gen-epix/ui/hooks/useDeleteMutation';
 import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
 import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
-import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { Typography } from '@mui/material';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';

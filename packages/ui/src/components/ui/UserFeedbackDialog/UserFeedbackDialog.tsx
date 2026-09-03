@@ -17,21 +17,21 @@ import {
   Typography,
 } from '@mui/material';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { SchemaUtil } from '../../../../../ui-core-form-components/src/utils/SchemaUtil';
-import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '../../../../../ui-core-form-components/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../../ui-core-form-components/src/models/form';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
+import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type {
+  WithDialogRefMethods,
+  WithDialogRenderProps,
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';
 import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';
 import { NotificationService } from '../../../classes/services/NotificationService';
 import { UserSettingsService } from '../../../classes/services/UserSettingsService';
-import type {
-  WithDialogRefMethods,
-  WithDialogRenderProps,
-} from '../../../hoc/withDialog';
-import { withDialog } from '../../../hoc/withDialog';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 
 export interface UserFeedbackDialogOpenProps {
@@ -80,23 +80,23 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   }, []);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        label: t`Name`,
-        name: 'name',
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        label: t`Email`,
-        name: 'email',
-      } as const satisfies FormFieldDefinition<FormFields>,
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        label: t`Your message`,
-        multiline: true,
-        name: 'message',
-        rows: 15,
-      } as const satisfies FormFieldDefinition<FormFields>,
+    {
+      definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+      label: t`Name`,
+      name: 'name',
+    } as const satisfies FormFieldDefinition<FormFields>,
+    {
+      definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+      label: t`Email`,
+      name: 'email',
+    } as const satisfies FormFieldDefinition<FormFields>,
+    {
+      definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+      label: t`Your message`,
+      multiline: true,
+      name: 'message',
+      rows: 15,
+    } as const satisfies FormFieldDefinition<FormFields>,
   ] as const, [t]);
 
   useEffect(() => {

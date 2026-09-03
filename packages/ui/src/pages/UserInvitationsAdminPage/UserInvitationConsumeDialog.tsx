@@ -17,15 +17,15 @@ import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { GenericForm } from '../../../../ui-core-form-components/src/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
-
+import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../hoc/withDialog';
-import { withDialog } from '../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+
 import { AuthenticationService } from '../../classes/services/AuthenticationService';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { NotificationService } from '../../classes/services/NotificationService';
@@ -63,13 +63,13 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
   }), []);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
-      {
-        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
-        label: t`Bearer Token`,
-        multiline: true,
-        name: 'bearerToken',
-        rows: 10,
-      } as const satisfies FormFieldDefinition<FormFields>,
+    {
+      definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+      label: t`Bearer Token`,
+      multiline: true,
+      name: 'bearerToken',
+      rows: 10,
+    } as const satisfies FormFieldDefinition<FormFields>,
   ] as const, [t]);
 
   const formMethods = useForm<FormFields>({

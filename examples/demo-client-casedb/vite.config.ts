@@ -86,10 +86,10 @@ export default defineConfig({
           ],
         },
         {
-          dest: './locale/ui-core-form-components',
+          dest: './locale/ui-core-form',
           rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
           src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui-core-form-components', 'src', 'locale', '*.json')),
+            normalizePath(resolve(gitRootPath, 'packages', 'ui-core-form', 'src', 'locale', '*.json')),
           ],
         },
         {

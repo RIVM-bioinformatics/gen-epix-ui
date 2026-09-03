@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
-import { CheckboxGroup } from '../../../../../ui-core-form-components/src/components/fields/CheckboxGroup';
-import { Autocomplete } from '../../../../../ui-core-form-components/src/components/fields/Autocomplete';
+import { CheckboxGroup } from '@gen-epix/ui-core-form/components/fields/CheckboxGroup';
+import { Autocomplete } from '@gen-epix/ui-core-form/components/fields/Autocomplete';
 
 import type { GeoFilter } from '../../../classes/filters/GeoFilter';
 

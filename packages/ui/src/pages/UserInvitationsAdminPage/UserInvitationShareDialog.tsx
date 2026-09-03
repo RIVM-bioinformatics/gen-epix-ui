@@ -14,14 +14,14 @@ import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
-
-import { ConfigService } from '../../classes/services/ConfigService';
-import { CopyToClipboardButton } from '../../components/ui/CopyToClipboardButton';
+import { CopyToClipboardButton } from '@gen-epix/ui-core-components/components/CopyToClipboardButton';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../hoc/withDialog';
-import { withDialog } from '../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+
+import { ConfigService } from '../../classes/services/ConfigService';
 
 export interface UserInvitationShareDialogOpenProps {
   item: CommonDbUserInvitation;

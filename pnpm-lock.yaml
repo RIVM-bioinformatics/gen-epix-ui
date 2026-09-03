@@ -606,9 +606,12 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
-      '@gen-epix/ui-core-form-components':
+      '@gen-epix/ui-core-components':
         specifier: workspace:^
-        version: link:../ui-core-form-compoments
+        version: link:../ui-core-components
+      '@gen-epix/ui-core-form':
+        specifier: workspace:^
+        version: link:../ui-core-form
       '@microsoft/api-extractor':
         specifier: 7.59.0
         version: 7.59.0(@types/node@26.4.0)
@@ -790,9 +793,12 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
-      '@gen-epix/ui-core-form-components':
+      '@gen-epix/ui-core-components':
         specifier: workspace:^
-        version: link:../ui-core-form-compoments
+        version: link:../ui-core-components
+      '@gen-epix/ui-core-form':
+        specifier: workspace:^
+        version: link:../ui-core-form
       '@gen-epix/ui-phylogenetic-tree':
         specifier: workspace:^
         version: link:../ui-phylogenetic-tree
@@ -997,7 +1003,7 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
 
-  packages/ui-core-form-compoments:
+  packages/ui-core-form:
     dependencies:
       '@tiptap/core':
         specifier: 3.31.0
@@ -1217,9 +1223,9 @@ importers:
       '@gen-epix/ui':
         specifier: workspace:^
         version: link:../ui
-      '@gen-epix/ui-core-form-components':
+      '@gen-epix/ui-core-form':
         specifier: workspace:^
-        version: link:../ui-core-form-compoments
+        version: link:../ui-core-form
       '@microsoft/api-extractor':
         specifier: 7.59.0
         version: 7.59.0(@types/node@26.4.0)
@@ -1404,9 +1410,9 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
-      '@gen-epix/ui-core-form-components':
+      '@gen-epix/ui-core-form':
         specifier: workspace:^
-        version: link:../ui-core-form-compoments
+        version: link:../ui-core-form
       '@microsoft/api-extractor':
         specifier: 7.59.0
         version: 7.59.0(@types/node@26.4.0)

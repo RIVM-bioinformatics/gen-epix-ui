@@ -26,21 +26,21 @@ import type {
   CaseDbTypedUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { DialogAction } from '@gen-epix/ui/components/ui/Dialog';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '@gen-epix/ui/hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
 import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { useEditMutation } from '@gen-epix/ui/hooks/useEditMutation';
 import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
-import { withDialog } from '@gen-epix/ui/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { FormUtil } from '../../../../../ui-core-form-components/src/utils/FormUtil';
-import { Select } from '../../../../../ui-core-form-components/src/components/fields/Select';
-import { Autocomplete } from '../../../../../ui-core-form-components/src/components/fields/Autocomplete';
+import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
+import { Select } from '@gen-epix/ui-core-form/components/fields/Select';
+import { Autocomplete } from '@gen-epix/ui-core-form/components/fields/Autocomplete';
 
 import {
   useCaseSetOptionsQuery,

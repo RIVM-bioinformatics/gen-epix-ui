@@ -25,9 +25,9 @@ import { CrudPage } from '@gen-epix/ui/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
-import { SchemaUtil } from '../../../../ui-core-form-components/src/utils/SchemaUtil';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';

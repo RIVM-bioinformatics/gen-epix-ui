@@ -20,16 +20,16 @@ import type {
 import { useForm } from 'react-hook-form';
 import { useDebouncedCallback } from 'use-debounce';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { GenericForm } from '../../../../ui-core-form-components/src/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
-import { FormUtil } from '../../../../ui-core-form-components/src/utils/FormUtil';
-
-import type { DialogAction } from '../../components/ui/Dialog';
+import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
-} from '../../hoc/withDialog';
-import { withDialog } from '../../hoc/withDialog';
+} from '@gen-epix/ui-core-components/hoc/withDialog';
+import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
+
 import type { GenericData } from '../../models/data';
 
 

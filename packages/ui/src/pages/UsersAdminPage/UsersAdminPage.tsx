@@ -31,9 +31,11 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type {
   FormFieldDefinition,
   OptionBase,
-} from '../../../../ui-core-form-components/src/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
-import { SchemaUtil } from '../../../../ui-core-form-components/src/utils/SchemaUtil';
+} from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
+import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
+import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
@@ -48,8 +50,6 @@ import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserCons
 import type { OmitWithMetaData } from '../../models/data';
 import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
-import type { ConfirmationRefMethods } from '../../components/ui/Confirmation';
-import { Confirmation } from '../../components/ui/Confirmation';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 
