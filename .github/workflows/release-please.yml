@@ -39,7 +39,7 @@ jobs:
       api-omopdb-release-created: ${{ steps.release.outputs['packages/api-omopdb--release_created'] }}
       api-omopdb-tag-name: ${{ steps.release.outputs['packages/api-omopdb--tag_name'] }}
     steps:
-      - uses: googleapis/release-please-action@v4.2.0
+      - uses: googleapis/release-please-action@v5.0.0
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
