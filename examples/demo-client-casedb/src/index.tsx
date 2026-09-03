@@ -2,9 +2,9 @@ import { createRoot } from 'react-dom/client';
 import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import type { CaseDbConfig } from '@gen-epix/ui-casedb/models/config';
-import { CaseDbApp } from '@gen-epix/ui-casedb/components/app/CaseDbApp';
-import { setupCaseDb } from '@gen-epix/ui-casedb/setup/setup';
+import type { CaseDbConfig } from '@gen-epix/ui-client-casedb/models/config';
+import { CaseDbApp } from '@gen-epix/ui-client-casedb/components/app/CaseDbApp';
+import { setupCaseDb } from '@gen-epix/ui-client-casedb/setup/setup';
 
 import { ConfigUtil } from './utils/ConfigUtil';
 
@@ -21,7 +21,7 @@ const init = async () => {
           '/locale/en.json',
           '/locale/ui/en.json',
           '/locale/ui-core-form/en.json',
-          '/locale/ui-casedb/en.json',
+          '/locale/ui-client-casedb/en.json',
         ],
         code: 'en',
       },
@@ -30,7 +30,7 @@ const init = async () => {
           '/locale/nl.json',
           '/locale/ui/nl.json',
           '/locale/ui-core-form/nl.json',
-          '/locale/ui-casedb/nl.json',
+          '/locale/ui-client-casedb/nl.json',
         ],
         code: 'nl',
       },

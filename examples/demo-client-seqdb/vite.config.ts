@@ -94,10 +94,10 @@ export default defineConfig({
           ],
         },
         {
-          dest: './locale/ui-seqdb',
+          dest: './locale/ui-client-seqdb',
           rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
           src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui-seqdb', 'src', 'locale', '*.json')),
+            normalizePath(resolve(gitRootPath, 'packages', 'ui-client-seqdb', 'src', 'locale', '*.json')),
           ],
         },
       ],

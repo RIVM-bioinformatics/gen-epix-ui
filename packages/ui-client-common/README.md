@@ -24,7 +24,7 @@ The platform is currently in beta and is not yet intended for production use. Fe
 
 Low-level, framework-agnostic primitives (services such as `WindowService`, utility classes, event bus abstractions, and generic hooks) live in `@gen-epix/ui-core`, which this package depends on.
 
-This package is not a standalone application. It is the foundation used by the domain-specific packages (`@gen-epix/ui-casedb`, `@gen-epix/ui-omopdb`, `@gen-epix/ui-seqdb`), each of which adds their own routes, pages, and API wiring on top.
+This package is not a standalone application. It is the foundation used by the domain-specific packages (`@gen-epix/ui-client-casedb`, `@gen-epix/ui-client-omopdb`, `@gen-epix/ui-client-seqdb`), each of which adds their own routes, pages, and API wiring on top.
 
 ## Installation
 
@@ -36,7 +36,7 @@ Refer to `package.json` for the full list of peer dependencies that your host ap
 
 ## Usage
 
-The example below shows the minimal bootstrap for a host application that uses `@gen-epix/ui-client-common` directly (without a domain package on top). Domain-specific packages like `@gen-epix/ui-casedb` wrap this pattern — see their READMEs for the recommended usage.
+The example below shows the minimal bootstrap for a host application that uses `@gen-epix/ui-client-common` directly (without a domain package on top). Domain-specific packages like `@gen-epix/ui-client-casedb` wrap this pattern — see their READMEs for the recommended usage.
 
 ```tsx
 import { createRoot } from 'react-dom/client';

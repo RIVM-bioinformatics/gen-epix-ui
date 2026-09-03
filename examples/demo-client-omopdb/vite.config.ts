@@ -94,10 +94,10 @@ export default defineConfig({
           ],
         },
         {
-          dest: './locale/ui-omopdb',
+          dest: './locale/ui-client-omopdb',
           rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
           src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui-omopdb', 'src', 'locale', '*.json')),
+            normalizePath(resolve(gitRootPath, 'packages', 'ui-client-omopdb', 'src', 'locale', '*.json')),
           ],
         },
       ],

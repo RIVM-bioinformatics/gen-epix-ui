@@ -11,9 +11,9 @@ Gen-EpiX UI is a pnpm/Lerna monorepo for the frontend libraries and demo clients
 of the Gen-EpiX genomic epidemiology platform.
 
 - `packages/ui-client-common`: core React component library shared by all Gen-EpiX frontends.
-- `packages/ui-casedb`: Case DB UI built on top of `@gen-epix/ui-client-common`.
-- `packages/ui-omopdb`: OMOP DB UI built on top of `@gen-epix/ui-client-common`.
-- `packages/ui-seqdb`: Sequence DB UI built on top of `@gen-epix/ui-client-common`.
+- `packages/ui-client-casedb`: Case DB UI built on top of `@gen-epix/ui-client-common`.
+- `packages/ui-client-omopdb`: OMOP DB UI built on top of `@gen-epix/ui-client-common`.
+- `packages/ui-client-seqdb`: Sequence DB UI built on top of `@gen-epix/ui-client-common`.
 - `packages/api-casedb`: generated Case DB API client.
 - `packages/api-commondb`: generated Common DB API client.
 - `packages/api-omopdb`: generated OMOP DB API client.

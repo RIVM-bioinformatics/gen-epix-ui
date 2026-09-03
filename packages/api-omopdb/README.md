@@ -23,7 +23,7 @@ The package exposes the following top-level API groups:
 - `OmopDbOrganizationApi`
 - `OmopDbSystemApi`
 
-It is consumed by `@gen-epix/ui-omopdb`, but can also be used independently in any application that needs direct access to the OMOP DB endpoints.
+It is consumed by `@gen-epix/ui-client-omopdb`, but can also be used independently in any application that needs direct access to the OMOP DB endpoints.
 
 ## Installation
 

@@ -20,12 +20,12 @@ jobs:
       ui-core-tag-name: ${{ steps.release.outputs['packages/ui-core--tag_name'] }}
       ui-core-components-release-created: ${{ steps.release.outputs['packages/ui-core-components--release_created'] }}
       ui-core-components-tag-name: ${{ steps.release.outputs['packages/ui-core-components--tag_name'] }}
-      ui-casedb-release-created: ${{ steps.release.outputs['packages/ui-casedb--release_created'] }}
-      ui-casedb-tag-name: ${{ steps.release.outputs['packages/ui-casedb--tag_name'] }}
-      ui-omopdb-release-created: ${{ steps.release.outputs['packages/ui-omopdb--release_created'] }}
-      ui-omopdb-tag-name: ${{ steps.release.outputs['packages/ui-omopdb--tag_name'] }}
-      ui-seqdb-release-created: ${{ steps.release.outputs['packages/ui-seqdb--release_created'] }}
-      ui-seqdb-tag-name: ${{ steps.release.outputs['packages/ui-seqdb--tag_name'] }}
+      ui-client-casedb-release-created: ${{ steps.release.outputs['packages/ui-client-casedb--release_created'] }}
+      ui-client-casedb-tag-name: ${{ steps.release.outputs['packages/ui-client-casedb--tag_name'] }}
+      ui-client-omopdb-release-created: ${{ steps.release.outputs['packages/ui-client-omopdb--release_created'] }}
+      ui-client-omopdb-tag-name: ${{ steps.release.outputs['packages/ui-client-omopdb--tag_name'] }}
+      ui-client-seqdb-release-created: ${{ steps.release.outputs['packages/ui-client-seqdb--release_created'] }}
+      ui-client-seqdb-tag-name: ${{ steps.release.outputs['packages/ui-client-seqdb--tag_name'] }}
       ui-phylogenetic-tree-release-created: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--release_created'] }}
       ui-phylogenetic-tree-tag-name: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--tag_name'] }}
       ui-core-form-release-created: ${{ steps.release.outputs['packages/ui-core-form--release_created'] }}
@@ -46,9 +46,9 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-  publish-ui-casedb:
+  publish-ui-client-casedb:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-casedb-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-client-casedb-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -66,22 +66,22 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-casedb run build
+        run: pnpm --filter @gen-epix/ui-client-casedb run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-casedb publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-client-casedb publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-casedb.zip packages/ui-casedb/dist
+        run: zip -r gen-epix-ui-client-casedb.zip packages/ui-client-casedb/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-casedb-tag-name }} gen-epix-ui-casedb.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-casedb-tag-name }} gen-epix-ui-client-casedb.zip
 
-  publish-ui-omopdb:
+  publish-ui-client-omopdb:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-omopdb-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-client-omopdb-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -99,22 +99,22 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-omopdb run build
+        run: pnpm --filter @gen-epix/ui-client-omopdb run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-omopdb publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-client-omopdb publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-omopdb.zip packages/ui-omopdb/dist
+        run: zip -r gen-epix-ui-client-omopdb.zip packages/ui-client-omopdb/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-omopdb-tag-name }} gen-epix-ui-omopdb.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-omopdb-tag-name }} gen-epix-ui-client-omopdb.zip
 
-  publish-ui-seqdb:
+  publish-ui-client-seqdb:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-seqdb-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-client-seqdb-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -132,18 +132,18 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-seqdb run build
+        run: pnpm --filter @gen-epix/ui-client-seqdb run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-seqdb publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-client-seqdb publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-seqdb.zip packages/ui-seqdb/dist
+        run: zip -r gen-epix-ui-client-seqdb.zip packages/ui-client-seqdb/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-seqdb-tag-name }} gen-epix-ui-seqdb.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-seqdb-tag-name }} gen-epix-ui-client-seqdb.zip
 
   publish-ui-client-common:
     needs: release-please

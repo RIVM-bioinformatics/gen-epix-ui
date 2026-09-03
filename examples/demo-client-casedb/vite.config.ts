@@ -93,10 +93,10 @@ export default defineConfig({
           ],
         },
         {
-          dest: './locale/ui-casedb',
+          dest: './locale/ui-client-casedb',
           rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
           src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui-casedb', 'src', 'locale', '*.json')),
+            normalizePath(resolve(gitRootPath, 'packages', 'ui-client-casedb', 'src', 'locale', '*.json')),
           ],
         },
       ],

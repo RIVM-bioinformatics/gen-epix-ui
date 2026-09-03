@@ -1,6 +1,6 @@
-import type { SeqDbConfig } from '@gen-epix/ui-seqdb/models/config';
-import { SeqDbStandardConfigUtil } from '@gen-epix/ui-seqdb/utils/SeqDbStandardConfigUtil';
-import { createSeqDbDemoTheme } from '@gen-epix/ui-seqdb/theme/demoTheme';
+import type { SeqDbConfig } from '@gen-epix/ui-client-seqdb/models/config';
+import { SeqDbStandardConfigUtil } from '@gen-epix/ui-client-seqdb/utils/SeqDbStandardConfigUtil';
+import { createSeqDbDemoTheme } from '@gen-epix/ui-client-seqdb/theme/demoTheme';
 import { t } from 'i18next';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';

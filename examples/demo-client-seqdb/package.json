@@ -21,7 +21,7 @@
     "@gen-epix/api-seqdb": "workspace:^",
     "@gen-epix/ui-client-common": "workspace:^",
     "@gen-epix/ui-core": "workspace:^",
-    "@gen-epix/ui-seqdb": "workspace:^",
+    "@gen-epix/ui-client-seqdb": "workspace:^",
     "@mui/icons-material": "9.4.0",
     "@mui/material": "9.4.0",
     "@mui/styled-engine": "9.4.0",
