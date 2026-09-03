@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.0.0...ui-phylogenetic-tree-v3.0.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* fix build ([d8fc239](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d8fc239c7119fcb8c6a37c320911b4dfef4aff31))
+
 ## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v2.2.0...ui-phylogenetic-tree-v3.0.0) (2026-09-03)
 
 
