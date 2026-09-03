@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.0.1...ui-client-common-v4.0.2) (2026-09-03)
+
+
+### Bug Fixes
+
+* fix exports ([a97f608](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a97f6080402d6ae49d6d0a4a3a8274157b85eb3b))
+
 ## [4.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.0.0...ui-client-common-v4.0.1) (2026-09-03)
 
 
