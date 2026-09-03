@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v3.1.0...api-casedb-v4.0.0) (2026-09-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename UI packages and update release configuration
+
+### Features
+
+* rename UI packages and update release configuration ([ac01335](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ac0133582dd9872e5ccc33b1b997fff182a2c861))
+* update to latest api, add unit ([fd04a3e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fd04a3eb4ed757f467ef57f9a569efcf3451471d))
+
 ## [3.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-casedb-v3.0.0...api-casedb-v3.1.0) (2026-09-01)
 
 
