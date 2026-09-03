@@ -207,6 +207,14 @@
         "types": "./dist/constants/query.d.ts",
         "import": "./dist/constants/query.js"
       },
+      "./context/caseAbac": {
+        "types": "./dist/context/caseAbac/index.d.ts",
+        "import": "./dist/context/caseAbac/index.js"
+      },
+      "./context/caseTypeAbac": {
+        "types": "./dist/context/caseTypeAbac/index.d.ts",
+        "import": "./dist/context/caseTypeAbac/index.js"
+      },
       "./dataHooks/useAssemblyProtocolsQuery": {
         "types": "./dist/dataHooks/useAssemblyProtocolsQuery/index.d.ts",
         "import": "./dist/dataHooks/useAssemblyProtocolsQuery/index.js"
@@ -865,6 +873,14 @@
     "./constants/query": {
       "types": "./src/constants/query.ts",
       "import": "./src/constants/query.ts"
+    },
+    "./context/caseAbac": {
+      "types": "./src/context/caseAbac/index.ts",
+      "import": "./src/context/caseAbac/index.ts"
+    },
+    "./context/caseTypeAbac": {
+      "types": "./src/context/caseTypeAbac/index.ts",
+      "import": "./src/context/caseTypeAbac/index.ts"
     },
     "./dataHooks/useAssemblyProtocolsQuery": {
       "types": "./src/dataHooks/useAssemblyProtocolsQuery/index.ts",
