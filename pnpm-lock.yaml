@@ -108,6 +108,9 @@ importers:
       '@gen-epix/generate-license-manifest':
         specifier: 0.2.0
         version: 0.2.0
+      '@gen-epix/merge-locales':
+        specifier: 0.0.2
+        version: 0.0.2
       '@gen-epix/oidc-mock-server':
         specifier: 0.4.1
         version: 0.4.1
@@ -144,9 +147,6 @@ importers:
       vite:
         specifier: 8.2.2
         version: 8.2.2(@types/node@26.4.1)(yaml@2.9.0)
-      vite-plugin-static-copy:
-        specifier: 4.1.1
-        version: 4.1.1(vite@8.2.2(@types/node@26.4.1)(yaml@2.9.0))
       vite-plugin-svgr:
         specifier: 5.2.0
         version: 5.2.0(supports-color@5.5.0)(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.1)(yaml@2.9.0))
@@ -232,6 +232,9 @@ importers:
       '@gen-epix/generate-license-manifest':
         specifier: 0.2.0
         version: 0.2.0
+      '@gen-epix/merge-locales':
+        specifier: 0.0.2
+        version: 0.0.2
       '@gen-epix/oidc-mock-server':
         specifier: 0.4.1
         version: 0.4.1
@@ -268,9 +271,6 @@ importers:
       vite:
         specifier: 8.2.2
         version: 8.2.2(@types/node@26.4.1)(yaml@2.9.0)
-      vite-plugin-static-copy:
-        specifier: 4.1.1
-        version: 4.1.1(vite@8.2.2(@types/node@26.4.1)(yaml@2.9.0))
       vite-plugin-svgr:
         specifier: 5.2.0
         version: 5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.1)(yaml@2.9.0))
@@ -356,6 +356,9 @@ importers:
       '@gen-epix/generate-license-manifest':
         specifier: 0.2.0
         version: 0.2.0
+      '@gen-epix/merge-locales':
+        specifier: 0.0.2
+        version: 0.0.2
       '@gen-epix/oidc-mock-server':
         specifier: 0.4.1
         version: 0.4.1
@@ -392,9 +395,6 @@ importers:
       vite:
         specifier: 8.2.2
         version: 8.2.2(@types/node@26.4.1)(yaml@2.9.0)
-      vite-plugin-static-copy:
-        specifier: 4.1.1
-        version: 4.1.1(vite@8.2.2(@types/node@26.4.1)(yaml@2.9.0))
       vite-plugin-svgr:
         specifier: 5.2.0
         version: 5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.1)(yaml@2.9.0))
@@ -1989,6 +1989,10 @@ packages:
 
   '@gen-epix/generate-license-manifest@0.2.0':
     resolution: {integrity: sha512-ON/8g5OWq5JTqfOEvEiBRYpMLc8Ptn8Jq3QyWQpquVN92nuE8YYaXEW/CPMwGSjbM8EGJc/4NyXJdoYx9gYHXw==}
+    hasBin: true
+
+  '@gen-epix/merge-locales@0.0.2':
+    resolution: {integrity: sha512-CvDHf0UYrUN13MyLJW/deVOJsJn/2h6Kv3l/NEojmcPSrZPrhoBHFGi6mLFdIldkUYyR/VRWhnjsAfGzkdF1wQ==}
     hasBin: true
 
   '@gen-epix/oidc-mock-server@0.4.1':
@@ -8051,6 +8055,8 @@ snapshots:
   '@gen-epix/generate-license-manifest@0.2.0':
     dependencies:
       '@gen-epix/tools-lib': 0.1.1
+
+  '@gen-epix/merge-locales@0.0.2': {}
 
   '@gen-epix/oidc-mock-server@0.4.1':
     dependencies:

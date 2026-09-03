@@ -19,20 +19,12 @@ const init = async () => {
       {
         bundles: [
           '/locale/en.json',
-          '/locale/ui/en.json',
-          '/locale/ui-core-form/en.json',
-          '/locale/ui-client-common/en.json',
-          '/locale/ui-client-seqdb/en.json',
         ],
         code: 'en',
       },
       {
         bundles: [
           '/locale/nl.json',
-          '/locale/ui/nl.json',
-          '/locale/ui-core-form/nl.json',
-          '/locale/ui-client-common/nl.json',
-          '/locale/ui-client-seqdb/nl.json',
         ],
         code: 'nl',
       },

@@ -1,57 +1,57 @@
 # Changelog
 
-## [3.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v3.1.3...ui-casedb-v3.2.0) (2026-09-01)
+## [3.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v3.1.3...ui-casedb-v3.2.0) (2026-09-01)
 
 
 ### Features
 
 * update dependencies ([d84eb74](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d84eb749eb95f385616ca6c0621e88128b15fd0d))
 
-## [3.1.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v3.1.2...ui-casedb-v3.1.3) (2026-08-31)
+## [3.1.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v3.1.2...ui-casedb-v3.1.3) (2026-08-31)
 
 
 ### Bug Fixes
 
 * update package exports once more, fix /types export ([27e1d93](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/27e1d934e856f2164c0c76284226a541ff485b43))
 
-## [3.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v3.1.1...ui-casedb-v3.1.2) (2026-08-31)
+## [3.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v3.1.1...ui-casedb-v3.1.2) (2026-08-31)
 
 
 ### Bug Fixes
 
 * fix types export ([6373072](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/63730727164f5db5f49ad73ee210525c9e44d75b))
 
-## [3.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v3.1.0...ui-casedb-v3.1.1) (2026-08-28)
+## [3.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v3.1.0...ui-casedb-v3.1.1) (2026-08-28)
 
 
 ### Bug Fixes
 
 * fix incorrect build ([443cd25](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/443cd254e2cfed5c51bf8a04295027504dac4840))
 
-## [3.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v3.0.1...ui-casedb-v3.1.0) (2026-08-28)
+## [3.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v3.0.1...ui-casedb-v3.1.0) (2026-08-28)
 
 
 ### Features
 
 * add esmExternalRequirePlugin ([e26062f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e26062f4180dab04dd46382d75ab4deb013cadda))
 
-## [3.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v3.0.0...ui-casedb-v3.0.1) (2026-08-28)
+## [3.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v3.0.0...ui-casedb-v3.0.1) (2026-08-28)
 
 
 ### Bug Fixes
 
 * make react-i18next a peer dependency in ui-casedb ([60e0868](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/60e0868208fbac9518d8ddd4377e10e19d885d4b))
 
-## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.11.0...ui-casedb-v3.0.0) (2026-08-28)
+## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.11.0...ui-casedb-v3.0.0) (2026-08-28)
 
 
 ### ⚠ BREAKING CHANGES
 
-* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
+* add @gen-epix/ui-core, @gen-epix/ui-core-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
 
 ### Features
 
-* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
+* add @gen-epix/ui-core, @gen-epix/ui-core-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
 * improve widget unavailable messages ([212d1bd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/212d1bd7c2cae5b90cb36b15e509454c24379d33))
 * improve widget unavailable messages ([fb88637](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fb88637198a096f0bb68444eaddc9498e48f6075))
 * update to latest API ([2220fb5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2220fb503410068571c18127b83bb075f18e8ccb))
@@ -62,14 +62,14 @@
 * add test attributes to search box and handle escape key better ([a98014e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a98014e4f2c0a565ea5c5df3d0f84db2005021ec))
 * fix CSP violation in Histogram Tooltip ([91dd304](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/91dd304f16ddb00d636db841d5b352e741df2965))
 
-## [2.11.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.10.0...ui-casedb-v2.11.0) (2026-07-16)
+## [2.11.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.10.0...ui-casedb-v2.11.0) (2026-07-16)
 
 
 ### Features
 
 * force coordinated package release ([4801965](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4801965482eadf6119651075c4d4adda8633333f))
 
-## [2.10.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.9.0...ui-casedb-v2.10.0) (2026-07-16)
+## [2.10.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.9.0...ui-casedb-v2.10.0) (2026-07-16)
 
 
 ### Features
@@ -89,21 +89,21 @@
 * fix highlighting in HistogramWidget and EpiCurveWidget ([b9e27b4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b9e27b409d224aa2affb84d248bbee226d5f6c7a))
 * remove usage of deprecated triggerLineEvent in echarts ([b7b0c78](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b7b0c78352424c5fe5dd8043c9ed8a7fa2da287b))
 
-## [2.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.8.0...ui-casedb-v2.9.0) (2026-07-03)
+## [2.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.8.0...ui-casedb-v2.9.0) (2026-07-03)
 
 
 ### Features
 
 * update dependencies ([410ec9f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/410ec9f1243ba7dd329a82183eafc787c828b52a))
 
-## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.7.0...ui-casedb-v2.8.0) (2026-07-03)
+## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.7.0...ui-casedb-v2.8.0) (2026-07-03)
 
 
 ### Features
 
 * major renaming of files and components ([1d1b24d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1d1b24d1495c922d2528786be5ad871163d7d58b))
 
-## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.6.2...ui-casedb-v2.7.0) (2026-07-02)
+## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.6.2...ui-casedb-v2.7.0) (2026-07-02)
 
 
 ### Features
@@ -116,21 +116,21 @@
 * allow dates from before 20 years ago ([0fc3a8b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0fc3a8b53085b8853b5bb6761bd8666e345c2c4e))
 * fix reset button label in widget settings ([cd6106d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/cd6106dad95bb2b32bc9c74676ff82c8cc17c379))
 
-## [2.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.6.1...ui-casedb-v2.6.2) (2026-07-01)
+## [2.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.6.1...ui-casedb-v2.6.2) (2026-07-01)
 
 
 ### Bug Fixes
 
 * prevent demo theme from unnecessary creation in demo config ([c713406](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c713406161567a13ee71467842ebc091d337e102))
 
-## [2.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.6.0...ui-casedb-v2.6.1) (2026-07-01)
+## [2.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.6.0...ui-casedb-v2.6.1) (2026-07-01)
 
 
 ### Bug Fixes
 
 * fix build (after closing dts bug) ([eeee812](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/eeee812b5c021383ad9fd304d59c9478700bc01d))
 
-## [2.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.5.0...ui-casedb-v2.6.0) (2026-07-01)
+## [2.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.5.0...ui-casedb-v2.6.0) (2026-07-01)
 
 
 ### Features
@@ -144,7 +144,7 @@
 * fix echarts tooltip CSP violation ([164bbb5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/164bbb5f198d01936200492a1990c2eb9d488aea))
 * fix non-passive wheel event ([1358f80](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1358f80ef94f5c1eaf5291c59f8331d7ba806c4b))
 
-## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.4.2...ui-casedb-v2.5.0) (2026-06-22)
+## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.4.2...ui-casedb-v2.5.0) (2026-06-22)
 
 
 ### Features
@@ -167,21 +167,21 @@
 * pylogenetic tree is now clamped to the edges even when the width of the canvas changes ([dfb5597](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/dfb559759f736ecf5c1e0aa411db9de7e32671f5))
 * update dependencies react-hook-form and uuid ([e73eadc](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e73eadc5eebacce2f5335b5a378ace2d735308a7))
 
-## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.4.1...ui-casedb-v2.4.2) (2026-06-12)
+## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.4.1...ui-casedb-v2.4.2) (2026-06-12)
 
 
 ### Bug Fixes
 
 * correctly set peer dependencies ([5745966](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5745966003e6bca7ec1599a0a0979efc2c6c3b82))
 
-## [2.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.4.0...ui-casedb-v2.4.1) (2026-06-12)
+## [2.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.4.0...ui-casedb-v2.4.1) (2026-06-12)
 
 
 ### Bug Fixes
 
 * upgrade all dependencies to latest ([b1e01aa](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b1e01aa0fc369405a620a38a964690d121e695b7))
 
-## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.3.0...ui-casedb-v2.4.0) (2026-06-12)
+## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.3.0...ui-casedb-v2.4.0) (2026-06-12)
 
 
 ### Features
@@ -201,7 +201,7 @@
 * fix sorting of case type cols ([db500e7](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/db500e7b6cbdc60c2706402d5ccc0da850a88ead))
 * reload selected id's after adding a tree filter ([9e1e9e0](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9e1e9e0abcf209ed74ce105318da886be65b4707))
 
-## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.2.3...ui-casedb-v2.3.0) (2026-05-20)
+## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.2.3...ui-casedb-v2.3.0) (2026-05-20)
 
 
 ### Features
@@ -216,28 +216,28 @@
 * improve area epi curve performance ([ce9b06b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ce9b06b1b153afe1a1616961bc6fd2e22c23b01c))
 * re-fix rendering tree when all leaves have 0 distance ([ee2be7c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ee2be7cc6d1f938ca3c678b7e6a17996b9a19488))
 
-## [2.2.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.2.2...ui-casedb-v2.2.3) (2026-05-14)
+## [2.2.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.2.2...ui-casedb-v2.2.3) (2026-05-14)
 
 
 ### Bug Fixes
 
 * force release ([72e5083](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/72e5083b620e2f11dddfea5d9147f0fc52d511df))
 
-## [2.2.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.2.1...ui-casedb-v2.2.2) (2026-05-14)
+## [2.2.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.2.1...ui-casedb-v2.2.2) (2026-05-14)
 
 
 ### Bug Fixes
 
 * broaden the semver range for workspace dependencies ([4ddbac5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4ddbac55a35865cefabff8e0e8cad78a1d0aed39))
 
-## [2.2.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.2.0...ui-casedb-v2.2.1) (2026-05-14)
+## [2.2.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.2.0...ui-casedb-v2.2.1) (2026-05-14)
 
 
 ### Bug Fixes
 
 * fix peer dependencies ([ae4d888](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ae4d8885c4ae8a2282d6cfa93885e2a62538dc95))
 
-## [2.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.1.2...ui-casedb-v2.2.0) (2026-05-14)
+## [2.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.1.2...ui-casedb-v2.2.0) (2026-05-14)
 
 
 ### Features
@@ -249,7 +249,7 @@
 
 * fix legenda item disabledd state ([529eb65](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/529eb65c3d770d8b89c7969aee2c7102190ab2b3))
 
-## [2.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.1.1...ui-casedb-v2.1.2) (2026-05-12)
+## [2.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.1.1...ui-casedb-v2.1.2) (2026-05-12)
 
 
 ### Bug Fixes
@@ -257,49 +257,49 @@
 * fix build ([72b206b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/72b206b10f090015892c684140ce6bef835b94ee))
 * fix build ([d6fbb5a](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d6fbb5ae88510e7a40aa61fbf93201c9295cbe55))
 
-## [2.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.1.0...ui-casedb-v2.1.1) (2026-05-12)
+## [2.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.1.0...ui-casedb-v2.1.1) (2026-05-12)
 
 
 ### Bug Fixes
 
 * add logging (debugging) ([51e2274](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/51e2274559be5a4b1227f2b49253a1d8e964202e))
 
-## [2.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.0.1...ui-casedb-v2.1.0) (2026-05-12)
+## [2.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.0.1...ui-casedb-v2.1.0) (2026-05-12)
 
 
 ### Features
 
 * update dependencies, update api ([718d298](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/718d298416b0af7e46840964434d491ac947229e))
 
-## [2.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v2.0.0...ui-casedb-v2.0.1) (2026-05-11)
+## [2.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v2.0.0...ui-casedb-v2.0.1) (2026-05-11)
 
 
 ### Bug Fixes
 
 * fix typing exports ([e90d3e6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e90d3e69de59bb8db44dc80d9f2352c0a1881d85))
 
-## [2.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v1.0.6...ui-casedb-v2.0.0) (2026-05-11)
+## [2.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v1.0.6...ui-casedb-v2.0.0) (2026-05-11)
 
 
 ### Miscellaneous Chores
 
 * force release-please 2.0.0 ([67492fb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/67492fb1eefc7c4e2f64b5247c03cc82df921a82))
 
-## [1.0.6](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v1.0.5...ui-casedb-v1.0.6) (2026-05-11)
+## [1.0.6](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v1.0.5...ui-casedb-v1.0.6) (2026-05-11)
 
 
 ### Bug Fixes
 
 * fix build ([9d91efd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9d91efdf417efae0bbca87f2f15fa8703fb6221f))
 
-## [1.0.5](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v1.0.4...ui-casedb-v1.0.5) (2026-05-11)
+## [1.0.5](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v1.0.4...ui-casedb-v1.0.5) (2026-05-11)
 
 
 ### Bug Fixes
 
 * fix build ([eda2af3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/eda2af31ef2c3bf0fb5857113f2fa6923db8a758))
 
-## [1.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-casedb-v1.25.0...ui-casedb-v1.0.4) (2026-05-11)
+## [1.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v1.25.0...ui-casedb-v1.0.4) (2026-05-11)
 
 
 ### Features

@@ -10,9 +10,9 @@ Gen-EpiX is platform for visualizing and analyzing genomic epidemiology data. It
 
 The platform is currently at the beta release stage and as such not yet usable for production. We are currently to get the platform released, for use in the Netherlands as the official national platform for laboratory-based surveillance of infectious diseases. Feel free to [contact us](mailto:ivo.van.walle@rivm.nl) if you are interested.
 
-## About @gen-epix/demo-client
+## About @gen-epix/demo-client-omopdb
 
-`@gen-epix/demo-client` is a reference client application for the Gen-EpiX platform, built with [React](https://react.dev/), [Vite](https://vitejs.dev/), and [MUI (Material UI)](https://mui.com/). It demonstrates how to integrate and use the `@gen-epix/ui-client-common` component library within a real application.
+`@gen-epix/demo-client-omopdb` is a reference client application for the Gen-EpiX platform, built with [React](https://react.dev/), [Vite](https://vitejs.dev/), and [MUI (Material UI)](https://mui.com/). It demonstrates how to integrate and use the `@gen-epix/ui-client-common` component library within a real application.
 
 Key characteristics:
 

@@ -5,7 +5,7 @@ import { resolve } from 'path';
 import { readFileSync } from 'fs';
 
 import react from '@vitejs/plugin-react';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { mergeLocales } from '@gen-epix/merge-locales';
 import svgr from 'vite-plugin-svgr';
 import {
   esmExternalRequirePlugin,
@@ -70,43 +70,14 @@ export default defineConfig({
   plugins: [
     react(),
     svgr(),
-    viteStaticCopy({
-      targets: [
-        {
-          dest: './locale',
-          rename: { stripBase: true },
-          src: [
-            './src/locale',
-          ],
-        },
-        {
-          dest: './locale/ui',
-          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
-          src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui-core-components', 'src', 'locale', '*.json')),
-          ],
-        },
-        {
-          dest: './locale/ui-core-form',
-          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
-          src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui-core-form', 'src', 'locale', '*.json')),
-          ],
-        },
-        {
-          dest: './locale/ui-client-common',
-          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
-          src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui-client-common', 'src', 'locale', '*.json')),
-          ],
-        },
-        {
-          dest: './locale/ui-client-seqdb',
-          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
-          src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui-client-seqdb', 'src', 'locale', '*.json')),
-          ],
-        },
+    mergeLocales({
+      outputDirectory: './public/locale',
+      sourceDirectories: [
+        './src/locale',
+        normalizePath(resolve(gitRootPath, 'packages', 'ui-core-components', 'src', 'locale')),
+        normalizePath(resolve(gitRootPath, 'packages', 'ui-core-form', 'src', 'locale')),
+        normalizePath(resolve(gitRootPath, 'packages', 'ui-client-common', 'src', 'locale')),
+        normalizePath(resolve(gitRootPath, 'packages', 'ui-client-seqdb', 'src', 'locale')),
       ],
     }),
   ],

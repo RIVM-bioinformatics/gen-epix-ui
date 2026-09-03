@@ -1,67 +1,67 @@
 # Changelog
 
-## [3.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v3.1.3...ui-v3.2.0) (2026-09-01)
+## [3.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v3.1.3...ui-v3.2.0) (2026-09-01)
 
 
 ### Features
 
 * update dependencies ([d84eb74](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d84eb749eb95f385616ca6c0621e88128b15fd0d))
 
-## [3.1.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v3.1.2...ui-v3.1.3) (2026-08-31)
+## [3.1.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v3.1.2...ui-v3.1.3) (2026-08-31)
 
 
 ### Bug Fixes
 
 * update package exports once more, fix /types export ([27e1d93](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/27e1d934e856f2164c0c76284226a541ff485b43))
 
-## [3.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v3.1.1...ui-v3.1.2) (2026-08-31)
+## [3.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v3.1.1...ui-v3.1.2) (2026-08-31)
 
 
 ### Bug Fixes
 
 * fix types export ([6373072](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/63730727164f5db5f49ad73ee210525c9e44d75b))
 
-## [3.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v3.1.0...ui-v3.1.1) (2026-08-28)
+## [3.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v3.1.0...ui-v3.1.1) (2026-08-28)
 
 
 ### Bug Fixes
 
 * fix incorrect build ([443cd25](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/443cd254e2cfed5c51bf8a04295027504dac4840))
 
-## [3.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v3.0.1...ui-v3.1.0) (2026-08-28)
+## [3.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v3.0.1...ui-v3.1.0) (2026-08-28)
 
 
 ### Features
 
 * add esmExternalRequirePlugin ([e26062f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e26062f4180dab04dd46382d75ab4deb013cadda))
 
-## [3.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v3.0.0...ui-v3.0.1) (2026-08-28)
+## [3.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v3.0.0...ui-v3.0.1) (2026-08-28)
 
 
 ### Bug Fixes
 
 * make react-i18next a peer dependency ([cbd0b86](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/cbd0b8609772783005c75e45dab116a46f4f1826))
 
-## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.10.0...ui-v3.0.0) (2026-08-28)
+## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.10.0...ui-v3.0.0) (2026-08-28)
 
 
 ### ⚠ BREAKING CHANGES
 
-* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
+* add @gen-epix/ui-core, @gen-epix/ui-core-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
 
 ### Features
 
-* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
+* add @gen-epix/ui-core, @gen-epix/ui-core-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
 * implement anonymize user (right to be forgotton) ([a0df919](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a0df9190cf5584c638cf66cf0ee20e7593319b93))
 
-## [2.10.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.9.0...ui-v2.10.0) (2026-07-16)
+## [2.10.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.9.0...ui-v2.10.0) (2026-07-16)
 
 
 ### Features
 
 * force coordinated package release ([4801965](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4801965482eadf6119651075c4d4adda8633333f))
 
-## [2.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.8.0...ui-v2.9.0) (2026-07-16)
+## [2.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.8.0...ui-v2.9.0) (2026-07-16)
 
 
 ### Features
@@ -70,42 +70,42 @@
 * add search box in dashboard ([28c7dd5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/28c7dd58e38daad68a54c845d108c0e4acbcbe6b))
 * histogram widget ([#156](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/156)) ([459f45f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/459f45fc07499e591281558313db2a558372d987))
 
-## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.7.0...ui-v2.8.0) (2026-07-03)
+## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.7.0...ui-v2.8.0) (2026-07-03)
 
 
 ### Features
 
 * update dependencies ([410ec9f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/410ec9f1243ba7dd329a82183eafc787c828b52a))
 
-## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.6.3...ui-v2.7.0) (2026-07-02)
+## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.6.3...ui-v2.7.0) (2026-07-02)
 
 
 ### Features
 
 * rename all managers to services ([98b087f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/98b087f031b70a92e0011f0428c442901e9be68a))
 
-## [2.6.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.6.2...ui-v2.6.3) (2026-07-01)
+## [2.6.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.6.2...ui-v2.6.3) (2026-07-01)
 
 
 ### Bug Fixes
 
 * allo config.consentDialog to be undefined ([d2366b4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d2366b422f9304a6ec4ba320b883cb3187504ef9))
 
-## [2.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.6.1...ui-v2.6.2) (2026-07-01)
+## [2.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.6.1...ui-v2.6.2) (2026-07-01)
 
 
 ### Bug Fixes
 
 * prevent demo theme from unnecessary creation in demo config ([c713406](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c713406161567a13ee71467842ebc091d337e102))
 
-## [2.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.6.0...ui-v2.6.1) (2026-07-01)
+## [2.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.6.0...ui-v2.6.1) (2026-07-01)
 
 
 ### Bug Fixes
 
 * fix build (after closing dts bug) ([eeee812](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/eeee812b5c021383ad9fd304d59c9478700bc01d))
 
-## [2.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.5.0...ui-v2.6.0) (2026-07-01)
+## [2.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.5.0...ui-v2.6.0) (2026-07-01)
 
 
 ### Features
@@ -113,7 +113,7 @@
 * flexible dashboard ([#148](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/148)) ([5ec990c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5ec990c5c851536376aaa542755e279a6f5cb69d))
 * remove bugs from upload ([#147](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/147)) ([fac16a8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fac16a89a08dbfc8144ff3b5aaa33574ac6ceebc))
 
-## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.4.2...ui-v2.5.0) (2026-06-22)
+## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.4.2...ui-v2.5.0) (2026-06-22)
 
 
 ### Features
@@ -136,21 +136,21 @@
 * remove ROLE_ prefix in user invitations ([8bfc909](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8bfc909eaca138f9ee0520cc1e18fcb5aa862d99))
 * update dependencies react-hook-form and uuid ([e73eadc](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e73eadc5eebacce2f5335b5a378ace2d735308a7))
 
-## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.4.1...ui-v2.4.2) (2026-06-12)
+## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.4.1...ui-v2.4.2) (2026-06-12)
 
 
 ### Bug Fixes
 
 * correctly set peer dependencies ([5745966](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5745966003e6bca7ec1599a0a0979efc2c6c3b82))
 
-## [2.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.4.0...ui-v2.4.1) (2026-06-12)
+## [2.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.4.0...ui-v2.4.1) (2026-06-12)
 
 
 ### Bug Fixes
 
 * upgrade all dependencies to latest ([b1e01aa](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b1e01aa0fc369405a620a38a964690d121e695b7))
 
-## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.3.0...ui-v2.4.0) (2026-06-12)
+## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.3.0...ui-v2.4.0) (2026-06-12)
 
 
 ### Features
@@ -161,7 +161,7 @@
 * update to latest API ([c3a06a4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c3a06a4f438506b54cc45783c7d4c1acbfc2fb76))
 * use case upload logic to update individual and bulk cases from line list ([#140](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/140)) ([03cf612](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/03cf61272ad7224b1485d21158d9be0f969edd30))
 
-## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.4...ui-v2.3.0) (2026-05-20)
+## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.2.4...ui-v2.3.0) (2026-05-20)
 
 
 ### Features
@@ -173,42 +173,42 @@
 
 * re-fix rendering tree when all leaves have 0 distance ([ee2be7c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ee2be7cc6d1f938ca3c678b7e6a17996b9a19488))
 
-## [2.2.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.3...ui-v2.2.4) (2026-05-14)
+## [2.2.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.2.3...ui-v2.2.4) (2026-05-14)
 
 
 ### Bug Fixes
 
 * force release ([72e5083](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/72e5083b620e2f11dddfea5d9147f0fc52d511df))
 
-## [2.2.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.2...ui-v2.2.3) (2026-05-14)
+## [2.2.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.2.2...ui-v2.2.3) (2026-05-14)
 
 
 ### Bug Fixes
 
 * broaden the semver range for workspace dependencies ([4ddbac5](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4ddbac55a35865cefabff8e0e8cad78a1d0aed39))
 
-## [2.2.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.1...ui-v2.2.2) (2026-05-14)
+## [2.2.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.2.1...ui-v2.2.2) (2026-05-14)
 
 
 ### Bug Fixes
 
 * fix publish config ([7ec047f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7ec047f6a967ec87765de60ac4d8bbf3eefcffda))
 
-## [2.2.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.2.0...ui-v2.2.1) (2026-05-14)
+## [2.2.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.2.0...ui-v2.2.1) (2026-05-14)
 
 
 ### Bug Fixes
 
 * fix peer dependencies ([ae4d888](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ae4d8885c4ae8a2282d6cfa93885e2a62538dc95))
 
-## [2.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.1.1...ui-v2.2.0) (2026-05-14)
+## [2.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.1.1...ui-v2.2.0) (2026-05-14)
 
 
 ### Features
 
 * move dependencies to peer dependencies ([d91409c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d91409cd21ce6653f8f027f49246a67324ff233b))
 
-## [2.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.1.0...ui-v2.1.1) (2026-05-12)
+## [2.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.1.0...ui-v2.1.1) (2026-05-12)
 
 
 ### Bug Fixes
@@ -216,7 +216,7 @@
 * fix build ([72b206b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/72b206b10f090015892c684140ce6bef835b94ee))
 * fix build ([d6fbb5a](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d6fbb5ae88510e7a40aa61fbf93201c9295cbe55))
 
-## [2.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.0.1...ui-v2.1.0) (2026-05-12)
+## [2.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.0.1...ui-v2.1.0) (2026-05-12)
 
 
 ### Features
@@ -228,56 +228,56 @@
 
 * fix typing issues ([7e895f0](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7e895f07ea8f7331e3b653a8d4a914735d9743ad))
 
-## [2.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v2.0.0...ui-v2.0.1) (2026-05-11)
+## [2.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v2.0.0...ui-v2.0.1) (2026-05-11)
 
 
 ### Bug Fixes
 
 * fix typing exports ([e90d3e6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e90d3e69de59bb8db44dc80d9f2352c0a1881d85))
 
-## [2.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.26.2...ui-v2.0.0) (2026-05-11)
+## [2.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.26.2...ui-v2.0.0) (2026-05-11)
 
 
 ### Miscellaneous Chores
 
 * force release-please 2.0.0 ([67492fb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/67492fb1eefc7c4e2f64b5247c03cc82df921a82))
 
-## [1.26.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.26.1...ui-v1.26.2) (2026-05-11)
+## [1.26.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.26.1...ui-v1.26.2) (2026-05-11)
 
 
 ### Bug Fixes
 
 * fix build ([9d91efd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9d91efdf417efae0bbca87f2f15fa8703fb6221f))
 
-## [1.26.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.26.0...ui-v1.26.1) (2026-05-11)
+## [1.26.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.26.0...ui-v1.26.1) (2026-05-11)
 
 
 ### Bug Fixes
 
 * fix build ([eda2af3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/eda2af31ef2c3bf0fb5857113f2fa6923db8a758))
 
-## [1.26.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.25.0...ui-v1.26.0) (2026-05-11)
+## [1.26.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.25.0...ui-v1.26.0) (2026-05-11)
 
 
 ### Features
 
 * split and add frontends ([#120](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/120)) ([ca14f73](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ca14f735841f5e738d5310bc2a7def3945460b28))
 
-## [1.25.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.24.0...ui-v1.25.0) (2026-04-16)
+## [1.25.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.24.0...ui-v1.25.0) (2026-04-16)
 
 
 ### Features
 
 * add multi backend support ([#117](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/117)) ([56736ca](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/56736ca6431c8d0cd60947a786de5c576517e34a))
 
-## [1.24.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.23.0...ui-v1.24.0) (2026-04-14)
+## [1.24.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.23.0...ui-v1.24.0) (2026-04-14)
 
 
 ### Features
 
 * refactor packages ([#114](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/114)) ([644d330](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/644d330b9b5071221851acf27c7eff6260d9c197))
 
-## [1.23.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.22.0...ui-v1.23.0) (2026-04-13)
+## [1.23.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.22.0...ui-v1.23.0) (2026-04-13)
 
 
 ### Features
@@ -291,7 +291,7 @@
 * fix upload button height ([0384ea9](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0384ea9d679693349762ba4d8c1cef7d54fc1009))
 * remove demo-config ([3d4113b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/3d4113ba50b66bf22d6aaa17f321df55d0cded7e))
 
-## [1.22.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.21.2...ui-v1.22.0) (2026-04-13)
+## [1.22.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.21.2...ui-v1.22.0) (2026-04-13)
 
 
 ### Features
@@ -306,7 +306,7 @@
 * show users own role list of roles in users admin page form ([a3e2bd1](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/a3e2bd1b71cd7816aa2c579d1151f2b54e24a124))
 * use hardcoded scale for map widget (to be fixed later) ([7126151](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7126151298f14c345eae8c0c08769dee15295f86))
 
-## [1.21.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.21.1...ui-v1.21.2) (2026-04-07)
+## [1.21.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.21.1...ui-v1.21.2) (2026-04-07)
 
 
 ### Bug Fixes
@@ -317,21 +317,21 @@
 * move query client retry and retry delay to config ([6e1cb49](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/6e1cb49e8167688a714c9ffac91d7005ff7c41c9))
 * remove empty strings from content during upload ([f3e7ae0](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f3e7ae05052a50f70110a5f390347293ffc48b67))
 
-## [1.21.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.21.0...ui-v1.21.1) (2026-04-07)
+## [1.21.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.21.0...ui-v1.21.1) (2026-04-07)
 
 
 ### Bug Fixes
 
 * update peer dependencies to latest ([3644512](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/3644512e182154d5c54a5400cf42d55d7d85b5d6))
 
-## [1.21.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.20.0...ui-v1.21.0) (2026-04-07)
+## [1.21.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.20.0...ui-v1.21.0) (2026-04-07)
 
 
 ### Features
 
 * update dependencies to latest ([75b0519](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/75b05190489c40eecdc3d9b3016137be273da07c))
 
-## [1.20.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.19.0...ui-v1.20.0) (2026-04-07)
+## [1.20.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.19.0...ui-v1.20.0) (2026-04-07)
 
 
 ### Features
@@ -345,7 +345,7 @@
 * fix TableUtil.getColumnIdsWithData include columns that has data for SOME rows instead of EVERY row ([197886c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/197886c3db53883df95075a21750c35c9b31d334))
 * when removing case from case set it should only be removed from given case set, not all case sets ([201c85d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/201c85d881c30ea44a00c26b664fa568718cc792))
 
-## [1.19.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.18.1...ui-v1.19.0) (2026-04-07)
+## [1.19.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.18.1...ui-v1.19.0) (2026-04-07)
 
 
 ### Features
@@ -363,21 +363,21 @@
 * re-use of schema definitions for common fields ([fd152fd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/fd152fd9b251a5a49fba79e0c74191f7cafaabb1))
 * use case_set_date instead of created_at ([db27b6c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/db27b6cb8b1776e9b8fd459864f9f9dd73369c5e))
 
-## [1.18.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.18.0...ui-v1.18.1) (2026-03-30)
+## [1.18.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.18.0...ui-v1.18.1) (2026-03-30)
 
 
 ### Bug Fixes
 
 * add case set cateogry admin page (typos) ([1f95583](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1f955832a61e52e73d09858d97da2e9d6b040ce8))
 
-## [1.18.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.17.0...ui-v1.18.0) (2026-03-30)
+## [1.18.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.17.0...ui-v1.18.0) (2026-03-30)
 
 
 ### Features
 
 * add case set cateogry admin page ([abfb369](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/abfb3691a6a3989d5603eb10ea21496163e2f505))
 
-## [1.17.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.16.2...ui-v1.17.0) (2026-03-30)
+## [1.17.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.16.2...ui-v1.17.0) (2026-03-30)
 
 
 ### Features
@@ -392,21 +392,21 @@
 * fix empty cases and empty events page, create LoadableUtil to handle loadables better ([e3c5780](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e3c578001ee105f3db05b012c4a1d5a96c6e76f0))
 * use Omit instead of Pick where possible ([b2f8f4e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b2f8f4e4dbd35c5a3f7182f790f6af2e37fe4cbf))
 
-## [1.16.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.16.1...ui-v1.16.2) (2026-03-26)
+## [1.16.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.16.1...ui-v1.16.2) (2026-03-26)
 
 
 ### Bug Fixes
 
 * update repository url in client-theme ([1922c6b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1922c6bfd78960cb30e9b01faac20d9539337d18))
 
-## [1.16.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.16.0...ui-v1.16.1) (2026-03-26)
+## [1.16.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.16.0...ui-v1.16.1) (2026-03-26)
 
 
 ### Bug Fixes
 
 * remove pnpm catalog to facalitate file protocol ([82c6183](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/82c6183a6067471117f6c809b60e8b16dd5484ee))
 
-## [1.16.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.15.2...ui-v1.16.0) (2026-03-26)
+## [1.16.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.15.2...ui-v1.16.0) (2026-03-26)
 
 
 ### Features
@@ -418,21 +418,21 @@
 
 * update to latest api ([bea7964](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/bea79644b791c961d668a85dadcc883f6d72c330))
 
-## [1.15.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.15.1...ui-v1.15.2) (2026-03-25)
+## [1.15.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.15.1...ui-v1.15.2) (2026-03-25)
 
 
 ### Bug Fixes
 
 * publish all files in the dist folder ([bdc4fa6](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/bdc4fa624ba9a599e41a3b3cf445eb9c02480e04))
 
-## [1.15.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.15.0...ui-v1.15.1) (2026-03-25)
+## [1.15.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.15.0...ui-v1.15.1) (2026-03-25)
 
 
 ### Bug Fixes
 
 * fix publish config ([f3008a1](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/f3008a18641762c4c44631e4f9f8d32a9080d188))
 
-## [1.15.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-v1.14.5...ui-v1.15.0) (2026-03-25)
+## [1.15.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v1.14.5...ui-v1.15.0) (2026-03-25)
 
 
 ### Features

@@ -40,11 +40,11 @@
 
 ### ⚠ BREAKING CHANGES
 
-* add @gen-epix/core, @gen-epix/ui-core-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
+* add @gen-epix/ui-core, @gen-epix/ui-core-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
 
 ### Features
 
-* add @gen-epix/core, @gen-epix/ui-core-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
+* add @gen-epix/ui-core, @gen-epix/ui-core-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
 
 ### Bug Fixes
 
