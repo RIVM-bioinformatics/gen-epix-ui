@@ -109,8 +109,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       '@gen-epix/merge-locales':
-        specifier: 0.0.2
-        version: 0.0.2
+        specifier: 0.0.3
+        version: 0.0.3
       '@gen-epix/oidc-mock-server':
         specifier: 0.4.1
         version: 0.4.1
@@ -233,8 +233,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       '@gen-epix/merge-locales':
-        specifier: 0.0.2
-        version: 0.0.2
+        specifier: 0.0.3
+        version: 0.0.3
       '@gen-epix/oidc-mock-server':
         specifier: 0.4.1
         version: 0.4.1
@@ -357,8 +357,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       '@gen-epix/merge-locales':
-        specifier: 0.0.2
-        version: 0.0.2
+        specifier: 0.0.3
+        version: 0.0.3
       '@gen-epix/oidc-mock-server':
         specifier: 0.4.1
         version: 0.4.1
@@ -1991,9 +1991,8 @@ packages:
     resolution: {integrity: sha512-ON/8g5OWq5JTqfOEvEiBRYpMLc8Ptn8Jq3QyWQpquVN92nuE8YYaXEW/CPMwGSjbM8EGJc/4NyXJdoYx9gYHXw==}
     hasBin: true
 
-  '@gen-epix/merge-locales@0.0.2':
-    resolution: {integrity: sha512-CvDHf0UYrUN13MyLJW/deVOJsJn/2h6Kv3l/NEojmcPSrZPrhoBHFGi6mLFdIldkUYyR/VRWhnjsAfGzkdF1wQ==}
-    hasBin: true
+  '@gen-epix/merge-locales@0.0.3':
+    resolution: {integrity: sha512-b8/Cbk8Clc5EWDphdcahz8boiGgvtuQvndWkjhFXUmdHqbjpka4MYnlU2UGpPWYu2TM88tRxImC8nMy74i0T6g==}
 
   '@gen-epix/oidc-mock-server@0.4.1':
     resolution: {integrity: sha512-hDdAR48VrV/0Smwk01AUkYre4WnWFjCeaW4bWlXQfWFHmPWhpgc350KFxg34qMVmy+yGDQDfTbmm5tzW8ZRWNQ==}
@@ -8056,7 +8055,7 @@ snapshots:
     dependencies:
       '@gen-epix/tools-lib': 0.1.1
 
-  '@gen-epix/merge-locales@0.0.2': {}
+  '@gen-epix/merge-locales@0.0.3': {}
 
   '@gen-epix/oidc-mock-server@0.4.1':
     dependencies:

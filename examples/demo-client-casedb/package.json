@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
+    "build": "vite build",
     "test-run": "vitest run --passWithNoTests",
     "test-missing-translations": "translation-util ./ --dry-run --fail-on-missing --fail-on-stale",
     "add-missing-translations": "translation-util ./",
@@ -47,7 +48,7 @@
     "@gen-epix/oidc-mock-server": "0.4.1",
     "@gen-epix/tools-lib": "0.1.1",
     "@gen-epix/translation-util": "0.2.0",
-    "@gen-epix/merge-locales": "0.0.2",
+    "@gen-epix/merge-locales": "0.0.3",
     "@types/node": "26.4.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",

@@ -70,7 +70,7 @@ export default defineConfig({
     react(),
     svgr(),
     mergeLocales({
-      outputDirectory: './public/locale',
+      outputPath: './locale',
       sourceDirectories: [
         './src/locale',
         normalizePath(resolve(gitRootPath, 'packages', 'ui-core-components', 'src', 'locale')),

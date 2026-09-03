@@ -68,16 +68,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/ui-client-casedb run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-client-casedb publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-client-casedb.zip packages/ui-client-casedb/dist
+        run: cd packages/ui-client-casedb && zip -r ../../gen-epix-ui-client-casedb.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-client-casedb-tag-name }} gen-epix-ui-client-casedb.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-casedb-tag-name }} gen-epix-ui-client-casedb.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-client-casedb publish --access=public --no-git-checks
 
   publish-ui-client-omopdb:
     needs: release-please
@@ -101,16 +101,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/ui-client-omopdb run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-client-omopdb publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-client-omopdb.zip packages/ui-client-omopdb/dist
+        run: cd packages/ui-client-omopdb && zip -r ../../gen-epix-ui-client-omopdb.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-client-omopdb-tag-name }} gen-epix-ui-client-omopdb.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-omopdb-tag-name }} gen-epix-ui-client-omopdb.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-client-omopdb publish --access=public --no-git-checks
 
   publish-ui-client-seqdb:
     needs: release-please
@@ -134,16 +134,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/ui-client-seqdb run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-client-seqdb publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-client-seqdb.zip packages/ui-client-seqdb/dist
+        run: cd packages/ui-client-seqdb && zip -r ../../gen-epix-ui-client-seqdb.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-client-seqdb-tag-name }} gen-epix-ui-client-seqdb.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-seqdb-tag-name }} gen-epix-ui-client-seqdb.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-client-seqdb publish --access=public --no-git-checks
 
   publish-ui-client-common:
     needs: release-please
@@ -167,16 +167,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/ui-client-common run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-client-common publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-client-common.zip packages/ui-client-common/dist
+        run: cd packages/ui-client-common && zip -r ../../gen-epix-ui-client-common.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-client-common-tag-name }} gen-epix-ui-client-common.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-client-common-tag-name }} gen-epix-ui-client-common.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-client-common publish --access=public --no-git-checks
 
   publish-ui-phylogenetic-tree:
     needs: release-please
@@ -200,16 +200,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/ui-phylogenetic-tree run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-phylogenetic-tree publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-phylogenetic-tree.zip packages/ui-phylogenetic-tree/dist
+        run: cd packages/ui-phylogenetic-tree && zip -r ../../gen-epix-ui-phylogenetic-tree.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-phylogenetic-tree-tag-name }} gen-epix-ui-phylogenetic-tree.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-phylogenetic-tree-tag-name }} gen-epix-ui-phylogenetic-tree.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-phylogenetic-tree publish --access=public --no-git-checks
 
   publish-ui-core:
     needs: release-please
@@ -233,16 +233,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/ui-core run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-core publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-core.zip packages/ui-core/dist
+        run: cd packages/ui-core && zip -r ../../gen-epix-ui-core.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-core-tag-name }} gen-epix-ui-core.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-core-tag-name }} gen-epix-ui-core.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-core publish --access=public --no-git-checks
 
   publish-ui-core-components:
     needs: release-please
@@ -266,16 +266,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/ui-core-components run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-core-components publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-core-components.zip packages/ui-core-components/dist
+        run: cd packages/ui-core-components && zip -r ../../gen-epix-ui-core-components.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-core-components-tag-name }} gen-epix-ui-core-components.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-core-components-tag-name }} gen-epix-ui-core-components.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-core-components publish --access=public --no-git-checks
 
   publish-api-casedb:
     needs: release-please
@@ -299,16 +299,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/api-casedb run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/api-casedb publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-api-casedb.zip packages/api-casedb/dist
+        run: cd packages/api-casedb && zip -r ../../gen-epix-api-casedb.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.api-casedb-tag-name }} gen-epix-api-casedb.zip
+        run: gh release upload ${{ needs.release-please.outputs.api-casedb-tag-name }} gen-epix-api-casedb.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/api-casedb publish --access=public --no-git-checks
 
   publish-api-commondb:
     needs: release-please
@@ -332,16 +332,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/api-commondb run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/api-commondb publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-api-commondb.zip packages/api-commondb/dist
+        run: cd packages/api-commondb && zip -r ../../gen-epix-api-commondb.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.api-commondb-tag-name }} gen-epix-api-commondb.zip
+        run: gh release upload ${{ needs.release-please.outputs.api-commondb-tag-name }} gen-epix-api-commondb.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/api-commondb publish --access=public --no-git-checks
 
   publish-api-seqdb:
     needs: release-please
@@ -365,16 +365,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/api-seqdb run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/api-seqdb publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-api-seqdb.zip packages/api-seqdb/dist
+        run: cd packages/api-seqdb && zip -r ../../gen-epix-api-seqdb.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.api-seqdb-tag-name }} gen-epix-api-seqdb.zip
+        run: gh release upload ${{ needs.release-please.outputs.api-seqdb-tag-name }} gen-epix-api-seqdb.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/api-seqdb publish --access=public --no-git-checks
 
   publish-api-omopdb:
     needs: release-please
@@ -398,16 +398,16 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/api-omopdb run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/api-omopdb publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-api-omopdb.zip packages/api-omopdb/dist
+        run: cd packages/api-omopdb && zip -r ../../gen-epix-api-omopdb.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.api-omopdb-tag-name }} gen-epix-api-omopdb.zip
+        run: gh release upload ${{ needs.release-please.outputs.api-omopdb-tag-name }} gen-epix-api-omopdb.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/api-omopdb publish --access=public --no-git-checks
 
   publish-ui-core-form:
     needs: release-please
@@ -431,13 +431,13 @@ jobs:
       - name: Build
         run: pnpm --filter @gen-epix/ui-core-form run build
 
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-core-form publish --access=public --no-git-checks
-
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-core-form.zip packages/ui-core-form/dist
+        run: cd packages/ui-core-form && zip -r ../../gen-epix-ui-core-form.zip dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-core-form-tag-name }} gen-epix-ui-core-form.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-core-form-tag-name }} gen-epix-ui-core-form.zip --clobber
+
+      - name: Publish to NPM
+        run: pnpm --filter @gen-epix/ui-core-form publish --access=public --no-git-checks
