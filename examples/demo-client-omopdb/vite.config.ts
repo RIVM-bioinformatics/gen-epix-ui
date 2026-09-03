@@ -83,7 +83,7 @@ export default defineConfig({
           dest: './locale/ui',
           rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
           src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui', 'src', 'locale', '*.json')),
+            normalizePath(resolve(gitRootPath, 'packages', 'ui-core-components', 'src', 'locale', '*.json')),
           ],
         },
         {
@@ -91,6 +91,13 @@ export default defineConfig({
           rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
           src: [
             normalizePath(resolve(gitRootPath, 'packages', 'ui-core-form', 'src', 'locale', '*.json')),
+          ],
+        },
+        {
+          dest: './locale/ui-client-common',
+          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
+          src: [
+            normalizePath(resolve(gitRootPath, 'packages', 'ui-client-common', 'src', 'locale', '*.json')),
           ],
         },
         {
