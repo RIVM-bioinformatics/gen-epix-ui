@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-components-v3.2.0...ui-core-components-v4.0.0) (2026-09-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename UI packages and update release configuration
+
+### Features
+
+* rename UI packages and update release configuration ([ac01335](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ac0133582dd9872e5ccc33b1b997fff182a2c861))
+
+
+### Bug Fixes
+
+* fix dependencies ([d7b5b57](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d7b5b57c31db60adb03c0f43f5b720d062be9a55))
+
 ## [3.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v3.1.3...ui-core-form-v3.2.0) (2026-09-01)
 
 ### Features
