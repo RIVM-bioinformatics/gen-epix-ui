@@ -43,8 +43,8 @@ import type {
   AutoCompleteOption,
   FormFieldDefinition,
   OptionBase,
-} from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+} from '../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';

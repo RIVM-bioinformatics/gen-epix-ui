@@ -566,9 +566,6 @@ importers:
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
-      use-cleanup-callback:
-        specifier: 1.3.0
-        version: 1.3.0(react@19.2.8)
       use-debounce:
         specifier: 10.1.1
         version: 10.1.1(react@19.2.8)
@@ -609,9 +606,9 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
-      '@gen-epix/ui-form':
+      '@gen-epix/ui-core-form-components':
         specifier: workspace:^
-        version: link:../ui-form
+        version: link:../ui-core-form-compoments
       '@microsoft/api-extractor':
         specifier: 7.59.0
         version: 7.59.0(@types/node@26.4.0)
@@ -793,9 +790,9 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
-      '@gen-epix/ui-form':
+      '@gen-epix/ui-core-form-components':
         specifier: workspace:^
-        version: link:../ui-form
+        version: link:../ui-core-form-compoments
       '@gen-epix/ui-phylogenetic-tree':
         specifier: workspace:^
         version: link:../ui-phylogenetic-tree
@@ -930,7 +927,77 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
 
-  packages/ui-form:
+  packages/ui-core-components:
+    dependencies:
+      lodash:
+        specifier: 4.18.1
+        version: 4.18.1
+      react-hook-form:
+        specifier: 7.87.0
+        version: 7.87.0(react@19.2.8)
+      use-cleanup-callback:
+        specifier: 1.3.0
+        version: 1.3.0(react@19.2.8)
+      use-debounce:
+        specifier: 10.1.1
+        version: 10.1.1(react@19.2.8)
+      uuid:
+        specifier: 14.0.2
+        version: 14.0.2
+    devDependencies:
+      '@gen-epix/eslint-config':
+        specifier: 0.5.0
+        version: 0.5.0(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.69.0(eslint@10.9.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(eslint@10.9.1(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.9.1(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3)(vitest@4.1.11)
+      '@gen-epix/translation-util':
+        specifier: 0.2.0
+        version: 0.2.0
+      '@gen-epix/ui-core':
+        specifier: workspace:^
+        version: link:../ui-core
+      '@mui/icons-material':
+        specifier: 9.4.0
+        version: 9.4.0(@mui/material@9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react@19.2.18)(react@19.2.8)
+      '@mui/material':
+        specifier: 9.4.0
+        version: 9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@mui/utils':
+        specifier: 9.4.0
+        version: 9.4.0(@types/react@19.2.18)(react@19.2.8)
+      '@types/lodash':
+        specifier: 4.17.25
+        version: 4.17.25
+      '@types/react':
+        specifier: 19.2.18
+        version: 19.2.18
+      eslint:
+        specifier: 10.9.1
+        version: 10.9.1(supports-color@10.2.2)
+      i18next:
+        specifier: 26.4.1
+        version: 26.4.1(typescript@6.0.3)
+      react:
+        specifier: 19.2.8
+        version: 19.2.8
+      react-i18next:
+        specifier: 17.0.13
+        version: 17.0.13(i18next@26.4.1(typescript@6.0.3))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(typescript@6.0.3)
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
+      vite:
+        specifier: 8.2.2
+        version: 8.2.2(@types/node@26.4.0)(yaml@2.9.0)
+      vite-plugin-dts:
+        specifier: 5.1.0
+        version: 5.1.0(@microsoft/api-extractor@7.59.0(@types/node@26.4.0))(rolldown@1.2.6)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
+      vite-plugin-static-copy:
+        specifier: 4.1.1
+        version: 4.1.1(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@26.4.0)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.0)(yaml@2.9.0))
+
+  packages/ui-core-form-compoments:
     dependencies:
       '@tiptap/core':
         specifier: 3.31.0
@@ -1150,9 +1217,9 @@ importers:
       '@gen-epix/ui':
         specifier: workspace:^
         version: link:../ui
-      '@gen-epix/ui-form':
+      '@gen-epix/ui-core-form-components':
         specifier: workspace:^
-        version: link:../ui-form
+        version: link:../ui-core-form-compoments
       '@microsoft/api-extractor':
         specifier: 7.59.0
         version: 7.59.0(@types/node@26.4.0)
@@ -1337,9 +1404,9 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
-      '@gen-epix/ui-form':
+      '@gen-epix/ui-core-form-components':
         specifier: workspace:^
-        version: link:../ui-form
+        version: link:../ui-core-form-compoments
       '@microsoft/api-extractor':
         specifier: 7.59.0
         version: 7.59.0(@types/node@26.4.0)
@@ -5967,9 +6034,6 @@ packages:
 
   prosemirror-model@1.25.11:
     resolution: {integrity: sha512-QWg9RhnpLlogAmp3p96uEFrE5txQpFynd4vhBAELkwgOCWQs/X0yCzB3/hrHqiPwf91RG5KyWq6553zs9JqIOQ==}
-
-  prosemirror-model@1.25.8:
-    resolution: {integrity: sha512-BswA4BLSFEiORV6Vjj/yZBXDbos1zTEnhyeSSgT8psGFhstQS7UJ8/WOLiDos9Byaee27+tml0/DuMNxYR84zg==}
 
   prosemirror-schema-list@1.5.1:
     resolution: {integrity: sha512-927lFx/uwyQaGwJxLWCZRkjXG0p48KpMj6ueoYiu4JX05GGuGcgzAy62dfiV8eFZftgyBUvLx76RsMe20fJl+Q==}
@@ -13005,7 +13069,7 @@ snapshots:
 
   prosemirror-commands@1.7.1:
     dependencies:
-      prosemirror-model: 1.25.8
+      prosemirror-model: 1.25.11
       prosemirror-state: 1.4.4
       prosemirror-transform: 1.12.0
 
@@ -13018,7 +13082,7 @@ snapshots:
   prosemirror-gapcursor@1.4.1:
     dependencies:
       prosemirror-keymap: 1.2.3
-      prosemirror-model: 1.25.8
+      prosemirror-model: 1.25.11
       prosemirror-state: 1.4.4
       prosemirror-view: 1.41.9
 
@@ -13043,37 +13107,33 @@ snapshots:
     dependencies:
       orderedmap: 2.1.1
 
-  prosemirror-model@1.25.8:
-    dependencies:
-      orderedmap: 2.1.1
-
   prosemirror-schema-list@1.5.1:
     dependencies:
-      prosemirror-model: 1.25.8
+      prosemirror-model: 1.25.11
       prosemirror-state: 1.4.4
       prosemirror-transform: 1.12.0
 
   prosemirror-state@1.4.4:
     dependencies:
-      prosemirror-model: 1.25.8
+      prosemirror-model: 1.25.11
       prosemirror-transform: 1.12.0
       prosemirror-view: 1.41.9
 
   prosemirror-tables@1.8.5:
     dependencies:
       prosemirror-keymap: 1.2.3
-      prosemirror-model: 1.25.8
+      prosemirror-model: 1.25.11
       prosemirror-state: 1.4.4
       prosemirror-transform: 1.12.0
       prosemirror-view: 1.41.9
 
   prosemirror-transform@1.12.0:
     dependencies:
-      prosemirror-model: 1.25.8
+      prosemirror-model: 1.25.11
 
   prosemirror-view@1.41.9:
     dependencies:
-      prosemirror-model: 1.25.8
+      prosemirror-model: 1.25.11
       prosemirror-state: 1.4.4
       prosemirror-transform: 1.12.0
 

@@ -24,8 +24,8 @@ import {
   AlertTitle,
   Box,
 } from '@mui/material';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
-import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
+import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import { FormUtil } from '../../../../../ui-core-form-components/src/utils/FormUtil';
 
 import { CaseTypeFormUtil } from '../../../utils/CaseTypeFormUtil';
 

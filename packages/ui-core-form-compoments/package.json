@@ -1,5 +1,5 @@
 {
-  "name": "@gen-epix/ui-form",
+  "name": "@gen-epix/ui-core-form-components",
   "version": "3.2.0",
   "license": "EUPL-1.2",
   "repository": {
@@ -18,10 +18,6 @@
     ],
     "access": "public",
     "exports": {
-      "./types": {
-        "types": "./dist/@types/ui-form.d.ts",
-        "import": "./dist/@types/ui-form.d.ts"
-      },
       "./components/fields/Autocomplete": {
         "types": "./dist/components/fields/Autocomplete/index.d.ts",
         "import": "./dist/components/fields/Autocomplete/index.js"
@@ -113,10 +109,6 @@
     }
   },
   "exports": {
-    "./types": {
-      "types": "./src/@types/ui-form.d.ts",
-      "import": "./src/@types/ui-form.d.ts"
-    },
     "./components/fields/Autocomplete": {
       "types": "./src/components/fields/Autocomplete/index.ts",
       "import": "./src/components/fields/Autocomplete/index.ts"

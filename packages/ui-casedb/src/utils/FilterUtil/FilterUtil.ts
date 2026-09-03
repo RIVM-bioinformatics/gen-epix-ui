@@ -27,7 +27,7 @@ import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
 } from '@gen-epix/ui/classes/abstracts/FilterAbstract';
-import type { AutoCompleteOption } from '@gen-epix/ui-form/models/form';
+import type { AutoCompleteOption } from '../../../../ui-core-form-components/src/models/form';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
 import {

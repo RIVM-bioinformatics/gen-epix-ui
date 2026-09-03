@@ -38,9 +38,9 @@ import { useQueryMemo } from '@gen-epix/ui/hooks/useQueryMemo';
 import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
-import { Select } from '@gen-epix/ui-form/components/fields/Select';
-import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
+import { FormUtil } from '../../../../../ui-core-form-components/src/utils/FormUtil';
+import { Select } from '../../../../../ui-core-form-components/src/components/fields/Select';
+import { Autocomplete } from '../../../../../ui-core-form-components/src/components/fields/Autocomplete';
 
 import {
   useCaseSetOptionsQuery,

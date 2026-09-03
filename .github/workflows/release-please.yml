@@ -26,8 +26,8 @@ jobs:
       ui-seqdb-tag-name: ${{ steps.release.outputs['packages/ui-seqdb--tag_name'] }}
       ui-phylogenetic-tree-release-created: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--release_created'] }}
       ui-phylogenetic-tree-tag-name: ${{ steps.release.outputs['packages/ui-phylogenetic-tree--tag_name'] }}
-      ui-form-release-created: ${{ steps.release.outputs['packages/ui-form--release_created'] }}
-      ui-form-tag-name: ${{ steps.release.outputs['packages/ui-form--tag_name'] }}
+      ui-core-form-components-release-created: ${{ steps.release.outputs['packages/ui-core-form-components--release_created'] }}
+      ui-core-form-components-tag-name: ${{ steps.release.outputs['packages/ui-core-form-components--tag_name'] }}
       api-casedb-release-created: ${{ steps.release.outputs['packages/api-casedb--release_created'] }}
       api-casedb-tag-name: ${{ steps.release.outputs['packages/api-casedb--tag_name'] }}
       api-commondb-release-created: ${{ steps.release.outputs['packages/api-commondb--release_created'] }}
@@ -374,9 +374,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ needs.release-please.outputs.api-omopdb-tag-name }} gen-epix-api-omopdb.zip
 
-  publish-ui-form:
+  publish-ui-core-form-components:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-form-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.ui-core-form-components-release-created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -394,15 +394,15 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-form run build
+        run: pnpm --filter @gen-epix/ui-core-form-components run build
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-form publish --access=public --no-git-checks
+        run: pnpm --filter @gen-epix/ui-core-form-components publish --access=public --no-git-checks
 
       - name: Zip dist directory
-        run: zip -r gen-epix-ui-form.zip packages/ui-form/dist
+        run: zip -r gen-epix-ui-core-form-components.zip packages/ui-core-form-components/dist
 
       - name: Upload release artifact to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-form-tag-name }} gen-epix-ui-form.zip
+        run: gh release upload ${{ needs.release-please.outputs.ui-core-form-components-tag-name }} gen-epix-ui-core-form-components.zip

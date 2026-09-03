@@ -19,8 +19,8 @@ import {
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
-import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
+import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import { FormUtil } from '../../../../../ui-core-form-components/src/utils/FormUtil';
 
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import type { CaseDbConfig } from '../../../models/config';

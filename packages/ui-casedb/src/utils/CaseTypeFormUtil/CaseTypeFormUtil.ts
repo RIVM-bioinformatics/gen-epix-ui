@@ -18,8 +18,8 @@ import type {
   FormFieldDefinition,
   FormGroupDefinition,
   FormGroupMessage,
-} from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+} from '../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
 
 import { DataService } from '../../classes/services/DataService';
 import { AbacUtil } from '../AbacUtil';

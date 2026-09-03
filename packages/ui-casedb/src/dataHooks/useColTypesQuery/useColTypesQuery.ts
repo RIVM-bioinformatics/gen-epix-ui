@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { UseOptions } from '@gen-epix/ui/models/dataHooks';
-import type { OptionBase } from '@gen-epix/ui-form/models/form';
+import type { OptionBase } from '../../../../ui-core-form-components/src/models/form';
 
 
 export const colTypePresentationValues: Record<CaseDbColType, string> = {

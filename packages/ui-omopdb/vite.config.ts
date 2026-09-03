@@ -49,6 +49,7 @@ const discoverEntries = (): { entries: Record<string, string>; flatKeys: Set<str
     join(srcDir, 'classes', '**', 'index.ts'),
     join(srcDir, 'components', '**', 'index.ts'),
     join(srcDir, 'constants', '**', 'index.ts'),
+    join(srcDir, 'context', '**', 'index.ts'),
     join(srcDir, 'dataHooks', '**', 'index.ts'),
     join(srcDir, 'hoc', '**', 'index.ts'),
     join(srcDir, 'hooks', '**', 'index.ts'),
@@ -201,7 +202,7 @@ export default defineConfig({
           name: 'browser',
           server: {
             deps: {
-              inline: ['@gen-epix/ui', '@gen-epix/ui-phylogenetic-tree', '@gen-epix/ui-core', '@gen-epix/ui-form', 'vitest-browser-react'],
+              inline: ['@gen-epix/ui', '@gen-epix/ui-phylogenetic-tree', '@gen-epix/ui-core', '@gen-epix/ui-core-form-components', 'vitest-browser-react'],
             },
           },
           setupFiles: ['./src/test/setup/setup-browser.ts'],

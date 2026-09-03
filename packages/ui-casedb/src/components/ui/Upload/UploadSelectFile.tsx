@@ -25,9 +25,9 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '../../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../../ui-core-form-components/src/models/form';
 
 import {
   useCaseTypeOptionsQuery,

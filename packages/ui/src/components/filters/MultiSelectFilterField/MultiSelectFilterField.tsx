@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
-import { CheckboxGroup } from '@gen-epix/ui-form/components/fields/CheckboxGroup';
-import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
+import { CheckboxGroup } from '../../../../../ui-core-form-components/src/components/fields/CheckboxGroup';
+import { Autocomplete } from '../../../../../ui-core-form-components/src/components/fields/Autocomplete';
 
 import type { MultiSelectFilter } from '../../../classes/filters/MultiSelectFilter';
 

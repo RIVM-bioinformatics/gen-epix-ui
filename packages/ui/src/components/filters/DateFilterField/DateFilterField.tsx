@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { DateRangePicker } from '@gen-epix/ui-form/components/fields/DateRangePicker';
+import { DateRangePicker } from '../../../../../ui-core-form-components/src/components/fields/DateRangePicker';
 
 import type { DateFilter } from '../../../classes/filters/DateFilter';
 

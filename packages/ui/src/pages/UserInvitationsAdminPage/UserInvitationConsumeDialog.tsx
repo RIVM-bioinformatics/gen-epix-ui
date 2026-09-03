@@ -17,9 +17,9 @@ import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { GenericForm } from '../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
 
 import type {
   WithDialogRefMethods,

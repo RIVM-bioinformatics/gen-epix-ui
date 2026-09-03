@@ -2,13 +2,11 @@
 
 ## [3.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v3.1.3...ui-omopdb-v3.2.0) (2026-09-01)
 
-
 ### Features
 
 * update dependencies ([d84eb74](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d84eb749eb95f385616ca6c0621e88128b15fd0d))
 
 ## [3.1.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v3.1.2...ui-omopdb-v3.1.3) (2026-08-31)
-
 
 ### Bug Fixes
 
@@ -16,13 +14,11 @@
 
 ## [3.1.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v3.1.1...ui-omopdb-v3.1.2) (2026-08-31)
 
-
 ### Bug Fixes
 
 * fix types export ([6373072](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/63730727164f5db5f49ad73ee210525c9e44d75b))
 
 ## [3.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v3.1.0...ui-omopdb-v3.1.1) (2026-08-28)
-
 
 ### Bug Fixes
 
@@ -30,13 +26,11 @@
 
 ## [3.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v3.0.1...ui-omopdb-v3.1.0) (2026-08-28)
 
-
 ### Features
 
 * add esmExternalRequirePlugin ([e26062f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e26062f4180dab04dd46382d75ab4deb013cadda))
 
 ## [3.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v3.0.0...ui-omopdb-v3.0.1) (2026-08-28)
-
 
 ### Bug Fixes
 
@@ -44,17 +38,15 @@
 
 ## [3.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.9.0...ui-omopdb-v3.0.0) (2026-08-28)
 
-
 ### ⚠ BREAKING CHANGES
 
-* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
+* add @gen-epix/core, @gen-epix/ui-core-form-components, @gen-epix/ui-phylogenetic-tree and change the way packages export files.
 
 ### Features
 
-* add @gen-epix/core, @gen-epix/ui-form, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
+* add @gen-epix/core, @gen-epix/ui-core-form-components, @gen-epix/ui-phylogenetic-tree and change the way packages export files. ([af761ad](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/af761ad078081432614bba1c58cc0b7dedc65990))
 
 ## [2.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.8.0...ui-omopdb-v2.9.0) (2026-07-16)
-
 
 ### Features
 
@@ -62,13 +54,11 @@
 
 ## [2.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.7.0...ui-omopdb-v2.8.0) (2026-07-03)
 
-
 ### Features
 
 * update dependencies ([410ec9f](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/410ec9f1243ba7dd329a82183eafc787c828b52a))
 
 ## [2.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.6.2...ui-omopdb-v2.7.0) (2026-07-02)
-
 
 ### Features
 
@@ -76,13 +66,11 @@
 
 ## [2.6.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.6.1...ui-omopdb-v2.6.2) (2026-07-01)
 
-
 ### Bug Fixes
 
 * prevent demo theme from unnecessary creation in demo config ([c713406](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c713406161567a13ee71467842ebc091d337e102))
 
 ## [2.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.6.0...ui-omopdb-v2.6.1) (2026-07-01)
-
 
 ### Bug Fixes
 
@@ -90,18 +78,15 @@
 
 ## [2.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.5.0...ui-omopdb-v2.6.0) (2026-07-01)
 
-
 ### Features
 
 * flexible dashboard ([#148](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/148)) ([5ec990c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5ec990c5c851536376aaa542755e279a6f5cb69d))
 
 ## [2.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.4.2...ui-omopdb-v2.5.0) (2026-06-22)
 
-
 ### Features
 
 * update all dependencies to latest, fix all tests, add null pagination ([7d99f59](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7d99f599eb40a42d38b6bf7d5439c46ce0925cac))
-
 
 ### Bug Fixes
 
@@ -111,13 +96,11 @@
 
 ## [2.4.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.4.1...ui-omopdb-v2.4.2) (2026-06-12)
 
-
 ### Bug Fixes
 
 * correctly set peer dependencies ([5745966](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/5745966003e6bca7ec1599a0a0979efc2c6c3b82))
 
 ## [2.4.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.4.0...ui-omopdb-v2.4.1) (2026-06-12)
-
 
 ### Bug Fixes
 
@@ -125,13 +108,11 @@
 
 ## [2.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.3.0...ui-omopdb-v2.4.0) (2026-06-12)
 
-
 ### Features
 
 * update to latest API ([c3a06a4](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c3a06a4f438506b54cc45783c7d4c1acbfc2fb76))
 
 ## [2.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.2.3...ui-omopdb-v2.3.0) (2026-05-20)
-
 
 ### Features
 
@@ -139,13 +120,11 @@
 
 ## [2.2.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.2.2...ui-omopdb-v2.2.3) (2026-05-14)
 
-
 ### Bug Fixes
 
 * force release ([72e5083](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/72e5083b620e2f11dddfea5d9147f0fc52d511df))
 
 ## [2.2.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.2.1...ui-omopdb-v2.2.2) (2026-05-14)
-
 
 ### Bug Fixes
 
@@ -153,20 +132,17 @@
 
 ## [2.2.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.2.0...ui-omopdb-v2.2.1) (2026-05-14)
 
-
 ### Bug Fixes
 
 * fix peer dependencies ([ae4d888](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ae4d8885c4ae8a2282d6cfa93885e2a62538dc95))
 
 ## [2.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.1.1...ui-omopdb-v2.2.0) (2026-05-14)
 
-
 ### Features
 
 * move dependencies to peer dependencies ([d91409c](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d91409cd21ce6653f8f027f49246a67324ff233b))
 
 ## [2.1.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.1.0...ui-omopdb-v2.1.1) (2026-05-12)
-
 
 ### Bug Fixes
 
@@ -175,13 +151,11 @@
 
 ## [2.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.0.1...ui-omopdb-v2.1.0) (2026-05-12)
 
-
 ### Features
 
 * update dependencies, update api ([718d298](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/718d298416b0af7e46840964434d491ac947229e))
 
 ## [2.0.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v2.0.0...ui-omopdb-v2.0.1) (2026-05-11)
-
 
 ### Bug Fixes
 
@@ -189,13 +163,11 @@
 
 ## [2.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v1.0.6...ui-omopdb-v2.0.0) (2026-05-11)
 
-
 ### Miscellaneous Chores
 
 * force release-please 2.0.0 ([67492fb](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/67492fb1eefc7c4e2f64b5247c03cc82df921a82))
 
 ## [1.0.6](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v1.0.5...ui-omopdb-v1.0.6) (2026-05-11)
-
 
 ### Bug Fixes
 
@@ -203,23 +175,19 @@
 
 ## [1.0.5](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v1.0.4...ui-omopdb-v1.0.5) (2026-05-11)
 
-
 ### Bug Fixes
 
 * fix build ([eda2af3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/eda2af31ef2c3bf0fb5857113f2fa6923db8a758))
 
 ## [1.0.4](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-omopdb-v1.25.0...ui-omopdb-v1.0.4) (2026-05-11)
 
-
 ### Features
 
 * split and add frontends ([#120](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/120)) ([ca14f73](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ca14f735841f5e738d5310bc2a7def3945460b28))
 
-
 ### Bug Fixes
 
 * fix dependencies ([d7b5b57](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d7b5b57c31db60adb03c0f43f5b720d062be9a55))
-
 
 ### Miscellaneous Chores
 

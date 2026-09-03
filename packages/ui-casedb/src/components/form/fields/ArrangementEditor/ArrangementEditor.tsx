@@ -31,9 +31,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
-import { FormFieldHelperText } from '@gen-epix/ui-form/components/helpers/FormFieldHelperText';
-import { FormFieldLoadingIndicator } from '@gen-epix/ui-form/components/helpers/FormFieldLoadingIndicator';
-import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
+import { FormFieldHelperText } from '../../../../../../ui-core-form-components/src/components/helpers/FormFieldHelperText';
+import { FormFieldLoadingIndicator } from '../../../../../../ui-core-form-components/src/components/helpers/FormFieldLoadingIndicator';
+import { FormUtil } from '../../../../../../ui-core-form-components/src/utils/FormUtil';
 
 import { DASHBOARD_ARRANGEMENT_ORIENTATION } from '../../../../models/dashboard';
 import type { DashboardArrangement } from '../../../../models/dashboard';

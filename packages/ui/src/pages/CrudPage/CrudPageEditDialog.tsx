@@ -20,9 +20,9 @@ import type {
 import { useForm } from 'react-hook-form';
 import { useDebouncedCallback } from 'use-debounce';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
-import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
+import { GenericForm } from '../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
+import { FormUtil } from '../../../../ui-core-form-components/src/utils/FormUtil';
 
 import type { DialogAction } from '../../components/ui/Dialog';
 import type {

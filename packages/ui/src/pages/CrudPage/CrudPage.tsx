@@ -27,7 +27,7 @@ import type {
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { CommonDbPermissionType } from '@gen-epix/api-commondb';
 import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
-import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
 
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { ConfigService } from '../../classes/services/ConfigService';

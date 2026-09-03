@@ -30,9 +30,9 @@ import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { useIdentifierIssuerOwnOrganizationOptionsQuery } from '@gen-epix/ui/dataHooks/useIdentifierIssuerOwnOrganizationQuery';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { Select } from '@gen-epix/ui-form/components/fields/Select';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
+import { Select } from '../../../../../ui-core-form-components/src/components/fields/Select';
+import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '../../../../../ui-core-form-components/src/models/form';
 
 import { useColMapQuery } from '../../../dataHooks/useColsQuery';
 import type { UploadMappedColumnsFormFields } from '../../../models/upload';

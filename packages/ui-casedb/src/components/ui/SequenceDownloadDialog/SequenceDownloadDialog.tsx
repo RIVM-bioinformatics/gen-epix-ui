@@ -29,8 +29,8 @@ import { ConfigService } from '@gen-epix/ui/classes/services/ConfigService';
 import { withDialog } from '@gen-epix/ui/hoc/withDialog';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
-import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
-import type { AutoCompleteOption } from '@gen-epix/ui-form/models/form';
+import { Autocomplete } from '../../../../../ui-core-form-components/src/components/fields/Autocomplete';
+import type { AutoCompleteOption } from '../../../../../ui-core-form-components/src/models/form';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 

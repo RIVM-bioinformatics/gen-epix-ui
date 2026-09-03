@@ -30,9 +30,9 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type {
   FormFieldDefinition,
   OptionBase,
-} from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
-import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
+} from '../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
+import { SchemaUtil } from '../../../../ui-core-form-components/src/utils/SchemaUtil';
 
 import { useColTypeOptionsQuery } from '../../dataHooks/useColTypesQuery';
 import { useUnitOptionsQuery } from '../../dataHooks/useUnitQuery/useUnit';

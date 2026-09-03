@@ -23,10 +23,10 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import { NotificationService } from '@gen-epix/ui/classes/services/NotificationService';
 import { QueryClientService } from '@gen-epix/ui/classes/services/QueryClientService';
 import { Spinner } from '@gen-epix/ui/components/ui/Spinner';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
-import { FormUtil } from '@gen-epix/ui-form/utils/FormUtil';
+import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '../../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../../ui-core-form-components/src/models/form';
+import { FormUtil } from '../../../../../ui-core-form-components/src/utils/FormUtil';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
 import { CASEDB_QUERY_KEY } from '../../../constants/query';

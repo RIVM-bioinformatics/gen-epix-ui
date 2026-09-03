@@ -29,9 +29,9 @@
       "package-name": "@gen-epix/ui-phylogenetic-tree",
       "component": "ui-phylogenetic-tree"
     },
-    "packages/ui-form": {
-      "package-name": "@gen-epix/ui-form",
-      "component": "ui-form"
+    "packages/ui-core-form-components": {
+      "package-name": "@gen-epix/ui-core-form-components",
+      "component": "ui-core-form-components"
     },
     "packages/api-casedb": {
       "package-name": "@gen-epix/api-casedb",

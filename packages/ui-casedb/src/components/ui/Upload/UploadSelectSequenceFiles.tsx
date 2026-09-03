@@ -24,12 +24,12 @@ import type { Resolver } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { ResponseHandler } from '@gen-epix/ui/components/ui/ResponseHandler';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
+import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
 import type {
   FormFieldDefinition,
   SelectOption,
-} from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+} from '../../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../../ui-core-form-components/src/models/form';
 
 import { FileSelector } from '../FileSelector';
 import { UploadUtil } from '../../../utils/UploadUtil';

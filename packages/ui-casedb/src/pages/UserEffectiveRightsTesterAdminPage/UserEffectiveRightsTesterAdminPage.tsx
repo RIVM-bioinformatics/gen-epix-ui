@@ -29,9 +29,9 @@ import { useItemQuery } from '@gen-epix/ui/hooks/useItemQuery';
 import { useOrganizationMapQuery } from '@gen-epix/ui/dataHooks/useOrganizationsQuery';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { GenericForm } from '../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
 
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';

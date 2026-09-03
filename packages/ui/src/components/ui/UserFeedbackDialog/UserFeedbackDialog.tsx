@@ -17,10 +17,10 @@ import {
   Typography,
 } from '@mui/material';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
-import { GenericForm } from '@gen-epix/ui-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
+import { SchemaUtil } from '../../../../../ui-core-form-components/src/utils/SchemaUtil';
+import { GenericForm } from '../../../../../ui-core-form-components/src/components/helpers/GenericForm';
+import type { FormFieldDefinition } from '../../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../../ui-core-form-components/src/models/form';
 
 import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';

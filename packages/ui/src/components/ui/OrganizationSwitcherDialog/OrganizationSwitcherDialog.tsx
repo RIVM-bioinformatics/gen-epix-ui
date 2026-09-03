@@ -24,7 +24,7 @@ import {
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { Autocomplete } from '@gen-epix/ui-form/components/fields/Autocomplete';
+import { Autocomplete } from '../../../../../ui-core-form-components/src/components/fields/Autocomplete';
 
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';

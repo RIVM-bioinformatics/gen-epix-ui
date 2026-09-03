@@ -207,6 +207,14 @@
         "types": "./dist/constants/query.d.ts",
         "import": "./dist/constants/query.js"
       },
+      "./context/caseAbac": {
+        "types": "./dist/context/caseAbac/index.d.ts",
+        "import": "./dist/context/caseAbac/index.js"
+      },
+      "./context/caseTypeAbac": {
+        "types": "./dist/context/caseTypeAbac/index.d.ts",
+        "import": "./dist/context/caseTypeAbac/index.js"
+      },
       "./dataHooks/useAssemblyProtocolsQuery": {
         "types": "./dist/dataHooks/useAssemblyProtocolsQuery/index.d.ts",
         "import": "./dist/dataHooks/useAssemblyProtocolsQuery/index.js"
@@ -358,6 +366,10 @@
       "./dataHooks/useTreeAlgorithmCodesQuery": {
         "types": "./dist/dataHooks/useTreeAlgorithmCodesQuery/index.d.ts",
         "import": "./dist/dataHooks/useTreeAlgorithmCodesQuery/index.js"
+      },
+      "./dataHooks/useUnitQuery": {
+        "types": "./dist/dataHooks/useUnitQuery/index.d.ts",
+        "import": "./dist/dataHooks/useUnitQuery/index.js"
       },
       "./dataHooks/useUserAccessCasePoliciesQuery": {
         "types": "./dist/dataHooks/useUserAccessCasePoliciesQuery/index.d.ts",
@@ -862,6 +874,14 @@
       "types": "./src/constants/query.ts",
       "import": "./src/constants/query.ts"
     },
+    "./context/caseAbac": {
+      "types": "./src/context/caseAbac/index.ts",
+      "import": "./src/context/caseAbac/index.ts"
+    },
+    "./context/caseTypeAbac": {
+      "types": "./src/context/caseTypeAbac/index.ts",
+      "import": "./src/context/caseTypeAbac/index.ts"
+    },
     "./dataHooks/useAssemblyProtocolsQuery": {
       "types": "./src/dataHooks/useAssemblyProtocolsQuery/index.ts",
       "import": "./src/dataHooks/useAssemblyProtocolsQuery/index.ts"
@@ -1013,6 +1033,10 @@
     "./dataHooks/useTreeAlgorithmCodesQuery": {
       "types": "./src/dataHooks/useTreeAlgorithmCodesQuery/index.ts",
       "import": "./src/dataHooks/useTreeAlgorithmCodesQuery/index.ts"
+    },
+    "./dataHooks/useUnitQuery": {
+      "types": "./src/dataHooks/useUnitQuery/index.ts",
+      "import": "./src/dataHooks/useUnitQuery/index.ts"
     },
     "./dataHooks/useUserAccessCasePoliciesQuery": {
       "types": "./src/dataHooks/useUserAccessCasePoliciesQuery/index.ts",
@@ -1345,7 +1369,7 @@
     "@gen-epix/ui-core": "workspace:^",
     "@gen-epix/ui": "workspace:^",
     "@gen-epix/ui-phylogenetic-tree": "workspace:^",
-    "@gen-epix/ui-form": "workspace:^",
+    "@gen-epix/ui-core-form-components": "workspace:^",
     "@mui/icons-material": "*",
     "@mui/material": "*",
     "@mui/styled-engine": "*",
@@ -1390,7 +1414,7 @@
     "@gen-epix/api-commondb": "workspace:^",
     "@gen-epix/ui-core": "workspace:^",
     "@gen-epix/ui-phylogenetic-tree": "workspace:^",
-    "@gen-epix/ui-form": "workspace:^",
+    "@gen-epix/ui-core-form-components": "workspace:^",
     "@gen-epix/eslint-config": "0.5.0",
     "@gen-epix/translation-util": "0.2.0",
     "@gen-epix/ui": "workspace:^",

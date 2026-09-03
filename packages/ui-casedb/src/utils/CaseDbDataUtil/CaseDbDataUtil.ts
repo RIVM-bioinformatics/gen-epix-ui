@@ -10,7 +10,7 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
-import type { OptionBase } from '@gen-epix/ui-form/models/form';
+import type { OptionBase } from '../../../../ui-core-form-components/src/models/form';
 
 export class CaseDbDataUtil {
   public static conceptComparator(a: CaseDbConcept, b: CaseDbConcept): number {

@@ -18,9 +18,9 @@ import type { TableColumn } from '@gen-epix/ui/models/table';
 import { CrudPage } from '@gen-epix/ui/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import type { FormFieldDefinition } from '@gen-epix/ui-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-form/models/form';
-import { SchemaUtil } from '@gen-epix/ui-form/utils/SchemaUtil';
+import type { FormFieldDefinition } from '../../../../ui-core-form-components/src/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../../ui-core-form-components/src/models/form';
+import { SchemaUtil } from '../../../../ui-core-form-components/src/utils/SchemaUtil';
 
 import { CASEDB_QUERY_KEY } from '../../constants/query';
 
