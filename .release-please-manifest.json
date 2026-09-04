@@ -3,7 +3,7 @@
   "packages/ui-core": "3.0.2",
   "packages/ui-core-components": "4.0.2",
   "packages/ui-core-form": "4.0.2",
-  "packages/ui-phylogenetic-tree": "3.0.2",
+  "packages/ui-phylogenetic-tree": "3.0.3",
   "packages/ui-client-casedb": "4.0.2",
   "packages/ui-client-omopdb": "4.0.2",
   "packages/ui-client-seqdb": "4.0.2",
