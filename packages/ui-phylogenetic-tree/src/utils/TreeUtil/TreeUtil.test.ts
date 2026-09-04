@@ -7,6 +7,7 @@ import type {
   TreeNode,
   TreePathProperties,
 } from '../../models/tree';
+import { NewickUtil } from '../NewickUtil';
 
 import { TreeUtil } from './TreeUtil';
 
@@ -780,6 +781,27 @@ describe('TreeUtil', () => {
     it('returns Infinity when all leaves have zero branchLength', () => {
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 0)]);
       expect(TreeUtil.getMinGeneticScaleUnit(root)).toBe(Infinity);
+    });
+
+    it('ignores negative leaf branch lengths when finding the minimum positive scale unit', () => {
+      const root = makeNode('root', 0, [makeLeaf('a', -1), makeLeaf('b', 2), makeLeaf('c', 3)]);
+      expect(TreeUtil.getMinGeneticScaleUnit(root)).toBe(2);
+    });
+
+    it('keeps the scale unit positive for a tree with tiny negative leaf branch lengths', () => {
+      const tree = NewickUtil.parse('(((EPI_ISL_402126,EPI_ISL_402127),(EPI_ISL_402119,EPI_ISL_402120)):0.002092509375,((((((EPI_ISL_402123,EPI_ISL_402124),EPI_ISL_402125):0.0020971899999999988,((EPI_ISL_402130,EPI_ISL_402131):0.0012432290000000002,EPI_ISL_402132:0.002955551):0.0021345700000000006):0.0020992670833333343,(EPI_ISL_402128,EPI_ISL_402129):0.004207167916666666):0.00000802875000000063,EPI_ISL_402121:-0.000008030000000000406):0.0000050187500000003354,EPI_ISL_402122:-0.0000050187500000003354):0.002092509375);');
+      const minGeneticScaleUnit = TreeUtil.getMinGeneticScaleUnit(tree);
+
+      expect(minGeneticScaleUnit).toBe(0.002955551);
+      expect(TreeUtil.getTickMarkScale({
+        geneticTreeWidth: tree.maxBranchLength,
+        maxScaleWidthPx: 144,
+        minGeneticScaleUnit,
+        minScaleWidthPx: 48,
+        scaleIncrements: [1, 2, 5, 10, 20, 50],
+        treeWidthMinusPadding: 1200,
+        zoomLevel: 1,
+      })).toEqual([5, 0.005, 0.002955551]);
     });
 
     it('traverses deeply nested leaves correctly', () => {

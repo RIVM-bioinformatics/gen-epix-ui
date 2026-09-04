@@ -558,7 +558,7 @@ export class TreeUtil {
     let min: number = Infinity;
     const traverse = (node: TreeNode) => {
       const branchLength = node.branchLength?.toNumber() ?? 0;
-      if (!node.children?.length && branchLength && branchLength < min) {
+      if (!node.children?.length && branchLength > 0 && branchLength < min) {
         min = branchLength;
       }
       node?.children?.forEach(child => traverse(child));
