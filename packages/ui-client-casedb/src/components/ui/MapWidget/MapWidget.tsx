@@ -43,7 +43,7 @@ import type {
   CaseDbCol,
   CaseDbRegion,
   CaseDbRegionSetShape,
-  CaseDbTypedUuidSetFilter,
+  CaseDbUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import {
   CaseDbDimType,
@@ -111,7 +111,7 @@ export const MapWidget = () => {
 
   const [focussedRegion, setFocussedRegion] = useState<CaseDbRegion>();
   const geoDims = useMemo(() => CaseTypeUtil.getDims(completeCaseType, [CaseDbDimType.GEO]), [completeCaseType]);
-  const regionSetShapesFilter = useMemo<CaseDbTypedUuidSetFilter>(() => {
+  const regionSetShapesFilter = useMemo<CaseDbUuidSetFilter>(() => {
     return {
       invert: false,
       key: 'region_set_id',

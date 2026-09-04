@@ -14,9 +14,8 @@ import round from 'lodash/round';
 import type {
   CaseDbApiPermission,
   CaseDbCaseStats,
-  CaseDbEpiFilter,
+  CaseDbDatetimeRangeFilter,
   CaseDbRetrieveCaseTypeStatsRequestBody,
-  CaseDbTypedDatetimeRangeFilter,
 } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
@@ -57,18 +56,18 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const dateTimeRangeFilter = useMemo<CaseDbTypedDatetimeRangeFilter>(() => ({
+  const dateTimeRangeFilter = useMemo<CaseDbDatetimeRangeFilter>(() => ({
     type: 'DATETIME_RANGE',
     upper_bound: ConfigService.getInstance<CaseDbConfig>().config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-  } satisfies CaseDbTypedDatetimeRangeFilter), []);
+  } satisfies CaseDbDatetimeRangeFilter), []);
 
-  const caseSetQueryFilter = useMemo<CaseDbEpiFilter>(() => ({
+  const caseSetQueryFilter = useMemo<CaseDbDatetimeRangeFilter>(() => ({
     key: 'case_set_date',
     type: 'DATETIME_RANGE',
     upper_bound: ConfigService.getInstance<CaseDbConfig>().config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-  } satisfies CaseDbEpiFilter), []);
+  } satisfies CaseDbDatetimeRangeFilter), []);
 
   const caseTypeStatsQueryNow = useQueryMemo({
     queryFn: async ({ signal }) => {

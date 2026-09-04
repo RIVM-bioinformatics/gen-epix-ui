@@ -1,5 +1,5 @@
 import isFinite from 'lodash/isFinite';
-import type { CommonDbTypedNumberRangeFilter } from '@gen-epix/api-commondb';
+import type { CommonDbNumberRangeFilter } from '@gen-epix/api-commondb';
 import { CommonDbComparisonOperator } from '@gen-epix/api-commondb';
 
 import type { Filter } from '../../models/filter';
@@ -59,7 +59,7 @@ export class NumberRangeFilter extends FilterAbstract<[number, number]> implemen
     return true;
   }
 
-  public toBackendFilter(): CommonDbTypedNumberRangeFilter {
+  public toBackendFilter(): CommonDbNumberRangeFilter {
     if (this.isInitialFilterValue()) {
       return;
     }

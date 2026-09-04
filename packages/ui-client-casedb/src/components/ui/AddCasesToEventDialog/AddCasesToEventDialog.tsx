@@ -23,7 +23,7 @@ import type {
   CaseDbCase,
   CaseDbCaseSet,
   CaseDbCaseSetMember,
-  CaseDbTypedUuidSetFilter,
+  CaseDbUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
@@ -133,7 +133,7 @@ export const AddCasesToEventDialog = withDialog<AddCasesToEventDialogProps, AddC
   const { control } = formMethods;
   const { caseSetId, shouldApplySharingToCases } = useWatch({ control });
 
-  const caseSetMembersFilter = useMemo<CaseDbTypedUuidSetFilter>(() => ({
+  const caseSetMembersFilter = useMemo<CaseDbUuidSetFilter>(() => ({
     invert: false,
     key: 'case_set_id',
     members: [caseSetId],
@@ -148,7 +148,7 @@ export const AddCasesToEventDialog = withDialog<AddCasesToEventDialogProps, AddC
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
-  const caseSetDataCollectionLinksFilter = useMemo<CaseDbTypedUuidSetFilter>(() => ({
+  const caseSetDataCollectionLinksFilter = useMemo<CaseDbUuidSetFilter>(() => ({
     invert: false,
     key: 'case_set_id',
     members: [caseSetId],
