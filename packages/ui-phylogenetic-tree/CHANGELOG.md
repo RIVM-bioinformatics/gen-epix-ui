@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.0.2...ui-phylogenetic-tree-v3.0.3) (2026-09-04)
+
+
+### Bug Fixes
+
+* fix phylogenetic tree handling negative branch lengts ([2ddbcd7](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2ddbcd71fcfdfea7d0c195f325e84c2afd894b9d))
+
 ## [3.0.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.0.1...ui-phylogenetic-tree-v3.0.2) (2026-09-03)
 
 
