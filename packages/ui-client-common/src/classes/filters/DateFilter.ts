@@ -7,8 +7,8 @@ import {
   isValid,
 } from 'date-fns';
 import type {
-  CommonDbTypedDateRangeFilter,
-  CommonDbTypedPartialDateRangeFilter,
+  CommonDbDateRangeFilter,
+  CommonDbPartialDateRangeFilter,
 } from '@gen-epix/api-commondb';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
@@ -112,7 +112,7 @@ export class DateFilter extends FilterAbstract<[Date, Date]> implements Filter<[
     }
   }
 
-  public toBackendFilter(): CommonDbTypedDateRangeFilter | CommonDbTypedPartialDateRangeFilter {
+  public toBackendFilter(): CommonDbDateRangeFilter | CommonDbPartialDateRangeFilter {
     if (this.isInitialFilterValue()) {
       return;
     }

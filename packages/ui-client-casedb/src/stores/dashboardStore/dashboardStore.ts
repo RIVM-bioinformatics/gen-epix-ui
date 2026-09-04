@@ -11,8 +11,8 @@ import type {
   CaseDbCaseQueryResult,
   CaseDbCol,
   CaseDbCompleteCaseType,
+  CaseDbCompositeFilter,
   CaseDbPhylogeneticTree,
-  CaseDbTypedCompositeFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import { AxiosUtil } from '@gen-epix/ui-client-common/utils/AxiosUtil';
@@ -211,7 +211,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
               .filter(filter => filter.filterMode === FILTER_MODE.BACKEND && !filter.isInitialFilterValue())
               .map(activeFilter => activeFilter.toBackendFilter())
               .filter(x => !!x);
-            const compositeFilter: CaseDbTypedCompositeFilter = activeFilters.length
+            const compositeFilter: CaseDbCompositeFilter = activeFilters.length
               ? {
                 filters: activeFilters,
                 operator: 'AND',

@@ -15,7 +15,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import type {
   CaseDbCaseSet,
-  CaseDbTypedUuidSetFilter,
+  CaseDbUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
@@ -125,7 +125,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
     },
   });
 
-  const caseSetDataCollectionLinksFilter = useMemo<CaseDbTypedUuidSetFilter>(() => ({
+  const caseSetDataCollectionLinksFilter = useMemo<CaseDbUuidSetFilter>(() => ({
     invert: false,
     key: 'case_set_id',
     members: [caseSet?.id],
