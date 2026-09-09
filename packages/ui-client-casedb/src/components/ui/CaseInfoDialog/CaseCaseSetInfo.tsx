@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import type {
   CaseDbCase,
-  CaseDbTypedUuidSetFilter,
+  CaseDbUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import { NavLink } from '@gen-epix/ui-client-common/components/ui/NavLink';
@@ -34,7 +34,7 @@ export const CaseCaseSetInfo = ({ caseDbCase, ...boxProps }: CaseCaseSetInfoProp
   const caseSetStatusMapQuery = useCaseSetStatusMapQuery();
 
   const { t } = useTranslation();
-  const caseSetMembersFilter: CaseDbTypedUuidSetFilter = {
+  const caseSetMembersFilter: CaseDbUuidSetFilter = {
     invert: false,
     key: 'case_id',
     members: [caseDbCase.id],
@@ -48,7 +48,7 @@ export const CaseCaseSetInfo = ({ caseDbCase, ...boxProps }: CaseCaseSetInfoProp
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
-  const caseSetsFilter: CaseDbTypedUuidSetFilter = {
+  const caseSetsFilter: CaseDbUuidSetFilter = {
     invert: false,
     key: 'id',
     members: caseSetMembers?.map((caseSetMember) => caseSetMember.case_set_id) ?? [],

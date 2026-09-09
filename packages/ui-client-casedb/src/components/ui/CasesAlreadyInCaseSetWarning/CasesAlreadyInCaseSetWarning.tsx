@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import type {
   CaseDbCase,
   CaseDbCaseSet,
-  CaseDbTypedUuidSetFilter,
+  CaseDbUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import {
   CaseDbCaseApi,
@@ -39,7 +39,7 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
   const theme = useTheme();
 
   // Load all case set members for the given cases
-  const caseSetMembersFilter = useMemo<CaseDbTypedUuidSetFilter>(() => {
+  const caseSetMembersFilter = useMemo<CaseDbUuidSetFilter>(() => {
     return {
       invert: false,
       key: 'case_id',
@@ -56,7 +56,7 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
   });
 
   // Load all case sets for the given case set members
-  const existingCaseSetsFilter = useMemo<CaseDbTypedUuidSetFilter>(() => {
+  const existingCaseSetsFilter = useMemo<CaseDbUuidSetFilter>(() => {
     return {
       invert: false,
       key: 'id',

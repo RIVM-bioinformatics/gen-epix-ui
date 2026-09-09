@@ -13,7 +13,7 @@ import type {
   CaseDbCase,
   CaseDbCaseSet,
   CaseDbCaseSetMember,
-  CaseDbTypedCompositeFilter,
+  CaseDbCompositeFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
@@ -60,7 +60,7 @@ export const RemoveCasesFromEventDialog = withDialog<RemoveCasesFromEventDialogP
 
   const isMaxExceeded = openProps.rows.length > completeCaseType.props.delete_max_n_cases;
 
-  const caseSetMembersFilter = useMemo<CaseDbTypedCompositeFilter>(() => ({
+  const caseSetMembersFilter = useMemo<CaseDbCompositeFilter>(() => ({
     filters: [
       {
         invert: false,
