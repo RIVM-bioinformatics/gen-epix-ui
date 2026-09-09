@@ -23,7 +23,7 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, SeqDbBaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
- * Represents an allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Normalizes DNA sequence casing, derives verifiable sequence hashes and lengths, and rejects inconsistent or unsupported representations.
+ * Represents an allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
  */
 export interface SeqDbAllele {
     'created_at'?: string | null;
@@ -48,7 +48,7 @@ export interface SeqDbAllele {
 
 
 /**
- * Represents an allele intended for upload. Equal to an SeqDbAllele, with additional variables.    PARENT CLASS DOCUMENTATION   SeqDbAllele: Represents an allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Normalizes DNA sequence casing, derives verifiable sequence hashes and lengths, and rejects inconsistent or unsupported representations.
+ * Represents an allele intended for upload. Equal to an SeqDbAllele, with additional variables.    PARENT CLASS DOCUMENTATION   SeqDbAllele: Represents an allele for a locus, i.e., a specific DNA sequence variant observed at that locus. Any IUPAC ambiguity codes are allowed in the sequence. The locus only represents the first observed locus that the allele was observed for, but the allele can be observed for multiple loci, e.g. due to gene duplication or because the locus definition is not specific enough to distinguish between multiple similar loci.  An allele is immutable: once created, it cannot be deleted or updated. As such, allele IDs can safely be referenced in other models and outside of the application.  The ID of the allele is equal to the hash of the sequence. As such, the ID of the allele can be computed outside of the application as well, e.g., to improve performance. In case of a collision, i.e., two different sequences yielding the same hash, the newer allele cannot be persisted. The probability of such collisions is extremely low: about 10^15 alleles would need to be stored for a one-in-a-billion chance of a collision. If such a collision does occur, you could send it to your nearest cryptographer, as they will be thrilled to investigate it. A word of caution though: this will lead to the discovery that SHA256 is cryptographically broken, which in turn will lead to the discovery that P=NP. This will lead to the collapse of modern cryptography, triggering a period of global chaos that will eventually lead to nuclear armageddon and bring about the end of human civilization as we know it. No liability is accepted for this chain of events.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
  */
 export interface SeqDbAlleleForUpload {
     'created_at'?: string | null;
@@ -171,7 +171,7 @@ export type SeqDbAuthProtocol = typeof SeqDbAuthProtocol[keyof typeof SeqDbAuthP
 
 
 /**
- * Represents calculating a phylogenetic tree from query profiles and a configured protocol.  The returned tree contains the query profiles and any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).  Model validation: When provided, leaf names must have one entry per queried sequence profile.
+ * Represents a request to calculate a phylogenetic tree from query profiles and a configured protocol.  The returned tree contains the query profiles and any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).  Model validation: When provided, leaf names must have one entry per queried sequence profile.
  */
 export interface SeqDbCalculatePhylogeneticTreeRequestBody {
     /**
@@ -210,84 +210,85 @@ export interface SeqDbCalculateSeqDistancesResult {
 
 
 export const SeqDbCommandName = {
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
-    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
-    TaxonCrudCommand: 'TaxonCrudCommand',
-    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
-    LocusCrudCommand: 'LocusCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    AlleleCrudCommand: 'AlleleCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    FileCrudCommand: 'FileCrudCommand',
-    ReadSetCrudCommand: 'ReadSetCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
-    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
-    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
-    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
-    ProtocolCrudCommand: 'ProtocolCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
-    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
     TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
+    ConvertSeqFormatCommand: 'ConvertSeqFormatCommand',
     SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
-    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
+    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
+    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
     CreateFileCommand: 'CreateFileCommand',
     ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    UploadSamplesCommand: 'UploadSamplesCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    LocusSetCrudCommand: 'LocusSetCrudCommand',
-    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
-    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
-    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
     InviteUserCommand: 'InviteUserCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    LocusCrudCommand: 'LocusCrudCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    TaxonCrudCommand: 'TaxonCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
+    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    LocusSetCrudCommand: 'LocusSetCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
+    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
+    ReadSetCrudCommand: 'ReadSetCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
+    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
+    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
+    AlleleCrudCommand: 'AlleleCrudCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
+    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    UploadSamplesCommand: 'UploadSamplesCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    FileCrudCommand: 'FileCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -371,6 +372,19 @@ export interface SeqDbContig {
 
 
 /**
+ * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.
+ */
+export interface SeqDbConvertSeqFormatRequestBody {
+    /**
+     * IDs of the sequences whose contigs should be converted.
+     */
+    'seq_ids': Array<string>;
+    'from_format': SeqDbSeqFormat;
+    'to_format': SeqDbSeqFormat;
+}
+
+
+/**
  * Represents a base64-encoded file creation request.
  */
 export interface SeqDbCreateFileRequestBody {
@@ -412,7 +426,7 @@ export interface SeqDbDataCollectionSet {
     'description'?: string | null;
 }
 /**
- * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
+ * Represents a request to update the association between a SeqDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
  */
 export interface SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody {
     'data_collection_set_members': Array<SeqDbDataCollectionSetMember>;
@@ -867,7 +881,7 @@ export interface SeqDbIdentityProvider {
 
 
 /**
- * Create and return a SeqDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+ * Represents a request to create and return a SeqDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
  */
 export interface SeqDbInviteUserRequestBody {
     'key'?: string | null;
@@ -1197,7 +1211,7 @@ export interface SeqDbOrganizationIdentifierIssuerLink {
     'identifier_issuer'?: SeqDbIdentifierIssuer;
 }
 /**
- * Represents a request to create or update organization-to-identifier issuer associations.
+ * Represents a request to update the association between an SeqDbOrganization and IdentifierIssuers.
  */
 export interface SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody {
     'organization_identifier_issuer_links': Array<SeqDbOrganizationIdentifierIssuerLink>;
@@ -1236,7 +1250,7 @@ export interface SeqDbOrganizationSetMember {
     'organization'?: SeqDbOrganization;
 }
 /**
- * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
+ * Represents a request to update the association between an SeqDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
  */
 export interface SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody {
     'organization_set_members': Array<SeqDbOrganizationSetMember>;
@@ -1583,7 +1597,7 @@ export type SeqDbReadsFileFormat = typeof SeqDbReadsFileFormat[keyof typeof SeqD
 
 
 /**
- * Represents a reference allele for a locus. This can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other alleles for the locus or for reducing storage requirements of alleles.  A reference allele is immutable: once created, it cannot be deleted or updated. As such, reference allele IDs can safely be referenced in other models and outside of the application.  The ID of the reference allele is equal to the hash of the sequence. As such, the ID of the reference allele can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Normalizes DNA sequence casing, derives verifiable sequence hashes and lengths, and rejects inconsistent or unsupported representations.
+ * Represents a reference allele for a locus. This can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other alleles for the locus or for reducing storage requirements of alleles.  A reference allele is immutable: once created, it cannot be deleted or updated. As such, reference allele IDs can safely be referenced in other models and outside of the application.  The ID of the reference allele is equal to the hash of the sequence. As such, the ID of the reference allele can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
  */
 export interface SeqDbRefAllele {
     'created_at'?: string | null;
@@ -1612,7 +1626,7 @@ export interface SeqDbRefAllele {
 
 
 /**
- * Represents an immutable reference sequence for a taxon.  A reference sequence represents a single chromosome, viral segment, plasmid, or other contiguous DNA molecule belonging to a particular taxon. This can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other sequences or for optimising storage requirements of sequences. Any IUPAC ambiguity codes are allowed in the sequence.  A reference sequence is immutable: once created, it cannot be deleted or updated. As such, reference sequence IDs can safely be referenced in other models and outside of the application.  The ID of the reference sequence is equal to the hash of the sequence. As such, the ID of the reference sequence can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Normalizes DNA sequence casing, derives verifiable sequence hashes and lengths, and rejects inconsistent or unsupported representations.
+ * Represents an immutable reference sequence for a taxon.  A reference sequence represents a single chromosome, viral segment, plasmid, or other contiguous DNA molecule belonging to a particular taxon. This can be an actual sequence or an artificial construct, typically then a consensus sequence. It can be used e.g. as a reference for alignment of other sequences or for optimising storage requirements of sequences. Any IUPAC ambiguity codes are allowed in the sequence.  A reference sequence is immutable: once created, it cannot be deleted or updated. As such, reference sequence IDs can safely be referenced in other models and outside of the application.  The ID of the reference sequence is equal to the hash of the sequence. As such, the ID of the reference sequence can be computed outside of the application as well.    PARENT CLASS DOCUMENTATION   BaseSeq: Represents a sequence with a validated representation, length, and hash.  The class includes validation logic to ensure consistency between the sequence, its format, length, and derived sequence hash. The sequence hash is stored in the id field of the model and is equal to the first 128 bits of the SHA256 hash of the lower case sequence.  Model validation: Converts string format names to  members, normalizes DNA sequence casing, decodes gzip+base64 input for validation, and re-encodes compressed representations for storage. It derives verifiable sequence hashes and lengths and rejects inconsistent or unsupported representations.
  */
 export interface SeqDbRefSeq {
     'created_at'?: string | null;
@@ -1665,7 +1679,7 @@ export interface SeqDbRegexFilter {
     'pattern': string;
 }
 /**
- * Represents retrieval of the best SeqDbSeqClassification ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
+ * Represents a request to retrieve the best SeqDbSeqClassification ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
  */
 export interface SeqDbRetrieveBestSeqClassificationPerSampleRequestBody {
     /**
@@ -1682,14 +1696,14 @@ export interface SeqDbRetrieveBestSeqClassificationPerSampleRequestBody {
 
 
 /**
- * Represents retrieval of the best SeqDbSeq ID for each requested sample.  IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
+ * Represents a request to retrieve the best SeqDbSeq ID for each requested sample.  IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
  */
 export interface SeqDbRetrieveBestSeqPerSampleRequestBody {
     'protocol_ids'?: Array<string> | null;
     'sample_ids': Array<string> | null;
 }
 /**
- * Represents retrieval of the best SeqDbSeqProfile ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
+ * Represents a request to retrieve the best SeqDbSeqProfile ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
  */
 export interface SeqDbRetrieveBestSeqProfilePerSampleRequestBody {
     /**
@@ -1699,7 +1713,7 @@ export interface SeqDbRetrieveBestSeqProfilePerSampleRequestBody {
     'sample_ids': Array<string> | null;
 }
 /**
- * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+ * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
  */
 export interface SeqDbRetrieveOrganizationContactsRequestBody {
     /**
@@ -1708,7 +1722,7 @@ export interface SeqDbRetrieveOrganizationContactsRequestBody {
     'organization_id': string;
 }
 /**
- * Represents retrieval of only SeqDbSampleIdentifier records for sample identifiers.  Lighter than RetrieveSamplesByIdCommand — no sequences or read sets.
+ * Represents a request to retrieve only SeqDbSampleIdentifier records for sample identifiers.  Lighter than RetrieveSamplesByIdCommand — no sequences or read sets.
  */
 export interface SeqDbRetrieveSampleIdentifiersByIdsRequestBody {
     /**
@@ -1717,7 +1731,7 @@ export interface SeqDbRetrieveSampleIdentifiersByIdsRequestBody {
     'sample_ids': Array<string>;
 }
 /**
- * Represents retrieval of complete data for sample identifiers.  The result contains SeqDbFullSample objects in the same order.
+ * Represents a request to retrieve complete data for sample identifiers.  The result contains SeqDbFullSample objects in the same order.
  */
 export interface SeqDbRetrieveSamplesByIdsRequestBody {
     /**
@@ -1726,7 +1740,7 @@ export interface SeqDbRetrieveSamplesByIdsRequestBody {
     'sample_ids': Array<string>;
 }
 /**
- * Represents retrieval of sequences in FASTA format.  as an iterable that yields one contig at a time.
+ * Represents a request to retrieve sequences in FASTA format.  The result is an iterable that yields one contig at a time.
  */
 export interface SeqDbRetrieveSeqFastaRequestBody {
     /**
@@ -1739,7 +1753,7 @@ export interface SeqDbRetrieveSeqFastaRequestBody {
     'file_name': string;
 }
 /**
- * Represents retrieval of profiles similar to at least one query profile.  the given maximum distance and based on the given seq distance protocol. The returned profiles do not contain the query profiles.
+ * Represents a request to retrieve profiles similar to at least one query profile.  the given maximum distance and based on the given seq distance protocol. The returned profiles do not contain the query profiles.
  */
 export interface SeqDbRetrieveSimilarProfilesRequestBody {
     /**
@@ -2245,6 +2259,8 @@ export const SeqDbSeqFormat = {
     STR_DNA: 2,
     STR_DNA_INCL_GAP: 3,
     NEXTCLADE: 4,
+    STR_DNA_GZB64: 5,
+    STR_DNA_INCL_GAP_GZB64: 6,
 } as const;
 
 export type SeqDbSeqFormat = typeof SeqDbSeqFormat[keyof typeof SeqDbSeqFormat];
@@ -2627,7 +2643,7 @@ export interface SeqDbTreeAlgorithmClass {
     'rank'?: number | null;
 }
 /**
- * Represents creating missing distances for profiles under a distance protocol.  The command finds all profiles that do not yet have a SeqDbSeqDistance record, computes the missing distances, and create the records while maintaining the symmetry invariant (every distance is stored in both directions).
+ * Represents a request to create missing distances for profiles under a distance protocol.  The command finds all profiles that do not yet have a SeqDbSeqDistance record, computes the missing distances, and create the records while maintaining the symmetry invariant (every distance is stored in both directions).
  */
 export interface SeqDbUpdateSeqDistancesRequestBody {
     /**
@@ -2643,7 +2659,7 @@ export interface SeqDbUpdateSeqDistancesRequestBody {
     'use_numpy_allele_distance'?: boolean;
 }
 /**
- * Updates the current user\'s SeqDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+ * Represents a request to update the current user\'s SeqDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
  */
 export interface SeqDbUpdateUserOwnOrganizationRequestBody {
     /**
@@ -2652,7 +2668,7 @@ export interface SeqDbUpdateUserOwnOrganizationRequestBody {
     'organization_id': string;
 }
 /**
- * Update an existing SeqDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+ * Represents a request to update an existing SeqDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
  */
 export interface SeqDbUpdateUserRequestBody {
     'is_active': boolean | null;
@@ -2691,7 +2707,7 @@ export interface SeqDbUploadResult {
 
 
 /**
- * Represents a batch upload of samples along with their associated data.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  The upload process consists of the following steps: 1) Check if the user has the rights to upload the data in question. 2) Verify the validity of the sample data. The verification does not fail fast    but rather proceeds with the remaining data and checks to the extent possible,    so that all errors can be reported back to the caller instead of just the    first encountered one. 3) Upsert (create and/or update) the sample data.  The return value contains the results of the upload operation, whether successful or otherwise, and with details for each sample and associated data item.
+ * Represents a request to upload a batch of samples along with their associated data.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  The upload process consists of the following steps: 1) Check if the user has the rights to upload the data in question. 2) Verify the validity of the sample data. The verification does not fail fast    but rather proceeds with the remaining data and checks to the extent possible,    so that all errors can be reported back to the caller instead of just the    first encountered one. 3) Upsert (create and/or update) the sample data.  The return value contains the results of the upload operation, whether successful or otherwise, and with details for each sample and associated data item.
  */
 export interface SeqDbUploadSamplesRequestBody {
     /**
@@ -2893,11 +2909,11 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to manage policies that grant organization-administration rights to users.
          * @summary SeqDbOrganization Admin Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationAdminPoliciesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_admin_policies/{object_id}`
@@ -3307,7 +3323,7 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a request to retrieve organization administrator names and email addresses.  Results include all administrators for the user\'s organization.
+         * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3362,11 +3378,11 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to manage policies that grant organization-administration rights to users.
          * @summary SeqDbOrganization Admin Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationAdminPoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -3509,7 +3525,7 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve organization administrator names and email addresses.  Results include all administrators for the user\'s organization.
+         * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3560,11 +3576,11 @@ export class SeqDbAbacApi extends SeqDbBaseAPI {
     /**
      * Represents a request to manage policies that grant organization-administration rights to users.
      * @summary SeqDbOrganization Admin Policies  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationAdminPoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -3685,7 +3701,7 @@ export class SeqDbAbacApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve organization administrator names and email addresses.  Results include all administrators for the user\'s organization.
+     * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
      * @summary Retrieveorganizationadminnameemailscommand
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3891,7 +3907,7 @@ export class SeqDbDefaultApi extends SeqDbBaseAPI {
 const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Represents file creation after validating its expected format and compression.  The expected format and compression determine how the file content is verified.
+         * Represents a request to create a file after validating its expected format and compression.  The expected format and compression determine how the file content is verified.
          * @summary Createfile
          * @param {SeqDbCreateFileRequestBody} createFileRequestBody 
          * @param {*} [options] Override http request option.
@@ -3926,7 +3942,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -3966,13 +3982,13 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        filesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        filesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('filesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/files/{object_id}`
@@ -4000,7 +4016,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -4037,7 +4053,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -4077,7 +4093,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -4111,7 +4127,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -4148,7 +4164,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Post One
          * @param {SeqDbModelFile} modelFile 
          * @param {*} [options] Override http request option.
@@ -4183,7 +4199,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -4228,7 +4244,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -4273,7 +4289,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Post Some
          * @param {Array<any>} requestBody 
          * @param {*} [options] Override http request option.
@@ -4308,7 +4324,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Put One
          * @param {string} objectId 
          * @param {SeqDbModelFile} modelFile 
@@ -4347,7 +4363,7 @@ const SeqDbFileApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Put Some
          * @param {Array<any>} requestBody 
          * @param {*} [options] Override http request option.
@@ -4391,7 +4407,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = SeqDbFileApiAxiosParamCreator(configuration)
     return {
         /**
-         * Represents file creation after validating its expected format and compression.  The expected format and compression determine how the file content is verified.
+         * Represents a request to create a file after validating its expected format and compression.  The expected format and compression determine how the file content is verified.
          * @summary Createfile
          * @param {SeqDbCreateFileRequestBody} createFileRequestBody 
          * @param {*} [options] Override http request option.
@@ -4404,7 +4420,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -4418,20 +4434,20 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async filesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async filesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.filesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FileApi.filesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -4444,7 +4460,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -4458,7 +4474,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -4471,7 +4487,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -4484,7 +4500,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Post One
          * @param {SeqDbModelFile} modelFile 
          * @param {*} [options] Override http request option.
@@ -4497,7 +4513,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -4512,7 +4528,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -4527,7 +4543,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Post Some
          * @param {Array<any>} requestBody 
          * @param {*} [options] Override http request option.
@@ -4540,7 +4556,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Put One
          * @param {string} objectId 
          * @param {SeqDbModelFile} modelFile 
@@ -4554,7 +4570,7 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a standard CRUD operation on persisted seqdb file records.
+         * Represents a request to perform a CRUD operation on a File.
          * @summary Files  Put Some
          * @param {Array<any>} requestBody 
          * @param {*} [options] Override http request option.
@@ -4592,7 +4608,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
   }
 
     /**
-     * Represents file creation after validating its expected format and compression.  The expected format and compression determine how the file content is verified.
+     * Represents a request to create a file after validating its expected format and compression.  The expected format and compression determine how the file content is verified.
      * @summary Createfile
      * @param {SeqDbCreateFileRequestBody} createFileRequestBody 
      * @param {*} [options] Override http request option.
@@ -4603,7 +4619,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -4615,18 +4631,18 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public filesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public filesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbFileApiFp(this.configuration).filesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -4637,7 +4653,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -4649,7 +4665,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -4660,7 +4676,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -4671,7 +4687,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Post One
      * @param {SeqDbModelFile} modelFile 
      * @param {*} [options] Override http request option.
@@ -4682,7 +4698,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -4695,7 +4711,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -4708,7 +4724,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Post Some
      * @param {Array<any>} requestBody 
      * @param {*} [options] Override http request option.
@@ -4719,7 +4735,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Put One
      * @param {string} objectId 
      * @param {SeqDbModelFile} modelFile 
@@ -4731,7 +4747,7 @@ export class SeqDbFileApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a standard CRUD operation on persisted seqdb file records.
+     * Represents a request to perform a CRUD operation on a File.
      * @summary Files  Put Some
      * @param {Array<any>} requestBody 
      * @param {*} [options] Override http request option.
@@ -4784,7 +4800,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -4824,13 +4840,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('contactsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/contacts/{object_id}`
@@ -4858,7 +4874,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -4895,7 +4911,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -4935,7 +4951,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -4969,7 +4985,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -5006,7 +5022,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post One
          * @param {SeqDbContact} contact 
          * @param {*} [options] Override http request option.
@@ -5041,7 +5057,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -5086,7 +5102,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -5131,7 +5147,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Some
          * @param {Array<SeqDbContact>} contact 
          * @param {*} [options] Override http request option.
@@ -5166,7 +5182,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Put One
          * @param {string} objectId 
          * @param {SeqDbContact} contact 
@@ -5205,7 +5221,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Put Some
          * @param {Array<SeqDbContact>} contact 
          * @param {*} [options] Override http request option.
@@ -5240,7 +5256,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -5280,13 +5296,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('dataCollectionSetMembersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/data_collection_set_members/{object_id}`
@@ -5314,7 +5330,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -5351,7 +5367,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -5391,7 +5407,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -5425,7 +5441,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -5462,7 +5478,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post One
          * @param {SeqDbDataCollectionSetMember} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -5497,7 +5513,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -5542,7 +5558,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -5587,7 +5603,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Some
          * @param {Array<SeqDbDataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -5622,7 +5638,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Put One
          * @param {string} objectId 
          * @param {SeqDbDataCollectionSetMember} dataCollectionSetMember 
@@ -5661,7 +5677,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Put Some
          * @param {Array<SeqDbDataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -5696,7 +5712,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -5736,13 +5752,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('dataCollectionSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/data_collection_sets/{object_id}`
@@ -5770,7 +5786,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -5807,7 +5823,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -5847,7 +5863,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -5881,7 +5897,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -5918,7 +5934,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post One
          * @param {SeqDbDataCollectionSet} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -5953,7 +5969,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -5998,7 +6014,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -6043,7 +6059,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Some
          * @param {Array<SeqDbDataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -6078,7 +6094,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
+         * Represents a request to update the association between a SeqDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -6117,7 +6133,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbDataCollectionSet} dataCollectionSet 
@@ -6156,7 +6172,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Put Some
          * @param {Array<SeqDbDataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -6191,7 +6207,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -6231,13 +6247,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('dataCollectionsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/data_collections/{object_id}`
@@ -6265,7 +6281,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -6302,7 +6318,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -6342,7 +6358,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -6376,7 +6392,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -6413,7 +6429,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post One
          * @param {SeqDbDataCollection} dataCollection 
          * @param {*} [options] Override http request option.
@@ -6448,7 +6464,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -6493,7 +6509,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -6538,7 +6554,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Some
          * @param {Array<SeqDbDataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
@@ -6573,7 +6589,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Put One
          * @param {string} objectId 
          * @param {SeqDbDataCollection} dataCollection 
@@ -6612,7 +6628,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Put Some
          * @param {Array<SeqDbDataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
@@ -6647,7 +6663,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -6687,13 +6703,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('identifierIssuersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/identifier_issuers/{object_id}`
@@ -6721,7 +6737,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -6758,7 +6774,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -6798,7 +6814,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -6832,7 +6848,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -6869,7 +6885,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post One
          * @param {SeqDbIdentifierIssuer} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -6904,7 +6920,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -6949,7 +6965,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -6994,7 +7010,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Some
          * @param {Array<SeqDbIdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -7029,7 +7045,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Put One
          * @param {string} objectId 
          * @param {SeqDbIdentifierIssuer} identifierIssuer 
@@ -7068,7 +7084,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Put Some
          * @param {Array<SeqDbIdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -7103,7 +7119,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Create and return a SeqDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+         * Represents a request to create and return a SeqDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A SeqDbUser
          * @param {SeqDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
@@ -7138,7 +7154,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents retrieval of the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
          * @summary The Constraints For Inviting A SeqDbUser
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7168,7 +7184,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -7208,13 +7224,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationIdentifierIssuerLinksDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_identifier_issuer_links/{object_id}`
@@ -7242,7 +7258,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7279,7 +7295,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -7319,7 +7335,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -7353,7 +7369,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7390,7 +7406,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Post One
          * @param {SeqDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -7425,7 +7441,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -7470,7 +7486,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -7515,7 +7531,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Post Some
          * @param {Array<SeqDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -7550,7 +7566,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Put One
          * @param {string} objectId 
          * @param {SeqDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
@@ -7589,7 +7605,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Put Some
          * @param {Array<SeqDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -7624,7 +7640,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -7664,13 +7680,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationSetMembersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_set_members/{object_id}`
@@ -7698,7 +7714,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7735,7 +7751,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -7775,7 +7791,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -7809,7 +7825,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7846,7 +7862,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Post One
          * @param {SeqDbOrganizationSetMember} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -7881,7 +7897,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -7926,7 +7942,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -7971,7 +7987,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Post Some
          * @param {Array<SeqDbOrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -8006,7 +8022,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Put One
          * @param {string} objectId 
          * @param {SeqDbOrganizationSetMember} organizationSetMember 
@@ -8045,7 +8061,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Put Some
          * @param {Array<SeqDbOrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -8080,7 +8096,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -8120,13 +8136,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_sets/{object_id}`
@@ -8154,7 +8170,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8191,7 +8207,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -8231,7 +8247,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -8265,7 +8281,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8302,7 +8318,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Post One
          * @param {SeqDbOrganizationSet} organizationSet 
          * @param {*} [options] Override http request option.
@@ -8337,7 +8353,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -8382,7 +8398,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -8427,7 +8443,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Post Some
          * @param {Array<SeqDbOrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
@@ -8462,7 +8478,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbOrganizationSet} organizationSet 
@@ -8501,7 +8517,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
+         * Represents a request to update the association between an SeqDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset SeqDbOrganization
          * @param {string} organizationSetId 
          * @param {SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -8540,7 +8556,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Put Some
          * @param {Array<SeqDbOrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
@@ -8575,7 +8591,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -8615,13 +8631,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organizations/{object_id}`
@@ -8649,7 +8665,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8686,7 +8702,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -8726,7 +8742,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -8760,7 +8776,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8797,7 +8813,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post One
          * @param {SeqDbOrganization} organization 
          * @param {*} [options] Override http request option.
@@ -8832,7 +8848,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -8877,7 +8893,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -8922,7 +8938,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Some
          * @param {Array<SeqDbOrganization>} organization 
          * @param {*} [options] Override http request option.
@@ -8957,7 +8973,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents a request to create or update organization-to-identifier issuer associations.
+         * Represents a request to update the association between an SeqDbOrganization and IdentifierIssuers.
          * @summary Update Association Between SeqDbOrganization And Identifierissuer
          * @param {string} organizationId 
          * @param {SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -8996,7 +9012,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Put One
          * @param {string} objectId 
          * @param {SeqDbOrganization} organization 
@@ -9035,7 +9051,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Put Some
          * @param {Array<SeqDbOrganization>} organization 
          * @param {*} [options] Override http request option.
@@ -9070,7 +9086,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
          * @summary Retrieve SeqDbOrganization Contacts
          * @param {SeqDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
          * @param {*} [options] Override http request option.
@@ -9105,7 +9121,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9145,13 +9161,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('sitesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/sites/{object_id}`
@@ -9179,7 +9195,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9216,7 +9232,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9256,7 +9272,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -9290,7 +9306,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9327,7 +9343,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post One
          * @param {SeqDbSite} site 
          * @param {*} [options] Override http request option.
@@ -9362,7 +9378,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -9407,7 +9423,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -9452,7 +9468,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Some
          * @param {Array<SeqDbSite>} site 
          * @param {*} [options] Override http request option.
@@ -9487,7 +9503,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Put One
          * @param {string} objectId 
          * @param {SeqDbSite} site 
@@ -9526,7 +9542,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Put Some
          * @param {Array<SeqDbSite>} site 
          * @param {*} [options] Override http request option.
@@ -9561,7 +9577,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Update an existing SeqDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+         * Represents a request to update an existing SeqDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
          * @summary Updateuser
          * @param {string} objectId 
          * @param {SeqDbUpdateUserRequestBody} updateUserRequestBody 
@@ -9600,7 +9616,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Updates the current user\'s SeqDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+         * Represents a request to update the current user\'s SeqDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
          * @summary Updateuserownorganizationcommand
          * @param {SeqDbUpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
          * @param {*} [options] Override http request option.
@@ -9635,7 +9651,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9675,13 +9691,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('userInvitationsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/user_invitations/{object_id}`
@@ -9709,7 +9725,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9746,7 +9762,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9786,7 +9802,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -9820,7 +9836,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9857,7 +9873,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Post One
          * @param {SeqDbUserInvitation} userInvitation 
          * @param {*} [options] Override http request option.
@@ -9892,7 +9908,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -9937,7 +9953,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -9982,7 +9998,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Post Some
          * @param {Array<SeqDbUserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
@@ -10017,7 +10033,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Put One
          * @param {string} objectId 
          * @param {SeqDbUserInvitation} userInvitation 
@@ -10056,7 +10072,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Put Some
          * @param {Array<SeqDbUserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
@@ -10151,7 +10167,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Register the user represented by an existing SeqDbUserInvitation.  The token must match that of an existing SeqDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+         * Represents a request to register the user represented by an existing SeqDbUserInvitation.  The token must match that of an existing SeqDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
          * @summary Register Inviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -10185,7 +10201,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10225,13 +10241,13 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('usersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/users/{object_id}`
@@ -10259,7 +10275,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10296,7 +10312,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10336,7 +10352,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10370,7 +10386,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10407,7 +10423,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post One
          * @param {SeqDbUser} user 
          * @param {*} [options] Override http request option.
@@ -10442,7 +10458,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10487,7 +10503,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10532,7 +10548,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Some
          * @param {Array<SeqDbUser>} user 
          * @param {*} [options] Override http request option.
@@ -10567,7 +10583,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Put One
          * @param {string} objectId 
          * @param {SeqDbUser} user 
@@ -10606,7 +10622,7 @@ const SeqDbOrganizationApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Put Some
          * @param {Array<SeqDbUser>} user 
          * @param {*} [options] Override http request option.
@@ -10663,7 +10679,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10677,20 +10693,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async contactsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10703,7 +10719,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10717,7 +10733,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10730,7 +10746,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10743,7 +10759,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post One
          * @param {SeqDbContact} contact 
          * @param {*} [options] Override http request option.
@@ -10756,7 +10772,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10771,7 +10787,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10786,7 +10802,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Some
          * @param {Array<SeqDbContact>} contact 
          * @param {*} [options] Override http request option.
@@ -10799,7 +10815,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Put One
          * @param {string} objectId 
          * @param {SeqDbContact} contact 
@@ -10813,7 +10829,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Put Some
          * @param {Array<SeqDbContact>} contact 
          * @param {*} [options] Override http request option.
@@ -10826,7 +10842,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10840,20 +10856,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async dataCollectionSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10866,7 +10882,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10880,7 +10896,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10893,7 +10909,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10906,7 +10922,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post One
          * @param {SeqDbDataCollectionSetMember} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -10919,7 +10935,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10934,7 +10950,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10949,7 +10965,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Some
          * @param {Array<SeqDbDataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -10962,7 +10978,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Put One
          * @param {string} objectId 
          * @param {SeqDbDataCollectionSetMember} dataCollectionSetMember 
@@ -10976,7 +10992,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Put Some
          * @param {Array<SeqDbDataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -10989,7 +11005,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11003,20 +11019,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async dataCollectionSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11029,7 +11045,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11043,7 +11059,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11056,7 +11072,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11069,7 +11085,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post One
          * @param {SeqDbDataCollectionSet} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -11082,7 +11098,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11097,7 +11113,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11112,7 +11128,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Some
          * @param {Array<SeqDbDataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -11125,7 +11141,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
+         * Represents a request to update the association between a SeqDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -11139,7 +11155,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbDataCollectionSet} dataCollectionSet 
@@ -11153,7 +11169,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Put Some
          * @param {Array<SeqDbDataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -11166,7 +11182,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11180,20 +11196,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async dataCollectionsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11206,7 +11222,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11220,7 +11236,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11233,7 +11249,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11246,7 +11262,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post One
          * @param {SeqDbDataCollection} dataCollection 
          * @param {*} [options] Override http request option.
@@ -11259,7 +11275,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11274,7 +11290,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11289,7 +11305,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Some
          * @param {Array<SeqDbDataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
@@ -11302,7 +11318,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Put One
          * @param {string} objectId 
          * @param {SeqDbDataCollection} dataCollection 
@@ -11316,7 +11332,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Put Some
          * @param {Array<SeqDbDataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
@@ -11329,7 +11345,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11343,20 +11359,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async identifierIssuersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11369,7 +11385,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11383,7 +11399,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11396,7 +11412,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11409,7 +11425,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post One
          * @param {SeqDbIdentifierIssuer} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -11422,7 +11438,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11437,7 +11453,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11452,7 +11468,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Some
          * @param {Array<SeqDbIdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -11465,7 +11481,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Put One
          * @param {string} objectId 
          * @param {SeqDbIdentifierIssuer} identifierIssuer 
@@ -11479,7 +11495,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Put Some
          * @param {Array<SeqDbIdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -11492,7 +11508,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create and return a SeqDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+         * Represents a request to create and return a SeqDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A SeqDbUser
          * @param {SeqDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
@@ -11505,7 +11521,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
          * @summary The Constraints For Inviting A SeqDbUser
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -11517,7 +11533,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11531,20 +11547,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationIdentifierIssuerLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11557,7 +11573,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11571,7 +11587,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11584,7 +11600,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11597,7 +11613,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Post One
          * @param {SeqDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -11610,7 +11626,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11625,7 +11641,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11640,7 +11656,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Post Some
          * @param {Array<SeqDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -11653,7 +11669,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Put One
          * @param {string} objectId 
          * @param {SeqDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
@@ -11667,7 +11683,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary SeqDbOrganization Identifier Issuer Links  Put Some
          * @param {Array<SeqDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -11680,7 +11696,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11694,20 +11710,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11720,7 +11736,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11734,7 +11750,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11747,7 +11763,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11760,7 +11776,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Post One
          * @param {SeqDbOrganizationSetMember} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -11773,7 +11789,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11788,7 +11804,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11803,7 +11819,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Post Some
          * @param {Array<SeqDbOrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -11816,7 +11832,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Put One
          * @param {string} objectId 
          * @param {SeqDbOrganizationSetMember} organizationSetMember 
@@ -11830,7 +11846,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary SeqDbOrganization Set Members  Put Some
          * @param {Array<SeqDbOrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -11843,7 +11859,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11857,20 +11873,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11883,7 +11899,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11897,7 +11913,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11910,7 +11926,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11923,7 +11939,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Post One
          * @param {SeqDbOrganizationSet} organizationSet 
          * @param {*} [options] Override http request option.
@@ -11936,7 +11952,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11951,7 +11967,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11966,7 +11982,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Post Some
          * @param {Array<SeqDbOrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
@@ -11979,7 +11995,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbOrganizationSet} organizationSet 
@@ -11993,7 +12009,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
+         * Represents a request to update the association between an SeqDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset SeqDbOrganization
          * @param {string} organizationSetId 
          * @param {SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -12007,7 +12023,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary SeqDbOrganization Sets  Put Some
          * @param {Array<SeqDbOrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
@@ -12020,7 +12036,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12034,20 +12050,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12060,7 +12076,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12074,7 +12090,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -12087,7 +12103,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12100,7 +12116,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post One
          * @param {SeqDbOrganization} organization 
          * @param {*} [options] Override http request option.
@@ -12113,7 +12129,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12128,7 +12144,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12143,7 +12159,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Some
          * @param {Array<SeqDbOrganization>} organization 
          * @param {*} [options] Override http request option.
@@ -12156,7 +12172,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to create or update organization-to-identifier issuer associations.
+         * Represents a request to update the association between an SeqDbOrganization and IdentifierIssuers.
          * @summary Update Association Between SeqDbOrganization And Identifierissuer
          * @param {string} organizationId 
          * @param {SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -12170,7 +12186,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Put One
          * @param {string} objectId 
          * @param {SeqDbOrganization} organization 
@@ -12184,7 +12200,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Put Some
          * @param {Array<SeqDbOrganization>} organization 
          * @param {*} [options] Override http request option.
@@ -12197,7 +12213,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
          * @summary Retrieve SeqDbOrganization Contacts
          * @param {SeqDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
          * @param {*} [options] Override http request option.
@@ -12210,7 +12226,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12224,20 +12240,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async sitesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12250,7 +12266,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12264,7 +12280,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -12277,7 +12293,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12290,7 +12306,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post One
          * @param {SeqDbSite} site 
          * @param {*} [options] Override http request option.
@@ -12303,7 +12319,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12318,7 +12334,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12333,7 +12349,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Some
          * @param {Array<SeqDbSite>} site 
          * @param {*} [options] Override http request option.
@@ -12346,7 +12362,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Put One
          * @param {string} objectId 
          * @param {SeqDbSite} site 
@@ -12360,7 +12376,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Put Some
          * @param {Array<SeqDbSite>} site 
          * @param {*} [options] Override http request option.
@@ -12373,7 +12389,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Update an existing SeqDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+         * Represents a request to update an existing SeqDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
          * @summary Updateuser
          * @param {string} objectId 
          * @param {SeqDbUpdateUserRequestBody} updateUserRequestBody 
@@ -12387,7 +12403,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Updates the current user\'s SeqDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+         * Represents a request to update the current user\'s SeqDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
          * @summary Updateuserownorganizationcommand
          * @param {SeqDbUpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
          * @param {*} [options] Override http request option.
@@ -12400,7 +12416,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12414,20 +12430,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async userInvitationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12440,7 +12456,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12454,7 +12470,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -12467,7 +12483,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12480,7 +12496,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Post One
          * @param {SeqDbUserInvitation} userInvitation 
          * @param {*} [options] Override http request option.
@@ -12493,7 +12509,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12508,7 +12524,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12523,7 +12539,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Post Some
          * @param {Array<SeqDbUserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
@@ -12536,7 +12552,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Put One
          * @param {string} objectId 
          * @param {SeqDbUserInvitation} userInvitation 
@@ -12550,7 +12566,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary SeqDbUser Invitations  Put Some
          * @param {Array<SeqDbUserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
@@ -12587,7 +12603,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Register the user represented by an existing SeqDbUserInvitation.  The token must match that of an existing SeqDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+         * Represents a request to register the user represented by an existing SeqDbUserInvitation.  The token must match that of an existing SeqDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
          * @summary Register Inviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -12600,7 +12616,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12614,20 +12630,20 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async usersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12640,7 +12656,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12654,7 +12670,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -12667,7 +12683,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12680,7 +12696,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post One
          * @param {SeqDbUser} user 
          * @param {*} [options] Override http request option.
@@ -12693,7 +12709,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12708,7 +12724,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12723,7 +12739,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Some
          * @param {Array<SeqDbUser>} user 
          * @param {*} [options] Override http request option.
@@ -12736,7 +12752,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Put One
          * @param {string} objectId 
          * @param {SeqDbUser} user 
@@ -12750,7 +12766,7 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Put Some
          * @param {Array<SeqDbUser>} user 
          * @param {*} [options] Override http request option.
@@ -12799,7 +12815,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -12811,18 +12827,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public contactsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).contactsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -12833,7 +12849,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -12845,7 +12861,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -12856,7 +12872,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -12867,7 +12883,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Post One
      * @param {SeqDbContact} contact 
      * @param {*} [options] Override http request option.
@@ -12878,7 +12894,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -12891,7 +12907,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -12904,7 +12920,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Post Some
      * @param {Array<SeqDbContact>} contact 
      * @param {*} [options] Override http request option.
@@ -12915,7 +12931,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Put One
      * @param {string} objectId 
      * @param {SeqDbContact} contact 
@@ -12927,7 +12943,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Put Some
      * @param {Array<SeqDbContact>} contact 
      * @param {*} [options] Override http request option.
@@ -12938,7 +12954,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -12950,18 +12966,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public dataCollectionSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -12972,7 +12988,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -12984,7 +13000,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -12995,7 +13011,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13006,7 +13022,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Post One
      * @param {SeqDbDataCollectionSetMember} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
@@ -13017,7 +13033,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13030,7 +13046,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13043,7 +13059,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Post Some
      * @param {Array<SeqDbDataCollectionSetMember>} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
@@ -13054,7 +13070,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Put One
      * @param {string} objectId 
      * @param {SeqDbDataCollectionSetMember} dataCollectionSetMember 
@@ -13066,7 +13082,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Put Some
      * @param {Array<SeqDbDataCollectionSetMember>} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
@@ -13077,7 +13093,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13089,18 +13105,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public dataCollectionSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13111,7 +13127,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13123,7 +13139,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -13134,7 +13150,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13145,7 +13161,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Post One
      * @param {SeqDbDataCollectionSet} dataCollectionSet 
      * @param {*} [options] Override http request option.
@@ -13156,7 +13172,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13169,7 +13185,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13182,7 +13198,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Post Some
      * @param {Array<SeqDbDataCollectionSet>} dataCollectionSet 
      * @param {*} [options] Override http request option.
@@ -13193,7 +13209,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
+     * Represents a request to update the association between a SeqDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating SeqDbDataCollectionSetMember associations between data collection sets and individual data collections.
      * @summary Datacollectionset Datacollection
      * @param {string} dataCollectionSetId 
      * @param {SeqDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -13205,7 +13221,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Put One
      * @param {string} objectId 
      * @param {SeqDbDataCollectionSet} dataCollectionSet 
@@ -13217,7 +13233,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Put Some
      * @param {Array<SeqDbDataCollectionSet>} dataCollectionSet 
      * @param {*} [options] Override http request option.
@@ -13228,7 +13244,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13240,18 +13256,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public dataCollectionsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).dataCollectionsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13262,7 +13278,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13274,7 +13290,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -13285,7 +13301,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13296,7 +13312,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Post One
      * @param {SeqDbDataCollection} dataCollection 
      * @param {*} [options] Override http request option.
@@ -13307,7 +13323,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13320,7 +13336,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13333,7 +13349,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Post Some
      * @param {Array<SeqDbDataCollection>} dataCollection 
      * @param {*} [options] Override http request option.
@@ -13344,7 +13360,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Put One
      * @param {string} objectId 
      * @param {SeqDbDataCollection} dataCollection 
@@ -13356,7 +13372,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Put Some
      * @param {Array<SeqDbDataCollection>} dataCollection 
      * @param {*} [options] Override http request option.
@@ -13367,7 +13383,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13379,18 +13395,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public identifierIssuersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).identifierIssuersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13401,7 +13417,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13413,7 +13429,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -13424,7 +13440,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13435,7 +13451,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Post One
      * @param {SeqDbIdentifierIssuer} identifierIssuer 
      * @param {*} [options] Override http request option.
@@ -13446,7 +13462,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13459,7 +13475,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13472,7 +13488,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Post Some
      * @param {Array<SeqDbIdentifierIssuer>} identifierIssuer 
      * @param {*} [options] Override http request option.
@@ -13483,7 +13499,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Put One
      * @param {string} objectId 
      * @param {SeqDbIdentifierIssuer} identifierIssuer 
@@ -13495,7 +13511,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Put Some
      * @param {Array<SeqDbIdentifierIssuer>} identifierIssuer 
      * @param {*} [options] Override http request option.
@@ -13506,7 +13522,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Create and return a SeqDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+     * Represents a request to create and return a SeqDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
      * @summary Invite A SeqDbUser
      * @param {SeqDbInviteUserRequestBody} inviteUserRequestBody 
      * @param {*} [options] Override http request option.
@@ -13517,7 +13533,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+     * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
      * @summary The Constraints For Inviting A SeqDbUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -13527,7 +13543,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13539,18 +13555,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationIdentifierIssuerLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13561,7 +13577,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13573,7 +13589,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -13584,7 +13600,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13595,7 +13611,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Post One
      * @param {SeqDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
      * @param {*} [options] Override http request option.
@@ -13606,7 +13622,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13619,7 +13635,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13632,7 +13648,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Post Some
      * @param {Array<SeqDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
      * @param {*} [options] Override http request option.
@@ -13643,7 +13659,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Put One
      * @param {string} objectId 
      * @param {SeqDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
@@ -13655,7 +13671,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary SeqDbOrganization Identifier Issuer Links  Put Some
      * @param {Array<SeqDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
      * @param {*} [options] Override http request option.
@@ -13666,7 +13682,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13678,18 +13694,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13700,7 +13716,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13712,7 +13728,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -13723,7 +13739,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13734,7 +13750,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Post One
      * @param {SeqDbOrganizationSetMember} organizationSetMember 
      * @param {*} [options] Override http request option.
@@ -13745,7 +13761,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13758,7 +13774,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13771,7 +13787,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Post Some
      * @param {Array<SeqDbOrganizationSetMember>} organizationSetMember 
      * @param {*} [options] Override http request option.
@@ -13782,7 +13798,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Put One
      * @param {string} objectId 
      * @param {SeqDbOrganizationSetMember} organizationSetMember 
@@ -13794,7 +13810,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary SeqDbOrganization Set Members  Put Some
      * @param {Array<SeqDbOrganizationSetMember>} organizationSetMember 
      * @param {*} [options] Override http request option.
@@ -13805,7 +13821,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13817,18 +13833,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).organizationSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13839,7 +13855,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13851,7 +13867,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -13862,7 +13878,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13873,7 +13889,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Post One
      * @param {SeqDbOrganizationSet} organizationSet 
      * @param {*} [options] Override http request option.
@@ -13884,7 +13900,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13897,7 +13913,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -13910,7 +13926,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Post Some
      * @param {Array<SeqDbOrganizationSet>} organizationSet 
      * @param {*} [options] Override http request option.
@@ -13921,7 +13937,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Put One
      * @param {string} objectId 
      * @param {SeqDbOrganizationSet} organizationSet 
@@ -13933,7 +13949,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
+     * Represents a request to update the association between an SeqDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating SeqDbOrganizationSetMember associations between organization sets and individual organizations.
      * @summary Organizationset SeqDbOrganization
      * @param {string} organizationSetId 
      * @param {SeqDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -13945,7 +13961,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary SeqDbOrganization Sets  Put Some
      * @param {Array<SeqDbOrganizationSet>} organizationSet 
      * @param {*} [options] Override http request option.
@@ -13956,7 +13972,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -13968,18 +13984,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).organizationsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -13990,7 +14006,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -14002,7 +14018,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -14013,7 +14029,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -14024,7 +14040,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Post One
      * @param {SeqDbOrganization} organization 
      * @param {*} [options] Override http request option.
@@ -14035,7 +14051,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -14048,7 +14064,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -14061,7 +14077,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Post Some
      * @param {Array<SeqDbOrganization>} organization 
      * @param {*} [options] Override http request option.
@@ -14072,7 +14088,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a request to create or update organization-to-identifier issuer associations.
+     * Represents a request to update the association between an SeqDbOrganization and IdentifierIssuers.
      * @summary Update Association Between SeqDbOrganization And Identifierissuer
      * @param {string} organizationId 
      * @param {SeqDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -14084,7 +14100,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Put One
      * @param {string} objectId 
      * @param {SeqDbOrganization} organization 
@@ -14096,7 +14112,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Put Some
      * @param {Array<SeqDbOrganization>} organization 
      * @param {*} [options] Override http request option.
@@ -14107,7 +14123,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+     * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
      * @summary Retrieve SeqDbOrganization Contacts
      * @param {SeqDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
      * @param {*} [options] Override http request option.
@@ -14118,7 +14134,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -14130,18 +14146,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public sitesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).sitesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -14152,7 +14168,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -14164,7 +14180,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -14175,7 +14191,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -14186,7 +14202,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Post One
      * @param {SeqDbSite} site 
      * @param {*} [options] Override http request option.
@@ -14197,7 +14213,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -14210,7 +14226,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -14223,7 +14239,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Post Some
      * @param {Array<SeqDbSite>} site 
      * @param {*} [options] Override http request option.
@@ -14234,7 +14250,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Put One
      * @param {string} objectId 
      * @param {SeqDbSite} site 
@@ -14246,7 +14262,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Put Some
      * @param {Array<SeqDbSite>} site 
      * @param {*} [options] Override http request option.
@@ -14257,7 +14273,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Update an existing SeqDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+     * Represents a request to update an existing SeqDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
      * @summary Updateuser
      * @param {string} objectId 
      * @param {SeqDbUpdateUserRequestBody} updateUserRequestBody 
@@ -14269,7 +14285,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Updates the current user\'s SeqDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+     * Represents a request to update the current user\'s SeqDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
      * @summary Updateuserownorganizationcommand
      * @param {SeqDbUpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
      * @param {*} [options] Override http request option.
@@ -14280,7 +14296,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -14292,18 +14308,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public userInvitationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).userInvitationsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -14314,7 +14330,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -14326,7 +14342,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -14337,7 +14353,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -14348,7 +14364,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Post One
      * @param {SeqDbUserInvitation} userInvitation 
      * @param {*} [options] Override http request option.
@@ -14359,7 +14375,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -14372,7 +14388,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -14385,7 +14401,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Post Some
      * @param {Array<SeqDbUserInvitation>} userInvitation 
      * @param {*} [options] Override http request option.
@@ -14396,7 +14412,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Put One
      * @param {string} objectId 
      * @param {SeqDbUserInvitation} userInvitation 
@@ -14408,7 +14424,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary SeqDbUser Invitations  Put Some
      * @param {Array<SeqDbUserInvitation>} userInvitation 
      * @param {*} [options] Override http request option.
@@ -14439,7 +14455,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Register the user represented by an existing SeqDbUserInvitation.  The token must match that of an existing SeqDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+     * Represents a request to register the user represented by an existing SeqDbUserInvitation.  The token must match that of an existing SeqDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
      * @summary Register Inviteduser
      * @param {string} token 
      * @param {*} [options] Override http request option.
@@ -14450,7 +14466,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -14462,18 +14478,18 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public usersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbOrganizationApiFp(this.configuration).usersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -14484,7 +14500,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -14496,7 +14512,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -14507,7 +14523,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -14518,7 +14534,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Post One
      * @param {SeqDbUser} user 
      * @param {*} [options] Override http request option.
@@ -14529,7 +14545,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -14542,7 +14558,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -14555,7 +14571,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Post Some
      * @param {Array<SeqDbUser>} user 
      * @param {*} [options] Override http request option.
@@ -14566,7 +14582,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Put One
      * @param {string} objectId 
      * @param {SeqDbUser} user 
@@ -14578,7 +14594,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Put Some
      * @param {Array<SeqDbUser>} user 
      * @param {*} [options] Override http request option.
@@ -14597,7 +14613,7 @@ export class SeqDbOrganizationApi extends SeqDbBaseAPI {
 const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -14637,13 +14653,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        allelesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        allelesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('allelesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/alleles/{object_id}`
@@ -14671,7 +14687,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14708,7 +14724,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -14748,7 +14764,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14782,7 +14798,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14819,7 +14835,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Post One
          * @param {SeqDbAllele} allele 
          * @param {*} [options] Override http request option.
@@ -14854,7 +14870,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -14899,7 +14915,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -14944,7 +14960,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Post Some
          * @param {Array<SeqDbAllele>} allele 
          * @param {*} [options] Override http request option.
@@ -14979,7 +14995,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Put One
          * @param {string} objectId 
          * @param {SeqDbAllele} allele 
@@ -15018,7 +15034,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Put Some
          * @param {Array<SeqDbAllele>} allele 
          * @param {*} [options] Override http request option.
@@ -15053,7 +15069,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -15093,13 +15109,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astMeasurementsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astMeasurementsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('astMeasurementsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/ast_measurements/{object_id}`
@@ -15127,7 +15143,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15164,7 +15180,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -15204,7 +15220,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -15238,7 +15254,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15275,7 +15291,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Post One
          * @param {SeqDbAstMeasurement} astMeasurement 
          * @param {*} [options] Override http request option.
@@ -15310,7 +15326,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -15355,7 +15371,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -15400,7 +15416,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Post Some
          * @param {Array<SeqDbAstMeasurement>} astMeasurement 
          * @param {*} [options] Override http request option.
@@ -15435,7 +15451,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Put One
          * @param {string} objectId 
          * @param {SeqDbAstMeasurement} astMeasurement 
@@ -15474,7 +15490,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Put Some
          * @param {Array<SeqDbAstMeasurement>} astMeasurement 
          * @param {*} [options] Override http request option.
@@ -15509,7 +15525,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -15549,13 +15565,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        astPredictionsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        astPredictionsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('astPredictionsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/ast_predictions/{object_id}`
@@ -15583,7 +15599,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15620,7 +15636,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -15660,7 +15676,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -15694,7 +15710,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15731,7 +15747,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Post One
          * @param {SeqDbAstPrediction} astPrediction 
          * @param {*} [options] Override http request option.
@@ -15766,7 +15782,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -15811,7 +15827,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -15856,7 +15872,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Post Some
          * @param {Array<SeqDbAstPrediction>} astPrediction 
          * @param {*} [options] Override http request option.
@@ -15891,7 +15907,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Put One
          * @param {string} objectId 
          * @param {SeqDbAstPrediction} astPrediction 
@@ -15930,7 +15946,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Put Some
          * @param {Array<SeqDbAstPrediction>} astPrediction 
          * @param {*} [options] Override http request option.
@@ -15965,7 +15981,42 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.
+         * @summary Convertseqformat
+         * @param {SeqDbConvertSeqFormatRequestBody} convertSeqFormatRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        convertSeqFormat: async (convertSeqFormatRequestBody: SeqDbConvertSeqFormatRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'convertSeqFormatRequestBody' is not null or undefined
+            assertParamExists('convertSeqFormat', 'convertSeqFormatRequestBody', convertSeqFormatRequestBody)
+            const localVarPath = `/v1/convert/seq_format`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(convertSeqFormatRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -16005,13 +16056,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lociDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        lociDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('lociDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/loci/{object_id}`
@@ -16039,7 +16090,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16076,7 +16127,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -16116,7 +16167,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -16150,7 +16201,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16187,7 +16238,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Post One
          * @param {SeqDbLocus} locus 
          * @param {*} [options] Override http request option.
@@ -16222,7 +16273,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -16267,7 +16318,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -16312,7 +16363,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Post Some
          * @param {Array<SeqDbLocus>} locus 
          * @param {*} [options] Override http request option.
@@ -16347,7 +16398,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Put One
          * @param {string} objectId 
          * @param {SeqDbLocus} locus 
@@ -16386,7 +16437,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Put Some
          * @param {Array<SeqDbLocus>} locus 
          * @param {*} [options] Override http request option.
@@ -16421,7 +16472,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -16461,13 +16512,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusCodeMapsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusCodeMapsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('locusCodeMapsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/locus_code_maps/{object_id}`
@@ -16495,7 +16546,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16532,7 +16583,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -16572,7 +16623,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -16606,7 +16657,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16643,7 +16694,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Post One
          * @param {SeqDbLocusCodeMap} locusCodeMap 
          * @param {*} [options] Override http request option.
@@ -16678,7 +16729,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -16723,7 +16774,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -16768,7 +16819,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Post Some
          * @param {Array<SeqDbLocusCodeMap>} locusCodeMap 
          * @param {*} [options] Override http request option.
@@ -16803,7 +16854,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Put One
          * @param {string} objectId 
          * @param {SeqDbLocusCodeMap} locusCodeMap 
@@ -16842,7 +16893,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Put Some
          * @param {Array<SeqDbLocusCodeMap>} locusCodeMap 
          * @param {*} [options] Override http request option.
@@ -16877,7 +16928,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -16917,13 +16968,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        locusSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        locusSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('locusSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/locus_sets/{object_id}`
@@ -16951,7 +17002,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16988,7 +17039,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17028,7 +17079,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -17062,7 +17113,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17099,7 +17150,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Post One
          * @param {SeqDbLocusSetInput} locusSetInput 
          * @param {*} [options] Override http request option.
@@ -17134,7 +17185,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17179,7 +17230,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17224,7 +17275,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Post Some
          * @param {Array<SeqDbLocusSetInput>} locusSetInput 
          * @param {*} [options] Override http request option.
@@ -17259,7 +17310,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbLocusSetInput} locusSetInput 
@@ -17298,7 +17349,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Put Some
          * @param {Array<SeqDbLocusSetInput>} locusSetInput 
          * @param {*} [options] Override http request option.
@@ -17333,7 +17384,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17373,13 +17424,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pcrMeasurementsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        pcrMeasurementsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('pcrMeasurementsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/pcr_measurements/{object_id}`
@@ -17407,7 +17458,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17444,7 +17495,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17484,7 +17535,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -17518,7 +17569,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17555,7 +17606,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Post One
          * @param {SeqDbPcrMeasurement} pcrMeasurement 
          * @param {*} [options] Override http request option.
@@ -17590,7 +17641,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17635,7 +17686,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17680,7 +17731,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Post Some
          * @param {Array<SeqDbPcrMeasurement>} pcrMeasurement 
          * @param {*} [options] Override http request option.
@@ -17715,7 +17766,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Put One
          * @param {string} objectId 
          * @param {SeqDbPcrMeasurement} pcrMeasurement 
@@ -17754,7 +17805,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Put Some
          * @param {Array<SeqDbPcrMeasurement>} pcrMeasurement 
          * @param {*} [options] Override http request option.
@@ -17789,7 +17840,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17829,13 +17880,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetMembersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('protocolSetMembersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/protocol_set_members/{object_id}`
@@ -17863,7 +17914,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17900,7 +17951,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17940,7 +17991,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -17974,7 +18025,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18011,7 +18062,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Post One
          * @param {SeqDbProtocolSetMember} protocolSetMember 
          * @param {*} [options] Override http request option.
@@ -18046,7 +18097,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18091,7 +18142,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18136,7 +18187,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Post Some
          * @param {Array<SeqDbProtocolSetMember>} protocolSetMember 
          * @param {*} [options] Override http request option.
@@ -18171,7 +18222,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Put One
          * @param {string} objectId 
          * @param {SeqDbProtocolSetMember} protocolSetMember 
@@ -18210,7 +18261,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Put Some
          * @param {Array<SeqDbProtocolSetMember>} protocolSetMember 
          * @param {*} [options] Override http request option.
@@ -18245,7 +18296,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18285,13 +18336,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('protocolSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/protocol_sets/{object_id}`
@@ -18319,7 +18370,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18356,7 +18407,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18396,7 +18447,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18430,7 +18481,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18467,7 +18518,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Post One
          * @param {SeqDbProtocolSet} protocolSet 
          * @param {*} [options] Override http request option.
@@ -18502,7 +18553,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18547,7 +18598,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18592,7 +18643,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Post Some
          * @param {Array<SeqDbProtocolSet>} protocolSet 
          * @param {*} [options] Override http request option.
@@ -18627,7 +18678,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbProtocolSet} protocolSet 
@@ -18666,7 +18717,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Put Some
          * @param {Array<SeqDbProtocolSet>} protocolSet 
          * @param {*} [options] Override http request option.
@@ -18701,7 +18752,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18741,13 +18792,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        protocolsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        protocolsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('protocolsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/protocols/{object_id}`
@@ -18775,7 +18826,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18812,7 +18863,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18852,7 +18903,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18886,7 +18937,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18923,7 +18974,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Post One
          * @param {SeqDbProtocol} protocol 
          * @param {*} [options] Override http request option.
@@ -18958,7 +19009,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19003,7 +19054,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19048,7 +19099,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Post Some
          * @param {Array<SeqDbProtocol>} protocol 
          * @param {*} [options] Override http request option.
@@ -19083,7 +19134,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Put One
          * @param {string} objectId 
          * @param {SeqDbProtocol} protocol 
@@ -19122,7 +19173,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Put Some
          * @param {Array<SeqDbProtocol>} protocol 
          * @param {*} [options] Override http request option.
@@ -19157,7 +19208,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19197,13 +19248,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetIdentifiersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetIdentifiersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('readSetIdentifiersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/read_set_identifiers/{object_id}`
@@ -19231,7 +19282,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19268,7 +19319,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19308,7 +19359,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19342,7 +19393,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19379,7 +19430,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Post One
          * @param {SeqDbReadSetIdentifier} readSetIdentifier 
          * @param {*} [options] Override http request option.
@@ -19414,7 +19465,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19459,7 +19510,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19504,7 +19555,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Post Some
          * @param {Array<SeqDbReadSetIdentifier>} readSetIdentifier 
          * @param {*} [options] Override http request option.
@@ -19539,7 +19590,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Put One
          * @param {string} objectId 
          * @param {SeqDbReadSetIdentifier} readSetIdentifier 
@@ -19578,7 +19629,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Put Some
          * @param {Array<SeqDbReadSetIdentifier>} readSetIdentifier 
          * @param {*} [options] Override http request option.
@@ -19613,7 +19664,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19653,13 +19704,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        readSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('readSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/read_sets/{object_id}`
@@ -19687,7 +19738,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19724,7 +19775,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19764,7 +19815,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19798,7 +19849,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19835,7 +19886,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Post One
          * @param {SeqDbReadSet} readSet 
          * @param {*} [options] Override http request option.
@@ -19870,7 +19921,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19915,7 +19966,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19960,7 +20011,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Post Some
          * @param {Array<SeqDbReadSet>} readSet 
          * @param {*} [options] Override http request option.
@@ -19995,7 +20046,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbReadSet} readSet 
@@ -20034,7 +20085,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Put Some
          * @param {Array<SeqDbReadSet>} readSet 
          * @param {*} [options] Override http request option.
@@ -20069,7 +20120,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20109,13 +20160,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refAllelesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refAllelesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('refAllelesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/ref_alleles/{object_id}`
@@ -20143,7 +20194,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20180,7 +20231,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20220,7 +20271,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20254,7 +20305,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20291,7 +20342,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Post One
          * @param {SeqDbRefAllele} refAllele 
          * @param {*} [options] Override http request option.
@@ -20326,7 +20377,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20371,7 +20422,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20416,7 +20467,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Post Some
          * @param {Array<SeqDbRefAllele>} refAllele 
          * @param {*} [options] Override http request option.
@@ -20451,7 +20502,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Put One
          * @param {string} objectId 
          * @param {SeqDbRefAllele} refAllele 
@@ -20490,7 +20541,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Put Some
          * @param {Array<SeqDbRefAllele>} refAllele 
          * @param {*} [options] Override http request option.
@@ -20525,7 +20576,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20565,13 +20616,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refSeqsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refSeqsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('refSeqsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/ref_seqs/{object_id}`
@@ -20599,7 +20650,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20636,7 +20687,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20676,7 +20727,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20710,7 +20761,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20747,7 +20798,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Post One
          * @param {SeqDbRefSeq} refSeq 
          * @param {*} [options] Override http request option.
@@ -20782,7 +20833,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20827,7 +20878,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20872,7 +20923,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Post Some
          * @param {Array<SeqDbRefSeq>} refSeq 
          * @param {*} [options] Override http request option.
@@ -20907,7 +20958,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Put One
          * @param {string} objectId 
          * @param {SeqDbRefSeq} refSeq 
@@ -20946,7 +20997,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Put Some
          * @param {Array<SeqDbRefSeq>} refSeq 
          * @param {*} [options] Override http request option.
@@ -20981,7 +21032,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents retrieval of the best SeqDbSeqClassification ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
+         * Represents a request to retrieve the best SeqDbSeqClassification ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
          * @summary Retrievebestseqclassificationpersample
          * @param {SeqDbRetrieveBestSeqClassificationPerSampleRequestBody} retrieveBestSeqClassificationPerSampleRequestBody 
          * @param {*} [options] Override http request option.
@@ -21016,7 +21067,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents retrieval of the best SeqDbSeq ID for each requested sample.  IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
+         * Represents a request to retrieve the best SeqDbSeq ID for each requested sample.  IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
          * @summary Retrievebestseqpersample
          * @param {SeqDbRetrieveBestSeqPerSampleRequestBody} retrieveBestSeqPerSampleRequestBody 
          * @param {*} [options] Override http request option.
@@ -21051,7 +21102,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents retrieval of the best SeqDbSeqProfile ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
+         * Represents a request to retrieve the best SeqDbSeqProfile ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
          * @summary Retrievebestseqprofilepersample
          * @param {SeqDbRetrieveBestSeqProfilePerSampleRequestBody} retrieveBestSeqProfilePerSampleRequestBody 
          * @param {*} [options] Override http request option.
@@ -21086,7 +21137,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents calculating a phylogenetic tree from query profiles and a configured protocol.  The returned tree contains the query profiles and any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).  Model validation: When provided, leaf names must have one entry per queried sequence profile.
+         * Represents a request to calculate a phylogenetic tree from query profiles and a configured protocol.  The returned tree contains the query profiles and any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).  Model validation: When provided, leaf names must have one entry per queried sequence profile.
          * @summary Retrievephylogenetictree
          * @param {SeqDbCalculatePhylogeneticTreeRequestBody} calculatePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
@@ -21121,7 +21172,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents retrieval of only SeqDbSampleIdentifier records for sample identifiers.  Lighter than RetrieveSamplesByIdCommand — no sequences or read sets.
+         * Represents a request to retrieve only SeqDbSampleIdentifier records for sample identifiers.  Lighter than RetrieveSamplesByIdCommand — no sequences or read sets.
          * @summary Retrievesampleidentifiersbyids
          * @param {SeqDbRetrieveSampleIdentifiersByIdsRequestBody} retrieveSampleIdentifiersByIdsRequestBody 
          * @param {*} [options] Override http request option.
@@ -21156,7 +21207,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents retrieval of sample identifiers matching a query.  These identifiers can then be used to retrieve the corresponding samples.
+         * Represents a request to retrieve sample identifiers matching a query.  These identifiers can then be used to retrieve the corresponding samples.
          * @summary Retrievesampleidsbyquery
          * @param {SeqDbSampleQuery} sampleQuery 
          * @param {*} [options] Override http request option.
@@ -21191,7 +21242,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents retrieval of complete data for sample identifiers.  The result contains SeqDbFullSample objects in the same order.
+         * Represents a request to retrieve complete data for sample identifiers.  The result contains SeqDbFullSample objects in the same order.
          * @summary Retrievesamplesbyids
          * @param {SeqDbRetrieveSamplesByIdsRequestBody} retrieveSamplesByIdsRequestBody 
          * @param {*} [options] Override http request option.
@@ -21226,7 +21277,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents retrieval of the last modified datetime for a SeqDbSeqDistance protocol.  This command is intended to be used in conjunction with the CalculateSeqDistancesForNewProfilesCommand command, which has a seq_distance_last_modified_at field that can be filled with the return value of this command to prevent concurrent modification conflicts by ensuring that no SeqDbSeqDistance was modified after the specified datetime between the time of retrieval and the time of calculation and upload of new distances.
+         * Represents a request to retrieve the last modified datetime for a SeqDbSeqDistance protocol.  This command is intended to be used in conjunction with the CalculateSeqDistancesForNewProfilesCommand command, which has a seq_distance_last_modified_at field that can be filled with the return value of this command to prevent concurrent modification conflicts by ensuring that no SeqDbSeqDistance was modified after the specified datetime between the time of retrieval and the time of calculation and upload of new distances.
          * @summary Retrieveseqdistancelastmodified
          * @param {string} protocolId 
          * @param {*} [options] Override http request option.
@@ -21260,7 +21311,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents retrieval of sequences in FASTA format.  as an iterable that yields one contig at a time.
+         * Represents a request to retrieve sequences in FASTA format.  The result is an iterable that yields one contig at a time.
          * @summary Retrieveseqfasta
          * @param {SeqDbRetrieveSeqFastaRequestBody} retrieveSeqFastaRequestBody 
          * @param {*} [options] Override http request option.
@@ -21295,7 +21346,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents retrieval of profiles similar to at least one query profile.  the given maximum distance and based on the given seq distance protocol. The returned profiles do not contain the query profiles.
+         * Represents a request to retrieve profiles similar to at least one query profile.  the given maximum distance and based on the given seq distance protocol. The returned profiles do not contain the query profiles.
          * @summary Retrievesimilarprofiles
          * @param {SeqDbRetrieveSimilarProfilesRequestBody} retrieveSimilarProfilesRequestBody 
          * @param {*} [options] Override http request option.
@@ -21330,7 +21381,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -21370,13 +21421,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleDataCollectionLinksDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleDataCollectionLinksDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('sampleDataCollectionLinksDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/sample_data_collection_links/{object_id}`
@@ -21404,7 +21455,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21441,7 +21492,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -21481,7 +21532,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21515,7 +21566,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21552,7 +21603,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Post One
          * @param {SeqDbSampleDataCollectionLink} sampleDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -21587,7 +21638,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -21632,7 +21683,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -21677,7 +21728,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Post Some
          * @param {Array<SeqDbSampleDataCollectionLink>} sampleDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -21712,7 +21763,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Put One
          * @param {string} objectId 
          * @param {SeqDbSampleDataCollectionLink} sampleDataCollectionLink 
@@ -21751,7 +21802,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Put Some
          * @param {Array<SeqDbSampleDataCollectionLink>} sampleDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -21786,7 +21837,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -21826,13 +21877,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sampleIdentifiersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sampleIdentifiersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('sampleIdentifiersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/sample_identifiers/{object_id}`
@@ -21860,7 +21911,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21897,7 +21948,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -21937,7 +21988,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21971,7 +22022,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -22008,7 +22059,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Post One
          * @param {SeqDbSampleIdentifier} sampleIdentifier 
          * @param {*} [options] Override http request option.
@@ -22043,7 +22094,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -22088,7 +22139,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -22133,7 +22184,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Post Some
          * @param {Array<SeqDbSampleIdentifier>} sampleIdentifier 
          * @param {*} [options] Override http request option.
@@ -22168,7 +22219,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Put One
          * @param {string} objectId 
          * @param {SeqDbSampleIdentifier} sampleIdentifier 
@@ -22207,7 +22258,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Put Some
          * @param {Array<SeqDbSampleIdentifier>} sampleIdentifier 
          * @param {*} [options] Override http request option.
@@ -22242,7 +22293,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -22282,13 +22333,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        samplesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        samplesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('samplesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/samples/{object_id}`
@@ -22316,7 +22367,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -22353,7 +22404,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -22393,7 +22444,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -22427,7 +22478,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -22464,7 +22515,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Post One
          * @param {SeqDbSample} sample 
          * @param {*} [options] Override http request option.
@@ -22499,7 +22550,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -22544,7 +22595,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -22589,7 +22640,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Post Some
          * @param {Array<SeqDbSample>} sample 
          * @param {*} [options] Override http request option.
@@ -22624,7 +22675,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Put One
          * @param {string} objectId 
          * @param {SeqDbSample} sample 
@@ -22663,7 +22714,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Put Some
          * @param {Array<SeqDbSample>} sample 
          * @param {*} [options] Override http request option.
@@ -22698,7 +22749,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -22738,13 +22789,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategoriesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategoriesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('seqCategoriesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/seq_categories/{object_id}`
@@ -22772,7 +22823,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -22809,7 +22860,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -22849,7 +22900,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -22883,7 +22934,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -22920,7 +22971,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Post One
          * @param {SeqDbSeqCategory} seqCategory 
          * @param {*} [options] Override http request option.
@@ -22955,7 +23006,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -23000,7 +23051,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -23045,7 +23096,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Post Some
          * @param {Array<SeqDbSeqCategory>} seqCategory 
          * @param {*} [options] Override http request option.
@@ -23080,7 +23131,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqCategory} seqCategory 
@@ -23119,7 +23170,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Put Some
          * @param {Array<SeqDbSeqCategory>} seqCategory 
          * @param {*} [options] Override http request option.
@@ -23154,7 +23205,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -23194,13 +23245,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqCategorySetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqCategorySetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('seqCategorySetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/seq_category_sets/{object_id}`
@@ -23228,7 +23279,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -23265,7 +23316,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -23305,7 +23356,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -23339,7 +23390,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -23376,7 +23427,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Post One
          * @param {SeqDbSeqCategorySet} seqCategorySet 
          * @param {*} [options] Override http request option.
@@ -23411,7 +23462,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -23456,7 +23507,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -23501,7 +23552,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Post Some
          * @param {Array<SeqDbSeqCategorySet>} seqCategorySet 
          * @param {*} [options] Override http request option.
@@ -23536,7 +23587,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqCategorySet} seqCategorySet 
@@ -23575,7 +23626,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Put Some
          * @param {Array<SeqDbSeqCategorySet>} seqCategorySet 
          * @param {*} [options] Override http request option.
@@ -23610,7 +23661,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -23650,13 +23701,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqClassificationsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqClassificationsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('seqClassificationsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/seq_classifications/{object_id}`
@@ -23684,7 +23735,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -23721,7 +23772,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -23761,7 +23812,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -23795,7 +23846,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -23832,7 +23883,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Post One
          * @param {SeqDbSeqClassification} seqClassification 
          * @param {*} [options] Override http request option.
@@ -23867,7 +23918,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -23912,7 +23963,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -23957,7 +24008,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Post Some
          * @param {Array<SeqDbSeqClassification>} seqClassification 
          * @param {*} [options] Override http request option.
@@ -23992,7 +24043,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqClassification} seqClassification 
@@ -24031,7 +24082,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Put Some
          * @param {Array<SeqDbSeqClassification>} seqClassification 
          * @param {*} [options] Override http request option.
@@ -24066,7 +24117,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -24106,13 +24157,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqDistancesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqDistancesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('seqDistancesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/seq_distances/{object_id}`
@@ -24140,7 +24191,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -24177,7 +24228,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -24217,7 +24268,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -24251,7 +24302,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -24288,7 +24339,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Post One
          * @param {SeqDbSeqDistance} seqDistance 
          * @param {*} [options] Override http request option.
@@ -24323,7 +24374,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -24368,7 +24419,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -24413,7 +24464,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Post Some
          * @param {Array<SeqDbSeqDistance>} seqDistance 
          * @param {*} [options] Override http request option.
@@ -24448,7 +24499,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqDistance} seqDistance 
@@ -24487,7 +24538,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Put Some
          * @param {Array<SeqDbSeqDistance>} seqDistance 
          * @param {*} [options] Override http request option.
@@ -24522,7 +24573,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -24562,13 +24613,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqIdentifiersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqIdentifiersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('seqIdentifiersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/seq_identifiers/{object_id}`
@@ -24596,7 +24647,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -24633,7 +24684,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -24673,7 +24724,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -24707,7 +24758,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -24744,7 +24795,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Post One
          * @param {SeqDbSeqIdentifier} seqIdentifier 
          * @param {*} [options] Override http request option.
@@ -24779,7 +24830,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -24824,7 +24875,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -24869,7 +24920,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Post Some
          * @param {Array<SeqDbSeqIdentifier>} seqIdentifier 
          * @param {*} [options] Override http request option.
@@ -24904,7 +24955,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqIdentifier} seqIdentifier 
@@ -24943,7 +24994,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Put Some
          * @param {Array<SeqDbSeqIdentifier>} seqIdentifier 
          * @param {*} [options] Override http request option.
@@ -24978,7 +25029,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -25018,13 +25069,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfileIdentifiersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfileIdentifiersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('seqProfileIdentifiersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/seq_profile_identifiers/{object_id}`
@@ -25052,7 +25103,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -25089,7 +25140,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -25129,7 +25180,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -25163,7 +25214,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -25200,7 +25251,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Post One
          * @param {SeqDbSeqProfileIdentifier} seqProfileIdentifier 
          * @param {*} [options] Override http request option.
@@ -25235,7 +25286,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -25280,7 +25331,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -25325,7 +25376,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Post Some
          * @param {Array<SeqDbSeqProfileIdentifier>} seqProfileIdentifier 
          * @param {*} [options] Override http request option.
@@ -25360,7 +25411,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqProfileIdentifier} seqProfileIdentifier 
@@ -25399,7 +25450,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Put Some
          * @param {Array<SeqDbSeqProfileIdentifier>} seqProfileIdentifier 
          * @param {*} [options] Override http request option.
@@ -25434,7 +25485,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -25474,13 +25525,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqProfilesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqProfilesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('seqProfilesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/seq_profiles/{object_id}`
@@ -25508,7 +25559,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -25545,7 +25596,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -25585,7 +25636,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -25619,7 +25670,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -25656,7 +25707,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Post One
          * @param {SeqDbSeqProfile} seqProfile 
          * @param {*} [options] Override http request option.
@@ -25691,7 +25742,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -25736,7 +25787,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -25781,7 +25832,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Post Some
          * @param {Array<SeqDbSeqProfile>} seqProfile 
          * @param {*} [options] Override http request option.
@@ -25816,7 +25867,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqProfile} seqProfile 
@@ -25855,7 +25906,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Put Some
          * @param {Array<SeqDbSeqProfile>} seqProfile 
          * @param {*} [options] Override http request option.
@@ -25890,7 +25941,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -25930,13 +25981,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqTaxonomiesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqTaxonomiesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('seqTaxonomiesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/seq_taxonomies/{object_id}`
@@ -25964,7 +26015,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -26001,7 +26052,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -26041,7 +26092,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -26075,7 +26126,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -26112,7 +26163,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Post One
          * @param {SeqDbSeqTaxonomy} seqTaxonomy 
          * @param {*} [options] Override http request option.
@@ -26147,7 +26198,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -26192,7 +26243,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -26237,7 +26288,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Post Some
          * @param {Array<SeqDbSeqTaxonomy>} seqTaxonomy 
          * @param {*} [options] Override http request option.
@@ -26272,7 +26323,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqTaxonomy} seqTaxonomy 
@@ -26311,7 +26362,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Put Some
          * @param {Array<SeqDbSeqTaxonomy>} seqTaxonomy 
          * @param {*} [options] Override http request option.
@@ -26346,7 +26397,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -26386,13 +26437,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        seqsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        seqsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('seqsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/seqs/{object_id}`
@@ -26420,7 +26471,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -26457,7 +26508,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -26497,7 +26548,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -26531,7 +26582,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -26568,7 +26619,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Post One
          * @param {SeqDbSeq} seq 
          * @param {*} [options] Override http request option.
@@ -26603,7 +26654,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -26648,7 +26699,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -26693,7 +26744,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Post Some
          * @param {Array<SeqDbSeq>} seq 
          * @param {*} [options] Override http request option.
@@ -26728,7 +26779,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Put One
          * @param {string} objectId 
          * @param {SeqDbSeq} seq 
@@ -26767,7 +26818,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Put Some
          * @param {Array<SeqDbSeq>} seq 
          * @param {*} [options] Override http request option.
@@ -26802,7 +26853,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -26842,13 +26893,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxaDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxaDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('taxaDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/taxa/{object_id}`
@@ -26876,7 +26927,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -26913,7 +26964,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -26953,7 +27004,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -26987,7 +27038,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -27024,7 +27075,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Post One
          * @param {SeqDbTaxon} taxon 
          * @param {*} [options] Override http request option.
@@ -27059,7 +27110,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -27104,7 +27155,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -27149,7 +27200,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Post Some
          * @param {Array<SeqDbTaxon>} taxon 
          * @param {*} [options] Override http request option.
@@ -27184,7 +27235,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Put One
          * @param {string} objectId 
          * @param {SeqDbTaxon} taxon 
@@ -27223,7 +27274,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Put Some
          * @param {Array<SeqDbTaxon>} taxon 
          * @param {*} [options] Override http request option.
@@ -27258,7 +27309,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -27298,13 +27349,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetMembersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('taxonSetMembersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/taxon_set_members/{object_id}`
@@ -27332,7 +27383,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -27369,7 +27420,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -27409,7 +27460,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -27443,7 +27494,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -27480,7 +27531,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Post One
          * @param {SeqDbTaxonSetMember} taxonSetMember 
          * @param {*} [options] Override http request option.
@@ -27515,7 +27566,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -27560,7 +27611,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -27605,7 +27656,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Post Some
          * @param {Array<SeqDbTaxonSetMember>} taxonSetMember 
          * @param {*} [options] Override http request option.
@@ -27640,7 +27691,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Put One
          * @param {string} objectId 
          * @param {SeqDbTaxonSetMember} taxonSetMember 
@@ -27679,7 +27730,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Put Some
          * @param {Array<SeqDbTaxonSetMember>} taxonSetMember 
          * @param {*} [options] Override http request option.
@@ -27714,7 +27765,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -27754,13 +27805,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        taxonSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        taxonSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('taxonSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/taxon_sets/{object_id}`
@@ -27788,7 +27839,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -27825,7 +27876,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -27865,7 +27916,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -27899,7 +27950,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -27936,7 +27987,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Post One
          * @param {SeqDbTaxonSet} taxonSet 
          * @param {*} [options] Override http request option.
@@ -27971,7 +28022,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -28016,7 +28067,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -28061,7 +28112,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Post Some
          * @param {Array<SeqDbTaxonSet>} taxonSet 
          * @param {*} [options] Override http request option.
@@ -28096,7 +28147,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbTaxonSet} taxonSet 
@@ -28135,7 +28186,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Put Some
          * @param {Array<SeqDbTaxonSet>} taxonSet 
          * @param {*} [options] Override http request option.
@@ -28170,7 +28221,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -28210,13 +28261,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('treeAlgorithmClassesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/tree_algorithm_classes/{object_id}`
@@ -28244,7 +28295,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -28281,7 +28332,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -28321,7 +28372,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -28355,7 +28406,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -28392,7 +28443,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post One
          * @param {SeqDbTreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -28427,7 +28478,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -28472,7 +28523,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -28517,7 +28568,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Some
          * @param {Array<SeqDbTreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -28552,7 +28603,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Put One
          * @param {string} objectId 
          * @param {SeqDbTreeAlgorithmClass} treeAlgorithmClass 
@@ -28591,7 +28642,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Put Some
          * @param {Array<SeqDbTreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -28626,7 +28677,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -28666,13 +28717,13 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('treeAlgorithmsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/tree_algorithms/{object_id}`
@@ -28700,7 +28751,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -28737,7 +28788,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -28777,7 +28828,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -28811,7 +28862,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -28848,7 +28899,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post One
          * @param {SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -28883,7 +28934,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -28928,7 +28979,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -28973,7 +29024,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Some
          * @param {Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -29008,7 +29059,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Put One
          * @param {string} objectId 
          * @param {SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
@@ -29047,7 +29098,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Put Some
          * @param {Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -29082,7 +29133,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents creating missing distances for profiles under a distance protocol.  The command finds all profiles that do not yet have a SeqDbSeqDistance record, computes the missing distances, and create the records while maintaining the symmetry invariant (every distance is stored in both directions).
+         * Represents a request to create missing distances for profiles under a distance protocol.  The command finds all profiles that do not yet have a SeqDbSeqDistance record, computes the missing distances, and create the records while maintaining the symmetry invariant (every distance is stored in both directions).
          * @summary Updateseqdistances
          * @param {SeqDbUpdateSeqDistancesRequestBody} updateSeqDistancesRequestBody 
          * @param {*} [options] Override http request option.
@@ -29117,7 +29168,7 @@ const SeqDbSeqApiAxiosParamCreator = function (configuration?: Configuration) {
             };
         },
         /**
-         * Represents a batch upload of samples along with their associated data.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  The upload process consists of the following steps: 1) Check if the user has the rights to upload the data in question. 2) Verify the validity of the sample data. The verification does not fail fast    but rather proceeds with the remaining data and checks to the extent possible,    so that all errors can be reported back to the caller instead of just the    first encountered one. 3) Upsert (create and/or update) the sample data.  The return value contains the results of the upload operation, whether successful or otherwise, and with details for each sample and associated data item.
+         * Represents a request to upload a batch of samples along with their associated data.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  The upload process consists of the following steps: 1) Check if the user has the rights to upload the data in question. 2) Verify the validity of the sample data. The verification does not fail fast    but rather proceeds with the remaining data and checks to the extent possible,    so that all errors can be reported back to the caller instead of just the    first encountered one. 3) Upsert (create and/or update) the sample data.  The return value contains the results of the upload operation, whether successful or otherwise, and with details for each sample and associated data item.
          * @summary Uploadsamples
          * @param {SeqDbUploadSamplesRequestBody} uploadSamplesRequestBody 
          * @param {*} [options] Override http request option.
@@ -29161,7 +29212,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = SeqDbSeqApiAxiosParamCreator(configuration)
     return {
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29175,20 +29226,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async allelesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async allelesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.allelesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.allelesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29201,7 +29252,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29215,7 +29266,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -29228,7 +29279,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29241,7 +29292,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Post One
          * @param {SeqDbAllele} allele 
          * @param {*} [options] Override http request option.
@@ -29254,7 +29305,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29269,7 +29320,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29284,7 +29335,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Post Some
          * @param {Array<SeqDbAllele>} allele 
          * @param {*} [options] Override http request option.
@@ -29297,7 +29348,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Put One
          * @param {string} objectId 
          * @param {SeqDbAllele} allele 
@@ -29311,7 +29362,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for allele records.
+         * Represents a request to perform a CRUD operation on Alleles.
          * @summary Alleles  Put Some
          * @param {Array<SeqDbAllele>} allele 
          * @param {*} [options] Override http request option.
@@ -29324,7 +29375,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29338,20 +29389,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astMeasurementsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async astMeasurementsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.astMeasurementsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astMeasurementsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29364,7 +29415,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29378,7 +29429,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -29391,7 +29442,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29404,7 +29455,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Post One
          * @param {SeqDbAstMeasurement} astMeasurement 
          * @param {*} [options] Override http request option.
@@ -29417,7 +29468,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29432,7 +29483,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29447,7 +29498,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Post Some
          * @param {Array<SeqDbAstMeasurement>} astMeasurement 
          * @param {*} [options] Override http request option.
@@ -29460,7 +29511,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Put One
          * @param {string} objectId 
          * @param {SeqDbAstMeasurement} astMeasurement 
@@ -29474,7 +29525,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+         * Represents a request to perform a CRUD operation on AstMeasurements.
          * @summary Ast Measurements  Put Some
          * @param {Array<SeqDbAstMeasurement>} astMeasurement 
          * @param {*} [options] Override http request option.
@@ -29487,7 +29538,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29501,20 +29552,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async astPredictionsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async astPredictionsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.astPredictionsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.astPredictionsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29527,7 +29578,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29541,7 +29592,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -29554,7 +29605,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29567,7 +29618,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Post One
          * @param {SeqDbAstPrediction} astPrediction 
          * @param {*} [options] Override http request option.
@@ -29580,7 +29631,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29595,7 +29646,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29610,7 +29661,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Post Some
          * @param {Array<SeqDbAstPrediction>} astPrediction 
          * @param {*} [options] Override http request option.
@@ -29623,7 +29674,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Put One
          * @param {string} objectId 
          * @param {SeqDbAstPrediction} astPrediction 
@@ -29637,7 +29688,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+         * Represents a request to perform a CRUD operation on AstPredictions.
          * @summary Ast Predictions  Put Some
          * @param {Array<SeqDbAstPrediction>} astPrediction 
          * @param {*} [options] Override http request option.
@@ -29650,7 +29701,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.
+         * @summary Convertseqformat
+         * @param {SeqDbConvertSeqFormatRequestBody} convertSeqFormatRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async convertSeqFormat(convertSeqFormatRequestBody: SeqDbConvertSeqFormatRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.convertSeqFormat(convertSeqFormatRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SeqApi.convertSeqFormat']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29664,20 +29728,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lociDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async lociDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.lociDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.lociDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29690,7 +29754,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29704,7 +29768,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -29717,7 +29781,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29730,7 +29794,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Post One
          * @param {SeqDbLocus} locus 
          * @param {*} [options] Override http request option.
@@ -29743,7 +29807,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29758,7 +29822,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29773,7 +29837,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Post Some
          * @param {Array<SeqDbLocus>} locus 
          * @param {*} [options] Override http request option.
@@ -29786,7 +29850,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Put One
          * @param {string} objectId 
          * @param {SeqDbLocus} locus 
@@ -29800,7 +29864,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus records.
+         * Represents a request to perform a CRUD operation on Loci.
          * @summary Loci  Put Some
          * @param {Array<SeqDbLocus>} locus 
          * @param {*} [options] Override http request option.
@@ -29813,7 +29877,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29827,20 +29891,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusCodeMapsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async locusCodeMapsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.locusCodeMapsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusCodeMapsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29853,7 +29917,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29867,7 +29931,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -29880,7 +29944,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -29893,7 +29957,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Post One
          * @param {SeqDbLocusCodeMap} locusCodeMap 
          * @param {*} [options] Override http request option.
@@ -29906,7 +29970,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29921,7 +29985,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -29936,7 +30000,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Post Some
          * @param {Array<SeqDbLocusCodeMap>} locusCodeMap 
          * @param {*} [options] Override http request option.
@@ -29949,7 +30013,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Put One
          * @param {string} objectId 
          * @param {SeqDbLocusCodeMap} locusCodeMap 
@@ -29963,7 +30027,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-code mapping records.
+         * Represents a request to perform a CRUD operation on LocusCodeMaps.
          * @summary SeqDbLocus Code Maps  Put Some
          * @param {Array<SeqDbLocusCodeMap>} locusCodeMap 
          * @param {*} [options] Override http request option.
@@ -29976,7 +30040,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -29990,20 +30054,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async locusSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async locusSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.locusSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.locusSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30016,7 +30080,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30030,7 +30094,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30043,7 +30107,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30056,7 +30120,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Post One
          * @param {SeqDbLocusSetInput} locusSetInput 
          * @param {*} [options] Override http request option.
@@ -30069,7 +30133,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30084,7 +30148,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30099,7 +30163,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Post Some
          * @param {Array<SeqDbLocusSetInput>} locusSetInput 
          * @param {*} [options] Override http request option.
@@ -30112,7 +30176,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbLocusSetInput} locusSetInput 
@@ -30126,7 +30190,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for locus-set records.
+         * Represents a request to perform a CRUD operation on LocusSets.
          * @summary SeqDbLocus Sets  Put Some
          * @param {Array<SeqDbLocusSetInput>} locusSetInput 
          * @param {*} [options] Override http request option.
@@ -30139,7 +30203,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30153,20 +30217,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pcrMeasurementsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async pcrMeasurementsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.pcrMeasurementsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.pcrMeasurementsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30179,7 +30243,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30193,7 +30257,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30206,7 +30270,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30219,7 +30283,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Post One
          * @param {SeqDbPcrMeasurement} pcrMeasurement 
          * @param {*} [options] Override http request option.
@@ -30232,7 +30296,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30247,7 +30311,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30262,7 +30326,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Post Some
          * @param {Array<SeqDbPcrMeasurement>} pcrMeasurement 
          * @param {*} [options] Override http request option.
@@ -30275,7 +30339,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Put One
          * @param {string} objectId 
          * @param {SeqDbPcrMeasurement} pcrMeasurement 
@@ -30289,7 +30353,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for PCR measurement records.
+         * Represents a request to perform a CRUD operation on PcrMeasurements.
          * @summary Pcr Measurements  Put Some
          * @param {Array<SeqDbPcrMeasurement>} pcrMeasurement 
          * @param {*} [options] Override http request option.
@@ -30302,7 +30366,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30316,20 +30380,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async protocolSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetMembersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30342,7 +30406,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30356,7 +30420,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30369,7 +30433,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30382,7 +30446,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Post One
          * @param {SeqDbProtocolSetMember} protocolSetMember 
          * @param {*} [options] Override http request option.
@@ -30395,7 +30459,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30410,7 +30474,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30425,7 +30489,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Post Some
          * @param {Array<SeqDbProtocolSetMember>} protocolSetMember 
          * @param {*} [options] Override http request option.
@@ -30438,7 +30502,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Put One
          * @param {string} objectId 
          * @param {SeqDbProtocolSetMember} protocolSetMember 
@@ -30452,7 +30516,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set memberships.
+         * Represents a request to perform a CRUD operation on ProtocolSetMembers.
          * @summary SeqDbProtocol Set Members  Put Some
          * @param {Array<SeqDbProtocolSetMember>} protocolSetMember 
          * @param {*} [options] Override http request option.
@@ -30465,7 +30529,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30479,20 +30543,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async protocolSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.protocolSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30505,7 +30569,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30519,7 +30583,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30532,7 +30596,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30545,7 +30609,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Post One
          * @param {SeqDbProtocolSet} protocolSet 
          * @param {*} [options] Override http request option.
@@ -30558,7 +30622,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30573,7 +30637,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30588,7 +30652,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Post Some
          * @param {Array<SeqDbProtocolSet>} protocolSet 
          * @param {*} [options] Override http request option.
@@ -30601,7 +30665,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbProtocolSet} protocolSet 
@@ -30615,7 +30679,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol-set records.
+         * Represents a request to perform a CRUD operation on ProtocolSets.
          * @summary SeqDbProtocol Sets  Put Some
          * @param {Array<SeqDbProtocolSet>} protocolSet 
          * @param {*} [options] Override http request option.
@@ -30628,7 +30692,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30642,20 +30706,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async protocolsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async protocolsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.protocolsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.protocolsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30668,7 +30732,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30682,7 +30746,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30695,7 +30759,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30708,7 +30772,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Post One
          * @param {SeqDbProtocol} protocol 
          * @param {*} [options] Override http request option.
@@ -30721,7 +30785,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30736,7 +30800,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30751,7 +30815,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Post Some
          * @param {Array<SeqDbProtocol>} protocol 
          * @param {*} [options] Override http request option.
@@ -30764,7 +30828,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Put One
          * @param {string} objectId 
          * @param {SeqDbProtocol} protocol 
@@ -30778,7 +30842,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence protocol records.
+         * Represents a request to perform a CRUD operation on Protocols.
          * @summary Protocols  Put Some
          * @param {Array<SeqDbProtocol>} protocol 
          * @param {*} [options] Override http request option.
@@ -30791,7 +30855,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30805,20 +30869,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async readSetIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readSetIdentifiersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetIdentifiersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30831,7 +30895,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30845,7 +30909,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -30858,7 +30922,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30871,7 +30935,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Post One
          * @param {SeqDbReadSetIdentifier} readSetIdentifier 
          * @param {*} [options] Override http request option.
@@ -30884,7 +30948,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30899,7 +30963,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -30914,7 +30978,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Post Some
          * @param {Array<SeqDbReadSetIdentifier>} readSetIdentifier 
          * @param {*} [options] Override http request option.
@@ -30927,7 +30991,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Put One
          * @param {string} objectId 
          * @param {SeqDbReadSetIdentifier} readSetIdentifier 
@@ -30941,7 +31005,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set identifier records.
+         * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
          * @summary Read Set Identifiers  Put Some
          * @param {Array<SeqDbReadSetIdentifier>} readSetIdentifier 
          * @param {*} [options] Override http request option.
@@ -30954,7 +31018,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -30968,20 +31032,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async readSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.readSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -30994,7 +31058,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31008,7 +31072,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31021,7 +31085,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31034,7 +31098,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Post One
          * @param {SeqDbReadSet} readSet 
          * @param {*} [options] Override http request option.
@@ -31047,7 +31111,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31062,7 +31126,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31077,7 +31141,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Post Some
          * @param {Array<SeqDbReadSet>} readSet 
          * @param {*} [options] Override http request option.
@@ -31090,7 +31154,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbReadSet} readSet 
@@ -31104,7 +31168,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for read-set records.
+         * Represents a request to perform a CRUD operation on ReadSets.
          * @summary Read Sets  Put Some
          * @param {Array<SeqDbReadSet>} readSet 
          * @param {*} [options] Override http request option.
@@ -31117,7 +31181,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31131,20 +31195,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refAllelesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async refAllelesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refAllelesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refAllelesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31157,7 +31221,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31171,7 +31235,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31184,7 +31248,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31197,7 +31261,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Post One
          * @param {SeqDbRefAllele} refAllele 
          * @param {*} [options] Override http request option.
@@ -31210,7 +31274,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31225,7 +31289,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31240,7 +31304,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Post Some
          * @param {Array<SeqDbRefAllele>} refAllele 
          * @param {*} [options] Override http request option.
@@ -31253,7 +31317,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Put One
          * @param {string} objectId 
          * @param {SeqDbRefAllele} refAllele 
@@ -31267,7 +31331,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference allele records.
+         * Represents a request to perform a CRUD operation on RefAlleles.
          * @summary Ref Alleles  Put Some
          * @param {Array<SeqDbRefAllele>} refAllele 
          * @param {*} [options] Override http request option.
@@ -31280,7 +31344,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31294,20 +31358,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refSeqsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async refSeqsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refSeqsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.refSeqsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31320,7 +31384,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31334,7 +31398,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31347,7 +31411,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31360,7 +31424,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Post One
          * @param {SeqDbRefSeq} refSeq 
          * @param {*} [options] Override http request option.
@@ -31373,7 +31437,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31388,7 +31452,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31403,7 +31467,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Post Some
          * @param {Array<SeqDbRefSeq>} refSeq 
          * @param {*} [options] Override http request option.
@@ -31416,7 +31480,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Put One
          * @param {string} objectId 
          * @param {SeqDbRefSeq} refSeq 
@@ -31430,7 +31494,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for reference sequence records.
+         * Represents a request to perform a CRUD operation on RefSeqs.
          * @summary Ref Seqs  Put Some
          * @param {Array<SeqDbRefSeq>} refSeq 
          * @param {*} [options] Override http request option.
@@ -31443,7 +31507,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of the best SeqDbSeqClassification ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
+         * Represents a request to retrieve the best SeqDbSeqClassification ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
          * @summary Retrievebestseqclassificationpersample
          * @param {SeqDbRetrieveBestSeqClassificationPerSampleRequestBody} retrieveBestSeqClassificationPerSampleRequestBody 
          * @param {*} [options] Override http request option.
@@ -31456,7 +31520,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of the best SeqDbSeq ID for each requested sample.  IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
+         * Represents a request to retrieve the best SeqDbSeq ID for each requested sample.  IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
          * @summary Retrievebestseqpersample
          * @param {SeqDbRetrieveBestSeqPerSampleRequestBody} retrieveBestSeqPerSampleRequestBody 
          * @param {*} [options] Override http request option.
@@ -31469,7 +31533,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of the best SeqDbSeqProfile ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
+         * Represents a request to retrieve the best SeqDbSeqProfile ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
          * @summary Retrievebestseqprofilepersample
          * @param {SeqDbRetrieveBestSeqProfilePerSampleRequestBody} retrieveBestSeqProfilePerSampleRequestBody 
          * @param {*} [options] Override http request option.
@@ -31482,7 +31546,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents calculating a phylogenetic tree from query profiles and a configured protocol.  The returned tree contains the query profiles and any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).  Model validation: When provided, leaf names must have one entry per queried sequence profile.
+         * Represents a request to calculate a phylogenetic tree from query profiles and a configured protocol.  The returned tree contains the query profiles and any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).  Model validation: When provided, leaf names must have one entry per queried sequence profile.
          * @summary Retrievephylogenetictree
          * @param {SeqDbCalculatePhylogeneticTreeRequestBody} calculatePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
@@ -31495,7 +31559,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of only SeqDbSampleIdentifier records for sample identifiers.  Lighter than RetrieveSamplesByIdCommand — no sequences or read sets.
+         * Represents a request to retrieve only SeqDbSampleIdentifier records for sample identifiers.  Lighter than RetrieveSamplesByIdCommand — no sequences or read sets.
          * @summary Retrievesampleidentifiersbyids
          * @param {SeqDbRetrieveSampleIdentifiersByIdsRequestBody} retrieveSampleIdentifiersByIdsRequestBody 
          * @param {*} [options] Override http request option.
@@ -31508,7 +31572,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of sample identifiers matching a query.  These identifiers can then be used to retrieve the corresponding samples.
+         * Represents a request to retrieve sample identifiers matching a query.  These identifiers can then be used to retrieve the corresponding samples.
          * @summary Retrievesampleidsbyquery
          * @param {SeqDbSampleQuery} sampleQuery 
          * @param {*} [options] Override http request option.
@@ -31521,7 +31585,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of complete data for sample identifiers.  The result contains SeqDbFullSample objects in the same order.
+         * Represents a request to retrieve complete data for sample identifiers.  The result contains SeqDbFullSample objects in the same order.
          * @summary Retrievesamplesbyids
          * @param {SeqDbRetrieveSamplesByIdsRequestBody} retrieveSamplesByIdsRequestBody 
          * @param {*} [options] Override http request option.
@@ -31534,7 +31598,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of the last modified datetime for a SeqDbSeqDistance protocol.  This command is intended to be used in conjunction with the CalculateSeqDistancesForNewProfilesCommand command, which has a seq_distance_last_modified_at field that can be filled with the return value of this command to prevent concurrent modification conflicts by ensuring that no SeqDbSeqDistance was modified after the specified datetime between the time of retrieval and the time of calculation and upload of new distances.
+         * Represents a request to retrieve the last modified datetime for a SeqDbSeqDistance protocol.  This command is intended to be used in conjunction with the CalculateSeqDistancesForNewProfilesCommand command, which has a seq_distance_last_modified_at field that can be filled with the return value of this command to prevent concurrent modification conflicts by ensuring that no SeqDbSeqDistance was modified after the specified datetime between the time of retrieval and the time of calculation and upload of new distances.
          * @summary Retrieveseqdistancelastmodified
          * @param {string} protocolId 
          * @param {*} [options] Override http request option.
@@ -31547,7 +31611,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of sequences in FASTA format.  as an iterable that yields one contig at a time.
+         * Represents a request to retrieve sequences in FASTA format.  The result is an iterable that yields one contig at a time.
          * @summary Retrieveseqfasta
          * @param {SeqDbRetrieveSeqFastaRequestBody} retrieveSeqFastaRequestBody 
          * @param {*} [options] Override http request option.
@@ -31560,7 +31624,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of profiles similar to at least one query profile.  the given maximum distance and based on the given seq distance protocol. The returned profiles do not contain the query profiles.
+         * Represents a request to retrieve profiles similar to at least one query profile.  the given maximum distance and based on the given seq distance protocol. The returned profiles do not contain the query profiles.
          * @summary Retrievesimilarprofiles
          * @param {SeqDbRetrieveSimilarProfilesRequestBody} retrieveSimilarProfilesRequestBody 
          * @param {*} [options] Override http request option.
@@ -31573,7 +31637,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31587,20 +31651,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleDataCollectionLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async sampleDataCollectionLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sampleDataCollectionLinksDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleDataCollectionLinksDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31613,7 +31677,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31627,7 +31691,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31640,7 +31704,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31653,7 +31717,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Post One
          * @param {SeqDbSampleDataCollectionLink} sampleDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -31666,7 +31730,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31681,7 +31745,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31696,7 +31760,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Post Some
          * @param {Array<SeqDbSampleDataCollectionLink>} sampleDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -31709,7 +31773,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Put One
          * @param {string} objectId 
          * @param {SeqDbSampleDataCollectionLink} sampleDataCollectionLink 
@@ -31723,7 +31787,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample data-collection links.
+         * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
          * @summary SeqDbSample Data Collection Links  Put Some
          * @param {Array<SeqDbSampleDataCollectionLink>} sampleDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -31736,7 +31800,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31750,20 +31814,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sampleIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async sampleIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sampleIdentifiersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.sampleIdentifiersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31776,7 +31840,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31790,7 +31854,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31803,7 +31867,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31816,7 +31880,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Post One
          * @param {SeqDbSampleIdentifier} sampleIdentifier 
          * @param {*} [options] Override http request option.
@@ -31829,7 +31893,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31844,7 +31908,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -31859,7 +31923,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Post Some
          * @param {Array<SeqDbSampleIdentifier>} sampleIdentifier 
          * @param {*} [options] Override http request option.
@@ -31872,7 +31936,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Put One
          * @param {string} objectId 
          * @param {SeqDbSampleIdentifier} sampleIdentifier 
@@ -31886,7 +31950,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample identifier records.
+         * Represents a request to perform a CRUD operation on SampleIdentifiers.
          * @summary SeqDbSample Identifiers  Put Some
          * @param {Array<SeqDbSampleIdentifier>} sampleIdentifier 
          * @param {*} [options] Override http request option.
@@ -31899,7 +31963,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31913,20 +31977,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async samplesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async samplesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.samplesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.samplesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31939,7 +32003,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -31953,7 +32017,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -31966,7 +32030,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -31979,7 +32043,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Post One
          * @param {SeqDbSample} sample 
          * @param {*} [options] Override http request option.
@@ -31992,7 +32056,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32007,7 +32071,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32022,7 +32086,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Post Some
          * @param {Array<SeqDbSample>} sample 
          * @param {*} [options] Override http request option.
@@ -32035,7 +32099,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Put One
          * @param {string} objectId 
          * @param {SeqDbSample} sample 
@@ -32049,7 +32113,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sample records.
+         * Represents a request to perform a CRUD operation on Samples.
          * @summary Samples  Put Some
          * @param {Array<SeqDbSample>} sample 
          * @param {*} [options] Override http request option.
@@ -32062,7 +32126,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32076,20 +32140,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategoriesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async seqCategoriesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategoriesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategoriesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32102,7 +32166,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32116,7 +32180,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -32129,7 +32193,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32142,7 +32206,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Post One
          * @param {SeqDbSeqCategory} seqCategory 
          * @param {*} [options] Override http request option.
@@ -32155,7 +32219,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32170,7 +32234,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32185,7 +32249,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Post Some
          * @param {Array<SeqDbSeqCategory>} seqCategory 
          * @param {*} [options] Override http request option.
@@ -32198,7 +32262,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqCategory} seqCategory 
@@ -32212,7 +32276,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category records.
+         * Represents a request to perform a CRUD operation on SeqCategories.
          * @summary SeqDbSeq Categories  Put Some
          * @param {Array<SeqDbSeqCategory>} seqCategory 
          * @param {*} [options] Override http request option.
@@ -32225,7 +32289,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32239,20 +32303,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqCategorySetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async seqCategorySetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqCategorySetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqCategorySetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32265,7 +32329,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32279,7 +32343,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -32292,7 +32356,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32305,7 +32369,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Post One
          * @param {SeqDbSeqCategorySet} seqCategorySet 
          * @param {*} [options] Override http request option.
@@ -32318,7 +32382,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32333,7 +32397,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32348,7 +32412,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Post Some
          * @param {Array<SeqDbSeqCategorySet>} seqCategorySet 
          * @param {*} [options] Override http request option.
@@ -32361,7 +32425,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqCategorySet} seqCategorySet 
@@ -32375,7 +32439,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence category-set records.
+         * Represents a request to perform a CRUD operation on SeqCategorySets.
          * @summary SeqDbSeq Category Sets  Put Some
          * @param {Array<SeqDbSeqCategorySet>} seqCategorySet 
          * @param {*} [options] Override http request option.
@@ -32388,7 +32452,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32402,20 +32466,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqClassificationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async seqClassificationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqClassificationsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqClassificationsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32428,7 +32492,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32442,7 +32506,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -32455,7 +32519,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32468,7 +32532,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Post One
          * @param {SeqDbSeqClassification} seqClassification 
          * @param {*} [options] Override http request option.
@@ -32481,7 +32545,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32496,7 +32560,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32511,7 +32575,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Post Some
          * @param {Array<SeqDbSeqClassification>} seqClassification 
          * @param {*} [options] Override http request option.
@@ -32524,7 +32588,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqClassification} seqClassification 
@@ -32538,7 +32602,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence classification records.
+         * Represents a request to perform a CRUD operation on SeqClassifications.
          * @summary SeqDbSeq Classifications  Put Some
          * @param {Array<SeqDbSeqClassification>} seqClassification 
          * @param {*} [options] Override http request option.
@@ -32551,7 +32615,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32565,20 +32629,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqDistancesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async seqDistancesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqDistancesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqDistancesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32591,7 +32655,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32605,7 +32669,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -32618,7 +32682,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32631,7 +32695,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Post One
          * @param {SeqDbSeqDistance} seqDistance 
          * @param {*} [options] Override http request option.
@@ -32644,7 +32708,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32659,7 +32723,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32674,7 +32738,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Post Some
          * @param {Array<SeqDbSeqDistance>} seqDistance 
          * @param {*} [options] Override http request option.
@@ -32687,7 +32751,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqDistance} seqDistance 
@@ -32701,7 +32765,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for pairwise sequence-distance records.
+         * Represents a request to perform a CRUD operation on SeqDistances.
          * @summary SeqDbSeq Distances  Put Some
          * @param {Array<SeqDbSeqDistance>} seqDistance 
          * @param {*} [options] Override http request option.
@@ -32714,7 +32778,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32728,20 +32792,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async seqIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqIdentifiersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqIdentifiersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32754,7 +32818,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32768,7 +32832,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -32781,7 +32845,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32794,7 +32858,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Post One
          * @param {SeqDbSeqIdentifier} seqIdentifier 
          * @param {*} [options] Override http request option.
@@ -32807,7 +32871,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32822,7 +32886,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32837,7 +32901,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Post Some
          * @param {Array<SeqDbSeqIdentifier>} seqIdentifier 
          * @param {*} [options] Override http request option.
@@ -32850,7 +32914,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqIdentifier} seqIdentifier 
@@ -32864,7 +32928,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence identifier records.
+         * Represents a request to perform a CRUD operation on SeqIdentifiers.
          * @summary SeqDbSeq Identifiers  Put Some
          * @param {Array<SeqDbSeqIdentifier>} seqIdentifier 
          * @param {*} [options] Override http request option.
@@ -32877,7 +32941,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32891,20 +32955,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfileIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async seqProfileIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfileIdentifiersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfileIdentifiersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32917,7 +32981,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32931,7 +32995,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -32944,7 +33008,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32957,7 +33021,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Post One
          * @param {SeqDbSeqProfileIdentifier} seqProfileIdentifier 
          * @param {*} [options] Override http request option.
@@ -32970,7 +33034,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32985,7 +33049,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33000,7 +33064,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Post Some
          * @param {Array<SeqDbSeqProfileIdentifier>} seqProfileIdentifier 
          * @param {*} [options] Override http request option.
@@ -33013,7 +33077,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqProfileIdentifier} seqProfileIdentifier 
@@ -33027,7 +33091,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile identifier records.
+         * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
          * @summary SeqDbSeq Profile Identifiers  Put Some
          * @param {Array<SeqDbSeqProfileIdentifier>} seqProfileIdentifier 
          * @param {*} [options] Override http request option.
@@ -33040,7 +33104,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33054,20 +33118,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqProfilesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async seqProfilesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqProfilesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqProfilesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33080,7 +33144,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33094,7 +33158,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -33107,7 +33171,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33120,7 +33184,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Post One
          * @param {SeqDbSeqProfile} seqProfile 
          * @param {*} [options] Override http request option.
@@ -33133,7 +33197,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33148,7 +33212,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33163,7 +33227,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Post Some
          * @param {Array<SeqDbSeqProfile>} seqProfile 
          * @param {*} [options] Override http request option.
@@ -33176,7 +33240,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqProfile} seqProfile 
@@ -33190,7 +33254,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence profile records.
+         * Represents a request to perform a CRUD operation on SeqProfiles.
          * @summary SeqDbSeq Profiles  Put Some
          * @param {Array<SeqDbSeqProfile>} seqProfile 
          * @param {*} [options] Override http request option.
@@ -33203,7 +33267,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33217,20 +33281,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqTaxonomiesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async seqTaxonomiesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqTaxonomiesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqTaxonomiesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33243,7 +33307,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33257,7 +33321,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -33270,7 +33334,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33283,7 +33347,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Post One
          * @param {SeqDbSeqTaxonomy} seqTaxonomy 
          * @param {*} [options] Override http request option.
@@ -33296,7 +33360,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33311,7 +33375,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33326,7 +33390,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Post Some
          * @param {Array<SeqDbSeqTaxonomy>} seqTaxonomy 
          * @param {*} [options] Override http request option.
@@ -33339,7 +33403,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Put One
          * @param {string} objectId 
          * @param {SeqDbSeqTaxonomy} seqTaxonomy 
@@ -33353,7 +33417,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for sequence taxonomy records.
+         * Represents a request to perform a CRUD operation on SeqTaxonomies.
          * @summary SeqDbSeq Taxonomies  Put Some
          * @param {Array<SeqDbSeqTaxonomy>} seqTaxonomy 
          * @param {*} [options] Override http request option.
@@ -33366,7 +33430,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33380,20 +33444,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async seqsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async seqsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.seqsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.seqsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33406,7 +33470,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33420,7 +33484,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -33433,7 +33497,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33446,7 +33510,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Post One
          * @param {SeqDbSeq} seq 
          * @param {*} [options] Override http request option.
@@ -33459,7 +33523,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33474,7 +33538,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33489,7 +33553,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Post Some
          * @param {Array<SeqDbSeq>} seq 
          * @param {*} [options] Override http request option.
@@ -33502,7 +33566,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Put One
          * @param {string} objectId 
          * @param {SeqDbSeq} seq 
@@ -33516,7 +33580,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for assembled sequence records.
+         * Represents a request to perform a CRUD operation on Seqs.
          * @summary Seqs  Put Some
          * @param {Array<SeqDbSeq>} seq 
          * @param {*} [options] Override http request option.
@@ -33529,7 +33593,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33543,20 +33607,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxaDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async taxaDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.taxaDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxaDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33569,7 +33633,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33583,7 +33647,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -33596,7 +33660,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33609,7 +33673,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Post One
          * @param {SeqDbTaxon} taxon 
          * @param {*} [options] Override http request option.
@@ -33622,7 +33686,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33637,7 +33701,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33652,7 +33716,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Post Some
          * @param {Array<SeqDbTaxon>} taxon 
          * @param {*} [options] Override http request option.
@@ -33665,7 +33729,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Put One
          * @param {string} objectId 
          * @param {SeqDbTaxon} taxon 
@@ -33679,7 +33743,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon records.
+         * Represents a request to perform a CRUD operation on Taxa.
          * @summary Taxa  Put Some
          * @param {Array<SeqDbTaxon>} taxon 
          * @param {*} [options] Override http request option.
@@ -33692,7 +33756,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33706,20 +33770,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async taxonSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetMembersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33732,7 +33796,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33746,7 +33810,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -33759,7 +33823,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33772,7 +33836,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Post One
          * @param {SeqDbTaxonSetMember} taxonSetMember 
          * @param {*} [options] Override http request option.
@@ -33785,7 +33849,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33800,7 +33864,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33815,7 +33879,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Post Some
          * @param {Array<SeqDbTaxonSetMember>} taxonSetMember 
          * @param {*} [options] Override http request option.
@@ -33828,7 +33892,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Put One
          * @param {string} objectId 
          * @param {SeqDbTaxonSetMember} taxonSetMember 
@@ -33842,7 +33906,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set membership records.
+         * Represents a request to perform a CRUD operation on TaxonSetMembers.
          * @summary SeqDbTaxon Set Members  Put Some
          * @param {Array<SeqDbTaxonSetMember>} taxonSetMember 
          * @param {*} [options] Override http request option.
@@ -33855,7 +33919,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33869,20 +33933,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async taxonSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async taxonSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.taxonSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.taxonSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33895,7 +33959,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33909,7 +33973,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -33922,7 +33986,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33935,7 +33999,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Post One
          * @param {SeqDbTaxonSet} taxonSet 
          * @param {*} [options] Override http request option.
@@ -33948,7 +34012,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33963,7 +34027,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33978,7 +34042,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Post Some
          * @param {Array<SeqDbTaxonSet>} taxonSet 
          * @param {*} [options] Override http request option.
@@ -33991,7 +34055,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Put One
          * @param {string} objectId 
          * @param {SeqDbTaxonSet} taxonSet 
@@ -34005,7 +34069,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for taxon-set records.
+         * Represents a request to perform a CRUD operation on TaxonSets.
          * @summary SeqDbTaxon Sets  Put Some
          * @param {Array<SeqDbTaxonSet>} taxonSet 
          * @param {*} [options] Override http request option.
@@ -34018,7 +34082,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -34032,20 +34096,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async treeAlgorithmClassesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmClassesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -34058,7 +34122,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -34072,7 +34136,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -34085,7 +34149,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -34098,7 +34162,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post One
          * @param {SeqDbTreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -34111,7 +34175,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -34126,7 +34190,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -34141,7 +34205,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Some
          * @param {Array<SeqDbTreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -34154,7 +34218,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Put One
          * @param {string} objectId 
          * @param {SeqDbTreeAlgorithmClass} treeAlgorithmClass 
@@ -34168,7 +34232,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for tree algorithm class records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Put Some
          * @param {Array<SeqDbTreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -34181,7 +34245,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -34195,20 +34259,20 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async treeAlgorithmsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SeqApi.treeAlgorithmsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -34221,7 +34285,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -34235,7 +34299,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -34248,7 +34312,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -34261,7 +34325,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post One
          * @param {SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -34274,7 +34338,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Query
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -34289,7 +34353,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Query  Ids
          * @param {SeqDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -34304,7 +34368,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Some
          * @param {Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -34317,7 +34381,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Put One
          * @param {string} objectId 
          * @param {SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
@@ -34331,7 +34395,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD command metadata for phylogenetic tree algorithm records.
+         * Represents a request to perform a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Put Some
          * @param {Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -34344,7 +34408,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents creating missing distances for profiles under a distance protocol.  The command finds all profiles that do not yet have a SeqDbSeqDistance record, computes the missing distances, and create the records while maintaining the symmetry invariant (every distance is stored in both directions).
+         * Represents a request to create missing distances for profiles under a distance protocol.  The command finds all profiles that do not yet have a SeqDbSeqDistance record, computes the missing distances, and create the records while maintaining the symmetry invariant (every distance is stored in both directions).
          * @summary Updateseqdistances
          * @param {SeqDbUpdateSeqDistancesRequestBody} updateSeqDistancesRequestBody 
          * @param {*} [options] Override http request option.
@@ -34357,7 +34421,7 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a batch upload of samples along with their associated data.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  The upload process consists of the following steps: 1) Check if the user has the rights to upload the data in question. 2) Verify the validity of the sample data. The verification does not fail fast    but rather proceeds with the remaining data and checks to the extent possible,    so that all errors can be reported back to the caller instead of just the    first encountered one. 3) Upsert (create and/or update) the sample data.  The return value contains the results of the upload operation, whether successful or otherwise, and with details for each sample and associated data item.
+         * Represents a request to upload a batch of samples along with their associated data.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  The upload process consists of the following steps: 1) Check if the user has the rights to upload the data in question. 2) Verify the validity of the sample data. The verification does not fail fast    but rather proceeds with the remaining data and checks to the extent possible,    so that all errors can be reported back to the caller instead of just the    first encountered one. 3) Upsert (create and/or update) the sample data.  The return value contains the results of the upload operation, whether successful or otherwise, and with details for each sample and associated data item.
          * @summary Uploadsamples
          * @param {SeqDbUploadSamplesRequestBody} uploadSamplesRequestBody 
          * @param {*} [options] Override http request option.
@@ -34395,7 +34459,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
   }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34407,18 +34471,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public allelesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public allelesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).allelesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -34429,7 +34493,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34441,7 +34505,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -34452,7 +34516,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -34463,7 +34527,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Post One
      * @param {SeqDbAllele} allele 
      * @param {*} [options] Override http request option.
@@ -34474,7 +34538,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -34487,7 +34551,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -34500,7 +34564,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Post Some
      * @param {Array<SeqDbAllele>} allele 
      * @param {*} [options] Override http request option.
@@ -34511,7 +34575,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Put One
      * @param {string} objectId 
      * @param {SeqDbAllele} allele 
@@ -34523,7 +34587,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for allele records.
+     * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Put Some
      * @param {Array<SeqDbAllele>} allele 
      * @param {*} [options] Override http request option.
@@ -34534,7 +34598,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34546,18 +34610,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astMeasurementsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public astMeasurementsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).astMeasurementsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -34568,7 +34632,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34580,7 +34644,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -34591,7 +34655,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -34602,7 +34666,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Post One
      * @param {SeqDbAstMeasurement} astMeasurement 
      * @param {*} [options] Override http request option.
@@ -34613,7 +34677,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -34626,7 +34690,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -34639,7 +34703,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Post Some
      * @param {Array<SeqDbAstMeasurement>} astMeasurement 
      * @param {*} [options] Override http request option.
@@ -34650,7 +34714,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Put One
      * @param {string} objectId 
      * @param {SeqDbAstMeasurement} astMeasurement 
@@ -34662,7 +34726,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility measurements.
+     * Represents a request to perform a CRUD operation on AstMeasurements.
      * @summary Ast Measurements  Put Some
      * @param {Array<SeqDbAstMeasurement>} astMeasurement 
      * @param {*} [options] Override http request option.
@@ -34673,7 +34737,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34685,18 +34749,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public astPredictionsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public astPredictionsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).astPredictionsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -34707,7 +34771,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34719,7 +34783,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -34730,7 +34794,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -34741,7 +34805,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Post One
      * @param {SeqDbAstPrediction} astPrediction 
      * @param {*} [options] Override http request option.
@@ -34752,7 +34816,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -34765,7 +34829,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -34778,7 +34842,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Post Some
      * @param {Array<SeqDbAstPrediction>} astPrediction 
      * @param {*} [options] Override http request option.
@@ -34789,7 +34853,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Put One
      * @param {string} objectId 
      * @param {SeqDbAstPrediction} astPrediction 
@@ -34801,7 +34865,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for antimicrobial-susceptibility predictions.
+     * Represents a request to perform a CRUD operation on AstPredictions.
      * @summary Ast Predictions  Put Some
      * @param {Array<SeqDbAstPrediction>} astPrediction 
      * @param {*} [options] Override http request option.
@@ -34812,7 +34876,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to convert stored contig sequence representations.  Returns:   The IDs of the sequences converted to the target format.
+     * @summary Convertseqformat
+     * @param {SeqDbConvertSeqFormatRequestBody} convertSeqFormatRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public convertSeqFormat(convertSeqFormatRequestBody: SeqDbConvertSeqFormatRequestBody, options?: RawAxiosRequestConfig) {
+        return SeqDbSeqApiFp(this.configuration).convertSeqFormat(convertSeqFormatRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34824,18 +34899,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public lociDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public lociDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).lociDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -34846,7 +34921,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34858,7 +34933,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -34869,7 +34944,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -34880,7 +34955,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Post One
      * @param {SeqDbLocus} locus 
      * @param {*} [options] Override http request option.
@@ -34891,7 +34966,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -34904,7 +34979,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -34917,7 +34992,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Post Some
      * @param {Array<SeqDbLocus>} locus 
      * @param {*} [options] Override http request option.
@@ -34928,7 +35003,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Put One
      * @param {string} objectId 
      * @param {SeqDbLocus} locus 
@@ -34940,7 +35015,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus records.
+     * Represents a request to perform a CRUD operation on Loci.
      * @summary Loci  Put Some
      * @param {Array<SeqDbLocus>} locus 
      * @param {*} [options] Override http request option.
@@ -34951,7 +35026,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34963,18 +35038,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusCodeMapsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public locusCodeMapsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).locusCodeMapsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -34985,7 +35060,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -34997,7 +35072,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -35008,7 +35083,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35019,7 +35094,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Post One
      * @param {SeqDbLocusCodeMap} locusCodeMap 
      * @param {*} [options] Override http request option.
@@ -35030,7 +35105,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35043,7 +35118,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35056,7 +35131,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Post Some
      * @param {Array<SeqDbLocusCodeMap>} locusCodeMap 
      * @param {*} [options] Override http request option.
@@ -35067,7 +35142,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Put One
      * @param {string} objectId 
      * @param {SeqDbLocusCodeMap} locusCodeMap 
@@ -35079,7 +35154,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-code mapping records.
+     * Represents a request to perform a CRUD operation on LocusCodeMaps.
      * @summary SeqDbLocus Code Maps  Put Some
      * @param {Array<SeqDbLocusCodeMap>} locusCodeMap 
      * @param {*} [options] Override http request option.
@@ -35090,7 +35165,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35102,18 +35177,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public locusSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public locusSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).locusSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35124,7 +35199,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35136,7 +35211,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -35147,7 +35222,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35158,7 +35233,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Post One
      * @param {SeqDbLocusSetInput} locusSetInput 
      * @param {*} [options] Override http request option.
@@ -35169,7 +35244,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35182,7 +35257,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35195,7 +35270,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Post Some
      * @param {Array<SeqDbLocusSetInput>} locusSetInput 
      * @param {*} [options] Override http request option.
@@ -35206,7 +35281,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Put One
      * @param {string} objectId 
      * @param {SeqDbLocusSetInput} locusSetInput 
@@ -35218,7 +35293,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for locus-set records.
+     * Represents a request to perform a CRUD operation on LocusSets.
      * @summary SeqDbLocus Sets  Put Some
      * @param {Array<SeqDbLocusSetInput>} locusSetInput 
      * @param {*} [options] Override http request option.
@@ -35229,7 +35304,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35241,18 +35316,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public pcrMeasurementsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public pcrMeasurementsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).pcrMeasurementsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35263,7 +35338,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35275,7 +35350,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -35286,7 +35361,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35297,7 +35372,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Post One
      * @param {SeqDbPcrMeasurement} pcrMeasurement 
      * @param {*} [options] Override http request option.
@@ -35308,7 +35383,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35321,7 +35396,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35334,7 +35409,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Post Some
      * @param {Array<SeqDbPcrMeasurement>} pcrMeasurement 
      * @param {*} [options] Override http request option.
@@ -35345,7 +35420,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Put One
      * @param {string} objectId 
      * @param {SeqDbPcrMeasurement} pcrMeasurement 
@@ -35357,7 +35432,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for PCR measurement records.
+     * Represents a request to perform a CRUD operation on PcrMeasurements.
      * @summary Pcr Measurements  Put Some
      * @param {Array<SeqDbPcrMeasurement>} pcrMeasurement 
      * @param {*} [options] Override http request option.
@@ -35368,7 +35443,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35380,18 +35455,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public protocolSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).protocolSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35402,7 +35477,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35414,7 +35489,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -35425,7 +35500,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35436,7 +35511,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Post One
      * @param {SeqDbProtocolSetMember} protocolSetMember 
      * @param {*} [options] Override http request option.
@@ -35447,7 +35522,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35460,7 +35535,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35473,7 +35548,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Post Some
      * @param {Array<SeqDbProtocolSetMember>} protocolSetMember 
      * @param {*} [options] Override http request option.
@@ -35484,7 +35559,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Put One
      * @param {string} objectId 
      * @param {SeqDbProtocolSetMember} protocolSetMember 
@@ -35496,7 +35571,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set memberships.
+     * Represents a request to perform a CRUD operation on ProtocolSetMembers.
      * @summary SeqDbProtocol Set Members  Put Some
      * @param {Array<SeqDbProtocolSetMember>} protocolSetMember 
      * @param {*} [options] Override http request option.
@@ -35507,7 +35582,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35519,18 +35594,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public protocolSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).protocolSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35541,7 +35616,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35553,7 +35628,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -35564,7 +35639,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35575,7 +35650,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Post One
      * @param {SeqDbProtocolSet} protocolSet 
      * @param {*} [options] Override http request option.
@@ -35586,7 +35661,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35599,7 +35674,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35612,7 +35687,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Post Some
      * @param {Array<SeqDbProtocolSet>} protocolSet 
      * @param {*} [options] Override http request option.
@@ -35623,7 +35698,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Put One
      * @param {string} objectId 
      * @param {SeqDbProtocolSet} protocolSet 
@@ -35635,7 +35710,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol-set records.
+     * Represents a request to perform a CRUD operation on ProtocolSets.
      * @summary SeqDbProtocol Sets  Put Some
      * @param {Array<SeqDbProtocolSet>} protocolSet 
      * @param {*} [options] Override http request option.
@@ -35646,7 +35721,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35658,18 +35733,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public protocolsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public protocolsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).protocolsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35680,7 +35755,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35692,7 +35767,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -35703,7 +35778,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35714,7 +35789,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Post One
      * @param {SeqDbProtocol} protocol 
      * @param {*} [options] Override http request option.
@@ -35725,7 +35800,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35738,7 +35813,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35751,7 +35826,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Post Some
      * @param {Array<SeqDbProtocol>} protocol 
      * @param {*} [options] Override http request option.
@@ -35762,7 +35837,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Put One
      * @param {string} objectId 
      * @param {SeqDbProtocol} protocol 
@@ -35774,7 +35849,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence protocol records.
+     * Represents a request to perform a CRUD operation on Protocols.
      * @summary Protocols  Put Some
      * @param {Array<SeqDbProtocol>} protocol 
      * @param {*} [options] Override http request option.
@@ -35785,7 +35860,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35797,18 +35872,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public readSetIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).readSetIdentifiersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35819,7 +35894,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35831,7 +35906,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -35842,7 +35917,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35853,7 +35928,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Post One
      * @param {SeqDbReadSetIdentifier} readSetIdentifier 
      * @param {*} [options] Override http request option.
@@ -35864,7 +35939,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35877,7 +35952,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -35890,7 +35965,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Post Some
      * @param {Array<SeqDbReadSetIdentifier>} readSetIdentifier 
      * @param {*} [options] Override http request option.
@@ -35901,7 +35976,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Put One
      * @param {string} objectId 
      * @param {SeqDbReadSetIdentifier} readSetIdentifier 
@@ -35913,7 +35988,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set identifier records.
+     * Represents a request to perform a CRUD operation on ReadSetIdentifiers.
      * @summary Read Set Identifiers  Put Some
      * @param {Array<SeqDbReadSetIdentifier>} readSetIdentifier 
      * @param {*} [options] Override http request option.
@@ -35924,7 +35999,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35936,18 +36011,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public readSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public readSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).readSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35958,7 +36033,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -35970,7 +36045,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -35981,7 +36056,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -35992,7 +36067,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Post One
      * @param {SeqDbReadSet} readSet 
      * @param {*} [options] Override http request option.
@@ -36003,7 +36078,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36016,7 +36091,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36029,7 +36104,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Post Some
      * @param {Array<SeqDbReadSet>} readSet 
      * @param {*} [options] Override http request option.
@@ -36040,7 +36115,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Put One
      * @param {string} objectId 
      * @param {SeqDbReadSet} readSet 
@@ -36052,7 +36127,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for read-set records.
+     * Represents a request to perform a CRUD operation on ReadSets.
      * @summary Read Sets  Put Some
      * @param {Array<SeqDbReadSet>} readSet 
      * @param {*} [options] Override http request option.
@@ -36063,7 +36138,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36075,18 +36150,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refAllelesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public refAllelesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).refAllelesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36097,7 +36172,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36109,7 +36184,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -36120,7 +36195,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36131,7 +36206,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Post One
      * @param {SeqDbRefAllele} refAllele 
      * @param {*} [options] Override http request option.
@@ -36142,7 +36217,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36155,7 +36230,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36168,7 +36243,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Post Some
      * @param {Array<SeqDbRefAllele>} refAllele 
      * @param {*} [options] Override http request option.
@@ -36179,7 +36254,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Put One
      * @param {string} objectId 
      * @param {SeqDbRefAllele} refAllele 
@@ -36191,7 +36266,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference allele records.
+     * Represents a request to perform a CRUD operation on RefAlleles.
      * @summary Ref Alleles  Put Some
      * @param {Array<SeqDbRefAllele>} refAllele 
      * @param {*} [options] Override http request option.
@@ -36202,7 +36277,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36214,18 +36289,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refSeqsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public refSeqsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).refSeqsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36236,7 +36311,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36248,7 +36323,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -36259,7 +36334,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36270,7 +36345,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Post One
      * @param {SeqDbRefSeq} refSeq 
      * @param {*} [options] Override http request option.
@@ -36281,7 +36356,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36294,7 +36369,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36307,7 +36382,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Post Some
      * @param {Array<SeqDbRefSeq>} refSeq 
      * @param {*} [options] Override http request option.
@@ -36318,7 +36393,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Put One
      * @param {string} objectId 
      * @param {SeqDbRefSeq} refSeq 
@@ -36330,7 +36405,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for reference sequence records.
+     * Represents a request to perform a CRUD operation on RefSeqs.
      * @summary Ref Seqs  Put Some
      * @param {Array<SeqDbRefSeq>} refSeq 
      * @param {*} [options] Override http request option.
@@ -36341,7 +36416,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of the best SeqDbSeqClassification ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
+     * Represents a request to retrieve the best SeqDbSeqClassification ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_classification_id].
      * @summary Retrievebestseqclassificationpersample
      * @param {SeqDbRetrieveBestSeqClassificationPerSampleRequestBody} retrieveBestSeqClassificationPerSampleRequestBody 
      * @param {*} [options] Override http request option.
@@ -36352,7 +36427,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of the best SeqDbSeq ID for each requested sample.  IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
+     * Represents a request to retrieve the best SeqDbSeq ID for each requested sample.  IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_id].
      * @summary Retrievebestseqpersample
      * @param {SeqDbRetrieveBestSeqPerSampleRequestBody} retrieveBestSeqPerSampleRequestBody 
      * @param {*} [options] Override http request option.
@@ -36363,7 +36438,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of the best SeqDbSeqProfile ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
+     * Represents a request to retrieve the best SeqDbSeqProfile ID for each requested sample.  protocol IDs, and using a particular ranking strategy. Returns a dict[sample_id, seq_profile_id].
      * @summary Retrievebestseqprofilepersample
      * @param {SeqDbRetrieveBestSeqProfilePerSampleRequestBody} retrieveBestSeqProfilePerSampleRequestBody 
      * @param {*} [options] Override http request option.
@@ -36374,7 +36449,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents calculating a phylogenetic tree from query profiles and a configured protocol.  The returned tree contains the query profiles and any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).  Model validation: When provided, leaf names must have one entry per queried sequence profile.
+     * Represents a request to calculate a phylogenetic tree from query profiles and a configured protocol.  The returned tree contains the query profiles and any additional profiles that are within the maximum distance threshold specified in the protocol for at least one of the query profiles. The leaf names in the tree correspond to the profile IDs, but can optionally be replaced with custom leaf names provided in the command (e.g. for better readability of the tree).  Model validation: When provided, leaf names must have one entry per queried sequence profile.
      * @summary Retrievephylogenetictree
      * @param {SeqDbCalculatePhylogeneticTreeRequestBody} calculatePhylogeneticTreeRequestBody 
      * @param {*} [options] Override http request option.
@@ -36385,7 +36460,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of only SeqDbSampleIdentifier records for sample identifiers.  Lighter than RetrieveSamplesByIdCommand — no sequences or read sets.
+     * Represents a request to retrieve only SeqDbSampleIdentifier records for sample identifiers.  Lighter than RetrieveSamplesByIdCommand — no sequences or read sets.
      * @summary Retrievesampleidentifiersbyids
      * @param {SeqDbRetrieveSampleIdentifiersByIdsRequestBody} retrieveSampleIdentifiersByIdsRequestBody 
      * @param {*} [options] Override http request option.
@@ -36396,7 +36471,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of sample identifiers matching a query.  These identifiers can then be used to retrieve the corresponding samples.
+     * Represents a request to retrieve sample identifiers matching a query.  These identifiers can then be used to retrieve the corresponding samples.
      * @summary Retrievesampleidsbyquery
      * @param {SeqDbSampleQuery} sampleQuery 
      * @param {*} [options] Override http request option.
@@ -36407,7 +36482,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of complete data for sample identifiers.  The result contains SeqDbFullSample objects in the same order.
+     * Represents a request to retrieve complete data for sample identifiers.  The result contains SeqDbFullSample objects in the same order.
      * @summary Retrievesamplesbyids
      * @param {SeqDbRetrieveSamplesByIdsRequestBody} retrieveSamplesByIdsRequestBody 
      * @param {*} [options] Override http request option.
@@ -36418,7 +36493,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of the last modified datetime for a SeqDbSeqDistance protocol.  This command is intended to be used in conjunction with the CalculateSeqDistancesForNewProfilesCommand command, which has a seq_distance_last_modified_at field that can be filled with the return value of this command to prevent concurrent modification conflicts by ensuring that no SeqDbSeqDistance was modified after the specified datetime between the time of retrieval and the time of calculation and upload of new distances.
+     * Represents a request to retrieve the last modified datetime for a SeqDbSeqDistance protocol.  This command is intended to be used in conjunction with the CalculateSeqDistancesForNewProfilesCommand command, which has a seq_distance_last_modified_at field that can be filled with the return value of this command to prevent concurrent modification conflicts by ensuring that no SeqDbSeqDistance was modified after the specified datetime between the time of retrieval and the time of calculation and upload of new distances.
      * @summary Retrieveseqdistancelastmodified
      * @param {string} protocolId 
      * @param {*} [options] Override http request option.
@@ -36429,7 +36504,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of sequences in FASTA format.  as an iterable that yields one contig at a time.
+     * Represents a request to retrieve sequences in FASTA format.  The result is an iterable that yields one contig at a time.
      * @summary Retrieveseqfasta
      * @param {SeqDbRetrieveSeqFastaRequestBody} retrieveSeqFastaRequestBody 
      * @param {*} [options] Override http request option.
@@ -36440,7 +36515,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of profiles similar to at least one query profile.  the given maximum distance and based on the given seq distance protocol. The returned profiles do not contain the query profiles.
+     * Represents a request to retrieve profiles similar to at least one query profile.  the given maximum distance and based on the given seq distance protocol. The returned profiles do not contain the query profiles.
      * @summary Retrievesimilarprofiles
      * @param {SeqDbRetrieveSimilarProfilesRequestBody} retrieveSimilarProfilesRequestBody 
      * @param {*} [options] Override http request option.
@@ -36451,7 +36526,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36463,18 +36538,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleDataCollectionLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public sampleDataCollectionLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).sampleDataCollectionLinksDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36485,7 +36560,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36497,7 +36572,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -36508,7 +36583,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36519,7 +36594,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Post One
      * @param {SeqDbSampleDataCollectionLink} sampleDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -36530,7 +36605,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36543,7 +36618,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36556,7 +36631,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Post Some
      * @param {Array<SeqDbSampleDataCollectionLink>} sampleDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -36567,7 +36642,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Put One
      * @param {string} objectId 
      * @param {SeqDbSampleDataCollectionLink} sampleDataCollectionLink 
@@ -36579,7 +36654,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample data-collection links.
+     * Represents a request to perform a CRUD operation on SampleDataCollectionLinks.
      * @summary SeqDbSample Data Collection Links  Put Some
      * @param {Array<SeqDbSampleDataCollectionLink>} sampleDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -36590,7 +36665,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36602,18 +36677,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sampleIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public sampleIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).sampleIdentifiersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36624,7 +36699,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36636,7 +36711,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -36647,7 +36722,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36658,7 +36733,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Post One
      * @param {SeqDbSampleIdentifier} sampleIdentifier 
      * @param {*} [options] Override http request option.
@@ -36669,7 +36744,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36682,7 +36757,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36695,7 +36770,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Post Some
      * @param {Array<SeqDbSampleIdentifier>} sampleIdentifier 
      * @param {*} [options] Override http request option.
@@ -36706,7 +36781,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Put One
      * @param {string} objectId 
      * @param {SeqDbSampleIdentifier} sampleIdentifier 
@@ -36718,7 +36793,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample identifier records.
+     * Represents a request to perform a CRUD operation on SampleIdentifiers.
      * @summary SeqDbSample Identifiers  Put Some
      * @param {Array<SeqDbSampleIdentifier>} sampleIdentifier 
      * @param {*} [options] Override http request option.
@@ -36729,7 +36804,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36741,18 +36816,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public samplesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public samplesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).samplesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36763,7 +36838,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36775,7 +36850,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -36786,7 +36861,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36797,7 +36872,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Post One
      * @param {SeqDbSample} sample 
      * @param {*} [options] Override http request option.
@@ -36808,7 +36883,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36821,7 +36896,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36834,7 +36909,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Post Some
      * @param {Array<SeqDbSample>} sample 
      * @param {*} [options] Override http request option.
@@ -36845,7 +36920,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Put One
      * @param {string} objectId 
      * @param {SeqDbSample} sample 
@@ -36857,7 +36932,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sample records.
+     * Represents a request to perform a CRUD operation on Samples.
      * @summary Samples  Put Some
      * @param {Array<SeqDbSample>} sample 
      * @param {*} [options] Override http request option.
@@ -36868,7 +36943,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36880,18 +36955,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategoriesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public seqCategoriesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqCategoriesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36902,7 +36977,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -36914,7 +36989,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -36925,7 +37000,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -36936,7 +37011,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Post One
      * @param {SeqDbSeqCategory} seqCategory 
      * @param {*} [options] Override http request option.
@@ -36947,7 +37022,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36960,7 +37035,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -36973,7 +37048,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Post Some
      * @param {Array<SeqDbSeqCategory>} seqCategory 
      * @param {*} [options] Override http request option.
@@ -36984,7 +37059,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Put One
      * @param {string} objectId 
      * @param {SeqDbSeqCategory} seqCategory 
@@ -36996,7 +37071,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category records.
+     * Represents a request to perform a CRUD operation on SeqCategories.
      * @summary SeqDbSeq Categories  Put Some
      * @param {Array<SeqDbSeqCategory>} seqCategory 
      * @param {*} [options] Override http request option.
@@ -37007,7 +37082,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37019,18 +37094,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqCategorySetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public seqCategorySetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqCategorySetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37041,7 +37116,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37053,7 +37128,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -37064,7 +37139,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37075,7 +37150,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Post One
      * @param {SeqDbSeqCategorySet} seqCategorySet 
      * @param {*} [options] Override http request option.
@@ -37086,7 +37161,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37099,7 +37174,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37112,7 +37187,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Post Some
      * @param {Array<SeqDbSeqCategorySet>} seqCategorySet 
      * @param {*} [options] Override http request option.
@@ -37123,7 +37198,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Put One
      * @param {string} objectId 
      * @param {SeqDbSeqCategorySet} seqCategorySet 
@@ -37135,7 +37210,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence category-set records.
+     * Represents a request to perform a CRUD operation on SeqCategorySets.
      * @summary SeqDbSeq Category Sets  Put Some
      * @param {Array<SeqDbSeqCategorySet>} seqCategorySet 
      * @param {*} [options] Override http request option.
@@ -37146,7 +37221,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37158,18 +37233,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqClassificationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public seqClassificationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqClassificationsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37180,7 +37255,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37192,7 +37267,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -37203,7 +37278,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37214,7 +37289,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Post One
      * @param {SeqDbSeqClassification} seqClassification 
      * @param {*} [options] Override http request option.
@@ -37225,7 +37300,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37238,7 +37313,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37251,7 +37326,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Post Some
      * @param {Array<SeqDbSeqClassification>} seqClassification 
      * @param {*} [options] Override http request option.
@@ -37262,7 +37337,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Put One
      * @param {string} objectId 
      * @param {SeqDbSeqClassification} seqClassification 
@@ -37274,7 +37349,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence classification records.
+     * Represents a request to perform a CRUD operation on SeqClassifications.
      * @summary SeqDbSeq Classifications  Put Some
      * @param {Array<SeqDbSeqClassification>} seqClassification 
      * @param {*} [options] Override http request option.
@@ -37285,7 +37360,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37297,18 +37372,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqDistancesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public seqDistancesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqDistancesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37319,7 +37394,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37331,7 +37406,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -37342,7 +37417,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37353,7 +37428,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Post One
      * @param {SeqDbSeqDistance} seqDistance 
      * @param {*} [options] Override http request option.
@@ -37364,7 +37439,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37377,7 +37452,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37390,7 +37465,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Post Some
      * @param {Array<SeqDbSeqDistance>} seqDistance 
      * @param {*} [options] Override http request option.
@@ -37401,7 +37476,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Put One
      * @param {string} objectId 
      * @param {SeqDbSeqDistance} seqDistance 
@@ -37413,7 +37488,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for pairwise sequence-distance records.
+     * Represents a request to perform a CRUD operation on SeqDistances.
      * @summary SeqDbSeq Distances  Put Some
      * @param {Array<SeqDbSeqDistance>} seqDistance 
      * @param {*} [options] Override http request option.
@@ -37424,7 +37499,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37436,18 +37511,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public seqIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqIdentifiersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37458,7 +37533,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37470,7 +37545,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -37481,7 +37556,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37492,7 +37567,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Post One
      * @param {SeqDbSeqIdentifier} seqIdentifier 
      * @param {*} [options] Override http request option.
@@ -37503,7 +37578,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37516,7 +37591,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37529,7 +37604,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Post Some
      * @param {Array<SeqDbSeqIdentifier>} seqIdentifier 
      * @param {*} [options] Override http request option.
@@ -37540,7 +37615,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Put One
      * @param {string} objectId 
      * @param {SeqDbSeqIdentifier} seqIdentifier 
@@ -37552,7 +37627,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence identifier records.
+     * Represents a request to perform a CRUD operation on SeqIdentifiers.
      * @summary SeqDbSeq Identifiers  Put Some
      * @param {Array<SeqDbSeqIdentifier>} seqIdentifier 
      * @param {*} [options] Override http request option.
@@ -37563,7 +37638,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37575,18 +37650,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfileIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public seqProfileIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqProfileIdentifiersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37597,7 +37672,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37609,7 +37684,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -37620,7 +37695,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37631,7 +37706,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Post One
      * @param {SeqDbSeqProfileIdentifier} seqProfileIdentifier 
      * @param {*} [options] Override http request option.
@@ -37642,7 +37717,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37655,7 +37730,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37668,7 +37743,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Post Some
      * @param {Array<SeqDbSeqProfileIdentifier>} seqProfileIdentifier 
      * @param {*} [options] Override http request option.
@@ -37679,7 +37754,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Put One
      * @param {string} objectId 
      * @param {SeqDbSeqProfileIdentifier} seqProfileIdentifier 
@@ -37691,7 +37766,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile identifier records.
+     * Represents a request to perform a CRUD operation on SeqProfileIdentifiers.
      * @summary SeqDbSeq Profile Identifiers  Put Some
      * @param {Array<SeqDbSeqProfileIdentifier>} seqProfileIdentifier 
      * @param {*} [options] Override http request option.
@@ -37702,7 +37777,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37714,18 +37789,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqProfilesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public seqProfilesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqProfilesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37736,7 +37811,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37748,7 +37823,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -37759,7 +37834,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37770,7 +37845,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Post One
      * @param {SeqDbSeqProfile} seqProfile 
      * @param {*} [options] Override http request option.
@@ -37781,7 +37856,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37794,7 +37869,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37807,7 +37882,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Post Some
      * @param {Array<SeqDbSeqProfile>} seqProfile 
      * @param {*} [options] Override http request option.
@@ -37818,7 +37893,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Put One
      * @param {string} objectId 
      * @param {SeqDbSeqProfile} seqProfile 
@@ -37830,7 +37905,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence profile records.
+     * Represents a request to perform a CRUD operation on SeqProfiles.
      * @summary SeqDbSeq Profiles  Put Some
      * @param {Array<SeqDbSeqProfile>} seqProfile 
      * @param {*} [options] Override http request option.
@@ -37841,7 +37916,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37853,18 +37928,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqTaxonomiesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public seqTaxonomiesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqTaxonomiesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37875,7 +37950,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37887,7 +37962,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -37898,7 +37973,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -37909,7 +37984,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Post One
      * @param {SeqDbSeqTaxonomy} seqTaxonomy 
      * @param {*} [options] Override http request option.
@@ -37920,7 +37995,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37933,7 +38008,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -37946,7 +38021,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Post Some
      * @param {Array<SeqDbSeqTaxonomy>} seqTaxonomy 
      * @param {*} [options] Override http request option.
@@ -37957,7 +38032,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Put One
      * @param {string} objectId 
      * @param {SeqDbSeqTaxonomy} seqTaxonomy 
@@ -37969,7 +38044,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for sequence taxonomy records.
+     * Represents a request to perform a CRUD operation on SeqTaxonomies.
      * @summary SeqDbSeq Taxonomies  Put Some
      * @param {Array<SeqDbSeqTaxonomy>} seqTaxonomy 
      * @param {*} [options] Override http request option.
@@ -37980,7 +38055,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -37992,18 +38067,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public seqsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public seqsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).seqsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38014,7 +38089,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38026,7 +38101,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -38037,7 +38112,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38048,7 +38123,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Post One
      * @param {SeqDbSeq} seq 
      * @param {*} [options] Override http request option.
@@ -38059,7 +38134,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38072,7 +38147,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38085,7 +38160,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Post Some
      * @param {Array<SeqDbSeq>} seq 
      * @param {*} [options] Override http request option.
@@ -38096,7 +38171,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Put One
      * @param {string} objectId 
      * @param {SeqDbSeq} seq 
@@ -38108,7 +38183,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for assembled sequence records.
+     * Represents a request to perform a CRUD operation on Seqs.
      * @summary Seqs  Put Some
      * @param {Array<SeqDbSeq>} seq 
      * @param {*} [options] Override http request option.
@@ -38119,7 +38194,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38131,18 +38206,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxaDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public taxaDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).taxaDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38153,7 +38228,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38165,7 +38240,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -38176,7 +38251,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38187,7 +38262,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Post One
      * @param {SeqDbTaxon} taxon 
      * @param {*} [options] Override http request option.
@@ -38198,7 +38273,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38211,7 +38286,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38224,7 +38299,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Post Some
      * @param {Array<SeqDbTaxon>} taxon 
      * @param {*} [options] Override http request option.
@@ -38235,7 +38310,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Put One
      * @param {string} objectId 
      * @param {SeqDbTaxon} taxon 
@@ -38247,7 +38322,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon records.
+     * Represents a request to perform a CRUD operation on Taxa.
      * @summary Taxa  Put Some
      * @param {Array<SeqDbTaxon>} taxon 
      * @param {*} [options] Override http request option.
@@ -38258,7 +38333,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38270,18 +38345,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public taxonSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).taxonSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38292,7 +38367,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38304,7 +38379,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -38315,7 +38390,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38326,7 +38401,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Post One
      * @param {SeqDbTaxonSetMember} taxonSetMember 
      * @param {*} [options] Override http request option.
@@ -38337,7 +38412,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38350,7 +38425,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38363,7 +38438,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Post Some
      * @param {Array<SeqDbTaxonSetMember>} taxonSetMember 
      * @param {*} [options] Override http request option.
@@ -38374,7 +38449,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Put One
      * @param {string} objectId 
      * @param {SeqDbTaxonSetMember} taxonSetMember 
@@ -38386,7 +38461,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set membership records.
+     * Represents a request to perform a CRUD operation on TaxonSetMembers.
      * @summary SeqDbTaxon Set Members  Put Some
      * @param {Array<SeqDbTaxonSetMember>} taxonSetMember 
      * @param {*} [options] Override http request option.
@@ -38397,7 +38472,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38409,18 +38484,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public taxonSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public taxonSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).taxonSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38431,7 +38506,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38443,7 +38518,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -38454,7 +38529,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38465,7 +38540,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Post One
      * @param {SeqDbTaxonSet} taxonSet 
      * @param {*} [options] Override http request option.
@@ -38476,7 +38551,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38489,7 +38564,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38502,7 +38577,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Post Some
      * @param {Array<SeqDbTaxonSet>} taxonSet 
      * @param {*} [options] Override http request option.
@@ -38513,7 +38588,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Put One
      * @param {string} objectId 
      * @param {SeqDbTaxonSet} taxonSet 
@@ -38525,7 +38600,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for taxon-set records.
+     * Represents a request to perform a CRUD operation on TaxonSets.
      * @summary SeqDbTaxon Sets  Put Some
      * @param {Array<SeqDbTaxonSet>} taxonSet 
      * @param {*} [options] Override http request option.
@@ -38536,7 +38611,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38548,18 +38623,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public treeAlgorithmClassesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).treeAlgorithmClassesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38570,7 +38645,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38582,7 +38657,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -38593,7 +38668,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38604,7 +38679,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Post One
      * @param {SeqDbTreeAlgorithmClass} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -38615,7 +38690,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38628,7 +38703,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38641,7 +38716,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Post Some
      * @param {Array<SeqDbTreeAlgorithmClass>} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -38652,7 +38727,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Put One
      * @param {string} objectId 
      * @param {SeqDbTreeAlgorithmClass} treeAlgorithmClass 
@@ -38664,7 +38739,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for tree algorithm class records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Put Some
      * @param {Array<SeqDbTreeAlgorithmClass>} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -38675,7 +38750,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38687,18 +38762,18 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public treeAlgorithmsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSeqApiFp(this.configuration).treeAlgorithmsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38709,7 +38784,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -38721,7 +38796,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -38732,7 +38807,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -38743,7 +38818,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Post One
      * @param {SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -38754,7 +38829,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Post Query
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38767,7 +38842,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Post Query  Ids
      * @param {SeqDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -38780,7 +38855,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Post Some
      * @param {Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -38791,7 +38866,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Put One
      * @param {string} objectId 
      * @param {SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
@@ -38803,7 +38878,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents CRUD command metadata for phylogenetic tree algorithm records.
+     * Represents a request to perform a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Put Some
      * @param {Array<SeqDbGenEpixSeqdbDomainModelSeqTreeTreeAlgorithm>} genEpixSeqdbDomainModelSeqTreeTreeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -38814,7 +38889,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents creating missing distances for profiles under a distance protocol.  The command finds all profiles that do not yet have a SeqDbSeqDistance record, computes the missing distances, and create the records while maintaining the symmetry invariant (every distance is stored in both directions).
+     * Represents a request to create missing distances for profiles under a distance protocol.  The command finds all profiles that do not yet have a SeqDbSeqDistance record, computes the missing distances, and create the records while maintaining the symmetry invariant (every distance is stored in both directions).
      * @summary Updateseqdistances
      * @param {SeqDbUpdateSeqDistancesRequestBody} updateSeqDistancesRequestBody 
      * @param {*} [options] Override http request option.
@@ -38825,7 +38900,7 @@ export class SeqDbSeqApi extends SeqDbBaseAPI {
     }
 
     /**
-     * Represents a batch upload of samples along with their associated data.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  The upload process consists of the following steps: 1) Check if the user has the rights to upload the data in question. 2) Verify the validity of the sample data. The verification does not fail fast    but rather proceeds with the remaining data and checks to the extent possible,    so that all errors can be reported back to the caller instead of just the    first encountered one. 3) Upsert (create and/or update) the sample data.  The return value contains the results of the upload operation, whether successful or otherwise, and with details for each sample and associated data item.
+     * Represents a request to upload a batch of samples along with their associated data.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  The upload process consists of the following steps: 1) Check if the user has the rights to upload the data in question. 2) Verify the validity of the sample data. The verification does not fail fast    but rather proceeds with the remaining data and checks to the extent possible,    so that all errors can be reported back to the caller instead of just the    first encountered one. 3) Upsert (create and/or update) the sample data.  The return value contains the results of the upload operation, whether successful or otherwise, and with details for each sample and associated data item.
      * @summary Uploadsamples
      * @param {SeqDbUploadSamplesRequestBody} uploadSamplesRequestBody 
      * @param {*} [options] Override http request option.
@@ -38951,11 +39026,11 @@ const SeqDbSystemApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Represents a request to manage persisted system outage windows and visibility information.
          * @summary Outages  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('outagesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/outages/{object_id}`
@@ -39505,11 +39580,11 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to manage persisted system outage windows and visibility information.
          * @summary Outages  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async outagesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -39748,11 +39823,11 @@ export class SeqDbSystemApi extends SeqDbBaseAPI {
     /**
      * Represents a request to manage persisted system outage windows and visibility information.
      * @summary Outages  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public outagesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return SeqDbSystemApiFp(this.configuration).outagesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 

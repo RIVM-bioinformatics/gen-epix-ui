@@ -224,11 +224,11 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
 
   const chartData = useMemo<FindSimilarCasesChartDataPoint[]>(() => {
     const counts = new Map<string, FindSimilarCasesChartDataPoint>();
-    for (const { case_date, is_own_case } of query.data ?? []) {
-      if (case_date) {
-        const currentCount = counts.get(case_date) ?? {
+    for (const { is_own_case, timed_at } of query.data ?? []) {
+      if (timed_at) {
+        const currentCount = counts.get(timed_at) ?? {
           count: 0,
-          date: case_date,
+          date: timed_at,
           otherOrganizationCaseCount: 0,
           ownCaseCount: 0,
         };
@@ -238,7 +238,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
         } else {
           currentCount.otherOrganizationCaseCount += 1;
         }
-        counts.set(case_date, currentCount);
+        counts.set(timed_at, currentCount);
       }
     }
     return Array.from(counts.values())
@@ -252,10 +252,10 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
     }
     const [startDate, endDate] = dateRange;
     return organizationFilteredCases.filter(c => {
-      if (!c.case_date) {
+      if (!c.timed_at) {
         return false;
       }
-      const caseDateOnly = format(parseISO(c.case_date), DATE_FORMAT.DATE);
+      const caseDateOnly = format(parseISO(c.timed_at), DATE_FORMAT.DATE);
       return caseDateOnly >= startDate && caseDateOnly <= endDate;
     });
   }, [formValues.dateRange, organizationFilteredCases]);

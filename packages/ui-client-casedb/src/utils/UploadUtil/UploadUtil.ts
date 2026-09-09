@@ -61,7 +61,7 @@ import { UploadError } from '../../classes/errors';
 import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 export class UploadUtil {
-  public static readonly caseDateColumnAliases = ['_case_date', 'case date', 'case_date', 'casedate', 'case.date'];
+  public static readonly caseDateColumnAliases = ['_timed_at', 'timed at', 'timed_at', 'timedat', 'case.timed_at', 'timed_at_date'];
   public static readonly caseIdColumnAliases = ['_case_id', 'case id', 'case_id', 'caseid', 'case.id'];
   public static readonly colAliases = ['_case_type', 'case type', 'case_type', 'casetype', 'case.type'];
 

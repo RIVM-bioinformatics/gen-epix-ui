@@ -74,7 +74,7 @@ export interface CaseDbCase {
     /**
      * The datetime of the case used for sorting results, limiting results and statistics such as first and last case date. Normally re-calculated from the case content variables upon persisting. Default is the current datetime.
      */
-    'case_date'?: string;
+    'timed_at'?: string;
     /**
      * The data content of the case as {col_id: str_value | None}. Only columns defined for the CaseDbCaseType of the case should be present here, and if no value is present, the key should be omitted. None content values are allowed to support deletion of keys.
      */
@@ -627,7 +627,7 @@ export interface CaseDbCaseTypeSet {
     'rank': number;
 }
 /**
- * Represent replacement of the case types in a case-type set.  The provided members keep the set synchronized for downstream access policies and presets.
+ * Represents a request to replace the association between a case type set and its case types.  The provided members keep the set synchronized for downstream access policies and presets.
  */
 export interface CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody {
     'case_type_set_members': Array<CaseDbCaseTypeSetMember>;
@@ -804,7 +804,7 @@ export interface CaseDbColSet {
     'description'?: string | null;
 }
 /**
- * Represent replacement of the columns in a column set.  The provided members keep read/write scopes and user-interface column groupings aligned.
+ * Represents a request to replace the association between a column set and its columns.  The provided members keep read/write scopes and user-interface column groupings aligned.
  */
 export interface CaseDbColSetColUpdateAssociationRequestBody {
     'col_set_members': Array<CaseDbColSetMember>;
@@ -872,97 +872,98 @@ export type CaseDbColType = typeof CaseDbColType[keyof typeof CaseDbColType];
 
 
 export const CaseDbCommandName = {
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
     TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
     RegionCrudCommand: 'RegionCrudCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
     CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
     InviteUserCommand: 'InviteUserCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    UpdateCaseCreatedInDataCollectionCommand: 'UpdateCaseCreatedInDataCollectionCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
     RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
 } as const;
 
 export type CaseDbCommandName = typeof CaseDbCommandName[keyof typeof CaseDbCommandName];
@@ -1193,7 +1194,7 @@ export interface CaseDbContact {
     'phone'?: string | null;
 }
 /**
- * Represent creation of a case set and its initial associations.  Model validation:     The creating data collection is removed from the additional data     collections because it is already associated through the case set.
+ * Represents a request to create a case set and its initial associations.  Model validation:     The creating data collection is removed from the additional data     collections because it is already associated through the case set.
  */
 export interface CaseDbCreateCaseSetRequestBody {
     'case_set': CaseDbCaseSet;
@@ -1204,7 +1205,7 @@ export interface CaseDbCreateCaseSetRequestBody {
     'case_ids'?: Array<string> | null;
 }
 /**
- * Represent upload of a raw-reads file for a case read-set column.  The command accepts base64 content with optional compression, distinguishes forward from reverse reads, and returns the stored file ID.
+ * Represents a request to upload a raw-reads file for a case read-set column.  The command accepts base64 content with optional compression, distinguishes forward from reverse reads, and returns the stored file ID.
  */
 export interface CaseDbCreateFileForReadSetRequestBody {
     /**
@@ -1221,7 +1222,7 @@ export interface CaseDbCreateFileForReadSetRequestBody {
 
 
 /**
- * Represent upload of an assembled file for a case sequence column.  The command accepts base64 content with optional compression and returns the stored file ID.
+ * Represents a request to upload an assembled file for a case sequence column.  The command accepts base64 content with optional compression and returns the stored file ID.
  */
 export interface CaseDbCreateFileForSeqRequestBody {
     /**
@@ -1262,7 +1263,7 @@ export interface CaseDbDataCollectionSet {
     'description'?: string | null;
 }
 /**
- * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
+ * Represents a request to update the association between a CaseDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
  */
 export interface CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody {
     'data_collection_set_members': Array<CaseDbDataCollectionSetMember>;
@@ -1731,7 +1732,7 @@ export interface CaseDbIdentityProvider {
 
 
 /**
- * Create and return a CaseDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+ * Represents a request to create and return a CaseDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
  */
 export interface CaseDbInviteUserRequestBody {
     'key'?: string | null;
@@ -2010,7 +2011,7 @@ export interface CaseDbOrganizationIdentifierIssuerLink {
     'identifier_issuer'?: CaseDbIdentifierIssuer;
 }
 /**
- * Represents a request to create or update organization-to-identifier issuer associations.
+ * Represents a request to update the association between an CaseDbOrganization and IdentifierIssuers.
  */
 export interface CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody {
     'organization_identifier_issuer_links': Array<CaseDbOrganizationIdentifierIssuerLink>;
@@ -2049,7 +2050,7 @@ export interface CaseDbOrganizationSetMember {
     'organization'?: CaseDbOrganization;
 }
 /**
- * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
+ * Represents a request to update the association between an CaseDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
  */
 export interface CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody {
     'organization_set_members': Array<CaseDbOrganizationSetMember>;
@@ -2507,7 +2508,7 @@ export interface CaseDbRegionSetShape {
     'geo_json': string;
 }
 /**
- * Represent a request for case-to-cohort links for a case type.  The request returns every case without pagination and is restricted to the application administrator role.
+ * Represents a request to retrieve case-to-cohort links for a case type.  The request returns every case without pagination and is restricted to the application administrator role.
  */
 export interface CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody {
     /**
@@ -2516,7 +2517,7 @@ export interface CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody {
     'case_type_id': string;
 }
 /**
- * Represent a request for access rights to specified cases.
+ * Represents a request to retrieve access rights to specified cases.
  */
 export interface CaseDbRetrieveCaseRightsRequestBody {
     /**
@@ -2529,21 +2530,21 @@ export interface CaseDbRetrieveCaseRightsRequestBody {
     'case_ids': Array<string>;
 }
 /**
- * Represent a request for statistics about case sets.  Optional parameters further filter the cases considered for the statistics.
+ * Represents a request to retrieve statistics about case sets.  Optional parameters further filter the cases considered for the statistics.
  */
 export interface CaseDbRetrieveCaseSetStatsRequestBody {
     'case_set_ids'?: Array<string> | null;
     'datetime_range_filter'?: CaseDbDatetimeRangeFilter;
 }
 /**
- * Represent a request for statistics about case types.  Optional parameters further filter the cases considered for the statistics.
+ * Represents a request to retrieve statistics about case types.  Optional parameters further filter the cases considered for the statistics.
  */
 export interface CaseDbRetrieveCaseTypeStatsRequestBody {
     'case_type_ids'?: Array<string> | null;
     'datetime_range_filter'?: CaseDbDatetimeRangeFilter;
 }
 /**
- * Represent a request for cases identified by unique IDs.
+ * Represents a request to retrieve cases identified by unique IDs.
  */
 export interface CaseDbRetrieveCasesByIdRequestBody {
     /**
@@ -2556,7 +2557,7 @@ export interface CaseDbRetrieveCasesByIdRequestBody {
     'case_ids': Array<string>;
 }
 /**
- * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+ * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
  */
 export interface CaseDbRetrieveOrganizationContactsRequestBody {
     /**
@@ -2565,7 +2566,7 @@ export interface CaseDbRetrieveOrganizationContactsRequestBody {
     'organization_id': string;
 }
 /**
- * Represent phylogenetic-tree calculation from cases and genetic distances.
+ * Represents a request to calculate a phylogenetic tree from cases and genetic distances.
  */
 export interface CaseDbRetrievePhylogeneticTreeRequestBody {
     /**
@@ -2585,7 +2586,7 @@ export interface CaseDbRetrievePhylogeneticTreeRequestBody {
 
 
 /**
- * Represent a request for genetically similar cases.  Similarity is based on a genetic-distance column and a maximum distance threshold applied to the supplied case IDs.
+ * Represents a request to retrieve genetically similar cases.  Similarity is based on a genetic-distance column and a maximum distance threshold applied to the supplied case IDs.
  */
 export interface CaseDbRetrieveSimilarCasesRequestBody {
     /**
@@ -2606,7 +2607,7 @@ export interface CaseDbRetrieveSimilarCasesRequestBody {
     'max_distance': number;
 }
 /**
- * Represent the cases returned by a similar-case request.
+ * Represents the cases returned by a similar-case request.
  */
 export interface CaseDbRetrieveSimilarCasesResponseBody {
     /**
@@ -2693,7 +2694,7 @@ export interface CaseDbSimilarCase {
     /**
      * The case date, if any.
      */
-    'case_date': string;
+    'timed_at': string;
 }
 /**
  * Represents a physical site belonging to an organization.
@@ -2847,7 +2848,20 @@ export type CaseDbUnit = typeof CaseDbUnit[keyof typeof CaseDbUnit];
 
 
 /**
- * Updates the current user\'s CaseDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+ * Represents a request to assign a different created_in_data_collection_id to a list of cases.
+ */
+export interface CaseDbUpdateCaseCreatedInDataCollectionRequestBody {
+    /**
+     * The IDs of the cases to update.
+     */
+    'case_ids': Array<string>;
+    /**
+     * The ID of the data collection to assign to the cases as created_in_data_collection_id.
+     */
+    'target_created_in_data_collection_id': string;
+}
+/**
+ * Represents a request to update the current user\'s CaseDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
  */
 export interface CaseDbUpdateUserOwnOrganizationRequestBody {
     /**
@@ -2856,7 +2870,7 @@ export interface CaseDbUpdateUserOwnOrganizationRequestBody {
     'organization_id': string;
 }
 /**
- * Update an existing CaseDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+ * Represents a request to update an existing CaseDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
  */
 export interface CaseDbUpdateUserRequestBody {
     'is_active': boolean | null;
@@ -2878,7 +2892,7 @@ export type CaseDbUploadAction = typeof CaseDbUploadAction[keyof typeof CaseDbUp
 
 
 /**
- * Represent an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+ * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
  */
 export interface CaseDbUploadCasesCommand {
     /**
@@ -3200,11 +3214,11 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAccessCasePoliciesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAccessCasePoliciesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationAccessCasePoliciesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_access_case_policies/{object_id}`
@@ -3656,11 +3670,11 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to manage policies that grant organization-administration rights to users.
          * @summary CaseDbOrganization Admin Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationAdminPoliciesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_admin_policies/{object_id}`
@@ -4112,11 +4126,11 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationShareCasePoliciesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationShareCasePoliciesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationShareCasePoliciesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_share_case_policies/{object_id}`
@@ -4526,7 +4540,7 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to retrieve organization administrator names and email addresses.  Results include all administrators for the user\'s organization.
+         * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4598,11 +4612,11 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userAccessCasePoliciesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userAccessCasePoliciesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('userAccessCasePoliciesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/user_access_case_policies/{object_id}`
@@ -5054,11 +5068,11 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userShareCasePoliciesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userShareCasePoliciesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('userShareCasePoliciesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/user_share_case_policies/{object_id}`
@@ -5493,11 +5507,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAccessCasePoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationAccessCasePoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAccessCasePoliciesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -5656,11 +5670,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to manage policies that grant organization-administration rights to users.
          * @summary CaseDbOrganization Admin Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationAdminPoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -5819,11 +5833,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationShareCasePoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationShareCasePoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationShareCasePoliciesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -5966,7 +5980,7 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve organization administrator names and email addresses.  Results include all administrators for the user\'s organization.
+         * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5994,11 +6008,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userAccessCasePoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async userAccessCasePoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userAccessCasePoliciesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -6157,11 +6171,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userShareCasePoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async userShareCasePoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userShareCasePoliciesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -6343,11 +6357,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
      * @summary CaseDbOrganization Access CaseDbCase Policies  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAccessCasePoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationAccessCasePoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -6482,11 +6496,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represents a request to manage policies that grant organization-administration rights to users.
      * @summary CaseDbOrganization Admin Policies  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationAdminPoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -6621,11 +6635,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
      * @summary CaseDbOrganization Share CaseDbCase Policies  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationShareCasePoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationShareCasePoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -6746,7 +6760,7 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve organization administrator names and email addresses.  Results include all administrators for the user\'s organization.
+     * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
      * @summary Retrieveorganizationadminnameemailscommand
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -6770,11 +6784,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
      * @summary CaseDbUser Access CaseDbCase Policies  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userAccessCasePoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public userAccessCasePoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -6909,11 +6923,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
      * @summary CaseDbUser Share CaseDbCase Policies  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userShareCasePoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public userShareCasePoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -7136,7 +7150,7 @@ export class CaseDbAuthApi extends CaseDbBaseAPI {
 const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -7176,13 +7190,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseDataCollectionLinksDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseDataCollectionLinksDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseDataCollectionLinksDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_data_collection_links/{object_id}`
@@ -7210,7 +7224,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7247,7 +7261,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -7287,7 +7301,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -7321,7 +7335,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7358,7 +7372,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Post One
          * @param {CaseDbCaseDataCollectionLink} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -7393,7 +7407,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -7438,7 +7452,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -7483,7 +7497,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Post Some
          * @param {Array<CaseDbCaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -7518,7 +7532,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseDataCollectionLink} caseDataCollectionLink 
@@ -7557,7 +7571,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Put Some
          * @param {Array<CaseDbCaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -7592,7 +7606,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -7632,13 +7646,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseIdentifiersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseIdentifiersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseIdentifiersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_identifiers/{object_id}`
@@ -7666,7 +7680,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7703,7 +7717,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -7743,7 +7757,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -7777,7 +7791,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -7814,7 +7828,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Post One
          * @param {CaseDbCaseIdentifier} caseIdentifier 
          * @param {*} [options] Override http request option.
@@ -7849,7 +7863,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -7894,7 +7908,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -7939,7 +7953,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Post Some
          * @param {Array<CaseDbCaseIdentifier>} caseIdentifier 
          * @param {*} [options] Override http request option.
@@ -7974,7 +7988,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseIdentifier} caseIdentifier 
@@ -8013,7 +8027,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Put Some
          * @param {Array<CaseDbCaseIdentifier>} caseIdentifier 
          * @param {*} [options] Override http request option.
@@ -8048,7 +8062,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -8088,13 +8102,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetCategoriesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetCategoriesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseSetCategoriesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_set_categories/{object_id}`
@@ -8122,7 +8136,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8159,7 +8173,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -8199,7 +8213,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -8233,7 +8247,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8270,7 +8284,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Post One
          * @param {CaseDbCaseSetCategory} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -8305,7 +8319,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -8350,7 +8364,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -8395,7 +8409,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Post Some
          * @param {Array<CaseDbCaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -8430,7 +8444,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetCategory} caseSetCategory 
@@ -8469,7 +8483,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Put Some
          * @param {Array<CaseDbCaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -8504,7 +8518,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -8544,13 +8558,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetDataCollectionLinksDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetDataCollectionLinksDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseSetDataCollectionLinksDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_set_data_collection_links/{object_id}`
@@ -8578,7 +8592,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8615,7 +8629,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -8655,7 +8669,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -8689,7 +8703,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -8726,7 +8740,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Post One
          * @param {CaseDbCaseSetDataCollectionLink} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -8761,7 +8775,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -8806,7 +8820,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -8851,7 +8865,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Post Some
          * @param {Array<CaseDbCaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -8886,7 +8900,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetDataCollectionLink} caseSetDataCollectionLink 
@@ -8925,7 +8939,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Put Some
          * @param {Array<CaseDbCaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -8960,7 +8974,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9000,13 +9014,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetMembersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseSetMembersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_set_members/{object_id}`
@@ -9034,7 +9048,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9071,7 +9085,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9111,7 +9125,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -9145,7 +9159,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9182,7 +9196,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Post One
          * @param {CaseDbCaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -9217,7 +9231,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -9262,7 +9276,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -9307,7 +9321,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Post Some
          * @param {Array<CaseDbCaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -9342,7 +9356,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetMember} caseSetMember 
@@ -9381,7 +9395,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Put Some
          * @param {Array<CaseDbCaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -9416,7 +9430,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9456,13 +9470,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetStatusesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetStatusesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseSetStatusesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_set_statuses/{object_id}`
@@ -9490,7 +9504,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9527,7 +9541,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9567,7 +9581,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -9601,7 +9615,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9638,7 +9652,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Post One
          * @param {CaseDbCaseSetStatus} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -9673,7 +9687,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -9718,7 +9732,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -9763,7 +9777,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Post Some
          * @param {Array<CaseDbCaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -9798,7 +9812,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetStatus} caseSetStatus 
@@ -9837,7 +9851,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Put Some
          * @param {Array<CaseDbCaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -9872,7 +9886,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -9912,13 +9926,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_sets/{object_id}`
@@ -9946,7 +9960,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -9983,7 +9997,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10023,7 +10037,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10057,7 +10071,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10094,7 +10108,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Post One
          * @param {CaseDbCaseSet} caseSet 
          * @param {*} [options] Override http request option.
@@ -10129,7 +10143,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10174,7 +10188,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10219,7 +10233,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Post Some
          * @param {Array<CaseDbCaseSet>} caseSet 
          * @param {*} [options] Override http request option.
@@ -10254,7 +10268,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSet} caseSet 
@@ -10293,7 +10307,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Put Some
          * @param {Array<CaseDbCaseSet>} caseSet 
          * @param {*} [options] Override http request option.
@@ -10328,7 +10342,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10368,13 +10382,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetCategoriesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetCategoriesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseTypeSetCategoriesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_type_set_categories/{object_id}`
@@ -10402,7 +10416,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10439,7 +10453,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10479,7 +10493,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10513,7 +10527,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10550,7 +10564,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Post One
          * @param {CaseDbCaseTypeSetCategory} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -10585,7 +10599,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10630,7 +10644,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -10675,7 +10689,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Post Some
          * @param {Array<CaseDbCaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -10710,7 +10724,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseTypeSetCategory} caseTypeSetCategory 
@@ -10749,7 +10763,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Put Some
          * @param {Array<CaseDbCaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -10784,7 +10798,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10824,13 +10838,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetMembersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseTypeSetMembersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_type_set_members/{object_id}`
@@ -10858,7 +10872,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -10895,7 +10909,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -10935,7 +10949,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -10969,7 +10983,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11006,7 +11020,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Post One
          * @param {CaseDbCaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -11041,7 +11055,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11086,7 +11100,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11131,7 +11145,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Post Some
          * @param {Array<CaseDbCaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -11166,7 +11180,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseTypeSetMember} caseTypeSetMember 
@@ -11205,7 +11219,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Put Some
          * @param {Array<CaseDbCaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -11240,7 +11254,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11280,13 +11294,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseTypeSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_type_sets/{object_id}`
@@ -11314,7 +11328,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11351,7 +11365,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11391,7 +11405,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11425,7 +11439,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11462,7 +11476,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Post One
          * @param {CaseDbCaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -11497,7 +11511,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11542,7 +11556,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -11587,7 +11601,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Post Some
          * @param {Array<CaseDbCaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -11622,7 +11636,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent replacement of the case types in a case-type set.  The provided members keep the set synchronized for downstream access policies and presets.
+         * Represents a request to replace the association between a case type set and its case types.  The provided members keep the set synchronized for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody} caseTypeSetCaseTypeUpdateAssociationRequestBody 
@@ -11661,7 +11675,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseTypeSet} caseTypeSet 
@@ -11700,7 +11714,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Put Some
          * @param {Array<CaseDbCaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -11735,7 +11749,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11775,13 +11789,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('caseTypesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/case_types/{object_id}`
@@ -11809,7 +11823,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11846,7 +11860,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -11886,7 +11900,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -11920,7 +11934,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -11957,7 +11971,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Post One
          * @param {CaseDbCaseType} caseType 
          * @param {*} [options] Override http request option.
@@ -11992,7 +12006,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12037,7 +12051,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12082,7 +12096,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Post Some
          * @param {Array<CaseDbCaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -12117,7 +12131,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseType} caseType 
@@ -12156,7 +12170,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Put Some
          * @param {Array<CaseDbCaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -12191,7 +12205,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12231,13 +12245,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        casesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        casesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('casesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/cases/{object_id}`
@@ -12265,7 +12279,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12302,7 +12316,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12342,7 +12356,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -12376,7 +12390,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12413,7 +12427,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Post One
          * @param {CaseDbCase} _case 
          * @param {*} [options] Override http request option.
@@ -12448,7 +12462,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12493,7 +12507,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12538,7 +12552,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Post Some
          * @param {Array<CaseDbCase>} _case 
          * @param {*} [options] Override http request option.
@@ -12573,7 +12587,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Put One
          * @param {string} objectId 
          * @param {CaseDbCase} _case 
@@ -12612,7 +12626,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Put Some
          * @param {Array<CaseDbCase>} _case 
          * @param {*} [options] Override http request option.
@@ -12647,7 +12661,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12687,13 +12701,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetMembersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('colSetMembersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/col_set_members/{object_id}`
@@ -12721,7 +12735,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12758,7 +12772,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -12798,7 +12812,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -12832,7 +12846,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -12869,7 +12883,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Post One
          * @param {CaseDbColSetMember} colSetMember 
          * @param {*} [options] Override http request option.
@@ -12904,7 +12918,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12949,7 +12963,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -12994,7 +13008,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Post Some
          * @param {Array<CaseDbColSetMember>} colSetMember 
          * @param {*} [options] Override http request option.
@@ -13029,7 +13043,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbColSetMember} colSetMember 
@@ -13068,7 +13082,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Put Some
          * @param {Array<CaseDbColSetMember>} colSetMember 
          * @param {*} [options] Override http request option.
@@ -13103,7 +13117,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -13143,13 +13157,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('colSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/col_sets/{object_id}`
@@ -13177,7 +13191,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -13214,7 +13228,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -13254,7 +13268,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -13288,7 +13302,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -13325,7 +13339,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Post One
          * @param {CaseDbColSet} colSet 
          * @param {*} [options] Override http request option.
@@ -13360,7 +13374,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -13405,7 +13419,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -13450,7 +13464,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Post Some
          * @param {Array<CaseDbColSet>} colSet 
          * @param {*} [options] Override http request option.
@@ -13485,7 +13499,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent replacement of the columns in a column set.  The provided members keep read/write scopes and user-interface column groupings aligned.
+         * Represents a request to replace the association between a column set and its columns.  The provided members keep read/write scopes and user-interface column groupings aligned.
          * @summary Update Association Between Colset And CaseDbCol
          * @param {string} colSetId 
          * @param {CaseDbColSetColUpdateAssociationRequestBody} colSetColUpdateAssociationRequestBody 
@@ -13524,7 +13538,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbColSet} colSet 
@@ -13563,7 +13577,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Put Some
          * @param {Array<CaseDbColSet>} colSet 
          * @param {*} [options] Override http request option.
@@ -13598,7 +13612,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -13638,13 +13652,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('colsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/cols/{object_id}`
@@ -13672,7 +13686,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -13709,7 +13723,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -13749,7 +13763,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -13783,7 +13797,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -13820,7 +13834,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Post One
          * @param {CaseDbCol} col 
          * @param {*} [options] Override http request option.
@@ -13855,7 +13869,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -13900,7 +13914,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -13945,7 +13959,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Post Some
          * @param {Array<CaseDbCol>} col 
          * @param {*} [options] Override http request option.
@@ -13980,7 +13994,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Put One
          * @param {string} objectId 
          * @param {CaseDbCol} col 
@@ -14019,7 +14033,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Put Some
          * @param {Array<CaseDbCol>} col 
          * @param {*} [options] Override http request option.
@@ -14054,7 +14068,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for a complete case type.
+         * Represents a request to retrieve a complete case type.
          * @summary Retrieve Complete Casetype
          * @param {string} caseTypeId 
          * @param {*} [options] Override http request option.
@@ -14091,7 +14105,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent creation of a case set and its initial associations.  Model validation:     The creating data collection is removed from the additional data     collections because it is already associated through the case set.
+         * Represents a request to create a case set and its initial associations.  Model validation:     The creating data collection is removed from the additional data     collections because it is already associated through the case set.
          * @summary Create CaseDbCase Set
          * @param {CaseDbCreateCaseSetRequestBody} createCaseSetRequestBody 
          * @param {*} [options] Override http request option.
@@ -14126,7 +14140,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent upload of a raw-reads file for a case read-set column.  The command accepts base64 content with optional compression, distinguishes forward from reverse reads, and returns the stored file ID.
+         * Represents a request to upload a raw-reads file for a case read-set column.  The command accepts base64 content with optional compression, distinguishes forward from reverse reads, and returns the stored file ID.
          * @summary Create File For Reads Set
          * @param {string} caseId 
          * @param {string} colId 
@@ -14169,7 +14183,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent upload of an assembled file for a case sequence column.  The command accepts base64 content with optional compression and returns the stored file ID.
+         * Represents a request to upload an assembled file for a case sequence column.  The command accepts base64 content with optional compression and returns the stored file ID.
          * @summary Create File For Sequence
          * @param {string} caseId 
          * @param {string} colId 
@@ -14212,7 +14226,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -14252,13 +14266,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dimsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dimsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('dimsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/dims/{object_id}`
@@ -14286,7 +14300,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14323,7 +14337,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -14363,7 +14377,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14397,7 +14411,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14434,7 +14448,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Post One
          * @param {CaseDbDim} dim 
          * @param {*} [options] Override http request option.
@@ -14469,7 +14483,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -14514,7 +14528,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -14559,7 +14573,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Post Some
          * @param {Array<CaseDbDim>} dim 
          * @param {*} [options] Override http request option.
@@ -14594,7 +14608,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Put One
          * @param {string} objectId 
          * @param {CaseDbDim} dim 
@@ -14633,7 +14647,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Put Some
          * @param {Array<CaseDbDim>} dim 
          * @param {*} [options] Override http request option.
@@ -14668,7 +14682,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -14708,13 +14722,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        geneticDistanceProtocolsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        geneticDistanceProtocolsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('geneticDistanceProtocolsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/genetic_distance_protocols/{object_id}`
@@ -14742,7 +14756,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14779,7 +14793,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -14819,7 +14833,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14853,7 +14867,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14890,7 +14904,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Post One
          * @param {CaseDbGeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -14925,7 +14939,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -14970,7 +14984,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -15015,7 +15029,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Post Some
          * @param {Array<CaseDbGeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -15050,7 +15064,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Put One
          * @param {string} objectId 
          * @param {CaseDbGeneticDistanceProtocol} geneticDistanceProtocol 
@@ -15089,7 +15103,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Put Some
          * @param {Array<CaseDbGeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -15124,7 +15138,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -15164,13 +15178,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refColsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refColsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('refColsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/ref_cols/{object_id}`
@@ -15198,7 +15212,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15235,7 +15249,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -15275,7 +15289,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -15309,7 +15323,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15346,7 +15360,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Post One
          * @param {CaseDbRefCol} refCol 
          * @param {*} [options] Override http request option.
@@ -15381,7 +15395,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -15426,7 +15440,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -15471,7 +15485,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Post Some
          * @param {Array<CaseDbRefCol>} refCol 
          * @param {*} [options] Override http request option.
@@ -15506,7 +15520,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Put One
          * @param {string} objectId 
          * @param {CaseDbRefCol} refCol 
@@ -15545,7 +15559,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Put Some
          * @param {Array<CaseDbRefCol>} refCol 
          * @param {*} [options] Override http request option.
@@ -15610,7 +15624,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -15650,13 +15664,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refDimsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refDimsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('refDimsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/ref_dims/{object_id}`
@@ -15684,7 +15698,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15721,7 +15735,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -15761,7 +15775,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -15795,7 +15809,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -15832,7 +15846,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Post One
          * @param {CaseDbRefDim} refDim 
          * @param {*} [options] Override http request option.
@@ -15867,7 +15881,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -15912,7 +15926,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -15957,7 +15971,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Post Some
          * @param {Array<CaseDbRefDim>} refDim 
          * @param {*} [options] Override http request option.
@@ -15992,7 +16006,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Put One
          * @param {string} objectId 
          * @param {CaseDbRefDim} refDim 
@@ -16031,7 +16045,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Put Some
          * @param {Array<CaseDbRefDim>} refDim 
          * @param {*} [options] Override http request option.
@@ -16066,7 +16080,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for seqdb protocols by protocol type.
+         * Represents a request to retrieve seqdb protocols by protocol type.
          * @summary Retrieve Assembly Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16096,7 +16110,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for case-to-cohort links for a case type.  The request returns every case without pagination and is restricted to the application administrator role.
+         * Represents a request to retrieve case-to-cohort links for a case type.  The request returns every case without pagination and is restricted to the application administrator role.
          * @summary Retrieve CaseDbCase Cohort Ids By CaseDbCase Type
          * @param {CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody} retrieveCaseCohortLinksByCaseTypeRequestBody 
          * @param {*} [options] Override http request option.
@@ -16131,7 +16145,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for cases matching a case query.
+         * Represents a request to retrieve cases matching a case query.
          * @summary Retrieve CaseDbCase Ids By Query
          * @param {CaseDbCaseQuery} caseQuery 
          * @param {*} [options] Override http request option.
@@ -16166,7 +16180,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for access rights to specified cases.
+         * Represents a request to retrieve access rights to specified cases.
          * @summary Retrieve CaseDbCase Rights
          * @param {CaseDbRetrieveCaseRightsRequestBody} retrieveCaseRightsRequestBody 
          * @param {*} [options] Override http request option.
@@ -16201,7 +16215,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for access rights to specified case sets.
+         * Represents a request to retrieve access rights to specified case sets.
          * @summary Retrieve CaseDbCase Set Rights
          * @param {Array<string>} requestBody 
          * @param {*} [options] Override http request option.
@@ -16236,7 +16250,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for statistics about case sets.  Optional parameters further filter the cases considered for the statistics.
+         * Represents a request to retrieve statistics about case sets.  Optional parameters further filter the cases considered for the statistics.
          * @summary Retrieve CaseDbCase Set Statistics
          * @param {CaseDbRetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
          * @param {*} [options] Override http request option.
@@ -16271,7 +16285,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for statistics about case types.  Optional parameters further filter the cases considered for the statistics.
+         * Represents a request to retrieve statistics about case types.  Optional parameters further filter the cases considered for the statistics.
          * @summary Retrieve Casetype Statistics
          * @param {CaseDbRetrieveCaseTypeStatsRequestBody} retrieveCaseTypeStatsRequestBody 
          * @param {*} [options] Override http request option.
@@ -16306,7 +16320,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for cases identified by unique IDs.
+         * Represents a request to retrieve cases identified by unique IDs.
          * @summary Retrieve Cases By Ids
          * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
          * @param {*} [options] Override http request option.
@@ -16341,7 +16355,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for case-linked sequences in FASTA format.  The response is an iterator that yields FASTA lines for sequences selected through the specified genetic-sequence column.
+         * Represents a request for case-linked sequences in FASTA format.  The response is an iterator that yields FASTA lines for sequences selected through the specified genetic-sequence column.
          * @summary Retrieve Genetic Sequence By CaseDbCase, In Fasta Format And Streamed
          * @param {string} token 
          * @param {string} caseTypeId 
@@ -16409,7 +16423,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for cases owned by or accessible to the user.  The response contains the supplied case IDs that the user owns or may access.
+         * Represents a request to retrieve cases owned by or accessible to the user.  The response contains the supplied case IDs that the user owns or may access.
          * @summary Retrieve Whether The CaseDbUser Owns The Cases
          * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
          * @param {*} [options] Override http request option.
@@ -16444,7 +16458,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent phylogenetic-tree calculation from cases and genetic distances.
+         * Represents a request to calculate a phylogenetic tree from cases and genetic distances.
          * @summary Retrieve Phylogenetic Tree
          * @param {CaseDbRetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
@@ -16479,7 +16493,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for seqdb protocols by protocol type.
+         * Represents a request to retrieve seqdb protocols by protocol type.
          * @summary Retrieve Sequencing Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -16509,7 +16523,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent a request for genetically similar cases.  Similarity is based on a genetic-distance column and a maximum distance threshold applied to the supplied case IDs.
+         * Represents a request to retrieve genetically similar cases.  Similarity is based on a genetic-distance column and a maximum distance threshold applied to the supplied case IDs.
          * @summary Retrieve Similar Cases
          * @param {CaseDbRetrieveSimilarCasesRequestBody} retrieveSimilarCasesRequestBody 
          * @param {*} [options] Override http request option.
@@ -16544,7 +16558,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -16584,13 +16598,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('treeAlgorithmClassesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/tree_algorithm_classes/{object_id}`
@@ -16618,7 +16632,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16655,7 +16669,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -16695,7 +16709,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -16729,7 +16743,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -16766,7 +16780,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post One
          * @param {CaseDbTreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -16801,7 +16815,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -16846,7 +16860,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -16891,7 +16905,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Some
          * @param {Array<CaseDbTreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -16926,7 +16940,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Put One
          * @param {string} objectId 
          * @param {CaseDbTreeAlgorithmClass} treeAlgorithmClass 
@@ -16965,7 +16979,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Put Some
          * @param {Array<CaseDbTreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -17000,7 +17014,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17040,13 +17054,13 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('treeAlgorithmsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/tree_algorithms/{object_id}`
@@ -17074,7 +17088,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17111,7 +17125,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17151,7 +17165,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -17185,7 +17199,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17222,7 +17236,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post One
          * @param {CaseDbTreeAlgorithm} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -17257,7 +17271,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17302,7 +17316,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17347,7 +17361,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Some
          * @param {Array<CaseDbTreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -17382,7 +17396,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Put One
          * @param {string} objectId 
          * @param {CaseDbTreeAlgorithm} treeAlgorithm 
@@ -17421,7 +17435,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Put Some
          * @param {Array<CaseDbTreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -17456,7 +17470,42 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represent an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+         * Represents a request to assign a different created_in_data_collection_id to a list of cases.
+         * @summary Update Cases\' Creating Data Collection
+         * @param {CaseDbUpdateCaseCreatedInDataCollectionRequestBody} updateCaseCreatedInDataCollectionRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCaseCreatedInDataCollection: async (updateCaseCreatedInDataCollectionRequestBody: CaseDbUpdateCaseCreatedInDataCollectionRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateCaseCreatedInDataCollectionRequestBody' is not null or undefined
+            assertParamExists('updateCaseCreatedInDataCollection', 'updateCaseCreatedInDataCollectionRequestBody', updateCaseCreatedInDataCollectionRequestBody)
+            const localVarPath = `/v1/update_case_created_in_data_collection`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateCaseCreatedInDataCollectionRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
          * @summary Upload Cases
          * @param {CaseDbUploadCasesCommand} uploadCasesCommand 
          * @param {*} [options] Override http request option.
@@ -17500,7 +17549,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CaseDbCaseApiAxiosParamCreator(configuration)
     return {
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17514,20 +17563,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseDataCollectionLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseDataCollectionLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseDataCollectionLinksDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17540,7 +17589,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17554,7 +17603,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -17567,7 +17616,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17580,7 +17629,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Post One
          * @param {CaseDbCaseDataCollectionLink} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -17593,7 +17642,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17608,7 +17657,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17623,7 +17672,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Post Some
          * @param {Array<CaseDbCaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -17636,7 +17685,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseDataCollectionLink} caseDataCollectionLink 
@@ -17650,7 +17699,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Put Some
          * @param {Array<CaseDbCaseDataCollectionLink>} caseDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -17663,7 +17712,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17677,20 +17726,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17703,7 +17752,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17717,7 +17766,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -17730,7 +17779,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17743,7 +17792,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Post One
          * @param {CaseDbCaseIdentifier} caseIdentifier 
          * @param {*} [options] Override http request option.
@@ -17756,7 +17805,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17771,7 +17820,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17786,7 +17835,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Post Some
          * @param {Array<CaseDbCaseIdentifier>} caseIdentifier 
          * @param {*} [options] Override http request option.
@@ -17799,7 +17848,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseIdentifier} caseIdentifier 
@@ -17813,7 +17862,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for alternate and external case identifiers.
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Put Some
          * @param {Array<CaseDbCaseIdentifier>} caseIdentifier 
          * @param {*} [options] Override http request option.
@@ -17826,7 +17875,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17840,20 +17889,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetCategoriesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseSetCategoriesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetCategoriesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17866,7 +17915,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -17880,7 +17929,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -17893,7 +17942,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -17906,7 +17955,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Post One
          * @param {CaseDbCaseSetCategory} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -17919,7 +17968,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17934,7 +17983,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -17949,7 +17998,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Post Some
          * @param {Array<CaseDbCaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -17962,7 +18011,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetCategory} caseSetCategory 
@@ -17976,7 +18025,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for categories used to tag case sets.
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Put Some
          * @param {Array<CaseDbCaseSetCategory>} caseSetCategory 
          * @param {*} [options] Override http request option.
@@ -17989,7 +18038,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18003,20 +18052,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetDataCollectionLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseSetDataCollectionLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetDataCollectionLinksDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18029,7 +18078,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18043,7 +18092,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18056,7 +18105,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18069,7 +18118,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Post One
          * @param {CaseDbCaseSetDataCollectionLink} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -18082,7 +18131,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18097,7 +18146,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18112,7 +18161,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Post Some
          * @param {Array<CaseDbCaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -18125,7 +18174,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetDataCollectionLink} caseSetDataCollectionLink 
@@ -18139,7 +18188,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set-to-data-collection links.
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Put Some
          * @param {Array<CaseDbCaseSetDataCollectionLink>} caseSetDataCollectionLink 
          * @param {*} [options] Override http request option.
@@ -18152,7 +18201,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18166,20 +18215,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18192,7 +18241,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18206,7 +18255,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18219,7 +18268,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18232,7 +18281,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Post One
          * @param {CaseDbCaseSetMember} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -18245,7 +18294,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18260,7 +18309,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18275,7 +18324,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Post Some
          * @param {Array<CaseDbCaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -18288,7 +18337,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetMember} caseSetMember 
@@ -18302,7 +18351,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for classified case-set membership.
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Put Some
          * @param {Array<CaseDbCaseSetMember>} caseSetMember 
          * @param {*} [options] Override http request option.
@@ -18315,7 +18364,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18329,20 +18378,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetStatusesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseSetStatusesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetStatusesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18355,7 +18404,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18369,7 +18418,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18382,7 +18431,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18395,7 +18444,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Post One
          * @param {CaseDbCaseSetStatus} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -18408,7 +18457,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18423,7 +18472,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18438,7 +18487,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Post Some
          * @param {Array<CaseDbCaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -18451,7 +18500,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSetStatus} caseSetStatus 
@@ -18465,7 +18514,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-set lifecycle statuses.
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Put Some
          * @param {Array<CaseDbCaseSetStatus>} caseSetStatus 
          * @param {*} [options] Override http request option.
@@ -18478,7 +18527,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18492,20 +18541,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18518,7 +18567,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18532,7 +18581,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18545,7 +18594,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18558,7 +18607,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Post One
          * @param {CaseDbCaseSet} caseSet 
          * @param {*} [options] Override http request option.
@@ -18571,7 +18620,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18586,7 +18635,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18601,7 +18650,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Post Some
          * @param {Array<CaseDbCaseSet>} caseSet 
          * @param {*} [options] Override http request option.
@@ -18614,7 +18663,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseSet} caseSet 
@@ -18628,7 +18677,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case sets and their context.
+         * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Put Some
          * @param {Array<CaseDbCaseSet>} caseSet 
          * @param {*} [options] Override http request option.
@@ -18641,7 +18690,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18655,20 +18704,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetCategoriesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseTypeSetCategoriesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetCategoriesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18681,7 +18730,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18695,7 +18744,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18708,7 +18757,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18721,7 +18770,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Post One
          * @param {CaseDbCaseTypeSetCategory} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -18734,7 +18783,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18749,7 +18798,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18764,7 +18813,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Post Some
          * @param {Array<CaseDbCaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -18777,7 +18826,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseTypeSetCategory} caseTypeSetCategory 
@@ -18791,7 +18840,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set categories.
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Put Some
          * @param {Array<CaseDbCaseTypeSetCategory>} caseTypeSetCategory 
          * @param {*} [options] Override http request option.
@@ -18804,7 +18853,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18818,20 +18867,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseTypeSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18844,7 +18893,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18858,7 +18907,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -18871,7 +18920,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -18884,7 +18933,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Post One
          * @param {CaseDbCaseTypeSetMember} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -18897,7 +18946,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18912,7 +18961,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -18927,7 +18976,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Post Some
          * @param {Array<CaseDbCaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -18940,7 +18989,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseTypeSetMember} caseTypeSetMember 
@@ -18954,7 +19003,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for case-type-set membership.
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Put Some
          * @param {Array<CaseDbCaseTypeSetMember>} caseTypeSetMember 
          * @param {*} [options] Override http request option.
@@ -18967,7 +19016,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -18981,20 +19030,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseTypeSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19007,7 +19056,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19021,7 +19070,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19034,7 +19083,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19047,7 +19096,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Post One
          * @param {CaseDbCaseTypeSet} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -19060,7 +19109,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19075,7 +19124,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19090,7 +19139,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Post Some
          * @param {Array<CaseDbCaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -19103,7 +19152,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent replacement of the case types in a case-type set.  The provided members keep the set synchronized for downstream access policies and presets.
+         * Represents a request to replace the association between a case type set and its case types.  The provided members keep the set synchronized for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody} caseTypeSetCaseTypeUpdateAssociationRequestBody 
@@ -19117,7 +19166,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseTypeSet} caseTypeSet 
@@ -19131,7 +19180,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable sets of related case types.
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Put Some
          * @param {Array<CaseDbCaseTypeSet>} caseTypeSet 
          * @param {*} [options] Override http request option.
@@ -19144,7 +19193,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19158,20 +19207,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async caseTypesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19184,7 +19233,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19198,7 +19247,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19211,7 +19260,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19224,7 +19273,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Post One
          * @param {CaseDbCaseType} caseType 
          * @param {*} [options] Override http request option.
@@ -19237,7 +19286,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19252,7 +19301,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19267,7 +19316,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Post Some
          * @param {Array<CaseDbCaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -19280,7 +19329,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Put One
          * @param {string} objectId 
          * @param {CaseDbCaseType} caseType 
@@ -19294,7 +19343,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for structural case-type definitions.
+         * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Put Some
          * @param {Array<CaseDbCaseType>} caseType 
          * @param {*} [options] Override http request option.
@@ -19307,7 +19356,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19321,20 +19370,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async casesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async casesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.casesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.casesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19347,7 +19396,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19361,7 +19410,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19374,7 +19423,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19387,7 +19436,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Post One
          * @param {CaseDbCase} _case 
          * @param {*} [options] Override http request option.
@@ -19400,7 +19449,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19415,7 +19464,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19430,7 +19479,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Post Some
          * @param {Array<CaseDbCase>} _case 
          * @param {*} [options] Override http request option.
@@ -19443,7 +19492,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Put One
          * @param {string} objectId 
          * @param {CaseDbCase} _case 
@@ -19457,7 +19506,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed cases in data collections.
+         * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Put Some
          * @param {Array<CaseDbCase>} _case 
          * @param {*} [options] Override http request option.
@@ -19470,7 +19519,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19484,20 +19533,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async colSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19510,7 +19559,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19524,7 +19573,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19537,7 +19586,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19550,7 +19599,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Post One
          * @param {CaseDbColSetMember} colSetMember 
          * @param {*} [options] Override http request option.
@@ -19563,7 +19612,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19578,7 +19627,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19593,7 +19642,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Post Some
          * @param {Array<CaseDbColSetMember>} colSetMember 
          * @param {*} [options] Override http request option.
@@ -19606,7 +19655,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbColSetMember} colSetMember 
@@ -19620,7 +19669,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for column-set membership.
+         * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Put Some
          * @param {Array<CaseDbColSetMember>} colSetMember 
          * @param {*} [options] Override http request option.
@@ -19633,7 +19682,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19647,20 +19696,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async colSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19673,7 +19722,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19687,7 +19736,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19700,7 +19749,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19713,7 +19762,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Post One
          * @param {CaseDbColSet} colSet 
          * @param {*} [options] Override http request option.
@@ -19726,7 +19775,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19741,7 +19790,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19756,7 +19805,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Post Some
          * @param {Array<CaseDbColSet>} colSet 
          * @param {*} [options] Override http request option.
@@ -19769,7 +19818,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent replacement of the columns in a column set.  The provided members keep read/write scopes and user-interface column groupings aligned.
+         * Represents a request to replace the association between a column set and its columns.  The provided members keep read/write scopes and user-interface column groupings aligned.
          * @summary Update Association Between Colset And CaseDbCol
          * @param {string} colSetId 
          * @param {CaseDbColSetColUpdateAssociationRequestBody} colSetColUpdateAssociationRequestBody 
@@ -19783,7 +19832,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbColSet} colSet 
@@ -19797,7 +19846,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable column sets.
+         * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Put Some
          * @param {Array<CaseDbColSet>} colSet 
          * @param {*} [options] Override http request option.
@@ -19810,7 +19859,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19824,20 +19873,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async colsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.colsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19850,7 +19899,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -19864,7 +19913,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -19877,7 +19926,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -19890,7 +19939,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Post One
          * @param {CaseDbCol} col 
          * @param {*} [options] Override http request option.
@@ -19903,7 +19952,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19918,7 +19967,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -19933,7 +19982,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Post Some
          * @param {Array<CaseDbCol>} col 
          * @param {*} [options] Override http request option.
@@ -19946,7 +19995,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Put One
          * @param {string} objectId 
          * @param {CaseDbCol} col 
@@ -19960,7 +20009,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for typed case-data columns.
+         * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Put Some
          * @param {Array<CaseDbCol>} col 
          * @param {*} [options] Override http request option.
@@ -19973,7 +20022,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for a complete case type.
+         * Represents a request to retrieve a complete case type.
          * @summary Retrieve Complete Casetype
          * @param {string} caseTypeId 
          * @param {*} [options] Override http request option.
@@ -19986,7 +20035,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent creation of a case set and its initial associations.  Model validation:     The creating data collection is removed from the additional data     collections because it is already associated through the case set.
+         * Represents a request to create a case set and its initial associations.  Model validation:     The creating data collection is removed from the additional data     collections because it is already associated through the case set.
          * @summary Create CaseDbCase Set
          * @param {CaseDbCreateCaseSetRequestBody} createCaseSetRequestBody 
          * @param {*} [options] Override http request option.
@@ -19999,7 +20048,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent upload of a raw-reads file for a case read-set column.  The command accepts base64 content with optional compression, distinguishes forward from reverse reads, and returns the stored file ID.
+         * Represents a request to upload a raw-reads file for a case read-set column.  The command accepts base64 content with optional compression, distinguishes forward from reverse reads, and returns the stored file ID.
          * @summary Create File For Reads Set
          * @param {string} caseId 
          * @param {string} colId 
@@ -20014,7 +20063,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent upload of an assembled file for a case sequence column.  The command accepts base64 content with optional compression and returns the stored file ID.
+         * Represents a request to upload an assembled file for a case sequence column.  The command accepts base64 content with optional compression and returns the stored file ID.
          * @summary Create File For Sequence
          * @param {string} caseId 
          * @param {string} colId 
@@ -20029,7 +20078,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20043,20 +20092,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async dimsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dimsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.dimsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20069,7 +20118,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20083,7 +20132,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20096,7 +20145,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20109,7 +20158,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Post One
          * @param {CaseDbDim} dim 
          * @param {*} [options] Override http request option.
@@ -20122,7 +20171,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20137,7 +20186,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20152,7 +20201,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Post Some
          * @param {Array<CaseDbDim>} dim 
          * @param {*} [options] Override http request option.
@@ -20165,7 +20214,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Put One
          * @param {string} objectId 
          * @param {CaseDbDim} dim 
@@ -20179,7 +20228,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for dimensions that group case-type columns.
+         * Represents a request to execute a CRUD operation on Dims.
          * @summary Dims  Put Some
          * @param {Array<CaseDbDim>} dim 
          * @param {*} [options] Override http request option.
@@ -20192,7 +20241,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20206,20 +20255,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async geneticDistanceProtocolsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async geneticDistanceProtocolsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20232,7 +20281,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20246,7 +20295,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20259,7 +20308,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20272,7 +20321,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Post One
          * @param {CaseDbGeneticDistanceProtocol} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -20285,7 +20334,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20300,7 +20349,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20315,7 +20364,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Post Some
          * @param {Array<CaseDbGeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -20328,7 +20377,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Put One
          * @param {string} objectId 
          * @param {CaseDbGeneticDistanceProtocol} geneticDistanceProtocol 
@@ -20342,7 +20391,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for genetic-distance protocols.
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Put Some
          * @param {Array<CaseDbGeneticDistanceProtocol>} geneticDistanceProtocol 
          * @param {*} [options] Override http request option.
@@ -20355,7 +20404,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20369,20 +20418,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refColsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async refColsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refColsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20395,7 +20444,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20409,7 +20458,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20422,7 +20471,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20435,7 +20484,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Post One
          * @param {CaseDbRefCol} refCol 
          * @param {*} [options] Override http request option.
@@ -20448,7 +20497,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20463,7 +20512,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20478,7 +20527,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Post Some
          * @param {Array<CaseDbRefCol>} refCol 
          * @param {*} [options] Override http request option.
@@ -20491,7 +20540,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Put One
          * @param {string} objectId 
          * @param {CaseDbRefCol} refCol 
@@ -20505,7 +20554,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference-column definitions.
+         * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Put Some
          * @param {Array<CaseDbRefCol>} refCol 
          * @param {*} [options] Override http request option.
@@ -20530,7 +20579,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20544,20 +20593,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refDimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async refDimsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20570,7 +20619,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20584,7 +20633,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20597,7 +20646,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20610,7 +20659,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Post One
          * @param {CaseDbRefDim} refDim 
          * @param {*} [options] Override http request option.
@@ -20623,7 +20672,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20638,7 +20687,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20653,7 +20702,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Post Some
          * @param {Array<CaseDbRefDim>} refDim 
          * @param {*} [options] Override http request option.
@@ -20666,7 +20715,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Put One
          * @param {string} objectId 
          * @param {CaseDbRefDim} refDim 
@@ -20680,7 +20729,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for reusable reference dimensions.
+         * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Put Some
          * @param {Array<CaseDbRefDim>} refDim 
          * @param {*} [options] Override http request option.
@@ -20693,7 +20742,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for seqdb protocols by protocol type.
+         * Represents a request to retrieve seqdb protocols by protocol type.
          * @summary Retrieve Assembly Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20705,7 +20754,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for case-to-cohort links for a case type.  The request returns every case without pagination and is restricted to the application administrator role.
+         * Represents a request to retrieve case-to-cohort links for a case type.  The request returns every case without pagination and is restricted to the application administrator role.
          * @summary Retrieve CaseDbCase Cohort Ids By CaseDbCase Type
          * @param {CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody} retrieveCaseCohortLinksByCaseTypeRequestBody 
          * @param {*} [options] Override http request option.
@@ -20718,7 +20767,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for cases matching a case query.
+         * Represents a request to retrieve cases matching a case query.
          * @summary Retrieve CaseDbCase Ids By Query
          * @param {CaseDbCaseQuery} caseQuery 
          * @param {*} [options] Override http request option.
@@ -20731,7 +20780,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for access rights to specified cases.
+         * Represents a request to retrieve access rights to specified cases.
          * @summary Retrieve CaseDbCase Rights
          * @param {CaseDbRetrieveCaseRightsRequestBody} retrieveCaseRightsRequestBody 
          * @param {*} [options] Override http request option.
@@ -20744,7 +20793,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for access rights to specified case sets.
+         * Represents a request to retrieve access rights to specified case sets.
          * @summary Retrieve CaseDbCase Set Rights
          * @param {Array<string>} requestBody 
          * @param {*} [options] Override http request option.
@@ -20757,7 +20806,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for statistics about case sets.  Optional parameters further filter the cases considered for the statistics.
+         * Represents a request to retrieve statistics about case sets.  Optional parameters further filter the cases considered for the statistics.
          * @summary Retrieve CaseDbCase Set Statistics
          * @param {CaseDbRetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
          * @param {*} [options] Override http request option.
@@ -20770,7 +20819,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for statistics about case types.  Optional parameters further filter the cases considered for the statistics.
+         * Represents a request to retrieve statistics about case types.  Optional parameters further filter the cases considered for the statistics.
          * @summary Retrieve Casetype Statistics
          * @param {CaseDbRetrieveCaseTypeStatsRequestBody} retrieveCaseTypeStatsRequestBody 
          * @param {*} [options] Override http request option.
@@ -20783,7 +20832,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for cases identified by unique IDs.
+         * Represents a request to retrieve cases identified by unique IDs.
          * @summary Retrieve Cases By Ids
          * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
          * @param {*} [options] Override http request option.
@@ -20796,7 +20845,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for case-linked sequences in FASTA format.  The response is an iterator that yields FASTA lines for sequences selected through the specified genetic-sequence column.
+         * Represents a request for case-linked sequences in FASTA format.  The response is an iterator that yields FASTA lines for sequences selected through the specified genetic-sequence column.
          * @summary Retrieve Genetic Sequence By CaseDbCase, In Fasta Format And Streamed
          * @param {string} token 
          * @param {string} caseTypeId 
@@ -20813,7 +20862,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for cases owned by or accessible to the user.  The response contains the supplied case IDs that the user owns or may access.
+         * Represents a request to retrieve cases owned by or accessible to the user.  The response contains the supplied case IDs that the user owns or may access.
          * @summary Retrieve Whether The CaseDbUser Owns The Cases
          * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
          * @param {*} [options] Override http request option.
@@ -20826,7 +20875,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent phylogenetic-tree calculation from cases and genetic distances.
+         * Represents a request to calculate a phylogenetic tree from cases and genetic distances.
          * @summary Retrieve Phylogenetic Tree
          * @param {CaseDbRetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
          * @param {*} [options] Override http request option.
@@ -20839,7 +20888,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for seqdb protocols by protocol type.
+         * Represents a request to retrieve seqdb protocols by protocol type.
          * @summary Retrieve Sequencing Protocols
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -20851,7 +20900,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent a request for genetically similar cases.  Similarity is based on a genetic-distance column and a maximum distance threshold applied to the supplied case IDs.
+         * Represents a request to retrieve genetically similar cases.  Similarity is based on a genetic-distance column and a maximum distance threshold applied to the supplied case IDs.
          * @summary Retrieve Similar Cases
          * @param {CaseDbRetrieveSimilarCasesRequestBody} retrieveSimilarCasesRequestBody 
          * @param {*} [options] Override http request option.
@@ -20864,7 +20913,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20878,20 +20927,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async treeAlgorithmClassesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmClassesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20904,7 +20953,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20918,7 +20967,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20931,7 +20980,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20944,7 +20993,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post One
          * @param {CaseDbTreeAlgorithmClass} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -20957,7 +21006,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20972,7 +21021,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20987,7 +21036,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Post Some
          * @param {Array<CaseDbTreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -21000,7 +21049,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Put One
          * @param {string} objectId 
          * @param {CaseDbTreeAlgorithmClass} treeAlgorithmClass 
@@ -21014,7 +21063,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic algorithm categories.
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Put Some
          * @param {Array<CaseDbTreeAlgorithmClass>} treeAlgorithmClass 
          * @param {*} [options] Override http request option.
@@ -21027,7 +21076,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -21041,20 +21090,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async treeAlgorithmsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21067,7 +21116,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -21081,7 +21130,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -21094,7 +21143,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -21107,7 +21156,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post One
          * @param {CaseDbTreeAlgorithm} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -21120,7 +21169,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -21135,7 +21184,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -21150,7 +21199,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Post Some
          * @param {Array<CaseDbTreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -21163,7 +21212,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Put One
          * @param {string} objectId 
          * @param {CaseDbTreeAlgorithm} treeAlgorithm 
@@ -21177,7 +21226,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent CRUD operations for phylogenetic-tree algorithms.
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Put Some
          * @param {Array<CaseDbTreeAlgorithm>} treeAlgorithm 
          * @param {*} [options] Override http request option.
@@ -21190,7 +21239,20 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represent an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+         * Represents a request to assign a different created_in_data_collection_id to a list of cases.
+         * @summary Update Cases\' Creating Data Collection
+         * @param {CaseDbUpdateCaseCreatedInDataCollectionRequestBody} updateCaseCreatedInDataCollectionRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateCaseCreatedInDataCollection(updateCaseCreatedInDataCollectionRequestBody: CaseDbUpdateCaseCreatedInDataCollectionRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCaseCreatedInDataCollection(updateCaseCreatedInDataCollectionRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.updateCaseCreatedInDataCollection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
          * @summary Upload Cases
          * @param {CaseDbUploadCasesCommand} uploadCasesCommand 
          * @param {*} [options] Override http request option.
@@ -21228,7 +21290,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
   }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21240,18 +21302,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseDataCollectionLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseDataCollectionLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21262,7 +21324,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21274,7 +21336,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -21285,7 +21347,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21296,7 +21358,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Post One
      * @param {CaseDbCaseDataCollectionLink} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -21307,7 +21369,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21320,7 +21382,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21333,7 +21395,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Post Some
      * @param {Array<CaseDbCaseDataCollectionLink>} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -21344,7 +21406,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseDataCollectionLink} caseDataCollectionLink 
@@ -21356,7 +21418,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Put Some
      * @param {Array<CaseDbCaseDataCollectionLink>} caseDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -21367,7 +21429,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21379,18 +21441,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseIdentifiersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseIdentifiersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseIdentifiersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21401,7 +21463,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21413,7 +21475,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -21424,7 +21486,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21435,7 +21497,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Post One
      * @param {CaseDbCaseIdentifier} caseIdentifier 
      * @param {*} [options] Override http request option.
@@ -21446,7 +21508,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21459,7 +21521,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21472,7 +21534,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Post Some
      * @param {Array<CaseDbCaseIdentifier>} caseIdentifier 
      * @param {*} [options] Override http request option.
@@ -21483,7 +21545,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseIdentifier} caseIdentifier 
@@ -21495,7 +21557,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for alternate and external case identifiers.
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Put Some
      * @param {Array<CaseDbCaseIdentifier>} caseIdentifier 
      * @param {*} [options] Override http request option.
@@ -21506,7 +21568,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21518,18 +21580,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetCategoriesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseSetCategoriesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetCategoriesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21540,7 +21602,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21552,7 +21614,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -21563,7 +21625,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21574,7 +21636,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Post One
      * @param {CaseDbCaseSetCategory} caseSetCategory 
      * @param {*} [options] Override http request option.
@@ -21585,7 +21647,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21598,7 +21660,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21611,7 +21673,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Post Some
      * @param {Array<CaseDbCaseSetCategory>} caseSetCategory 
      * @param {*} [options] Override http request option.
@@ -21622,7 +21684,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseSetCategory} caseSetCategory 
@@ -21634,7 +21696,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for categories used to tag case sets.
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Put Some
      * @param {Array<CaseDbCaseSetCategory>} caseSetCategory 
      * @param {*} [options] Override http request option.
@@ -21645,7 +21707,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21657,18 +21719,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetDataCollectionLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseSetDataCollectionLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21679,7 +21741,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21691,7 +21753,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -21702,7 +21764,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21713,7 +21775,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Post One
      * @param {CaseDbCaseSetDataCollectionLink} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -21724,7 +21786,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21737,7 +21799,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21750,7 +21812,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Post Some
      * @param {Array<CaseDbCaseSetDataCollectionLink>} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -21761,7 +21823,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseSetDataCollectionLink} caseSetDataCollectionLink 
@@ -21773,7 +21835,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set-to-data-collection links.
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Put Some
      * @param {Array<CaseDbCaseSetDataCollectionLink>} caseSetDataCollectionLink 
      * @param {*} [options] Override http request option.
@@ -21784,7 +21846,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21796,18 +21858,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21818,7 +21880,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21830,7 +21892,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -21841,7 +21903,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21852,7 +21914,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Post One
      * @param {CaseDbCaseSetMember} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -21863,7 +21925,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21876,7 +21938,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -21889,7 +21951,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Post Some
      * @param {Array<CaseDbCaseSetMember>} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -21900,7 +21962,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseSetMember} caseSetMember 
@@ -21912,7 +21974,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for classified case-set membership.
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Put Some
      * @param {Array<CaseDbCaseSetMember>} caseSetMember 
      * @param {*} [options] Override http request option.
@@ -21923,7 +21985,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21935,18 +21997,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetStatusesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseSetStatusesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetStatusesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21957,7 +22019,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -21969,7 +22031,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -21980,7 +22042,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -21991,7 +22053,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Post One
      * @param {CaseDbCaseSetStatus} caseSetStatus 
      * @param {*} [options] Override http request option.
@@ -22002,7 +22064,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22015,7 +22077,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22028,7 +22090,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Post Some
      * @param {Array<CaseDbCaseSetStatus>} caseSetStatus 
      * @param {*} [options] Override http request option.
@@ -22039,7 +22101,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseSetStatus} caseSetStatus 
@@ -22051,7 +22113,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-set lifecycle statuses.
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Put Some
      * @param {Array<CaseDbCaseSetStatus>} caseSetStatus 
      * @param {*} [options] Override http request option.
@@ -22062,7 +22124,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22074,18 +22136,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22096,7 +22158,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22108,7 +22170,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22119,7 +22181,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22130,7 +22192,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Post One
      * @param {CaseDbCaseSet} caseSet 
      * @param {*} [options] Override http request option.
@@ -22141,7 +22203,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22154,7 +22216,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22167,7 +22229,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Post Some
      * @param {Array<CaseDbCaseSet>} caseSet 
      * @param {*} [options] Override http request option.
@@ -22178,7 +22240,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseSet} caseSet 
@@ -22190,7 +22252,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case sets and their context.
+     * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Put Some
      * @param {Array<CaseDbCaseSet>} caseSet 
      * @param {*} [options] Override http request option.
@@ -22201,7 +22263,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22213,18 +22275,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetCategoriesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseTypeSetCategoriesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22235,7 +22297,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22247,7 +22309,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22258,7 +22320,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22269,7 +22331,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Post One
      * @param {CaseDbCaseTypeSetCategory} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
@@ -22280,7 +22342,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22293,7 +22355,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22306,7 +22368,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Post Some
      * @param {Array<CaseDbCaseTypeSetCategory>} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
@@ -22317,7 +22379,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseTypeSetCategory} caseTypeSetCategory 
@@ -22329,7 +22391,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set categories.
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Put Some
      * @param {Array<CaseDbCaseTypeSetCategory>} caseTypeSetCategory 
      * @param {*} [options] Override http request option.
@@ -22340,7 +22402,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22352,18 +22414,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseTypeSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22374,7 +22436,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22386,7 +22448,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22397,7 +22459,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22408,7 +22470,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Post One
      * @param {CaseDbCaseTypeSetMember} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -22419,7 +22481,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22432,7 +22494,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22445,7 +22507,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Post Some
      * @param {Array<CaseDbCaseTypeSetMember>} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -22456,7 +22518,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseTypeSetMember} caseTypeSetMember 
@@ -22468,7 +22530,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for case-type-set membership.
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Put Some
      * @param {Array<CaseDbCaseTypeSetMember>} caseTypeSetMember 
      * @param {*} [options] Override http request option.
@@ -22479,7 +22541,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22491,18 +22553,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseTypeSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseTypeSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22513,7 +22575,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22525,7 +22587,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22536,7 +22598,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22547,7 +22609,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Post One
      * @param {CaseDbCaseTypeSet} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -22558,7 +22620,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22571,7 +22633,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22584,7 +22646,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Post Some
      * @param {Array<CaseDbCaseTypeSet>} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -22595,7 +22657,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent replacement of the case types in a case-type set.  The provided members keep the set synchronized for downstream access policies and presets.
+     * Represents a request to replace the association between a case type set and its case types.  The provided members keep the set synchronized for downstream access policies and presets.
      * @summary Update Association Between Casetypeset And Casetype
      * @param {string} caseTypeSetId 
      * @param {CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody} caseTypeSetCaseTypeUpdateAssociationRequestBody 
@@ -22607,7 +22669,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseTypeSet} caseTypeSet 
@@ -22619,7 +22681,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable sets of related case types.
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Put Some
      * @param {Array<CaseDbCaseTypeSet>} caseTypeSet 
      * @param {*} [options] Override http request option.
@@ -22630,7 +22692,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22642,18 +22704,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public caseTypesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseTypesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22664,7 +22726,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22676,7 +22738,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22687,7 +22749,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22698,7 +22760,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Post One
      * @param {CaseDbCaseType} caseType 
      * @param {*} [options] Override http request option.
@@ -22709,7 +22771,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22722,7 +22784,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22735,7 +22797,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Post Some
      * @param {Array<CaseDbCaseType>} caseType 
      * @param {*} [options] Override http request option.
@@ -22746,7 +22808,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Put One
      * @param {string} objectId 
      * @param {CaseDbCaseType} caseType 
@@ -22758,7 +22820,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for structural case-type definitions.
+     * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Put Some
      * @param {Array<CaseDbCaseType>} caseType 
      * @param {*} [options] Override http request option.
@@ -22769,7 +22831,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22781,18 +22843,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public casesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public casesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).casesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22803,7 +22865,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22815,7 +22877,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22826,7 +22888,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22837,7 +22899,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Post One
      * @param {CaseDbCase} _case 
      * @param {*} [options] Override http request option.
@@ -22848,7 +22910,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22861,7 +22923,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -22874,7 +22936,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Post Some
      * @param {Array<CaseDbCase>} _case 
      * @param {*} [options] Override http request option.
@@ -22885,7 +22947,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Put One
      * @param {string} objectId 
      * @param {CaseDbCase} _case 
@@ -22897,7 +22959,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed cases in data collections.
+     * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Put Some
      * @param {Array<CaseDbCase>} _case 
      * @param {*} [options] Override http request option.
@@ -22908,7 +22970,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22920,18 +22982,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public colSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).colSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22942,7 +23004,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -22954,7 +23016,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -22965,7 +23027,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -22976,7 +23038,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Post One
      * @param {CaseDbColSetMember} colSetMember 
      * @param {*} [options] Override http request option.
@@ -22987,7 +23049,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23000,7 +23062,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23013,7 +23075,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Post Some
      * @param {Array<CaseDbColSetMember>} colSetMember 
      * @param {*} [options] Override http request option.
@@ -23024,7 +23086,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Put One
      * @param {string} objectId 
      * @param {CaseDbColSetMember} colSetMember 
@@ -23036,7 +23098,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for column-set membership.
+     * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Put Some
      * @param {Array<CaseDbColSetMember>} colSetMember 
      * @param {*} [options] Override http request option.
@@ -23047,7 +23109,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23059,18 +23121,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public colSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).colSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23081,7 +23143,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23093,7 +23155,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23104,7 +23166,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23115,7 +23177,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Post One
      * @param {CaseDbColSet} colSet 
      * @param {*} [options] Override http request option.
@@ -23126,7 +23188,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23139,7 +23201,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23152,7 +23214,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Post Some
      * @param {Array<CaseDbColSet>} colSet 
      * @param {*} [options] Override http request option.
@@ -23163,7 +23225,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent replacement of the columns in a column set.  The provided members keep read/write scopes and user-interface column groupings aligned.
+     * Represents a request to replace the association between a column set and its columns.  The provided members keep read/write scopes and user-interface column groupings aligned.
      * @summary Update Association Between Colset And CaseDbCol
      * @param {string} colSetId 
      * @param {CaseDbColSetColUpdateAssociationRequestBody} colSetColUpdateAssociationRequestBody 
@@ -23175,7 +23237,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Put One
      * @param {string} objectId 
      * @param {CaseDbColSet} colSet 
@@ -23187,7 +23249,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable column sets.
+     * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Put Some
      * @param {Array<CaseDbColSet>} colSet 
      * @param {*} [options] Override http request option.
@@ -23198,7 +23260,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23210,18 +23272,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public colsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).colsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23232,7 +23294,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23244,7 +23306,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23255,7 +23317,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23266,7 +23328,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Post One
      * @param {CaseDbCol} col 
      * @param {*} [options] Override http request option.
@@ -23277,7 +23339,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23290,7 +23352,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23303,7 +23365,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Post Some
      * @param {Array<CaseDbCol>} col 
      * @param {*} [options] Override http request option.
@@ -23314,7 +23376,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Put One
      * @param {string} objectId 
      * @param {CaseDbCol} col 
@@ -23326,7 +23388,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for typed case-data columns.
+     * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Put Some
      * @param {Array<CaseDbCol>} col 
      * @param {*} [options] Override http request option.
@@ -23337,7 +23399,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for a complete case type.
+     * Represents a request to retrieve a complete case type.
      * @summary Retrieve Complete Casetype
      * @param {string} caseTypeId 
      * @param {*} [options] Override http request option.
@@ -23348,7 +23410,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent creation of a case set and its initial associations.  Model validation:     The creating data collection is removed from the additional data     collections because it is already associated through the case set.
+     * Represents a request to create a case set and its initial associations.  Model validation:     The creating data collection is removed from the additional data     collections because it is already associated through the case set.
      * @summary Create CaseDbCase Set
      * @param {CaseDbCreateCaseSetRequestBody} createCaseSetRequestBody 
      * @param {*} [options] Override http request option.
@@ -23359,7 +23421,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent upload of a raw-reads file for a case read-set column.  The command accepts base64 content with optional compression, distinguishes forward from reverse reads, and returns the stored file ID.
+     * Represents a request to upload a raw-reads file for a case read-set column.  The command accepts base64 content with optional compression, distinguishes forward from reverse reads, and returns the stored file ID.
      * @summary Create File For Reads Set
      * @param {string} caseId 
      * @param {string} colId 
@@ -23372,7 +23434,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent upload of an assembled file for a case sequence column.  The command accepts base64 content with optional compression and returns the stored file ID.
+     * Represents a request to upload an assembled file for a case sequence column.  The command accepts base64 content with optional compression and returns the stored file ID.
      * @summary Create File For Sequence
      * @param {string} caseId 
      * @param {string} colId 
@@ -23385,7 +23447,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23397,18 +23459,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public dimsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).dimsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23419,7 +23481,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23431,7 +23493,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23442,7 +23504,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23453,7 +23515,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Post One
      * @param {CaseDbDim} dim 
      * @param {*} [options] Override http request option.
@@ -23464,7 +23526,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23477,7 +23539,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23490,7 +23552,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Post Some
      * @param {Array<CaseDbDim>} dim 
      * @param {*} [options] Override http request option.
@@ -23501,7 +23563,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Put One
      * @param {string} objectId 
      * @param {CaseDbDim} dim 
@@ -23513,7 +23575,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for dimensions that group case-type columns.
+     * Represents a request to execute a CRUD operation on Dims.
      * @summary Dims  Put Some
      * @param {Array<CaseDbDim>} dim 
      * @param {*} [options] Override http request option.
@@ -23524,7 +23586,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23536,18 +23598,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public geneticDistanceProtocolsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public geneticDistanceProtocolsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23558,7 +23620,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23570,7 +23632,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23581,7 +23643,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23592,7 +23654,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Post One
      * @param {CaseDbGeneticDistanceProtocol} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -23603,7 +23665,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23616,7 +23678,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23629,7 +23691,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Post Some
      * @param {Array<CaseDbGeneticDistanceProtocol>} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -23640,7 +23702,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Put One
      * @param {string} objectId 
      * @param {CaseDbGeneticDistanceProtocol} geneticDistanceProtocol 
@@ -23652,7 +23714,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for genetic-distance protocols.
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Put Some
      * @param {Array<CaseDbGeneticDistanceProtocol>} geneticDistanceProtocol 
      * @param {*} [options] Override http request option.
@@ -23663,7 +23725,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23675,18 +23737,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refColsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public refColsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).refColsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23697,7 +23759,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23709,7 +23771,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23720,7 +23782,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23731,7 +23793,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Post One
      * @param {CaseDbRefCol} refCol 
      * @param {*} [options] Override http request option.
@@ -23742,7 +23804,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23755,7 +23817,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23768,7 +23830,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Post Some
      * @param {Array<CaseDbRefCol>} refCol 
      * @param {*} [options] Override http request option.
@@ -23779,7 +23841,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Put One
      * @param {string} objectId 
      * @param {CaseDbRefCol} refCol 
@@ -23791,7 +23853,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference-column definitions.
+     * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Put Some
      * @param {Array<CaseDbRefCol>} refCol 
      * @param {*} [options] Override http request option.
@@ -23812,7 +23874,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23824,18 +23886,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refDimsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public refDimsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).refDimsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23846,7 +23908,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23858,7 +23920,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23869,7 +23931,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23880,7 +23942,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Post One
      * @param {CaseDbRefDim} refDim 
      * @param {*} [options] Override http request option.
@@ -23891,7 +23953,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23904,7 +23966,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23917,7 +23979,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Post Some
      * @param {Array<CaseDbRefDim>} refDim 
      * @param {*} [options] Override http request option.
@@ -23928,7 +23990,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Put One
      * @param {string} objectId 
      * @param {CaseDbRefDim} refDim 
@@ -23940,7 +24002,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for reusable reference dimensions.
+     * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Put Some
      * @param {Array<CaseDbRefDim>} refDim 
      * @param {*} [options] Override http request option.
@@ -23951,7 +24013,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for seqdb protocols by protocol type.
+     * Represents a request to retrieve seqdb protocols by protocol type.
      * @summary Retrieve Assembly Protocols
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -23961,7 +24023,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for case-to-cohort links for a case type.  The request returns every case without pagination and is restricted to the application administrator role.
+     * Represents a request to retrieve case-to-cohort links for a case type.  The request returns every case without pagination and is restricted to the application administrator role.
      * @summary Retrieve CaseDbCase Cohort Ids By CaseDbCase Type
      * @param {CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody} retrieveCaseCohortLinksByCaseTypeRequestBody 
      * @param {*} [options] Override http request option.
@@ -23972,7 +24034,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for cases matching a case query.
+     * Represents a request to retrieve cases matching a case query.
      * @summary Retrieve CaseDbCase Ids By Query
      * @param {CaseDbCaseQuery} caseQuery 
      * @param {*} [options] Override http request option.
@@ -23983,7 +24045,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for access rights to specified cases.
+     * Represents a request to retrieve access rights to specified cases.
      * @summary Retrieve CaseDbCase Rights
      * @param {CaseDbRetrieveCaseRightsRequestBody} retrieveCaseRightsRequestBody 
      * @param {*} [options] Override http request option.
@@ -23994,7 +24056,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for access rights to specified case sets.
+     * Represents a request to retrieve access rights to specified case sets.
      * @summary Retrieve CaseDbCase Set Rights
      * @param {Array<string>} requestBody 
      * @param {*} [options] Override http request option.
@@ -24005,7 +24067,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for statistics about case sets.  Optional parameters further filter the cases considered for the statistics.
+     * Represents a request to retrieve statistics about case sets.  Optional parameters further filter the cases considered for the statistics.
      * @summary Retrieve CaseDbCase Set Statistics
      * @param {CaseDbRetrieveCaseSetStatsRequestBody} retrieveCaseSetStatsRequestBody 
      * @param {*} [options] Override http request option.
@@ -24016,7 +24078,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for statistics about case types.  Optional parameters further filter the cases considered for the statistics.
+     * Represents a request to retrieve statistics about case types.  Optional parameters further filter the cases considered for the statistics.
      * @summary Retrieve Casetype Statistics
      * @param {CaseDbRetrieveCaseTypeStatsRequestBody} retrieveCaseTypeStatsRequestBody 
      * @param {*} [options] Override http request option.
@@ -24027,7 +24089,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for cases identified by unique IDs.
+     * Represents a request to retrieve cases identified by unique IDs.
      * @summary Retrieve Cases By Ids
      * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
      * @param {*} [options] Override http request option.
@@ -24038,7 +24100,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for case-linked sequences in FASTA format.  The response is an iterator that yields FASTA lines for sequences selected through the specified genetic-sequence column.
+     * Represents a request for case-linked sequences in FASTA format.  The response is an iterator that yields FASTA lines for sequences selected through the specified genetic-sequence column.
      * @summary Retrieve Genetic Sequence By CaseDbCase, In Fasta Format And Streamed
      * @param {string} token 
      * @param {string} caseTypeId 
@@ -24053,7 +24115,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for cases owned by or accessible to the user.  The response contains the supplied case IDs that the user owns or may access.
+     * Represents a request to retrieve cases owned by or accessible to the user.  The response contains the supplied case IDs that the user owns or may access.
      * @summary Retrieve Whether The CaseDbUser Owns The Cases
      * @param {CaseDbRetrieveCasesByIdRequestBody} retrieveCasesByIdRequestBody 
      * @param {*} [options] Override http request option.
@@ -24064,7 +24126,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent phylogenetic-tree calculation from cases and genetic distances.
+     * Represents a request to calculate a phylogenetic tree from cases and genetic distances.
      * @summary Retrieve Phylogenetic Tree
      * @param {CaseDbRetrievePhylogeneticTreeRequestBody} retrievePhylogeneticTreeRequestBody 
      * @param {*} [options] Override http request option.
@@ -24075,7 +24137,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for seqdb protocols by protocol type.
+     * Represents a request to retrieve seqdb protocols by protocol type.
      * @summary Retrieve Sequencing Protocols
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -24085,7 +24147,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent a request for genetically similar cases.  Similarity is based on a genetic-distance column and a maximum distance threshold applied to the supplied case IDs.
+     * Represents a request to retrieve genetically similar cases.  Similarity is based on a genetic-distance column and a maximum distance threshold applied to the supplied case IDs.
      * @summary Retrieve Similar Cases
      * @param {CaseDbRetrieveSimilarCasesRequestBody} retrieveSimilarCasesRequestBody 
      * @param {*} [options] Override http request option.
@@ -24096,7 +24158,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -24108,18 +24170,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public treeAlgorithmClassesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24130,7 +24192,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -24142,7 +24204,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24153,7 +24215,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24164,7 +24226,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Post One
      * @param {CaseDbTreeAlgorithmClass} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -24175,7 +24237,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -24188,7 +24250,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -24201,7 +24263,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Post Some
      * @param {Array<CaseDbTreeAlgorithmClass>} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -24212,7 +24274,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Put One
      * @param {string} objectId 
      * @param {CaseDbTreeAlgorithmClass} treeAlgorithmClass 
@@ -24224,7 +24286,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic algorithm categories.
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Put Some
      * @param {Array<CaseDbTreeAlgorithmClass>} treeAlgorithmClass 
      * @param {*} [options] Override http request option.
@@ -24235,7 +24297,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -24247,18 +24309,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public treeAlgorithmsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).treeAlgorithmsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24269,7 +24331,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -24281,7 +24343,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -24292,7 +24354,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -24303,7 +24365,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Post One
      * @param {CaseDbTreeAlgorithm} treeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -24314,7 +24376,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -24327,7 +24389,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -24340,7 +24402,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Post Some
      * @param {Array<CaseDbTreeAlgorithm>} treeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -24351,7 +24413,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Put One
      * @param {string} objectId 
      * @param {CaseDbTreeAlgorithm} treeAlgorithm 
@@ -24363,7 +24425,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent CRUD operations for phylogenetic-tree algorithms.
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Put Some
      * @param {Array<CaseDbTreeAlgorithm>} treeAlgorithm 
      * @param {*} [options] Override http request option.
@@ -24374,7 +24436,18 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represent an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
+     * Represents a request to assign a different created_in_data_collection_id to a list of cases.
+     * @summary Update Cases\' Creating Data Collection
+     * @param {CaseDbUpdateCaseCreatedInDataCollectionRequestBody} updateCaseCreatedInDataCollectionRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public updateCaseCreatedInDataCollection(updateCaseCreatedInDataCollectionRequestBody: CaseDbUpdateCaseCreatedInDataCollectionRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).updateCaseCreatedInDataCollection(updateCaseCreatedInDataCollectionRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform an atomic batch upload of cases and associated data.  The upload returns an upload result. Setting ``verify_only`` stops processing after verification, so the result contains only verification outcomes.  The data are uploaded as a single atomic unit of work, so that either all data are successfully uploaded or none are.  Model validation:     Every supplied case must belong to the command\'s case type. A mismatched     case causes validation to fail.
      * @summary Upload Cases
      * @param {CaseDbUploadCasesCommand} uploadCasesCommand 
      * @param {*} [options] Override http request option.
@@ -24529,11 +24602,11 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represent CRUD operations for relationships between regions.
          * @summary CaseDbRegion Relations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionRelationsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionRelationsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('regionRelationsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/region_relations/{object_id}`
@@ -24985,11 +25058,11 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represent CRUD operations for shapes associated with region sets.
          * @summary CaseDbRegion Set Shapes  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetShapesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetShapesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('regionSetShapesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/region_set_shapes/{object_id}`
@@ -25441,11 +25514,11 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represent CRUD operations for geographic region sets.
          * @summary CaseDbRegion Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('regionSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/region_sets/{object_id}`
@@ -25897,11 +25970,11 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represent CRUD operations for geographic regions.
          * @summary Regions  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('regionsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/regions/{object_id}`
@@ -26336,11 +26409,11 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for relationships between regions.
          * @summary CaseDbRegion Relations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionRelationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async regionRelationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionRelationsDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -26499,11 +26572,11 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for shapes associated with region sets.
          * @summary CaseDbRegion Set Shapes  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetShapesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async regionSetShapesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetShapesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -26662,11 +26735,11 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for geographic region sets.
          * @summary CaseDbRegion Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async regionSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -26825,11 +26898,11 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for geographic regions.
          * @summary Regions  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async regionsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.regionsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionsDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -27011,11 +27084,11 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for relationships between regions.
      * @summary CaseDbRegion Relations  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionRelationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public regionRelationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbGeoApiFp(this.configuration).regionRelationsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -27150,11 +27223,11 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for shapes associated with region sets.
      * @summary CaseDbRegion Set Shapes  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetShapesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public regionSetShapesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbGeoApiFp(this.configuration).regionSetShapesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -27289,11 +27362,11 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for geographic region sets.
      * @summary CaseDbRegion Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public regionSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbGeoApiFp(this.configuration).regionSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -27428,11 +27501,11 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for geographic regions.
      * @summary Regions  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public regionsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbGeoApiFp(this.configuration).regionsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -27603,11 +27676,11 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for semantic relationships between concepts.
          * @summary CaseDbConcept Relations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptRelationsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptRelationsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('conceptRelationsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/concept_relations/{object_id}`
@@ -28059,11 +28132,11 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for controlled vocabularies and value sets.
          * @summary CaseDbConcept Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('conceptSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/concept_sets/{object_id}`
@@ -28515,11 +28588,11 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for concepts within a concept set.
          * @summary Concepts  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('conceptsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/concepts/{object_id}`
@@ -28971,11 +29044,11 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for diseases that anchor case types.
          * @summary Diseases  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        diseasesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        diseasesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('diseasesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/diseases/{object_id}`
@@ -29466,11 +29539,11 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for disease etiological agents.
          * @summary Etiological Agents  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologicalAgentsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologicalAgentsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('etiologicalAgentsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/etiological_agents/{object_id}`
@@ -29922,11 +29995,11 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for disease-agent etiology links.
          * @summary Etiologies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologiesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologiesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('etiologiesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/etiologies/{object_id}`
@@ -30361,11 +30434,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for semantic relationships between concepts.
          * @summary CaseDbConcept Relations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptRelationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async conceptRelationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptRelationsDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -30524,11 +30597,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for controlled vocabularies and value sets.
          * @summary CaseDbConcept Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async conceptSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -30687,11 +30760,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for concepts within a concept set.
          * @summary Concepts  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async conceptsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptsDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -30850,11 +30923,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for diseases that anchor case types.
          * @summary Diseases  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async diseasesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async diseasesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -31027,11 +31100,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for disease etiological agents.
          * @summary Etiological Agents  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologicalAgentsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async etiologicalAgentsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologicalAgentsDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -31190,11 +31263,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for disease-agent etiology links.
          * @summary Etiologies  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologiesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async etiologiesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologiesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -31376,11 +31449,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for semantic relationships between concepts.
      * @summary CaseDbConcept Relations  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptRelationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public conceptRelationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).conceptRelationsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -31515,11 +31588,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for controlled vocabularies and value sets.
      * @summary CaseDbConcept Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public conceptSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).conceptSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -31654,11 +31727,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for concepts within a concept set.
      * @summary Concepts  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public conceptsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).conceptsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -31793,11 +31866,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for diseases that anchor case types.
      * @summary Diseases  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public diseasesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public diseasesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).diseasesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -31944,11 +32017,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for disease etiological agents.
      * @summary Etiological Agents  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologicalAgentsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public etiologicalAgentsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -32083,11 +32156,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for disease-agent etiology links.
      * @summary Etiologies  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologiesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public etiologiesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).etiologiesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
@@ -32250,7 +32323,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32290,13 +32363,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('contactsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/contacts/{object_id}`
@@ -32324,7 +32397,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32361,7 +32434,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32401,7 +32474,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -32435,7 +32508,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32472,7 +32545,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post One
          * @param {CaseDbContact} contact 
          * @param {*} [options] Override http request option.
@@ -32507,7 +32580,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32552,7 +32625,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -32597,7 +32670,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Some
          * @param {Array<CaseDbContact>} contact 
          * @param {*} [options] Override http request option.
@@ -32632,7 +32705,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Put One
          * @param {string} objectId 
          * @param {CaseDbContact} contact 
@@ -32671,7 +32744,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Put Some
          * @param {Array<CaseDbContact>} contact 
          * @param {*} [options] Override http request option.
@@ -32706,7 +32779,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32746,13 +32819,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('dataCollectionSetMembersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/data_collection_set_members/{object_id}`
@@ -32780,7 +32853,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32817,7 +32890,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -32857,7 +32930,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -32891,7 +32964,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -32928,7 +33001,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post One
          * @param {CaseDbDataCollectionSetMember} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -32963,7 +33036,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33008,7 +33081,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33053,7 +33126,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Some
          * @param {Array<CaseDbDataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -33088,7 +33161,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbDataCollectionSetMember} dataCollectionSetMember 
@@ -33127,7 +33200,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Put Some
          * @param {Array<CaseDbDataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -33162,7 +33235,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33202,13 +33275,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('dataCollectionSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/data_collection_sets/{object_id}`
@@ -33236,7 +33309,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33273,7 +33346,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33313,7 +33386,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -33347,7 +33420,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33384,7 +33457,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post One
          * @param {CaseDbDataCollectionSet} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -33419,7 +33492,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33464,7 +33537,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33509,7 +33582,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Some
          * @param {Array<CaseDbDataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -33544,7 +33617,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
+         * Represents a request to update the association between a CaseDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -33583,7 +33656,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbDataCollectionSet} dataCollectionSet 
@@ -33622,7 +33695,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Put Some
          * @param {Array<CaseDbDataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -33657,7 +33730,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33697,13 +33770,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('dataCollectionsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/data_collections/{object_id}`
@@ -33731,7 +33804,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33768,7 +33841,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -33808,7 +33881,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -33842,7 +33915,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -33879,7 +33952,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post One
          * @param {CaseDbDataCollection} dataCollection 
          * @param {*} [options] Override http request option.
@@ -33914,7 +33987,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -33959,7 +34032,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -34004,7 +34077,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Some
          * @param {Array<CaseDbDataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
@@ -34039,7 +34112,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Put One
          * @param {string} objectId 
          * @param {CaseDbDataCollection} dataCollection 
@@ -34078,7 +34151,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Put Some
          * @param {Array<CaseDbDataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
@@ -34113,7 +34186,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -34153,13 +34226,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('identifierIssuersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/identifier_issuers/{object_id}`
@@ -34187,7 +34260,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -34224,7 +34297,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -34264,7 +34337,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -34298,7 +34371,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -34335,7 +34408,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post One
          * @param {CaseDbIdentifierIssuer} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -34370,7 +34443,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -34415,7 +34488,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -34460,7 +34533,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Some
          * @param {Array<CaseDbIdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -34495,7 +34568,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Put One
          * @param {string} objectId 
          * @param {CaseDbIdentifierIssuer} identifierIssuer 
@@ -34534,7 +34607,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Put Some
          * @param {Array<CaseDbIdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -34569,7 +34642,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Create and return a CaseDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+         * Represents a request to create and return a CaseDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A CaseDbUser
          * @param {CaseDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
@@ -34604,7 +34677,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents retrieval of the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
          * @summary The Constraints For Inviting A CaseDbUser
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34634,7 +34707,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -34674,13 +34747,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationIdentifierIssuerLinksDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_identifier_issuer_links/{object_id}`
@@ -34708,7 +34781,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -34745,7 +34818,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -34785,7 +34858,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -34819,7 +34892,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -34856,7 +34929,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Post One
          * @param {CaseDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -34891,7 +34964,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -34936,7 +35009,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -34981,7 +35054,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Post Some
          * @param {Array<CaseDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -35016,7 +35089,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Put One
          * @param {string} objectId 
          * @param {CaseDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
@@ -35055,7 +35128,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Put Some
          * @param {Array<CaseDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -35090,7 +35163,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -35130,13 +35203,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationSetMembersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_set_members/{object_id}`
@@ -35164,7 +35237,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -35201,7 +35274,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -35241,7 +35314,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -35275,7 +35348,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -35312,7 +35385,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Post One
          * @param {CaseDbOrganizationSetMember} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -35347,7 +35420,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -35392,7 +35465,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -35437,7 +35510,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Post Some
          * @param {Array<CaseDbOrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -35472,7 +35545,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbOrganizationSetMember} organizationSetMember 
@@ -35511,7 +35584,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Put Some
          * @param {Array<CaseDbOrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -35546,7 +35619,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -35586,13 +35659,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationSetsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organization_sets/{object_id}`
@@ -35620,7 +35693,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -35657,7 +35730,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -35697,7 +35770,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -35731,7 +35804,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -35768,7 +35841,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Post One
          * @param {CaseDbOrganizationSet} organizationSet 
          * @param {*} [options] Override http request option.
@@ -35803,7 +35876,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -35848,7 +35921,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -35893,7 +35966,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Post Some
          * @param {Array<CaseDbOrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
@@ -35928,7 +36001,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbOrganizationSet} organizationSet 
@@ -35967,7 +36040,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
+         * Represents a request to update the association between an CaseDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset CaseDbOrganization
          * @param {string} organizationSetId 
          * @param {CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -36006,7 +36079,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Put Some
          * @param {Array<CaseDbOrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
@@ -36041,7 +36114,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -36081,13 +36154,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('organizationsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/organizations/{object_id}`
@@ -36115,7 +36188,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -36152,7 +36225,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -36192,7 +36265,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -36226,7 +36299,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -36263,7 +36336,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post One
          * @param {CaseDbOrganization} organization 
          * @param {*} [options] Override http request option.
@@ -36298,7 +36371,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -36343,7 +36416,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -36388,7 +36461,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Some
          * @param {Array<CaseDbOrganization>} organization 
          * @param {*} [options] Override http request option.
@@ -36423,7 +36496,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents a request to create or update organization-to-identifier issuer associations.
+         * Represents a request to update the association between an CaseDbOrganization and IdentifierIssuers.
          * @summary Update Association Between CaseDbOrganization And Identifierissuer
          * @param {string} organizationId 
          * @param {CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -36462,7 +36535,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Put One
          * @param {string} objectId 
          * @param {CaseDbOrganization} organization 
@@ -36501,7 +36574,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Put Some
          * @param {Array<CaseDbOrganization>} organization 
          * @param {*} [options] Override http request option.
@@ -36536,7 +36609,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
          * @summary Retrieve CaseDbOrganization Contacts
          * @param {CaseDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
          * @param {*} [options] Override http request option.
@@ -36571,7 +36644,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -36611,13 +36684,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('sitesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/sites/{object_id}`
@@ -36645,7 +36718,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -36682,7 +36755,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -36722,7 +36795,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -36756,7 +36829,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -36793,7 +36866,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post One
          * @param {CaseDbSite} site 
          * @param {*} [options] Override http request option.
@@ -36828,7 +36901,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -36873,7 +36946,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -36918,7 +36991,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Some
          * @param {Array<CaseDbSite>} site 
          * @param {*} [options] Override http request option.
@@ -36953,7 +37026,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Put One
          * @param {string} objectId 
          * @param {CaseDbSite} site 
@@ -36992,7 +37065,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Put Some
          * @param {Array<CaseDbSite>} site 
          * @param {*} [options] Override http request option.
@@ -37027,7 +37100,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Update an existing CaseDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+         * Represents a request to update an existing CaseDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
          * @summary Updateuser
          * @param {string} objectId 
          * @param {CaseDbUpdateUserRequestBody} updateUserRequestBody 
@@ -37066,7 +37139,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Updates the current user\'s CaseDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+         * Represents a request to update the current user\'s CaseDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
          * @summary Updateuserownorganizationcommand
          * @param {CaseDbUpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
          * @param {*} [options] Override http request option.
@@ -37101,7 +37174,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -37141,13 +37214,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('userInvitationsDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/user_invitations/{object_id}`
@@ -37175,7 +37248,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -37212,7 +37285,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -37252,7 +37325,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -37286,7 +37359,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -37323,7 +37396,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Post One
          * @param {CaseDbUserInvitation} userInvitation 
          * @param {*} [options] Override http request option.
@@ -37358,7 +37431,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -37403,7 +37476,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -37448,7 +37521,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Post Some
          * @param {Array<CaseDbUserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
@@ -37483,7 +37556,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Put One
          * @param {string} objectId 
          * @param {CaseDbUserInvitation} userInvitation 
@@ -37522,7 +37595,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Put Some
          * @param {Array<CaseDbUserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
@@ -37617,7 +37690,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Register the user represented by an existing CaseDbUserInvitation.  The token must match that of an existing CaseDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+         * Represents a request to register the user represented by an existing CaseDbUserInvitation.  The token must match that of an existing CaseDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
          * @summary Register Inviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -37651,7 +37724,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -37691,13 +37764,13 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('usersDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/users/{object_id}`
@@ -37725,7 +37798,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -37762,7 +37835,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -37802,7 +37875,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -37836,7 +37909,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -37873,7 +37946,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post One
          * @param {CaseDbUser} user 
          * @param {*} [options] Override http request option.
@@ -37908,7 +37981,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -37953,7 +38026,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -37998,7 +38071,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Some
          * @param {Array<CaseDbUser>} user 
          * @param {*} [options] Override http request option.
@@ -38033,7 +38106,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Put One
          * @param {string} objectId 
          * @param {CaseDbUser} user 
@@ -38072,7 +38145,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Put Some
          * @param {Array<CaseDbUser>} user 
          * @param {*} [options] Override http request option.
@@ -38129,7 +38202,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38143,20 +38216,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async contactsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38169,7 +38242,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38183,7 +38256,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -38196,7 +38269,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38209,7 +38282,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post One
          * @param {CaseDbContact} contact 
          * @param {*} [options] Override http request option.
@@ -38222,7 +38295,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38237,7 +38310,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38252,7 +38325,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Post Some
          * @param {Array<CaseDbContact>} contact 
          * @param {*} [options] Override http request option.
@@ -38265,7 +38338,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Put One
          * @param {string} objectId 
          * @param {CaseDbContact} contact 
@@ -38279,7 +38352,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization contact records.
+         * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Put Some
          * @param {Array<CaseDbContact>} contact 
          * @param {*} [options] Override http request option.
@@ -38292,7 +38365,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38306,20 +38379,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async dataCollectionSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38332,7 +38405,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38346,7 +38419,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -38359,7 +38432,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38372,7 +38445,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post One
          * @param {CaseDbDataCollectionSetMember} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -38385,7 +38458,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38400,7 +38473,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38415,7 +38488,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Post Some
          * @param {Array<CaseDbDataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -38428,7 +38501,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbDataCollectionSetMember} dataCollectionSetMember 
@@ -38442,7 +38515,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set membership records.
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Put Some
          * @param {Array<CaseDbDataCollectionSetMember>} dataCollectionSetMember 
          * @param {*} [options] Override http request option.
@@ -38455,7 +38528,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38469,20 +38542,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async dataCollectionSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38495,7 +38568,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38509,7 +38582,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -38522,7 +38595,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38535,7 +38608,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post One
          * @param {CaseDbDataCollectionSet} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -38548,7 +38621,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38563,7 +38636,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38578,7 +38651,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Post Some
          * @param {Array<CaseDbDataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -38591,7 +38664,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
+         * Represents a request to update the association between a CaseDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -38605,7 +38678,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbDataCollectionSet} dataCollectionSet 
@@ -38619,7 +38692,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection-set records.
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Put Some
          * @param {Array<CaseDbDataCollectionSet>} dataCollectionSet 
          * @param {*} [options] Override http request option.
@@ -38632,7 +38705,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38646,20 +38719,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async dataCollectionsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38672,7 +38745,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38686,7 +38759,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -38699,7 +38772,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38712,7 +38785,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post One
          * @param {CaseDbDataCollection} dataCollection 
          * @param {*} [options] Override http request option.
@@ -38725,7 +38798,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38740,7 +38813,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38755,7 +38828,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Post Some
          * @param {Array<CaseDbDataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
@@ -38768,7 +38841,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Put One
          * @param {string} objectId 
          * @param {CaseDbDataCollection} dataCollection 
@@ -38782,7 +38855,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for data-collection records.
+         * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Put Some
          * @param {Array<CaseDbDataCollection>} dataCollection 
          * @param {*} [options] Override http request option.
@@ -38795,7 +38868,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38809,20 +38882,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async identifierIssuersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38835,7 +38908,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38849,7 +38922,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -38862,7 +38935,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -38875,7 +38948,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post One
          * @param {CaseDbIdentifierIssuer} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -38888,7 +38961,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38903,7 +38976,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -38918,7 +38991,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Post Some
          * @param {Array<CaseDbIdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -38931,7 +39004,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Put One
          * @param {string} objectId 
          * @param {CaseDbIdentifierIssuer} identifierIssuer 
@@ -38945,7 +39018,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for identifier issuer records.
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Put Some
          * @param {Array<CaseDbIdentifierIssuer>} identifierIssuer 
          * @param {*} [options] Override http request option.
@@ -38958,7 +39031,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create and return a CaseDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+         * Represents a request to create and return a CaseDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
          * @summary Invite A CaseDbUser
          * @param {CaseDbInviteUserRequestBody} inviteUserRequestBody 
          * @param {*} [options] Override http request option.
@@ -38971,7 +39044,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents retrieval of the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
          * @summary The Constraints For Inviting A CaseDbUser
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -38983,7 +39056,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -38997,20 +39070,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationIdentifierIssuerLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39023,7 +39096,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39037,7 +39110,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39050,7 +39123,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39063,7 +39136,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Post One
          * @param {CaseDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -39076,7 +39149,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39091,7 +39164,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39106,7 +39179,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Post Some
          * @param {Array<CaseDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -39119,7 +39192,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Put One
          * @param {string} objectId 
          * @param {CaseDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
@@ -39133,7 +39206,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-identifier issuer links.
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Put Some
          * @param {Array<CaseDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
          * @param {*} [options] Override http request option.
@@ -39146,7 +39219,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39160,20 +39233,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39186,7 +39259,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39200,7 +39273,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39213,7 +39286,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39226,7 +39299,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Post One
          * @param {CaseDbOrganizationSetMember} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -39239,7 +39312,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39254,7 +39327,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39269,7 +39342,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Post Some
          * @param {Array<CaseDbOrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -39282,7 +39355,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Put One
          * @param {string} objectId 
          * @param {CaseDbOrganizationSetMember} organizationSetMember 
@@ -39296,7 +39369,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set membership records.
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Put Some
          * @param {Array<CaseDbOrganizationSetMember>} organizationSetMember 
          * @param {*} [options] Override http request option.
@@ -39309,7 +39382,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39323,20 +39396,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39349,7 +39422,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39363,7 +39436,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39376,7 +39449,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39389,7 +39462,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Post One
          * @param {CaseDbOrganizationSet} organizationSet 
          * @param {*} [options] Override http request option.
@@ -39402,7 +39475,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39417,7 +39490,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39432,7 +39505,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Post Some
          * @param {Array<CaseDbOrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
@@ -39445,7 +39518,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Put One
          * @param {string} objectId 
          * @param {CaseDbOrganizationSet} organizationSet 
@@ -39459,7 +39532,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
+         * Represents a request to update the association between an CaseDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset CaseDbOrganization
          * @param {string} organizationSetId 
          * @param {CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -39473,7 +39546,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization-set records.
+         * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Put Some
          * @param {Array<CaseDbOrganizationSet>} organizationSet 
          * @param {*} [options] Override http request option.
@@ -39486,7 +39559,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39500,20 +39573,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async organizationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39526,7 +39599,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39540,7 +39613,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39553,7 +39626,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39566,7 +39639,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post One
          * @param {CaseDbOrganization} organization 
          * @param {*} [options] Override http request option.
@@ -39579,7 +39652,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39594,7 +39667,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39609,7 +39682,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Post Some
          * @param {Array<CaseDbOrganization>} organization 
          * @param {*} [options] Override http request option.
@@ -39622,7 +39695,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to create or update organization-to-identifier issuer associations.
+         * Represents a request to update the association between an CaseDbOrganization and IdentifierIssuers.
          * @summary Update Association Between CaseDbOrganization And Identifierissuer
          * @param {string} organizationId 
          * @param {CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -39636,7 +39709,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Put One
          * @param {string} objectId 
          * @param {CaseDbOrganization} organization 
@@ -39650,7 +39723,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization records.
+         * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Put Some
          * @param {Array<CaseDbOrganization>} organization 
          * @param {*} [options] Override http request option.
@@ -39663,7 +39736,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
          * @summary Retrieve CaseDbOrganization Contacts
          * @param {CaseDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
          * @param {*} [options] Override http request option.
@@ -39676,7 +39749,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39690,20 +39763,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async sitesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39716,7 +39789,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39730,7 +39803,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39743,7 +39816,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39756,7 +39829,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post One
          * @param {CaseDbSite} site 
          * @param {*} [options] Override http request option.
@@ -39769,7 +39842,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39784,7 +39857,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39799,7 +39872,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Post Some
          * @param {Array<CaseDbSite>} site 
          * @param {*} [options] Override http request option.
@@ -39812,7 +39885,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Put One
          * @param {string} objectId 
          * @param {CaseDbSite} site 
@@ -39826,7 +39899,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for organization site records.
+         * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Put Some
          * @param {Array<CaseDbSite>} site 
          * @param {*} [options] Override http request option.
@@ -39839,7 +39912,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Update an existing CaseDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+         * Represents a request to update an existing CaseDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
          * @summary Updateuser
          * @param {string} objectId 
          * @param {CaseDbUpdateUserRequestBody} updateUserRequestBody 
@@ -39853,7 +39926,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Updates the current user\'s CaseDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+         * Represents a request to update the current user\'s CaseDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
          * @summary Updateuserownorganizationcommand
          * @param {CaseDbUpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
          * @param {*} [options] Override http request option.
@@ -39866,7 +39939,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39880,20 +39953,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async userInvitationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39906,7 +39979,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -39920,7 +39993,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -39933,7 +40006,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -39946,7 +40019,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Post One
          * @param {CaseDbUserInvitation} userInvitation 
          * @param {*} [options] Override http request option.
@@ -39959,7 +40032,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39974,7 +40047,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -39989,7 +40062,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Post Some
          * @param {Array<CaseDbUserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
@@ -40002,7 +40075,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Put One
          * @param {string} objectId 
          * @param {CaseDbUserInvitation} userInvitation 
@@ -40016,7 +40089,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user invitation records.
+         * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Put Some
          * @param {Array<CaseDbUserInvitation>} userInvitation 
          * @param {*} [options] Override http request option.
@@ -40053,7 +40126,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Register the user represented by an existing CaseDbUserInvitation.  The token must match that of an existing CaseDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+         * Represents a request to register the user represented by an existing CaseDbUserInvitation.  The token must match that of an existing CaseDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
          * @summary Register Inviteduser
          * @param {string} token 
          * @param {*} [options] Override http request option.
@@ -40066,7 +40139,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -40080,20 +40153,20 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async usersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersDeleteOne']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -40106,7 +40179,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -40120,7 +40193,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -40133,7 +40206,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -40146,7 +40219,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post One
          * @param {CaseDbUser} user 
          * @param {*} [options] Override http request option.
@@ -40159,7 +40232,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -40174,7 +40247,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -40189,7 +40262,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Post Some
          * @param {Array<CaseDbUser>} user 
          * @param {*} [options] Override http request option.
@@ -40202,7 +40275,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Put One
          * @param {string} objectId 
          * @param {CaseDbUser} user 
@@ -40216,7 +40289,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents CRUD operations for user records.
+         * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Put Some
          * @param {Array<CaseDbUser>} user 
          * @param {*} [options] Override http request option.
@@ -40265,7 +40338,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40277,18 +40350,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public contactsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).contactsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40299,7 +40372,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40311,7 +40384,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -40322,7 +40395,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40333,7 +40406,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Post One
      * @param {CaseDbContact} contact 
      * @param {*} [options] Override http request option.
@@ -40344,7 +40417,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40357,7 +40430,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40370,7 +40443,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Post Some
      * @param {Array<CaseDbContact>} contact 
      * @param {*} [options] Override http request option.
@@ -40381,7 +40454,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Put One
      * @param {string} objectId 
      * @param {CaseDbContact} contact 
@@ -40393,7 +40466,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization contact records.
+     * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Put Some
      * @param {Array<CaseDbContact>} contact 
      * @param {*} [options] Override http request option.
@@ -40404,7 +40477,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40416,18 +40489,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public dataCollectionSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40438,7 +40511,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40450,7 +40523,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -40461,7 +40534,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40472,7 +40545,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Post One
      * @param {CaseDbDataCollectionSetMember} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
@@ -40483,7 +40556,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40496,7 +40569,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40509,7 +40582,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Post Some
      * @param {Array<CaseDbDataCollectionSetMember>} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
@@ -40520,7 +40593,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Put One
      * @param {string} objectId 
      * @param {CaseDbDataCollectionSetMember} dataCollectionSetMember 
@@ -40532,7 +40605,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set membership records.
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Put Some
      * @param {Array<CaseDbDataCollectionSetMember>} dataCollectionSetMember 
      * @param {*} [options] Override http request option.
@@ -40543,7 +40616,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40555,18 +40628,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public dataCollectionSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40577,7 +40650,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40589,7 +40662,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -40600,7 +40673,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40611,7 +40684,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Post One
      * @param {CaseDbDataCollectionSet} dataCollectionSet 
      * @param {*} [options] Override http request option.
@@ -40622,7 +40695,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40635,7 +40708,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40648,7 +40721,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Post Some
      * @param {Array<CaseDbDataCollectionSet>} dataCollectionSet 
      * @param {*} [options] Override http request option.
@@ -40659,7 +40732,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Updates the association between DataCollectionSets and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
+     * Represents a request to update the association between a CaseDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
      * @summary Datacollectionset Datacollection
      * @param {string} dataCollectionSetId 
      * @param {CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -40671,7 +40744,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Put One
      * @param {string} objectId 
      * @param {CaseDbDataCollectionSet} dataCollectionSet 
@@ -40683,7 +40756,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection-set records.
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Put Some
      * @param {Array<CaseDbDataCollectionSet>} dataCollectionSet 
      * @param {*} [options] Override http request option.
@@ -40694,7 +40767,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40706,18 +40779,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public dataCollectionsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).dataCollectionsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40728,7 +40801,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40740,7 +40813,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -40751,7 +40824,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40762,7 +40835,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Post One
      * @param {CaseDbDataCollection} dataCollection 
      * @param {*} [options] Override http request option.
@@ -40773,7 +40846,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40786,7 +40859,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40799,7 +40872,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Post Some
      * @param {Array<CaseDbDataCollection>} dataCollection 
      * @param {*} [options] Override http request option.
@@ -40810,7 +40883,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Put One
      * @param {string} objectId 
      * @param {CaseDbDataCollection} dataCollection 
@@ -40822,7 +40895,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for data-collection records.
+     * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Put Some
      * @param {Array<CaseDbDataCollection>} dataCollection 
      * @param {*} [options] Override http request option.
@@ -40833,7 +40906,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40845,18 +40918,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public identifierIssuersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).identifierIssuersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40867,7 +40940,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -40879,7 +40952,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -40890,7 +40963,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -40901,7 +40974,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Post One
      * @param {CaseDbIdentifierIssuer} identifierIssuer 
      * @param {*} [options] Override http request option.
@@ -40912,7 +40985,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40925,7 +40998,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -40938,7 +41011,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Post Some
      * @param {Array<CaseDbIdentifierIssuer>} identifierIssuer 
      * @param {*} [options] Override http request option.
@@ -40949,7 +41022,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Put One
      * @param {string} objectId 
      * @param {CaseDbIdentifierIssuer} identifierIssuer 
@@ -40961,7 +41034,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for identifier issuer records.
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Put Some
      * @param {Array<CaseDbIdentifierIssuer>} identifierIssuer 
      * @param {*} [options] Override http request option.
@@ -40972,7 +41045,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Create and return a CaseDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
+     * Represents a request to create and return a CaseDbUserInvitation for a new user.  The invitation records a particular user key claim (e.g. email address), organization and initial role(s).  A random unique token is added to the invitation, and to be provided to the new user for consuming the invitation.
      * @summary Invite A CaseDbUser
      * @param {CaseDbInviteUserRequestBody} inviteUserRequestBody 
      * @param {*} [options] Override http request option.
@@ -40983,7 +41056,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents retrieval of the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+     * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
      * @summary The Constraints For Inviting A CaseDbUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -40993,7 +41066,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41005,18 +41078,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationIdentifierIssuerLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41027,7 +41100,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41039,7 +41112,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -41050,7 +41123,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41061,7 +41134,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Post One
      * @param {CaseDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
      * @param {*} [options] Override http request option.
@@ -41072,7 +41145,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41085,7 +41158,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41098,7 +41171,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Post Some
      * @param {Array<CaseDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
      * @param {*} [options] Override http request option.
@@ -41109,7 +41182,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Put One
      * @param {string} objectId 
      * @param {CaseDbOrganizationIdentifierIssuerLink} organizationIdentifierIssuerLink 
@@ -41121,7 +41194,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-identifier issuer links.
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Put Some
      * @param {Array<CaseDbOrganizationIdentifierIssuerLink>} organizationIdentifierIssuerLink 
      * @param {*} [options] Override http request option.
@@ -41132,7 +41205,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41144,18 +41217,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41166,7 +41239,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41178,7 +41251,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -41189,7 +41262,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41200,7 +41273,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Post One
      * @param {CaseDbOrganizationSetMember} organizationSetMember 
      * @param {*} [options] Override http request option.
@@ -41211,7 +41284,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41224,7 +41297,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41237,7 +41310,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Post Some
      * @param {Array<CaseDbOrganizationSetMember>} organizationSetMember 
      * @param {*} [options] Override http request option.
@@ -41248,7 +41321,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Put One
      * @param {string} objectId 
      * @param {CaseDbOrganizationSetMember} organizationSetMember 
@@ -41260,7 +41333,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set membership records.
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Put Some
      * @param {Array<CaseDbOrganizationSetMember>} organizationSetMember 
      * @param {*} [options] Override http request option.
@@ -41271,7 +41344,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41283,18 +41356,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).organizationSetsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41305,7 +41378,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41317,7 +41390,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -41328,7 +41401,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41339,7 +41412,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Post One
      * @param {CaseDbOrganizationSet} organizationSet 
      * @param {*} [options] Override http request option.
@@ -41350,7 +41423,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41363,7 +41436,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41376,7 +41449,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Post Some
      * @param {Array<CaseDbOrganizationSet>} organizationSet 
      * @param {*} [options] Override http request option.
@@ -41387,7 +41460,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Put One
      * @param {string} objectId 
      * @param {CaseDbOrganizationSet} organizationSet 
@@ -41399,7 +41472,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Updates the association between an OrganizationSets and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
+     * Represents a request to update the association between an CaseDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
      * @summary Organizationset CaseDbOrganization
      * @param {string} organizationSetId 
      * @param {CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -41411,7 +41484,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization-set records.
+     * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Put Some
      * @param {Array<CaseDbOrganizationSet>} organizationSet 
      * @param {*} [options] Override http request option.
@@ -41422,7 +41495,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41434,18 +41507,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public organizationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).organizationsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41456,7 +41529,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41468,7 +41541,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -41479,7 +41552,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41490,7 +41563,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Post One
      * @param {CaseDbOrganization} organization 
      * @param {*} [options] Override http request option.
@@ -41501,7 +41574,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41514,7 +41587,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41527,7 +41600,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Post Some
      * @param {Array<CaseDbOrganization>} organization 
      * @param {*} [options] Override http request option.
@@ -41538,7 +41611,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to create or update organization-to-identifier issuer associations.
+     * Represents a request to update the association between an CaseDbOrganization and IdentifierIssuers.
      * @summary Update Association Between CaseDbOrganization And Identifierissuer
      * @param {string} organizationId 
      * @param {CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -41550,7 +41623,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Put One
      * @param {string} objectId 
      * @param {CaseDbOrganization} organization 
@@ -41562,7 +41635,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization records.
+     * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Put Some
      * @param {Array<CaseDbOrganization>} organization 
      * @param {*} [options] Override http request option.
@@ -41573,7 +41646,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Retrieves Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+     * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
      * @summary Retrieve CaseDbOrganization Contacts
      * @param {CaseDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
      * @param {*} [options] Override http request option.
@@ -41584,7 +41657,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41596,18 +41669,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public sitesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).sitesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41618,7 +41691,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41630,7 +41703,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -41641,7 +41714,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41652,7 +41725,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Post One
      * @param {CaseDbSite} site 
      * @param {*} [options] Override http request option.
@@ -41663,7 +41736,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41676,7 +41749,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41689,7 +41762,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Post Some
      * @param {Array<CaseDbSite>} site 
      * @param {*} [options] Override http request option.
@@ -41700,7 +41773,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Put One
      * @param {string} objectId 
      * @param {CaseDbSite} site 
@@ -41712,7 +41785,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for organization site records.
+     * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Put Some
      * @param {Array<CaseDbSite>} site 
      * @param {*} [options] Override http request option.
@@ -41723,7 +41796,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Update an existing CaseDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
+     * Represents a request to update an existing CaseDbUser\'s status, roles, and organization membership.  The target user is identified by tgt_user_id. Any field set to None will leave that property unchanged. Roles cannot be set to an empty set. Cache is invalidated after successful update.
      * @summary Updateuser
      * @param {string} objectId 
      * @param {CaseDbUpdateUserRequestBody} updateUserRequestBody 
@@ -41735,7 +41808,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Updates the current user\'s CaseDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
+     * Represents a request to update the current user\'s CaseDbOrganization membership.  This command allows a user to change their own organization association. The is_new_user flag indicates whether this is part of a new user registration process.
      * @summary Updateuserownorganizationcommand
      * @param {CaseDbUpdateUserOwnOrganizationRequestBody} updateUserOwnOrganizationRequestBody 
      * @param {*} [options] Override http request option.
@@ -41746,7 +41819,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41758,18 +41831,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public userInvitationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).userInvitationsDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41780,7 +41853,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41792,7 +41865,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -41803,7 +41876,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41814,7 +41887,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Post One
      * @param {CaseDbUserInvitation} userInvitation 
      * @param {*} [options] Override http request option.
@@ -41825,7 +41898,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41838,7 +41911,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -41851,7 +41924,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Post Some
      * @param {Array<CaseDbUserInvitation>} userInvitation 
      * @param {*} [options] Override http request option.
@@ -41862,7 +41935,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Put One
      * @param {string} objectId 
      * @param {CaseDbUserInvitation} userInvitation 
@@ -41874,7 +41947,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user invitation records.
+     * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Put Some
      * @param {Array<CaseDbUserInvitation>} userInvitation 
      * @param {*} [options] Override http request option.
@@ -41905,7 +41978,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Register the user represented by an existing CaseDbUserInvitation.  The token must match that of an existing CaseDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
+     * Represents a request to register the user represented by an existing CaseDbUserInvitation.  The token must match that of an existing CaseDbUserInvitation. The newly registered user is assigned the organization and roles from the invitation. The invitation is deleted.
      * @summary Register Inviteduser
      * @param {string} token 
      * @param {*} [options] Override http request option.
@@ -41916,7 +41989,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Delete All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41928,18 +42001,18 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public usersDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).usersDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41950,7 +42023,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -41962,7 +42035,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -41973,7 +42046,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -41984,7 +42057,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Post One
      * @param {CaseDbUser} user 
      * @param {*} [options] Override http request option.
@@ -41995,7 +42068,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -42008,7 +42081,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -42021,7 +42094,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Post Some
      * @param {Array<CaseDbUser>} user 
      * @param {*} [options] Override http request option.
@@ -42032,7 +42105,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Put One
      * @param {string} objectId 
      * @param {CaseDbUser} user 
@@ -42044,7 +42117,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents CRUD operations for user records.
+     * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Put Some
      * @param {Array<CaseDbUser>} user 
      * @param {*} [options] Override http request option.
@@ -42170,11 +42243,11 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * Represents a request to manage persisted system outage windows and visibility information.
          * @summary Outages  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesDeleteOne: async (objectId: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesDeleteOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'objectId' is not null or undefined
             assertParamExists('outagesDeleteOne', 'objectId', objectId)
             const localVarPath = `/v1/outages/{object_id}`
@@ -42724,11 +42797,11 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to manage persisted system outage windows and visibility information.
          * @summary Outages  Delete One
-         * @param {any} objectId 
+         * @param {string} objectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async outagesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteOne(objectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesDeleteOne']?.[localVarOperationServerIndex]?.url;
@@ -42967,11 +43040,11 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     /**
      * Represents a request to manage persisted system outage windows and visibility information.
      * @summary Outages  Delete One
-     * @param {any} objectId 
+     * @param {string} objectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesDeleteOne(objectId: any, options?: RawAxiosRequestConfig) {
+    public outagesDeleteOne(objectId: string, options?: RawAxiosRequestConfig) {
         return CaseDbSystemApiFp(this.configuration).outagesDeleteOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
