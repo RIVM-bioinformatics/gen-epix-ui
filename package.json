@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "EUPL-1.2",
   "private": true,
-  "packageManager": "pnpm@11.25.0",
+  "packageManager": "pnpm@12.3.4",
   "scripts": {
     "update-exports": "lerna run update-exports",
     "start": "concurrently \"pnpm --filter @gen-epix/demo-client-casedb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-casedb run start\"",
