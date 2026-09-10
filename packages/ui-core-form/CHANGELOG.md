@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.0.2...ui-core-form-v4.1.0) (2026-09-10)
+
+
+### Features
+
+* add FoleDropZone ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* add some tree features ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* allow consumers to add download fasta actions ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* allow consumers to inject component into dashboard ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+
 ## [4.0.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.0.1...ui-core-form-v4.0.2) (2026-09-03)
 
 
