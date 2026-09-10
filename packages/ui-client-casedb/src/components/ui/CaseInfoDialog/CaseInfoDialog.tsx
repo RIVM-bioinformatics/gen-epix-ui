@@ -18,7 +18,7 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import type {
   CaseDbCase,
-  CaseDbTypedUuidSetFilter,
+  CaseDbUuidSetFilter,
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
@@ -146,7 +146,7 @@ export const CaseInfoDialog = withDialog<CaseInfoDialogProps, CaseInfoDialogOpen
     },
   });
 
-  const caseDataCollectionLinksFilter = useMemo<CaseDbTypedUuidSetFilter>(() => ({
+  const caseDataCollectionLinksFilter = useMemo<CaseDbUuidSetFilter>(() => ({
     invert: false,
     key: 'case_id',
     members: [caseDbCase?.id],

@@ -1,5 +1,5 @@
 import isArray from 'lodash/isArray';
-import type { CommonDbTypedStringSetFilter } from '@gen-epix/api-commondb';
+import type { CommonDbStringSetFilter } from '@gen-epix/api-commondb';
 import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
 
 import type { Filter } from '../../models/filter';
@@ -46,7 +46,7 @@ export class GeoFilter extends FilterAbstract<string[]> implements Filter<string
     return (this.filterValue).includes(rowValue);
   }
 
-  public toBackendFilter(): CommonDbTypedStringSetFilter {
+  public toBackendFilter(): CommonDbStringSetFilter {
     if (this.isInitialFilterValue()) {
       return;
     }

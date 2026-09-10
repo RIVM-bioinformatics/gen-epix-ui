@@ -178,7 +178,7 @@ export class CaseDbDownloadUtil {
     return cases.map(row => [
       row.id,
       completeCaseType.name,
-      row.case_date ? format(row.case_date, DATE_FORMAT.DATE) : '',
+      row.timed_at ? format(row.timed_at, DATE_FORMAT.DATE) : '',
       ...cols.map(col => CaseUtil.getRowValue(row.content, col, completeCaseType, true).long),
     ]);
   }
