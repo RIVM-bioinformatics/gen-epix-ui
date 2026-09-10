@@ -7,6 +7,7 @@ export type TreeAssembly = {
   horizontalLinePathPropertiesMap: TreeAssemblyPathPropertiesMap;
   leafNodes: Array<{ nodeName: string; shape: Path2D }>;
   leafTreeLines: Array<{ nodeName: string; shape: Path2D }>;
+  nodeLabels: Array<{ nodeName: string; x: number; y: number }>;
   nodePathPropertiesMap: TreeAssemblyPathPropertiesMap;
   supportLines: Array<{ fromX: number; fromY: number; nodeName: string; toX: number; toY: number }>;
   verticalAncestorTreeLines: Array<{ nodeNames: string[]; shape: Path2D }>;

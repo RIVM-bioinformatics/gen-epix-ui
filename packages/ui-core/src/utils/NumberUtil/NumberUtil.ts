@@ -49,6 +49,9 @@ export class NumberUtil {
     if (typeof value !== 'number' || !isFinite(value)) {
       return '';
     }
+    if (value === 0) {
+      return '0';
+    }
     const precision = base.toString().split('.')?.[1]?.length ?? 0;
     const splitValue = value.toString().split('.');
 

@@ -2,6 +2,7 @@ import type { EpiContactDetailsDialogOpenProps } from '@gen-epix/ui-client-commo
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
 import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import type { AddCasesToEventDialogOpenProps } from '../../../components/ui/AddCasesToEventDialog';
 import type { CaseInfoDialogOpenProps } from '../../../components/ui/CaseInfoDialog';
@@ -13,7 +14,7 @@ import type { SequenceDownloadDialogOpenProps } from '../../../components/ui/Seq
 
 export type DownloadConfig = {
   disabled?: boolean;
-  items: DownloadConfigItems[];
+  items: Array<DownloadConfigItem | DownloadConfigSection>;
   zone: string;
   zoneLabel: string;
 };
@@ -24,18 +25,24 @@ export type DownloadConfigItem = {
   label: string;
 };
 
-export type DownloadConfigItems = DownloadConfigItem | DownloadConfigSection;
-
 export type DownloadConfigSection = {
   disabled?: boolean;
   items: DownloadConfigItem[];
   label: string;
 };
 
+export type FastaDownloadProps = {
+  caseIds: string[];
+  caseTypeId: string;
+  geneticSequenceColId: string;
+};
+
 type EpiEvent = {
   onDownloadOptionsChanged: DownloadConfig;
   onDownloadOptionsRequested: void;
   onEventCreated: void;
+  onFastaDownloadActionsChanged: DialogAction[];
+  onFastaDownloadActionsRequested: FastaDownloadProps;
   onLinkLineListAndTree: void;
   openAddCasesToEventDialog: AddCasesToEventDialogOpenProps;
   openCaseInfoDialog: CaseInfoDialogOpenProps;

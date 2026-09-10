@@ -1,6 +1,14 @@
 {
   "translation": {
+    "(last modified: {{lastModified}})": "(last modified: {{lastModified}})",
+    "(size: {{size}})": "(size: {{size}})",
     "Cancel": "Cancel",
+    "Choose File": "Choose File",
+    "Clear {{fileName}}": "Clear {{fileName}}",
+    "Clear all selected files": "Clear all selected files",
+    "Click or drag to replace": "Click or drag to replace",
+    "Click or drag to upload file ({{accept}})": "Click or drag to upload file ({{accept}})",
+    "Click or drag to upload files  ({{accept}})": "Click or drag to upload files  ({{accept}})",
     "Close": "Close",
     "Close dialog": "Close dialog",
     "Close dialog with title: {{title}}": "Close dialog with title: {{title}}",
@@ -8,11 +16,17 @@
     "Copied to clipboard": "Copied to clipboard",
     "Copy to clipboard": "Copy to clipboard",
     "Current: ": "Current: ",
+    "Drag & drop your file here, or click to browse": "Drag & drop your file here, or click to browse",
+    "Drop file here": "Drop file here",
+    "Drop files here": "Drop files here",
     "Error": "Error",
+    "Invalid file type. Accepted types: {{accept}}": "Invalid file type. Accepted types: {{accept}}",
     "Loading": "Loading",
     "Menu": "Menu",
     "OK": "OK",
     "Optional": "Optional",
-    "This is taking longer than expected. We are still trying.": "This is taking longer than expected. We are still trying."
+    "Selected files: {{numFiles}}": "Selected files: {{numFiles}}",
+    "This is taking longer than expected. We are still trying.": "This is taking longer than expected. We are still trying.",
+    "Too many files selected. Maximum allowed: {{numFilesAllowed}}": "Too many files selected. Maximum allowed: {{numFilesAllowed}}"
   }
 }

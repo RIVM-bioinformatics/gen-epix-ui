@@ -3,6 +3,7 @@ import type { CaseDbColType } from '@gen-epix/api-casedb';
 import type { ConfigBase } from '@gen-epix/ui-client-common/models/config';
 import type { Range } from 'colorjs.io';
 import type { FieldValues } from 'react-hook-form';
+import type { ReactElement } from 'react';
 
 import type {
   DashboardArrangement,
@@ -14,6 +15,8 @@ import type {
 export interface CaseDbConfig extends ConfigBase {
   dashboard: {
     ARRANGEMENT_OPTIONS: { [key: string]: DashboardArrangement };
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    DASHBOARD_INJECTED_COMPONENT?: () => ReactElement;
     DEFAULT_ARRANGEMENT_KEY: string;
     DEFAULT_WIDGET_ASSIGNMENTS: { [key: string]: DashboardArrangementWidgetAssignments };
     DOWNLOAD_SECTION_ORDER: string[];

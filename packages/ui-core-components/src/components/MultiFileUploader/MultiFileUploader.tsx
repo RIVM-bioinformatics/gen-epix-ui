@@ -24,23 +24,22 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { FileUtil } from '@gen-epix/ui-core/utils/FileUtil';
 
-import { FileUtil } from '../../../utils/FileUtil';
 
-
-export type FileSelectorProps = {
+export type MultiFileUploaderProps = {
   readonly accept: string;
   readonly initialDataTransfer?: DataTransfer;
   readonly numFilesAllowed?: number;
   readonly onDataTransferChange: (dataTransfer: DataTransfer) => void;
 };
 
-export const FileSelector = ({
+export const MultiFileUploader = ({
   accept,
   initialDataTransfer: initialDataTransferProp,
   numFilesAllowed = 1,
   onDataTransferChange,
-}: FileSelectorProps) => {
+}: MultiFileUploaderProps) => {
   const { t } = useTranslation();
   const hoverLabel = numFilesAllowed === 1
     ? t('Click or drag to upload file ({{accept}})', { accept: accept.split(',').join(', ') })

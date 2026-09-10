@@ -1,8 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-} from '@mui/material';
+import { Box } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import type { ReactElement } from 'react';
 import {
@@ -31,8 +28,10 @@ import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import { Autocomplete } from '@gen-epix/ui-core-form/components/fields/Autocomplete';
 import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
+import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
+import { EventBusService } from '../../../classes/services/EventBusService';
 
 
 export interface SequenceDownloadDialogOpenProps {
@@ -52,6 +51,7 @@ type FormFields = {
 
 export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, SequenceDownloadDialogOpenProps>((
   {
+    onActionsChange,
     onClose,
     onTitleChange,
     openProps,
@@ -108,6 +108,34 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
     onTitleChange(t`Download sequences`);
   }, [onTitleChange, t]);
 
+  useEffect(() => {
+    const buildInItems: DialogAction[] = [
+      {
+        disabled: !geneticSequenceColId,
+        label: t`Download FASTA`,
+        onClick: onDownloadFastaButtonClick,
+        startIcon: <DownloadIcon />,
+      },
+    ];
+    onActionsChange(buildInItems);
+
+    const onDownloadActionsChanged = (actions: DialogAction[]) => {
+      onActionsChange([...actions, ...buildInItems]);
+    };
+
+    const eventBusService = EventBusService.getInstance();
+    eventBusService.addEventListener('onFastaDownloadActionsChanged', onDownloadActionsChanged);
+    eventBusService.emit('onFastaDownloadActionsRequested', {
+      caseIds: openProps.cases.map(c => c.id),
+      caseTypeId: completeCaseType.id,
+      geneticSequenceColId,
+    });
+    return () => {
+      eventBusService.removeEventListener('onFastaDownloadActionsChanged', onDownloadActionsChanged);
+    };
+
+  }, [completeCaseType.id, geneticSequenceColId, onActionsChange, onDownloadFastaButtonClick, openProps.cases, t]);
+
   return (
     <Box>
       <Box
@@ -131,26 +159,6 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
           </form>
         </FormProvider>
       </Box>
-      {geneticSequenceColId && (
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 1,
-            justifyContent: 'flex-end',
-            marginBottom: 1,
-          }}
-        >
-          <Box>
-            <Button
-              color={'primary'}
-              onClick={onDownloadFastaButtonClick}
-              startIcon={<DownloadIcon />}
-            >
-              {t`Download FASTA`}
-            </Button>
-          </Box>
-        </Box>
-      )}
     </Box>
   );
 }, {

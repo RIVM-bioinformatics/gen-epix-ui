@@ -9,7 +9,7 @@ import type { AutocompleteProps } from '../components/fields/Autocomplete';
 import type { TextFieldProps } from '../components/fields/TextField';
 import type { SelectProps } from '../components/fields/Select';
 import type { DatePickerProps } from '../components/fields/DatePicker';
-import type { UploadButtonProps } from '../components/fields/UploadButton/UploadButton';
+import type { FileUploadProps } from '../components/fields/FileUpload/FileUpload';
 import type { RadioGroupProps } from '../components/fields/RadioGroup';
 import type { NumberFieldProps } from '../components/fields/NumberField';
 import type { SwitchProps } from '../components/fields/Switch';
@@ -67,7 +67,7 @@ export type FormFieldDefinitionAutocompleteMultiple<TFormFields extends FieldVal
 export type FormFieldDefinitionBoolean<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN } & FormFieldGrouping & Omit<SelectProps<TFormFields, Path<TFormFields>, false>, 'options'>;
 export type FormFieldDefinitionBooleanSwitch<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH } & FormFieldGrouping & Omit<SwitchProps<TFormFields, Path<TFormFields>>, 'options'>;
 export type FormFieldDefinitionDate<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.DATE } & DatePickerProps<TFormFields, Path<TFormFields>> & FormFieldGrouping;
-export type FormFieldDefinitionFile<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.FILE } & FormFieldGrouping & UploadButtonProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionFile<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.FILE } & FileUploadProps<TFormFields, Path<TFormFields>> & FormFieldGrouping;
 export type FormFieldDefinitionHidden<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.HIDDEN } & FormFieldGrouping & TextFieldProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionNumber<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER } & FormFieldGrouping & NumberFieldProps<TFormFields, Path<TFormFields>>;
 export type FormFieldDefinitionRadioGroup<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP } & FormFieldGrouping & RadioGroupProps<TFormFields, Path<TFormFields>>;
@@ -95,6 +95,7 @@ export type FormGroupMessage = {
 export interface OptionBase<TValue> {
   disabled?: boolean;
   label?: string;
+  secondaryLabel?: string;
   value?: TValue;
 }
 export type RadioButtonOption<TValue = void> = OptionBase<TValue extends void ? (boolean | number | string) : TValue>;

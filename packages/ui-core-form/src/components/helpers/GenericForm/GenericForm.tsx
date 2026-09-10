@@ -38,7 +38,7 @@ import { Select } from '../../fields/Select';
 import { TextField } from '../../fields/TextField';
 import { NumberField } from '../../fields/NumberField';
 import { DatePicker } from '../../fields/DatePicker';
-import { UploadButton } from '../../fields/UploadButton/UploadButton';
+import { FileUpload } from '../../fields/FileUpload/FileUpload';
 import { RadioGroup } from '../../fields/RadioGroup';
 import { Switch } from '../../fields/Switch';
 import { useIsFormFieldRequiredFromSchema } from '../../../hooks/useIsFormFieldRequiredFromSchema';
@@ -112,7 +112,7 @@ export const GenericForm = <TFormFields extends FieldValues>({
         );
       case FORM_FIELD_DEFINITION_TYPE.FILE:
         return (
-          <UploadButton
+          <FileUpload
             {...formFieldDefinition}
             disabled={formFieldDefinition.disabled || disableAll}
             required={isFormFieldRequired(formFieldDefinition.name)}

@@ -43,7 +43,6 @@ export class DownloadUtil {
     });
     const input = document.createElement('input');
     input.name = 'token';
-    // ! FIXME: add access token to arguments instead of accessing it directly here
     input.value = kwArgs.accessToken;
     formElement.appendChild(input);
 
@@ -51,5 +50,30 @@ export class DownloadUtil {
 
     formElement.submit();
     document.body.removeChild(formElement);
+  }
+
+  public static async fetchAsDataUrl(kwArgs: { accessToken: string; action: string; data: Record<string, string | string[]> }): Promise<string> {
+    const body = new URLSearchParams();
+    Object.entries(kwArgs.data).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((v) => body.append(key, v));
+        return;
+      }
+      body.append(key, value);
+    });
+    body.append('token', kwArgs.accessToken);
+
+    const response = await fetch(kwArgs.action, {
+      body,
+      method: 'POST',
+    });
+    if (!response.ok) {
+      throw new Error(`Request to ${kwArgs.action} failed with status ${response.status}`);
+    }
+
+    const blob = await response.blob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const base64 = DownloadUtil.arrayBufferToBase64(arrayBuffer);
+    return `data:${blob.type || 'application/octet-stream'};base64,${base64}`;
   }
 }

@@ -30,8 +30,8 @@ import type {
   SelectOption,
 } from '@gen-epix/ui-core-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import { MultiFileUploader } from '@gen-epix/ui-core-components/components/MultiFileUploader';
 
-import { FileSelector } from '../FileSelector';
 import { UploadUtil } from '../../../utils/UploadUtil';
 import { UploadStoreContext } from '../../../stores/uploadStore';
 import { useSequencingProtocolOptionsQuery } from '../../../dataHooks/useSequencingProtocolsQuery';
@@ -391,7 +391,7 @@ export const UploadSelectSequenceFiles = () => {
             }}
           >
             {canUpload && (
-              <FileSelector
+              <MultiFileUploader
                 accept={accept}
                 initialDataTransfer={initialDataTransfer}
                 numFilesAllowed={Infinity}

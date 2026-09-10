@@ -119,10 +119,6 @@
         "types": "./dist/components/ui/EpiCurveWidget/index.d.ts",
         "import": "./dist/components/ui/EpiCurveWidget/index.js"
       },
-      "./components/ui/FileSelector": {
-        "types": "./dist/components/ui/FileSelector/index.d.ts",
-        "import": "./dist/components/ui/FileSelector/index.js"
-      },
       "./components/ui/FindSimilarCasesDialog": {
         "types": "./dist/components/ui/FindSimilarCasesDialog/index.d.ts",
         "import": "./dist/components/ui/FindSimilarCasesDialog/index.js"
@@ -647,10 +643,6 @@
         "types": "./dist/utils/EpiCurveUtil/index.d.ts",
         "import": "./dist/utils/EpiCurveUtil/index.js"
       },
-      "./utils/FileUtil": {
-        "types": "./dist/utils/FileUtil/index.d.ts",
-        "import": "./dist/utils/FileUtil/index.js"
-      },
       "./utils/FilterUtil": {
         "types": "./dist/utils/FilterUtil/index.d.ts",
         "import": "./dist/utils/FilterUtil/index.js"
@@ -785,10 +777,6 @@
     "./components/ui/EpiCurveWidget": {
       "types": "./src/components/ui/EpiCurveWidget/index.ts",
       "import": "./src/components/ui/EpiCurveWidget/index.ts"
-    },
-    "./components/ui/FileSelector": {
-      "types": "./src/components/ui/FileSelector/index.ts",
-      "import": "./src/components/ui/FileSelector/index.ts"
     },
     "./components/ui/FindSimilarCasesDialog": {
       "types": "./src/components/ui/FindSimilarCasesDialog/index.ts",
@@ -1313,10 +1301,6 @@
     "./utils/EpiCurveUtil": {
       "types": "./src/utils/EpiCurveUtil/index.ts",
       "import": "./src/utils/EpiCurveUtil/index.ts"
-    },
-    "./utils/FileUtil": {
-      "types": "./src/utils/FileUtil/index.ts",
-      "import": "./src/utils/FileUtil/index.ts"
     },
     "./utils/FilterUtil": {
       "types": "./src/utils/FilterUtil/index.ts",
