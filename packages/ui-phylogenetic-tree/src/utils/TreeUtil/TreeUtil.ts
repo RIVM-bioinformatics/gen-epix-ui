@@ -20,8 +20,11 @@ type NodeAssemblyResult = {
 
 type SanitizeResult = { node: TreeNode; nodesToMove: TreeNode[] };
 
-// [number of lines to draw, genetic distance of single line, minGeneticScaleUnit]
-type TickerMarkScale = [number, number, number];
+type TickerMarkScale = {
+  geneticDistanceOfSingleLine: number;
+  minGeneticScaleUnit: Decimal;
+  numberOfLines: number;
+};
 
 type TreeAssemblyContext = {
   ancestorDotRadius: number;
@@ -61,6 +64,7 @@ export class TreeUtil {
       horizontalLinePathPropertiesMap: new Map(),
       leafNodes: [],
       leafTreeLines: [],
+      nodeLabels: [],
       nodePathPropertiesMap: new Map(),
       supportLines: [],
       verticalAncestorTreeLines: [],
@@ -161,7 +165,7 @@ export class TreeUtil {
    * Draws vertical dashed guide lines on the canvas at each tick mark position.
    *
    * @param params.canvas - The canvas element to draw onto.
-   * @param params.tickerMarkScale - Scale tuple from {@link getTickMarkScale}.
+   * @param params.tickerMarkScale - Scale tuple from {@link getTickerMarkScale}.
    * @param params.geneticTreeWidth - Total genetic width of the tree.
    * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
    * @param params.devicePixelRatio - Screen DPR.
@@ -209,7 +213,7 @@ export class TreeUtil {
    * @param params.fontFamily - Font family for the scale labels.
    * @param params.scaleColor - Fill colour for the label text.
    * @param params.headerHeight - Height of the header area in logical pixels.
-   * @param params.tickerMarkScale - Scale tuple from {@link getTickMarkScale}.
+   * @param params.tickerMarkScale - Scale tuple from {@link getTickerMarkScale}.
    * @param params.geneticTreeWidth - Total genetic width of the tree.
    * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
    * @param params.zoomLevel - Current zoom level.
@@ -218,6 +222,7 @@ export class TreeUtil {
    */
   public static drawScale(params: { canvas: HTMLCanvasElement; devicePixelRatio: number; fontFamily: string; geneticTreeWidth: Decimal; headerHeight: number; horizontalScrollPosition: number; pixelToGeneticDistanceRatio: number; scaleColor: string; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
     const { canvas, devicePixelRatio, fontFamily, geneticTreeWidth, headerHeight, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, scaleColor, tickerMarkScale, treePadding, zoomLevel } = params;
+
     TreeUtil.draw(canvas, devicePixelRatio, (ctx) => {
       ctx.fillStyle = scaleColor;
       TreeUtil.forEachScaleLine({
@@ -225,8 +230,8 @@ export class TreeUtil {
           ctx.beginPath();
           ctx.textAlign = 'center';
           ctx.font = `bold 11px ${fontFamily}`;
-          const label = new Decimal(tickerMarkScale[1]).times((numberOfLines - 1) - i).toNumber();
-          ctx.fillText(NumberUtil.toStringWithPrecision(label, tickerMarkScale[2]), x, headerHeight * 0.61);
+          const label = new Decimal(tickerMarkScale.geneticDistanceOfSingleLine).times((numberOfLines - 1) - i).toNumber();
+          ctx.fillText(NumberUtil.toStringWithPrecision(label, tickerMarkScale.geneticDistanceOfSingleLine), x, headerHeight * 0.61);
           ctx.closePath();
         },
         devicePixelRatio,
@@ -245,7 +250,7 @@ export class TreeUtil {
    *
    * Applies a transform for zoom and scroll, then draws in order:
    * vertical ancestor lines -> horizontal ancestor lines -> (linked) support lines
-   * -> (highlighted) distance labels -> ancestor dots -> leaf branch lines -> leaf dots.
+   * -> (highlighted) distance labels -> (optional) leaf labels -> ancestor dots -> leaf branch lines -> leaf dots.
    *
    * When nodes are highlighted, non-highlighted shapes are dimmed via `dimFn`.
    * Leaf dot colours come from `nodeNameColors` when available.
@@ -263,6 +268,8 @@ export class TreeUtil {
    * @param params.verticalScrollPosition - Vertical scroll offset in pixels.
    * @param params.horizontalScrollPosition - Horizontal scroll offset in pixels.
    * @param params.shouldShowDistances - Whether to render branch distance labels.
+   * @param params.shouldShowLeafLabels - Whether to render a label next to each leaf node.
+   * @param params.getLeafLabel - Resolves the display label for a leaf node name; falls back to the node name itself.
    * @param params.devicePixelRatio - Screen DPR for crisp rendering on HiDPI displays.
    * @param params.isLinked - Whether to draw the dashed support lines linking leaf nodes to the table.
    * @param params.shouldShowSupportLinesWhenUnlinked - Whether to render support lines when unlinked.
@@ -271,6 +278,7 @@ export class TreeUtil {
     canvas: HTMLCanvasElement;
     devicePixelRatio: number;
     dimFn: (color: string) => string;
+    getLeafLabel?: (nodeName: string) => string;
     headerHeight?: number;
     highlightedNodeNames: string[];
     horizontalScrollPosition: number;
@@ -279,8 +287,9 @@ export class TreeUtil {
     nodeNameColors: { [key: string]: string } | null;
     range: { endIndex: number; startIndex: number };
     scrollPosition?: number;
-    shouldShowDistances: boolean;
-    shouldShowSupportLinesWhenUnlinked: boolean;
+    shouldShowDistances?: boolean;
+    shouldShowLeafLabels?: boolean;
+    shouldShowSupportLinesWhenUnlinked?: boolean;
     supportLineColorLinked: string;
     supportLineColorUnlinked: string;
     treeAssembly: TreeAssembly;
@@ -289,7 +298,7 @@ export class TreeUtil {
     verticalScrollPosition: number;
     zoomLevel: number;
   }): void {
-    const { canvas, devicePixelRatio, dimFn, headerHeight = 0, highlightedNodeNames = [], horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, range, scrollPosition = 0, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel } = params;
+    const { canvas, devicePixelRatio, dimFn, getLeafLabel: getNodeLabel, headerHeight = 0, highlightedNodeNames = [], horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, range, scrollPosition = 0, shouldShowDistances, shouldShowLeafLabels: shouldShowLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel } = params;
     const ctx = TreeUtil.getCanvasContext(canvas);
     const bodyStartY = headerHeight * devicePixelRatio;
     const setRegularTransform = () => {
@@ -381,6 +390,15 @@ export class TreeUtil {
         });
       }
 
+      if (shouldShowLabels) {
+        treeAssembly.nodeLabels.forEach(({ nodeName, x, y }) => {
+          ctx.textBaseline = 'middle';
+          ctx.textAlign = 'left';
+          ctx.fillStyle = TreeUtil.getFillStyle(treeColor, dimFn, highlightedNodeNames, nodeName);
+          ctx.fillText(getNodeLabel?.(nodeName) ?? nodeName ?? '', x, y);
+        });
+      }
+
       treeAssembly.ancestorNodes.forEach(({ nodeNames, shape }) => {
         ctx.fillStyle = TreeUtil.getFillStyle(treeColor, dimFn, highlightedNodeNames, nodeNames);
         ctx.fill(shape);
@@ -440,8 +458,10 @@ export class TreeUtil {
    * @param params.treeCanvasHeight - Logical canvas height in pixels.
    * @param params.headerHeight - Height of the scale header area in logical pixels.
    * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
-   * @param params.tickerMarkScale - Scale tuple from {@link getTickMarkScale}.
+   * @param params.tickerMarkScale - Scale tuple from {@link getTickerMarkScale}.
    * @param params.shouldShowDistances - Whether to render branch labels.
+   * @param params.shouldShowLeafLabels - Whether to render a label next to each leaf node.
+   * @param params.getLeafLabel - Resolves the display label for a leaf node name; falls back to the node name itself.
    * @param params.shouldShowSupportLinesWhenUnlinked - Whether to render support lines when unlinked.
    * @param params.devicePixelRatio - Screen DPR for HiDPI rendering.
    * @param params.geneticTreeWidth - Total genetic width of the tree.
@@ -453,6 +473,7 @@ export class TreeUtil {
     dimFn: (color: string) => string;
     fontFamily: string;
     geneticTreeWidth: Decimal;
+    getLeafLabel?: (nodeName: string) => string;
     headerHeight?: number;
     highlightedNodeNames?: string[];
     horizontalScrollPosition: number;
@@ -464,7 +485,8 @@ export class TreeUtil {
     regularFillColorSupportLine: string;
     scaleColor: string;
     scrollPosition?: number;
-    shouldShowDistances: boolean;
+    shouldShowDistances?: boolean;
+    shouldShowLeafLabels?: boolean;
     shouldShowSupportLinesWhenUnlinked: boolean;
     supportLineColorLinked: string;
     supportLineColorUnlinked: string;
@@ -478,7 +500,7 @@ export class TreeUtil {
     verticalScrollPosition: number;
     zoomLevel: number;
   }): void {
-    const { backgroundColor, canvas, devicePixelRatio, dimFn, fontFamily, geneticTreeWidth, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, pixelToGeneticDistanceRatio, range, regularFillColorSupportLine, scaleColor, scrollPosition = 0, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, treeColor, treeFont, treePadding, verticalScrollPosition, zoomLevel } = params;
+    const { backgroundColor, canvas, devicePixelRatio, dimFn, fontFamily, geneticTreeWidth, getLeafLabel, headerHeight = 0, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, pixelToGeneticDistanceRatio, range, regularFillColorSupportLine, scaleColor, scrollPosition = 0, shouldShowDistances, shouldShowLeafLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, tickerMarkScale, treeAssembly, treeCanvasHeight, treeCanvasWidth, treeColor, treeFont, treePadding, verticalScrollPosition, zoomLevel } = params;
     const ctx = TreeUtil.getCanvasContext(canvas);
     ctx.reset();
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -497,7 +519,7 @@ export class TreeUtil {
       TreeUtil.drawDivider({ canvas, devicePixelRatio, y: headerHeight - 1 });
     }
 
-    TreeUtil.drawTree({ canvas, devicePixelRatio, dimFn, headerHeight, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, range, scrollPosition, shouldShowDistances, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel });
+    TreeUtil.drawTree({ canvas, devicePixelRatio, dimFn, getLeafLabel, headerHeight, highlightedNodeNames, horizontalScrollPosition, isLinked, itemHeight, nodeNameColors, range, scrollPosition, shouldShowDistances, shouldShowLeafLabels, shouldShowSupportLinesWhenUnlinked, supportLineColorLinked, supportLineColorUnlinked, treeAssembly, treeColor, treeFont, verticalScrollPosition, zoomLevel });
   }
 
   /**
@@ -551,14 +573,14 @@ export class TreeUtil {
    * @returns The minimum positive branch length found on any leaf, or `Infinity`
    *   if the tree is empty or all leaves have zero/undefined branch lengths.
    */
-  public static getMinGeneticScaleUnit(tree: TreeNode): number {
+  public static getMinGeneticScaleUnit(tree: TreeNode): Decimal {
     if (!tree) {
-      return Infinity;
+      return new Decimal(Infinity);
     }
-    let min: number = Infinity;
+    let min = new Decimal(Infinity);
     const traverse = (node: TreeNode) => {
-      const branchLength = node.branchLength?.toNumber() ?? 0;
-      if (!node.children?.length && branchLength > 0 && branchLength < min) {
+      const branchLength = node.branchLength ?? new Decimal(0);
+      if (!node.children?.length && branchLength.greaterThan(0) && branchLength.lessThan(min)) {
         min = branchLength;
       }
       node?.children?.forEach(child => traverse(child));
@@ -763,13 +785,13 @@ export class TreeUtil {
    * @param params.geneticTreeWidth - Total genetic distance represented by the full tree width.
    * @param params.minGeneticScaleUnit - The smallest meaningful genetic distance unit (see {@link getMinGeneticScaleUnit}).
    * @param params.zoomLevel - Current zoom level; divides the effective pixel width.
-   * @returns A {@link TickerMarkScale} tuple: `[numberOfLines, geneticDistancePerLine, minGeneticScaleUnit]`.
-   *   Returns `[0, 0, 0]` when any required input is falsy.
+   * @returns A {@link TickerMarkScale} describing the number of lines and the genetic distance per line.
+   *   Returns zeroed values when any required input is falsy.
    */
-  public static getTickMarkScale(params: { geneticTreeWidth: Decimal; maxScaleWidthPx: number; minGeneticScaleUnit: number; minScaleWidthPx: number; scaleIncrements: number[]; treeWidthMinusPadding: number; zoomLevel: number }): TickerMarkScale {
+  public static getTickerMarkScale(params: { geneticTreeWidth: Decimal; maxScaleWidthPx: number; minGeneticScaleUnit: Decimal; minScaleWidthPx: number; scaleIncrements: number[]; treeWidthMinusPadding: number; zoomLevel: number }): TickerMarkScale {
     const { geneticTreeWidth, maxScaleWidthPx, minGeneticScaleUnit, minScaleWidthPx, scaleIncrements, treeWidthMinusPadding, zoomLevel } = params;
-    if (!treeWidthMinusPadding || !geneticTreeWidth || !minGeneticScaleUnit) {
-      return [0, 0, 0];
+    if (!treeWidthMinusPadding || !geneticTreeWidth || !minGeneticScaleUnit || minGeneticScaleUnit.isZero()) {
+      return { geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 };
     }
     const width = treeWidthMinusPadding / zoomLevel;
 
@@ -783,7 +805,7 @@ export class TreeUtil {
       minNumLines = maxNumLines;
     }
     if (maxNumLines === 2) {
-      return [2, minGeneticScaleUnit, minGeneticScaleUnit];
+      return { geneticDistanceOfSingleLine: minGeneticScaleUnit.toNumber(), minGeneticScaleUnit, numberOfLines: 2 };
     }
 
     const geneticTreeWidthDecimal = new Decimal(geneticTreeWidth);
@@ -805,7 +827,7 @@ export class TreeUtil {
       }
     }
 
-    return [bestCombination[0].add(1).toNumber(), bestCombination[1].toNumber(), minGeneticScaleUnit];
+    return { geneticDistanceOfSingleLine: bestCombination[1].toNumber(), minGeneticScaleUnit, numberOfLines: bestCombination[0].add(1).toNumber() };
   }
 
   /**
@@ -900,7 +922,7 @@ export class TreeUtil {
         chunkNodeNames.push(...childRenderResult.nodeNames);
 
         const chunkPath = new Path2D();
-        chunkPath.moveTo(childRenderResult.x, childRenderResult.y);
+        chunkPath.moveTo(childRenderResult.x, childRenderResult.y + 0.5);
         chunkPath.lineTo(childRenderResult.x, lineToYPx);
         chunkPath.closePath();
         treeAssemblyContext.treeAssembly.verticalAncestorTreeLines.push({ nodeNames: [...chunkNodeNames], shape: chunkPath });
@@ -947,8 +969,9 @@ export class TreeUtil {
    * Assembles the visual elements for a single leaf node and appends them to
    * the tree assembly.
    *
-   * Produces: a horizontal branch line, an optional distance label, a dashed
-   * support line extending to the canvas edge, and a filled dot.
+   * Produces: a horizontal branch line, an optional distance label, a node
+   * label position, a dashed support line extending to the canvas edge, and a
+   * filled dot.
    *
    * @param treeAssemblyContext - Shared context holding the assembly target and canvas dimensions.
    * @param node - The leaf tree node to assemble.
@@ -963,7 +986,7 @@ export class TreeUtil {
     const leafYPx = ((leafIndex) * treeAssemblyContext.itemHeight) + (treeAssemblyContext.itemHeight / 2);
     const leafXPxDistance = (node.branchLength?.toNumber() ?? 0) * treeAssemblyContext.pixelToGeneticDistanceRatio;
     const leafXPxStart = leafXPxEnd - leafXPxDistance;
-    const label = TreeUtil.getDistanceLabel(treeAssemblyContext, node.branchLength);
+    const distanceLabel = TreeUtil.getDistanceLabel(treeAssemblyContext, node.branchLength);
 
     // add horizontal line according to distance
     const horizontalLineAccordingToDistancePath = new Path2D();
@@ -976,9 +999,12 @@ export class TreeUtil {
     });
 
     // add distance text
-    if (label) {
-      treeAssemblyContext.treeAssembly.distanceTexts.push({ nodeNames: [node.name], text: label, x: (leafXPxStart + leafXPxEnd) / 2, y: leafYPx + 12 });
+    if (distanceLabel) {
+      treeAssemblyContext.treeAssembly.distanceTexts.push({ nodeNames: [node.name], text: distanceLabel, x: (leafXPxStart + leafXPxEnd) / 2, y: leafYPx + 12 });
     }
+    // add node label
+    treeAssemblyContext.treeAssembly.nodeLabels.push({ nodeName: node.name, x: Math.max(leafXPxEnd, leafXPxStart) + (treeAssemblyContext.leafDotRadius * 2), y: leafYPx });
+
     // add horizontal support line to max width
     const supportLineToYpx = sortingIndex * treeAssemblyContext.itemHeight + (treeAssemblyContext.itemHeight / 2);
     treeAssemblyContext.treeAssembly.supportLines.push({ fromX: leafXPxEnd, fromY: leafYPx, nodeName: node.name, toX: treeAssemblyContext.treeCanvasWidth, toY: supportLineToYpx });
@@ -1043,7 +1069,7 @@ export class TreeUtil {
    * Computes the pixel offset for each tick so that the rightmost line aligns
    * with the genetic tree width, accounting for the current scroll and zoom.
    *
-   * @param params.tickerMarkScale - Scale tuple from {@link getTickMarkScale}.
+   * @param params.tickerMarkScale - Scale tuple from {@link getTickerMarkScale}.
    * @param params.geneticTreeWidth - Total genetic width of the tree.
    * @param params.pixelToGeneticDistanceRatio - Pixels per unit of genetic distance.
    * @param params.zoomLevel - Current zoom level.
@@ -1054,8 +1080,8 @@ export class TreeUtil {
   private static forEachScaleLine(params: { callback: (x: number, i: number, numberOfLines: number) => void; devicePixelRatio: number; geneticTreeWidth: Decimal; horizontalScrollPosition?: number; pixelToGeneticDistanceRatio: number; tickerMarkScale: TickerMarkScale; treePadding: number; zoomLevel: number }): void {
     const { callback, devicePixelRatio, geneticTreeWidth, horizontalScrollPosition = 0, pixelToGeneticDistanceRatio, tickerMarkScale, treePadding, zoomLevel } = params;
 
-    const numberOfLines = tickerMarkScale[0];
-    const tickerGeneticWidth = tickerMarkScale[1];
+    const numberOfLines = tickerMarkScale.numberOfLines;
+    const tickerGeneticWidth = tickerMarkScale.geneticDistanceOfSingleLine;
     const tickerWidth = new Decimal(tickerGeneticWidth).times(pixelToGeneticDistanceRatio).div(zoomLevel);
     const totalTickerWidth = tickerWidth.times(numberOfLines - 1);
     const geneticTreeWidthPx = geneticTreeWidth.times(pixelToGeneticDistanceRatio).div(zoomLevel);

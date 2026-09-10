@@ -1,6 +1,14 @@
 {
   "translation": {
+    "(last modified: {{lastModified}})": "(laatst gewijzigd: {{lastModified}})",
+    "(size: {{size}})": "(grootte: {{size}})",
     "Cancel": "Annuleren",
+    "Choose File": "Bestand kiezen",
+    "Clear {{fileName}}": "{{fileName}} wissen",
+    "Clear all selected files": "Alle geselecteerde bestanden wissen",
+    "Click or drag to replace": "Klik of sleep om te vervangen",
+    "Click or drag to upload file ({{accept}})": "Klik of sleep om bestand te uploaden ({{accept}})",
+    "Click or drag to upload files  ({{accept}})": "Klik of sleep om bestanden te uploaden  ({{accept}})",
     "Close": "Sluiten",
     "Close dialog": "Dialoog sluiten",
     "Close dialog with title: {{title}}": "Dialoog met titel {{title}} sluiten",
@@ -8,11 +16,17 @@
     "Copied to clipboard": "Gekopieerd naar klembord",
     "Copy to clipboard": "Kopieer naar klembord",
     "Current: ": "Huidig: ",
+    "Drag & drop your file here, or click to browse": "Sleep uw bestand hierheen, of klik om te bladeren",
+    "Drop file here": "Zet bestand hier neer",
+    "Drop files here": "Zet bestanden hier neer",
     "Error": "Fout",
+    "Invalid file type. Accepted types: {{accept}}": "Ongeldig bestandstype. Toegestane typen: {{accept}}",
     "Loading": "Laden",
     "Menu": "Menu",
     "OK": "OK",
     "Optional": "Optioneel",
-    "This is taking longer than expected. We are still trying.": "Dit duurt langer dan verwacht. We proberen het nog steeds."
+    "Selected files: {{numFiles}}": "Geselecteerde bestanden: {{numFiles}}",
+    "This is taking longer than expected. We are still trying.": "Dit duurt langer dan verwacht. We proberen het nog steeds.",
+    "Too many files selected. Maximum allowed: {{numFilesAllowed}}": "Te veel bestanden geselecteerd. Maximaal toegestaan: {{numFilesAllowed}}"
   }
 }

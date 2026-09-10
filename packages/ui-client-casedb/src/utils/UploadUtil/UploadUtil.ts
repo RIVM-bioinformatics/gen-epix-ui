@@ -31,6 +31,7 @@ import {
   CaseDbCaseApi,
   CaseDbColType,
   CaseDbEtlStatus,
+  CaseDbFileCompression,
   CaseDbReadsFileFormat,
   CaseDbSeqFileFormat,
   CaseDbUploadAction,
@@ -56,7 +57,6 @@ import type {
   UploadSequenceMapping,
   UploadSequenceMappingForCaseId,
 } from '../../models/upload';
-import { FileUtil } from '../FileUtil';
 import { UploadError } from '../../classes/errors';
 import { CASEDB_QUERY_KEY } from '../../constants/query';
 
@@ -814,7 +814,7 @@ export class UploadUtil {
           const fileSize = file.size;
           const base64Data = await UploadUtil.readFileAsBase64(file);
           await CaseDbCaseApi.getInstance().createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
-            file_compression: FileUtil.getFileCompressionFromFileName(caseSeqToBeUploaded.fileName),
+            file_compression: UploadUtil.getFileCompressionFromFileName(caseSeqToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbSeqFileFormat.FASTA,
           }, { signal });
@@ -836,7 +836,7 @@ export class UploadUtil {
           const fileSize = file.size;
           const base64Data = await UploadUtil.readFileAsBase64(file);
           await CaseDbCaseApi.getInstance().createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
-            file_compression: FileUtil.getFileCompressionFromFileName(caseReadSetToBeUploaded.fileName),
+            file_compression: UploadUtil.getFileCompressionFromFileName(caseReadSetToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbReadsFileFormat.FASTQ,
             is_fwd: caseReadSetToBeUploaded.is_fwd,
@@ -854,6 +854,14 @@ export class UploadUtil {
         }
       }
     }
+  }
+
+  private static getFileCompressionFromFileName(fileName: string): CaseDbFileCompression {
+    const lowerFileName = fileName.toLowerCase();
+    if (lowerFileName.endsWith('.gz') || lowerFileName.endsWith('.gzip')) {
+      return CaseDbFileCompression.GZIP;
+    }
+    return CaseDbFileCompression.NONE;
   }
 
   private static idToRegex(id: string): RegExp {

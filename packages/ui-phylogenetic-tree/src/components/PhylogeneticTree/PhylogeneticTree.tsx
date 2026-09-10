@@ -24,6 +24,7 @@ import { TreeUtil } from '../../utils/TreeUtil';
 
 export type PhylogeneticTreeHighlightedNodeNamesSubjectValue = {
   highlightedNodeNames: string[];
+  persistedHighlightedNodeNames: string[];
 };
 
 export type PhylogeneticTreePathClickEvent = {
@@ -37,6 +38,7 @@ export type PhylogeneticTreeProps = {
   readonly backgroundColor: string;
   readonly dimFn: (color: string) => string;
   readonly fontFamily: string;
+  readonly getLeafLabel?: (nodeName: string) => string;
   readonly headerHeight: number;
   readonly highlightedNodeNamesSubject?: Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>;
   readonly initialViewState?: Partial<PhylogeneticTreeViewState>;
@@ -61,7 +63,8 @@ export type PhylogeneticTreeProps = {
   readonly scaleColor: string;
   readonly scaleIncrements: number[];
   readonly scrollSubject?: Subject<PhylogeneticTreeScrollSubjectValue>;
-  readonly shouldShowDistances: boolean;
+  readonly shouldShowDistances?: boolean;
+  readonly shouldShowLeafLabels?: boolean;
   readonly shouldShowSupportLinesWhenUnlinked: boolean;
   readonly sortedLeafNames: string[];
   readonly supportLineColorLinked: string;
@@ -101,6 +104,7 @@ export const PhylogeneticTree = ({
   backgroundColor,
   dimFn,
   fontFamily,
+  getLeafLabel,
   headerHeight,
   highlightedNodeNamesSubject,
   initialViewState,
@@ -126,6 +130,7 @@ export const PhylogeneticTree = ({
   scaleIncrements,
   scrollSubject,
   shouldShowDistances,
+  shouldShowLeafLabels,
   shouldShowSupportLinesWhenUnlinked,
   sortedLeafNames,
   supportLineColorLinked,
@@ -364,7 +369,7 @@ export const PhylogeneticTree = ({
   });
 
   const getTickerMarkScale = useCallback((zoomLevel: number) => {
-    return TreeUtil.getTickMarkScale({
+    return TreeUtil.getTickerMarkScale({
       geneticTreeWidth: tree?.maxBranchLength,
       maxScaleWidthPx,
       minGeneticScaleUnit: TreeUtil.getMinGeneticScaleUnit(tree),
@@ -447,7 +452,7 @@ export const PhylogeneticTree = ({
     let animationFrameId: number;
     let zoomLevel: number = zoomLevelSubject.data;
     let tickerMarkScale = getTickerMarkScale(zoomLevel);
-    let highlightedNodeNames: string[] = highlightedNodeNamesSubject?.data?.highlightedNodeNames ?? [];
+    let highlightedNodeNames: string[] = [...highlightedNodeNamesSubject?.data?.highlightedNodeNames ?? [], ...highlightedNodeNamesSubject?.data?.persistedHighlightedNodeNames ?? []];
     let scrollPosition = scrollSubject?.data?.position ?? 0;
     let horizontalScrollPosition = scrollPositionSubject.data.horizontal;
     let verticalScrollPosition = scrollPositionSubject.data.vertical;
@@ -463,6 +468,7 @@ export const PhylogeneticTree = ({
           dimFn,
           fontFamily,
           geneticTreeWidth: tree.maxBranchLength,
+          getLeafLabel,
           headerHeight,
           highlightedNodeNames,
           horizontalScrollPosition,
@@ -475,6 +481,7 @@ export const PhylogeneticTree = ({
           scaleColor,
           scrollPosition,
           shouldShowDistances,
+          shouldShowLeafLabels,
           shouldShowSupportLinesWhenUnlinked,
           supportLineColorLinked,
           supportLineColorUnlinked,
@@ -492,7 +499,7 @@ export const PhylogeneticTree = ({
     };
 
     const unsubscribeFromHighlighting = highlightedNodeNamesSubject ? highlightedNodeNamesSubject.subscribe((data) => {
-      highlightedNodeNames = data.highlightedNodeNames;
+      highlightedNodeNames = [...data.highlightedNodeNames ?? [], ...data.persistedHighlightedNodeNames ?? []];
       render();
     }) : (): null => null;
 
@@ -535,23 +542,24 @@ export const PhylogeneticTree = ({
     backgroundColor,
     devicePixelRatio,
     dimFn,
-    highlightedNodeNamesSubject,
-    scrollSubject,
-    visibleRangeSubject,
     fontFamily,
     getTickerMarkScale,
     headerHeight,
+    highlightedNodeNamesSubject,
     isLinked,
     itemHeight,
+    nodeNameColors,
     pixelToGeneticDistanceRatio,
     regularFillColorSupportLine,
     scaleColor,
     scrollPositionSubject,
+    scrollSubject,
     shouldShowDistances,
+    shouldShowLeafLabels,
     shouldShowSupportLinesWhenUnlinked,
-    nodeNameColors,
     supportLineColorLinked,
     supportLineColorUnlinked,
+    getLeafLabel,
     tree,
     treeAssembly,
     treeCanvas,
@@ -560,6 +568,7 @@ export const PhylogeneticTree = ({
     treeColor,
     treeFont,
     treePadding,
+    visibleRangeSubject,
     zoomLevelSubject,
   ]);
 
@@ -582,6 +591,7 @@ export const PhylogeneticTree = ({
       if (highlightedNodeNamesSubject?.data?.highlightedNodeNames?.length) {
         highlightedNodeNamesSubject.next({
           highlightedNodeNames: [],
+          persistedHighlightedNodeNames: highlightedNodeNamesSubject?.data?.persistedHighlightedNodeNames ?? [],
         });
       }
     };
@@ -632,6 +642,7 @@ export const PhylogeneticTree = ({
         treeCanvas.style.cursor = 'pointer';
         highlightedNodeNamesSubject?.next({
           highlightedNodeNames: pathProperties.subTreeLeaveNames,
+          persistedHighlightedNodeNames: highlightedNodeNamesSubject?.data?.persistedHighlightedNodeNames ?? [],
         });
       } else {
         treeCanvas.style.cursor = 'default';

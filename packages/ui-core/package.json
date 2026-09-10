@@ -78,6 +78,10 @@
         "types": "./dist/utils/DownloadUtil/index.d.ts",
         "import": "./dist/utils/DownloadUtil/index.js"
       },
+      "./utils/FileUtil": {
+        "types": "./dist/utils/FileUtil/index.d.ts",
+        "import": "./dist/utils/FileUtil/index.js"
+      },
       "./utils/HmrUtil": {
         "types": "./dist/utils/HmrUtil/index.d.ts",
         "import": "./dist/utils/HmrUtil/index.js"
@@ -164,6 +168,10 @@
     "./utils/DownloadUtil": {
       "types": "./src/utils/DownloadUtil/index.ts",
       "import": "./src/utils/DownloadUtil/index.ts"
+    },
+    "./utils/FileUtil": {
+      "types": "./src/utils/FileUtil/index.ts",
+      "import": "./src/utils/FileUtil/index.ts"
     },
     "./utils/HmrUtil": {
       "types": "./src/utils/HmrUtil/index.ts",

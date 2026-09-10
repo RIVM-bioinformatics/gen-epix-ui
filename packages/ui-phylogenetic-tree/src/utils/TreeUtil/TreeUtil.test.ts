@@ -153,48 +153,48 @@ describe('TreeUtil', () => {
     });
   });
 
-  describe('getTickMarkScale', () => {
+  describe('getTickerMarkScale', () => {
     const MAX_SCALE_WIDTH_PX = 144;
     const MIN_SCALE_WIDTH_PX = 48;
     const SCALE_INCREMENTS = [1, 2, 5, 10, 20, 50];
 
     it('returns [0,0,0] when treeWidthMinusPadding is 0', () => {
-      expect(TreeUtil.getTickMarkScale({
+      expect(TreeUtil.getTickerMarkScale({
         geneticTreeWidth: new Decimal(80),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
-        minGeneticScaleUnit: 1,
+        minGeneticScaleUnit: new Decimal(1),
         minScaleWidthPx: MIN_SCALE_WIDTH_PX,
         scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 0,
         zoomLevel: 1,
-      })).toEqual([0, 0, 0]);
+      })).toEqual({ geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 });
     });
 
     it('returns [0,0,0] when minGeneticScaleUnit is 0', () => {
-      expect(TreeUtil.getTickMarkScale({
+      expect(TreeUtil.getTickerMarkScale({
         geneticTreeWidth: new Decimal(80),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
-        minGeneticScaleUnit: 0,
+        minGeneticScaleUnit: new Decimal(0),
         minScaleWidthPx: MIN_SCALE_WIDTH_PX,
         scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 1,
-      })).toEqual([0, 0, 0]);
+      })).toEqual({ geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 });
     });
 
     it('returns [2, minGeneticScaleUnit, minGeneticScaleUnit] when geneticTree fits only 2 lines (maxNumLines clamped to 2, minNumLines > maxNumLines)', () => {
       // geneticTreeWidth=0.8, minGeneticScaleUnit=1:
       // 0.8/1 + 1 = 1.8 < maxNumLines(26) -> maxNumLines = max(ceil(0.8), 2) = 2
       // minNumLines(9) > 2 -> minNumLines = 2 -> maxNumLines === 2 -> [2, 1, 1]
-      expect(TreeUtil.getTickMarkScale({
+      expect(TreeUtil.getTickerMarkScale({
         geneticTreeWidth: new Decimal(0.8),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
-        minGeneticScaleUnit: 1,
+        minGeneticScaleUnit: new Decimal(1),
         minScaleWidthPx: MIN_SCALE_WIDTH_PX,
         scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 1,
-      })).toEqual([2, 1, 1]);
+      })).toEqual({ geneticDistanceOfSingleLine: 1, minGeneticScaleUnit: new Decimal(1), numberOfLines: 2 });
     });
 
     it('clamps maxNumLines and sets minNumLines = maxNumLines when geneticTree has few divisions', () => {
@@ -202,78 +202,78 @@ describe('TreeUtil', () => {
       // 4/1 + 1 = 5 < maxNumLines(26) -> maxNumLines = max(ceil(4), 2) = 4
       // minNumLines(9) > 4 -> minNumLines = 4, maxNumLines = 4
       // numLines=4, increment=1: product=4, leftover=0 -> [5, 1, 1]
-      expect(TreeUtil.getTickMarkScale({
+      expect(TreeUtil.getTickerMarkScale({
         geneticTreeWidth: new Decimal(4),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
-        minGeneticScaleUnit: 1,
+        minGeneticScaleUnit: new Decimal(1),
         minScaleWidthPx: MIN_SCALE_WIDTH_PX,
         scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 1,
-      })).toEqual([5, 1, 1]);
+      })).toEqual({ geneticDistanceOfSingleLine: 1, minGeneticScaleUnit: new Decimal(1), numberOfLines: 5 });
     });
 
     it('skips increments smaller than minGeneticScaleUnit', () => {
       // minGeneticScaleUnit=5 causes increments [1, 2] to be skipped
       // numLines=16, increment=5: product=80, leftover=0 -> [17, 5, 5]
-      expect(TreeUtil.getTickMarkScale({
+      expect(TreeUtil.getTickerMarkScale({
         geneticTreeWidth: new Decimal(80),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
-        minGeneticScaleUnit: 5,
+        minGeneticScaleUnit: new Decimal(5),
         minScaleWidthPx: MIN_SCALE_WIDTH_PX,
         scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 1,
-      })).toEqual([17, 5, 5]);
+      })).toEqual({ geneticDistanceOfSingleLine: 5, minGeneticScaleUnit: new Decimal(5), numberOfLines: 17 });
     });
 
     it('accounts for zoom level by reducing effective width', () => {
       // zoomLevel=2: width=600 -> minNumLines=5, maxNumLines=14
       // numLines=8, increment=10: product=80, leftover=0 -> [9, 10, 1]
-      expect(TreeUtil.getTickMarkScale({
+      expect(TreeUtil.getTickerMarkScale({
         geneticTreeWidth: new Decimal(80),
         maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
-        minGeneticScaleUnit: 1,
+        minGeneticScaleUnit: new Decimal(1),
         minScaleWidthPx: MIN_SCALE_WIDTH_PX,
         scaleIncrements: SCALE_INCREMENTS,
         treeWidthMinusPadding: 1200,
         zoomLevel: 2,
-      })).toEqual([9, 10, 1]);
+      })).toEqual({ geneticDistanceOfSingleLine: 10, minGeneticScaleUnit: new Decimal(1), numberOfLines: 9 });
     });
 
     it('determines the tick mark scale for various tree widths', () => {
-      const cases: Array<[ArgumentTypes<typeof TreeUtil.getTickMarkScale>[0], [number, number, number]]> = [
+      const cases: Array<[ArgumentTypes<typeof TreeUtil.getTickerMarkScale>[0], ReturnType<typeof TreeUtil.getTickerMarkScale>]> = [
         [{
           geneticTreeWidth: new Decimal(16),
           maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
-          minGeneticScaleUnit: 1,
+          minGeneticScaleUnit: new Decimal(1),
           minScaleWidthPx: MIN_SCALE_WIDTH_PX,
           scaleIncrements: SCALE_INCREMENTS,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,
-        }, [17, 1, 1]],
+        }, { geneticDistanceOfSingleLine: 1, minGeneticScaleUnit: new Decimal(1), numberOfLines: 17 }],
         [{
           geneticTreeWidth: new Decimal(80),
           maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
-          minGeneticScaleUnit: 1,
+          minGeneticScaleUnit: new Decimal(1),
           minScaleWidthPx: MIN_SCALE_WIDTH_PX,
           scaleIncrements: SCALE_INCREMENTS,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,
-        }, [17, 5, 1]],
+        }, { geneticDistanceOfSingleLine: 5, minGeneticScaleUnit: new Decimal(1), numberOfLines: 17 }],
         [{
           geneticTreeWidth: new Decimal(150),
           maxScaleWidthPx: MAX_SCALE_WIDTH_PX,
-          minGeneticScaleUnit: 1,
+          minGeneticScaleUnit: new Decimal(1),
           minScaleWidthPx: MIN_SCALE_WIDTH_PX,
           scaleIncrements: SCALE_INCREMENTS,
           treeWidthMinusPadding: 1200,
           zoomLevel: 1,
-        }, [16, 10, 1]],
+        }, { geneticDistanceOfSingleLine: 10, minGeneticScaleUnit: new Decimal(1), numberOfLines: 16 }],
       ];
 
       cases.forEach(([input, expectedOutput]) => {
-        expect(TreeUtil.getTickMarkScale(input)).toEqual(expectedOutput);
+        expect(TreeUtil.getTickerMarkScale(input)).toEqual(expectedOutput);
       });
     });
   });
@@ -742,26 +742,26 @@ describe('TreeUtil', () => {
 
   describe('getMinGeneticScaleUnit', () => {
     it('returns Infinity when passed a falsy value', () => {
-      expect(TreeUtil.getMinGeneticScaleUnit(null)).toBe(Infinity);
+      expect(TreeUtil.getMinGeneticScaleUnit(null).toNumber()).toBe(Infinity);
     });
 
     it('returns the branchLength of a single leaf node', () => {
-      expect(TreeUtil.getMinGeneticScaleUnit(makeLeaf('a', 3))).toBe(3);
+      expect(TreeUtil.getMinGeneticScaleUnit(makeLeaf('a', 3)).toNumber()).toBe(3);
     });
 
     it('returns Infinity for a leaf whose branchLength is 0 (zero is treated as missing)', () => {
-      expect(TreeUtil.getMinGeneticScaleUnit(makeLeaf('a', 0))).toBe(Infinity);
+      expect(TreeUtil.getMinGeneticScaleUnit(makeLeaf('a', 0)).toNumber()).toBe(Infinity);
     });
 
     it('returns Infinity for a leaf with no branchLength set', () => {
       const leaf: TreeNode = { name: 'a', size: 1, subTreeLeaveNames: ['a'], subTreeNames: [] };
-      expect(TreeUtil.getMinGeneticScaleUnit(leaf)).toBe(Infinity);
+      expect(TreeUtil.getMinGeneticScaleUnit(leaf).toNumber()).toBe(Infinity);
     });
 
     it('returns the minimum among multiple leaf children', () => {
       // leaves: 3, 1, 7 -> min = 1
       const root = makeNode('root', 0, [makeLeaf('a', 3), makeLeaf('b', 1), makeLeaf('c', 7)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root)).toBe(1);
+      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(1);
     });
 
     it('ignores internal (non-leaf) node branch lengths when finding the minimum', () => {
@@ -769,31 +769,31 @@ describe('TreeUtil', () => {
       // leaf b branchLength=2 is the true minimum
       const inner = makeNode('inner', 0.5, [makeLeaf('b', 2), makeLeaf('c', 5)]);
       const root = makeNode('root', 0, [makeLeaf('a', 3), inner]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root)).toBe(2);
+      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(2);
     });
 
     it('skips zero-branch leaves and returns the minimum positive one', () => {
       // leaf a=0 (skipped), leaf b=4, leaf c=2 -> min = 2
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 4), makeLeaf('c', 2)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root)).toBe(2);
+      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(2);
     });
 
     it('returns Infinity when all leaves have zero branchLength', () => {
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 0)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root)).toBe(Infinity);
+      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(Infinity);
     });
 
     it('ignores negative leaf branch lengths when finding the minimum positive scale unit', () => {
       const root = makeNode('root', 0, [makeLeaf('a', -1), makeLeaf('b', 2), makeLeaf('c', 3)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root)).toBe(2);
+      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(2);
     });
 
     it('keeps the scale unit positive for a tree with tiny negative leaf branch lengths', () => {
       const tree = NewickUtil.parse('(((EPI_ISL_402126,EPI_ISL_402127),(EPI_ISL_402119,EPI_ISL_402120)):0.002092509375,((((((EPI_ISL_402123,EPI_ISL_402124),EPI_ISL_402125):0.0020971899999999988,((EPI_ISL_402130,EPI_ISL_402131):0.0012432290000000002,EPI_ISL_402132:0.002955551):0.0021345700000000006):0.0020992670833333343,(EPI_ISL_402128,EPI_ISL_402129):0.004207167916666666):0.00000802875000000063,EPI_ISL_402121:-0.000008030000000000406):0.0000050187500000003354,EPI_ISL_402122:-0.0000050187500000003354):0.002092509375);');
       const minGeneticScaleUnit = TreeUtil.getMinGeneticScaleUnit(tree);
 
-      expect(minGeneticScaleUnit).toBe(0.002955551);
-      expect(TreeUtil.getTickMarkScale({
+      expect(minGeneticScaleUnit.toNumber()).toBe(0.002955551);
+      expect(TreeUtil.getTickerMarkScale({
         geneticTreeWidth: tree.maxBranchLength,
         maxScaleWidthPx: 144,
         minGeneticScaleUnit,
@@ -801,7 +801,7 @@ describe('TreeUtil', () => {
         scaleIncrements: [1, 2, 5, 10, 20, 50],
         treeWidthMinusPadding: 1200,
         zoomLevel: 1,
-      })).toEqual([5, 0.005, 0.002955551]);
+      })).toEqual({ geneticDistanceOfSingleLine: 0.005, minGeneticScaleUnit: new Decimal(0.002955551), numberOfLines: 5 });
     });
 
     it('traverses deeply nested leaves correctly', () => {
@@ -810,17 +810,17 @@ describe('TreeUtil', () => {
       const deep = makeLeaf('deep', 0.1);
       const inner = makeNode('inner', 2, [deep, makeLeaf('sibling', 3)]);
       const root = makeNode('root', 0, [makeLeaf('a', 5), inner]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root)).toBe(0.1);
+      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(0.1);
     });
 
     it('handles a tree where the root is itself a leaf (no children)', () => {
       const leaf = makeLeaf('solo', 7);
-      expect(TreeUtil.getMinGeneticScaleUnit(leaf)).toBe(7);
+      expect(TreeUtil.getMinGeneticScaleUnit(leaf).toNumber()).toBe(7);
     });
 
     it('returns the sole positive leaf value when only one leaf has a positive branchLength', () => {
       const root = makeNode('root', 0, [makeLeaf('a', 0), makeLeaf('b', 0), makeLeaf('c', 6)]);
-      expect(TreeUtil.getMinGeneticScaleUnit(root)).toBe(6);
+      expect(TreeUtil.getMinGeneticScaleUnit(root).toNumber()).toBe(6);
     });
   });
 
@@ -850,6 +850,19 @@ describe('TreeUtil', () => {
       // leafXPxEnd = (0+2)*100+10 = 210, leafYPx = 15
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: makeLeaf('a', 2), treeCanvasWidth });
       expect(asm.supportLines).toEqual([{ fromX: 210, fromY: 15, nodeName: 'a', toX: treeCanvasWidth, toY: 15 }]);
+    });
+
+    it('produces a node label positioned past the leaf dot for each leaf', () => {
+      // leafXPxEnd = 210, leafDotRadius default = 4 -> x = 210 + (4*2) = 218, y = 15
+      const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: makeLeaf('a', 2), treeCanvasWidth });
+      expect(asm.nodeLabels).toEqual([{ nodeName: 'a', x: 218, y: 15 }]);
+    });
+
+    it('produces one node label per leaf in a multi-leaf tree', () => {
+      const tree = makeNode('root', 0, [makeLeaf('a', 2), makeLeaf('b', 3)]);
+      const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, treeCanvasWidth });
+      expect(asm.nodeLabels).toHaveLength(2);
+      expect(asm.nodeLabels.map(l => l.nodeName)).toEqual(['a', 'b']);
     });
 
     it('produces one entry per leaf in leafNodes, leafTreeLines, and supportLines for a two-leaf tree', () => {
@@ -1401,7 +1414,7 @@ describe('TreeUtil', () => {
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
         regularFillColorSupportLine: REGULAR_FILL_COLOR,
-        tickerMarkScale: [0, 0, 0],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 },
         treePadding: TREE_PADDING_GUIDES,
         zoomLevel: 1,
       });
@@ -1418,7 +1431,7 @@ describe('TreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      // tickerMarkScale=[3,...] -> 3 iterations -> 3 beginPath/moveTo/lineTo/stroke/closePath calls
+      // tickerMarkScale={numberOfLines:3,...} -> 3 iterations -> 3 beginPath/moveTo/lineTo/stroke/closePath calls
       TreeUtil.drawGuides({
         canvas,
         devicePixelRatio: 1,
@@ -1426,7 +1439,7 @@ describe('TreeUtil', () => {
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
         regularFillColorSupportLine: REGULAR_FILL_COLOR,
-        tickerMarkScale: [3, 5, 1],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 5, minGeneticScaleUnit: new Decimal(1), numberOfLines: 3 },
         treePadding: TREE_PADDING_GUIDES,
         zoomLevel: 1,
       });
@@ -1444,7 +1457,7 @@ describe('TreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      // tickerMarkScale=[3,5,1], genetic=10, ratio=100, zoom=1, scroll=0
+      // tickerMarkScale={numberOfLines:3,geneticDistanceOfSingleLine:5,minGeneticScaleUnit:1}, genetic=10, ratio=100, zoom=1, scroll=0
       // offset = totalTicker - geneticPx = (500*2) - 1000 = 0
       // i=0: x = 0*500 + (10/1) - 0 - 0 = 10
       TreeUtil.drawGuides({
@@ -1454,7 +1467,7 @@ describe('TreeUtil', () => {
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
         regularFillColorSupportLine: REGULAR_FILL_COLOR,
-        tickerMarkScale: [3, 5, 1],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 5, minGeneticScaleUnit: new Decimal(1), numberOfLines: 3 },
         treePadding: TREE_PADDING_GUIDES,
         zoomLevel: 1,
       });
@@ -1480,7 +1493,7 @@ describe('TreeUtil', () => {
         pixelToGeneticDistanceRatio: 100,
         regularFillColorSupportLine: REGULAR_FILL_COLOR,
         startY: 40,
-        tickerMarkScale: [3, 5, 1],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 5, minGeneticScaleUnit: new Decimal(1), numberOfLines: 3 },
         treePadding: TREE_PADDING_GUIDES,
         zoomLevel: 1,
       });
@@ -1513,7 +1526,7 @@ describe('TreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      // tickerMarkScale=[3,5,1] -> 3 fillText calls
+      // tickerMarkScale={numberOfLines:3,geneticDistanceOfSingleLine:5,minGeneticScaleUnit:1} -> 3 fillText calls
       TreeUtil.drawScale({
         canvas,
         devicePixelRatio: 1,
@@ -1523,7 +1536,7 @@ describe('TreeUtil', () => {
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
         scaleColor: '#111111',
-        tickerMarkScale: [3, 5, 1],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 5, minGeneticScaleUnit: new Decimal(1), numberOfLines: 3 },
         treePadding: TREE_PADDING_SCALE,
         zoomLevel: 1,
       });
@@ -1539,7 +1552,7 @@ describe('TreeUtil', () => {
         width: 800,
       } as unknown as HTMLCanvasElement;
 
-      // tickerMarkScale=[3,5,1], labels: i=0->10, i=1->5, i=2->0
+      // tickerMarkScale={numberOfLines:3,geneticDistanceOfSingleLine:5,minGeneticScaleUnit:1}, labels: i=0->10, i=1->5, i=2->0
       // x positions: i=0->10, i=1->510, i=2->1010
       // y = HEADER_HEIGHT * 0.61 = 40 * 0.61 = 24.4
       TreeUtil.drawScale({
@@ -1551,7 +1564,7 @@ describe('TreeUtil', () => {
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
         scaleColor: '#111111',
-        tickerMarkScale: [3, 5, 1],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 5, minGeneticScaleUnit: new Decimal(1), numberOfLines: 3 },
         treePadding: TREE_PADDING_SCALE,
         zoomLevel: 1,
       });
@@ -1578,7 +1591,7 @@ describe('TreeUtil', () => {
         horizontalScrollPosition: 0,
         pixelToGeneticDistanceRatio: 100,
         scaleColor: '#111111',
-        tickerMarkScale: [1, 5, 1],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 5, minGeneticScaleUnit: new Decimal(1), numberOfLines: 1 },
         treePadding: TREE_PADDING_SCALE,
         zoomLevel: 1,
       });
@@ -1621,6 +1634,7 @@ describe('TreeUtil', () => {
       horizontalLinePathPropertiesMap: new Map(),
       leafNodes: [],
       leafTreeLines: [],
+      nodeLabels: [],
       nodePathPropertiesMap: new Map(),
       supportLines: [],
       verticalAncestorTreeLines: [],
@@ -1657,7 +1671,7 @@ describe('TreeUtil', () => {
         shouldShowSupportLinesWhenUnlinked: false,
         supportLineColorLinked: '#000000',
         supportLineColorUnlinked: '#bbbbbb',
-        tickerMarkScale: [0, 0, 0],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 },
         treeAssembly: makeEmptyAssembly(),
         treeCanvasHeight: 100,
         treeCanvasWidth: 200,
@@ -1701,7 +1715,7 @@ describe('TreeUtil', () => {
         shouldShowSupportLinesWhenUnlinked: false,
         supportLineColorLinked: '#000000',
         supportLineColorUnlinked: '#bbbbbb',
-        tickerMarkScale: [0, 0, 0],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 },
         treeAssembly: makeEmptyAssembly(),
         treeCanvasHeight: 100,
         treeCanvasWidth: 200,
@@ -1746,7 +1760,7 @@ describe('TreeUtil', () => {
         shouldShowSupportLinesWhenUnlinked: false,
         supportLineColorLinked: '#000000',
         supportLineColorUnlinked: '#bbbbbb',
-        tickerMarkScale: [0, 0, 0],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 },
         treeAssembly: makeEmptyAssembly(),
         treeCanvasHeight: 100,
         treeCanvasWidth: 200,
@@ -1790,7 +1804,7 @@ describe('TreeUtil', () => {
         shouldShowSupportLinesWhenUnlinked: false,
         supportLineColorLinked: '#000000',
         supportLineColorUnlinked: '#bbbbbb',
-        tickerMarkScale: [0, 0, 0],
+        tickerMarkScale: { geneticDistanceOfSingleLine: 0, minGeneticScaleUnit: new Decimal(0), numberOfLines: 0 },
         treeAssembly: makeEmptyAssembly(),
         treeCanvasHeight: 100,
         treeCanvasWidth: 200,
@@ -1835,6 +1849,7 @@ describe('TreeUtil', () => {
         horizontalLinePathPropertiesMap: new Map(),
         leafNodes: [],
         leafTreeLines: [],
+        nodeLabels: [],
         nodePathPropertiesMap: new Map([[nodeShape, nodeProps]]),
         supportLines: [],
         verticalAncestorTreeLines: [],
@@ -1865,6 +1880,7 @@ describe('TreeUtil', () => {
         horizontalLinePathPropertiesMap: new Map([[hShape, hProps]]),
         leafNodes: [],
         leafTreeLines: [],
+        nodeLabels: [],
         nodePathPropertiesMap: new Map(),
         supportLines: [],
         verticalAncestorTreeLines: [],
@@ -1895,6 +1911,7 @@ describe('TreeUtil', () => {
         horizontalLinePathPropertiesMap: new Map(),
         leafNodes: [],
         leafTreeLines: [],
+        nodeLabels: [],
         nodePathPropertiesMap: new Map(),
         supportLines: [],
         verticalAncestorTreeLines: [],
@@ -1924,6 +1941,7 @@ describe('TreeUtil', () => {
         horizontalLinePathPropertiesMap: new Map(),
         leafNodes: [],
         leafTreeLines: [],
+        nodeLabels: [],
         nodePathPropertiesMap: new Map([[new Path2D(), { subTreeLeaveNames: [] }]]),
         supportLines: [],
         verticalAncestorTreeLines: [],
@@ -1953,6 +1971,7 @@ describe('TreeUtil', () => {
         horizontalLinePathPropertiesMap: new Map(),
         leafNodes: [],
         leafTreeLines: [],
+        nodeLabels: [],
         nodePathPropertiesMap: new Map(),
         supportLines: [],
         verticalAncestorTreeLines: [],
@@ -1982,6 +2001,7 @@ describe('TreeUtil', () => {
         horizontalLinePathPropertiesMap: new Map([[hShape, { subTreeLeaveNames: ['a'] }]]),
         leafNodes: [],
         leafTreeLines: [],
+        nodeLabels: [],
         nodePathPropertiesMap: new Map(),
         supportLines: [],
         verticalAncestorTreeLines: [],
@@ -2071,6 +2091,7 @@ describe('TreeUtil', () => {
       horizontalLinePathPropertiesMap: new Map(),
       leafNodes: [],
       leafTreeLines: [],
+      nodeLabels: [],
       nodePathPropertiesMap: new Map(),
       supportLines: [],
       verticalAncestorTreeLines: [],
@@ -2696,6 +2717,94 @@ describe('TreeUtil', () => {
       });
       expect(ctx.fillText).toHaveBeenCalledTimes(1);
       expect(ctx.fillText).toHaveBeenCalledWith('label-a', 100, 20);
+    });
+
+    it('does not call fillText for node labels when shouldShowLeafLabels is false', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.nodeLabels = [{ nodeName: 'a', x: 100, y: 20 }];
+      TreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        devicePixelRatio: 1,
+        dimFn: makeDimFn(),
+        highlightedNodeNames: [],
+        horizontalScrollPosition: 0,
+        isLinked: false,
+        itemHeight: 30,
+        nodeNameColors: null,
+        range: { endIndex: 0, startIndex: 0 },
+        shouldShowDistances: false,
+        shouldShowLeafLabels: false,
+        shouldShowSupportLinesWhenUnlinked: false,
+        supportLineColorLinked: TREE_COLOR,
+        supportLineColorUnlinked: DIM_COLOR,
+        treeAssembly: assembly,
+        treeColor: TREE_COLOR,
+        treeFont: TREE_FONT,
+        verticalScrollPosition: 0,
+        zoomLevel: 1,
+      });
+      expect(ctx.fillText).not.toHaveBeenCalled();
+    });
+
+    it('renders the node name as the label when shouldShowLeafLabels is true and getLeafLabel is not provided', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.nodeLabels = [{ nodeName: 'a', x: 100, y: 20 }];
+      TreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        devicePixelRatio: 1,
+        dimFn: makeDimFn(),
+        highlightedNodeNames: [],
+        horizontalScrollPosition: 0,
+        isLinked: false,
+        itemHeight: 30,
+        nodeNameColors: null,
+        range: { endIndex: 0, startIndex: 0 },
+        shouldShowDistances: false,
+        shouldShowLeafLabels: true,
+        shouldShowSupportLinesWhenUnlinked: false,
+        supportLineColorLinked: TREE_COLOR,
+        supportLineColorUnlinked: DIM_COLOR,
+        treeAssembly: assembly,
+        treeColor: TREE_COLOR,
+        treeFont: TREE_FONT,
+        verticalScrollPosition: 0,
+        zoomLevel: 1,
+      });
+      expect(ctx.fillText).toHaveBeenCalledTimes(1);
+      expect(ctx.fillText).toHaveBeenCalledWith('a', 100, 20);
+    });
+
+    it('resolves the label through getLeafLabel when provided', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.nodeLabels = [{ nodeName: 'a', x: 100, y: 20 }];
+      const getLeafLabel = vi.fn((nodeName: string) => `custom-${nodeName}`);
+      TreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        devicePixelRatio: 1,
+        dimFn: makeDimFn(),
+        getLeafLabel,
+        highlightedNodeNames: [],
+        horizontalScrollPosition: 0,
+        isLinked: false,
+        itemHeight: 30,
+        nodeNameColors: null,
+        range: { endIndex: 0, startIndex: 0 },
+        shouldShowDistances: false,
+        shouldShowLeafLabels: true,
+        shouldShowSupportLinesWhenUnlinked: false,
+        supportLineColorLinked: TREE_COLOR,
+        supportLineColorUnlinked: DIM_COLOR,
+        treeAssembly: assembly,
+        treeColor: TREE_COLOR,
+        treeFont: TREE_FONT,
+        verticalScrollPosition: 0,
+        zoomLevel: 1,
+      });
+      expect(getLeafLabel).toHaveBeenCalledWith('a');
+      expect(ctx.fillText).toHaveBeenCalledWith('custom-a', 100, 20);
     });
 
     it('uses full tree color for every shape when highlightedNodeNames is empty', () => {

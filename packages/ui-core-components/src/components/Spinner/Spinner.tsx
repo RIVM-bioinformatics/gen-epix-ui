@@ -15,6 +15,9 @@ import { visuallyHidden } from '@mui/utils';
 import { useUiCoreComponentsConfigContext } from '../../context/uiCoreComponentsConfigContext';
 
 
+const DEFAULT_TAKING_LONGER_TIMEOUT_MS = 5000;
+const DEFAULT_CIRCULAR_PROGRESS_SIZE = 40;
+
 export type SpinnerProps = {
   readonly color?: 'inherit' | 'primary' | 'secondary';
   readonly inline?: boolean;
@@ -22,9 +25,10 @@ export type SpinnerProps = {
   readonly size?: CircularProgressProps['size'];
   readonly takingLongerLabel?: string;
   readonly takingLongerTimeoutMs?: number;
+  readonly textColor?: string;
 };
 
-export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLabel, takingLongerTimeoutMs }: SpinnerProps): ReactElement => {
+export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLabel, takingLongerTimeoutMs, textColor }: SpinnerProps): ReactElement => {
   const [isTakingLonger, setIsTakingLonger] = useState(false);
   const { t } = useTranslation();
 
@@ -33,11 +37,11 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
   useEffect(() => {
     const handle = setTimeout(() => {
       setIsTakingLonger(true);
-    }, takingLongerTimeoutMs ?? uiCoreComponentsConfig.spinner.defaultTakingLongerTimeoutMs);
+    }, takingLongerTimeoutMs ?? uiCoreComponentsConfig?.spinner?.defaultTakingLongerTimeoutMs ?? DEFAULT_TAKING_LONGER_TIMEOUT_MS);
     return () => {
       clearTimeout(handle);
     };
-  }, [takingLongerTimeoutMs, uiCoreComponentsConfig.spinner.defaultTakingLongerTimeoutMs]);
+  }, [takingLongerTimeoutMs, uiCoreComponentsConfig?.spinner?.defaultTakingLongerTimeoutMs]);
 
   return (
     <Box
@@ -63,12 +67,13 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
       >
         <CircularProgress
           color={color}
-          size={size ?? uiCoreComponentsConfig.spinner.defaultCircularProgressSize}
+          size={size ?? uiCoreComponentsConfig?.spinner?.defaultCircularProgressSize ?? DEFAULT_CIRCULAR_PROGRESS_SIZE}
         />
       </Box>
       <Box
         sx={{
           ...(!label ? visuallyHidden : undefined),
+          color: textColor ?? 'inherit',
           margin: 1,
         }}
       >
@@ -81,6 +86,7 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
       {isTakingLonger && (
         <Box
           sx={{
+            color: textColor ?? 'inherit',
             margin: 1,
           }}
         >

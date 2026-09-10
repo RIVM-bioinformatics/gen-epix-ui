@@ -38,6 +38,10 @@
         "types": "./dist/components/fields/DateRangePicker/index.d.ts",
         "import": "./dist/components/fields/DateRangePicker/index.js"
       },
+      "./components/fields/FileUpload": {
+        "types": "./dist/components/fields/FileUpload/index.d.ts",
+        "import": "./dist/components/fields/FileUpload/index.js"
+      },
       "./components/fields/NumberField": {
         "types": "./dist/components/fields/NumberField/index.d.ts",
         "import": "./dist/components/fields/NumberField/index.js"
@@ -73,10 +77,6 @@
       "./components/fields/TransferList": {
         "types": "./dist/components/fields/TransferList/index.d.ts",
         "import": "./dist/components/fields/TransferList/index.js"
-      },
-      "./components/fields/UploadButton": {
-        "types": "./dist/components/fields/UploadButton/index.d.ts",
-        "import": "./dist/components/fields/UploadButton/index.js"
       },
       "./components/helpers/FormFieldHelperText": {
         "types": "./dist/components/helpers/FormFieldHelperText/index.d.ts",
@@ -133,6 +133,10 @@
       "types": "./src/components/fields/DateRangePicker/index.ts",
       "import": "./src/components/fields/DateRangePicker/index.ts"
     },
+    "./components/fields/FileUpload": {
+      "types": "./src/components/fields/FileUpload/index.ts",
+      "import": "./src/components/fields/FileUpload/index.ts"
+    },
     "./components/fields/NumberField": {
       "types": "./src/components/fields/NumberField/index.ts",
       "import": "./src/components/fields/NumberField/index.ts"
@@ -168,10 +172,6 @@
     "./components/fields/TransferList": {
       "types": "./src/components/fields/TransferList/index.ts",
       "import": "./src/components/fields/TransferList/index.ts"
-    },
-    "./components/fields/UploadButton": {
-      "types": "./src/components/fields/UploadButton/index.ts",
-      "import": "./src/components/fields/UploadButton/index.ts"
     },
     "./components/helpers/FormFieldHelperText": {
       "types": "./src/components/helpers/FormFieldHelperText/index.ts",
@@ -221,6 +221,7 @@
   },
   "peerDependencies": {
     "@gen-epix/ui-core": "workspace:^",
+    "@gen-epix/ui-core-components": "workspace:^",
     "@mui/icons-material": "*",
     "@mui/material": "*",
     "@mui/x-date-pickers": "*",
@@ -278,6 +279,7 @@
   "devDependencies": {
     "@gen-epix/eslint-config": "0.5.0",
     "@gen-epix/ui-core": "workspace:^",
+    "@gen-epix/ui-core-components": "workspace:^",
     "@gen-epix/translation-util": "0.2.0",
     "@mui/icons-material": "9.4.0",
     "@mui/material": "9.4.0",

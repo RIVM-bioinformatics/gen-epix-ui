@@ -79,8 +79,12 @@ export const UploadSelectFile = () => {
     caseTypeId: string().uuid4().required(),
     createdInDataCollectionId: string().uuid4().required(),
     fileList: mixed().required(t`File is required`),
-    sheet: string().required(t`Sheet is required`),
-  }), [t]);
+    sheet: string().when('fileList', {
+      is: UploadUtil.isXlsxFile(fileName),
+      otherwise: (sheetSchema) => sheetSchema.notRequired(),
+      then: (sheetSchema) => sheetSchema.required(t`Sheet is required`),
+    }),
+  }), [fileName, t]);
 
   const formMethods = useForm<FormFields>({
     defaultValues: {

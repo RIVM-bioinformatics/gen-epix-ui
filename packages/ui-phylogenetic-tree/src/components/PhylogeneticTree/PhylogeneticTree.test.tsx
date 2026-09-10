@@ -500,6 +500,7 @@ describe('PhylogeneticTree', () => {
   test('draws highlighted distance labels only when enabled', async () => {
     const highlightedNodeNamesSubject = new Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>({
       highlightedNodeNames: ['LeafA'],
+      persistedHighlightedNodeNames: [],
     });
     const { ariaLabel, canvas, layout, renderResult, resolvedOptions } = await renderTree({
       highlightedNodeNamesSubject,
@@ -641,6 +642,7 @@ describe('PhylogeneticTree', () => {
   test('highlights hovered nodes and emits path clicks for generated internal nodes', async () => {
     const highlightedNodeNamesSubject = new Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>({
       highlightedNodeNames: [],
+      persistedHighlightedNodeNames: [],
     });
     const onPathClick = vi.fn();
     const { canvas, layout, tree } = await renderTree({

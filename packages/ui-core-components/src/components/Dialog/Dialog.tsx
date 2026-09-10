@@ -55,7 +55,6 @@ const isDialogActionButton = (action: DialogAction): action is DialogActionButto
 };
 
 export const Dialog = ({
-  actionButtons: ActionButtons,
   actions,
   children,
   dialogContentRef,
@@ -156,7 +155,7 @@ export const Dialog = ({
       {!!children && (
         <DialogContent
           {...TestIdUtil.createAttributes(`${testId}-content`)}
-          dividers={!!ActionButtons}
+          dividers
           ref={dialogContentRef}
           sx={{
             paddingTop: fullScreen ? 0 : undefined,

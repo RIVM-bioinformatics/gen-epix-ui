@@ -527,6 +527,7 @@ export const TreeWidget = () => {
   const phylogeneticTreeHighlightedNodeNamesSubject = useMemo(() => {
     const subject = new Subject<PhylogeneticTreeHighlightedNodeNamesSubjectValue>({
       highlightedNodeNames: dashboardContext.highlightSubject.data.caseIds,
+      persistedHighlightedNodeNames: [],
     });
     return subject;
   }, [dashboardContext.highlightSubject.data.caseIds]);
@@ -550,6 +551,7 @@ export const TreeWidget = () => {
       }
       phylogeneticTreeHighlightedNodeNamesSubject.next({
         highlightedNodeNames: data.caseIds,
+        persistedHighlightedNodeNames: [],
       });
     });
     return () => {

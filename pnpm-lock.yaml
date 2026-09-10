@@ -101,6 +101,9 @@ importers:
       yup:
         specifier: 1.7.1
         version: 1.7.1
+      zustand:
+        specifier: 5.0.15
+        version: 5.0.15(@types/react@19.2.18)(immer@11.1.18)(react@19.2.8)(use-sync-external-store@1.6.0(react@19.2.8))
     devDependencies:
       '@gen-epix/eslint-config':
         specifier: 0.5.0
@@ -1197,6 +1200,9 @@ importers:
 
   packages/ui-core-components:
     dependencies:
+      date-fns:
+        specifier: 4.4.0
+        version: 4.4.0
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -1409,6 +1415,9 @@ importers:
       '@gen-epix/ui-core':
         specifier: workspace:^
         version: link:../ui-core
+      '@gen-epix/ui-core-components':
+        specifier: workspace:^
+        version: link:../ui-core-components
       '@mui/icons-material':
         specifier: 9.4.0
         version: 9.4.0(@mui/material@9.4.0(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react@19.2.8)(supports-color@10.2.2))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(@types/react@19.2.18)(react@19.2.8)

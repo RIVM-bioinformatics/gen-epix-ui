@@ -52,6 +52,7 @@ import type { FindSimilarCasesDialogRefMethods } from '../FindSimilarCasesDialog
 import { RemoveFindSimilarCasesResultDialog } from '../RemoveFindSimilarCasesResultDialog/RemoveFindSimilarCasesResultDialog';
 import type { RemoveFindSimilarCasesResultDialogRefMethods } from '../RemoveFindSimilarCasesResultDialog/RemoveFindSimilarCasesResultDialog';
 import { EventBusService } from '../../../classes/services/EventBusService';
+import type { CaseDbConfig } from '../../../models/config';
 
 import {
   DashboardSettingsSidebarItem,
@@ -189,6 +190,8 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
     return !!isMaxResultsExceeded && !isMaxResultsExceededDismissed;
   }, [isMaxResultsExceededDismissed, isMaxResultsExceeded]);
 
+  const InjectedDashboardComponent = ConfigService.getInstance<CaseDbConfig>().config.dashboard.DASHBOARD_INJECTED_COMPONENT;
+
   return (
     <>
       {/* Sidebar */}
@@ -303,6 +306,9 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
       <CreateEventDialog ref={createEventDialogRef} />
       <RemoveCasesFromEventDialog ref={removeCasesFromEventDialogRef} />
       <AddCasesToEventDialog ref={addCasesToEventDialogRef} />
+      {InjectedDashboardComponent && (
+        <InjectedDashboardComponent />
+      )}
     </>
   );
 };

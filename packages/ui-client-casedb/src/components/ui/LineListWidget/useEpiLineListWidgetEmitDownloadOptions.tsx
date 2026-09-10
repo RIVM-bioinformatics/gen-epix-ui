@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
+import type { DownloadConfig } from '../../../classes/services/EventBusService';
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
@@ -25,55 +26,57 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
 
   useEffect(() => {
     const emitDownloadOptions = (selectedIds: string[]) => {
+      const items: DownloadConfig['items'] = [
+        {
+          disabled: !sortedData?.length,
+          items: [
+            {
+              callback: async () => CaseDbDownloadUtil.downloadAsExcel(sortedData, getVisibleColumnIds(), completeCaseType, t),
+              label: t`Download as Excel`,
+            },
+            {
+              callback: () => CaseDbDownloadUtil.downloadAsCsv(sortedData, getVisibleColumnIds(), completeCaseType, t),
+              label: t`Download as CSV`,
+            },
+            {
+              callback: () => EventBusService.getInstance().emit('openSequenceDownloadDialog', { cases: sortedData }),
+              label: t`Download sequences`,
+            },
+            {
+              callback: () => null,
+              disabled: true,
+              label: t`Download allele profiles`,
+            },
+          ],
+          label: t`All rows`,
+        },
+        {
+          disabled: selectedIds.length === 0,
+          items: [
+            {
+              callback: async () => CaseDbDownloadUtil.downloadAsExcel(DashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+              label: t`Download as Excel`,
+            },
+            {
+              callback: () => CaseDbDownloadUtil.downloadAsCsv(DashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
+              label: t`Download as CSV`,
+            },
+            {
+              callback: () => EventBusService.getInstance().emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedIds.includes(c.id)) }),
+              label: t`Download sequences`,
+            },
+            {
+              callback: () => null,
+              disabled: true,
+              label: t`Download allele profiles`,
+            },
+          ],
+          label: t`Selected rows`,
+        },
+      ];
+
       EventBusService.getInstance().emit('onDownloadOptionsChanged', {
-        items: [
-          {
-            disabled: !sortedData?.length,
-            items: [
-              {
-                callback: async () => CaseDbDownloadUtil.downloadAsExcel(sortedData, getVisibleColumnIds(), completeCaseType, t),
-                label: t`Download as Excel`,
-              },
-              {
-                callback: () => CaseDbDownloadUtil.downloadAsCsv(sortedData, getVisibleColumnIds(), completeCaseType, t),
-                label: t`Download as CSV`,
-              },
-              {
-                callback: () => EventBusService.getInstance().emit('openSequenceDownloadDialog', { cases: sortedData }),
-                label: t`Download sequences`,
-              },
-              {
-                callback: () => null,
-                disabled: true,
-                label: t`Download allele profiles`,
-              },
-            ],
-            label: t`All rows`,
-          },
-          {
-            disabled: selectedIds.length === 0,
-            items: [
-              {
-                callback: async () => CaseDbDownloadUtil.downloadAsExcel(DashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
-                label: t`Download as Excel`,
-              },
-              {
-                callback: () => CaseDbDownloadUtil.downloadAsCsv(DashboardUtil.getSelectedRows(sortedData, selectedIds), getVisibleColumnIds(), completeCaseType, t),
-                label: t`Download as CSV`,
-              },
-              {
-                callback: () => EventBusService.getInstance().emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedIds.includes(c.id)) }),
-                label: t`Download sequences`,
-              },
-              {
-                callback: () => null,
-                disabled: true,
-                label: t`Download allele profiles`,
-              },
-            ],
-            label: t`Selected rows`,
-          },
-        ],
+        items,
         zone: DASHBOARD_COMPONENT_NAME.LINE_LIST,
         zoneLabel: t`Line list`,
       });
