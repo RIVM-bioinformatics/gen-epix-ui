@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.0.3...ui-phylogenetic-tree-v3.1.0) (2026-09-10)
+
+
+### Features
+
+* add FoleDropZone ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* add some tree features ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* allow consumers to add download fasta actions ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* allow consumers to inject component into dashboard ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+
 ## [3.0.3](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.0.2...ui-phylogenetic-tree-v3.0.3) (2026-09-04)
 
 

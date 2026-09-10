@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v4.0.0...api-seqdb-v4.1.0) (2026-09-10)
+
+
+### Features
+
+* add FoleDropZone ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* add some tree features ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* allow consumers to add download fasta actions ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* allow consumers to inject component into dashboard ([0eb4f18](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/0eb4f187ae882177519341cb253f117e5c2366dd))
+* changed case_date to timed_at ([9d13656](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/9d1365670b2d32bf28c9151a76814a24d53ecc92))
+
+
+### Bug Fixes
+
+* update filter types across components and services ([263b772](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/263b7720040c3bffe0980542861a5247ab9075eb))
+* update filter types across components and services ([8eb4db8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/8eb4db8a718a79b978da4f10cf6d6d81ed35ee3e))
+
 ## [4.0.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-seqdb-v3.1.0...api-seqdb-v4.0.0) (2026-09-03)
 
 
