@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.2.0...ui-phylogenetic-tree-v3.3.0) (2026-09-11)
+
+
+### Features
+
+* don't show distance label when distance is rounded off to 0 ([54b80ab](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/54b80ab3eab95b8c0dca0976c790814bd96b23bd))
+
 ## [3.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-phylogenetic-tree-v3.1.0...ui-phylogenetic-tree-v3.2.0) (2026-09-11)
 
 
