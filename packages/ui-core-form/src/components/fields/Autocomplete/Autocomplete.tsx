@@ -27,6 +27,7 @@ import type {
   AutocompleteRenderValueGetItemProps,
   AutocompleteValue,
   FilterOptionsState,
+  TextFieldVariants,
 } from '@mui/material';
 import type {
   ControllerRenderProps,
@@ -54,18 +55,23 @@ import { AutocompleteSelectAllPaper } from './AutocompleteSelectAllPaper';
 import { AutocompleteSelectAllContext } from './AutocompleteSelectAllContext';
 
 
+// A multi-select field's own value is already the array, so it must not be re-wrapped by `AutocompleteValue`'s `Multiple` handling.
+export type AutocompleteChangeValue<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = TMultiple extends true ? TFieldValues[TName] : AutocompleteValue<TFieldValues[TName], false, false, false>;
+
 export type AutocompleteProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>, TMultiple extends boolean> = {
   readonly disabled?: boolean;
   readonly groupValues?: boolean;
+  readonly hideSelectAll?: boolean;
   readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
   readonly multiple?: TMultiple;
   readonly name: TName;
-  readonly onChange?: (value: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>) => void;
+  readonly onChange?: (value: AutocompleteChangeValue<TFieldValues, TName, TMultiple>) => void;
   readonly options: AutoCompleteOption[];
   readonly required?: boolean;
   readonly shouldSortOptions?: boolean;
+  readonly textFieldVariant?: TextFieldVariants;
   readonly warningMessage?: string;
 };
 type MultipleRenderValueItemProps = ReturnType<AutocompleteRenderValueGetItemProps<true>>;
@@ -75,6 +81,7 @@ type Value = number | string;
 export const Autocomplete = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>, TMultiple extends boolean = false>({
   disabled = false,
   groupValues = false,
+  hideSelectAll = false,
   infoMessage,
   label,
   loading = false,
@@ -84,6 +91,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
   options,
   required = false,
   shouldSortOptions,
+  textFieldVariant = 'outlined',
   warningMessage,
 }: AutocompleteProps<TFieldValues, TName, TMultiple>): ReactElement => {
   const { t } = useTranslation();
@@ -197,10 +205,10 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
             required: required && !disabled,
           },
         }}
-        variant={'outlined'}
+        variant={textFieldVariant}
       />
     );
-  }, [disabled, errorMessage, hasError, hasWarning, infoMessage, label, loading, required, warningMessage]);
+  }, [disabled, errorMessage, hasError, hasWarning, infoMessage, label, loading, required, textFieldVariant, warningMessage]);
 
   const renderValue = useCallback((values: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>, getItemProps: AutocompleteRenderValueGetItemProps<TMultiple>) => {
     const selectedValues = (Array.isArray(values) ? values : [values]) as Value[];
@@ -234,7 +242,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
   const onMuiAutocompleteChange = useCallback((onChange: ControllerRenderProps<TFieldValues, TName>['onChange']) =>
     (_event: SyntheticEvent, value: AutocompleteValue<TFieldValues[TName], TMultiple, false, false>) => {
       if (onChangeProp) {
-        onChangeProp(value);
+        onChangeProp(value as unknown as AutocompleteChangeValue<TFieldValues, TName, TMultiple>);
       }
       onChange(value);
     }
@@ -260,7 +268,7 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
     const newValue = isCurrentlyAll
       ? curValues.filter(v => mappedOptions.get(v)?.disabled)
       : [...new Set([...curValues, ...enabledOptionValues])];
-    onChangePropRef.current?.(newValue as unknown as AutocompleteValue<TFieldValues[TName], TMultiple, false, false>);
+    onChangePropRef.current?.(newValue as unknown as AutocompleteChangeValue<TFieldValues, TName, TMultiple>);
     setValue(name, newValue as TFieldValues[TName], { shouldDirty: true, shouldTouch: true, shouldValidate: true });
   }, [enabledOptionValues, mappedOptions, name, setValue]);
 
@@ -300,11 +308,11 @@ export const Autocomplete = <TFieldValues extends FieldValues, TName extends Pat
         renderInput={renderInput}
         renderOption={multiple ? renderOption : undefined}
         renderValue={multiple ? renderValue : undefined}
-        slots={multiple ? { paper: AutocompleteSelectAllPaper } : undefined}
+        slots={(multiple && !hideSelectAll) ? { paper: AutocompleteSelectAllPaper } : undefined}
         value={value}
       />
     );
-  }, [required, multiple, disabled, loading, filterOptions, getIsOptionDisabled, getOptionKey, getOptionLabel, groupValues, groupBy, inputValue, getIsOptionEqualToValue, t, onMuiAutocompleteChange, onMuiAutocompleteInputChange, optionValues, renderInput, renderOption, renderValue]);
+  }, [required, multiple, hideSelectAll, disabled, loading, filterOptions, getIsOptionDisabled, getOptionKey, getOptionLabel, groupValues, groupBy, inputValue, getIsOptionEqualToValue, t, onMuiAutocompleteChange, onMuiAutocompleteInputChange, optionValues, renderInput, renderOption, renderValue]);
 
   return (
     <AutocompleteSelectAllContext value={multiple ? selectAllContextValue : null}>

@@ -1,5 +1,6 @@
 import type {
   ReactElement,
+  ReactNode,
   SyntheticEvent,
 } from 'react';
 import {
@@ -7,6 +8,7 @@ import {
   useRef,
 } from 'react';
 import {
+  Box,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -31,6 +33,7 @@ import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicat
 
 export type SwitchProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues>> = {
   readonly disabled?: boolean;
+  readonly icon?: ReactNode;
   readonly infoMessage?: string;
   readonly label: string;
   readonly loading?: boolean;
@@ -42,6 +45,7 @@ export type SwitchProps<TFieldValues extends FieldValues, TName extends Path<TFi
 
 export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>>({
   disabled = false,
+  icon,
   infoMessage,
   label,
   loading = false,
@@ -81,6 +85,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
             <MuiSwitch
               checked={!!value}
               color={'primary'}
+              size={'small'}
               slotProps={{
                 input: {
                   ref: inputRef,
@@ -89,7 +94,15 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
             />
           )}
           disabled={disabled}
-          label={label}
+          label={icon ? (
+            <Box
+              component={'span'}
+              sx={{ alignItems: 'center', display: 'flex', gap: 0.5 }}
+            >
+              {icon}
+              {label}
+            </Box>
+          ) : label}
           onBlur={onBlur}
           onChange={onMuiSwitchChange(onChange)}
         />
@@ -108,7 +121,7 @@ export const Switch = <TFieldValues extends FieldValues, TName extends Path<TFie
       </FormControl>
 
     );
-  }, [disabled, infoMessage, errorMessage, hasWarning, label, loading, name, onMuiSwitchChange, warningMessage]);
+  }, [disabled, infoMessage, errorMessage, hasWarning, icon, label, loading, name, onMuiSwitchChange, warningMessage]);
 
   return (
 

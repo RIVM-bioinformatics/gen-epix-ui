@@ -58,6 +58,16 @@ describe('FormUtil', () => {
       expect(FormUtil.areFormValuesValid(defs, { active: null })).toBe(false);
     });
 
+    it('returns true for SWITCH field with a boolean value', () => {
+      const defs = [fd<{ active: boolean }>(FORM_FIELD_DEFINITION_TYPE.SWITCH, 'active')];
+      expect(FormUtil.areFormValuesValid(defs, { active: false })).toBe(true);
+    });
+
+    it('returns false for SWITCH field with a non-boolean value', () => {
+      const defs = [fd<{ active: boolean }>(FORM_FIELD_DEFINITION_TYPE.SWITCH, 'active')];
+      expect(FormUtil.areFormValuesValid(defs, { active: null })).toBe(false);
+    });
+
     it('returns true for DATE field with a string value', () => {
       const defs = [fd<{ date: string }>(FORM_FIELD_DEFINITION_TYPE.DATE, 'date')];
       expect(FormUtil.areFormValuesValid(defs, { date: '2023-01-01' })).toBe(true);
@@ -240,10 +250,30 @@ describe('FormUtil', () => {
       expect(FormUtil.createFormValues(defs, {}).items).toEqual([]);
     });
 
-    it('does not set a value for the default branch (BOOLEAN_SWITCH)', () => {
+    it('returns item value for BOOLEAN_SWITCH when present', () => {
       const defs = [fd<{ sw: boolean }>(FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH, 'sw')];
-      const result = FormUtil.createFormValues(defs, { sw: true });
-      expect(result.sw).toBeUndefined();
+      expect(FormUtil.createFormValues(defs, { sw: true }).sw).toBe(true);
+    });
+
+    it('returns empty string for BOOLEAN_SWITCH when item value is absent', () => {
+      const defs = [fd<{ sw: boolean }>(FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH, 'sw')];
+      expect(FormUtil.createFormValues(defs, {}).sw).toBe('');
+    });
+
+    it('returns item value for SWITCH when present', () => {
+      const defs = [fd<{ sw: boolean }>(FORM_FIELD_DEFINITION_TYPE.SWITCH, 'sw')];
+      expect(FormUtil.createFormValues(defs, { sw: true }).sw).toBe(true);
+    });
+
+    it('returns empty string for SWITCH when item value is absent', () => {
+      const defs = [fd<{ sw: boolean }>(FORM_FIELD_DEFINITION_TYPE.SWITCH, 'sw')];
+      expect(FormUtil.createFormValues(defs, {}).sw).toBe('');
+    });
+
+    it('does not set a value for the default branch (FILE)', () => {
+      const defs = [fd<{ f: unknown }>(FORM_FIELD_DEFINITION_TYPE.FILE, 'f')];
+      const result = FormUtil.createFormValues(defs, { f: 'x' });
+      expect(result.f).toBeUndefined();
     });
   });
 

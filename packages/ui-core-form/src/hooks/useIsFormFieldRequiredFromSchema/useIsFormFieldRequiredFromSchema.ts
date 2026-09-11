@@ -12,6 +12,10 @@ import type {
 
 const useIsFormFieldRequiredFromSchema = <TFormFields extends FieldValues, TName extends Path<TFormFields>>(schema: ObjectSchema<TFormFields, TFormFields>, getFormValues: UseFormGetValues<TFormFields>): (fieldName: TName) => boolean => {
   return useCallback((fieldName: TName) => {
+    if (!schema) {
+      return false;
+    }
+
     try {
       const values = structuredClone(getFormValues());
       set(values, fieldName, undefined);

@@ -3,7 +3,7 @@ packages:
   - examples/*
 
 overrides:
-  '@openapitools/openapi-generator-cli>axios': 1.20.0
+  'axios': 1.20.0
 
 onlyBuiltDependencies:
   - '@nestjs/core'
@@ -116,3 +116,8 @@ minimumReleaseAgeExclude:
   - unplugin-dts@1.1.0
   - vite-plugin-dts@5.1.0
   - '@gen-epix/merge-locales@0.0.2 || 0.0.3'
+  - '@types/react-dom@19.3.0'
+  - '@types/react@19.3.0'
+  - react-dom@19.3.0
+  - react@19.3.0
+  - scheduler@0.28.0

@@ -1,41 +1,14 @@
 {
   "name": "@gen-epix/ui-phylogenetic-tree",
   "version": "3.1.0",
-  "license": "EUPL-1.2",
+  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
   },
+  "license": "EUPL-1.2",
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
-  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "type": "module",
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "files": [
-      "dist"
-    ],
-    "access": "public",
-    "exports": {
-      "./components/PhylogeneticTree": {
-        "types": "./dist/components/PhylogeneticTree/index.d.ts",
-        "import": "./dist/components/PhylogeneticTree/index.js"
-      },
-      "./models/tree": {
-        "types": "./dist/models/tree.d.ts",
-        "import": "./dist/models/tree.js"
-      },
-      "./utils/NewickUtil": {
-        "types": "./dist/utils/NewickUtil/index.d.ts",
-        "import": "./dist/utils/NewickUtil/index.js"
-      },
-      "./utils/TreeUtil": {
-        "types": "./dist/utils/TreeUtil/index.d.ts",
-        "import": "./dist/utils/TreeUtil/index.js"
-      }
-    }
-  },
   "exports": {
     "./components/PhylogeneticTree": {
       "types": "./src/components/PhylogeneticTree/index.ts",
@@ -54,22 +27,23 @@
       "import": "./src/utils/TreeUtil/index.ts"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "update-exports": "node scripts/update-exports.js",
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public",
-    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run",
-    "test": "vitest --coverage",
-    "test-run": "vitest run --passWithNoTests --coverage",
+    "check-types": "tsc --noemit",
     "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
     "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
-    "check-types": "tsc --noemit"
+    "test": "vitest --coverage",
+    "test-run": "vitest run --passWithNoTests --coverage",
+    "update-exports": "node scripts/update-exports.js",
+    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run"
   },
-  "peerDependencies": {
-    "@gen-epix/ui-core": "workspace:^",
-    "@mui/material": "*",
-    "react": "*"
-  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
   "dependencies": {
     "decimal.js": "10.6.0",
     "lodash": "4.18.1",
@@ -81,22 +55,48 @@
     "@mui/material": "9.4.0",
     "@types/lodash": "4.17.25",
     "@types/node": "26.4.1",
-    "@types/react": "19.2.18",
+    "@types/react": "19.3.0",
     "@vitejs/plugin-react": "6.1.1",
-    "@vitest/browser-playwright": "4.1.11",
-    "@vitest/coverage-v8": "4.1.11",
-    "eslint": "10.9.1",
+    "@vitest/browser-playwright": "5.0.0",
+    "@vitest/coverage-v8": "5.0.0",
+    "eslint": "10.10.0",
     "jsdom": "30.0.1",
-    "playwright": "1.62.1",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
+    "playwright": "1.63.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "typescript": "6.0.3",
-    "vite-plugin-dts": "5.1.0",
     "vite": "8.2.2",
-    "vitest-browser-react": "2.2.0",
-    "vitest": "4.1.11"
+    "vite-plugin-dts": "5.1.0",
+    "vitest": "5.0.0",
+    "vitest-browser-react": "2.3.0"
   },
-  "browserslist": [
-    "last 2 Chrome versions"
-  ]
+  "peerDependencies": {
+    "@gen-epix/ui-core": "workspace:^",
+    "@mui/material": "*",
+    "react": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      "./components/PhylogeneticTree": {
+        "types": "./dist/components/PhylogeneticTree/index.d.ts",
+        "import": "./dist/components/PhylogeneticTree/index.js"
+      },
+      "./models/tree": {
+        "types": "./dist/models/tree.d.ts",
+        "import": "./dist/models/tree.js"
+      },
+      "./utils/NewickUtil": {
+        "types": "./dist/utils/NewickUtil/index.d.ts",
+        "import": "./dist/utils/NewickUtil/index.js"
+      },
+      "./utils/TreeUtil": {
+        "types": "./dist/utils/TreeUtil/index.d.ts",
+        "import": "./dist/utils/TreeUtil/index.js"
+      }
+    },
+    "files": [
+      "dist"
+    ]
+  }
 }

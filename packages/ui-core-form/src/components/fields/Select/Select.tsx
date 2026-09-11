@@ -184,7 +184,19 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
                     checked={(value as string[]).includes(option.value as string)}
                   />
                 )}
-                <ListItemText primary={option.label} />
+                <ListItemText
+                  primary={option.label}
+                  secondary={option.secondaryLabel}
+                  slotProps={{
+                    secondary: { sx: { fontSize: '0.875rem', fontStyle: 'italic' } },
+                  }}
+                  sx={{
+                    alignItems: 'baseline',
+                    display: 'flex',
+                    gap: 2,
+                    justifyContent: 'space-between',
+                  }}
+                />
               </MenuItem>
             );
           })}

@@ -53,7 +53,7 @@ export type GenericFormProps<TFormFields extends FieldValues> = {
   readonly onSubmit?: SubmitEventHandler<HTMLFormElement>;
   readonly renderField?: (definition: FormFieldDefinition<TFormFields>, element: ReactElement) => ReactElement;
   readonly renderGroup?: (definition: FormGroupDefinition, children: ReactElement) => ReactElement;
-  readonly schema: ObjectSchema<TFormFields, TFormFields>;
+  readonly schema?: ObjectSchema<TFormFields, TFormFields>;
   readonly wrapForm?: (children: ReactElement) => ReactElement;
 };
 
@@ -184,7 +184,9 @@ export const GenericForm = <TFormFields extends FieldValues>({
     if (renderField) {
       return (
         <Fragment key={formFieldDefinition.name}>
+          {formFieldDefinition.contentBefore}
           {renderField(formFieldDefinition, renderFormFieldDefinition(formFieldDefinition))}
+          {formFieldDefinition.contentAfter}
         </Fragment>
       );
     }
@@ -195,7 +197,9 @@ export const GenericForm = <TFormFields extends FieldValues>({
           marginY: 1,
         }}
       >
+        {formFieldDefinition.contentBefore}
         {renderFormFieldDefinition(formFieldDefinition)}
+        {formFieldDefinition.contentAfter}
       </Box>
     );
   }, [renderField, renderFormFieldDefinition]);
@@ -247,6 +251,7 @@ export const GenericForm = <TFormFields extends FieldValues>({
               key={group.groupKey}
               sx={{ marginY: 2 }}
             >
+              {group.contentBefore}
               <Typography variant={'subtitle1'}>
                 {group.label}
               </Typography>
@@ -282,6 +287,7 @@ export const GenericForm = <TFormFields extends FieldValues>({
                 </Alert>
               ))}
               {groupContent}
+              {group.contentAfter}
             </Box>
           );
         })}

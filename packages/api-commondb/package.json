@@ -1,55 +1,55 @@
 {
   "name": "@gen-epix/api-commondb",
   "version": "4.1.0",
-  "license": "EUPL-1.2",
+  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
   },
+  "license": "EUPL-1.2",
   "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
-  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.js"
-      }
-    }
-  },
   "exports": {
     ".": {
       "types": "./src/api.ts",
       "import": "./src/api.ts"
     }
   },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "build-publish": "pnpm build && pnpm publish --access=public"
   },
-  "peerDependencies": {
-    "axios": "*"
-  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
   "devDependencies": {
     "@gen-epix/eslint-config": "0.5.0",
+    "@microsoft/api-extractor": "7.59.1",
     "@types/node": "26.4.1",
-    "@microsoft/api-extractor": "7.59.0",
     "axios": "1.20.0",
-    "eslint": "10.9.1",
+    "eslint": "10.10.0",
     "typescript": "6.0.3",
     "vite": "8.2.2",
     "vite-plugin-dts": "5.1.0",
     "vite-plugin-static-copy": "4.1.1"
   },
-  "browserslist": [
-    "last 2 Chrome versions"
-  ]
+  "peerDependencies": {
+    "axios": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  }
 }

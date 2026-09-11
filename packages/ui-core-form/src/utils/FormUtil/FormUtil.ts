@@ -34,6 +34,7 @@ export class FormUtil {
       switch (fieldDef.definition) {
         case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
         case FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH:
+        case FORM_FIELD_DEFINITION_TYPE.SWITCH:
           return typeof value === 'boolean';
         case FORM_FIELD_DEFINITION_TYPE.DATE:
         case FORM_FIELD_DEFINITION_TYPE.HIDDEN:
@@ -68,7 +69,9 @@ export class FormUtil {
           }
           break;
         case FORM_FIELD_DEFINITION_TYPE.BOOLEAN:
+        case FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH:
         case FORM_FIELD_DEFINITION_TYPE.RICH_TEXT:
+        case FORM_FIELD_DEFINITION_TYPE.SWITCH:
         case FORM_FIELD_DEFINITION_TYPE.TEXTFIELD:
           itemValues[formFieldDefinition.name] = item?.[formFieldDefinition.name as unknown as keyof typeof item] ?? '';
           break;

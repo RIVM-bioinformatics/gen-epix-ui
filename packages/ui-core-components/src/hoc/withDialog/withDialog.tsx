@@ -33,6 +33,8 @@ export type WithDialogRenderProps<TOpenProps = never> = {
   maxWidth?: MuiDialogProps['maxWidth'];
   onActionsChange?: (config: DialogAction[]) => void;
   onClose?: () => void;
+  onDisableBackdropClickChange?: (disableBackdropClick: boolean) => void;
+  onNoCloseButtonChange?: (noCloseButton: boolean) => void;
   onPermalinkChange?: (permalink: string) => void;
   onTitleChange?: (title: string) => void;
   openProps?: TOpenProps;
@@ -42,7 +44,9 @@ export type WithDialogRenderProps<TOpenProps = never> = {
 
 export interface WithDialogState<TOpenProps> {
   actions: DialogAction[];
+  disableBackdropClick: boolean;
   isOpen: boolean;
+  noCloseButton: boolean;
   openProps: TOpenProps;
   permalink: string;
   title: string;
@@ -57,7 +61,9 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
       super(props);
       this.state = {
         actions: null,
+        disableBackdropClick: withDialogOptions?.disableBackdropClick,
         isOpen: false,
+        noCloseButton: withDialogOptions?.noCloseButton,
         openProps: undefined,
         permalink: props.permalink,
         title: props.title || withDialogOptions?.defaultTitle,
@@ -66,6 +72,8 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
       this.onPermalinkChange = this.onPermalinkChange.bind(this);
       this.onTitleChange = this.onTitleChange.bind(this);
       this.onActionsChange = this.onActionsChange.bind(this);
+      this.onDisableBackdropClickChange = this.onDisableBackdropClickChange.bind(this);
+      this.onNoCloseButtonChange = this.onNoCloseButtonChange.bind(this);
       this.dialogContentRef = createRef<HTMLDivElement>();
     }
 
@@ -88,11 +96,11 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
         <Dialog
           actions={this.state.actions}
           dialogContentRef={this.dialogContentRef}
-          disableBackdropClick={withDialogOptions?.disableBackdropClick}
+          disableBackdropClick={this.state.disableBackdropClick}
           fullScreen={withDialogOptions.fullScreen}
           fullWidth={withDialogOptions.fullWidth}
           maxWidth={withDialogOptions.maxWidth}
-          noCloseButton={withDialogOptions?.noCloseButton}
+          noCloseButton={this.state.noCloseButton}
           noPadding={withDialogOptions.noPadding}
           noTitle={withDialogOptions?.noTitle}
           onClose={this.onClose}
@@ -106,6 +114,8 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
             dialogContentRef={this.dialogContentRef}
             onActionsChange={this.onActionsChange}
             onClose={this.onClose}
+            onDisableBackdropClickChange={this.onDisableBackdropClickChange}
+            onNoCloseButtonChange={this.onNoCloseButtonChange}
             onPermalinkChange={this.onPermalinkChange}
             onTitleChange={this.onTitleChange}
             openProps={this.state.openProps}
@@ -121,6 +131,14 @@ export const withDialog = <TProps extends WithDialogRenderProps<TOpenProps>, TOp
     private onClose(): void {
       this.close();
       this.props.onClose?.();
+    }
+
+    private onDisableBackdropClickChange(disableBackdropClick: boolean): void {
+      this.setState({ disableBackdropClick });
+    }
+
+    private onNoCloseButtonChange(noCloseButton: boolean): void {
+      this.setState({ noCloseButton });
     }
 
     private onPermalinkChange(permalink: string): void {
