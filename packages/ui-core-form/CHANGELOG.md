@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.1.0...ui-core-form-v4.2.0) (2026-09-11)
+
+
+### Features
+
+* **ui-core-form:** support content slots and richer field options ([c89b2ba](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c89b2ba98f9980139fac3d015ae7367963e10733))
+
 ## [4.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-form-v4.0.2...ui-core-form-v4.1.0) (2026-09-10)
 
 
