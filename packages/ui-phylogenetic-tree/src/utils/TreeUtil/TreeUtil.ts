@@ -1126,7 +1126,8 @@ export class TreeUtil {
     if (branchLength.div(treeAssemblyContext.rootNode.maxBranchLength).mul(100).lessThan(treeAssemblyContext.minimumDistancePercentageToShowLabel)) {
       return null;
     }
-    return String(round(branchLength.toNumber(), labelPrecision));
+    const roundedValue = round(branchLength.toNumber(), labelPrecision);
+    return roundedValue === 0 ? '' : String(roundedValue);
   }
 
   /**

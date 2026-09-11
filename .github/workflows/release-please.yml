@@ -14,6 +14,7 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
+      releases-created: ${{ steps.release.outputs.releases_created }}
       ui-client-common-release-created: ${{ steps.release.outputs['packages/ui-client-common--release_created'] }}
       ui-client-common-tag-name: ${{ steps.release.outputs['packages/ui-client-common--tag_name'] }}
       ui-core-release-created: ${{ steps.release.outputs['packages/ui-core--release_created'] }}
@@ -45,6 +46,26 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+  merge-main-into-development:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases-created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: development
+          fetch-depth: 0
+
+      - name: Merge main into development
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git merge --no-ff origin/main -m "chore: merge main into development [skip ci]"
+          git push origin development
 
   publish-ui-client-casedb:
     needs: release-please
