@@ -28,6 +28,7 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
+import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
@@ -163,7 +164,7 @@ export const CaseInfoDialog = withDialog<CaseInfoDialogProps, CaseInfoDialogOpen
 
 
   const canEdit = useMemo(() => {
-    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.write_col_ids.length);
+    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.write_col_ids.length) && !FeatureFlagsService.getInstance().featureFlags?.disable_upload;
   }, [caseRightsQuery.data]);
 
   const canShare = useMemo(() => {

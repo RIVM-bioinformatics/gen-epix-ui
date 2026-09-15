@@ -14,6 +14,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import type { MouseEvent } from 'react';
 
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
@@ -64,6 +65,12 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
     setIsMenuOpen(x => !x);
   }, []);
 
+  const onNavLinkClick = useCallback((event: MouseEvent<HTMLAnchorElement>) => {
+    if (event.currentTarget.ariaDisabled === 'true') {
+      event.preventDefault();
+    }
+  }, []);
+
   return (
     <Box
       sx={{
@@ -112,13 +119,14 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
             },
           }}
         >
-          {menuItems.filter(menuItem => !menuItem.handle.disabled && authorizationService.doesUserHavePermissionForRoute(menuItem)).map(menuItem => {
+          {menuItems.filter(menuItem => authorizationService.doesUserHavePermissionForRoute(menuItem)).map(menuItem => {
+            const isDisabled = !!menuItem.handle.disabled;
             return (
               <Box
                 component={'li'}
                 key={menuItem.path}
                 sx={{
-                  '&:has(.active)': {
+                  '&:has(.active:not([aria-disabled="true"]))': {
                     '& svg': {
                       color: theme['gen-epix-ui'].navbar.activeColor,
                     },
@@ -128,10 +136,11 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                     background: theme['gen-epix-ui'].navbar.activeBackground,
                   },
                   '& svg': {
+                    color: isDisabled ? theme.palette.grey[400] : undefined,
                     marginTop: '6px',
                   },
                   alignItems: 'center',
-                  color: theme['gen-epix-ui'].navbar.primaryColor,
+                  color: isDisabled ? theme.palette.grey[400] : theme['gen-epix-ui'].navbar.primaryColor,
                   display: 'flex',
                   fontWeight: 800,
                   height: 48,
@@ -140,10 +149,18 @@ export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNaviga
                 }}
               >
                 <NavLink
+                  aria-disabled={isDisabled || undefined}
                   aria-label={menuItem.handle.title}
+                  onClick={onNavLinkClick}
                   sx={{
+                    '&:hover': {
+                      textDecoration: isDisabled ? 'none' : undefined,
+                    },
+                    color: isDisabled ? theme.palette.grey[400] : undefined,
+                    cursor: isDisabled ? 'not-allowed' : undefined,
                     padding: `0 ${theme.spacing(1)}`,
                   }}
+                  tabIndex={isDisabled ? -1 : undefined}
                   to={menuItem.path}
                 >
                   {!!menuItem.handle.icon && menuItem.handle.icon}

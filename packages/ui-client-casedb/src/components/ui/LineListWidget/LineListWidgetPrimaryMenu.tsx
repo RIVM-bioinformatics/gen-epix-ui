@@ -19,6 +19,7 @@ import {
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
 import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
+import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
 import { useColumnsMenu } from '@gen-epix/ui-client-common/hooks/useColumnsMenu';
 import last from 'lodash/last';
 
@@ -175,7 +176,7 @@ export const LineListWidgetPrimaryMenu = ({
       actionsColumnMenuItem.items.push(
         {
           callback: () => EventBusService.getInstance().emit('openEditCases', selectedRows),
-          disabled: !selectedIds?.length,
+          disabled: !selectedIds?.length || FeatureFlagsService.getInstance().featureFlags?.disable_upload,
           label: t`Edit selected cases`,
         },
       );

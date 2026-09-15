@@ -98,9 +98,13 @@
       "types": "./src/components/app/App/index.ts",
       "import": "./src/components/app/App/index.ts"
     },
-    "./components/app/ApplicationBootstrap": {
-      "types": "./src/components/app/ApplicationBootstrap/index.ts",
-      "import": "./src/components/app/ApplicationBootstrap/index.ts"
+    "./components/app/ApplicationBootstrapWithAuthentication": {
+      "types": "./src/components/app/ApplicationBootstrapWithAuthentication/index.ts",
+      "import": "./src/components/app/ApplicationBootstrapWithAuthentication/index.ts"
+    },
+    "./components/app/ApplicationBootstrapWithoutAuthorization": {
+      "types": "./src/components/app/ApplicationBootstrapWithoutAuthorization/index.ts",
+      "import": "./src/components/app/ApplicationBootstrapWithoutAuthorization/index.ts"
     },
     "./components/app/AuthenticationWrapper": {
       "types": "./src/components/app/AuthenticationWrapper/index.ts",
@@ -668,9 +672,13 @@
         "types": "./dist/components/app/App/index.d.ts",
         "import": "./dist/components/app/App/index.js"
       },
-      "./components/app/ApplicationBootstrap": {
-        "types": "./dist/components/app/ApplicationBootstrap/index.d.ts",
-        "import": "./dist/components/app/ApplicationBootstrap/index.js"
+      "./components/app/ApplicationBootstrapWithAuthentication": {
+        "types": "./dist/components/app/ApplicationBootstrapWithAuthentication/index.d.ts",
+        "import": "./dist/components/app/ApplicationBootstrapWithAuthentication/index.js"
+      },
+      "./components/app/ApplicationBootstrapWithoutAuthorization": {
+        "types": "./dist/components/app/ApplicationBootstrapWithoutAuthorization/index.d.ts",
+        "import": "./dist/components/app/ApplicationBootstrapWithoutAuthorization/index.js"
       },
       "./components/app/AuthenticationWrapper": {
         "types": "./dist/components/app/AuthenticationWrapper/index.d.ts",

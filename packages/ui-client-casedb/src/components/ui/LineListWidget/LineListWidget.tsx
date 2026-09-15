@@ -37,6 +37,7 @@ import type {
 } from '@gen-epix/ui-client-common/models/table';
 import type { TableRef } from '@gen-epix/ui-client-common/components/ui/Table';
 import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
 import { Table } from '@gen-epix/ui-client-common/components/ui/Table';
 import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui-client-common/models/table';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
@@ -385,6 +386,7 @@ export const LineListWidget = () => {
             ),
             (
               <MenuItem
+                disabled={FeatureFlagsService.getInstance().featureFlags?.disable_upload}
                 key={'editInformation'}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={() => openCaseInfoDialog(params.row.id, CASE_INFO_DIALOG_TAB_NAME.EDIT)}
