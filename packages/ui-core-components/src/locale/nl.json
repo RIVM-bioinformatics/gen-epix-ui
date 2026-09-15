@@ -2,6 +2,7 @@
   "translation": {
     "(last modified: {{lastModified}})": "(laatst gewijzigd: {{lastModified}})",
     "(size: {{size}})": "(grootte: {{size}})",
+    "{{label}} ({{accept}})": "{{label}} ({{accept}})",
     "Cancel": "Annuleren",
     "Choose File": "Bestand kiezen",
     "Clear {{fileName}}": "{{fileName}} wissen",

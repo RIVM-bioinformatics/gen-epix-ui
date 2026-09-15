@@ -25,6 +25,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { UseFormReturn } from 'react-hook-form';
 
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
@@ -67,23 +68,63 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
 
   const schema = useMemo(() => {
     return object<FormFields>().shape({
-      add_case: boolean().required(),
-      add_case_set: boolean().required(),
+      add_case: boolean().when('is_private', {
+        is: true,
+        otherwise: () => boolean().required(),
+        then: () => boolean().required().oneOf([true], t`Add case must be enabled for private policies`),
+      }),
+      add_case_set: boolean().when('is_private', {
+        is: true,
+        otherwise: () => boolean().required(),
+        then: () => boolean().required().oneOf([true], t`Add case set must be enabled for private policies`),
+      }),
       case_type_set_id: string().uuid4().required().max(100),
       data_collection_id: string().uuid4().required().max(100),
       is_active: boolean().required(),
       is_private: boolean().required(),
       organization_id: string().uuid4().required().max(100),
       read_case_set: boolean().required(),
-      read_col_set_id: string().uuid4().required().max(100),
-      remove_case: boolean().required(),
-      remove_case_set: boolean().required(),
+      read_col_set_id: string().when('is_private', {
+        is: true,
+        otherwise: () => string().nullable().notRequired().max(100),
+        then: () => string().uuid4().required(t`Read column set is required for private policies`).max(100),
+      }),
+      remove_case: boolean().when('is_private', {
+        is: true,
+        otherwise: () => boolean().required(),
+        then: () => boolean().required().oneOf([true], t`Remove case must be enabled for private policies`),
+      }),
+      remove_case_set: boolean().when('is_private', {
+        is: true,
+        otherwise: () => boolean().required(),
+        then: () => boolean().required().oneOf([true], t`Remove case set must be enabled for private policies`),
+      }),
       write_case_set: boolean().required(),
-      write_col_set_id: string().uuid4().nullable().notRequired().max(100),
+      write_col_set_id: string().when('is_private', {
+        is: true,
+        otherwise: () => string().nullable().notRequired().max(100),
+        then: () => string().uuid4().required(t`Write column set is required for private policies`).max(100),
+      }),
     });
+  }, [t]);
+
+  const onFormChange = useCallback((_item: CaseDbOrganizationAccessCasePolicy, values: FormFields, formMethods: UseFormReturn<FormFields>) => {
+    if (values?.is_private === true && values?.add_case !== true) {
+      formMethods.setValue('add_case', true);
+    }
+    if (values?.is_private === true && values?.add_case_set !== true) {
+      formMethods.setValue('add_case_set', true);
+    }
+    if (values?.is_private === true && values?.remove_case !== true) {
+      formMethods.setValue('remove_case', true);
+    }
+    if (values?.is_private === true && values?.remove_case_set !== true) {
+      formMethods.setValue('remove_case_set', true);
+    }
   }, []);
 
-  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
+  const formFieldDefinitions = useCallback((item: CaseDbOrganizationAccessCasePolicy, values: FormFields): FormFieldDefinition<FormFields>[] => {
+    const isPrivate = values?.is_private ?? item?.is_private ?? false;
     return [
       {
         definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
@@ -122,21 +163,25 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
+        disabled: isPrivate,
         label: t`Add case`,
         name: 'add_case',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
+        disabled: isPrivate,
         label: t`Remove case`,
         name: 'remove_case',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
+        disabled: isPrivate,
         label: t`Add case set`,
         name: 'add_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
       {
         definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
+        disabled: isPrivate,
         label: t`Remove case set`,
         name: 'remove_case_set',
       } as const satisfies FormFieldDefinition<FormFields>,
@@ -196,6 +241,7 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
       getName={getName}
       itemName={t`Organization access case policy`}
       loadables={loadables}
+      onFormChange={onFormChange}
       resourceQueryKeyBase={CASEDB_QUERY_KEY.ORGANIZATION_ACCESS_CASE_POLICIES}
       schema={schema}
       tableColumns={tableColumns}

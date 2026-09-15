@@ -114,6 +114,7 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
       <>
         <InputLabel
           className={classnames({ 'Mui-warning': hasWarning })}
+          disabled={disabled}
           error={hasError}
           htmlFor={id}
           id={labelId}
@@ -162,13 +163,11 @@ export const Select = <TFieldValues extends FieldValues, TName extends Path<TFie
             }),
             id,
             ref: inputRef,
-            required: required && !disabled,
           }}
           multiple={multiple}
           onBlur={onBlur}
           onChange={onMuiSelectChange(onChange)}
           renderValue={renderValue}
-          required={required}
           value={value ?? (multiple ? [] : '') as TFieldValues[TName]}
         >
           { options.map((option) => {
