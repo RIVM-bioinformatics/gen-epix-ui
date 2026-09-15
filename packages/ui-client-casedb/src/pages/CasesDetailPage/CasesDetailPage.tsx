@@ -1,0 +1,58 @@
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import {
+  useEffect,
+  useMemo,
+} from 'react';
+import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import { PageContainer } from '@gen-epix/ui-client-common/components/ui/PageContainer';
+import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
+import { useUpdateBreadcrumb } from '@gen-epix/ui-client-common/hooks/useUpdateBreadcrumb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+
+import { Dashboard } from '../../components/ui/Dashboard';
+import { CASEDB_QUERY_KEY } from '../../constants/query';
+
+
+export const CasesDetailPage = () => {
+  const { t } = useTranslation();
+  const { caseTypeId, slug } = useParams();
+
+  const updateBreadcrumb = useUpdateBreadcrumb('Case type');
+
+  const { data: caseType, error, isLoading } = useItemQuery({
+    baseQueryKey: CASEDB_QUERY_KEY.CASE_TYPES,
+    itemId: caseTypeId,
+    useQueryOptions: {
+      queryFn: async ({ signal }) => (await CaseDbCaseApi.getInstance().caseTypesGetOne(caseTypeId, { signal })).data,
+    },
+  });
+
+  const title = useMemo(() => {
+    return caseType?.name ? caseType?.name : t`Case`;
+  }, [caseType, t]);
+
+  useEffect(() => {
+    updateBreadcrumb(title);
+  }, [title, updateBreadcrumb]);
+
+  return (
+    <PageContainer
+      fullHeight
+      fullWidth
+      showBreadcrumbs
+      testIdAttributes={TestIdUtil.createAttributes('CasesDetailPage', { 'case-type-id': caseTypeId, slug })}
+      title={title}
+    >
+      <ResponseHandler
+        error={error}
+        isLoading={isLoading}
+      >
+        <Dashboard
+          caseTypeId={caseTypeId}
+        />
+      </ResponseHandler>
+    </PageContainer>
+  );
+};

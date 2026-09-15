@@ -1,0 +1,305 @@
+import type { ReactElement } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  array,
+  boolean,
+  object,
+  string,
+} from 'yup';
+import type {
+  CommonDbApiPermission,
+  CommonDbUser,
+} from '@gen-epix/api-commondb';
+import {
+  CommonDbCommandName,
+  CommonDbPermissionType,
+} from '@gen-epix/api-commondb';
+import {
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+} from '@mui/material';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import type {
+  FormFieldDefinition,
+  OptionBase,
+} from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
+import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
+import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
+
+import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
+import type {
+  TableColumn,
+  TableRowParams,
+} from '../../models/table';
+import { TableUtil } from '../../utils/TableUtil';
+import type { CrudPageProps } from '../CrudPage';
+import { CrudPage } from '../CrudPage';
+import { AuthorizationService } from '../../classes/services/AuthorizationService';
+import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
+import type { OmitWithMetaData } from '../../models/data';
+import { COMMON_QUERY_KEY } from '../../constants/query';
+import { ApiService } from '../../classes/services/ApiService';
+import { NotificationService } from '../../classes/services/NotificationService';
+import { QueryClientService } from '../../classes/services/QueryClientService';
+
+export type UsersAdminPageProps = {
+  subPages?: CrudPageProps<OmitWithMetaData<CommonDbUser, 'organization_id' | 'organization'>, CommonDbUser>['subPages'];
+};
+
+type FormFields = OmitWithMetaData<CommonDbUser, 'organization_id' | 'organization'>;
+
+export const UsersAdminPage = ({
+  subPages,
+}: UsersAdminPageProps) => {
+  const { t } = useTranslation();
+  const anonymizeUserConfirmationRef = useRef<ConfirmationRefMethods>(null);
+  const organizationOptionsQuery = useOrganizationOptionsQuery();
+  const inviteUserConstraintsQuery = useInviteUserConstraintsQuery();
+  const [tableRoleOptions, setTableRoleOptions] = useState<OptionBase<string>[]>([]);
+  const [formRoleOptions, setFormRoleOptions] = useState<OptionBase<string>[]>([]);
+  const selectedUserRef = useRef<CommonDbUser | null>(null);
+
+  const loadables = useArray([
+    organizationOptionsQuery,
+    inviteUserConstraintsQuery,
+  ]);
+
+  const userRoles = AuthorizationService.getInstance().user.roles;
+
+  const onRowsChange = useCallback((items: CommonDbUser[]) => {
+    // Because roles are a string array (instead of an enum or similar), we need to dynamically determine the options for the roles column in the table and in the form.
+    // The options for the form are determined by the invite user constraints endpoint, but if the user doesn't have access to that endpoint, we fall back to using the roles that are currently in use by users in the system.
+    const roles = new Set<string>();
+    items.forEach((user) => {
+      user.roles.forEach((role) => roles.add(role));
+    });
+    const _tableRoleOptions = Array.from(roles).map((role) => ({
+      label: role,
+      value: role,
+    }));
+    setTableRoleOptions(_tableRoleOptions);
+    let _formRoleOptions: OptionBase<string>[];
+    if (AuthorizationService.getInstance().doesUserHavePermission([
+      { command_name: CommonDbCommandName.RetrieveInviteUserConstraintsCommand, permission_type: CommonDbPermissionType.EXECUTE },
+    ])) {
+      _formRoleOptions = inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
+        label: role,
+        value: role,
+      })) : _tableRoleOptions;
+    } else {
+      _formRoleOptions = _tableRoleOptions;
+    }
+    // The users own roles may not be included in the options from the invite user constraints endpoint (if they don't have permission to view that endpoint),
+    // so we need to add those to the options as well, but disable them since the user doesn't have permission to assign those roles to other users.
+    const extraRolesFromUser = userRoles.filter(role => !_formRoleOptions.some(option => option.value === role));
+    _formRoleOptions.push(...extraRolesFromUser.map(role => ({
+      disabled: true,
+      label: role,
+      value: role,
+    })));
+    setFormRoleOptions(_formRoleOptions);
+  }, [inviteUserConstraintsQuery.data, userRoles]);
+
+  const fetchAll = useCallback(async (signal: AbortSignal) => {
+    const users = (await ApiService.getInstance().organizationApi.usersGetAll(null, null, { signal }))?.data;
+
+    return users;
+  }, []);
+
+  const updateOne = useCallback(async (variables: FormFields, item: CommonDbUser) => {
+    return (await ApiService.getInstance().organizationApi.updateUser(item.id, {
+      is_active: variables.is_active,
+      organization_id: item.organization_id,
+      roles: variables.roles,
+    })).data;
+  }, []);
+
+  const deleteOne = useCallback(async (item: CommonDbUser) => {
+    return await ApiService.getInstance().organizationApi.usersDeleteOne(item.id);
+  }, []);
+
+  const getName = useCallback((item: FormFields) => {
+    return item.email;
+  }, []);
+
+  const canEditItem = useCallback((item: CommonDbUser) => {
+    return AuthorizationService.getInstance().user.email !== item.email;
+  }, []);
+
+  const schema = useMemo(() => {
+    return object<FormFields>().shape({
+      description: SchemaUtil.description,
+      email: string().email().nullable(),
+      is_active: boolean().required(),
+      key: string().optional(),
+      name: string().nullable(),
+      roles: array().required().min(1),
+    });
+  }, []);
+
+  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
+    return [
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        disabled: true,
+        label: t`Key`,
+        name: 'key',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Email`,
+        name: 'email',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Name`,
+        name: 'name',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
+        label: t`Roles`,
+        loading: inviteUserConstraintsQuery.isLoading,
+        multiple: true,
+        name: 'roles',
+        options: formRoleOptions,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
+        label: t`Is active`,
+        name: 'is_active',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Description`,
+        name: 'description',
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
+  }, [t, formRoleOptions, inviteUserConstraintsQuery.isLoading]);
+
+  const tableColumns = useMemo((): TableColumn<CommonDbUser>[] => {
+    return [
+      TableUtil.createOptionsColumn<CommonDbUser>({ id: 'organization_id', name: t`Organization`, options: organizationOptionsQuery.options }),
+      TableUtil.createTextColumn<CommonDbUser>({ id: 'key', name: t`Key` }),
+      TableUtil.createTextColumn<CommonDbUser>({ id: 'email', name: t`E-Mail` }),
+      TableUtil.createTextColumn<CommonDbUser>({ advancedSort: true, id: 'name', name: t`Name` }),
+      TableUtil.createTextColumn<CommonDbUser>({ id: 'description', name: t`Description` }),
+      TableUtil.createOptionsColumn<CommonDbUser>({ id: 'roles', name: t`Roles`, options: tableRoleOptions }),
+      TableUtil.createBooleanColumn<CommonDbUser>({ id: 'is_active', name: t`Is active` }),
+    ];
+  }, [organizationOptionsQuery.options, tableRoleOptions, t]);
+
+  const getOptimisticUpdateIntermediateItem = useCallback((variables: FormFields, previousItem: CommonDbUser): CommonDbUser => {
+    return {
+      email: previousItem.email,
+      id: previousItem.id,
+      is_active: previousItem.is_active,
+      key: previousItem.email,
+      name: previousItem.name,
+      organization_id: previousItem.organization_id,
+      ...variables,
+    };
+  }, []);
+
+  const extraUpdateOnePermissions = useMemo<CommonDbApiPermission[]>(() => [
+    { command_name: CommonDbCommandName.UpdateUserCommand, permission_type: CommonDbPermissionType.EXECUTE },
+  ], []);
+  const extraDeleteOnePermissions = useMemo<CommonDbApiPermission[]>(() => [
+    { command_name: CommonDbCommandName.UserCrudCommand, permission_type: CommonDbPermissionType.DELETE },
+  ], []);
+
+  const onAnonymizeUserConfirmationConfirm = useCallback(async () => {
+    const userName = selectedUserRef.current?.email ?? selectedUserRef.current?.key;
+    const notificationId = NotificationService.getInstance().showNotification({
+      isLoading: true,
+      message: t('Anonymizing user: {{userName}}', { userName }),
+      severity: 'info',
+    });
+    try {
+      // Anonymize the user
+      await ApiService.getInstance().organizationApi.anonymizeUser(selectedUserRef.current.id);
+      // Invalidate the users query key so that the users list is refreshed and the anonymized user is no longer visible in the list.
+      await QueryClientService.getInstance().invalidateQueryKeys(
+        QueryClientService.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USERS], true),
+      );
+      NotificationService.getInstance().fulfillNotification(notificationId, t('User anonymized successfully: {{userName}}', { userName }), 'success');
+    } catch (_error) {
+      NotificationService.getInstance().fulfillNotification(notificationId, t('Error anonymizing user: {{userName}}', { userName }), 'error');
+    }
+  }, [t]);
+
+  const extraActionsFactory = useCallback((params: TableRowParams<CommonDbUser, null>) => {
+    const menuItems: ReactElement[] = [];
+
+    if (AuthorizationService.getInstance().doesUserHavePermission([
+      { command_name: CommonDbCommandName.AnonymizeUserCommand, permission_type: CommonDbPermissionType.EXECUTE },
+    ])) {
+      menuItems.push(
+        <MenuItem
+          key={'custom-action-1'}
+          // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
+          onClick={() => {
+            selectedUserRef.current = params.row;
+            anonymizeUserConfirmationRef.current.open();
+          }}
+        >
+          <ListItemIcon>
+            <PersonOffIcon fontSize={'small'} />
+          </ListItemIcon>
+          <ListItemText>
+            {t`Anonymize user`}
+          </ListItemText>
+        </MenuItem>,
+      );
+    }
+
+    return menuItems;
+  }, [t]);
+
+  return (
+    <>
+      <CrudPage<FormFields, CommonDbUser>
+        canEditItem={canEditItem}
+        createItemDialogTitle={t`Create new user`}
+        defaultSortByField={'name'}
+        defaultSortDirection={'asc'}
+        deleteOne={deleteOne}
+        extraActionsFactory={extraActionsFactory}
+        extraDeleteOnePermissions={extraDeleteOnePermissions}
+        extraUpdateOnePermissions={extraUpdateOnePermissions}
+        fetchAll={fetchAll}
+        formFieldDefinitions={formFieldDefinitions}
+        getName={getName}
+        getOptimisticUpdateIntermediateItem={getOptimisticUpdateIntermediateItem}
+        itemName={t`User`}
+        loadables={loadables}
+        onRowsChange={onRowsChange}
+        resourceQueryKeyBase={COMMON_QUERY_KEY.USERS}
+        schema={schema}
+        subPages={subPages}
+        tableColumns={tableColumns}
+        testIdAttributes={TestIdUtil.createAttributes('UsersAdminPage')}
+        title={t`Users`}
+        updateOne={updateOne}
+      />
+      <Confirmation
+        body={t`Click the anonymize button to anonymize the user`}
+        cancelLabel={t`Cancel`}
+        confirmLabel={t`Anonymize`}
+        onConfirm={onAnonymizeUserConfirmationConfirm}
+        ref={anonymizeUserConfirmationRef}
+        title={t`Are you sure you want to anonymize this user?`}
+      />
+    </>
+  );
+};

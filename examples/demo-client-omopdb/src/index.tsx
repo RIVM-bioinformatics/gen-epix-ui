@@ -1,16 +1,12 @@
 import { createRoot } from 'react-dom/client';
-import {
-  ConfigService,
-  I18nService,
-  WindowService,
-} from '@gen-epix/ui';
-import {
-  OmopDbApp,
-  setupOmopDb,
-} from '@gen-epix/ui-omopdb';
-import type { OmopDbConfig } from '@gen-epix/ui-omopdb';
+import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
+import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { OmopDbConfig } from '@gen-epix/ui-client-omopdb/models/config';
+import { OmopDbApp } from '@gen-epix/ui-client-omopdb/components/app/OmopDbApp';
+import { setupOmopDb } from '@gen-epix/ui-client-omopdb/setup/setup';
 
-import { ConfigUtil } from './utils/ConfigUtil';
+import { ConfigUtil } from './utils/ConfigUtil/ConfigUtil';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
@@ -23,16 +19,12 @@ const init = async () => {
       {
         bundles: [
           '/locale/en.json',
-          '/locale/ui/en.json',
-          '/locale/ui-omopdb/en.json',
         ],
         code: 'en',
       },
       {
         bundles: [
           '/locale/nl.json',
-          '/locale/ui/nl.json',
-          '/locale/ui-omopdb/nl.json',
         ],
         code: 'nl',
       },

@@ -22,37 +22,38 @@ export type CommonDbAuthProtocol = typeof CommonDbAuthProtocol[keyof typeof Comm
 
 
 export const CommonDbCommandName = {
-  SiteCrudCommand: 'SiteCrudCommand',
+  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+  InviteUserCommand: 'InviteUserCommand',
+  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+  GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+  UserCrudCommand: 'UserCrudCommand',
+  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+  ContactCrudCommand: 'ContactCrudCommand',
+  UpdateUserCommand: 'UpdateUserCommand',
   DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+  OrganizationCrudCommand: 'OrganizationCrudCommand',
+  OutageCrudCommand: 'OutageCrudCommand',
+  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
   RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
   RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-  InviteUserCommand: 'InviteUserCommand',
-  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-  UpdateUserCommand: 'UpdateUserCommand',
-  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+  SiteCrudCommand: 'SiteCrudCommand',
   RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-  ContactCrudCommand: 'ContactCrudCommand',
-  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-  GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-  OutageCrudCommand: 'OutageCrudCommand',
-  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-  OrganizationCrudCommand: 'OrganizationCrudCommand',
-  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
   RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-  UserCrudCommand: 'UserCrudCommand',
+  AnonymizeUserCommand: 'AnonymizeUserCommand',
+  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
 } as const;
 
 export type CommonDbCommandName = typeof CommonDbCommandName[keyof typeof CommonDbCommandName];
@@ -68,6 +69,15 @@ export const CommonDbComparisonOperator = {
 } as const;
 
 export type CommonDbComparisonOperator = typeof CommonDbComparisonOperator[keyof typeof CommonDbComparisonOperator];
+
+
+export interface CommonDbCompositeFilter {
+  'invert'?: boolean;
+  'key'?: string | null;
+  'type'?: string;
+  'filters': Array<CommonDbFiltersInner>;
+  'operator'?: CommonDbLogicalOperator;
+}
 
 
 export interface CommonDbContact {
@@ -103,6 +113,11 @@ export interface CommonDbDataCollectionSet {
 }
 
 
+export interface CommonDbDataCollectionSetDataCollectionUpdateAssociationRequestBody {
+  'data_collection_set_members': Array<CommonDbDataCollectionSetMember>;
+}
+
+
 export interface CommonDbDataCollectionSetMember {
   'created_at'?: string | null;
   'modified_at'?: string | null;
@@ -125,6 +140,60 @@ export const CommonDbDataIssueType = {
 } as const;
 
 export type CommonDbDataIssueType = typeof CommonDbDataIssueType[keyof typeof CommonDbDataIssueType];
+
+
+export interface CommonDbDateRangeFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'lower_bound'?: string | null;
+  'lower_bound_censor'?: CommonDbComparisonOperator;
+  'upper_bound'?: string | null;
+  'upper_bound_censor'?: CommonDbComparisonOperator;
+}
+
+
+export interface CommonDbDatetimeRangeFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'lower_bound'?: string | null;
+  'lower_bound_censor'?: CommonDbComparisonOperator;
+  'upper_bound'?: string | null;
+  'upper_bound_censor'?: CommonDbComparisonOperator;
+}
+
+
+export interface CommonDbEqualsBooleanFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'value': boolean;
+}
+
+
+export interface CommonDbEqualsNumberFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'value': CommonDbValue;
+}
+
+
+export interface CommonDbEqualsStringFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'value': string;
+}
+
+
+export interface CommonDbEqualsUuidFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'value': string;
+}
 
 
 export interface CommonDbEtlLogItem {
@@ -153,15 +222,29 @@ export const CommonDbEtlStatus = {
 export type CommonDbEtlStatus = typeof CommonDbEtlStatus[keyof typeof CommonDbEtlStatus];
 
 
+export interface CommonDbExistsFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+}
+
+
 export interface CommonDbFeatureFlagsResponseBody {
   'feature_flags': { [key: string]: boolean; };
 }
 
 
-export type CommonDbEpiFilter = CommonDbTypedCompositeFilter | CommonDbTypedDateRangeFilter | CommonDbTypedDatetimeRangeFilter | CommonDbTypedEqualsBooleanFilter | CommonDbTypedEqualsNumberFilter | CommonDbTypedEqualsStringFilter | CommonDbTypedEqualsUuidFilter | CommonDbTypedExistsFilter | CommonDbTypedNoFilter | CommonDbTypedNumberRangeFilter | CommonDbTypedNumberSetFilter | CommonDbTypedPartialDateRangeFilter | CommonDbTypedRegexFilter | CommonDbTypedStringSetFilter | CommonDbTypedUuidSetFilter;
+export interface CommonDbFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+}
 
 
-export type CommonDbFiltersInner = CommonDbTypedCompositeFilter | CommonDbTypedDateRangeFilter | CommonDbTypedDatetimeRangeFilter | CommonDbTypedEqualsBooleanFilter | CommonDbTypedEqualsNumberFilter | CommonDbTypedEqualsStringFilter | CommonDbTypedEqualsUuidFilter | CommonDbTypedExistsFilter | CommonDbTypedNoFilter | CommonDbTypedNumberRangeFilter | CommonDbTypedNumberSetFilter | CommonDbTypedPartialDateRangeFilter | CommonDbTypedRegexFilter | CommonDbTypedStringSetFilter | CommonDbTypedUuidSetFilter;
+export type CommonDbFilter1 = CommonDbCompositeFilter | CommonDbDateRangeFilter | CommonDbDatetimeRangeFilter | CommonDbEqualsBooleanFilter | CommonDbEqualsNumberFilter | CommonDbEqualsStringFilter | CommonDbEqualsUuidFilter | CommonDbExistsFilter | CommonDbNoFilter | CommonDbNumberRangeFilter | CommonDbNumberSetFilter | CommonDbPartialDateRangeFilter | CommonDbRegexFilter | CommonDbStringSetFilter | CommonDbUuidSetFilter;
+
+
+export type CommonDbFiltersInner = CommonDbDateRangeFilter | CommonDbDatetimeRangeFilter | CommonDbEqualsBooleanFilter | CommonDbEqualsNumberFilter | CommonDbEqualsStringFilter | CommonDbEqualsUuidFilter | CommonDbExistsFilter | CommonDbFilter | CommonDbNoFilter | CommonDbNumberRangeFilter | CommonDbNumberSetFilter | CommonDbPartialDateRangeFilter | CommonDbRegexFilter | CommonDbStringSetFilter | CommonDbUuidSetFilter;
 
 
 export interface CommonDbHTTPValidationError {
@@ -214,6 +297,14 @@ export interface CommonDbIdentityProvider {
 }
 
 
+export interface CommonDbInviteUserRequestBody {
+  'key'?: string | null;
+  'description'?: string | null;
+  'roles': Array<string>;
+  'organization_id': string;
+}
+
+
 export interface CommonDbLogItem {
   'level': CommonDbLogLevel;
   'command_id': string;
@@ -258,6 +349,32 @@ export type CommonDbLogicalOperator = typeof CommonDbLogicalOperator[keyof typeo
 
 
 export type CommonDbMembersInner = number | string;
+
+
+export interface CommonDbNoFilter {
+  'invert'?: boolean;
+  'key'?: boolean;
+  'type'?: string;
+}
+
+
+export interface CommonDbNumberRangeFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'lower_bound'?: number | null;
+  'lower_bound_censor'?: CommonDbComparisonOperator;
+  'upper_bound'?: number | null;
+  'upper_bound_censor'?: CommonDbComparisonOperator;
+}
+
+
+export interface CommonDbNumberSetFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'members': Array<CommonDbMembersInner>;
+}
 
 
 export const CommonDbOAuthFlow = {
@@ -315,6 +432,11 @@ export interface CommonDbOrganizationIdentifierIssuerLink {
 }
 
 
+export interface CommonDbOrganizationIdentifierIssuerUpdateAssociationRequestBody {
+  'organization_identifier_issuer_links': Array<CommonDbOrganizationIdentifierIssuerLink>;
+}
+
+
 export interface CommonDbOrganizationSet {
   'created_at'?: string | null;
   'modified_at'?: string | null;
@@ -334,6 +456,11 @@ export interface CommonDbOrganizationSetMember {
   'organization_set'?: CommonDbOrganizationSet;
   'organization_id': string;
   'organization'?: CommonDbOrganization;
+}
+
+
+export interface CommonDbOrganizationSetOrganizationUpdateAssociationRequestBody {
+  'organization_set_members': Array<CommonDbOrganizationSetMember>;
 }
 
 
@@ -364,6 +491,17 @@ export interface CommonDbPackageMetadata {
 }
 
 
+export interface CommonDbPartialDateRangeFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'lower_bound'?: string | null;
+  'lower_bound_censor'?: CommonDbComparisonOperator;
+  'upper_bound'?: string | null;
+  'upper_bound_censor'?: CommonDbComparisonOperator;
+}
+
+
 export const CommonDbPermissionType = {
   CREATE: 'CREATE',
   READ: 'READ',
@@ -373,6 +511,14 @@ export const CommonDbPermissionType = {
 } as const;
 
 export type CommonDbPermissionType = typeof CommonDbPermissionType[keyof typeof CommonDbPermissionType];
+
+
+export interface CommonDbRegexFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'pattern': string;
+}
 
 
 export interface CommonDbRetrieveOrganizationContactsRequestBody {
@@ -391,150 +537,12 @@ export interface CommonDbSite {
 }
 
 
-export interface CommonDbTypedCompositeFilter {
-  'invert'?: boolean;
-  'key'?: string | null;
-  'filters': Array<CommonDbFiltersInner>;
-  'operator'?: CommonDbLogicalOperator;
-  'type': string;
-}
-
-
-export interface CommonDbTypedDateRangeFilter {
+export interface CommonDbStringSetFilter {
   'invert'?: boolean;
   'key'?: string;
-  'lower_bound'?: string | null;
-  'lower_bound_censor'?: CommonDbComparisonOperator;
-  'upper_bound'?: string | null;
-  'upper_bound_censor'?: CommonDbComparisonOperator;
-  'type': string;
-}
-
-
-export interface CommonDbTypedDatetimeRangeFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'lower_bound'?: string | null;
-  'lower_bound_censor'?: CommonDbComparisonOperator;
-  'upper_bound'?: string | null;
-  'upper_bound_censor'?: CommonDbComparisonOperator;
-  'type': string;
-}
-
-
-export interface CommonDbTypedEqualsBooleanFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'value': boolean;
-  'type': string;
-}
-
-
-export interface CommonDbTypedEqualsNumberFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'value': CommonDbValue;
-  'type': string;
-}
-
-
-export interface CommonDbTypedEqualsStringFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'value': string;
-  'type': string;
-}
-
-
-export interface CommonDbTypedEqualsUuidFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'value': string;
-  'type': string;
-}
-
-
-export interface CommonDbTypedExistsFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'type': string;
-}
-
-
-export interface CommonDbTypedNoFilter {
-  'invert'?: boolean;
-  'key'?: boolean;
-  'type': string;
-}
-
-
-export interface CommonDbTypedNumberRangeFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'lower_bound'?: number | null;
-  'lower_bound_censor'?: CommonDbComparisonOperator;
-  'upper_bound'?: number | null;
-  'upper_bound_censor'?: CommonDbComparisonOperator;
-  'type': string;
-}
-
-
-export interface CommonDbTypedNumberSetFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'members'?: Array<CommonDbMembersInner>;
-  'type': string;
-}
-
-
-export interface CommonDbTypedPartialDateRangeFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'lower_bound'?: string | null;
-  'lower_bound_censor'?: CommonDbComparisonOperator;
-  'upper_bound'?: string | null;
-  'upper_bound_censor'?: CommonDbComparisonOperator;
-  'type': string;
-}
-
-
-export interface CommonDbTypedRegexFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'pattern': string;
-  'type': string;
-}
-
-
-export interface CommonDbTypedStringSetFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'members'?: Array<string>;
+  'type'?: string;
+  'members': Array<string>;
   'case_sensitive'?: boolean;
-  'type': string;
-}
-
-
-export interface CommonDbTypedUuidSetFilter {
-  'invert'?: boolean;
-  'key'?: string;
-  'members'?: Array<string>;
-  'type': string;
-}
-
-
-export interface CommonDbUpdateDataCollectionSetDataCollectionRequestBody {
-  'data_collection_set_members': Array<CommonDbDataCollectionSetMember>;
-}
-
-
-export interface CommonDbUpdateOrganizationIdentifierIssuerLinksRequestBody {
-  'organization_identifier_issuer_links': Array<CommonDbOrganizationIdentifierIssuerLink>;
-}
-
-
-export interface CommonDbUpdateOrganizationSetOrganizationRequestBody {
-  'organization_set_members': Array<CommonDbOrganizationSetMember>;
 }
 
 
@@ -613,18 +621,18 @@ export interface CommonDbUserInvitationConstraints {
 }
 
 
-export interface CommonDbUserInvitationRequestBody {
-  'key'?: string | null;
-  'description'?: string | null;
-  'roles': Array<string>;
-  'organization_id': string;
-}
-
-
 export interface CommonDbUserNameEmail {
   'id'?: string | null;
   'name'?: string | null;
   'email': string | null;
+}
+
+
+export interface CommonDbUuidSetFilter {
+  'invert'?: boolean;
+  'key'?: string;
+  'type'?: string;
+  'members': Array<string>;
 }
 
 
@@ -641,14 +649,14 @@ export type CommonDbValue = number | string;
 
 export interface CommonDbAbacApi {
   organizationAdminPoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  organizationAdminPoliciesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  organizationAdminPoliciesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   organizationAdminPoliciesDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationAdminPoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
   organizationAdminPoliciesGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationAdminPolicy>>;
   organizationAdminPoliciesGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
   organizationAdminPoliciesPostOne(organizationAdminPolicy: CommonDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationAdminPolicy>>;
-  organizationAdminPoliciesPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
-  organizationAdminPoliciesPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  organizationAdminPoliciesPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
+  organizationAdminPoliciesPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationAdminPoliciesPostSome(organizationAdminPolicy: Array<CommonDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
   organizationAdminPoliciesPutOne(objectId: string, organizationAdminPolicy: CommonDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationAdminPolicy>>;
   organizationAdminPoliciesPutSome(organizationAdminPolicy: Array<CommonDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
@@ -667,143 +675,144 @@ export interface CommonDbDefaultApi {
 
 
 export interface CommonDbOrganizationApi {
+  anonymizeUser(userId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
   contactsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  contactsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  contactsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   contactsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   contactsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbContact>>>;
   contactsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbContact>>;
   contactsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbContact>>>;
   contactsPostOne(contact: CommonDbContact, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbContact>>;
-  contactsPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbContact>>>;
-  contactsPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  contactsPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbContact>>>;
+  contactsPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   contactsPostSome(contact: Array<CommonDbContact>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbContact>>>;
   contactsPutOne(objectId: string, contact: CommonDbContact, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbContact>>;
   contactsPutSome(contact: Array<CommonDbContact>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbContact>>>;
   dataCollectionSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  dataCollectionSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  dataCollectionSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   dataCollectionSetMembersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   dataCollectionSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
   dataCollectionSetMembersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollectionSetMember>>;
   dataCollectionSetMembersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
   dataCollectionSetMembersPostOne(dataCollectionSetMember: CommonDbDataCollectionSetMember, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollectionSetMember>>;
-  dataCollectionSetMembersPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
-  dataCollectionSetMembersPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  dataCollectionSetMembersPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
+  dataCollectionSetMembersPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   dataCollectionSetMembersPostSome(dataCollectionSetMember: Array<CommonDbDataCollectionSetMember>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
   dataCollectionSetMembersPutOne(objectId: string, dataCollectionSetMember: CommonDbDataCollectionSetMember, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollectionSetMember>>;
   dataCollectionSetMembersPutSome(dataCollectionSetMember: Array<CommonDbDataCollectionSetMember>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
   dataCollectionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  dataCollectionSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  dataCollectionSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   dataCollectionSetsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   dataCollectionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSet>>>;
   dataCollectionSetsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollectionSet>>;
   dataCollectionSetsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSet>>>;
   dataCollectionSetsPostOne(dataCollectionSet: CommonDbDataCollectionSet, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollectionSet>>;
-  dataCollectionSetsPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSet>>>;
-  dataCollectionSetsPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  dataCollectionSetsPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSet>>>;
+  dataCollectionSetsPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   dataCollectionSetsPostSome(dataCollectionSet: Array<CommonDbDataCollectionSet>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSet>>>;
-  dataCollectionSetsPutDataCollections(dataCollectionSetId: string, updateDataCollectionSetDataCollectionRequestBody: CommonDbUpdateDataCollectionSetDataCollectionRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
+  dataCollectionSetsPutDataCollections(dataCollectionSetId: string, dataCollectionSetDataCollectionUpdateAssociationRequestBody: CommonDbDataCollectionSetDataCollectionUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSetMember>>>;
   dataCollectionSetsPutOne(objectId: string, dataCollectionSet: CommonDbDataCollectionSet, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollectionSet>>;
   dataCollectionSetsPutSome(dataCollectionSet: Array<CommonDbDataCollectionSet>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollectionSet>>>;
   dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  dataCollectionsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  dataCollectionsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   dataCollectionsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   dataCollectionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollection>>>;
   dataCollectionsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollection>>;
   dataCollectionsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollection>>>;
   dataCollectionsPostOne(dataCollection: CommonDbDataCollection, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollection>>;
-  dataCollectionsPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollection>>>;
-  dataCollectionsPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  dataCollectionsPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollection>>>;
+  dataCollectionsPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   dataCollectionsPostSome(dataCollection: Array<CommonDbDataCollection>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollection>>>;
   dataCollectionsPutOne(objectId: string, dataCollection: CommonDbDataCollection, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbDataCollection>>;
   dataCollectionsPutSome(dataCollection: Array<CommonDbDataCollection>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbDataCollection>>>;
   identifierIssuersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  identifierIssuersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  identifierIssuersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   identifierIssuersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   identifierIssuersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbIdentifierIssuer>>>;
   identifierIssuersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbIdentifierIssuer>>;
   identifierIssuersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbIdentifierIssuer>>>;
   identifierIssuersPostOne(identifierIssuer: CommonDbIdentifierIssuer, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbIdentifierIssuer>>;
-  identifierIssuersPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbIdentifierIssuer>>>;
-  identifierIssuersPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  identifierIssuersPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbIdentifierIssuer>>>;
+  identifierIssuersPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   identifierIssuersPostSome(identifierIssuer: Array<CommonDbIdentifierIssuer>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbIdentifierIssuer>>>;
   identifierIssuersPutOne(objectId: string, identifierIssuer: CommonDbIdentifierIssuer, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbIdentifierIssuer>>;
   identifierIssuersPutSome(identifierIssuer: Array<CommonDbIdentifierIssuer>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbIdentifierIssuer>>>;
-  inviteUser(userInvitationRequestBody: CommonDbUserInvitationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUserInvitation>>;
+  inviteUser(inviteUserRequestBody: CommonDbInviteUserRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUserInvitation>>;
   inviteUserConstraints(options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUserInvitationConstraints>>;
   organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  organizationIdentifierIssuerLinksDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  organizationIdentifierIssuerLinksDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   organizationIdentifierIssuerLinksDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationIdentifierIssuerLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
   organizationIdentifierIssuerLinksGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationIdentifierIssuerLink>>;
   organizationIdentifierIssuerLinksGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
   organizationIdentifierIssuerLinksPostOne(organizationIdentifierIssuerLink: CommonDbOrganizationIdentifierIssuerLink, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationIdentifierIssuerLink>>;
-  organizationIdentifierIssuerLinksPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
-  organizationIdentifierIssuerLinksPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  organizationIdentifierIssuerLinksPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
+  organizationIdentifierIssuerLinksPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationIdentifierIssuerLinksPostSome(organizationIdentifierIssuerLink: Array<CommonDbOrganizationIdentifierIssuerLink>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
   organizationIdentifierIssuerLinksPutOne(objectId: string, organizationIdentifierIssuerLink: CommonDbOrganizationIdentifierIssuerLink, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationIdentifierIssuerLink>>;
   organizationIdentifierIssuerLinksPutSome(organizationIdentifierIssuerLink: Array<CommonDbOrganizationIdentifierIssuerLink>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
   organizationSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  organizationSetMembersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  organizationSetMembersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   organizationSetMembersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
   organizationSetMembersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationSetMember>>;
   organizationSetMembersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
   organizationSetMembersPostOne(organizationSetMember: CommonDbOrganizationSetMember, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationSetMember>>;
-  organizationSetMembersPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
-  organizationSetMembersPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  organizationSetMembersPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
+  organizationSetMembersPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationSetMembersPostSome(organizationSetMember: Array<CommonDbOrganizationSetMember>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
   organizationSetMembersPutOne(objectId: string, organizationSetMember: CommonDbOrganizationSetMember, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationSetMember>>;
   organizationSetMembersPutSome(organizationSetMember: Array<CommonDbOrganizationSetMember>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
   organizationSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  organizationSetsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  organizationSetsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   organizationSetsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSet>>>;
   organizationSetsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationSet>>;
   organizationSetsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSet>>>;
   organizationSetsPostOne(organizationSet: CommonDbOrganizationSet, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationSet>>;
-  organizationSetsPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSet>>>;
-  organizationSetsPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  organizationSetsPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSet>>>;
+  organizationSetsPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationSetsPostSome(organizationSet: Array<CommonDbOrganizationSet>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSet>>>;
   organizationSetsPutOne(objectId: string, organizationSet: CommonDbOrganizationSet, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationSet>>;
-  organizationSetsPutOrganizations(organizationSetId: string, updateOrganizationSetOrganizationRequestBody: CommonDbUpdateOrganizationSetOrganizationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
+  organizationSetsPutOrganizations(organizationSetId: string, organizationSetOrganizationUpdateAssociationRequestBody: CommonDbOrganizationSetOrganizationUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSetMember>>>;
   organizationSetsPutSome(organizationSet: Array<CommonDbOrganizationSet>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationSet>>>;
   organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  organizationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  organizationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   organizationsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganization>>>;
   organizationsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganization>>;
   organizationsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganization>>>;
   organizationsPostOne(organization: CommonDbOrganization, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganization>>;
-  organizationsPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganization>>>;
-  organizationsPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  organizationsPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganization>>>;
+  organizationsPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   organizationsPostSome(organization: Array<CommonDbOrganization>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganization>>>;
-  organizationsPutIdentifierIssuers(organizationId: string, updateOrganizationIdentifierIssuerLinksRequestBody: CommonDbUpdateOrganizationIdentifierIssuerLinksRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
+  organizationsPutIdentifierIssuers(organizationId: string, organizationIdentifierIssuerUpdateAssociationRequestBody: CommonDbOrganizationIdentifierIssuerUpdateAssociationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationIdentifierIssuerLink>>>;
   organizationsPutOne(objectId: string, organization: CommonDbOrganization, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganization>>;
   organizationsPutSome(organization: Array<CommonDbOrganization>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganization>>>;
   retrieveOrganizationContacts(retrieveOrganizationContactsRequestBody: CommonDbRetrieveOrganizationContactsRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationContacts>>;
   sitesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  sitesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  sitesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   sitesDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   sitesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbSite>>>;
   sitesGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbSite>>;
   sitesGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbSite>>>;
   sitesPostOne(site: CommonDbSite, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbSite>>;
-  sitesPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbSite>>>;
-  sitesPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  sitesPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbSite>>>;
+  sitesPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   sitesPostSome(site: Array<CommonDbSite>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbSite>>>;
   sitesPutOne(objectId: string, site: CommonDbSite, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbSite>>;
   sitesPutSome(site: Array<CommonDbSite>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbSite>>>;
   updateUser(objectId: string, updateUserRequestBody: CommonDbUpdateUserRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUser>>;
   updateUserOwnOrganization(updateUserOwnOrganizationRequestBody: CommonDbUpdateUserOwnOrganizationRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUser>>;
   userInvitationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  userInvitationsDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  userInvitationsDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   userInvitationsDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   userInvitationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUserInvitation>>>;
   userInvitationsGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUserInvitation>>;
   userInvitationsGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUserInvitation>>>;
   userInvitationsPostOne(userInvitation: CommonDbUserInvitation, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUserInvitation>>;
-  userInvitationsPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUserInvitation>>>;
-  userInvitationsPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  userInvitationsPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUserInvitation>>>;
+  userInvitationsPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   userInvitationsPostSome(userInvitation: Array<CommonDbUserInvitation>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUserInvitation>>>;
   userInvitationsPutOne(objectId: string, userInvitation: CommonDbUserInvitation, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUserInvitation>>;
   userInvitationsPutSome(userInvitation: Array<CommonDbUserInvitation>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUserInvitation>>>;
@@ -811,14 +820,14 @@ export interface CommonDbOrganizationApi {
   userMeRetrievePermissions(options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbApiPermission>>>;
   userRegistrationsPostOne(token: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUser>>;
   usersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  usersDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  usersDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   usersDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   usersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUser>>>;
   usersGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUser>>;
   usersGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUser>>>;
   usersPostOne(user: CommonDbUser, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUser>>;
-  usersPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUser>>>;
-  usersPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  usersPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUser>>>;
+  usersPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   usersPostSome(user: Array<CommonDbUser>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUser>>>;
   usersPutOne(objectId: string, user: CommonDbUser, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbUser>>;
   usersPutSome(user: Array<CommonDbUser>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUser>>>;
@@ -829,14 +838,14 @@ export interface CommonDbSystemApi {
   health(options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbHealthResponseBody>>;
   log(logRequestBody: CommonDbLogRequestBody, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
   outagesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<any>>;
-  outagesDeleteOne(objectId: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
+  outagesDeleteOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<string>>;
   outagesDeleteSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   outagesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOutage>>>;
   outagesGetOne(objectId: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOutage>>;
   outagesGetSome(ids: string, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOutage>>>;
   outagesPostOne(outage: CommonDbOutage, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOutage>>;
-  outagesPostQuery(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOutage>>>;
-  outagesPostQueryIds(filter: CommonDbEpiFilter, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
+  outagesPostQuery(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOutage>>>;
+  outagesPostQueryIds(filter1: CommonDbFilter1, limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<string>>>;
   outagesPostSome(outage: Array<CommonDbOutage>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOutage>>>;
   outagesPutOne(objectId: string, outage: CommonDbOutage, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOutage>>;
   outagesPutSome(outage: Array<CommonDbOutage>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOutage>>>;

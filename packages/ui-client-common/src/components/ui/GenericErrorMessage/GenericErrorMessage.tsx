@@ -1,0 +1,168 @@
+import {
+  Box,
+  Button,
+  Typography,
+} from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
+import { isRouteErrorResponse } from 'react-router-dom';
+import { isAxiosError } from 'axios';
+import { CommonDbLogLevel } from '@gen-epix/api-commondb';
+
+import { AuthenticationService } from '../../../classes/services/AuthenticationService';
+import { ConfigService } from '../../../classes/services/ConfigService';
+import { LogService } from '../../../classes/services/LogService';
+import { PageEventBusService } from '../../../classes/services/PageEventBusService';
+import { RouterService } from '../../../classes/services/RouterService';
+import { AxiosUtil } from '../../../utils/AxiosUtil';
+
+export type GenericErrorMessageProps = {
+  readonly error?: unknown;
+  readonly shouldHideActionButtons?: boolean;
+};
+
+export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericErrorMessageProps) => {
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (!error || isAxiosError(error)) {
+      // Axios errors are logged in LogService already
+      return;
+    }
+    LogService.getInstance().log([{
+      detail: {
+        error,
+        stack: (error as Error)?.stack,
+      },
+      level: isAxiosError(error) ? CommonDbLogLevel.DEBUG : CommonDbLogLevel.ERROR,
+      topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
+    }]);
+    LogService.getInstance().flushLog();
+    if (error instanceof Error && ConfigService.getInstance().config.enablePageEvents) {
+      PageEventBusService.getInstance().emit('error', error);
+    }
+  }, [error]);
+
+  const onBackToHomePageButtonClick = useCallback(async () => {
+    await RouterService.getInstance().router.navigate({
+      pathname: '/',
+    });
+  }, []);
+
+  const onBackButtonClick = useCallback(async () => {
+    await RouterService.getInstance().router.navigate(-1);
+  }, []);
+
+  const onLogoutButtonClick = useCallback(async () => {
+    AuthenticationService.clearStaleState();
+    if (AuthenticationService.getInstance().authContextProps) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      AuthenticationService.getInstance().authContextProps.signoutRedirect();
+    } else {
+      await RouterService.getInstance().router.navigate({
+        pathname: '/',
+      });
+    }
+  }, []);
+
+  const title = useMemo(() => {
+    if (isRouteErrorResponse(error) || AxiosUtil.isAxiosNotFoundError(error)) {
+      return t`Not found.`;
+    }
+    if (AxiosUtil.isAxiosForbiddenError(error)) {
+      return t`Access denied.`;
+    }
+    if (AxiosUtil.isAxiosUnprocessableEntityError(error)) {
+      return t`Unprocessable Entity.`;
+    }
+    return t`Sorry, an unexpected error has occurred.`;
+  }, [error, t]);
+
+  const message = useMemo(() => {
+    if (isRouteErrorResponse(error) || AxiosUtil.isAxiosNotFoundError(error)) {
+      return t`The item you requested can not be found. It may have been moved or deleted.`;
+    }
+    if (AxiosUtil.isAxiosForbiddenError(error)) {
+      return t`You are not authorized to access this page or item.`;
+    }
+    if (AxiosUtil.isAxiosUnauthorizedError(error)) {
+      return t`You are not authorized to access this page or item. Please logout and login again.`;
+    }
+    if (AxiosUtil.isAxiosUnprocessableEntityError(error)) {
+      return t`We were unable to process this page or item.`;
+    }
+    return t('We have encountered a problem. The error has been automatically logged. One of our staff will look into it shortly. Error message: {{message}}', { message: (error as Error)?.message ?? t`Unknown` });
+  }, [error, t]);
+
+  const shouldShowStackTrace = useMemo(() => {
+    return !isAxiosError(error) && (error as Error)?.stack;
+  }, [error]);
+
+  return (
+    <Box>
+      <Box sx={{ padding: 1 }}>
+        <Typography
+          variant={'h1'}
+        >
+          {title}
+        </Typography>
+      </Box>
+      <Box sx={{ padding: 1 }}>
+        <Typography
+          variant={'body2'}
+        >
+          {message}
+        </Typography>
+      </Box>
+      {shouldShowStackTrace && (
+        <Box sx={{ padding: 1 }}>
+          <Typography variant={'h6'}>
+            {t`Details for our technicians`}
+          </Typography>
+          <Box
+            component={'pre'}
+            sx={{
+              fontSize: '0.8rem',
+            }}
+          >
+            {(error as Error)?.stack}
+          </Box>
+        </Box>
+      )}
+      {!shouldHideActionButtons && (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1,
+            padding: 1,
+          }}
+        >
+          <Button
+            color={'primary'}
+            onClick={onLogoutButtonClick}
+            variant={'outlined'}
+          >
+            {t`Logout`}
+          </Button>
+          <Button
+            color={'primary'}
+            onClick={onBackToHomePageButtonClick}
+            variant={'outlined'}
+          >
+            {t`Go back to homepage`}
+          </Button>
+          <Button
+            color={'secondary'}
+            onClick={onBackButtonClick}
+          >
+            {t`Go back`}
+          </Button>
+        </Box>
+      )}
+    </Box>
+  );
+};

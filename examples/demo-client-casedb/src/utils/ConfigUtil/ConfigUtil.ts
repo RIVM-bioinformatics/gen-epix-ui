@@ -1,16 +1,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import type { CaseDbConfig } from '@gen-epix/ui-casedb';
-import {
-  CaseDbStandardConfigUtil,
-  createCaseDbDemoTheme,
-} from '@gen-epix/ui-casedb';
 import { t } from 'i18next';
+import type { CaseDbConfig } from '@gen-epix/ui-client-casedb/models/config';
+import { createCaseDbDemoTheme } from '@gen-epix/ui-client-casedb/theme/demoTheme';
+import { CaseDbStandardConfigUtil } from '@gen-epix/ui-client-casedb/utils/CaseDbStandardConfigUtil';
 
 import { ApplicationHeader } from '../../components/ApplicationHeader';
 import { ConsentDialogContent } from '../../components/ConsentDialogContent';
 import { HomePageIntroduction } from '../../components/HomePageIntroduction';
 import { LicenseInformation } from '../../components/LicenseInformation';
-
 
 export class ConfigUtil {
   public static createConfig(): CaseDbConfig {

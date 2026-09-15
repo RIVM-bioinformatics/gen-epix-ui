@@ -5,7 +5,7 @@ import { resolve } from 'path';
 import { readFileSync } from 'fs';
 
 import react from '@vitejs/plugin-react';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { mergeLocales } from '@gen-epix/merge-locales';
 import svgr from 'vite-plugin-svgr';
 import {
   esmExternalRequirePlugin,
@@ -49,7 +49,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        app: resolve(__dirname, 'index.html'),
+        app: resolve(import.meta.dirname, 'index.html'),
       },
     },
   },
@@ -70,34 +70,19 @@ export default defineConfig({
   plugins: [
     react(),
     svgr(),
-    viteStaticCopy({
-      targets: [
-        {
-          dest: './locale',
-          rename: { stripBase: true },
-          src: [
-            './src/locale',
-          ],
-        },
-        {
-          dest: './locale/ui',
-          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
-          src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui', 'src', 'locale', '*.json')),
-          ],
-        },
-        {
-          dest: './locale/ui-seqdb',
-          rename: (fileName, fileExtension) => `../../../../${fileName}.${fileExtension}`,
-          src: [
-            normalizePath(resolve(gitRootPath, 'packages', 'ui-seqdb', 'src', 'locale', '*.json')),
-          ],
-        },
+    mergeLocales({
+      outputPath: './dist/locale',
+      sourceDirectories: [
+        './src/locale',
+        normalizePath(resolve(gitRootPath, 'packages', 'ui-core-components', 'src', 'locale')),
+        normalizePath(resolve(gitRootPath, 'packages', 'ui-core-form', 'src', 'locale')),
+        normalizePath(resolve(gitRootPath, 'packages', 'ui-client-common', 'src', 'locale')),
+        normalizePath(resolve(gitRootPath, 'packages', 'ui-client-seqdb', 'src', 'locale')),
       ],
     }),
   ],
   resolve: {
-    // All peer dependencies of @gen-epix/ui should be deduplicated to the local node_modules version
+    // All peer dependencies of @gen-epix/ui-client-common should be deduplicated to the local node_modules version
     // This is to prevent issues with multiple versions of the same package (replaces explicit path aliases
     // which caused rolldown CJS `require` errors in Vite 8)
     dedupe: [

@@ -1,10 +1,14 @@
 {
-  "packages/ui": "2.10.0",
-  "packages/ui-casedb": "2.11.0",
-  "packages/ui-omopdb": "2.9.0",
-  "packages/ui-seqdb": "2.9.0",
-  "packages/api-casedb": "2.8.0",
-  "packages/api-commondb": "2.8.0",
-  "packages/api-seqdb": "2.8.0",
-  "packages/api-omopdb": "2.8.0"
+  "packages/ui-client-common": "4.2.0",
+  "packages/ui-core": "3.2.0",
+  "packages/ui-core-components": "4.2.0",
+  "packages/ui-core-form": "4.2.0",
+  "packages/ui-phylogenetic-tree": "3.3.0",
+  "packages/ui-client-casedb": "4.2.0",
+  "packages/ui-client-omopdb": "4.1.0",
+  "packages/ui-client-seqdb": "4.1.0",
+  "packages/api-casedb": "4.2.0",
+  "packages/api-commondb": "4.2.0",
+  "packages/api-seqdb": "4.2.0",
+  "packages/api-omopdb": "4.2.0"
 }

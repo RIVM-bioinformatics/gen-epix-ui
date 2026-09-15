@@ -1,0 +1,39 @@
+import type { Path } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from 'react-oidc-context';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+
+import { RouterService } from '../../classes/services/RouterService';
+import { PageContainer } from '../../components/ui/PageContainer';
+import type { AuthState } from '../../models/auth';
+
+export const PostLoginPage = () => {
+  const { t } = useTranslation();
+  const auth = useAuth();
+  const authState = auth.user.state as AuthState;
+
+  useEffect(() => {
+    let path: Partial<Path> = authState?.preLoginLocation;
+    if (!path?.pathname || path.pathname === '/post-login') {
+      path = {
+        pathname: '/',
+      };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    RouterService.getInstance().router.navigate(path);
+  }, [authState?.preLoginLocation]);
+
+  return (
+    <PageContainer
+      ignorePageEvent
+      singleAction
+      testIdAttributes={TestIdUtil.createAttributes('PostLoginPage')}
+      title={t`Logged in`}
+    >
+      <CircularProgress />
+    </PageContainer>
+  );
+};

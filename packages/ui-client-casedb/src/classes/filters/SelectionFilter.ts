@@ -1,0 +1,23 @@
+import { t } from 'i18next';
+import type { CommonDbFiltersInner } from '@gen-epix/api-commondb';
+import type { Filter } from '@gen-epix/ui-client-common/models/filter';
+import { FilterAbstract } from '@gen-epix/ui-client-common/classes/abstracts/FilterAbstract';
+
+
+export class SelectionFilter extends FilterAbstract<string[]> implements Filter<string[], string> {
+  public filterValue: string[] = [];
+  public initialFilterValue: string[] = [];
+  public showInSidebar = false;
+
+  public getPresentationValue(): string {
+    return t('{{numCases}} case(s)', { numCases: this.filterValue.length });
+  }
+
+  public matchRowValue(_rowValue: unknown): boolean {
+    return !this.filterValue.length;
+  }
+
+  public toBackendFilter(): CommonDbFiltersInner {
+    return undefined;
+  }
+}

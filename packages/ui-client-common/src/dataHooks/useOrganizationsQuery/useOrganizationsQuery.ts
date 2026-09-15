@@ -1,0 +1,40 @@
+import type { UseQueryResult } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import type { CommonDbOrganization } from '@gen-epix/api-commondb';
+import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+
+import type {
+  UseMap,
+  UseOptions,
+} from '../../models/dataHooks';
+import { DataHookUtil } from '../../utils/DataHookUtil';
+import { useQueryMemo } from '../../hooks/useQueryMemo';
+import { QueryClientService } from '../../classes/services/QueryClientService';
+import { COMMON_QUERY_KEY } from '../../constants/query';
+import { ApiService } from '../../classes/services/ApiService';
+
+export const useOrganizationsQuery = (): UseQueryResult<CommonDbOrganization[]> => {
+  return useQueryMemo({
+    queryFn: async ({ signal }) => {
+      const response = await ApiService.getInstance().organizationApi.organizationsGetAll(null, null, { signal });
+      return response.data;
+    },
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS),
+  });
+};
+
+export const useOrganizationMapQuery = (): UseMap<CommonDbOrganization> => {
+  const organizationsQuery = useOrganizationsQuery();
+
+  return useMemo(() => {
+    return DataHookUtil.createUseMapDataHook<CommonDbOrganization>(organizationsQuery, item => item.id);
+  }, [organizationsQuery]);
+};
+
+export const useOrganizationOptionsQuery = (): UseOptions<string> => {
+  const organizationsQuery = useOrganizationsQuery();
+
+  return useMemo(() => {
+    return DataHookUtil.createUseOptionsDataHook<CommonDbOrganization>(organizationsQuery, item => item.id, item => item.name, [], (a, b) => StringUtil.advancedSortComperator(a.name, b.name));
+  }, [organizationsQuery]);
+};

@@ -1,0 +1,74 @@
+import { useMemo } from 'react';
+import type {
+  PropsWithChildren,
+  ReactNode,
+} from 'react';
+import { useMatches } from 'react-router-dom';
+import type { UIMatch } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import last from 'lodash/last';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+
+import { AuthorizationService } from '../../../classes/services/AuthorizationService';
+import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { LoadableUtil } from '../../../utils/LoadableUtil';
+import { PageContainer } from '../../ui/PageContainer';
+import { ResponseHandler } from '../../ui/ResponseHandler';
+import { QueryClientService } from '../../../classes/services/QueryClientService';
+import { COMMON_QUERY_KEY } from '../../../constants/query';
+import { ApiService } from '../../../classes/services/ApiService';
+
+export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode => {
+  const { t } = useTranslation();
+  const matches = (useMatches() as UIMatch<unknown, MyNonIndexRouteObject['handle']>[]);
+
+  const requiresUserProfile = useMemo(() => last(matches).handle.requiresUserProfile, [matches]);
+
+  const userQuery = useQueryMemo({
+    enabled: requiresUserProfile,
+    gcTime: Infinity,
+    queryFn: async ({ signal }) => (await ApiService.getInstance().organizationApi.userMeGetOne({ signal })).data,
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_ME),
+    staleTime: Infinity,
+  });
+  const userPermissionsQuery = useQueryMemo({
+    enabled: requiresUserProfile,
+    gcTime: Infinity,
+    queryFn: async ({ signal }) => (await ApiService.getInstance().organizationApi.userMeRetrievePermissions({ signal })).data,
+    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
+    staleTime: Infinity,
+  });
+
+  const loadables = useArray([
+    userQuery,
+    userPermissionsQuery,
+  ]);
+
+
+  if (userQuery.data) {
+    AuthorizationService.getInstance().user = userQuery.data;
+  }
+  if (userPermissionsQuery.data) {
+    AuthorizationService.getInstance().apiPermissions = userPermissionsQuery.data;
+  }
+
+  if (requiresUserProfile && (LoadableUtil.isSomeLoading(loadables) || LoadableUtil.hasSomeError(loadables))) {
+    return (
+      <PageContainer
+        ignorePageEvent
+        singleAction
+        testIdAttributes={TestIdUtil.createAttributes('LoadingUserDataPage')}
+        title={t`Loading user data`}
+      >
+        <ResponseHandler
+          loadables={loadables}
+          loadingMessage={t`Loading user data`}
+        />
+      </PageContainer>
+    );
+  }
+
+  return children;
+};

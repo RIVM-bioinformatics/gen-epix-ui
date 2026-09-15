@@ -1,0 +1,159 @@
+import {
+  useCallback,
+  useMemo,
+} from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  boolean,
+  object,
+} from 'yup';
+import type {
+  CommonDbApiPermission,
+  CommonDbOutage,
+} from '@gen-epix/api-commondb';
+import {
+  CommonDbCommandName,
+  CommonDbPermissionType,
+} from '@gen-epix/api-commondb';
+import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+
+import type { TableColumn } from '../../models/table';
+import { TableUtil } from '../../utils/TableUtil';
+import { CrudPage } from '../CrudPage';
+import type { OmitWithMetaData } from '../../models/data';
+import { COMMON_QUERY_KEY } from '../../constants/query';
+import { ApiService } from '../../classes/services/ApiService';
+
+type FormFields = OmitWithMetaData<CommonDbOutage>;
+
+export const OutagesAdminPage = () => {
+  const { t } = useTranslation();
+
+  const fetchAll = useCallback(async (signal: AbortSignal) => {
+    return (await ApiService.getInstance().systemApi.outagesGetAll(null, null, { signal }))?.data;
+  }, []);
+
+  const deleteOne = useCallback(async (item: CommonDbOutage) => {
+    return await ApiService.getInstance().systemApi.outagesDeleteOne(item.id);
+  }, []);
+
+  const updateOne = useCallback(async (variables: FormFields, item: CommonDbOutage) => {
+    return (await ApiService.getInstance().systemApi.outagesPutOne(item.id, { id: item.id, ...variables })).data;
+  }, []);
+
+  const createOne = useCallback(async (variables: FormFields) => {
+    return (await ApiService.getInstance().systemApi.outagesPostOne(variables)).data;
+  }, []);
+
+  const getName = useCallback((item: CommonDbOutage) => {
+    return item.description;
+  }, []);
+
+  const schema = useMemo(() => {
+    return object<FormFields>().shape({
+      active_from: SchemaUtil.isoString,
+      active_to: SchemaUtil.isoString,
+      description: SchemaUtil.description.required(),
+      is_active: boolean(),
+      is_visible: boolean(),
+      visible_from: SchemaUtil.isoString,
+      visible_to: SchemaUtil.isoString,
+    });
+  }, []);
+
+  const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => {
+    return [
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD,
+        label: t`Description`,
+        multiline: true,
+        name: 'description',
+        rows: 5,
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        dateFormat: DATE_FORMAT.DATE_TIME,
+        definition: FORM_FIELD_DEFINITION_TYPE.DATE,
+        label: t`Active from`,
+        name: 'active_from',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        dateFormat: DATE_FORMAT.DATE_TIME,
+        definition: FORM_FIELD_DEFINITION_TYPE.DATE,
+        label: t`Active to`,
+        name: 'active_to',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        dateFormat: DATE_FORMAT.DATE_TIME,
+        definition: FORM_FIELD_DEFINITION_TYPE.DATE,
+        label: t`Visible from`,
+        name: 'visible_from',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        dateFormat: DATE_FORMAT.DATE_TIME,
+        definition: FORM_FIELD_DEFINITION_TYPE.DATE,
+        label: t`Visible to`,
+        name: 'visible_to',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
+        label: t`Is active`,
+        name: 'is_active',
+      } as const satisfies FormFieldDefinition<FormFields>,
+      {
+        definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN,
+        label: t`Is visible`,
+        name: 'is_visible',
+      } as const satisfies FormFieldDefinition<FormFields>,
+    ] as const;
+  }, [t]);
+
+  const tableColumns = useMemo((): TableColumn<CommonDbOutage>[] => {
+    return [
+      TableUtil.createDateColumn<CommonDbOutage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'active_from', name: t`Active from` }),
+      TableUtil.createDateColumn<CommonDbOutage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'active_to', name: t`Active to` }),
+      TableUtil.createDateColumn<CommonDbOutage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'visible_from', name: t`Visible from` }),
+      TableUtil.createDateColumn<CommonDbOutage>({ dateFormat: DATE_FORMAT.DATE_TIME, id: 'visible_to', name: t`Visible to` }),
+      TableUtil.createBooleanColumn<CommonDbOutage>({ id: 'is_active', name: t`Is active` }),
+      TableUtil.createBooleanColumn<CommonDbOutage>({ id: 'is_visible', name: t`Is visible` }),
+    ];
+  }, [t]);
+
+
+  const extraCreateOnePermissions = useMemo<CommonDbApiPermission[]>(() => [
+    { command_name: CommonDbCommandName.OutageCrudCommand, permission_type: CommonDbPermissionType.CREATE },
+  ], []);
+  const extraDeleteOnePermissions = useMemo<CommonDbApiPermission[]>(() => [
+    { command_name: CommonDbCommandName.OutageCrudCommand, permission_type: CommonDbPermissionType.DELETE },
+  ], []);
+  const extraUpdateOnePermissions = useMemo<CommonDbApiPermission[]>(() => [
+    { command_name: CommonDbCommandName.OutageCrudCommand, permission_type: CommonDbPermissionType.UPDATE },
+  ], []);
+
+  return (
+    <CrudPage<FormFields, CommonDbOutage>
+      createItemDialogTitle={t`Create new outage`}
+      createOne={createOne}
+      crudCommandType={CommonDbCommandName.OutageCrudCommand}
+      defaultSortByField={'active_from'}
+      defaultSortDirection={'asc'}
+      deleteOne={deleteOne}
+      extraCreateOnePermissions={extraCreateOnePermissions}
+      extraDeleteOnePermissions={extraDeleteOnePermissions}
+      extraUpdateOnePermissions={extraUpdateOnePermissions}
+      fetchAll={fetchAll}
+      formFieldDefinitions={formFieldDefinitions}
+      getName={getName}
+      itemName={t`Outage`}
+      resourceQueryKeyBase={COMMON_QUERY_KEY.OUTAGES}
+      schema={schema}
+      tableColumns={tableColumns}
+      testIdAttributes={TestIdUtil.createAttributes('OutagesAdminPage')}
+      title={t`Outages`}
+      updateOne={updateOne}
+    />
+  );
+};

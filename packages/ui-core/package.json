@@ -1,0 +1,234 @@
+{
+  "name": "@gen-epix/ui-core",
+  "version": "3.2.0",
+  "homepage": "https://github.com/RIVM-bioinformatics/gen-epix",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIVM-bioinformatics/gen-epix-ui.git"
+  },
+  "license": "EUPL-1.2",
+  "author": "RIVM-bioinformatics <ids-bioinformatics@rivm.nl>",
+  "type": "module",
+  "exports": {
+    "./classes/Subject": {
+      "types": "./src/classes/Subject/index.ts",
+      "import": "./src/classes/Subject/index.ts"
+    },
+    "./classes/abstracts/EventBusAbstract": {
+      "types": "./src/classes/abstracts/EventBusAbstract/index.ts",
+      "import": "./src/classes/abstracts/EventBusAbstract/index.ts"
+    },
+    "./classes/abstracts/SubscribableAbstract": {
+      "types": "./src/classes/abstracts/SubscribableAbstract/index.ts",
+      "import": "./src/classes/abstracts/SubscribableAbstract/index.ts"
+    },
+    "./classes/services/DevicePixelRatioService": {
+      "types": "./src/classes/services/DevicePixelRatioService/index.ts",
+      "import": "./src/classes/services/DevicePixelRatioService/index.ts"
+    },
+    "./classes/services/KeyboardShortcutService": {
+      "types": "./src/classes/services/KeyboardShortcutService/index.ts",
+      "import": "./src/classes/services/KeyboardShortcutService/index.ts"
+    },
+    "./classes/services/WindowService": {
+      "types": "./src/classes/services/WindowService/index.ts",
+      "import": "./src/classes/services/WindowService/index.ts"
+    },
+    "./constants/date": {
+      "types": "./src/constants/date.ts",
+      "import": "./src/constants/date.ts"
+    },
+    "./hooks/useArray": {
+      "types": "./src/hooks/useArray/index.ts",
+      "import": "./src/hooks/useArray/index.ts"
+    },
+    "./hooks/useDimensions": {
+      "types": "./src/hooks/useDimensions/index.ts",
+      "import": "./src/hooks/useDimensions/index.ts"
+    },
+    "./hooks/useScrollbarSize": {
+      "types": "./src/hooks/useScrollbarSize/index.ts",
+      "import": "./src/hooks/useScrollbarSize/index.ts"
+    },
+    "./hooks/useSubscribable": {
+      "types": "./src/hooks/useSubscribable/index.ts",
+      "import": "./src/hooks/useSubscribable/index.ts"
+    },
+    "./models/generic": {
+      "types": "./src/models/generic.ts",
+      "import": "./src/models/generic.ts"
+    },
+    "./models/testId": {
+      "types": "./src/models/testId.ts",
+      "import": "./src/models/testId.ts"
+    },
+    "./utils/DataUtil": {
+      "types": "./src/utils/DataUtil/index.ts",
+      "import": "./src/utils/DataUtil/index.ts"
+    },
+    "./utils/DownloadUtil": {
+      "types": "./src/utils/DownloadUtil/index.ts",
+      "import": "./src/utils/DownloadUtil/index.ts"
+    },
+    "./utils/FileUtil": {
+      "types": "./src/utils/FileUtil/index.ts",
+      "import": "./src/utils/FileUtil/index.ts"
+    },
+    "./utils/HmrUtil": {
+      "types": "./src/utils/HmrUtil/index.ts",
+      "import": "./src/utils/HmrUtil/index.ts"
+    },
+    "./utils/NumberUtil": {
+      "types": "./src/utils/NumberUtil/index.ts",
+      "import": "./src/utils/NumberUtil/index.ts"
+    },
+    "./utils/ObjectUtil": {
+      "types": "./src/utils/ObjectUtil/index.ts",
+      "import": "./src/utils/ObjectUtil/index.ts"
+    },
+    "./utils/StringUtil": {
+      "types": "./src/utils/StringUtil/index.ts",
+      "import": "./src/utils/StringUtil/index.ts"
+    },
+    "./utils/TestIdUtil": {
+      "types": "./src/utils/TestIdUtil/index.ts",
+      "import": "./src/utils/TestIdUtil/index.ts"
+    },
+    "./utils/ValidationUtil": {
+      "types": "./src/utils/ValidationUtil/index.ts",
+      "import": "./src/utils/ValidationUtil/index.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "build-publish": "pnpm build && pnpm publish --access=public",
+    "check-types": "tsc --noemit",
+    "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0",
+    "lint-fix": "eslint ./src --report-unused-disable-directives --max-warnings 0 --fix",
+    "test": "vitest --coverage",
+    "test-run": "vitest run --passWithNoTests --coverage",
+    "update-exports": "node scripts/update-exports.js",
+    "validate": "pnpm run lint && pnpm run check-types && pnpm run test-run"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
+  "dependencies": {
+    "lodash": "4.18.1",
+    "uuid": "14.0.2"
+  },
+  "devDependencies": {
+    "@gen-epix/eslint-config": "0.5.0",
+    "@types/lodash": "4.17.25",
+    "@types/react": "19.3.0",
+    "eslint": "10.10.0",
+    "react": "19.3.0",
+    "typescript": "6.0.3",
+    "vite": "8.2.2",
+    "vite-plugin-dts": "5.1.0",
+    "vite-plugin-static-copy": "4.1.1",
+    "vitest": "5.0.0"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      "./classes/Subject": {
+        "types": "./dist/classes/Subject/index.d.ts",
+        "import": "./dist/classes/Subject/index.js"
+      },
+      "./classes/abstracts/EventBusAbstract": {
+        "types": "./dist/classes/abstracts/EventBusAbstract/index.d.ts",
+        "import": "./dist/classes/abstracts/EventBusAbstract/index.js"
+      },
+      "./classes/abstracts/SubscribableAbstract": {
+        "types": "./dist/classes/abstracts/SubscribableAbstract/index.d.ts",
+        "import": "./dist/classes/abstracts/SubscribableAbstract/index.js"
+      },
+      "./classes/services/DevicePixelRatioService": {
+        "types": "./dist/classes/services/DevicePixelRatioService/index.d.ts",
+        "import": "./dist/classes/services/DevicePixelRatioService/index.js"
+      },
+      "./classes/services/KeyboardShortcutService": {
+        "types": "./dist/classes/services/KeyboardShortcutService/index.d.ts",
+        "import": "./dist/classes/services/KeyboardShortcutService/index.js"
+      },
+      "./classes/services/WindowService": {
+        "types": "./dist/classes/services/WindowService/index.d.ts",
+        "import": "./dist/classes/services/WindowService/index.js"
+      },
+      "./constants/date": {
+        "types": "./dist/constants/date.d.ts",
+        "import": "./dist/constants/date.js"
+      },
+      "./hooks/useArray": {
+        "types": "./dist/hooks/useArray/index.d.ts",
+        "import": "./dist/hooks/useArray/index.js"
+      },
+      "./hooks/useDimensions": {
+        "types": "./dist/hooks/useDimensions/index.d.ts",
+        "import": "./dist/hooks/useDimensions/index.js"
+      },
+      "./hooks/useScrollbarSize": {
+        "types": "./dist/hooks/useScrollbarSize/index.d.ts",
+        "import": "./dist/hooks/useScrollbarSize/index.js"
+      },
+      "./hooks/useSubscribable": {
+        "types": "./dist/hooks/useSubscribable/index.d.ts",
+        "import": "./dist/hooks/useSubscribable/index.js"
+      },
+      "./models/generic": {
+        "types": "./dist/models/generic.d.ts",
+        "import": "./dist/models/generic.js"
+      },
+      "./models/testId": {
+        "types": "./dist/models/testId.d.ts",
+        "import": "./dist/models/testId.js"
+      },
+      "./utils/DataUtil": {
+        "types": "./dist/utils/DataUtil/index.d.ts",
+        "import": "./dist/utils/DataUtil/index.js"
+      },
+      "./utils/DownloadUtil": {
+        "types": "./dist/utils/DownloadUtil/index.d.ts",
+        "import": "./dist/utils/DownloadUtil/index.js"
+      },
+      "./utils/FileUtil": {
+        "types": "./dist/utils/FileUtil/index.d.ts",
+        "import": "./dist/utils/FileUtil/index.js"
+      },
+      "./utils/HmrUtil": {
+        "types": "./dist/utils/HmrUtil/index.d.ts",
+        "import": "./dist/utils/HmrUtil/index.js"
+      },
+      "./utils/NumberUtil": {
+        "types": "./dist/utils/NumberUtil/index.d.ts",
+        "import": "./dist/utils/NumberUtil/index.js"
+      },
+      "./utils/ObjectUtil": {
+        "types": "./dist/utils/ObjectUtil/index.d.ts",
+        "import": "./dist/utils/ObjectUtil/index.js"
+      },
+      "./utils/StringUtil": {
+        "types": "./dist/utils/StringUtil/index.d.ts",
+        "import": "./dist/utils/StringUtil/index.js"
+      },
+      "./utils/TestIdUtil": {
+        "types": "./dist/utils/TestIdUtil/index.d.ts",
+        "import": "./dist/utils/TestIdUtil/index.js"
+      },
+      "./utils/ValidationUtil": {
+        "types": "./dist/utils/ValidationUtil/index.d.ts",
+        "import": "./dist/utils/ValidationUtil/index.js"
+      }
+    },
+    "files": [
+      "dist"
+    ]
+  }
+}

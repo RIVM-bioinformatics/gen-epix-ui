@@ -1,0 +1,115 @@
+import type {
+  FieldValues,
+  Path,
+} from 'react-hook-form';
+import type { ReactElement } from 'react';
+
+import type { RichTextEditorProps } from '../components/fields/RichTextEditor';
+import type { TransferListProps } from '../components/fields/TransferList';
+import type { AutocompleteProps } from '../components/fields/Autocomplete';
+import type { TextFieldProps } from '../components/fields/TextField';
+import type { SelectProps } from '../components/fields/Select';
+import type { DatePickerProps } from '../components/fields/DatePicker';
+import type { FileUploadProps } from '../components/fields/FileUpload/FileUpload';
+import type { RadioGroupProps } from '../components/fields/RadioGroup';
+import type { NumberFieldProps } from '../components/fields/NumberField';
+import type { SwitchProps } from '../components/fields/Switch';
+
+export enum FORM_FIELD_DEFINITION_TYPE {
+  AUTOCOMPLETE = 'AUTOCOMPLETE',
+  BOOLEAN = 'BOOLEAN',
+  BOOLEAN_SWITCH = 'BOOLEAN_SWITCH',
+  DATE = 'DATE',
+  FILE = 'FILE',
+  HIDDEN = 'HIDDEN',
+  NUMBER = 'NUMBER',
+  RADIO_GROUP = 'RADIO_GROUP',
+  RICH_TEXT = 'RICH_TEXT',
+  SELECT = 'SELECT',
+  SWITCH = 'SWITCH',
+  TEXTFIELD = 'TEXTFIELD',
+  TRANSFER_LIST = 'TRANSFER_LIST',
+}
+
+export interface AutoCompleteOption<TValue = void> extends OptionBase<TValue extends void ? (number | string) : TValue> {
+  groupBySortOrderValue?: number;
+  groupByValue?: string;
+}
+
+export type AutocompleteSelectAllContextData = {
+  currentValues: AutocompleteValue[];
+  enabledOptionValues: AutocompleteValue[];
+  handleSelectAll: (isCurrentlyAll: boolean, currentValues: AutocompleteValue[]) => void;
+  selectAllLabel: string;
+};
+export type AutocompleteValue = number | string;
+export type BaseFormFieldDefinition = {
+  contentAfter?: ReactElement;
+  contentBefore?: ReactElement;
+};
+
+export type CheckboxOption = OptionBase<number | string>;
+
+export type FormFieldDefinition<TFormFields extends FieldValues> =
+  FormFieldDefinitionAutocompleteForName<TFormFields> |
+  FormFieldDefinitionBoolean<TFormFields> |
+  FormFieldDefinitionBooleanSwitch<TFormFields> |
+  FormFieldDefinitionDate<TFormFields> |
+  FormFieldDefinitionFile<TFormFields> |
+  FormFieldDefinitionHidden<TFormFields> |
+  FormFieldDefinitionNumber<TFormFields> |
+  FormFieldDefinitionRadioGroup<TFormFields> |
+  FormFieldDefinitionRichText<TFormFields> |
+  FormFieldDefinitionSelect<TFormFields> |
+  FormFieldDefinitionSelectMultiple<TFormFields> |
+  FormFieldDefinitionSwitch<TFormFields> |
+  FormFieldDefinitionTextField<TFormFields> |
+  FormFieldDefinitionTransferList<TFormFields>;
+export type FormFieldDefinitionAutocomplete<TFormFields extends FieldValues, TName extends Path<TFormFields> = Path<TFormFields>> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: false } & AutocompleteProps<TFormFields, TName, false> & BaseFormFieldDefinition & FormFieldGrouping;
+export type FormFieldDefinitionAutocompleteMultiple<TFormFields extends FieldValues, TName extends Path<TFormFields> = Path<TFormFields>> = { definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE; multiple?: true } & AutocompleteProps<TFormFields, TName, true> & BaseFormFieldDefinition & FormFieldGrouping;
+export type FormFieldDefinitionBoolean<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN } & BaseFormFieldDefinition & FormFieldGrouping & Omit<SelectProps<TFormFields, Path<TFormFields>, false>, 'options'>;
+export type FormFieldDefinitionBooleanSwitch<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.BOOLEAN_SWITCH } & BaseFormFieldDefinition & FormFieldGrouping & Omit<SwitchProps<TFormFields, Path<TFormFields>>, 'options'>;
+export type FormFieldDefinitionDate<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.DATE } & BaseFormFieldDefinition & DatePickerProps<TFormFields, Path<TFormFields>> & FormFieldGrouping;
+export type FormFieldDefinitionFile<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.FILE } & BaseFormFieldDefinition & FileUploadProps<TFormFields, Path<TFormFields>> & FormFieldGrouping;
+export type FormFieldDefinitionHidden<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.HIDDEN } & BaseFormFieldDefinition & FormFieldGrouping & TextFieldProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionNumber<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.NUMBER } & BaseFormFieldDefinition & FormFieldGrouping & NumberFieldProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionRadioGroup<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RADIO_GROUP } & BaseFormFieldDefinition & FormFieldGrouping & RadioGroupProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionRichText<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.RICH_TEXT } & BaseFormFieldDefinition & FormFieldGrouping & RichTextEditorProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionSelect<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SELECT; multiple?: false } & BaseFormFieldDefinition & FormFieldGrouping & SelectProps<TFormFields, Path<TFormFields>, false>;
+export type FormFieldDefinitionSelectMultiple<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SELECT; multiple?: true } & BaseFormFieldDefinition & FormFieldGrouping & SelectProps<TFormFields, Path<TFormFields>, true>;
+export type FormFieldDefinitionSwitch<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.SWITCH } & BaseFormFieldDefinition & FormFieldGrouping & SwitchProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionTextField<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TEXTFIELD } & BaseFormFieldDefinition & FormFieldGrouping & TextFieldProps<TFormFields, Path<TFormFields>>;
+export type FormFieldDefinitionTransferList<TFormFields extends FieldValues> = { definition: FORM_FIELD_DEFINITION_TYPE.TRANSFER_LIST } & BaseFormFieldDefinition & FormFieldGrouping & TransferListProps<TFormFields, Path<TFormFields>>;
+export type FormFieldGrouping = {
+  groupKey?: string;
+};
+export type FormGroupDefinition = {
+  contentAfter?: ReactElement;
+  contentBefore?: ReactElement;
+  description?: string;
+  groupKey: string;
+  label: string;
+  messages?: FormGroupMessage[];
+};
+export type FormGroupMessage = {
+  buttonLabel?: string;
+  message: string;
+  onButtonClick?: () => void;
+  severity: 'error' | 'info' | 'warning';
+};
+export interface OptionBase<TValue> {
+  disabled?: boolean;
+  label?: string;
+  secondaryLabel?: string;
+  value?: TValue;
+}
+export type RadioButtonOption<TValue = void> = OptionBase<TValue extends void ? (boolean | number | string) : TValue>;
+export type SelectOption<TValue = void> = OptionBase<TValue extends void ? (boolean | number | string) : TValue>;
+export type ToggleButtonOption<TValue = void> = OptionBase<TValue extends void ? (boolean | number | string) : TValue>;
+export type TransferListOption = OptionBase<string>;
+
+// Distributes over each field name so `onChange`'s value type resolves to the concrete
+// `TFormFields[TName]` per field instead of collapsing to `unknown` for the whole `Path<TFormFields>` union.
+type FormFieldDefinitionAutocompleteForName<TFormFields extends FieldValues> = {
+  [TName in Path<TFormFields>]: FormFieldDefinitionAutocomplete<TFormFields, TName> | FormFieldDefinitionAutocompleteMultiple<TFormFields, TName>;
+}[Path<TFormFields>];

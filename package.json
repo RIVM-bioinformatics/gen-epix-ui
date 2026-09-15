@@ -3,25 +3,27 @@
   "version": "0.0.1",
   "license": "EUPL-1.2",
   "private": true,
-  "packageManager": "pnpm@11.13.1",
+  "packageManager": "pnpm@12.3.4",
   "scripts": {
+    "update-exports": "lerna run update-exports",
     "start": "concurrently \"pnpm --filter @gen-epix/demo-client-casedb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-casedb run start\"",
     "start-omop": "concurrently \"pnpm --filter @gen-epix/demo-client-omopdb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-omopdb run start\"",
     "start-seq": "concurrently \"pnpm --filter @gen-epix/demo-client-seqdb run oidc-server\" \"pnpm --filter @gen-epix/demo-client-seqdb run start\"",
     "clean": "lerna clean && rm -fr node_modules",
     "generate-api": "lerna run generate-api && generate-common-api packages/api-casedb packages/api-seqdb packages/api-omopdb packages/api-commondb",
-    "validate": "lerna run validate --concurrency 1 --stream",
+    "validate": "lerna run validate --stream",
     "lint": "lerna run lint",
     "lint-fix": "lerna run lint-fix",
     "check-types": "lerna run check-types",
     "test": "lerna run test-run",
     "add-missing-translations": "lerna run add-missing-translations",
+    "sort-package-json": "lerna exec npx sort-package-json",
     "build": "lerna run build"
   },
   "devDependencies": {
     "@gen-epix/generate-common-api": "0.0.1",
-    "concurrently": "10.0.3",
-    "lerna": "9.0.7",
+    "concurrently": "10.0.5",
+    "lerna": "10.0.1",
     "typescript": "6.0.3"
   }
 }
