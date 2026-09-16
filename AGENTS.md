@@ -154,6 +154,91 @@ pnpm run add-missing-translations
 - Preserve strict type behavior; avoid `any` unless the surrounding generated or
  compatibility code already requires it.
 
+## Code Organization And Directory Structure
+
+The UI packages (`ui-client-common`, `ui-client-casedb`, and the thinner
+`ui-client-omopdb`/`ui-client-seqdb`) share one top-level `src/` taxonomy:
+`components/`, `hooks/`, `dataHooks/`, `classes/`, `constants/`, `models/`,
+`context/`, `stores/`, `pages/`, `routes/`, `utils/`, `test/`, `theme/`,
+`setup/`. The domain packages omit folders they don't need (e.g. omopdb/seqdb
+have no `classes`, `hooks`, `dataHooks`, `context`, or `stores`, and collapse
+constants/query-keys into a single `data/` folder).
+
+**Universal rule:** almost every unit (component, hook, class, store, service)
+gets its own PascalCase-or-camelCase folder matching the unit name, containing
+the implementation file plus an `index.ts` barrel (`export * from './Xxx';`).
+This is load-bearing, not just style: `package.json` `exports` maps expose each
+folder as its own subpath (e.g. `"./classes/services/ApiService"`), so new
+public units need the same folder+barrel shape to be consumable.
+
+- **Components**: `src/components/<subarea>/<ComponentName>/ComponentName.tsx`
+ with an `index.ts` barrel. Subareas: `app/` (bootstrap/shell), `ui/` (generic
+ widgets like `Table`, `Sidebar`, dialogs), `filters/` (filter fields),
+ domain folders like `epi/`. Sub-parts used only by one component are sibling
+ files in the same folder (e.g. `Table/TableActionsCell.tsx`), re-exported
+ selectively from that folder's `index.ts`. Components are
+ `export const Name = (...) => {...}` arrow functions, never default exports.
+ Props types are named `<ComponentName>Props`, declared with `type` (not
+ `interface`), with `readonly` members, directly above the component.
+- **Hooks**: generic/behavior hooks live in `src/hooks/useXxx/useXxx.ts(x)`;
+ query-fetching hooks live separately in `src/dataHooks/useXxxQuery/`. Folder
+ name matches the hook name exactly, plus an `index.ts` barrel. Hook option/
+ props types are named `Use<HookName>Props`.
+- **Classes** (managers, singletons, event buses): `src/classes/services/`
+ (singletons suffixed `Service`, e.g. `ApiService`, `NotificationService`),
+ `src/classes/abstracts/` (base classes suffixed `Abstract`), `src/classes/
+ filters/` (concrete filter classes), and similar grouping folders (e.g.
+ casedb's `classes/errors/` for `*Error` classes). Singletons use a private
+ static `__instance`, private constructor, `public static getInstance()`,
+ typically wrapped in `HmrUtil.getHmrSingleton(...)` for HMR safety.
+- **Constants**: flat files under `src/constants/*.ts`, one per domain, no
+ subfolders or barrel. Identifiers are `UPPER_SNAKE_CASE`, declared `as const`,
+ with a same-named companion type derived via
+ `typeof X[keyof typeof X]` (with an eslint-disable for the intentional
+ redeclare). Most enum-like/shape constants actually live in `models/`, not
+ `constants/`; `constants/` is for concrete runtime values like query-key maps.
+- **Utils**: `src/utils/<XxxUtil>/XxxUtil.ts` + `index.ts` barrel. Utils are
+ written as all-static classes used as namespaces
+ (`export class AxiosUtil { public static isAxiosBadRequestError(...) {} }`),
+ not free-function modules. Co-locate tests as `XxxUtil.test.ts` in the same
+ folder. Domain packages prefix domain-specific utils with the domain
+ (`CaseDbDataUtil`, `OmopDbStandardConfigUtil`) and leave generic ones
+ unprefixed (`CaseUtil`, `AbacUtil`).
+- **Types/interfaces**: co-located in `src/models/*.ts`, one file per concern
+ (`api.ts`, `auth.ts`, `filter.ts`, `table.ts`, ...) rather than beside
+ components, though one-off component-local types are declared inline in the
+ component file. Use `interface` for extendable/object shapes, `type` for
+ unions, mapped types, and function signatures. No `I`-prefix or `T`-suffix
+ convention for regular types; generic type parameters do use a `T`-prefix
+ (`TRowData`, `TDataContext`, `TValue`).
+- **Enums**: also co-located in `src/models/*.ts` (or inline in the one
+ class/component that owns them). Both the enum name and its members are
+ `UPPER_SNAKE_CASE`, with string values mirroring the key
+ (`FIXED_COLUMN_ID.ROW_SELECT = 'ROW_SELECT'`).
+- **Services/API layer**: same folder pattern as classes, under
+ `src/classes/services/<ServiceName>/`. `ApiService` wraps generated OpenAPI
+ clients behind an `initialize({...})` method and typed public fields.
+- **Context**: `src/context/<contextName>/` with four files —
+ `XxxContext.tsx` (the `createContext` call), `XxxContextProvider.tsx`
+ (provider component), `useXxxContext.tsx` (consumer hook), and an `index.ts`
+ barrel.
+- **Zustand stores**: `src/stores/<xxxStore>/` (camelCase, `Store` suffix)
+ using vanilla `createStore` (not the React hook directly) plus `persist`/
+ `createJSONStorage` middleware where needed. State/actions are typed as
+ `interface <Name>StoreState`, `interface <Name>StoreActions`, combined into
+ `export type <Name>Store = <Name>StoreActions & <Name>StoreState;`, with a
+ `create<Name>StoreInitialState` factory. Stores that need per-instance
+ injection (e.g. `tableStore`) add their own Context wrapper alongside.
+- **Tests**: co-located next to the unit under test as `<Name>.test.ts(x)`
+ (no `__tests__` directory). Uses Vitest (`describe`/`it`/`expect` from
+ `'vitest'`). Shared test setup/helpers live in `src/test/` (e.g.
+ `test/lib/render.tsx`, `test/setup/setup-browser.ts`).
+- **Barrel exports**: there is no single package-wide `src/index.ts`; instead
+ every unit folder has its own `index.ts`, and `package.json` `exports` maps
+ one subpath per folder to that barrel. When adding a new unit, add its
+ folder's `index.ts` and, if it should be publicly consumable, a matching
+ `exports` entry in `package.json`.
+
 ## React And UI Conventions
 
 - Match existing MUI-based design patterns and component composition.
