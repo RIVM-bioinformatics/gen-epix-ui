@@ -28,7 +28,7 @@
     "last 2 Chrome versions"
   ],
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.5.0",
+    "@gen-epix/eslint-config": "0.6.1",
     "@microsoft/api-extractor": "7.59.1",
     "@types/node": "26.4.1",
     "axios": "1.20.0",

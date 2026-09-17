@@ -94,8 +94,8 @@
     "uuid": "14.0.2"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.5.0",
-    "@gen-epix/translation-util": "0.2.0",
+    "@gen-epix/eslint-config": "0.6.1",
+    "@gen-epix/translation-util": "0.3.2",
     "@gen-epix/ui-core": "workspace:^",
     "@mui/icons-material": "9.4.0",
     "@mui/material": "9.4.0",

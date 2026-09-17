@@ -21,7 +21,7 @@
     "build": "lerna run build"
   },
   "devDependencies": {
-    "@gen-epix/generate-common-api": "0.0.1",
+    "@gen-epix/generate-common-api": "0.1.2",
     "concurrently": "10.0.5",
     "lerna": "10.0.1",
     "typescript": "6.0.3"

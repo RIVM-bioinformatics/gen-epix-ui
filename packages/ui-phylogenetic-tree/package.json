@@ -50,7 +50,7 @@
     "use-debounce": "10.1.1"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.5.0",
+    "@gen-epix/eslint-config": "0.6.1",
     "@gen-epix/ui-core": "workspace:^",
     "@mui/material": "9.4.0",
     "@types/lodash": "4.17.25",

@@ -47,12 +47,12 @@
     "zustand": "5.0.15"
   },
   "devDependencies": {
-    "@gen-epix/eslint-config": "0.5.0",
-    "@gen-epix/generate-license-manifest": "0.2.0",
-    "@gen-epix/merge-locales": "0.0.3",
-    "@gen-epix/oidc-mock-server": "0.4.1",
-    "@gen-epix/tools-lib": "0.1.1",
-    "@gen-epix/translation-util": "0.2.0",
+    "@gen-epix/eslint-config": "0.6.1",
+    "@gen-epix/generate-license-manifest": "0.3.2",
+    "@gen-epix/merge-locales": "0.1.2",
+    "@gen-epix/oidc-mock-server": "0.5.2",
+    "@gen-epix/tools-lib": "0.2.2",
+    "@gen-epix/translation-util": "0.3.2",
     "@types/node": "26.4.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
