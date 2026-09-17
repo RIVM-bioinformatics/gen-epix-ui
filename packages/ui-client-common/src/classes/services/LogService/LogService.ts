@@ -4,7 +4,7 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
-import type { CommonDbLogItem } from '@gen-epix/api-commondb';
+import type { CommonDbExternalLogItem } from '@gen-epix/api-commondb';
 import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
@@ -25,7 +25,7 @@ export class LogService {
 
   protected readonly requestMap: Map<string, number>;
 
-  private logItems: CommonDbLogItem[] = [];
+  private logItems: CommonDbExternalLogItem[] = [];
 
   private constructor() {
     this.requestMap = new Map<string, number>();
@@ -46,7 +46,7 @@ export class LogService {
   public log(items: LogServiceItem[]): void {
     const timestamp = new Date().toISOString();
     const software_version = ConfigService.getInstance().config.getSoftwareVersion();
-    this.logItems.push(...items.map<CommonDbLogItem>(item => {
+    this.logItems.push(...items.map<CommonDbExternalLogItem>(item => {
       return {
         command_id: StringUtil.createUuid(),
         detail: item.detail ? JSON.stringify(item.detail) : null,

@@ -22,38 +22,39 @@ export type CommonDbAuthProtocol = typeof CommonDbAuthProtocol[keyof typeof Comm
 
 
 export const CommonDbCommandName = {
-  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-  InviteUserCommand: 'InviteUserCommand',
+  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
   RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-  GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-  UserCrudCommand: 'UserCrudCommand',
-  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
   ContactCrudCommand: 'ContactCrudCommand',
+  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+  AnonymizeUserCommand: 'AnonymizeUserCommand',
   UpdateUserCommand: 'UpdateUserCommand',
+  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+  InviteUserCommand: 'InviteUserCommand',
+  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+  OrganizationCrudCommand: 'OrganizationCrudCommand',
+  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+  OutageCrudCommand: 'OutageCrudCommand',
+  GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+  DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+  SiteCrudCommand: 'SiteCrudCommand',
+  RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+  UserCrudCommand: 'UserCrudCommand',
   DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
   RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-  OrganizationCrudCommand: 'OrganizationCrudCommand',
-  OutageCrudCommand: 'OutageCrudCommand',
-  UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-  RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-  RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-  SiteCrudCommand: 'SiteCrudCommand',
-  RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-  AnonymizeUserCommand: 'AnonymizeUserCommand',
-  RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-  RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
 } as const;
 
 export type CommonDbCommandName = typeof CommonDbCommandName[keyof typeof CommonDbCommandName];
@@ -196,24 +197,13 @@ export interface CommonDbEqualsUuidFilter {
 }
 
 
-export interface CommonDbEtlLogItem {
-  'timestamp'?: string;
-  'code': string;
-  'message': string;
-  'severity': CommonDbLogLevel;
-  'source'?: string | null;
-  'target'?: string | null;
-}
-
-
 export const CommonDbEtlStatus = {
-  INITIALIZED: 'INITIALIZED',
   PENDING: 'PENDING',
   SKIPPED: 'SKIPPED',
   FAILED: 'FAILED',
-  ERROR: 'ERROR',
   CREATED: 'CREATED',
   UPDATED: 'UPDATED',
+  DELETED: 'DELETED',
   MIXED: 'MIXED',
   PROCESSED: 'PROCESSED',
   SUCCESS: 'SUCCESS',
@@ -226,6 +216,17 @@ export interface CommonDbExistsFilter {
   'invert'?: boolean;
   'key'?: string;
   'type'?: string;
+}
+
+
+export interface CommonDbExternalLogItem {
+  'level': CommonDbLogLevel;
+  'command_id': string;
+  'timestamp': string;
+  'duration'?: number | null;
+  'software_version': string;
+  'topic': string;
+  'detail'?: string | null;
 }
 
 
@@ -306,13 +307,12 @@ export interface CommonDbInviteUserRequestBody {
 
 
 export interface CommonDbLogItem {
-  'level': CommonDbLogLevel;
-  'command_id': string;
-  'timestamp': string;
-  'duration'?: number | null;
-  'software_version': string;
-  'topic': string;
-  'detail'?: string | null;
+  'timestamp'?: string;
+  'code': string;
+  'message': string;
+  'severity': CommonDbLogLevel;
+  'source'?: string | null;
+  'target'?: string | null;
 }
 
 
@@ -329,7 +329,7 @@ export type CommonDbLogLevel = typeof CommonDbLogLevel[keyof typeof CommonDbLogL
 
 
 export interface CommonDbLogRequestBody {
-  'log_items': Array<CommonDbLogItem>;
+  'log_items': Array<CommonDbExternalLogItem>;
 }
 
 
@@ -569,9 +569,11 @@ export type CommonDbUploadAction = typeof CommonDbUploadAction[keyof typeof Comm
 
 
 export interface CommonDbUploadResult {
-  'logs'?: Array<CommonDbEtlLogItem>;
-  'id'?: string | null;
+  'type'?: string;
   'status'?: CommonDbEtlStatus;
+  'source_id'?: string | null;
+  'logs'?: Array<CommonDbLogItem>;
+  'id'?: string | null;
   'is_new'?: boolean;
 }
 
