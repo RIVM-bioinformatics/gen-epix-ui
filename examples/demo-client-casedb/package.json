@@ -34,15 +34,15 @@
     "@mui/styled-engine": "9.4.0",
     "@mui/system": "9.4.0",
     "@mui/utils": "9.4.0",
-    "@mui/x-date-pickers": "9.13.0",
+    "@mui/x-date-pickers": "9.14.0",
     "axios": "1.20.0",
     "colorjs.io": "0.7.1",
     "date-fns": "4.4.0",
     "i18next": "26.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-i18next": "17.0.13",
-    "react-router-dom": "7.18.3",
+    "react-i18next": "17.0.14",
+    "react-router-dom": "7.18.4",
     "yup": "1.7.1",
     "zustand": "5.0.15"
   },
@@ -61,8 +61,8 @@
     "husky": "9.1.7",
     "nodemon": "3.1.14",
     "typescript": "6.0.3",
-    "vite": "8.2.2",
+    "vite": "8.3.0",
     "vite-plugin-svgr": "5.2.0",
-    "vitest": "5.0.0"
+    "vitest": "5.0.1"
   }
 }

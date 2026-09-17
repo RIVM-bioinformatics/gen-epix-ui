@@ -53,32 +53,38 @@ const componentKeys = [...indexBasedKeys, ...flatKeys].sort();
 const pkgBaseName = basename(pkg.name.replace(/^@[^/]+\//, ''));
 const typesDeclarationFile = join(srcDir, '@types', `${pkgBaseName}.d.ts`);
 const hasTypesEntry = existsSync(typesDeclarationFile);
+const hasExportEntries = hasTypesEntry || componentKeys.length > 0;
 
-// exports: points to source files (used in workspace / dev)
-pkg.exports = {
-  ...(hasTypesEntry ? { './types': { types: `./src/@types/${pkgBaseName}.d.ts`, import: `./src/@types/${pkgBaseName}.d.ts` } } : {}),
-  ...Object.fromEntries(
-    componentKeys.map((key) => [
-      `./${key}`,
-      flatKeySet.has(key)
-        ? { types: `./src/${key}.ts`, import: `./src/${key}.ts` }
-        : { types: `./src/${key}/index.ts`, import: `./src/${key}/index.ts` },
-    ]),
-  ),
-};
+if (hasExportEntries) {
+  // exports: points to source files (used in workspace / dev)
+  pkg.exports = {
+    ...(hasTypesEntry ? { './types': { types: `./src/@types/${pkgBaseName}.d.ts`, import: `./src/@types/${pkgBaseName}.d.ts` } } : {}),
+    ...Object.fromEntries(
+      componentKeys.map((key) => [
+        `./${key}`,
+        flatKeySet.has(key)
+          ? { types: `./src/${key}.ts`, import: `./src/${key}.ts` }
+          : { types: `./src/${key}/index.ts`, import: `./src/${key}/index.ts` },
+      ]),
+    ),
+  };
+}
 
-// publishConfig.exports: points to dist files (used after publish)
-pkg.publishConfig.exports = {
-  ...(hasTypesEntry ? { './types': { types: `./dist/@types/${pkgBaseName}.d.ts`, import: `./dist/@types/${pkgBaseName}.d.ts` } } : {}),
-  ...Object.fromEntries(
-    componentKeys.map((key) => [
-      `./${key}`,
-      flatKeySet.has(key)
-        ? { types: `./dist/${key}.d.ts`, import: `./dist/${key}.js` }
-        : { types: `./dist/${key}/index.d.ts`,import: `./dist/${key}/index.js` },
-    ]),
-  ),
-};
+if (hasExportEntries) {
+  pkg.publishConfig ??= {};
+  // publishConfig.exports: points to dist files (used after publish)
+  pkg.publishConfig.exports = {
+    ...(hasTypesEntry ? { './types': { types: `./dist/@types/${pkgBaseName}.d.ts`, import: `./dist/@types/${pkgBaseName}.d.ts` } } : {}),
+    ...Object.fromEntries(
+      componentKeys.map((key) => [
+        `./${key}`,
+        flatKeySet.has(key)
+          ? { types: `./dist/${key}.d.ts`, import: `./dist/${key}.js` }
+          : { types: `./dist/${key}/index.d.ts`,import: `./dist/${key}/index.js` },
+      ]),
+    ),
+  };
+}
 
 const indentMatch = raw.match(/^(\s+)"/m);
 const indent = indentMatch ? indentMatch[1] : '  ';
