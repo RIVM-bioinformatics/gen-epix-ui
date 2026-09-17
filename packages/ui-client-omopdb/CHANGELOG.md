@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-omopdb-v4.2.0...ui-client-omopdb-v4.2.1) (2026-09-17)
+
+
+### Bug Fixes
+
+* fix peer dependencies ([4b5c7e2](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/4b5c7e258fe6de0c79580fe86c7cbaee3a661b64))
+
 ## [4.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-omopdb-v4.1.0...ui-client-omopdb-v4.2.0) (2026-09-17)
 
 
