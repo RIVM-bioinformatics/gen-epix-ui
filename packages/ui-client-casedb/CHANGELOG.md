@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.2.0...ui-client-casedb-v4.3.0) (2026-09-17)
+
+
+### Features
+
+* feature flag upload ([#161](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/161)) ([2c22ac8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2c22ac8b149a842114fc43a707f848075dbe8444))
+* upgrade dependencies to latest ([d260568](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d26056823184da0edd5765520b1e40920df8d09b))
+
+
+### Bug Fixes
+
+* add validation rules in OrganizationAccessCasePolicies for private policies ([c757337](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/c7573379d4df1a415fbb6eae489c0f5ff82fa381))
+* import from mui/material instead of mui/system ([7798f00](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7798f00eba9fb96831fa9e3019f6991eee503730))
+
 ## [4.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.1.0...ui-client-casedb-v4.2.0) (2026-09-11)
 
 
