@@ -150,8 +150,7 @@ export default defineConfig({
             instances: [
               { browser: 'chromium' },
             ],
-            // Vitest's pnpm peer contexts currently expose duplicate copies of its config types.
-            provider: playwright() as never,
+            provider: playwright(),
             screenshotDirectory: join(import.meta.dirname, '__screenshots__'),
             viewport: {
               height: 1080,
