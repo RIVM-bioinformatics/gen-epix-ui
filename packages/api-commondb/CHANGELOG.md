@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v4.2.0...api-commondb-v4.3.0) (2026-09-17)
+
+
+### Features
+
+* update api specs to match gen-epix-api ([b9e25c3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b9e25c33ded4ab072701f603c38012be0c3f3a91))
+* upgrade dependencies to latest ([d260568](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d26056823184da0edd5765520b1e40920df8d09b))
+
 ## [4.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/api-commondb-v4.1.0...api-commondb-v4.2.0) (2026-09-11)
 
 

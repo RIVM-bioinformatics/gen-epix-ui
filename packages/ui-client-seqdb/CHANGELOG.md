@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-seqdb-v4.1.0...ui-client-seqdb-v4.2.0) (2026-09-17)
+
+
+### Features
+
+* upgrade dependencies to latest ([d260568](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d26056823184da0edd5765520b1e40920df8d09b))
+
 ## [4.1.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-seqdb-v4.0.2...ui-client-seqdb-v4.1.0) (2026-09-11)
 
 

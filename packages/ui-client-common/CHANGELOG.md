@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.2.0...ui-client-common-v4.3.0) (2026-09-17)
+
+
+### Features
+
+* feature flag upload ([#161](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/161)) ([2c22ac8](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2c22ac8b149a842114fc43a707f848075dbe8444))
+* update api specs to match gen-epix-api ([b9e25c3](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/b9e25c33ded4ab072701f603c38012be0c3f3a91))
+* upgrade dependencies to latest ([d260568](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d26056823184da0edd5765520b1e40920df8d09b))
+
 ## [4.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-common-v4.1.0...ui-client-common-v4.2.0) (2026-09-11)
 
 
