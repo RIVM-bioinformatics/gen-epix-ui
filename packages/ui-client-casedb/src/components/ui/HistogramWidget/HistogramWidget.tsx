@@ -1,4 +1,10 @@
-import { Box } from '@mui/system';
+import {
+  Box,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  useTheme,
+} from '@mui/material';
 import type { ReactElement } from 'react';
 import {
   use,
@@ -33,12 +39,6 @@ import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
-import {
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  useTheme,
-} from '@mui/material';
 import intersection from 'lodash/intersection';
 
 import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';

@@ -3,7 +3,6 @@ import type {
   CaseDbCaseSet,
 } from '@gen-epix/api-casedb';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
-import { Box } from '@mui/system';
 import {
   use,
   useCallback,
@@ -11,6 +10,7 @@ import {
   useState,
 } from 'react';
 import { useStore } from 'zustand';
+import { Box } from '@mui/material';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { withEpiDashboardStore } from '../DashboardStoreLoader';
