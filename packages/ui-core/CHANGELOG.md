@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.2.0...ui-core-v3.3.0) (2026-09-17)
+
+
+### Features
+
+* upgrade dependencies to latest ([d260568](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/d26056823184da0edd5765520b1e40920df8d09b))
+
 ## [3.2.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.1.0...ui-core-v3.2.0) (2026-09-11)
 
 
