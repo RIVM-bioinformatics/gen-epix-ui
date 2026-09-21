@@ -67,9 +67,60 @@ jobs:
           git merge --no-ff origin/main -m "chore: merge main into development [skip ci]"
           git push origin development
 
-  publish-ui-client-casedb:
+  publish:
     needs: release-please
-    if: ${{ needs.release-please.outputs.ui-client-casedb-release-created == 'true' }}
+    if: ${{ needs.release-please.outputs.releases-created == 'true' }}
+    strategy:
+      matrix:
+        include:
+          - package: ui-client-casedb
+            path: packages/ui-client-casedb
+            release-created: ui-client-casedb-release-created
+            tag-name: ui-client-casedb-tag-name
+          - package: ui-client-omopdb
+            path: packages/ui-client-omopdb
+            release-created: ui-client-omopdb-release-created
+            tag-name: ui-client-omopdb-tag-name
+          - package: ui-client-seqdb
+            path: packages/ui-client-seqdb
+            release-created: ui-client-seqdb-release-created
+            tag-name: ui-client-seqdb-tag-name
+          - package: ui-client-common
+            path: packages/ui-client-common
+            release-created: ui-client-common-release-created
+            tag-name: ui-client-common-tag-name
+          - package: ui-phylogenetic-tree
+            path: packages/ui-phylogenetic-tree
+            release-created: ui-phylogenetic-tree-release-created
+            tag-name: ui-phylogenetic-tree-tag-name
+          - package: ui-core
+            path: packages/ui-core
+            release-created: ui-core-release-created
+            tag-name: ui-core-tag-name
+          - package: ui-core-components
+            path: packages/ui-core-components
+            release-created: ui-core-components-release-created
+            tag-name: ui-core-components-tag-name
+          - package: ui-core-form
+            path: packages/ui-core-form
+            release-created: ui-core-form-release-created
+            tag-name: ui-core-form-tag-name
+          - package: api-casedb
+            path: packages/api-casedb
+            release-created: api-casedb-release-created
+            tag-name: api-casedb-tag-name
+          - package: api-commondb
+            path: packages/api-commondb
+            release-created: api-commondb-release-created
+            tag-name: api-commondb-tag-name
+          - package: api-seqdb
+            path: packages/api-seqdb
+            release-created: api-seqdb-release-created
+            tag-name: api-seqdb-tag-name
+          - package: api-omopdb
+            path: packages/api-omopdb
+            release-created: api-omopdb-release-created
+            tag-name: api-omopdb-tag-name
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -79,386 +130,29 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
+        if: ${{ needs.release-please.outputs[matrix.release-created] == 'true' }}
         run: pnpm install --frozen-lockfile
 
       - name: Create .npmrc
+        if: ${{ needs.release-please.outputs[matrix.release-created] == 'true' }}
         run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build
-        run: pnpm --filter @gen-epix/ui-client-casedb run build
+        if: ${{ needs.release-please.outputs[matrix.release-created] == 'true' }}
+        run: pnpm --filter @gen-epix/${{ matrix.package }} run build
 
       - name: Zip dist directory
-        run: cd packages/ui-client-casedb && zip -r ../../gen-epix-ui-client-casedb.zip dist
+        if: ${{ needs.release-please.outputs[matrix.release-created] == 'true' }}
+        run: cd ${{ matrix.path }} && zip -r ../../gen-epix-${{ matrix.package }}.zip dist
 
       - name: Upload release artifact to GitHub
+        if: ${{ needs.release-please.outputs[matrix.release-created] == 'true' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-client-casedb-tag-name }} gen-epix-ui-client-casedb.zip --clobber
+        run: gh release upload ${{ needs.release-please.outputs[matrix.tag-name] }} gen-epix-${{ matrix.package }}.zip --clobber
 
       - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-client-casedb publish --access=public --no-git-checks
-
-  publish-ui-client-omopdb:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.ui-client-omopdb-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/ui-client-omopdb run build
-
-      - name: Zip dist directory
-        run: cd packages/ui-client-omopdb && zip -r ../../gen-epix-ui-client-omopdb.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-client-omopdb-tag-name }} gen-epix-ui-client-omopdb.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-client-omopdb publish --access=public --no-git-checks
-
-  publish-ui-client-seqdb:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.ui-client-seqdb-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/ui-client-seqdb run build
-
-      - name: Zip dist directory
-        run: cd packages/ui-client-seqdb && zip -r ../../gen-epix-ui-client-seqdb.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-client-seqdb-tag-name }} gen-epix-ui-client-seqdb.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-client-seqdb publish --access=public --no-git-checks
-
-  publish-ui-client-common:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.ui-client-common-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/ui-client-common run build
-
-      - name: Zip dist directory
-        run: cd packages/ui-client-common && zip -r ../../gen-epix-ui-client-common.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-client-common-tag-name }} gen-epix-ui-client-common.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-client-common publish --access=public --no-git-checks
-
-  publish-ui-phylogenetic-tree:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.ui-phylogenetic-tree-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/ui-phylogenetic-tree run build
-
-      - name: Zip dist directory
-        run: cd packages/ui-phylogenetic-tree && zip -r ../../gen-epix-ui-phylogenetic-tree.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-phylogenetic-tree-tag-name }} gen-epix-ui-phylogenetic-tree.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-phylogenetic-tree publish --access=public --no-git-checks
-
-  publish-ui-core:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.ui-core-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/ui-core run build
-
-      - name: Zip dist directory
-        run: cd packages/ui-core && zip -r ../../gen-epix-ui-core.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-core-tag-name }} gen-epix-ui-core.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-core publish --access=public --no-git-checks
-
-  publish-ui-core-components:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.ui-core-components-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/ui-core-components run build
-
-      - name: Zip dist directory
-        run: cd packages/ui-core-components && zip -r ../../gen-epix-ui-core-components.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-core-components-tag-name }} gen-epix-ui-core-components.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-core-components publish --access=public --no-git-checks
-
-  publish-api-casedb:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.api-casedb-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/api-casedb run build
-
-      - name: Zip dist directory
-        run: cd packages/api-casedb && zip -r ../../gen-epix-api-casedb.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.api-casedb-tag-name }} gen-epix-api-casedb.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/api-casedb publish --access=public --no-git-checks
-
-  publish-api-commondb:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.api-commondb-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/api-commondb run build
-
-      - name: Zip dist directory
-        run: cd packages/api-commondb && zip -r ../../gen-epix-api-commondb.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.api-commondb-tag-name }} gen-epix-api-commondb.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/api-commondb publish --access=public --no-git-checks
-
-  publish-api-seqdb:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.api-seqdb-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/api-seqdb run build
-
-      - name: Zip dist directory
-        run: cd packages/api-seqdb && zip -r ../../gen-epix-api-seqdb.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.api-seqdb-tag-name }} gen-epix-api-seqdb.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/api-seqdb publish --access=public --no-git-checks
-
-  publish-api-omopdb:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.api-omopdb-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/api-omopdb run build
-
-      - name: Zip dist directory
-        run: cd packages/api-omopdb && zip -r ../../gen-epix-api-omopdb.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.api-omopdb-tag-name }} gen-epix-api-omopdb.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/api-omopdb publish --access=public --no-git-checks
-
-  publish-ui-core-form:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.ui-core-form-release-created == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: ./.github/actions/setup-node-env
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Create .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Build
-        run: pnpm --filter @gen-epix/ui-core-form run build
-
-      - name: Zip dist directory
-        run: cd packages/ui-core-form && zip -r ../../gen-epix-ui-core-form.zip dist
-
-      - name: Upload release artifact to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ needs.release-please.outputs.ui-core-form-tag-name }} gen-epix-ui-core-form.zip --clobber
-
-      - name: Publish to NPM
-        run: pnpm --filter @gen-epix/ui-core-form publish --access=public --no-git-checks
+        if: ${{ needs.release-please.outputs[matrix.release-created] == 'true' }}
+        run: pnpm --filter @gen-epix/${{ matrix.package }} publish --access=public --no-git-checks

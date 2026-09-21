@@ -120,7 +120,7 @@ export const toPathString = function (url: URL) {
     return url.pathname + url.search + url.hash
 }
 
-export const createRequestFunction = function (axiosArgs: RequestArgs, globalAxios: AxiosInstance, _configuration?: Configuration) {
+export const createRequestFunction = function (axiosArgs: RequestArgs, globalAxios: AxiosInstance, _configuration?: Configuration): <T = unknown, R = AxiosResponse<T>>(axios?: AxiosInstance, _basePath?: string) => Promise<R> {
   return async <T = unknown, R = AxiosResponse<T>>(axios: AxiosInstance = globalAxios, _basePath: string) => {
 
     const axiosRequestArgs: AxiosRequestConfig = {
@@ -138,6 +138,7 @@ export const createRequestFunction = function (axiosArgs: RequestArgs, globalAxi
     if (isAxiosError(res)) {
       throw res;
     }
-    return res;
+    // axios@1.20+ keeps AxiosResponseResult<T, R, D, P> unresolved for a generic R, so it won't assign to Promise<R> without a cast.
+    return res as unknown as R;
   };
-}
+};
