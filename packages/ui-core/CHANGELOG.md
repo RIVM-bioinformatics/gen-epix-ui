@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.3.0...ui-core-v3.3.1) (2026-09-21)
+
+
+### Bug Fixes
+
+* fix api typings ([749cf9d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/749cf9d51cc3221299c112308745f83d60958576))
+
 ## [3.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.2.0...ui-core-v3.3.0) (2026-09-17)
 
 

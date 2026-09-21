@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.3.1...ui-client-casedb-v4.3.2) (2026-09-21)
+
+
+### Bug Fixes
+
+* fix api typings ([749cf9d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/749cf9d51cc3221299c112308745f83d60958576))
+
 ## [4.3.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.3.0...ui-client-casedb-v4.3.1) (2026-09-17)
 
 
