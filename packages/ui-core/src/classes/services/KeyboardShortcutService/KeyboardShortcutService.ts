@@ -48,9 +48,6 @@ export class KeyboardShortcutService {
   }
 
   public registerShortcut({ callback, code, key, modifier }: KeyboardShortcutConfig): () => void {
-    if (!code && !key) {
-      throw new Error('Either code or key must be specified for a keyboard shortcut.');
-    }
     const config: KeyboardShortcutConfig = { callback, code, key, modifier };
     this.configs.push(config);
 
@@ -62,7 +59,7 @@ export class KeyboardShortcutService {
   private handleKeyDown(event: KeyboardEvent): void {
     for (const config of this.configs) {
       const { callback, code, key, modifier } = config;
-      if (event.key !== key && event.code !== code) {
+      if ((key && event.key !== key) || (code && event.code !== code)) {
         continue;
       }
       if (modifier && !event.getModifierState(modifier)) {
