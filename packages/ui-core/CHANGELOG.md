@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.3.1...ui-core-v3.4.0) (2026-09-30)
+
+
+### Features
+
+* improve KeyboardShortcutService so it can take a code besides key ([e7079bd](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e7079bd3fef51274ef449bd3d829b49d44b13921))
+
 ## [3.3.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.3.0...ui-core-v3.3.1) (2026-09-21)
 
 
