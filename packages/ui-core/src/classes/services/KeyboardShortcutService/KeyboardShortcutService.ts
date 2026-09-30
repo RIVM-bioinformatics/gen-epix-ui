@@ -16,8 +16,9 @@ const FORM_ELEMENT_TAG_NAMES = [
 ];
 
 type KeyboardShortcutConfig = {
-  callback: () => void;
-  key: string;
+  callback: (event: KeyboardEvent) => void;
+  code?: string;
+  key?: string;
   modifier?: string;
 };
 
@@ -46,8 +47,11 @@ export class KeyboardShortcutService {
     return false;
   }
 
-  public registerShortcut({ callback, key, modifier }: KeyboardShortcutConfig): () => void {
-    const config: KeyboardShortcutConfig = { callback, key, modifier };
+  public registerShortcut({ callback, code, key, modifier }: KeyboardShortcutConfig): () => void {
+    if (!code && !key) {
+      throw new Error('Either code or key must be specified for a keyboard shortcut.');
+    }
+    const config: KeyboardShortcutConfig = { callback, code, key, modifier };
     this.configs.push(config);
 
     return () => {
@@ -57,8 +61,8 @@ export class KeyboardShortcutService {
 
   private handleKeyDown(event: KeyboardEvent): void {
     for (const config of this.configs) {
-      const { callback, key, modifier } = config;
-      if (event.key !== key) {
+      const { callback, code, key, modifier } = config;
+      if (event.key !== key && event.code !== code) {
         continue;
       }
       if (modifier && !event.getModifierState(modifier)) {
@@ -71,7 +75,7 @@ export class KeyboardShortcutService {
       if (KeyboardShortcutService.shouldIgnoreShortcut()) {
         return;
       }
-      callback();
+      callback(event);
       return; // only one callback per shortcut
     }
   }
