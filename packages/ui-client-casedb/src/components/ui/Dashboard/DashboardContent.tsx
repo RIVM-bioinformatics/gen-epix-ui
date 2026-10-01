@@ -134,13 +134,13 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
     const removers = [
       KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
         setIsFilterSidebarOpen(x => !x);
-      }, key: 'f', modifier: null }),
+      }, key: 'f' }),
       KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
         setIsSettingsSidebarOpen(x => !x);
-      }, key: 's', modifier: null }),
+      }, key: 's' }),
       KeyboardShortcutService.getInstance().registerShortcut({ callback: () => {
         caseTypeInfoDialogRef.current.open();
-      }, key: 'i', modifier: null }),
+      }, key: 'i' }),
     ];
     return () => {
       removers.forEach(callbackfn => callbackfn());

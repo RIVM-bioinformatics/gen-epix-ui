@@ -15,11 +15,32 @@ const FORM_ELEMENT_TAG_NAMES = [
   'optgroup',
 ];
 
+const MODIFIER_KEYS = [
+  'Accel',
+  'Alt',
+  'AltGraph',
+  'CapsLock',
+  'Control',
+  'Fn',
+  'FnLock',
+  'Hyper',
+  'Meta',
+  'NumLock',
+  'OS',
+  'ScrollLock',
+  'Shift',
+  'Super',
+  'Symbol',
+  'SymbolLock',
+] as const;
+
+type KeyboardModifier = typeof MODIFIER_KEYS[number];
+
 type KeyboardShortcutConfig = {
   callback: (event: KeyboardEvent) => void;
   code?: string;
   key?: string;
-  modifier?: string;
+  modifier?: KeyboardModifier[];
 };
 
 export class KeyboardShortcutService {
@@ -62,10 +83,10 @@ export class KeyboardShortcutService {
       if ((key && event.key !== key) || (code && event.code !== code)) {
         continue;
       }
-      if (modifier && !event.getModifierState(modifier)) {
+      if (modifier?.length && !modifier.some((modifierKey) => event.getModifierState(modifierKey))) {
         return;
       }
-      if (!modifier && (event.getModifierState('Control') || event.getModifierState('Alt') || event.getModifierState('Meta'))) {
+      if (!modifier?.length && MODIFIER_KEYS.some((modifierKey) => event.getModifierState(modifierKey))) {
         return;
       }
 
