@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.3.2...ui-client-casedb-v4.4.0) (2026-10-01)
+
+
+### Features
+
+* impelement all modifier keys for KeyboardShortcutService and allow multiple modifier keys (to impelement OS differences) ([7cf344d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7cf344d2f9ecf04377ff288a336ddb285f0dd01e))
+
 ## [4.3.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.3.1...ui-client-casedb-v4.3.2) (2026-09-21)
 
 
