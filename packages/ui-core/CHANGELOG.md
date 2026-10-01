@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.6.0...ui-core-v3.6.1) (2026-10-01)
+
+
+### Bug Fixes
+
+* KeyboardShortcutService should not return when modifier is not matched ([ffc6586](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/ffc65860e48e0e9d3b5b27943a3e86835bc4f9fb))
+
 ## [3.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.5.0...ui-core-v3.6.0) (2026-10-01)
 
 
