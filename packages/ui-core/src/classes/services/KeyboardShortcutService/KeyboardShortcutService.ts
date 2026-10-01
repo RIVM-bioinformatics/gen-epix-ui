@@ -84,10 +84,10 @@ export class KeyboardShortcutService {
         continue;
       }
       if (modifier?.length && !modifier.some((modifierKey) => event.getModifierState(modifierKey))) {
-        return;
+        continue;
       }
       if (!modifier?.length && MODIFIER_KEYS.some((modifierKey) => event.getModifierState(modifierKey))) {
-        return;
+        continue;
       }
 
       if (KeyboardShortcutService.shouldIgnoreShortcut()) {

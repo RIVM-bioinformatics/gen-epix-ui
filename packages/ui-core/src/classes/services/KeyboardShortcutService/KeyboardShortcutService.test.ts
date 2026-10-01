@@ -72,4 +72,28 @@ describe('KeyboardShortcutService', () => {
 
     expect(callback).toHaveBeenCalledOnce();
   });
+
+  it('checks later shortcuts when an explicit modifier does not match', () => {
+    const firstCallback = vi.fn();
+    const secondCallback = vi.fn();
+    keyboardShortcutService.registerShortcut({ callback: firstCallback, key: 'f', modifier: ['Control'] });
+    keyboardShortcutService.registerShortcut({ callback: secondCallback, key: 'f', modifier: ['Meta'] });
+
+    window.dispatchEvent(createKeyboardEvent('Meta'));
+
+    expect(firstCallback).not.toHaveBeenCalled();
+    expect(secondCallback).toHaveBeenCalledOnce();
+  });
+
+  it('checks later shortcuts when a plain shortcut has an active modifier', () => {
+    const firstCallback = vi.fn();
+    const secondCallback = vi.fn();
+    keyboardShortcutService.registerShortcut({ callback: firstCallback, key: 'f' });
+    keyboardShortcutService.registerShortcut({ callback: secondCallback, key: 'f', modifier: ['Meta'] });
+
+    window.dispatchEvent(createKeyboardEvent('Meta'));
+
+    expect(firstCallback).not.toHaveBeenCalled();
+    expect(secondCallback).toHaveBeenCalledOnce();
+  });
 });
