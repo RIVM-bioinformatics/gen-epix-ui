@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.5.0...ui-core-v3.6.0) (2026-10-01)
+
+
+### Features
+
+* impelement all modifier keys for KeyboardShortcutService and allow multiple modifier keys (to impelement OS differences) ([7cf344d](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/7cf344d2f9ecf04377ff288a336ddb285f0dd01e))
+
 ## [3.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.4.0...ui-core-v3.5.0) (2026-09-30)
 
 
