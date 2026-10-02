@@ -40,7 +40,7 @@ type KeyboardShortcutConfig = {
   callback: (event: KeyboardEvent) => void;
   code?: string;
   key?: string;
-  modifier?: KeyboardModifier[];
+  modifiers?: KeyboardModifier[][];
 };
 
 export class KeyboardShortcutService {
@@ -68,8 +68,8 @@ export class KeyboardShortcutService {
     return false;
   }
 
-  public registerShortcut({ callback, code, key, modifier }: KeyboardShortcutConfig): () => void {
-    const config: KeyboardShortcutConfig = { callback, code, key, modifier };
+  public registerShortcut({ callback, code, key, modifiers }: KeyboardShortcutConfig): () => void {
+    const config: KeyboardShortcutConfig = { callback, code, key, modifiers };
     this.configs.push(config);
 
     return () => {
@@ -79,14 +79,14 @@ export class KeyboardShortcutService {
 
   private handleKeyDown(event: KeyboardEvent): void {
     for (const config of this.configs) {
-      const { callback, code, key, modifier } = config;
+      const { callback, code, key, modifiers } = config;
       if ((key && event.key !== key) || (code && event.code !== code)) {
         continue;
       }
-      if (modifier?.length && !modifier.some((modifierKey) => event.getModifierState(modifierKey))) {
+      if (modifiers?.length && !modifiers.some((modifierGroup) => modifierGroup.every((modifierKey) => event.getModifierState(modifierKey)))) {
         continue;
       }
-      if (!modifier?.length && MODIFIER_KEYS.some((modifierKey) => event.getModifierState(modifierKey))) {
+      if (!modifiers?.length && MODIFIER_KEYS.some((modifierKey) => event.getModifierState(modifierKey))) {
         continue;
       }
 

@@ -21,10 +21,10 @@ const MODIFIER_KEYS = [
   'SymbolLock',
 ] as const;
 
-const createKeyboardEvent = (activeModifier?: string): KeyboardEvent => {
+const createKeyboardEvent = (...activeModifiers: string[]): KeyboardEvent => {
   const event = new KeyboardEvent('keydown', { key: 'f' });
   Object.defineProperty(event, 'getModifierState', {
-    value: (modifier: string) => modifier === activeModifier,
+    value: (modifier: string) => activeModifiers.includes(modifier),
   });
   return event;
 };
@@ -39,7 +39,7 @@ describe('KeyboardShortcutService', () => {
 
   it.each(MODIFIER_KEYS)('recognizes %s as a modifier', (modifier) => {
     const callback = vi.fn();
-    keyboardShortcutService.registerShortcut({ callback, key: 'f', modifier: [modifier] });
+    keyboardShortcutService.registerShortcut({ callback, key: 'f', modifiers: [[modifier]] });
 
     window.dispatchEvent(createKeyboardEvent(modifier));
 
@@ -57,16 +57,27 @@ describe('KeyboardShortcutService', () => {
 
   it('recognizes a shortcut when one of multiple modifiers is active', () => {
     const callback = vi.fn();
-    keyboardShortcutService.registerShortcut({ callback, key: 'f', modifier: ['Control', 'Meta'] });
+    keyboardShortcutService.registerShortcut({ callback, key: 'f', modifiers: [['Control'], ['Meta']] });
 
     window.dispatchEvent(createKeyboardEvent('Meta'));
 
     expect(callback).toHaveBeenCalledOnce();
   });
 
+  it('requires every modifier in a modifier group', () => {
+    const callback = vi.fn();
+    keyboardShortcutService.registerShortcut({ callback, key: 'f', modifiers: [['Control', 'Meta']] });
+
+    window.dispatchEvent(createKeyboardEvent('Control'));
+    expect(callback).not.toHaveBeenCalled();
+
+    window.dispatchEvent(createKeyboardEvent('Control', 'Meta'));
+    expect(callback).toHaveBeenCalledOnce();
+  });
+
   it('allows an undefined modifier for a plain shortcut', () => {
     const callback = vi.fn();
-    keyboardShortcutService.registerShortcut({ callback, key: 'f', modifier: undefined });
+    keyboardShortcutService.registerShortcut({ callback, key: 'f', modifiers: undefined });
 
     window.dispatchEvent(createKeyboardEvent());
 
@@ -76,8 +87,8 @@ describe('KeyboardShortcutService', () => {
   it('checks later shortcuts when an explicit modifier does not match', () => {
     const firstCallback = vi.fn();
     const secondCallback = vi.fn();
-    keyboardShortcutService.registerShortcut({ callback: firstCallback, key: 'f', modifier: ['Control'] });
-    keyboardShortcutService.registerShortcut({ callback: secondCallback, key: 'f', modifier: ['Meta'] });
+    keyboardShortcutService.registerShortcut({ callback: firstCallback, key: 'f', modifiers: [['Control']] });
+    keyboardShortcutService.registerShortcut({ callback: secondCallback, key: 'f', modifiers: [['Meta']] });
 
     window.dispatchEvent(createKeyboardEvent('Meta'));
 
@@ -89,7 +100,7 @@ describe('KeyboardShortcutService', () => {
     const firstCallback = vi.fn();
     const secondCallback = vi.fn();
     keyboardShortcutService.registerShortcut({ callback: firstCallback, key: 'f' });
-    keyboardShortcutService.registerShortcut({ callback: secondCallback, key: 'f', modifier: ['Meta'] });
+    keyboardShortcutService.registerShortcut({ callback: secondCallback, key: 'f', modifiers: [['Meta']] });
 
     window.dispatchEvent(createKeyboardEvent('Meta'));
 
