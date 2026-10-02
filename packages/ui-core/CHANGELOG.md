@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.6.1...ui-core-v3.7.0) (2026-10-02)
+
+
+### Features
+
+* improve KeyboardShortcutService so that it supports both AND and OR conditions for modifier keys ([474ee08](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/474ee08d84f536bce0edc74f924d82ff43423778))
+
 ## [3.6.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.6.0...ui-core-v3.6.1) (2026-10-01)
 
 
