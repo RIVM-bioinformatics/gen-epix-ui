@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.7.0...ui-core-v3.8.0) (2026-10-06)
+
+
+### Features
+
+* KeyboardShortcutService allows to set an element ([e7ea22b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/e7ea22bb8cc8120fc86c6f85af62fbae57a76f49))
+
 ## [3.7.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.6.1...ui-core-v3.7.0) (2026-10-02)
 
 
