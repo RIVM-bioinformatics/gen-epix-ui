@@ -1,6 +1,6 @@
 import { HmrUtil } from '../../../utils/HmrUtil';
 
-const FORM_ELEMENT_TAG_NAMES = [
+export const FORM_ELEMENT_TAG_NAMES = [
   'form',
   'input',
   'label',
@@ -16,7 +16,7 @@ const FORM_ELEMENT_TAG_NAMES = [
 ];
 
 // Lock keys (CapsLock, NumLock, ...) and browser-specific aliases (Accel, OS, ...) are excluded: they are reported as active in states that are not part of the shortcut.
-const MODIFIER_KEYS = [
+export const MODIFIER_KEYS = [
   'Alt',
   'AltGraph',
   'Control',
@@ -24,9 +24,9 @@ const MODIFIER_KEYS = [
   'Shift',
 ] as const;
 
-type KeyboardModifier = typeof MODIFIER_KEYS[number];
+export type KeyboardModifier = typeof MODIFIER_KEYS[number];
 
-type KeyboardShortcutConfig = {
+export type KeyboardShortcutConfig = {
   callback: (event: KeyboardEvent) => void;
   code?: string;
   element?: HTMLElement;
