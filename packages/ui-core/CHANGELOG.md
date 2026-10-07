@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.8.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.8.0...ui-core-v3.8.1) (2026-10-07)
+
+
+### Bug Fixes
+
+* export types from KeyboardShortcutService ([60d0a87](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/60d0a87d133fbbd7155d29a8b3751091db12e4cc))
+
 ## [3.8.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.7.0...ui-core-v3.8.0) (2026-10-06)
 
 
