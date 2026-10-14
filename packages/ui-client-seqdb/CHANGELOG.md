@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.3.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-seqdb-v4.2.2...ui-client-seqdb-v4.3.0) (2026-10-14)
+
+
+### Features
+
+* setup dependency injection ([#194](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/194)) ([1f9140e](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/1f9140e7c0443f2a9c056af8ff85fa5263351185))
+
+
+### Bug Fixes
+
+* update eslint-config ([54b1a95](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/54b1a9511836d5d9bccb9175e177410258a1442e))
+
 ## [4.2.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-seqdb-v4.2.1...ui-client-seqdb-v4.2.2) (2026-09-21)
 
 
