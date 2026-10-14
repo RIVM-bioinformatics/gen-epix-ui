@@ -98,6 +98,7 @@ export default defineConfig({
       'react-dom',
       'react-i18next',
       'react',
+      'tsyringe',
     ],
   },
   server: {

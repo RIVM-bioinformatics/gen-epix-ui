@@ -101,6 +101,7 @@
     "react-i18next": "17.0.14",
     "react-router": "8.4.0",
     "react-router-dom": "7.18.4",
+    "tsyringe": "4.10.0",
     "typescript": "6.0.3",
     "vite": "8.3.0",
     "vite-plugin-dts": "5.1.1",
@@ -134,6 +135,7 @@
     "react-i18next": "*",
     "react-router": "*",
     "react-router-dom": "*",
+    "tsyringe": "*",
     "yup": "*"
   },
   "publishConfig": {
@@ -176,8 +178,5 @@
         "import": "./dist/utils/SeqDbStandardConfigUtil/index.js"
       }
     }
-  },
-  "dependencies": {
-    "tsyringe": "4.10.0"
   }
 }

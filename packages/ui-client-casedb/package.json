@@ -699,7 +699,6 @@
     "immer": "11.1.18",
     "lodash": "4.18.1",
     "read-excel-file": "9.3.10",
-    "tsyringe": "4.10.0",
     "use-debounce": "10.1.1",
     "write-excel-file": "4.1.1",
     "zustand": "5.0.15"
@@ -745,6 +744,7 @@
     "react-router": "8.4.0",
     "react-router-dom": "7.18.4",
     "react-virtuoso": "4.18.14",
+    "tsyringe": "4.10.0",
     "typescript": "6.0.3",
     "vite": "8.3.0",
     "vite-plugin-dts": "5.1.1",
@@ -783,6 +783,7 @@
     "react-router": "*",
     "react-router-dom": "*",
     "react-virtuoso": "*",
+    "tsyringe": "*",
     "yup": "*"
   },
   "publishConfig": {
