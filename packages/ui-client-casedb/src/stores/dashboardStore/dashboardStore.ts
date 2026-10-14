@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { createStore } from 'zustand';
 import { produce } from 'immer';
 import { t } from 'i18next';
@@ -231,7 +232,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             try {
               let currentCaseIdsByQueryResponse = QueryClientService.getInstance().getValidQueryData<CaseDbCaseQueryResult>(retrieveCaseIdsByQueryQueryKey);
               if (!currentCaseIdsByQueryResponse) {
-                const retrieveCaseIdsByQueryResponse = (await CaseDbCaseApi.getInstance().retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
+                const retrieveCaseIdsByQueryResponse = (await rootContainer.resolve(CaseDbCaseApi).retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
                 currentCaseIdsByQueryResponse = retrieveCaseIdsByQueryResponse;
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
               }
@@ -244,7 +245,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
               const missingCaseIds = difference(caseIds, currentCaseIds);
               if (missingCaseIds.length) {
-                const missingCasesResult = (await CaseDbCaseApi.getInstance().retrieveCasesByIds({
+                const missingCasesResult = (await rootContainer.resolve(CaseDbCaseApi).retrieveCasesByIds({
                   case_ids: missingCaseIds,
                   case_type_id: completeCaseType.id,
                 }, { signal: fetchAbortController.signal })).data;

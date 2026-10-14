@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -49,7 +50,7 @@ export const DimsAdminPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, refDimOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().dimsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbCaseApi).dimsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((dims: CaseDbDim[]) => {
@@ -60,15 +61,15 @@ export const DimsAdminPage = () => {
   }, [caseTypeId]);
 
   const deleteOne = useCallback(async (item: CaseDbDim) => {
-    return await CaseDbCaseApi.getInstance().dimsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbCaseApi).dimsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbDim) => {
-    return (await CaseDbCaseApi.getInstance().dimsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).dimsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.getInstance().dimsPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).dimsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbDim) => {

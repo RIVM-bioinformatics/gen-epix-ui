@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   ListItemIcon,
@@ -122,7 +123,7 @@ export const MapWidget = () => {
 
   const { data: regionSetShapes, error: regionSetShapesError, isLoading: isRegionSetShapesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      return (await CaseDbGeoApi.getInstance().regionSetShapesPostQuery(regionSetShapesFilter, null, null, { signal })).data;
+      return (await rootContainer.resolve(CaseDbGeoApi).regionSetShapesPostQuery(regionSetShapesFilter, null, null, { signal })).data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,

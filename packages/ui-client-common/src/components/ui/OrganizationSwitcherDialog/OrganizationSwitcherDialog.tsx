@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -31,11 +32,11 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
+import { API_ORGANIZATION_TOKEN } from '../../../models/api';
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { NotificationService } from '../../../classes/services/NotificationService';
 import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
-import { ApiService } from '../../../classes/services/ApiService';
 
 export interface OrganizationSwitcherDialogOpenProps {
   //
@@ -96,7 +97,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       });
       try {
         setIsChanging(true);
-        await ApiService.getInstance().organizationApi.updateUserOwnOrganization({
+        await rootContainer.resolve(API_ORGANIZATION_TOKEN).updateUserOwnOrganization({
           organization_id: formValues.organization_id,
         }, {});
         setNewOrganizationId(formValues.organization_id);

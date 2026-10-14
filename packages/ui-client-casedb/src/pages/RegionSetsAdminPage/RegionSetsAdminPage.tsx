@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -36,19 +37,19 @@ export const RegionSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.getInstance().regionSetsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbGeoApi).regionSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRegionSet) => {
-    return await CaseDbGeoApi.getInstance().regionSetsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbGeoApi).regionSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionSet) => {
-    return (await CaseDbGeoApi.getInstance().regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbGeoApi).regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbGeoApi.getInstance().regionSetsPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbGeoApi).regionSetsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRegionSet) => {

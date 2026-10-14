@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -30,19 +31,19 @@ export const CaseSetStatusAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().caseSetStatusesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseSetStatusesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseSetStatus) => {
-    return await CaseDbCaseApi.getInstance().caseSetStatusesDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbCaseApi).caseSetStatusesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseSetStatus) => {
-    return (await CaseDbCaseApi.getInstance().caseSetStatusesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseSetStatusesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.getInstance().caseSetStatusesPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseSetStatusesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: FormFields) => {

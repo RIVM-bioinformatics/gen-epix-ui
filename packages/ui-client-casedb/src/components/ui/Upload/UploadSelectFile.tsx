@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -121,7 +122,7 @@ export const UploadSelectFile = () => {
     useQueryOptions: {
       enabled: !!caseTypeId,
       queryFn: async ({ signal }) => {
-        return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
+        return (await rootContainer.resolve(CaseDbCaseApi).completeCaseTypesGetOne(caseTypeId, { signal })).data;
       },
     },
   });

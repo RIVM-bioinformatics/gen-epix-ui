@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { ReactElement } from 'react';
 import {
   useCallback,
@@ -37,6 +38,7 @@ import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 
+import { API_ORGANIZATION_TOKEN } from '../../models/api';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
   TableColumn,
@@ -49,7 +51,6 @@ import { AuthorizationService } from '../../classes/services/AuthorizationServic
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
 import type { OmitWithMetaData } from '../../models/data';
 import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 
@@ -112,13 +113,13 @@ export const UsersAdminPage = ({
   }, [inviteUserConstraintsQuery.data, userRoles]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    const users = (await ApiService.getInstance().organizationApi.usersGetAll(null, null, { signal }))?.data;
+    const users = (await rootContainer.resolve(API_ORGANIZATION_TOKEN).usersGetAll(null, null, { signal }))?.data;
 
     return users;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbUser) => {
-    return (await ApiService.getInstance().organizationApi.updateUser(item.id, {
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).updateUser(item.id, {
       is_active: variables.is_active,
       organization_id: item.organization_id,
       roles: variables.roles,
@@ -126,7 +127,7 @@ export const UsersAdminPage = ({
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbUser) => {
-    return await ApiService.getInstance().organizationApi.usersDeleteOne(item.id);
+    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).usersDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -227,7 +228,7 @@ export const UsersAdminPage = ({
     });
     try {
       // Anonymize the user
-      await ApiService.getInstance().organizationApi.anonymizeUser(selectedUserRef.current.id);
+      await rootContainer.resolve(API_ORGANIZATION_TOKEN).anonymizeUser(selectedUserRef.current.id);
       // Invalidate the users query key so that the users list is refreshed and the anonymized user is no longer visible in the list.
       await QueryClientService.getInstance().invalidateQueryKeys(
         QueryClientService.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USERS], true),

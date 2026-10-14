@@ -30,10 +30,6 @@
       "types": "./src/classes/containers/UiClientCommonContainer/index.ts",
       "import": "./src/classes/containers/UiClientCommonContainer/index.ts"
     },
-    "./classes/services/ApiService": {
-      "types": "./src/classes/services/ApiService/index.ts",
-      "import": "./src/classes/services/ApiService/index.ts"
-    },
     "./classes/services/AuthenticationService": {
       "types": "./src/classes/services/AuthenticationService/index.ts",
       "import": "./src/classes/services/AuthenticationService/index.ts"
@@ -613,10 +609,6 @@
       "./classes/containers/UiClientCommonContainer": {
         "types": "./dist/classes/containers/UiClientCommonContainer/index.d.ts",
         "import": "./dist/classes/containers/UiClientCommonContainer/index.js"
-      },
-      "./classes/services/ApiService": {
-        "types": "./dist/classes/services/ApiService/index.d.ts",
-        "import": "./dist/classes/services/ApiService/index.js"
       },
       "./classes/services/AuthenticationService": {
         "types": "./dist/classes/services/AuthenticationService/index.d.ts",

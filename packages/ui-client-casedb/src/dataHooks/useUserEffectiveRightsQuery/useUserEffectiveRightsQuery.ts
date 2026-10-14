@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type {
@@ -54,7 +55,7 @@ export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryRes
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await CaseDbOrganizationApi.getInstance().usersGetOne(userId, { signal });
+        const response = await rootContainer.resolve(CaseDbOrganizationApi).usersGetOne(userId, { signal });
         return response.data;
       },
     },

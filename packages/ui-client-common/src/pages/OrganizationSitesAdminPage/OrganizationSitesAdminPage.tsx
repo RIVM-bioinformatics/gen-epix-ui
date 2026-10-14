@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -15,6 +16,7 @@ import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
+import { API_ORGANIZATION_TOKEN } from '../../models/api';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import type { CrudPageSubPage } from '../CrudPage';
@@ -22,7 +24,6 @@ import { CrudPage } from '../CrudPage';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import type { OmitWithMetaData } from '../../models/data';
 import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
 
 type FormFields = OmitWithMetaData<CommonDbSite, 'organization_id' | 'organization'>;
 
@@ -31,7 +32,7 @@ export const OrganizationSitesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiService.getInstance().organizationApi.sitesGetAll(null, null, { signal })).data;
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).sitesGetAll(null, null, { signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((sites: CommonDbSite[]) => {
@@ -39,7 +40,7 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbSite) => {
-    return (await ApiService.getInstance().organizationApi.sitesPutOne(item.id, {
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).sitesPutOne(item.id, {
       id: item.id,
       name: variables.name,
       organization_id: organizationId,
@@ -47,14 +48,14 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ApiService.getInstance().organizationApi.sitesPostOne({
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).sitesPostOne({
       name: variables.name,
       organization_id: organizationId,
     })).data;
   }, [organizationId]);
 
   const deleteOne = useCallback(async (item: CommonDbSite) => {
-    return await ApiService.getInstance().organizationApi.sitesDeleteOne(item.id);
+    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).sitesDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {

@@ -1,8 +1,10 @@
+import { container as rootContainer } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CommonDbOrganizationAdminPolicy } from '@gen-epix/api-commondb';
 
+import { API_ABAC_TOKEN } from '../../models/api';
 import type {
   UseMap,
   UseNameFactory,
@@ -14,13 +16,12 @@ import { useUsersMapQuery } from '../useUsersQuery';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
 import { UserUtil } from '../../utils/UserUtil';
 
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrganizationAdminPolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiService.getInstance().abacApi.organizationAdminPoliciesGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(API_ABAC_TOKEN).organizationAdminPoliciesGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),

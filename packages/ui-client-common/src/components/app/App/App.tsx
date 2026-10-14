@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { CacheProvider } from '@emotion/react';
 import {
   CssBaseline,
@@ -6,13 +7,13 @@ import {
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 
+import { API_BASE_TOKEN } from '../../../models/api';
 import { BackendVersionService } from '../../../classes/services/BackendVersionService';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { ErrorPage } from '../../../pages/ErrorPage';
 import { EmotionCacheService } from '../../../classes/services/EmotionCacheService';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
-import { ApiService } from '../../../classes/services/ApiService';
 import { ApplicationBootstrapWithoutAuthorization } from '../ApplicationBootstrapWithoutAuthorization';
 import { AppRouterProvider } from '../AppRouterProvider/AppRouterProvider';
 import { UiClientCommonConfigContextProvider } from '../../../context/uiClientCommonConfigContext';
@@ -33,18 +34,18 @@ export const App = ({ container }: AppProps) => {
   if (touchIconUrl) {
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
   }
-  const apiService = ApiService.getInstance();
-  apiService.api.baseUrl = config.getAPIBaseUrl();
-  apiService.api.defaultRequestTimeout = config.defaultRequestTimeout;
-  apiService.api.onRequest = [
+  const api = rootContainer.resolve(API_BASE_TOKEN);
+  api.baseUrl = config.getAPIBaseUrl();
+  api.defaultRequestTimeout = config.defaultRequestTimeout;
+  api.onRequest = [
     authenticationService.onRequest.bind(authenticationService),
     logService.onRequest.bind(logService),
   ];
-  apiService.api.onResponseFulfilled = [
+  api.onResponseFulfilled = [
     logService.onResponseFulfilled.bind(logService),
     BackendVersionService.getInstance().onResponseFulfilled.bind(BackendVersionService.getInstance()),
   ];
-  apiService.api.onResponseRejected = [
+  api.onResponseRejected = [
     logService.onResponseRejected.bind(logService),
     authenticationService.onResponseRejected.bind(authenticationService),
   ];

@@ -1,6 +1,5 @@
 import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
 import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/reactRouter';
-import { ApiService } from '@gen-epix/ui-client-common/classes/services/ApiService';
 import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/query';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
@@ -15,6 +14,13 @@ import {
   CaseDbSystemApi,
 } from '@gen-epix/api-casedb';
 import type { CommonDbOrganizationApi } from '@gen-epix/api-commondb';
+import {
+  API_ABAC_TOKEN,
+  API_AUTH_TOKEN,
+  API_BASE_TOKEN,
+  API_ORGANIZATION_TOKEN,
+  API_SYSTEM_TOKEN,
+} from '@gen-epix/ui-client-common/models/api';
 
 import type { CaseDbConfig } from '../models/config';
 import type { CASEDB_QUERY_KEY } from '../constants/query';
@@ -40,14 +46,10 @@ export const setupCaseDb = (container: UiClientCommonContainer) => {
       queryKeyDependencies: [COMMON_QUERY_DEPENDENCIES, CASEDB_QUERY_DEPENDENCIES],
     }),
   });
-  container.register(ApiService, {
-    useValue: new ApiService({
-      abacApi: CaseDbAbacApi.getInstance(),
-      authApi: CaseDbAuthApi.getInstance(),
-      baseApi: CaseDbBaseAPI,
-      organizationApi: CaseDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
-      systemApi: CaseDbSystemApi.getInstance(),
-    }),
-  });
+  container.register(API_BASE_TOKEN, { useValue: CaseDbBaseAPI });
+  container.register(API_ABAC_TOKEN, { useValue: container.resolve(CaseDbAbacApi) });
+  container.register(API_AUTH_TOKEN, { useValue: container.resolve(CaseDbAuthApi) });
+  container.register(API_ORGANIZATION_TOKEN, { useValue: container.resolve(CaseDbOrganizationApi) as CommonDbOrganizationApi });
+  container.register(API_SYSTEM_TOKEN, { useValue: container.resolve(CaseDbSystemApi) });
   setupUi();
 };

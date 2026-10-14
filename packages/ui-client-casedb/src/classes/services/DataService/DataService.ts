@@ -57,12 +57,12 @@ export class DataService {
     }
 
     if (conceptSets === null) {
-      conceptSets = (await CaseDbOntologyApi.getInstance().conceptSetsGetAll(null, null, { signal })).data;
+      conceptSets = (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsGetAll(null, null, { signal })).data;
       queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS), conceptSets);
     }
 
     if (concepts === null) {
-      concepts = (await CaseDbOntologyApi.getInstance().conceptsGetAll(null, null, { signal })).data;
+      concepts = (await rootContainer.resolve(CaseDbOntologyApi).conceptsGetAll(null, null, { signal })).data;
       concepts.forEach(concept => {
         try {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -106,7 +106,7 @@ export class DataService {
     const currentRegionSets = QueryClientService.getInstance().getValidQueryData<CaseDbRegionSet[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY)) ?? [];
     const currentRegions = QueryClientService.getInstance().getValidQueryData<CaseDbRegion[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGIONS_LAZY)) ?? [];
 
-    const regionSetsResult = (await CaseDbGeoApi.getInstance().regionSetsPostQuery({
+    const regionSetsResult = (await rootContainer.resolve(CaseDbGeoApi).regionSetsPostQuery({
       invert: false,
       key: 'id',
       members: regionSetIds,
@@ -115,7 +115,7 @@ export class DataService {
     const regionSets = [...regionSetsResult, ...currentRegionSets];
     queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY), regionSets);
 
-    const regionsResult = (await CaseDbGeoApi.getInstance().regionsPostQuery({
+    const regionsResult = (await rootContainer.resolve(CaseDbGeoApi).regionsPostQuery({
       invert: false,
       key: 'region_set_id',
       members: regionSetIds,
@@ -150,7 +150,7 @@ export class DataService {
     if (organizations !== null) {
       return;
     }
-    organizations = (await CaseDbOrganizationApi.getInstance().organizationsGetAll(null, null, { signal })).data;
+    organizations = (await rootContainer.resolve(CaseDbOrganizationApi).organizationsGetAll(null, null, { signal })).data;
     queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS), organizations);
 
     // Rebuild the cache
@@ -172,7 +172,7 @@ export class DataService {
     if (currentTreeAlgorithms) {
       return;
     }
-    const treeAlgorithms = (await CaseDbCaseApi.getInstance().treeAlgorithmsGetAll(null, null, { signal })).data.sort((a, b) => {
+    const treeAlgorithms = (await rootContainer.resolve(CaseDbCaseApi).treeAlgorithmsGetAll(null, null, { signal })).data.sort((a, b) => {
       if (!a.rank && !b.rank) {
         return a.name.localeCompare(b.name);
       }

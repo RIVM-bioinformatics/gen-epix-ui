@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -67,7 +68,7 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
       });
       try {
         await QueryClientService.getInstance().cancelQueries(queryKeys);
-        const uploadResult = (await CaseDbCaseApi.getInstance().uploadCases({
+        const uploadResult = (await rootContainer.resolve(CaseDbCaseApi).uploadCases({
           case_batch: {
             cases: [
               {
@@ -86,7 +87,7 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
         if (uploadResult.status !== CaseDbEtlStatus.SKIPPED && uploadResult.status !== CaseDbEtlStatus.SUCCESS && uploadResult.status !== CaseDbEtlStatus.UPDATED) {
           throw new Error('Case upload failed');
         }
-        // await CaseDbCaseApi.getInstance().casesPutOne(item.id, item);
+        // await rootContainer.resolve(CaseDbCaseApi).casesPutOne(item.id, item);
         mutateCachedCase(caseDbCase.id, caseDbCase);
         NotificationService.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
       } catch (_error) {

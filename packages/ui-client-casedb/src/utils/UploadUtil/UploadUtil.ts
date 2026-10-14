@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import readXlsxFile, { readSheet } from 'read-excel-file/browser';
 import type {
   CellValue,
@@ -105,7 +106,7 @@ export class UploadUtil {
 
     const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col?.id === sampleIdColId) ?? {};
 
-    return (await CaseDbCaseApi.getInstance().uploadCases({
+    return (await rootContainer.resolve(CaseDbCaseApi).uploadCases({
       case_batch: {
         cases: validatedCases.map((vc) => {
           const caseId = vc.id;
@@ -813,7 +814,7 @@ export class UploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await UploadUtil.readFileAsBase64(file);
-          await CaseDbCaseApi.getInstance().createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
+          await rootContainer.resolve(CaseDbCaseApi).createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
             file_compression: UploadUtil.getFileCompressionFromFileName(caseSeqToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbSeqFileFormat.FASTA,
@@ -835,7 +836,7 @@ export class UploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await UploadUtil.readFileAsBase64(file);
-          await CaseDbCaseApi.getInstance().createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
+          await rootContainer.resolve(CaseDbCaseApi).createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
             file_compression: UploadUtil.getFileCompressionFromFileName(caseReadSetToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbReadsFileFormat.FASTQ,

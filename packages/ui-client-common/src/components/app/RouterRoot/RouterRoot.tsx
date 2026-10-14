@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   StrictMode,
   useCallback,
@@ -23,6 +24,7 @@ import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService'
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
+import { API_AUTH_TOKEN } from '../../../models/api';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
 import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';
@@ -40,7 +42,6 @@ import { AuthorizationWrapper } from '../AuthorizationWrapper';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../../constants/query';
 import { RouterService } from '../../../classes/services/RouterService';
-import { ApiService } from '../../../classes/services/ApiService';
 
 
 export const RouterRoot = () => {
@@ -53,7 +54,7 @@ export const RouterRoot = () => {
   const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const providers = (await ApiService.getInstance().authApi.identityProvidersGetAll({ signal })).data;
+      const providers = (await rootContainer.resolve(API_AUTH_TOKEN).identityProvidersGetAll({ signal })).data;
       if (!Array.isArray(providers)) {
         throw new Error('Invalid response for identity providers. Backend is most likely misconfigured.');
       }

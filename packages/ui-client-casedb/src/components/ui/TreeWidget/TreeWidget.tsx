@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -176,7 +177,7 @@ export const TreeWidget = () => {
   const { data: treeData, error: treeError, isLoading: isTreeLoading } = useQueryMemo({
     enabled: hasEnoughSequencesToShowTree && !!treeConfiguration && !hasToManyResultsToShowTree,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
       return response.data;
     },
     queryKey: [CASEDB_QUERY_KEY.PHYLOGENETIC_TREE, JSON.stringify(retrievePhylogeneticTreeRequestBody)],

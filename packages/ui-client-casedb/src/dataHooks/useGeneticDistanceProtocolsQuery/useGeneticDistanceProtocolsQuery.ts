@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbGeneticDistanceProtocol } from '@gen-epix/api-casedb';
@@ -13,7 +14,7 @@ import { CASEDB_QUERY_KEY } from '../../constants/query';
 export const useGeneticDistanceProtocolsQuery = (): UseQueryResult<CaseDbGeneticDistanceProtocol[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().geneticDistanceProtocolsGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).geneticDistanceProtocolsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.GENETIC_DISTANCE_PROTOCOLS),

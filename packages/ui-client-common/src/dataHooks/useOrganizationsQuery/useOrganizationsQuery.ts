@@ -1,8 +1,10 @@
+import { container as rootContainer } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CommonDbOrganization } from '@gen-epix/api-commondb';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
+import { API_ORGANIZATION_TOKEN } from '../../models/api';
 import type {
   UseMap,
   UseOptions,
@@ -11,12 +13,11 @@ import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
 
 export const useOrganizationsQuery = (): UseQueryResult<CommonDbOrganization[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiService.getInstance().organizationApi.organizationsGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS),

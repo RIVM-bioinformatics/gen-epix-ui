@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -79,7 +80,7 @@ export const CasesPage = () => {
 
   const { data: caseTypes, error: caseTypesError, isLoading: isCaseTypesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseTypesGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseTypesGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
@@ -92,7 +93,7 @@ export const CasesPage = () => {
 
   const { data: caseTypeSets, error: caseTypeSetsError, isLoading: isCaseTypeSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseTypeSetsGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SETS),
@@ -100,7 +101,7 @@ export const CasesPage = () => {
 
   const { data: caseTypeSetMembers, error: caseTypeSetMembersError, isLoading: isCaseTypeSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseTypeSetMembersGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseTypeSetMembersGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),

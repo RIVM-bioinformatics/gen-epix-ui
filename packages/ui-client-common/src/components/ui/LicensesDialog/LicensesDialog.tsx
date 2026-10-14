@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import type {
   ReactElement,
@@ -34,12 +35,12 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
+import { API_SYSTEM_TOKEN } from '../../../models/api';
 import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { useConfig } from '../../../hooks/useConfig';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../../constants/query';
-import { ApiService } from '../../../classes/services/ApiService';
 
 
 export interface LicensesDialogOpenProps {
@@ -78,7 +79,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
   const { data: backendLicenses, error: backendLicensesError, isLoading: isBackendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await ApiService.getInstance().systemApi.retrieveLicenses({ signal });
+      const response = await rootContainer.resolve(API_SYSTEM_TOKEN).retrieveLicenses({ signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.LICENSES),

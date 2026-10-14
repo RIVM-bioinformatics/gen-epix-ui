@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { TFunction } from 'i18next';
 import { format } from 'date-fns';
 import type { ECharts } from 'echarts';
@@ -89,7 +90,7 @@ export class CaseDbDownloadUtil {
     try {
       const completeCaseType = await queryClient.fetchQuery({
         queryFn: async ({ signal }) => {
-          return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
+          return (await rootContainer.resolve(CaseDbCaseApi).completeCaseTypesGetOne(caseTypeId, { signal })).data;
         },
         queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
       });

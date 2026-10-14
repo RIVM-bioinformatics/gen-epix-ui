@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { ReactElement } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
@@ -108,7 +109,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
     onError: onDeleteError,
     onSuccess: onDeleteSuccess,
     queryFn: async (item: CaseDbCaseSet) => {
-      return await CaseDbCaseApi.getInstance().caseSetsDeleteOne(item.id);
+      return await rootContainer.resolve(CaseDbCaseApi).caseSetsDeleteOne(item.id);
     },
     resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
@@ -119,7 +120,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
     useQueryOptions: {
       enabled: !isDeleteMutating,
       queryFn: async ({ signal }) => {
-        const response = await CaseDbCaseApi.getInstance().caseSetsGetOne(openProps.caseSetId, { signal });
+        const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsGetOne(openProps.caseSetId, { signal });
         return response.data;
       },
     },
@@ -134,7 +135,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
   const { data: caseSetDataCollectionLinks, error: caseSetDataCollectionLinksError, isLoading: isSetCaseDataCollectionLinksLoading } = useQueryMemo({
     enabled: !!caseSet && !isDeleteMutating,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { BoxProps } from '@mui/material';
 import {
   Box,
@@ -42,7 +43,7 @@ export const CaseCaseSetInfo = ({ caseDbCase, ...boxProps }: CaseCaseSetInfoProp
   };
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
@@ -57,7 +58,7 @@ export const CaseCaseSetInfo = ({ caseDbCase, ...boxProps }: CaseCaseSetInfoProp
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     enabled: caseSetsFilter.members.length > 0,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetsFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsPostQuery(caseSetsFilter, null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetsFilter),

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -23,6 +24,7 @@ import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
+import { API_ORGANIZATION_TOKEN } from '../../models/api';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import type { CrudPageSubPage } from '../CrudPage';
@@ -32,7 +34,6 @@ import { useIdentifierIssuerOptionsQuery } from '../../dataHooks/useIdentifierIs
 import { useOrganizationIdentifierIssuerLinksQuery } from '../../dataHooks/useOrganizationIdentifierIssuerLinksQuery';
 import type { OmitWithMetaData } from '../../models/data';
 import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
 
 type FormFields = OmitWithMetaData<TableData>;
 
@@ -46,22 +47,22 @@ export const OrganizationsAdminPage = () => {
   const loadables = useArray([identifierIssuerOptionsQuery, organizationIdentifierIssuerLinksQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiService.getInstance().organizationApi.organizationsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganization) => {
-    await ApiService.getInstance().organizationApi.organizationsPutIdentifierIssuers(item.id, {
+    await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsPutIdentifierIssuers(item.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: item.id,
       })),
     });
-    return (await ApiService.getInstance().organizationApi.organizationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await ApiService.getInstance().organizationApi.organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
-    await ApiService.getInstance().organizationApi.organizationsPutIdentifierIssuers(resultItem.id, {
+    const resultItem = (await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
+    await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsPutIdentifierIssuers(resultItem.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: resultItem.id,
@@ -71,7 +72,7 @@ export const OrganizationsAdminPage = () => {
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOrganization) => {
-    return await ApiService.getInstance().organizationApi.organizationsDeleteOne(item.id);
+    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: CommonDbOrganization) => {

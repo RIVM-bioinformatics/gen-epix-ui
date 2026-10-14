@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { Box } from '@mui/material';
 import {
   use,
@@ -81,7 +82,7 @@ export const RemoveCasesFromEventDialog = withDialog<RemoveCasesFromEventDialogP
 
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
@@ -106,7 +107,7 @@ export const RemoveCasesFromEventDialog = withDialog<RemoveCasesFromEventDialogP
     onError,
     onSuccess,
     queryFn: async (items: CaseDbCaseSetMember[]) => {
-      await CaseDbCaseApi.getInstance().caseSetMembersDeleteSome(items.map(item => item.id).join(','));
+      await rootContainer.resolve(CaseDbCaseApi).caseSetMembersDeleteSome(items.map(item => item.id).join(','));
     },
   });
 

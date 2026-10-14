@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -39,19 +40,19 @@ export const RefDimsAdminPage = () => {
   const dimTypeOptionsQuery = useDimTypeOptionsQuery();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().refDimsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbCaseApi).refDimsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRefDim) => {
-    return await CaseDbCaseApi.getInstance().refDimsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbCaseApi).refDimsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRefDim) => {
-    return (await CaseDbCaseApi.getInstance().refDimsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).refDimsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.getInstance().refDimsPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).refDimsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRefDim) => {

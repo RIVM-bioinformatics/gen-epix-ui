@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbCaseType } from '@gen-epix/api-casedb';
@@ -14,7 +15,7 @@ import { CASEDB_QUERY_KEY } from '../../constants/query';
 
 
 export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Promise<CaseDbCaseType[]> => {
-  const response = await CaseDbCaseApi.getInstance().caseTypesGetAll(null, null, { signal });
+  const response = await rootContainer.resolve(CaseDbCaseApi).caseTypesGetAll(null, null, { signal });
   const items = response.data;
   items.sort((a, b) => a.name.localeCompare(b.name));
   return items;

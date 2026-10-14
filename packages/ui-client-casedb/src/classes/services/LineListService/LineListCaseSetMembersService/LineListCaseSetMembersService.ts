@@ -19,7 +19,7 @@ export class LineListCaseSetMembersService extends LineListServiceAbstract {
   }
 
   protected async fetchMatchingCaseIds(caseIds: string[]): Promise<string[]> {
-    const caseSetMembersResult = (await CaseDbCaseApi.getInstance().caseSetMembersPostQuery({
+    const caseSetMembersResult = (await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery({
       invert: false,
       key: 'case_id',
       members: caseIds,

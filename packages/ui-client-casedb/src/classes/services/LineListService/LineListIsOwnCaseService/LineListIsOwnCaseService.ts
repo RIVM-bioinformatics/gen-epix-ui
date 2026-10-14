@@ -21,7 +21,7 @@ export class LineListIsOwnCaseService extends LineListServiceAbstract {
     if (!caseTypeId) {
       throw new Error('caseTypeId is required for LineListIsOwnCaseService');
     }
-    const retrieveIsOwnCasesResult = (await CaseDbCaseApi.getInstance().retrieveIsOwnCases({
+    const retrieveIsOwnCasesResult = (await rootContainer.resolve(CaseDbCaseApi).retrieveIsOwnCases({
       case_ids: caseIds,
       case_type_id: caseTypeId,
     })).data;

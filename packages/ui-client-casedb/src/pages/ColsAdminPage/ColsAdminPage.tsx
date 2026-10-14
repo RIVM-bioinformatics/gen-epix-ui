@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -90,7 +91,7 @@ export const ColsAdminPage = () => {
   }, [dimId, dimMapQuery.map, caseTypeId]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().colsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbCaseApi).colsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((cols: CaseDbCol[]) => {
@@ -101,15 +102,15 @@ export const ColsAdminPage = () => {
   }, [dimId]);
 
   const deleteOne = useCallback(async (item: CaseDbCol) => {
-    return await CaseDbCaseApi.getInstance().colsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbCaseApi).colsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCol) => {
-    return (await CaseDbCaseApi.getInstance().colsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).colsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.getInstance().colsPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).colsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbCol) => {

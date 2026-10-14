@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import type { ReactElement } from 'react';
@@ -26,12 +27,12 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
+import { API_ORGANIZATION_TOKEN } from '../../models/api';
 import { AuthenticationService } from '../../classes/services/AuthenticationService';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
 
 export interface UserInvitationConsumeDialogOpenProps {
   item: CommonDbUserInvitation;
@@ -83,7 +84,7 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
   const onFormSubmit = useCallback(async (data: FormFields) => {
     try {
       AuthenticationService.getInstance().temporaryToken = data.bearerToken;
-      await ApiService.getInstance().organizationApi.userRegistrationsPostOne(openProps.item.token);
+      await rootContainer.resolve(API_ORGANIZATION_TOKEN).userRegistrationsPostOne(openProps.item.token);
       NotificationService.getInstance().showNotification({
         message: t`Invitation has been consumed by bearer token`,
         severity: 'success',

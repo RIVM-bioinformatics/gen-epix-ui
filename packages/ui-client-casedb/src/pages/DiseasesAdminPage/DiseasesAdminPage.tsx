@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -33,19 +34,19 @@ export const DiseasesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().diseasesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).diseasesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbDisease) => {
-    return await CaseDbOntologyApi.getInstance().diseasesDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbOntologyApi).diseasesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbDisease) => {
-    return (await CaseDbOntologyApi.getInstance().diseasesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).diseasesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOntologyApi.getInstance().diseasesPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).diseasesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbDisease) => {

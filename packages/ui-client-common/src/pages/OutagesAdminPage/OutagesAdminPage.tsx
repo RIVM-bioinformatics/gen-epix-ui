@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -21,12 +22,12 @@ import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 
+import { API_SYSTEM_TOKEN } from '../../models/api';
 import type { TableColumn } from '../../models/table';
 import { TableUtil } from '../../utils/TableUtil';
 import { CrudPage } from '../CrudPage';
 import type { OmitWithMetaData } from '../../models/data';
 import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
 
 type FormFields = OmitWithMetaData<CommonDbOutage>;
 
@@ -34,19 +35,19 @@ export const OutagesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiService.getInstance().systemApi.outagesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(API_SYSTEM_TOKEN).outagesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOutage) => {
-    return await ApiService.getInstance().systemApi.outagesDeleteOne(item.id);
+    return await rootContainer.resolve(API_SYSTEM_TOKEN).outagesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbOutage) => {
-    return (await ApiService.getInstance().systemApi.outagesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(API_SYSTEM_TOKEN).outagesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ApiService.getInstance().systemApi.outagesPostOne(variables)).data;
+    return (await rootContainer.resolve(API_SYSTEM_TOKEN).outagesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CommonDbOutage) => {

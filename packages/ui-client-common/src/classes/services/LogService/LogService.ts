@@ -12,8 +12,8 @@ import {
   singleton,
 } from 'tsyringe';
 
+import { API_SYSTEM_TOKEN } from '../../../models/api';
 import { AuthenticationService } from '../AuthenticationService';
-import { ApiService } from '../ApiService';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { CONFIG_TOKEN } from '../../../constants/config';
 import type { ConfigBase } from '../../../models/config';
@@ -143,7 +143,7 @@ export class LogService {
     if (document.location.href.includes('accept-invitation')) {
       return;
     }
-    ApiService.getInstance().systemApi.log({
+    rootContainer.resolve(API_SYSTEM_TOKEN).log({
       log_items: this.logItems,
     }, {
       headers: {

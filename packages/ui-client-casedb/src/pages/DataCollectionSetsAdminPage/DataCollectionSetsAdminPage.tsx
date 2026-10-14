@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -45,26 +46,26 @@ export const DataCollectionSetsAdminPage = () => {
   const loadables = useArray([dataCollectionSetMembersQuery, dataCollectionOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOrganizationApi.getInstance().dataCollectionSetsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbOrganizationApi).dataCollectionSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbDataCollectionSet) => {
-    return await CaseDbOrganizationApi.getInstance().dataCollectionSetsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbOrganizationApi).dataCollectionSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbDataCollectionSet) => {
-    await CaseDbOrganizationApi.getInstance().dataCollectionSetsPutDataCollections(item.id, {
+    await rootContainer.resolve(CaseDbOrganizationApi).dataCollectionSetsPutDataCollections(item.id, {
       data_collection_set_members: variables.dataCollectionIds.map<CaseDbDataCollectionSetMember>(data_collection_id => ({
         data_collection_id,
         data_collection_set_id: item.id,
       })),
     });
-    return (await CaseDbOrganizationApi.getInstance().dataCollectionSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbOrganizationApi).dataCollectionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseDbOrganizationApi.getInstance().dataCollectionSetsPostOne(variables)).data;
-    await CaseDbOrganizationApi.getInstance().dataCollectionSetsPutDataCollections(resultItem.id, {
+    const resultItem = (await rootContainer.resolve(CaseDbOrganizationApi).dataCollectionSetsPostOne(variables)).data;
+    await rootContainer.resolve(CaseDbOrganizationApi).dataCollectionSetsPutDataCollections(resultItem.id, {
       data_collection_set_members: variables.dataCollectionIds.map<CaseDbDataCollectionSetMember>(data_collection_id => ({
         data_collection_id,
         data_collection_set_id: resultItem.id,

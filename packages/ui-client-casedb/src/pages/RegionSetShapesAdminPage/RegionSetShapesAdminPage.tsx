@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -40,7 +41,7 @@ export const RegionSetShapesAdminPage = () => {
   const loadables = useArray([regionSetsMapQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbGeoApi.getInstance().regionSetShapesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbGeoApi).regionSetShapesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((regionSetShapes: CaseDbRegionSetShape[]) => {
@@ -48,11 +49,11 @@ export const RegionSetShapesAdminPage = () => {
   }, [regionSetId]);
 
   const deleteOne = useCallback(async (item: CaseDbRegionSetShape) => {
-    return await CaseDbGeoApi.getInstance().regionSetShapesDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbGeoApi).regionSetShapesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionSetShape) => {
-    return (await CaseDbGeoApi.getInstance().regionSetShapesPutOne(item.id, {
+    return (await rootContainer.resolve(CaseDbGeoApi).regionSetShapesPutOne(item.id, {
       ...variables,
       id: item.id,
       region_set_id: regionSetId,
@@ -60,7 +61,7 @@ export const RegionSetShapesAdminPage = () => {
   }, [regionSetId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbGeoApi.getInstance().regionSetShapesPostOne({
+    return (await rootContainer.resolve(CaseDbGeoApi).regionSetShapesPostOne({
       ...variables,
       region_set_id: regionSetId,
     })).data;

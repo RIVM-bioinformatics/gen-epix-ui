@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useEffect,
@@ -136,7 +137,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
     useQueryOptions: {
       enabled: !openProps.completeCaseType && !!sanitizedCompleteCaseTypeId,
       queryFn: async ({ signal }) => {
-        return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
+        return (await rootContainer.resolve(CaseDbCaseApi).completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
       },
     },
   });
@@ -299,7 +300,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
     onError,
     onSuccess,
     queryFn: async (formData: FormFields): Promise<CaseDbCaseSet> => {
-      const caseSetResult = (await CaseDbCaseApi.getInstance().createCaseSet({
+      const caseSetResult = (await rootContainer.resolve(CaseDbCaseApi).createCaseSet({
         case_ids: openProps.rows?.map(row => row.id) ?? [],
         case_set: {
           case_set_category_id: formData.case_set_category_id,

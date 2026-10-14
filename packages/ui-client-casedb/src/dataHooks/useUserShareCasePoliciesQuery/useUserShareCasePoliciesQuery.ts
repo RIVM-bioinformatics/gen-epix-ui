@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbUserShareCasePolicy } from '@gen-epix/api-casedb';
 import { CaseDbAbacApi } from '@gen-epix/api-casedb';
@@ -10,7 +11,7 @@ import { CASEDB_QUERY_KEY } from '../../constants/query';
 export const useUserShareCasePoliciesQuery = (select?: (data: CaseDbUserShareCasePolicy[]) => CaseDbUserShareCasePolicy[]): UseQueryResult<CaseDbUserShareCasePolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbAbacApi.getInstance().userShareCasePoliciesGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbAbacApi).userShareCasePoliciesGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.USER_SHARE_CASE_POLICIES),

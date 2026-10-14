@@ -12,6 +12,7 @@
  */
 
 
+import { singleton } from 'tsyringe';
 import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
@@ -3579,19 +3580,9 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
  * SeqDbAbacApi - object-oriented interface
 
  */
+@singleton()
 export class SeqDbAbacApi extends SeqDbBaseAPI {
-  private static __instance: SeqDbAbacApi;
-    
-  public static getInstance(): SeqDbAbacApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = SeqDbAbacApi.__instance ?? (hotData?.['SeqDbAbacApi'] as SeqDbAbacApi) ?? new SeqDbAbacApi();
-    if (hotData && !hotData['SeqDbAbacApi']) {
-      hotData['SeqDbAbacApi'] = instance;
-    }
 
-    SeqDbAbacApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represents a request to manage policies that grant organization-administration rights to users.
@@ -3812,19 +3803,9 @@ const SeqDbAuthApiFp = function(configuration?: Configuration) {
  * SeqDbAuthApi - object-oriented interface
 
  */
+@singleton()
 export class SeqDbAuthApi extends SeqDbBaseAPI {
-  private static __instance: SeqDbAuthApi;
-    
-  public static getInstance(): SeqDbAuthApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = SeqDbAuthApi.__instance ?? (hotData?.['SeqDbAuthApi'] as SeqDbAuthApi) ?? new SeqDbAuthApi();
-    if (hotData && !hotData['SeqDbAuthApi']) {
-      hotData['SeqDbAuthApi'] = instance;
-    }
 
-    SeqDbAuthApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Get all public identity providers
@@ -3906,19 +3887,9 @@ const SeqDbDefaultApiFp = function(configuration?: Configuration) {
  * SeqDbDefaultApi - object-oriented interface
 
  */
+@singleton()
 export class SeqDbDefaultApi extends SeqDbBaseAPI {
-  private static __instance: SeqDbDefaultApi;
-    
-  public static getInstance(): SeqDbDefaultApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = SeqDbDefaultApi.__instance ?? (hotData?.['SeqDbDefaultApi'] as SeqDbDefaultApi) ?? new SeqDbDefaultApi();
-    if (hotData && !hotData['SeqDbDefaultApi']) {
-      hotData['SeqDbDefaultApi'] = instance;
-    }
 
-    SeqDbDefaultApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Redirect the root path to the configured default API route.  Returns:     Redirect response targeting the configured default route.
@@ -4625,19 +4596,9 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
  * SeqDbFileApi - object-oriented interface
 
  */
+@singleton()
 export class SeqDbFileApi extends SeqDbBaseAPI {
-  private static __instance: SeqDbFileApi;
-    
-  public static getInstance(): SeqDbFileApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = SeqDbFileApi.__instance ?? (hotData?.['SeqDbFileApi'] as SeqDbFileApi) ?? new SeqDbFileApi();
-    if (hotData && !hotData['SeqDbFileApi']) {
-      hotData['SeqDbFileApi'] = instance;
-    }
 
-    SeqDbFileApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represents a request to create a file after validating its expected format and compression.  The expected format and compression determine how the file content is verified.
@@ -12821,19 +12782,9 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
  * SeqDbOrganizationApi - object-oriented interface
 
  */
+@singleton()
 export class SeqDbOrganizationApi extends SeqDbBaseAPI {
-  private static __instance: SeqDbOrganizationApi;
-    
-  public static getInstance(): SeqDbOrganizationApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = SeqDbOrganizationApi.__instance ?? (hotData?.['SeqDbOrganizationApi'] as SeqDbOrganizationApi) ?? new SeqDbOrganizationApi();
-    if (hotData && !hotData['SeqDbOrganizationApi']) {
-      hotData['SeqDbOrganizationApi'] = instance;
-    }
 
-    SeqDbOrganizationApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represents a request to anonymize a target user according to GDPR requirements.  This removes the target user\'s name and replaces its key with the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
@@ -34476,19 +34427,9 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
  * SeqDbSeqApi - object-oriented interface
 
  */
+@singleton()
 export class SeqDbSeqApi extends SeqDbBaseAPI {
-  private static __instance: SeqDbSeqApi;
-    
-  public static getInstance(): SeqDbSeqApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = SeqDbSeqApi.__instance ?? (hotData?.['SeqDbSeqApi'] as SeqDbSeqApi) ?? new SeqDbSeqApi();
-    if (hotData && !hotData['SeqDbSeqApi']) {
-      hotData['SeqDbSeqApi'] = instance;
-    }
 
-    SeqDbSeqApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represents a request to perform a CRUD operation on Alleles.
@@ -39805,19 +39746,9 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
  * SeqDbSystemApi - object-oriented interface
 
  */
+@singleton()
 export class SeqDbSystemApi extends SeqDbBaseAPI {
-  private static __instance: SeqDbSystemApi;
-    
-  public static getInstance(): SeqDbSystemApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = SeqDbSystemApi.__instance ?? (hotData?.['SeqDbSystemApi'] as SeqDbSystemApi) ?? new SeqDbSystemApi();
-    if (hotData && !hotData['SeqDbSystemApi']) {
-      hotData['SeqDbSystemApi'] = instance;
-    }
 
-    SeqDbSystemApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Return the service health status.  If no response is received within the timeout period, the service is considered unhealthy.

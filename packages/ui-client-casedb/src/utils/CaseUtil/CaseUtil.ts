@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { t } from 'i18next';
 import difference from 'lodash/difference';
 import intersection from 'lodash/intersection';
@@ -43,7 +44,7 @@ export class CaseUtil {
       if (caseIds) {
         normalizedCaseIds = caseIds;
       } else {
-        normalizedCaseIds = (await CaseDbCaseApi.getInstance().caseSetMembersPostQuery({
+        normalizedCaseIds = (await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery({
           invert: false,
           key: 'case_set_id',
           members: [caseSetId],
@@ -56,7 +57,7 @@ export class CaseUtil {
       }
 
       const dataLinksToAdd: CaseDbCaseDataCollectionLink[] = [];
-      const caseRights = (await CaseDbCaseApi.getInstance().retrieveCaseRights({
+      const caseRights = (await rootContainer.resolve(CaseDbCaseApi).retrieveCaseRights({
         case_ids: normalizedCaseIds,
         case_type_id: caseTypeId,
       })).data;
@@ -83,7 +84,7 @@ export class CaseUtil {
       }
 
       // Batch add the data collection links
-      await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostSome(dataLinksToAdd);
+      await rootContainer.resolve(CaseDbCaseApi).caseDataCollectionLinksPostSome(dataLinksToAdd);
       await QueryClientService.getInstance().invalidateQueryKeys(QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
       NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
 

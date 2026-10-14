@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -46,19 +47,19 @@ export const ConceptSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().conceptSetsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbConceptSet) => {
-    return await CaseDbOntologyApi.getInstance().conceptSetsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbOntologyApi).conceptSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbConceptSet) => {
-    return (await CaseDbOntologyApi.getInstance().conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOntologyApi.getInstance().conceptSetsPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbConceptSet) => {

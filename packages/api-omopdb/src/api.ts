@@ -12,6 +12,7 @@
  */
 
 
+import { singleton } from 'tsyringe';
 import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
@@ -3966,19 +3967,9 @@ const OmopDbAbacApiFp = function(configuration?: Configuration) {
  * OmopDbAbacApi - object-oriented interface
 
  */
+@singleton()
 export class OmopDbAbacApi extends OmopDbBaseAPI {
-  private static __instance: OmopDbAbacApi;
-    
-  public static getInstance(): OmopDbAbacApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = OmopDbAbacApi.__instance ?? (hotData?.['OmopDbAbacApi'] as OmopDbAbacApi) ?? new OmopDbAbacApi();
-    if (hotData && !hotData['OmopDbAbacApi']) {
-      hotData['OmopDbAbacApi'] = instance;
-    }
 
-    OmopDbAbacApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represents a request to manage policies that grant organization-administration rights to users.
@@ -4199,19 +4190,9 @@ const OmopDbAuthApiFp = function(configuration?: Configuration) {
  * OmopDbAuthApi - object-oriented interface
 
  */
+@singleton()
 export class OmopDbAuthApi extends OmopDbBaseAPI {
-  private static __instance: OmopDbAuthApi;
-    
-  public static getInstance(): OmopDbAuthApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = OmopDbAuthApi.__instance ?? (hotData?.['OmopDbAuthApi'] as OmopDbAuthApi) ?? new OmopDbAuthApi();
-    if (hotData && !hotData['OmopDbAuthApi']) {
-      hotData['OmopDbAuthApi'] = instance;
-    }
 
-    OmopDbAuthApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Get all public identity providers
@@ -4293,19 +4274,9 @@ const OmopDbDefaultApiFp = function(configuration?: Configuration) {
  * OmopDbDefaultApi - object-oriented interface
 
  */
+@singleton()
 export class OmopDbDefaultApi extends OmopDbBaseAPI {
-  private static __instance: OmopDbDefaultApi;
-    
-  public static getInstance(): OmopDbDefaultApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = OmopDbDefaultApi.__instance ?? (hotData?.['OmopDbDefaultApi'] as OmopDbDefaultApi) ?? new OmopDbDefaultApi();
-    if (hotData && !hotData['OmopDbDefaultApi']) {
-      hotData['OmopDbDefaultApi'] = instance;
-    }
 
-    OmopDbDefaultApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Redirect the root path to the configured default API route.  Returns:     Redirect response targeting the configured default route.
@@ -38582,19 +38553,9 @@ const OmopDbOmopApiFp = function(configuration?: Configuration) {
  * OmopDbOmopApi - object-oriented interface
 
  */
+@singleton()
 export class OmopDbOmopApi extends OmopDbBaseAPI {
-  private static __instance: OmopDbOmopApi;
-    
-  public static getInstance(): OmopDbOmopApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = OmopDbOmopApi.__instance ?? (hotData?.['OmopDbOmopApi'] as OmopDbOmopApi) ?? new OmopDbOmopApi();
-    if (hotData && !hotData['OmopDbOmopApi']) {
-      hotData['OmopDbOmopApi'] = instance;
-    }
 
-    OmopDbOmopApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represents a request to perform a CRUD operation on OMOP care-site records.
@@ -54317,19 +54278,9 @@ const OmopDbOrganizationApiFp = function(configuration?: Configuration) {
  * OmopDbOrganizationApi - object-oriented interface
 
  */
+@singleton()
 export class OmopDbOrganizationApi extends OmopDbBaseAPI {
-  private static __instance: OmopDbOrganizationApi;
-    
-  public static getInstance(): OmopDbOrganizationApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = OmopDbOrganizationApi.__instance ?? (hotData?.['OmopDbOrganizationApi'] as OmopDbOrganizationApi) ?? new OmopDbOrganizationApi();
-    if (hotData && !hotData['OmopDbOrganizationApi']) {
-      hotData['OmopDbOrganizationApi'] = instance;
-    }
 
-    OmopDbOrganizationApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represents a request to anonymize a target user according to GDPR requirements.  This removes the target user\'s name and replaces its key with the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
@@ -56995,19 +56946,9 @@ const OmopDbSystemApiFp = function(configuration?: Configuration) {
  * OmopDbSystemApi - object-oriented interface
 
  */
+@singleton()
 export class OmopDbSystemApi extends OmopDbBaseAPI {
-  private static __instance: OmopDbSystemApi;
-    
-  public static getInstance(): OmopDbSystemApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = OmopDbSystemApi.__instance ?? (hotData?.['OmopDbSystemApi'] as OmopDbSystemApi) ?? new OmopDbSystemApi();
-    if (hotData && !hotData['OmopDbSystemApi']) {
-      hotData['OmopDbSystemApi'] = instance;
-    }
 
-    OmopDbSystemApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Return the service health status.  If no response is received within the timeout period, the service is considered unhealthy.

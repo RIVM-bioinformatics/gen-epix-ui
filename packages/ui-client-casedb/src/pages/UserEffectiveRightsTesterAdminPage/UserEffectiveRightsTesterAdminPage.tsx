@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -74,7 +75,7 @@ export const UserEffectiveRightsTesterAdminPage = () => {
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await CaseDbOrganizationApi.getInstance().usersGetOne(userId, { signal });
+        const response = await rootContainer.resolve(CaseDbOrganizationApi).usersGetOne(userId, { signal });
         return response.data;
       },
     },

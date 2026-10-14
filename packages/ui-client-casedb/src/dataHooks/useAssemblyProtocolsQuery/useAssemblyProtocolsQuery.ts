@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbProtocol } from '@gen-epix/api-casedb';
@@ -16,7 +17,7 @@ import { CASEDB_QUERY_KEY } from '../../constants/query';
 export const useAssemblyProtocolsQuery = (): UseQueryResult<CaseDbProtocol[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrieveAssemblyProtocols({ signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveAssemblyProtocols({ signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.ASSEMBLY_PROTOCOLS),

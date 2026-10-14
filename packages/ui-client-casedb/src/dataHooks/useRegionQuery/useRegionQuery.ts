@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbRegion } from '@gen-epix/api-casedb';
@@ -18,7 +19,7 @@ import { CASEDB_QUERY_KEY } from '../../constants/query';
 export const useRegionQuery = (): UseQueryResult<CaseDbRegion[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbGeoApi.getInstance().regionsGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbGeoApi).regionsGetAll(null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGIONS),

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -188,13 +189,13 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   const query = useQueryMemo({
     enabled: !!formData,
     queryFn: async ({ signal }) => {
-      const retrieveSimilarCasesResponse = await CaseDbCaseApi.getInstance().retrieveSimilarCases({
+      const retrieveSimilarCasesResponse = await rootContainer.resolve(CaseDbCaseApi).retrieveSimilarCases({
         case_ids: openProps.selectedRows.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
         genetic_distance_col_id: formData?.treeColId,
         max_distance: formData?.maxDistance,
       }, { signal });
-      const retrieveIsOwnCasesResponse = await CaseDbCaseApi.getInstance().retrieveIsOwnCases({
+      const retrieveIsOwnCasesResponse = await rootContainer.resolve(CaseDbCaseApi).retrieveIsOwnCases({
         case_ids: retrieveSimilarCasesResponse.data.cases.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
       }, { signal });

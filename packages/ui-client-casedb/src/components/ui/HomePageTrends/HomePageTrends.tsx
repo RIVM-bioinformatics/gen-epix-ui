@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -72,7 +73,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
 
   const caseTypeStatsQueryNow = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats({}, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseTypeStats({}, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS),
@@ -91,7 +92,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   const caseTypeStatsQueryPast = useQueryMemo({
     enabled: !!retrieveTypeCaseStatsRequestBody,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
@@ -101,7 +102,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
 
   const { data: caseSetsThenData, ...caseSetsThenQuery } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetQueryFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsPostQuery(caseSetQueryFilter, null, null, { signal });
       return response.data;
     },
     queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetQueryFilter),
