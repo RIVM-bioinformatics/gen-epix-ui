@@ -2,14 +2,14 @@ import type { EmotionCache } from '@emotion/cache';
 import createCache from '@emotion/cache';
 import {
   inject,
-  injectable,
+  singleton,
 } from 'tsyringe';
 
 import { CONFIG_TOKEN } from '../../../constants/config';
 import type { ConfigBase } from '../../../models/config';
 
 
-@injectable()
+@singleton()
 export class EmotionCacheService {
   public readonly emotionCache: EmotionCache;
 

@@ -3,8 +3,8 @@ import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAb
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   inject,
-  injectable,
   container as rootContainer,
+  singleton,
 } from 'tsyringe';
 
 import { CONFIG_TOKEN } from '../../../constants/config';
@@ -27,7 +27,7 @@ type Page = {
   pageName: string;
 };
 
-@injectable()
+@singleton()
 export class PageEventBusService extends EventBusAbstract<EpiEvent> {
   private lastPageEventPayload: string = null;
 

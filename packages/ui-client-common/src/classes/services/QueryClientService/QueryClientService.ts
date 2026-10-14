@@ -6,11 +6,15 @@ import {
 import remove from 'lodash/remove';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
-import { container as rootContainer } from 'tsyringe';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
 import type { GenericData } from '../../../models/data';
 import type { ConfigBase } from '../../../models/config';
 
+@singleton()
 export class QueryClientService<TQueryKey extends string = string> {
   public mutationCache: MutationCache;
   public queryCache: QueryCache;

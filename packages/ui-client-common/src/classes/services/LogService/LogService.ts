@@ -8,8 +8,8 @@ import type { CommonDbExternalLogItem } from '@gen-epix/api-commondb';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import {
   inject,
-  injectable,
   container as rootContainer,
+  singleton,
 } from 'tsyringe';
 
 import { AuthenticationService } from '../AuthenticationService';
@@ -25,7 +25,7 @@ type LogServiceItem = {
   topic: string;
 };
 
-@injectable()
+@singleton()
 export class LogService {
   protected readonly requestMap: Map<string, number>;
 

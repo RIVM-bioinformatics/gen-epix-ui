@@ -2,13 +2,16 @@ import type {
   CommonDbApiPermission,
   CommonDbUser,
 } from '@gen-epix/api-commondb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 import { PageEventBusService } from '../PageEventBusService';
 
+@singleton()
 export class AuthorizationService {
-  private static __instance: AuthorizationService;
 
   public set apiPermissions(permissions: CommonDbApiPermission[]) {
     this.__apiPermissions = permissions;
@@ -31,14 +34,8 @@ export class AuthorizationService {
 
   private __user: CommonDbUser;
 
-  private constructor() {
-    //
-  }
-
-
   public static getInstance(): AuthorizationService {
-    AuthorizationService.__instance = HmrUtil.getHmrSingleton('authorizationService', AuthorizationService.__instance, () => new AuthorizationService());
-    return AuthorizationService.__instance;
+    return rootContainer.resolve(AuthorizationService);
   }
 
   public doesUserHavePermission<TApiPermission = CommonDbApiPermission>(permissions: NoInfer<TApiPermission>[]): boolean {

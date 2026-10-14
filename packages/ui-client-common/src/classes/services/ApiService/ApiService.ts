@@ -4,10 +4,14 @@ import type {
   CommonDbOrganizationApi,
   CommonDbSystemApi,
 } from '@gen-epix/api-commondb';
-import { container as rootContainer } from 'tsyringe';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
 import type { BaseApi } from '../../../models/api';
 
+@singleton()
 export class ApiService {
   public abacApi: CommonDbAbacApi;
   public api: BaseApi;

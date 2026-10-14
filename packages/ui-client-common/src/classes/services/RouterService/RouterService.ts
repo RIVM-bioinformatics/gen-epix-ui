@@ -1,6 +1,9 @@
 import type { ReactElement } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { container as rootContainer } from 'tsyringe';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
 import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
 
@@ -8,6 +11,7 @@ type HomePage = () => ReactElement;
 type RoutesFactory = () => MyNonIndexRouteObject[];
 type RoutesInput = MyNonIndexRouteObject[] | RoutesFactory;
 
+@singleton()
 export class RouterService {
   public get adminRoutes(): MyNonIndexRouteObject[] {
     if (!this.__adminRoutesFactory) {

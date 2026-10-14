@@ -4,8 +4,8 @@ import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/Subscr
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import {
   inject,
-  injectable,
   container as rootContainer,
+  singleton,
 } from 'tsyringe';
 
 import { AuthenticationService } from '../AuthenticationService';
@@ -22,7 +22,7 @@ export type InactivityState = {
   readableNotificationDiff: string;
 };
 
-@injectable()
+@singleton()
 export class InactivityService extends SubscribableAbstract<InactivityState> {
   private idleDiff: number = 0;
 

@@ -1,23 +1,21 @@
 import type { CaseDbCaseSetMember } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
 import { CASEDB_QUERY_KEY } from '../../../../constants/query';
 import { LineListServiceAbstract } from '../LineListServiceAbstract';
 
 
+@singleton()
 export class LineListCaseSetMembersService extends LineListServiceAbstract {
-  private static __instance: LineListCaseSetMembersService;
 
   protected readonly queryKey: CASEDB_QUERY_KEY = CASEDB_QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET;
 
-  private constructor() {
-    super();
-  }
-
   public static getInstance(): LineListCaseSetMembersService {
-    LineListCaseSetMembersService.__instance = HmrUtil.getHmrSingleton('lineListCaseSetMembersService', LineListCaseSetMembersService.__instance, () => new LineListCaseSetMembersService());
-    return LineListCaseSetMembersService.__instance;
+    return rootContainer.resolve(LineListCaseSetMembersService);
   }
 
   protected async fetchMatchingCaseIds(caseIds: string[]): Promise<string[]> {

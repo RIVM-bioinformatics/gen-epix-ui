@@ -4,8 +4,11 @@ import i18next, {
 } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
 export type LanguageConfig = {
   bundles: string[];
@@ -20,21 +23,20 @@ type I18nEvent = {
   onUserLanguageChange: string;
 };
 
+@singleton()
 export class I18nService extends EventBusAbstract<I18nEvent> {
-  private static __instance: I18nService;
 
   private getCurrentLanguageCode: () => Promise<string> | string;
   private isInitialized = false;
   private languageConfigs: LanguageConfig[];
   private languageLoaded: Record<string, boolean> = {};
   private setNewLanguageCode: (code: string) => Promise<void> | void;
-  private constructor() {
+  public constructor() {
     super();
   }
 
   public static getInstance(): I18nService {
-    I18nService.__instance = HmrUtil.getHmrSingleton('i18nService', I18nService.__instance, () => new I18nService());
-    return I18nService.__instance;
+    return rootContainer.resolve(I18nService);
   }
 
   public async init(kwArgs: {

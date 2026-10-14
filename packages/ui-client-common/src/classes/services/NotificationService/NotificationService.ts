@@ -3,15 +3,15 @@ import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/Subscr
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import {
   inject,
-  injectable,
   container as rootContainer,
+  singleton,
 } from 'tsyringe';
 
 import type { Notification } from '../../../models/notification';
 import { CONFIG_TOKEN } from '../../../constants/config';
 import type { ConfigBase } from '../../../models/config';
 
-@injectable()
+@singleton()
 export class NotificationService extends SubscribableAbstract<Notification[]> {
   private readonly config: Pick<ConfigBase, 'notifications'>;
   private readonly notificationTimeouts: Record<string, ReturnType<typeof setTimeout>>;

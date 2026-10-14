@@ -2,10 +2,13 @@ import 'reflect-metadata';
 import type { InternalAxiosRequestConfig } from 'axios';
 import type { AuthContextProps } from 'react-oidc-context';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
 import { AuthorizationService } from '../AuthorizationService';
 import type { AuthState } from '../../../models/auth';
@@ -14,15 +17,15 @@ import { AxiosUtil } from '../../../utils/AxiosUtil';
 
 export const createdAtMetaDataKey = Symbol('createdAt');
 
+@singleton()
 export class AuthenticationService extends SubscribableAbstract<CommonDbIdentityProvider> {
   public static autoLoginSkew = 500;
-  private static __instance: AuthenticationService;
 
   public authContextProps: AuthContextProps;
 
   public temporaryToken: string;
 
-  private constructor() {
+  public constructor() {
     super(new Subject(oidcStore.getState().configuration));
   }
 
@@ -35,8 +38,7 @@ export class AuthenticationService extends SubscribableAbstract<CommonDbIdentity
   }
 
   public static getInstance(): AuthenticationService {
-    AuthenticationService.__instance = HmrUtil.getHmrSingleton('authenticationService', AuthenticationService.__instance, () => new AuthenticationService());
-    return AuthenticationService.__instance;
+    return rootContainer.resolve(AuthenticationService);
   }
 
   public getUserManagerSettingsCreatedAt(): number {

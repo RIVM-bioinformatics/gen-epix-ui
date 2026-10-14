@@ -1,22 +1,20 @@
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
 import { CASEDB_QUERY_KEY } from '../../../../constants/query';
 import { LineListServiceAbstract } from '../LineListServiceAbstract';
 
 
+@singleton()
 export class LineListIsOwnCaseService extends LineListServiceAbstract {
-  private static __instance: LineListIsOwnCaseService;
 
   protected readonly queryKey: CASEDB_QUERY_KEY = CASEDB_QUERY_KEY.XXX_CASE_ID_IS_OWN_CASE;
 
-  private constructor() {
-    super();
-  }
-
   public static getInstance(): LineListIsOwnCaseService {
-    LineListIsOwnCaseService.__instance = HmrUtil.getHmrSingleton('lineListIsOwnCaseService', LineListIsOwnCaseService.__instance, () => new LineListIsOwnCaseService());
-    return LineListIsOwnCaseService.__instance;
+    return rootContainer.resolve(LineListIsOwnCaseService);
   }
 
   protected async fetchMatchingCaseIds(caseIds: string[], caseTypeId: string): Promise<string[]> {

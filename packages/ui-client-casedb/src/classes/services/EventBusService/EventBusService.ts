@@ -1,7 +1,10 @@
 import type { EpiContactDetailsDialogOpenProps } from '@gen-epix/ui-client-common/components/epi/EpiContactDetailsDialog';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import type { AddCasesToEventDialogOpenProps } from '../../../components/ui/AddCasesToEventDialog';
@@ -56,16 +59,15 @@ type EpiEvent = {
   openSequenceDownloadDialog: SequenceDownloadDialogOpenProps;
 };
 
+@singleton()
 export class EventBusService extends EventBusAbstract<EpiEvent> {
-  private static __instance: EventBusService;
 
-  private constructor() {
+  public constructor() {
     super();
   }
 
   public static getInstance(): EventBusService {
-    EventBusService.__instance = HmrUtil.getHmrSingleton('eventBusService', EventBusService.__instance, () => new EventBusService());
-    return EventBusService.__instance;
+    return rootContainer.resolve(EventBusService);
   }
 
 }

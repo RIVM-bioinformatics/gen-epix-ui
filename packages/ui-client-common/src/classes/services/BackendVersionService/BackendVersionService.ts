@@ -1,18 +1,15 @@
 import type { AxiosResponse } from 'axios';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
+@singleton()
 export class BackendVersionService {
-  private static __instance: BackendVersionService;
-
   public version: string;
 
-  private constructor() {
-    //
-  }
-
   public static getInstance(): BackendVersionService {
-    BackendVersionService.__instance = HmrUtil.getHmrSingleton('backendVersionService', BackendVersionService.__instance, () => new BackendVersionService());
-    return BackendVersionService.__instance;
+    return rootContainer.resolve(BackendVersionService);
   }
 
   public onResponseFulfilled(response: AxiosResponse): AxiosResponse {

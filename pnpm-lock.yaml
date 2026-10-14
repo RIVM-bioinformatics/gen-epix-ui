@@ -739,6 +739,9 @@ importers:
       read-excel-file:
         specifier: 9.3.10
         version: 9.3.10
+      tsyringe:
+        specifier: 4.10.0
+        version: 4.10.0
       use-debounce:
         specifier: 10.1.1
         version: 10.1.1(react@19.3.0)

@@ -15,14 +15,17 @@ import {
 } from '@gen-epix/api-casedb';
 import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  container as rootContainer,
+  singleton,
+} from 'tsyringe';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CASEDB_QUERY_KEY } from '../../../constants/query';
 import type { DataCache } from '../../../models/caseDb';
 
+@singleton()
 export class DataService {
-  private static __instance: DataService;
 
   public readonly data: DataCache = {
     conceptsById: {},
@@ -39,13 +42,8 @@ export class DataService {
     userDataCollectionsById: {},
   };
 
-  private constructor() {
-    //
-  }
-
   public static getInstance(): DataService {
-    DataService.__instance = HmrUtil.getHmrSingleton('dataService', DataService.__instance, () => new DataService());
-    return DataService.__instance;
+    return rootContainer.resolve(DataService);
   }
 
   public async loadConcepts(signal: AbortSignal): Promise<void> {
