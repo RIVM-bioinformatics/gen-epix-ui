@@ -3,7 +3,6 @@ import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/Subscr
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import {
   inject,
-  container as rootContainer,
   singleton,
 } from 'tsyringe';
 
@@ -22,9 +21,6 @@ export class NotificationService extends SubscribableAbstract<Notification[]> {
     this.notificationTimeouts = {};
   }
 
-  public static getInstance(): NotificationService {
-    return rootContainer.resolve(NotificationService);
-  }
 
   public clearNotification(key: string): void {
     this.subject.next(this.subject.data.filter(x => x.key !== key));

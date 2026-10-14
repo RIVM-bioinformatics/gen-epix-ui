@@ -60,14 +60,14 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
-      const queryKeys = QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
-      const notificationKey = NotificationService.getInstance().showNotification({
+      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
+      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t('Saving case data'),
         severity: 'info',
       });
       try {
-        await QueryClientService.getInstance().cancelQueries(queryKeys);
+        await rootContainer.resolve(QueryClientService).cancelQueries(queryKeys);
         const uploadResult = (await rootContainer.resolve(CaseDbCaseApi).uploadCases({
           case_batch: {
             cases: [
@@ -89,11 +89,11 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
         }
         // await rootContainer.resolve(CaseDbCaseApi).casesPutOne(item.id, item);
         mutateCachedCase(caseDbCase.id, caseDbCase);
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
       } catch (_error) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
       } finally {
-        await QueryClientService.getInstance().invalidateQueryKeys(queryKeys);
+        await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

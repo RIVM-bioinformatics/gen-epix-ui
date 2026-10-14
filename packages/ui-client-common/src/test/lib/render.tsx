@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { render } from 'vitest-browser-react';
 import { CacheProvider } from '@emotion/react';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -19,7 +20,7 @@ import { UiClientCommonConfigContextProvider } from '../../context/uiClientCommo
 const AllTheProviders = ({ children }: PropsWithChildren<unknown>) => {
   const config = resolveConfig();
   const container = createUiClientCommonContainer(config);
-  const queryQueryManager = QueryClientService.getInstance();
+  const queryQueryManager = rootContainer.resolve(QueryClientService);
   const emotionCache = container.resolve(EmotionCacheService).emotionCache;
 
   return (

@@ -21,7 +21,7 @@ export const useCaseSetsQuery = (): UseQueryResult<CaseDbCaseSet[]> => {
       const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 };
 

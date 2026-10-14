@@ -102,7 +102,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
   }, [onClose]);
 
   const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<CaseDbCaseSet>({
-    associationQueryKeys: QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS], true),
+    associationQueryKeys: rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS], true),
     getErrorNotificationMessage: (data) => t('Unable to remove event: {{name}}.', { name: data.name }),
     getProgressNotificationMessage: (data) => t('Deleting event: {{name}}...', { name: data.name }),
     getSuccessNotificationMessage: (data) => t('Event: {{name}}, has been removed.', { name: data.name }),
@@ -111,7 +111,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
     queryFn: async (item: CaseDbCaseSet) => {
       return await rootContainer.resolve(CaseDbCaseApi).caseSetsDeleteOne(item.id);
     },
-    resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    resourceQueryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   const { data: caseSet, error: caseSetError, isLoading: isCaseSetLoading } = useItemQuery<CaseDbCaseSet>({
@@ -138,7 +138,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
       const response = await rootContainer.resolve(CaseDbCaseApi).caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
   });
 
   const canEdit = useMemo(() => {
@@ -194,7 +194,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
   const isSaving = isEpiCaseSetFormSaving || isEpiCaseSetDataCollectionFormSaving;
 
   const onGotoEventButtonClick = useCallback(async () => {
-    await RouterService.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
+    await rootContainer.resolve(RouterService).router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
   }, [caseSet]);
 
   useEffect(() => {

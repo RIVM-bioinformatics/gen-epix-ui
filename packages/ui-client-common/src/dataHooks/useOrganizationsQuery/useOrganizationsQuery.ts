@@ -20,7 +20,7 @@ export const useOrganizationsQuery = (): UseQueryResult<CommonDbOrganization[]> 
       const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS),
   });
 };
 

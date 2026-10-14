@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { t } from 'i18next';
 import {
   Box,
@@ -17,7 +18,7 @@ export type AddCasesToEventDialogSuccessNotificationMessageProps = {
 export const AddCasesToEventDialogSuccessNotificationMessage = ({ caseSet, numAddedCases }: AddCasesToEventDialogSuccessNotificationMessageProps) => {
 
   const onLinkClick = useCallback(async () => {
-    await RouterService.getInstance().router.navigate({ pathname: CaseSetUtil.createCaseSetLink(caseSet) });
+    await rootContainer.resolve(RouterService).router.navigate({ pathname: CaseSetUtil.createCaseSetLink(caseSet) });
   }, [caseSet]);
 
   return (

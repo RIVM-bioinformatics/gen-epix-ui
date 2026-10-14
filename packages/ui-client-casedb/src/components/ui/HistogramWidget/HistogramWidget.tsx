@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   ListItemIcon,
@@ -251,7 +252,7 @@ export const HistogramWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      EventBusService.getInstance().emit('onDownloadOptionsChanged', {
+      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         disabled: !canShowWidget,
         items: [
           {
@@ -270,7 +271,7 @@ export const HistogramWidget = () => {
       });
     };
     emitDownloadOptions();
-    const eventBusManager = EventBusService.getInstance();
+    const eventBusManager = rootContainer.resolve(EventBusService);
     eventBusManager.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
       eventBusManager.emit('onDownloadOptionsChanged', {

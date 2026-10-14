@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { ReactElement } from 'react';
 import { useCallback } from 'react';
 import {
@@ -12,12 +13,12 @@ import { NotificationService } from '../../../classes/services/NotificationServi
 import { NotificationItem } from './NotificationItem';
 
 export const NotificationsStack = (): ReactElement => {
-  const visibleNotifications = useSubscribable(NotificationService.getInstance(), {
+  const visibleNotifications = useSubscribable(rootContainer.resolve(NotificationService), {
     select: (notifications) => notifications.filter(notification => notification.visible),
   });
 
   const onNotificationItemClose = useCallback((key: string) => {
-    NotificationService.getInstance().hideNotification(key);
+    rootContainer.resolve(NotificationService).hideNotification(key);
   }, []);
 
   return (

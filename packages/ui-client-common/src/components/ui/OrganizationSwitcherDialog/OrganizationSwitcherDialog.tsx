@@ -61,7 +61,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
 ): ReactElement => {
   const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
-  const user = AuthorizationService.getInstance().user;
+  const user = rootContainer.resolve(AuthorizationService).user;
   const [isChanging, setIsChanging] = useState(false);
   const [newOrganizationId, setNewOrganizationId] = useState<string>(null);
 
@@ -90,7 +90,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       onClose();
     }
     const perform = async () => {
-      const notificationKey = NotificationService.getInstance().showNotification({
+      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t`Changing organization...`,
         severity: 'info',
@@ -102,9 +102,9 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
         }, {});
         setNewOrganizationId(formValues.organization_id);
         setIsChanging(false);
-        NotificationService.getInstance().fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
       } catch (_error: unknown) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
         onClose();
       }
     };

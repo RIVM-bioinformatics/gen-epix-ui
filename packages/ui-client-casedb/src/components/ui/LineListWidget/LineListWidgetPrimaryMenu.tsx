@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -87,9 +88,9 @@ export const LineListWidgetPrimaryMenu = ({
   }, [sortedData, selectedIds]);
 
   const menu = useMemo<MenuItemData[]>(() => {
-    const shouldShowCreateEventMenuItem = AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CreateCaseSetCommand, permission_type: CaseDbPermissionType.EXECUTE }]);
-    const shouldShowAddToEventMenuItem = AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
-    const shouldShowRemoveFromEventMenuItem = !!caseSet && AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
+    const shouldShowCreateEventMenuItem = rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CreateCaseSetCommand, permission_type: CaseDbPermissionType.EXECUTE }]);
+    const shouldShowAddToEventMenuItem = rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.CREATE }]);
+    const shouldShowRemoveFromEventMenuItem = !!caseSet && rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([{ command_name: CaseDbCommandName.CaseSetMemberCrudCommand, permission_type: CaseDbPermissionType.DELETE }]);
     const shouldShowBulkEditCaseMenuItem = true;
 
     const actionsColumnMenuItem: MenuItemData = {
@@ -101,7 +102,7 @@ export const LineListWidgetPrimaryMenu = ({
           label: t`Create filter from selected cases`,
         },
         {
-          callback: () => EventBusService.getInstance().emit('openFindSimilarCasesDialog', {
+          callback: () => rootContainer.resolve(EventBusService).emit('openFindSimilarCasesDialog', {
             allRows: sortedData,
             completeCaseType,
             selectedRows: sortedData,
@@ -110,7 +111,7 @@ export const LineListWidgetPrimaryMenu = ({
           label: t`Find similar cases`,
         },
         {
-          callback: () => EventBusService.getInstance().emit('openFindSimilarCasesDialog', {
+          callback: () => rootContainer.resolve(EventBusService).emit('openFindSimilarCasesDialog', {
             allRows: sortedData,
             completeCaseType,
             selectedRows,
@@ -119,7 +120,7 @@ export const LineListWidgetPrimaryMenu = ({
           label: t`Find similar cases (based on selected cases)`,
         },
         {
-          callback: () => EventBusService.getInstance().emit('openRemoveFindSimilarCasesResultDialog', {
+          callback: () => rootContainer.resolve(EventBusService).emit('openRemoveFindSimilarCasesResultDialog', {
             completeCaseType,
           }),
           disabled: !findSimilarCasesResults?.length,
@@ -132,7 +133,7 @@ export const LineListWidgetPrimaryMenu = ({
     if (shouldShowCreateEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EventBusService.getInstance().emit('openCreateEventDialog', {
+          callback: () => rootContainer.resolve(EventBusService).emit('openCreateEventDialog', {
             completeCaseType,
             rows: selectedRows,
           }),
@@ -145,7 +146,7 @@ export const LineListWidgetPrimaryMenu = ({
     if (shouldShowAddToEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EventBusService.getInstance().emit('openAddCasesToEventDialog', {
+          callback: () => rootContainer.resolve(EventBusService).emit('openAddCasesToEventDialog', {
             currentCaseSet: caseSet,
             rows: selectedRows,
           }),
@@ -158,7 +159,7 @@ export const LineListWidgetPrimaryMenu = ({
     if (shouldShowRemoveFromEventMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EventBusService.getInstance().emit('openRemoveCasesFromEventDialog', {
+          callback: () => rootContainer.resolve(EventBusService).emit('openRemoveCasesFromEventDialog', {
             caseSet,
             rows: selectedRowsWithoutSimilarCases,
           }),
@@ -175,8 +176,8 @@ export const LineListWidgetPrimaryMenu = ({
     if (shouldShowBulkEditCaseMenuItem) {
       actionsColumnMenuItem.items.push(
         {
-          callback: () => EventBusService.getInstance().emit('openEditCases', selectedRows),
-          disabled: !selectedIds?.length || FeatureFlagsService.getInstance().featureFlags?.disable_upload,
+          callback: () => rootContainer.resolve(EventBusService).emit('openEditCases', selectedRows),
+          disabled: !selectedIds?.length || rootContainer.resolve(FeatureFlagsService).featureFlags?.disable_upload,
           label: t`Edit selected cases`,
         },
       );

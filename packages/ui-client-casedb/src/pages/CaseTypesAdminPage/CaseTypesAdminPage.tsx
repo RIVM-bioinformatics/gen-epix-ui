@@ -228,7 +228,7 @@ export const CaseTypesAdminPage = () => {
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbCaseType>[]>(() => {
-    if (!AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.DimCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

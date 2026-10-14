@@ -125,7 +125,7 @@ export const MapWidget = () => {
     queryFn: async ({ signal }) => {
       return (await rootContainer.resolve(CaseDbGeoApi).regionSetShapesPostQuery(regionSetShapesFilter, null, null, { signal })).data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,
     select: (shapes) => Object.fromEntries(shapes.map(regionSetShape => [regionSetShape.region_set_id, regionSetShape])),
   });
@@ -151,7 +151,7 @@ export const MapWidget = () => {
       return [];
     }
     const regionSetId = completeCaseType.ref_cols[col.ref_col_id].region_set_id;
-    return DataService.getInstance().data.regionsByRegionSetId[regionSetId];
+    return rootContainer.resolve(DataService).data.regionsByRegionSetId[regionSetId];
   }, [col, completeCaseType.ref_cols]);
 
   const lineListCaseCount = useMemo(() => {
@@ -394,7 +394,7 @@ export const MapWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      EventBusService.getInstance().emit('onDownloadOptionsChanged', {
+      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         disabled: !canShowWidget,
         items: [
           {
@@ -413,10 +413,10 @@ export const MapWidget = () => {
 
 
     emitDownloadOptions();
-    const eventBusService = EventBusService.getInstance();
+    const eventBusService = rootContainer.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
-      EventBusService.getInstance().emit('onDownloadOptionsChanged', {
+      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         items: null,
         zone: DASHBOARD_COMPONENT_NAME.MAP,
         zoneLabel: t`Map`,

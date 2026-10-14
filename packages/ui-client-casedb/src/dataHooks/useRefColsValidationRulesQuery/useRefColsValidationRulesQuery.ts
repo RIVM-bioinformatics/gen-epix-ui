@@ -13,6 +13,6 @@ export const useRefColsValidationRulesQuery = (): UseQueryResult<CaseDbRefColVal
       const response = await rootContainer.resolve(CaseDbCaseApi).refColsValidationRules({ signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_COLS_VALIDATION_RULES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REF_COLS_VALIDATION_RULES),
   });
 };

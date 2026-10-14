@@ -21,7 +21,7 @@ export const useIdentifierIssuersQuery = (select?: Select): UseQueryResult<Commo
       const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).identifierIssuersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS),
     select: select ? (data) => select(data) : undefined,
   });
 };

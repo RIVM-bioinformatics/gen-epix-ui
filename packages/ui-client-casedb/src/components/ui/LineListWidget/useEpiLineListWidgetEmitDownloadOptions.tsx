@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -39,7 +40,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
               label: t`Download as CSV`,
             },
             {
-              callback: () => EventBusService.getInstance().emit('openSequenceDownloadDialog', { cases: sortedData }),
+              callback: () => rootContainer.resolve(EventBusService).emit('openSequenceDownloadDialog', { cases: sortedData }),
               label: t`Download sequences`,
             },
             {
@@ -62,7 +63,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
               label: t`Download as CSV`,
             },
             {
-              callback: () => EventBusService.getInstance().emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedIds.includes(c.id)) }),
+              callback: () => rootContainer.resolve(EventBusService).emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedIds.includes(c.id)) }),
               label: t`Download sequences`,
             },
             {
@@ -75,7 +76,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
         },
       ];
 
-      EventBusService.getInstance().emit('onDownloadOptionsChanged', {
+      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         items,
         zone: DASHBOARD_COMPONENT_NAME.LINE_LIST,
         zoneLabel: t`Line list`,
@@ -91,7 +92,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
     const onDownloadOptionsRequested = () => {
       emitDownloadOptions(dashboardStore.getState().selectedIds);
     };
-    const eventBusService = EventBusService.getInstance();
+    const eventBusService = rootContainer.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
     return () => {
       eventBusService.emit('onDownloadOptionsChanged', {

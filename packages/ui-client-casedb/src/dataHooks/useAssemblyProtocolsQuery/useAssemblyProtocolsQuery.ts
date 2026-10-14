@@ -20,7 +20,7 @@ export const useAssemblyProtocolsQuery = (): UseQueryResult<CaseDbProtocol[]> =>
       const response = await rootContainer.resolve(CaseDbCaseApi).retrieveAssemblyProtocols({ signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.ASSEMBLY_PROTOCOLS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.ASSEMBLY_PROTOCOLS),
   });
 };
 

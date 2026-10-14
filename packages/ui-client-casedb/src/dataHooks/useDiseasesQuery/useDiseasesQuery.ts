@@ -19,7 +19,7 @@ export const useDiseasesQuery = (): UseQueryResult<CaseDbDisease[]> => {
       const response = await rootContainer.resolve(CaseDbOntologyApi).diseasesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.DISEASES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.DISEASES),
   });
 };
 

@@ -19,7 +19,7 @@ export const useEtiologicalAgentsQuery = (): UseQueryResult<CaseDbEtiologicalAge
       const response = await rootContainer.resolve(CaseDbOntologyApi).etiologicalAgentsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.ETIOLOGICAL_AGENTS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.ETIOLOGICAL_AGENTS),
   });
 };
 

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type {
   SxProps,
   Theme,
@@ -176,7 +177,7 @@ export const Table = <TRowData, TDataContext = null>({
         throw new Error('getRowName is required when onRowClick is provided');
       }
       if (config.enablePageEvents) {
-        PageEventBusService.getInstance().emit('click', {
+        rootContainer.resolve(PageEventBusService).emit('click', {
           label: getRowName(row.row),
           type: 'table-row',
         });

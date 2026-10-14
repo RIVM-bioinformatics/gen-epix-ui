@@ -21,7 +21,7 @@ export const useCaseTypeSetCategoriesQuery = (): UseQueryResult<CaseDbCaseTypeSe
       const response = await rootContainer.resolve(CaseDbCaseApi).caseTypeSetCategoriesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_CATEGORIES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_CATEGORIES),
   });
 };
 

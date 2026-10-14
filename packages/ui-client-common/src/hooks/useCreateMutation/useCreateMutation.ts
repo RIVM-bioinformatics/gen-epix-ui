@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useMutation } from '@tanstack/react-query';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
@@ -33,7 +34,7 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
   queryFn,
   resourceQueryKey,
 }: UseCreateMutationProps<TData, TVariables>) => {
-  const queryClient = QueryClientService.getInstance().queryClient;
+  const queryClient = rootContainer.resolve(QueryClientService).queryClient;
 
   const createMutation = useMutation<TData, Error, TVariables, MutationContextCreate<TData>>({
     mutationFn: async (item) => {
@@ -48,14 +49,14 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
           return [...oldItems.filter(item => (item as GenericData)?.id !== context.temporaryId)];
         });
       }
-      await QueryClientService.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       if (onError) {
         await onError(error, variables, context);
       }
-      NotificationService.getInstance().fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
+      rootContainer.resolve(NotificationService).fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(variables, error), error), 'error');
     },
     onMutate: async (variables) => {
-      const notificationKey = NotificationService.getInstance().showNotification({
+      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
         isLoading: true,
         message: getProgressNotificationMessage(variables),
         severity: 'info',
@@ -88,11 +89,11 @@ export const useCreateMutation = <TData extends GenericData | GenericData[], TVa
           ];
         });
       }
-      await QueryClientService.getInstance().invalidateQueryKeys(associationQueryKeys);
+      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
         await onSuccess(item, variables, context);
       }
-      NotificationService.getInstance().fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
+      rootContainer.resolve(NotificationService).fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
     },
   });
 

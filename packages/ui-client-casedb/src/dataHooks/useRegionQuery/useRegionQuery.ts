@@ -22,7 +22,7 @@ export const useRegionQuery = (): UseQueryResult<CaseDbRegion[]> => {
       const response = await rootContainer.resolve(CaseDbGeoApi).regionsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGIONS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REGIONS),
   });
 };
 

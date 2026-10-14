@@ -23,7 +23,7 @@ export const useDimsQuery = (): UseQueryResult<CaseDbDim[]> => {
       const response = await rootContainer.resolve(CaseDbCaseApi).dimsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.DIMS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.DIMS),
   });
 };
 

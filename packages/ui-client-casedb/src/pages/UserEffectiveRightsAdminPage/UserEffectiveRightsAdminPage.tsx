@@ -113,7 +113,7 @@ export const UserEffectiveRightsAdminPage = () => {
     defaultSortByField: 'data_collection_id',
     defaultSortDirection: 'asc',
     idSelectorCallback: (entry) => entry.data_collection_id,
-    navigatorFunction: RouterService.getInstance().router.navigate,
+    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
     storageNamePostFix: 'UsersEffectiveRightsAdminPage-Table',
     storageVersion: 1,
   }), []);

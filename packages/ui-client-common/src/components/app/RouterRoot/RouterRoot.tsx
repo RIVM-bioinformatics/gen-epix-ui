@@ -49,7 +49,7 @@ export const RouterRoot = () => {
   const location = useLocation();
   const config = useConfig();
 
-  const oidcConfiguration = useSubscribable(AuthenticationService.getInstance());
+  const oidcConfiguration = useSubscribable(rootContainer.resolve(AuthenticationService));
 
   const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     gcTime: Infinity,
@@ -73,7 +73,7 @@ export const RouterRoot = () => {
         } catch (error: unknown) {
           console.error(`Identity provider ${provider.name} is not available`, error);
           if (oidcConfiguration?.name === provider.name) {
-            AuthenticationService.getInstance().next(undefined);
+            rootContainer.resolve(AuthenticationService).next(undefined);
           }
           providersWithAvailability.push({
             isAvailable: false,
@@ -83,7 +83,7 @@ export const RouterRoot = () => {
       }
       return providersWithAvailability;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
     staleTime: Infinity,
   });
 
@@ -92,8 +92,8 @@ export const RouterRoot = () => {
   }, [identityProvidersWithAvailability]);
 
   useEffect(() => {
-    NavigationHistoryService.getInstance().navigationHistory.push(location.pathname);
-    LogService.getInstance().log([{
+    rootContainer.resolve(NavigationHistoryService).navigationHistory.push(location.pathname);
+    rootContainer.resolve(LogService).log([{
       detail: {
         pathname: location.pathname,
       },
@@ -104,7 +104,7 @@ export const RouterRoot = () => {
 
   useEffect(() => {
     if (identityProvidersWithAvailability?.length === 1 && availableIdentityProviders.length === 1) {
-      AuthenticationService.getInstance().next(identityProvidersWithAvailability[0].provider);
+      rootContainer.resolve(AuthenticationService).next(identityProvidersWithAvailability[0].provider);
     }
   }, [availableIdentityProviders.length, identityProvidersWithAvailability]);
 
@@ -116,7 +116,7 @@ export const RouterRoot = () => {
     // Validate the storage
     const identityProvider = identityProvidersWithAvailability.find(x => x.provider.name === oidcConfiguration.name)?.provider;
     if (!identityProvider || JSON.stringify(oidcConfiguration) !== JSON.stringify(identityProvider)) {
-      AuthenticationService.getInstance().next(undefined);
+      rootContainer.resolve(AuthenticationService).next(undefined);
       return null;
     }
     WindowService.getInstance().window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
@@ -124,7 +124,7 @@ export const RouterRoot = () => {
   }, [availableIdentityProviders, identityProvidersWithAvailability, oidcConfiguration]);
 
   const onSignin = useCallback(() => {
-    LogService.getInstance().log([{
+    rootContainer.resolve(LogService).log([{
       level: CommonDbLogLevel.INFO,
       topic: 'USER_LOGIN',
     }]);
@@ -173,7 +173,7 @@ export const RouterRoot = () => {
     );
   }
 
-  const HomePage = RouterService.getInstance().homePageComponent;
+  const HomePage = rootContainer.resolve(RouterService).homePageComponent;
 
   return (
     <AuthProvider

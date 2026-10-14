@@ -76,7 +76,7 @@ export const UsersAdminPage = ({
     inviteUserConstraintsQuery,
   ]);
 
-  const userRoles = AuthorizationService.getInstance().user.roles;
+  const userRoles = rootContainer.resolve(AuthorizationService).user.roles;
 
   const onRowsChange = useCallback((items: CommonDbUser[]) => {
     // Because roles are a string array (instead of an enum or similar), we need to dynamically determine the options for the roles column in the table and in the form.
@@ -91,7 +91,7 @@ export const UsersAdminPage = ({
     }));
     setTableRoleOptions(_tableRoleOptions);
     let _formRoleOptions: OptionBase<string>[];
-    if (AuthorizationService.getInstance().doesUserHavePermission([
+    if (rootContainer.resolve(AuthorizationService).doesUserHavePermission([
       { command_name: CommonDbCommandName.RetrieveInviteUserConstraintsCommand, permission_type: CommonDbPermissionType.EXECUTE },
     ])) {
       _formRoleOptions = inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
@@ -135,7 +135,7 @@ export const UsersAdminPage = ({
   }, []);
 
   const canEditItem = useCallback((item: CommonDbUser) => {
-    return AuthorizationService.getInstance().user.email !== item.email;
+    return rootContainer.resolve(AuthorizationService).user.email !== item.email;
   }, []);
 
   const schema = useMemo(() => {
@@ -221,7 +221,7 @@ export const UsersAdminPage = ({
 
   const onAnonymizeUserConfirmationConfirm = useCallback(async () => {
     const userName = selectedUserRef.current?.email ?? selectedUserRef.current?.key;
-    const notificationId = NotificationService.getInstance().showNotification({
+    const notificationId = rootContainer.resolve(NotificationService).showNotification({
       isLoading: true,
       message: t('Anonymizing user: {{userName}}', { userName }),
       severity: 'info',
@@ -230,19 +230,19 @@ export const UsersAdminPage = ({
       // Anonymize the user
       await rootContainer.resolve(API_ORGANIZATION_TOKEN).anonymizeUser(selectedUserRef.current.id);
       // Invalidate the users query key so that the users list is refreshed and the anonymized user is no longer visible in the list.
-      await QueryClientService.getInstance().invalidateQueryKeys(
-        QueryClientService.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USERS], true),
+      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(
+        rootContainer.resolve(QueryClientService).getQueryKeyDependencies([COMMON_QUERY_KEY.USERS], true),
       );
-      NotificationService.getInstance().fulfillNotification(notificationId, t('User anonymized successfully: {{userName}}', { userName }), 'success');
+      rootContainer.resolve(NotificationService).fulfillNotification(notificationId, t('User anonymized successfully: {{userName}}', { userName }), 'success');
     } catch (_error) {
-      NotificationService.getInstance().fulfillNotification(notificationId, t('Error anonymizing user: {{userName}}', { userName }), 'error');
+      rootContainer.resolve(NotificationService).fulfillNotification(notificationId, t('Error anonymizing user: {{userName}}', { userName }), 'error');
     }
   }, [t]);
 
   const extraActionsFactory = useCallback((params: TableRowParams<CommonDbUser, null>) => {
     const menuItems: ReactElement[] = [];
 
-    if (AuthorizationService.getInstance().doesUserHavePermission([
+    if (rootContainer.resolve(AuthorizationService).doesUserHavePermission([
       { command_name: CommonDbCommandName.AnonymizeUserCommand, permission_type: CommonDbPermissionType.EXECUTE },
     ])) {
       menuItems.push(

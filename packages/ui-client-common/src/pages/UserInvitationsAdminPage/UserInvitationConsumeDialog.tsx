@@ -83,9 +83,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
 
   const onFormSubmit = useCallback(async (data: FormFields) => {
     try {
-      AuthenticationService.getInstance().temporaryToken = data.bearerToken;
+      rootContainer.resolve(AuthenticationService).temporaryToken = data.bearerToken;
       await rootContainer.resolve(API_ORGANIZATION_TOKEN).userRegistrationsPostOne(openProps.item.token);
-      NotificationService.getInstance().showNotification({
+      rootContainer.resolve(NotificationService).showNotification({
         message: t`Invitation has been consumed by bearer token`,
         severity: 'success',
       });
@@ -93,9 +93,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
     } catch (responseError) {
       setError(responseError);
     } finally {
-      delete AuthenticationService.getInstance().temporaryToken;
-      const queryKeys = QueryClientService.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
-      await QueryClientService.getInstance().invalidateQueryKeys(queryKeys);
+      delete rootContainer.resolve(AuthenticationService).temporaryToken;
+      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
+      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
     }
   }, [onClose, openProps.item.token, t]);
 

@@ -83,7 +83,7 @@ export const CasesPage = () => {
       const response = await rootContainer.resolve(CaseDbCaseApi).caseTypesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
   });
 
   const caseTypeStatsMap = useMemo(() => {
@@ -96,7 +96,7 @@ export const CasesPage = () => {
       const response = await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SETS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SETS),
   });
 
   const { data: caseTypeSetMembers, error: caseTypeSetMembersError, isLoading: isCaseTypeSetMembersLoading } = useQueryMemo({
@@ -104,14 +104,14 @@ export const CasesPage = () => {
       const response = await rootContainer.resolve(CaseDbCaseApi).caseTypeSetMembersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),
   });
 
   const isLoading = isCaseTypesLoading || isCaseTypeSetsLoading || isCaseTypeSetMembersLoading || caseTypeSetCategoriesQuery.isLoading || caseTypeStatsQuery.isLoading;
   const error = caseTypesError || caseTypeSetsError || caseTypeSetMembersError || caseTypeSetCategoriesQuery.error || caseTypeStatsQuery.error;
 
   const handleCellNavigation = useCallback(async (caseType: Row) => {
-    await RouterService.getInstance().router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
+    await rootContainer.resolve(RouterService).router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
   }, []);
 
   const onRowClick = useCallback(async (params: TableRowParams<Row>) => {
@@ -283,7 +283,7 @@ export const CasesPage = () => {
     defaultSortDirection: 'asc',
     idSelectorCallback: (row) => row.id,
     isRowEnabledCallback: (row) => row.n_cases > 0,
-    navigatorFunction: RouterService.getInstance().router.navigate,
+    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
     storageNamePostFix: 'cases',
     storageVersion: 1,
   }), []);

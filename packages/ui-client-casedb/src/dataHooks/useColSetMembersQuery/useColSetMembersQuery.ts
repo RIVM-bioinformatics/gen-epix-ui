@@ -14,6 +14,6 @@ export const useColSetMembersQuery = (): UseQueryResult<CaseDbColSetMember[]> =>
       const response = await rootContainer.resolve(CaseDbCaseApi).colSetMembersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.COL_SET_MEMBERS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.COL_SET_MEMBERS),
   });
 };

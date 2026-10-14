@@ -207,7 +207,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
         } satisfies CaseDbSimilarCaseWithIsOwnCase;
       });
     },
-    queryKey: [QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
+    queryKey: [rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
   const organizationFilteredCases = useMemo<CaseDbSimilarCaseWithIsOwnCase[]>(() => {

@@ -14,7 +14,7 @@ export const useUserShareCasePoliciesQuery = (select?: (data: CaseDbUserShareCas
       const response = await rootContainer.resolve(CaseDbAbacApi).userShareCasePoliciesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.USER_SHARE_CASE_POLICIES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.USER_SHARE_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

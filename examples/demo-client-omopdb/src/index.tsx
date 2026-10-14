@@ -10,7 +10,10 @@ import { ConfigUtil } from './utils/ConfigUtil/ConfigUtil';
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 const init = async () => {
-  await I18nService.getInstance().init({
+  const config = ConfigUtil.createConfig();
+  const container = createUiClientCommonContainer(config);
+
+  await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
       return Promise.resolve(WindowService.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE) ?? window.navigator.language.split('-')[0] ?? 'en');
     },
@@ -33,8 +36,6 @@ const init = async () => {
     },
   });
 
-  const config = ConfigUtil.createConfig();
-  const container = createUiClientCommonContainer(config);
   setupOmopDb(container);
 
   createRoot(document.getElementById('root')).render(

@@ -14,6 +14,6 @@ export const useOrganizationIdentifierIssuerLinksQuery = (): UseQueryResult<Comm
       const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationIdentifierIssuerLinksGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUER_LINKS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUER_LINKS),
   });
 };

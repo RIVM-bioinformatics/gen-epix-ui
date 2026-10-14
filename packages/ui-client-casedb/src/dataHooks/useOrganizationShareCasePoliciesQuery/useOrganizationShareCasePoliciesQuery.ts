@@ -13,7 +13,7 @@ export const useOrganizationShareCasePoliciesQuery = (select?: (data: CaseDbOrga
       const response = await rootContainer.resolve(CaseDbAbacApi).organizationShareCasePoliciesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.ORGANIZATION_SHARE_CASE_POLICIES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.ORGANIZATION_SHARE_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

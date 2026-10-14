@@ -40,7 +40,7 @@ export const ApplicationBootstrapWithAuthentication = ({ children }: PropsWithCh
   const outagesQuery = useQueryMemo({
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await rootContainer.resolve(API_SYSTEM_TOKEN).retrieveOutages({ signal })).data,
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.OUTAGES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.OUTAGES),
     refetchInterval: 5 * 60 * 1000,
     staleTime: Infinity,
   });

@@ -14,6 +14,6 @@ export const useDataCollectionSetMembersQuery = (): UseQueryResult<CaseDbDataCol
       const response = await rootContainer.resolve(CaseDbOrganizationApi).dataCollectionSetMembersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS),
   });
 };

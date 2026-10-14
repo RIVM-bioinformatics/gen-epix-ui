@@ -23,7 +23,7 @@ export const useColsQuery = (): UseQueryResult<CaseDbCol[]> => {
       const response = await rootContainer.resolve(CaseDbCaseApi).colsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.COLS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.COLS),
   });
 };
 

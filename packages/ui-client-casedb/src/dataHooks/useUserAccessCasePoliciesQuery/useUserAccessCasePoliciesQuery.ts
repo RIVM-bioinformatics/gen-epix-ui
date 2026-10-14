@@ -13,7 +13,7 @@ export const useUserAccessCasePoliciesQuery = (select?: (data: CaseDbUserAccessC
       const response = await rootContainer.resolve(CaseDbAbacApi).userAccessCasePoliciesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.USER_ACCESS_CASE_POLICIES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.USER_ACCESS_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

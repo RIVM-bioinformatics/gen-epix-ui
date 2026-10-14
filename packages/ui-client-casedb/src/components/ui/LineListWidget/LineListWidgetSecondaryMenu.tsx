@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -26,7 +27,7 @@ export const LineListWidgetSecondaryMenu = () => {
   const onLinkButtonClick = useCallback(() => {
     const perform = async () => {
       await setSorting(null, null);
-      EventBusService.getInstance().emit('onLinkLineListAndTree');
+      rootContainer.resolve(EventBusService).emit('onLinkLineListAndTree');
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();

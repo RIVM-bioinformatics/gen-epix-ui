@@ -19,7 +19,7 @@ export const useSequencingProtocolsQuery = (): UseQueryResult<CaseDbProtocol[]> 
       const response = await rootContainer.resolve(CaseDbCaseApi).retrieveSequencingProtocols({ signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.SEQUENCING_PROTOCOLS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.SEQUENCING_PROTOCOLS),
   });
 };
 

@@ -120,7 +120,7 @@ export const RefDimsAdminPage = () => {
   }, [dimTypeOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbRefDim>[]>(() => {
-    if (!AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

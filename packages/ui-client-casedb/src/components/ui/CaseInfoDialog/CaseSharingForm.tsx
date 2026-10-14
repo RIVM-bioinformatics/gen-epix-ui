@@ -80,14 +80,14 @@ export const CaseSharingForm = ({ caseDbCase, formId, onFinish, onIsSavingChange
     const perform = async () => {
       setIsSaving(true);
       onIsSavingChange(true);
-      const queryKeys = QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
-      const notificationKey = NotificationService.getInstance().showNotification({
+      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
+      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t('Saving case data collections'),
         severity: 'info',
       });
       try {
-        await QueryClientService.getInstance().cancelQueries(queryKeys);
+        await rootContainer.resolve(QueryClientService).cancelQueries(queryKeys);
         const rights = caseAbacContext?.rights?.[0];
         const dataCollectionIdsToAdd = difference(dataCollectionIds, rights.shared_in_data_collection_ids);
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
@@ -101,11 +101,11 @@ export const CaseSharingForm = ({ caseDbCase, formId, onFinish, onIsSavingChange
         if (dataCollectionIdsToRemove.length > 0) {
           await rootContainer.resolve(CaseDbCaseApi).caseDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
         }
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data collections.'), 'success');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Successfully saved case data collections.'), 'success');
       } catch (_error) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Could not save case data collections.'), 'error');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Could not save case data collections.'), 'error');
       } finally {
-        await QueryClientService.getInstance().invalidateQueryKeys(queryKeys);
+        await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

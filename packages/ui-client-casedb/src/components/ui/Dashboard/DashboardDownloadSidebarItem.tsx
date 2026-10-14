@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Link,
@@ -52,7 +53,7 @@ const DashboardDownloadSidebarItemContent = () => {
         });
       });
     };
-    const eventBusService = EventBusService.getInstance();
+    const eventBusService = rootContainer.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
     eventBusService.emit('onDownloadOptionsRequested');
 

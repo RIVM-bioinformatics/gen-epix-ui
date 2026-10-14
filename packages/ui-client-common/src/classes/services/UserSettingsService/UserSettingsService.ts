@@ -1,13 +1,7 @@
-import {
-  container as rootContainer,
-  singleton,
-} from 'tsyringe';
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class UserSettingsService {
   public showShowUserFeedbackTooltip = true;
 
-  public static getInstance(): UserSettingsService {
-    return rootContainer.resolve(UserSettingsService);
-  }
 }

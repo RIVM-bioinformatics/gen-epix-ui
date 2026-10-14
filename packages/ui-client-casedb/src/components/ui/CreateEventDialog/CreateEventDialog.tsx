@@ -274,20 +274,20 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
         caseTypeId: completeCaseType.id,
       });
     }
-    EventBusService.getInstance().emit('onEventCreated');
+    rootContainer.resolve(EventBusService).emit('onEventCreated');
     onClose();
   }, [completeCaseType?.id, onClose, openProps.rows]);
 
   const onError = useCallback(() => {
-    EventBusService.getInstance().emit('onEventCreated');
+    rootContainer.resolve(EventBusService).emit('onEventCreated');
     onClose();
   }, [onClose]);
 
   const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<CaseDbCaseSet, FormFields>({
     associationQueryKeys: [
-      ...QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS]),
-      ...QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
-      ...QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
+      ...rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS]),
+      ...rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
+      ...rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
     ],
     getErrorNotificationMessage: (item, _error) => t('Failed to create event: {{name}}', { name: item.name }),
     getProgressNotificationMessage: (variables) => t('Creating event: {{name}}...', { name: variables.name }),
@@ -316,7 +316,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
 
       return caseSetResult;
     },
-    resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    resourceQueryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   const isFormDisabled = useMemo(() => {

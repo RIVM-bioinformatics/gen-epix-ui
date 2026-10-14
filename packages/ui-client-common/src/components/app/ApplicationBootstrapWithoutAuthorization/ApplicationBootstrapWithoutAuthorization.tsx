@@ -35,7 +35,7 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
   const [isLanguageChanging, setIsLanguageChanging] = useState(false);
 
   useEffect(() => {
-    const i18nService = I18nService.getInstance();
+    const i18nService = rootContainer.resolve(I18nService);
     const callback = (code: string) => {
       newLanguageCodeRef.current = code;
       confirmationRef.current?.open();
@@ -49,7 +49,7 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
   const onLanguageChangeConfirm = useCallback(async () => {
     if (newLanguageCodeRef.current) {
       setIsLanguageChanging(true);
-      await I18nService.getInstance().switchLanguageConfig(newLanguageCodeRef.current);
+      await rootContainer.resolve(I18nService).switchLanguageConfig(newLanguageCodeRef.current);
       WindowService.getInstance().window.location.reload();
     }
   }, []);
@@ -57,12 +57,12 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
   const featureFlagsQuery = useQueryMemo({
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await rootContainer.resolve(API_SYSTEM_TOKEN).retrieveFeatureFlags({ signal })).data,
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.FEATURE_FLAGS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.FEATURE_FLAGS),
     staleTime: Infinity,
   });
 
   if (featureFlagsQuery.data) {
-    FeatureFlagsService.getInstance().featureFlags = featureFlagsQuery.data.feature_flags;
+    rootContainer.resolve(FeatureFlagsService).featureFlags = featureFlagsQuery.data.feature_flags;
   }
 
   const loadables = useArray([featureFlagsQuery]);

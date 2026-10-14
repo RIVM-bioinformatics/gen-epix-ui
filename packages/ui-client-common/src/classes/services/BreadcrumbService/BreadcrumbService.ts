@@ -2,10 +2,7 @@ import omit from 'lodash/omit';
 import set from 'lodash/set';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
-import {
-  container as rootContainer,
-  singleton,
-} from 'tsyringe';
+import { singleton } from 'tsyringe';
 
 
 type SubjectData = Record<string, string>;
@@ -17,9 +14,6 @@ export class BreadcrumbService extends SubscribableAbstract<SubjectData> {
     super(new Subject<SubjectData>({}));
   }
 
-  public static getInstance(): BreadcrumbService {
-    return rootContainer.resolve(BreadcrumbService);
-  }
 
   public remove(position: string): void {
     this.subject.next({ ...omit(this.subject, position) });

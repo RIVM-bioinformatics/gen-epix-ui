@@ -203,7 +203,7 @@ export class UploadUtil {
       await UploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, endPercentage: 99, startPercentage: 1 });
       onProgress(100, t('Upload complete.'));
 
-      await QueryClientService.getInstance().invalidateQueryKeys(QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true));
+      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true));
       onComplete();
       return caseBatchUploadResult;
     } catch (error) {

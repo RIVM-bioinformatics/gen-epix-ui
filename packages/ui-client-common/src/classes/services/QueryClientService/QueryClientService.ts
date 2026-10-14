@@ -6,10 +6,7 @@ import {
 import remove from 'lodash/remove';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
-import {
-  container as rootContainer,
-  singleton,
-} from 'tsyringe';
+import { singleton } from 'tsyringe';
 
 import type { GenericData } from '../../../models/data.models';
 import type { ConfigBase } from '../../../models/config.models';
@@ -44,10 +41,6 @@ export class QueryClientService<TQueryKey extends string = string> {
     this.queryClient = queryClient;
   }
 
-  public static getInstance<TQueryKey extends string>(): QueryClientService<TQueryKey> {
-    return rootContainer.resolve(QueryClientService) as QueryClientService<TQueryKey>;
-  }
-
   private static mergeQueryKeyDependencies<TQueryKey extends string>(dependencies: Array<Record<TQueryKey, TQueryKey[]>>): Record<TQueryKey, TQueryKey[]> {
     const merged: Record<TQueryKey, TQueryKey[]> = {} as Record<TQueryKey, TQueryKey[]>;
     dependencies.forEach(dependency => {
@@ -65,7 +58,7 @@ export class QueryClientService<TQueryKey extends string = string> {
   }
 
   public async cancelQueries(queryKeys: string[][]) {
-    const queryClient = QueryClientService.getInstance().queryClient;
+    const queryClient = this.queryClient;
     for (const queryKey of this.getUniqueQueryKeys(queryKeys ?? [])) {
       await queryClient.cancelQueries({ queryKey });
     }
@@ -105,14 +98,13 @@ export class QueryClientService<TQueryKey extends string = string> {
   }
 
   public getValidQueryData<T>(queryKey: string[]): T {
-    const { queryCache, queryClient } = QueryClientService.getInstance();
-    const cache = queryCache.find({
+    const cache = this.queryCache.find({
       queryKey,
     });
     if (cache?.state?.isInvalidated) {
       return undefined;
     }
-    return queryClient.getQueryData<T>(queryKey);
+    return this.queryClient.getQueryData<T>(queryKey);
   }
 
   public async invalidateQueryKeys(queryKeys: string[][]) {

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { Theme } from '@mui/material';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
@@ -145,9 +146,9 @@ export class StratificationUtil {
           gradient = STRATIFICATION.BASE_UNORDERED_GRADIENT;
         }
       }
-      const conceptSetConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+      const conceptSetConceptIds = rootContainer.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
       if (conceptSetConceptIds?.length) {
-        const concepts = conceptSetConceptIds.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort(CaseDbDataUtil.conceptComparator);
+        const concepts = conceptSetConceptIds.map(conceptId => rootContainer.resolve(DataService).data.conceptsById[conceptId]).sort(CaseDbDataUtil.conceptComparator);
         if (concepts.every(concept => StratificationUtil.isEpiConceptBoundaryProps(concept.props))) {
           const boundaryProps = concepts.map(concept => concept.props as ConceptBoundaryProps);
           const finiteLbs = boundaryProps.map(bp => bp.lb).filter(v => isFinite(v));
@@ -327,11 +328,11 @@ export class StratificationUtil {
     const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
     const { col, completeCaseType, sortedData } = kwArgs;
     const refCol = completeCaseType.ref_cols[col.ref_col_id];
-    const conceptSetConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+    const conceptSetConceptIds = rootContainer.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
 
     if (conceptSetConceptIds) {
       const uniqueRowValues: CaseTypeRowValue[] = [];
-      conceptSetConceptIds.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort((a, b) => {
+      conceptSetConceptIds.map(conceptId => rootContainer.resolve(DataService).data.conceptsById[conceptId]).sort((a, b) => {
         if (STRATIFICATION.GRADIENT_COL_TYPES.includes(refCol.col_type) && a.rank !== b.rank) {
           return a.rank - b.rank;
         }

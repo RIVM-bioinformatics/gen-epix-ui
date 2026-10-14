@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
 import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/react-router.models';
 import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/query.constants';
@@ -37,7 +38,7 @@ export const setupCaseDb = (container: UiClientCommonContainer) => {
     useValue: new RouterService({
       adminRoutes: () => createAdminRoutes() as MyNonIndexRouteObject[],
       homePageComponent: HomePage,
-      routes: () => createRoutes(RouterService.getInstance().adminRoutes) as MyNonIndexRouteObject[],
+      routes: () => createRoutes(rootContainer.resolve(RouterService).adminRoutes) as MyNonIndexRouteObject[],
     }),
   });
   container.register(QueryClientService, {

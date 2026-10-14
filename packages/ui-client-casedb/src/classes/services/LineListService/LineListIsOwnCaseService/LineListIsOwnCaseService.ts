@@ -1,8 +1,9 @@
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import {
-  container as rootContainer,
+  inject,
   singleton,
 } from 'tsyringe';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
 import { CASEDB_QUERY_KEY } from '../../../../constants/query.constants';
 import { LineListServiceAbstract } from '../LineListServiceAbstract';
@@ -12,16 +13,21 @@ import { LineListServiceAbstract } from '../LineListServiceAbstract';
 export class LineListIsOwnCaseService extends LineListServiceAbstract {
 
   protected readonly queryKey: CASEDB_QUERY_KEY = CASEDB_QUERY_KEY.XXX_CASE_ID_IS_OWN_CASE;
+  private readonly caseDbCaseApi: CaseDbCaseApi;
 
-  public static getInstance(): LineListIsOwnCaseService {
-    return rootContainer.resolve(LineListIsOwnCaseService);
+  public constructor(
+    @inject(QueryClientService) queryClientService: QueryClientService,
+    @inject(CaseDbCaseApi) caseDbCaseApi: CaseDbCaseApi,
+  ) {
+    super(queryClientService);
+    this.caseDbCaseApi = caseDbCaseApi;
   }
 
   protected async fetchMatchingCaseIds(caseIds: string[], caseTypeId: string): Promise<string[]> {
     if (!caseTypeId) {
       throw new Error('caseTypeId is required for LineListIsOwnCaseService');
     }
-    const retrieveIsOwnCasesResult = (await rootContainer.resolve(CaseDbCaseApi).retrieveIsOwnCases({
+    const retrieveIsOwnCasesResult = (await this.caseDbCaseApi.retrieveIsOwnCases({
       case_ids: caseIds,
       case_type_id: caseTypeId,
     })).data;

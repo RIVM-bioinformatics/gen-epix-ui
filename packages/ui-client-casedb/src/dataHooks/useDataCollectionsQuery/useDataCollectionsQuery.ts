@@ -19,7 +19,7 @@ export const useDataCollectionsQuery = (dataCollectionIds?: string[]): UseQueryR
       const response = await rootContainer.resolve(CaseDbOrganizationApi).dataCollectionsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.DATA_COLLECTIONS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.DATA_COLLECTIONS),
     select: (items) => {
       if (dataCollectionIds) {
         return items.filter(item => dataCollectionIds.includes(item.id));

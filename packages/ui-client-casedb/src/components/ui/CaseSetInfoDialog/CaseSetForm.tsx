@@ -115,7 +115,7 @@ export const CaseSetForm = ({ caseSet, formId, onFinish, onIsSavingChange }: Cas
       const result = await rootContainer.resolve(CaseDbCaseApi).caseSetsPutOne(item.id, { ...item, ...formData });
       return result.data;
     },
-    resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    resourceQueryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   useEffect(() => {

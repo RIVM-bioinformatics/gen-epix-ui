@@ -46,7 +46,7 @@ export const CaseCaseSetInfo = ({ caseDbCase, ...boxProps }: CaseCaseSetInfoProp
       const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const caseSetsFilter: CaseDbUuidSetFilter = {
@@ -61,7 +61,7 @@ export const CaseCaseSetInfo = ({ caseDbCase, ...boxProps }: CaseCaseSetInfoProp
       const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsPostQuery(caseSetsFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetsFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetsFilter),
   });
 
   const loadables = useArray([caseSetCategoryMapQuery, caseSetStatusMapQuery]);

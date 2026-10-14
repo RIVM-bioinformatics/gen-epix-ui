@@ -33,7 +33,7 @@ export const AcceptInvitationPage = () => {
       const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).userRegistrationsPostOne(token, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_INVITATIONS, token),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USER_INVITATIONS, token),
     staleTime: 0,
   });
 

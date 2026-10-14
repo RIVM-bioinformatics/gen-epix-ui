@@ -18,7 +18,7 @@ export const useCaseRightsQuery = (caseIds: string[], caseTypeId: string, enable
       }, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_RIGHTS, caseIds),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_RIGHTS, caseIds),
   });
 
 };

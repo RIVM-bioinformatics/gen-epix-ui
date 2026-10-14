@@ -3,7 +3,7 @@ import type {
   CommonDbUser,
 } from '@gen-epix/api-commondb';
 import {
-  container as rootContainer,
+  inject,
   singleton,
 } from 'tsyringe';
 
@@ -12,7 +12,6 @@ import { PageEventBusService } from '../PageEventBusService';
 
 @singleton()
 export class AuthorizationService {
-
   public set apiPermissions(permissions: CommonDbApiPermission[]) {
     this.__apiPermissions = permissions;
   }
@@ -22,7 +21,7 @@ export class AuthorizationService {
   }
 
   public set user(user: CommonDbUser) {
-    PageEventBusService.getInstance().emit('changeUser', user);
+    this.pageEventBusService.emit('changeUser', user);
     this.__user = user;
   }
 
@@ -34,9 +33,12 @@ export class AuthorizationService {
 
   private __user: CommonDbUser;
 
-  public static getInstance(): AuthorizationService {
-    return rootContainer.resolve(AuthorizationService);
+  private readonly pageEventBusService: PageEventBusService;
+
+  public constructor(@inject(PageEventBusService) pageEventBusService: PageEventBusService) {
+    this.pageEventBusService = pageEventBusService;
   }
+
 
   public doesUserHavePermission<TApiPermission = CommonDbApiPermission>(permissions: NoInfer<TApiPermission>[]): boolean {
     if (!permissions?.length) {

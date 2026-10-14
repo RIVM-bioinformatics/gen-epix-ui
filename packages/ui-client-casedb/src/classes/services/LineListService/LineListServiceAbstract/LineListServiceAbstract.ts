@@ -1,4 +1,4 @@
-import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
+import type { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
 import type { CASEDB_QUERY_KEY } from '../../../../constants/query.constants';
 
@@ -8,9 +8,13 @@ type CaseIdCache = { [caseId: string]: boolean };
 type QueueItem = { caseId: string; isFetching: boolean; promise: Promise<boolean>; reject: () => void; resolve: (result: boolean) => void };
 
 export abstract class LineListServiceAbstract {
+  protected readonly queryClientService: QueryClientService;
   protected abstract readonly queryKey: CASEDB_QUERY_KEY;
-
   private readonly queuedCases: { [caseId: string]: QueueItem } = {};
+
+  protected constructor(queryClientService: QueryClientService) {
+    this.queryClientService = queryClientService;
+  }
 
   public cleanStaleQueue(): void {
     Object.values(this.queuedCases).forEach((item) => {
@@ -22,7 +26,7 @@ export abstract class LineListServiceAbstract {
   }
 
   public async loadRange(caseIds: string[], caseTypeId?: string): Promise<void> {
-    const cache = QueryClientService.getInstance().getValidQueryData<CaseIdCache>([this.queryKey]) ?? {};
+    const cache = this.queryClientService.getValidQueryData<CaseIdCache>([this.queryKey]) ?? {};
     const caseIdsToFetch: string[] = [];
     caseIds.forEach((caseId) => {
       if (caseIdsToFetch.includes(caseId)) {
@@ -50,7 +54,7 @@ export abstract class LineListServiceAbstract {
     });
 
     try {
-      const queryClient = QueryClientService.getInstance().queryClient;
+      const queryClient = this.queryClientService.queryClient;
       const newCache = { ...cache };
       const matchingCaseIds = await this.fetchMatchingCaseIds(caseIdsToFetch, caseTypeId);
 
@@ -64,7 +68,7 @@ export abstract class LineListServiceAbstract {
         this.queuedCases[caseId]?.resolve(newCache[caseId]);
         delete this.queuedCases[caseId];
       });
-      queryClient.setQueryData<CaseIdCache>(QueryClientService.getInstance().getGenericKey(this.queryKey), {
+      queryClient.setQueryData<CaseIdCache>(this.queryClientService.getGenericKey(this.queryKey), {
         ...newCache,
       });
     } catch (_error: unknown) {
@@ -106,7 +110,7 @@ export abstract class LineListServiceAbstract {
   }
 
   private getItemFromCache(caseId: string): boolean | undefined {
-    return QueryClientService.getInstance().getValidQueryData<CaseIdCache>([this.queryKey])?.[caseId];
+    return this.queryClientService.getValidQueryData<CaseIdCache>([this.queryKey])?.[caseId];
   }
 
 }

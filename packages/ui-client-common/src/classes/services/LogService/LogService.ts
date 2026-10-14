@@ -3,12 +3,14 @@ import type {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
+import type {
+  CommonDbExternalLogItem,
+  CommonDbSystemApi,
+} from '@gen-epix/api-commondb';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
-import type { CommonDbExternalLogItem } from '@gen-epix/api-commondb';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import {
   inject,
-  container as rootContainer,
   singleton,
 } from 'tsyringe';
 
@@ -29,20 +31,25 @@ type LogServiceItem = {
 export class LogService {
   protected readonly requestMap: Map<string, number>;
 
+  private readonly authenticationService: AuthenticationService;
   private readonly config: Pick<ConfigBase, 'getSoftwareVersion' | 'log'>;
   private logItems: CommonDbExternalLogItem[] = [];
+  private readonly systemApi: CommonDbSystemApi;
 
-  public constructor(@inject(CONFIG_TOKEN) config: ConfigBase) {
+  public constructor(
+    @inject(CONFIG_TOKEN) config: ConfigBase,
+    @inject(AuthenticationService) authenticationService: AuthenticationService,
+    @inject(API_SYSTEM_TOKEN) systemApi: CommonDbSystemApi,
+  ) {
     this.requestMap = new Map<string, number>();
     this.config = config;
+    this.authenticationService = authenticationService;
+    this.systemApi = systemApi;
     setInterval(() => {
       this.sendLog();
     }, config.log.LOG_INTERVAL_MS);
   }
 
-  public static getInstance(): LogService {
-    return rootContainer.resolve(LogService);
-  }
 
   public flushLog(): void {
     this.sendLog();
@@ -137,13 +144,13 @@ export class LogService {
   }
 
   private sendLog(): void {
-    if (!this.logItems.length || !AuthenticationService.getInstance()?.authContextProps?.isAuthenticated) {
+    if (!this.logItems.length || !this.authenticationService?.authContextProps?.isAuthenticated) {
       return;
     }
     if (document.location.href.includes('accept-invitation')) {
       return;
     }
-    rootContainer.resolve(API_SYSTEM_TOKEN).log({
+    this.systemApi.log({
       log_items: this.logItems,
     }, {
       headers: {

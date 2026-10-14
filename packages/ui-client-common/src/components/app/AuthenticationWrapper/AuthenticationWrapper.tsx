@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -36,11 +37,11 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
     !config.consentDialog?.getShouldShow(),
   );
 
-  const oidcConfiguration = useSubscribable(AuthenticationService.getInstance());
+  const oidcConfiguration = useSubscribable(rootContainer.resolve(AuthenticationService));
   const AfterLoginElement = config.login?.AfterLoginElement;
 
   useEffect(() => {
-    AuthenticationService.getInstance().authContextProps = auth;
+    rootContainer.resolve(AuthenticationService).authContextProps = auth;
   }, [auth]);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   }, [auth.isAuthenticated, hasGivenConsent]);
 
   const onConsentDialogConsent = useCallback(() => {
-    LogService.getInstance().log([
+    rootContainer.resolve(LogService).log([
       {
         level: CommonDbLogLevel.INFO,
         topic: 'CONSENT',
@@ -85,7 +86,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   const onChangeLoginProviderButtonClick = useCallback(() => {
     AuthenticationService.clearStaleState();
-    AuthenticationService.getInstance().next(undefined);
+    rootContainer.resolve(AuthenticationService).next(undefined);
   }, []);
 
   const now = useMemo(() => new Date().getTime(), []);
@@ -142,7 +143,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   if (auth.error) {
     AuthenticationService.clearStaleState();
-    LogService.getInstance().log([
+    rootContainer.resolve(LogService).log([
       {
         detail: {
           error: auth.error,
@@ -173,9 +174,9 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   if (!auth.isAuthenticated) {
     if (
-      AuthenticationService.getInstance().getUserManagerSettingsCreatedAt() &&
+      rootContainer.resolve(AuthenticationService).getUserManagerSettingsCreatedAt() &&
       now -
-        AuthenticationService.getInstance().getUserManagerSettingsCreatedAt() <
+        rootContainer.resolve(AuthenticationService).getUserManagerSettingsCreatedAt() <
         AuthenticationService.autoLoginSkew
     ) {
       login();

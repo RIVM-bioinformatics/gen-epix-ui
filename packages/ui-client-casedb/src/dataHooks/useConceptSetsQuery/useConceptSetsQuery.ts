@@ -20,7 +20,7 @@ export const useConceptSetsQuery = (): UseQueryResult<CaseDbConceptSet[]> => {
       const response = await rootContainer.resolve(CaseDbOntologyApi).conceptSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS),
   });
 };
 

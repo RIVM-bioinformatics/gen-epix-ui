@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -201,13 +202,13 @@ export const CrudPage = <
   const config = useConfig();
   const deleteConfirmationRef = useRef<CrudPageDeleteDialogRefMethods<TData>>(null);
   const editDialogRef = useRef<CrudPageEditDialogRefMethods<TData, TFormFields>>(null);
-  const authorizationService = useMemo(() => AuthorizationService.getInstance(), []);
+  const authorizationService = useMemo(() => rootContainer.resolve(AuthorizationService), []);
   const resourceQueryKey = useMemo(() => [resourceQueryKeyBase], [resourceQueryKeyBase]);
   const tableStore = useMemo(() => createTableStore<TTableData, null>({
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
     idSelectorCallback: (item) => item.id,
-    navigatorFunction: RouterService.getInstance().router.navigate,
+    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
     storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
     storageVersion: tableStoreStorageVersion ?? 1,
   }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
@@ -302,7 +303,7 @@ export const CrudPage = <
       actions.push({
         color: 'primary',
         label: subPage.label,
-        onClick: async () => await RouterService.getInstance().router.navigate({
+        onClick: async () => await rootContainer.resolve(RouterService).router.navigate({
           pathname: subPage.getPathName(item),
         }),
         variant: 'outlined',
@@ -378,7 +379,7 @@ export const CrudPage = <
   const calculatedAssociationQueryKeys = useMemo<string[][]>(() => {
     const keys = associationQueryKeys ?? [];
 
-    QueryClientService.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
+    rootContainer.resolve(QueryClientService).getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
       keys.push(key);
     });
     return keys;
@@ -457,7 +458,7 @@ export const CrudPage = <
         <MenuItem
           key={subPage.label}
           // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-          onClick={async () => await RouterService.getInstance().router.navigate({
+          onClick={async () => await rootContainer.resolve(RouterService).router.navigate({
             pathname: subPage.getPathName(params.row),
           })}
         >

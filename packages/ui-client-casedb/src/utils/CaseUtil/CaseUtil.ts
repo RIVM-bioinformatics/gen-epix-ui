@@ -29,7 +29,7 @@ export class CaseUtil {
       throw new Error('Either caseSetId or caseIds must be provided');
     }
 
-    const notificationKey = NotificationService.getInstance().showNotification({
+    const notificationKey = rootContainer.resolve(NotificationService).showNotification({
       isLoading: true,
       message: t('Applying sharing to the cases'),
       severity: 'info',
@@ -37,7 +37,7 @@ export class CaseUtil {
 
     try {
       if (!caseSetDataCollectionIds.length) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because the event is not shared.'), 'info');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because the event is not shared.'), 'info');
       }
 
       let normalizedCaseIds: string[] = [];
@@ -53,7 +53,7 @@ export class CaseUtil {
       }
 
       if (!normalizedCaseIds.length) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because there are no cases in the event.'), 'info');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because there are no cases in the event.'), 'info');
       }
 
       const dataLinksToAdd: CaseDbCaseDataCollectionLink[] = [];
@@ -79,17 +79,17 @@ export class CaseUtil {
       });
 
       if (!dataLinksToAdd.length) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because sharing has already been applied.'), 'info');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because sharing has already been applied.'), 'info');
         return;
       }
 
       // Batch add the data collection links
       await rootContainer.resolve(CaseDbCaseApi).caseDataCollectionLinksPostSome(dataLinksToAdd);
-      await QueryClientService.getInstance().invalidateQueryKeys(QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
-      NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
+      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true));
+      rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Sharing has been applied to the cases'), 'success');
 
     } catch (_error) {
-      NotificationService.getInstance().fulfillNotification(notificationKey, t('Sharing could not be applied to selected cases due to an error.'), 'error');
+      rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Sharing could not be applied to selected cases due to an error.'), 'error');
     }
   }
 
@@ -144,7 +144,7 @@ export class CaseUtil {
   }
 
   private static getConceptMappedValue(raw: string): CaseTypeRowValue {
-    const concept = DataService.getInstance().data.conceptsById?.[raw];
+    const concept = rootContainer.resolve(DataService).data.conceptsById?.[raw];
     if (!concept) {
       return CaseUtil.getMissingRowValue(raw);
     }
@@ -158,7 +158,7 @@ export class CaseUtil {
   }
 
   private static getOrganizationMappedValue(raw: string): CaseTypeRowValue {
-    const organization = DataService.getInstance().data?.organizationsById?.[raw];
+    const organization = rootContainer.resolve(DataService).data?.organizationsById?.[raw];
     if (!organization) {
       return CaseUtil.getMissingRowValue(raw);
     }
@@ -172,8 +172,8 @@ export class CaseUtil {
   }
 
   private static getRegionMappedValue(refCol: CaseDbRefCol, raw: string): CaseTypeRowValue {
-    const regionSet = DataService.getInstance().data.regionSets[refCol.region_set_id];
-    const region = DataService.getInstance().data.regionsById?.[raw];
+    const regionSet = rootContainer.resolve(DataService).data.regionSets[refCol.region_set_id];
+    const region = rootContainer.resolve(DataService).data.regionsById?.[raw];
     if (!region) {
       return CaseUtil.getMissingRowValue(raw);
     }

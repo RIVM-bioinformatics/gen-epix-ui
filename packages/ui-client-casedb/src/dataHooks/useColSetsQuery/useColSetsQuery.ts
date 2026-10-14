@@ -20,7 +20,7 @@ export const useColSetsQuery = (): UseQueryResult<CaseDbColSet[]> => {
       const response = await rootContainer.resolve(CaseDbCaseApi).colSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.COL_SETS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.COL_SETS),
   });
 };
 

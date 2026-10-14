@@ -13,6 +13,6 @@ export const useCaseSetRightsQuery = (caseSetIds: string[]): UseQueryResult<Case
       const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseSetRights(caseSetIds, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_RIGHTS, caseSetIds),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_RIGHTS, caseSetIds),
   });
 };

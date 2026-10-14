@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type {
   CaseDbCase,
   CaseDbCol,
@@ -36,7 +37,7 @@ export class CaseDbTableUtil {
       }
 
       if (refCol.col_type === CaseDbColType.ORDINAL) {
-        const conceptSetConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+        const conceptSetConceptIds = rootContainer.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
         return (conceptSetConceptIds.indexOf(aValue.raw) - conceptSetConceptIds.indexOf(bValue.raw)) * directionMultiplier;
       }
 

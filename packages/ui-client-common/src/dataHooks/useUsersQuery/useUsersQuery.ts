@@ -21,7 +21,7 @@ export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
       const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).usersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.USERS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USERS),
   });
 };
 

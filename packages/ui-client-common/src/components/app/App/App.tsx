@@ -28,8 +28,8 @@ export type AppProps = {
 export const App = ({ container }: AppProps) => {
   const config = resolveConfig<ConfigBase>(container);
 
-  const authenticationService = AuthenticationService.getInstance();
-  const logService = LogService.getInstance();
+  const authenticationService = rootContainer.resolve(AuthenticationService);
+  const logService = rootContainer.resolve(LogService);
   const touchIconUrl = config.getTouchIconUrl();
   if (touchIconUrl) {
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
@@ -43,7 +43,7 @@ export const App = ({ container }: AppProps) => {
   ];
   api.onResponseFulfilled = [
     logService.onResponseFulfilled.bind(logService),
-    BackendVersionService.getInstance().onResponseFulfilled.bind(BackendVersionService.getInstance()),
+    rootContainer.resolve(BackendVersionService).onResponseFulfilled.bind(rootContainer.resolve(BackendVersionService)),
   ];
   api.onResponseRejected = [
     logService.onResponseRejected.bind(logService),

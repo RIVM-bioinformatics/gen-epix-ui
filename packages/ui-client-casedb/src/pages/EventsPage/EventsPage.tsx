@@ -77,13 +77,13 @@ export const EventsPage = () => {
       const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
   const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
   const navigateToEvent = useCallback(async (row: CaseDbCaseSet) => {
-    await RouterService.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(row));
+    await rootContainer.resolve(RouterService).router.navigate(CaseSetUtil.createCaseSetLink(row));
   }, []);
 
   const showEventInformation = useCallback((row: CaseDbCaseSet) => {
@@ -173,7 +173,7 @@ export const EventsPage = () => {
     defaultSortByField: 'case_set_date',
     defaultSortDirection: 'desc',
     idSelectorCallback: (row) => row.id,
-    navigatorFunction: RouterService.getInstance().router.navigate,
+    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
     storageNamePostFix: 'caseSets',
     storageVersion: 3,
   }), []);

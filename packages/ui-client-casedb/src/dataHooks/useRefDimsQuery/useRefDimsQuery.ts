@@ -20,7 +20,7 @@ export const useRefDimsQuery = (): UseQueryResult<CaseDbRefDim[]> => {
       const response = await rootContainer.resolve(CaseDbCaseApi).refDimsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_DIMS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REF_DIMS),
   });
 };
 

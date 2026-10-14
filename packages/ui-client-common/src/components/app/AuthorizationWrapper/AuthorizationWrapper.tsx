@@ -31,14 +31,14 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
     enabled: requiresUserProfile,
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await rootContainer.resolve(API_ORGANIZATION_TOKEN).userMeGetOne({ signal })).data,
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_ME),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USER_ME),
     staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
     queryFn: async ({ signal }) => (await rootContainer.resolve(API_ORGANIZATION_TOKEN).userMeRetrievePermissions({ signal })).data,
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
     staleTime: Infinity,
   });
 
@@ -49,10 +49,10 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
 
 
   if (userQuery.data) {
-    AuthorizationService.getInstance().user = userQuery.data;
+    rootContainer.resolve(AuthorizationService).user = userQuery.data;
   }
   if (userPermissionsQuery.data) {
-    AuthorizationService.getInstance().apiPermissions = userPermissionsQuery.data;
+    rootContainer.resolve(AuthorizationService).apiPermissions = userPermissionsQuery.data;
   }
 
   if (requiresUserProfile && (LoadableUtil.isSomeLoading(loadables) || LoadableUtil.hasSomeError(loadables))) {

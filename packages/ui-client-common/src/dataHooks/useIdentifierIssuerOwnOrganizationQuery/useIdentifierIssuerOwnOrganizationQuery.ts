@@ -17,12 +17,12 @@ export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<Common
       const links = (await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationIdentifierIssuerLinksPostQuery({
         key: 'organization_id',
         type: 'EQUALS_UUID',
-        value: AuthorizationService.getInstance().user.organization_id,
+        value: rootContainer.resolve(AuthorizationService).user.organization_id,
       }, null, null, { signal })).data;
       const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
   });
 };
 

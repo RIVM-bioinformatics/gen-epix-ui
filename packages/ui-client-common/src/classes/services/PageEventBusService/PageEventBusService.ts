@@ -1,13 +1,15 @@
 import type { CommonDbUser } from '@gen-epix/api-commondb';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   inject,
-  container as rootContainer,
   singleton,
 } from 'tsyringe';
 
-import { CONFIG_TOKEN } from '../../../constants/config.constants';
+import {
+  CONFIG_TOKEN,
+  WINDOW_SERVICE_TOKEN,
+} from '../../../constants/config.constants';
 import type { ConfigBase } from '../../../models/config.models';
 
 type EpiEvent = {
@@ -30,15 +32,17 @@ type Page = {
 @singleton()
 export class PageEventBusService extends EventBusAbstract<EpiEvent> {
   private lastPageEventPayload: string = null;
+  private readonly windowService: WindowService;
 
-  public constructor(@inject(CONFIG_TOKEN) config: ConfigBase) {
+  public constructor(
+    @inject(CONFIG_TOKEN) config: ConfigBase,
+    @inject(WINDOW_SERVICE_TOKEN) windowService: WindowService,
+  ) {
     super();
+    this.windowService = windowService;
     this.setupClickEventListener(config.enablePageEvents);
   }
 
-  public static getInstance(): PageEventBusService {
-    return rootContainer.resolve(PageEventBusService);
-  }
 
   public emit<TEventName extends keyof EpiEvent>(eventName: TEventName, payload?: EpiEvent[TEventName]): void {
     if (eventName === 'changePage') {
@@ -57,7 +61,7 @@ export class PageEventBusService extends EventBusAbstract<EpiEvent> {
 
   public getPage(): Page {
     return {
-      location: WindowService.getInstance().window.location,
+      location: this.windowService.window.location,
       pageName: document.querySelector('[data-page-container]')?.getAttribute('data-testid'),
     };
   }
@@ -66,7 +70,7 @@ export class PageEventBusService extends EventBusAbstract<EpiEvent> {
     if (!enablePageEvents) {
       return;
     }
-    WindowService.getInstance().window.addEventListener('click', (event: Event): void => {
+    this.windowService.window.addEventListener('click', (event: Event): void => {
 
       const closestButton = (event.target as HTMLElement).closest('button');
       const closestLink = (event.target as HTMLElement).closest('a');

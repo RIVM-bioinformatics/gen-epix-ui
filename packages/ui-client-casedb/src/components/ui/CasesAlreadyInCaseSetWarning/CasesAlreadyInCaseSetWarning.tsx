@@ -53,7 +53,7 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
       const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   // Load all case sets for the given case set members
@@ -71,7 +71,7 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
       const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsPostQuery(existingCaseSetsFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
   });
 
   const caseSetsByCase = useMemo(() => {
@@ -84,7 +84,7 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
       const caseItem = cases.find(x => x.id === member.case_id);
       const caseSetItem = caseSets.find(x => x.id === member.case_set_id);
       if (!caseItem || !caseSetItem) {
-        LogService.getInstance().log([
+        rootContainer.resolve(LogService).log([
           {
             detail: member,
             level: CaseDbLogLevel.DEBUG,

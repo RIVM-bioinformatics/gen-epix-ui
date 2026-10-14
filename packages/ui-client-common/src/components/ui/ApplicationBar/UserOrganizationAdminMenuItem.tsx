@@ -22,7 +22,7 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
   const { data: organizationAdminNameEmails, error: organizationAdminNameEmailsError, isLoading: isOrganizationAdminNameEmailsLoading } = useQueryMemo({
     gcTime: 0,
     queryFn: async ({ signal }) => (await rootContainer.resolve(API_ABAC_TOKEN).retrieveOrganizationAdminNameEmails({ signal })).data,
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     staleTime: 0,
   });
 

@@ -1,9 +1,6 @@
 import type { ReactElement } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import {
-  container as rootContainer,
-  singleton,
-} from 'tsyringe';
+import { singleton } from 'tsyringe';
 
 import type { MyNonIndexRouteObject } from '../../../models/react-router.models';
 
@@ -60,9 +57,6 @@ export class RouterService {
     this.__routesFactory = this.createRoutesFactory(kwArgs.routes);
   }
 
-  public static getInstance(): RouterService {
-    return rootContainer.resolve(RouterService);
-  }
 
   private createRoutesFactory(routes: RoutesInput): RoutesFactory {
     if (typeof routes === 'function') {

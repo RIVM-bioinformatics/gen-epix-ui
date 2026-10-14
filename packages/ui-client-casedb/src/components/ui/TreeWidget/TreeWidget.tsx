@@ -186,7 +186,7 @@ export const TreeWidget = () => {
   });
 
   const onOpenFiltersButtonClick = useCallback(() => {
-    EventBusService.getInstance().emit('openFiltersMenu');
+    rootContainer.resolve(EventBusService).emit('openFiltersMenu');
   }, []);
 
   const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreeLoading));
@@ -358,7 +358,7 @@ export const TreeWidget = () => {
   }, []);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
-    EventBusService.getInstance().emit('openCaseInfoDialog', {
+    rootContainer.resolve(EventBusService).emit('openCaseInfoDialog', {
       caseId: baseData.find(c => c.id === extraLeafInfoId).id,
       caseTypeId: completeCaseType.id,
     });
@@ -476,7 +476,7 @@ export const TreeWidget = () => {
           treeAlgorithm: treeConfiguration?.treeAlgorithm.name ?? '',
         });
 
-      EventBusService.getInstance().emit('onDownloadOptionsChanged', {
+      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         disabled: isTreeUnavailable,
         items: [
           {
@@ -499,7 +499,7 @@ export const TreeWidget = () => {
 
 
     emitDownloadOptions();
-    const eventBusService = EventBusService.getInstance();
+    const eventBusService = rootContainer.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
 
     return () => {
@@ -515,7 +515,7 @@ export const TreeWidget = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
-    const removeEventListener = EventBusService.getInstance().addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
+    const removeEventListener = rootContainer.resolve(EventBusService).addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
     return () => {
       removeEventListener();
     };

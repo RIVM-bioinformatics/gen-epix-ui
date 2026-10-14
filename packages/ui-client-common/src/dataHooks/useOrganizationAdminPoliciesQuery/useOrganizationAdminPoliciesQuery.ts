@@ -24,7 +24,7 @@ export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrga
       const response = await rootContainer.resolve(API_ABAC_TOKEN).organizationAdminPoliciesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
   });
 };
 

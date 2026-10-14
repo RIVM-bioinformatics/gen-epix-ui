@@ -17,6 +17,6 @@ export const useCaseTypeStatsQuery = (options?: CaseDbRetrieveCaseTypeStatsReque
       const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseTypeStats(options ?? {}, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, options ?? {}),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, options ?? {}),
   });
 };

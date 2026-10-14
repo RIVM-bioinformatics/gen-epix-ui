@@ -104,7 +104,7 @@ export const RegionSetsAdminPage = () => {
   const subPages = useMemo<CrudPageSubPage<CaseDbRegionSet>[]>(() => {
     const pages: CrudPageSubPage<CaseDbRegionSet>[] = [];
 
-    if (AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RegionCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(
@@ -115,7 +115,7 @@ export const RegionSetsAdminPage = () => {
       );
     }
 
-    if (AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RegionSetShapeCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   afterAll,
   beforeAll,
@@ -79,12 +80,12 @@ describe('TreeWidgetUtil.test', () => {
     };
 
     beforeAll(() => {
-      savedTreeAlgorithms = DataService.getInstance().data.treeAlgorithms;
-      DataService.getInstance().data.treeAlgorithms = [mockAlgo1, mockAlgo2];
+      savedTreeAlgorithms = rootContainer.resolve(DataService).data.treeAlgorithms;
+      rootContainer.resolve(DataService).data.treeAlgorithms = [mockAlgo1, mockAlgo2];
     });
 
     afterAll(() => {
-      DataService.getInstance().data.treeAlgorithms = savedTreeAlgorithms;
+      rootContainer.resolve(DataService).data.treeAlgorithms = savedTreeAlgorithms;
     });
 
     it('returns empty array when no GENETIC_DISTANCE cols exist', () => {
@@ -144,7 +145,7 @@ describe('TreeWidgetUtil.test', () => {
       expect(result[0].computedId).toBe('col1_rc1_gdp1_algo-nj');
     });
 
-    it('sorts algorithms according to DataService.getInstance().data.treeAlgorithms order', () => {
+    it('sorts algorithms according to rootContainer.resolve(DataService).data.treeAlgorithms order', () => {
       // DataService order: [mockAlgo1(NJ), mockAlgo2(UPGMA)]
       // col specifies UPGMA first, then NJ -> result should be sorted to NJ then UPGMA
       const completeCaseType = {

@@ -48,10 +48,10 @@ export const CompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseType
       const perform = async () => {
         try {
           await Promise.all([
-            DataService.getInstance().loadConcepts(abortController.signal),
-            DataService.getInstance().loadMissingRegions(completeCaseType, abortController.signal),
-            DataService.getInstance().loadTreeAlgorithms(completeCaseType, abortController.signal),
-            DataService.getInstance().loadOrganizations(abortController.signal),
+            rootContainer.resolve(DataService).loadConcepts(abortController.signal),
+            rootContainer.resolve(DataService).loadMissingRegions(completeCaseType, abortController.signal),
+            rootContainer.resolve(DataService).loadTreeAlgorithms(completeCaseType, abortController.signal),
+            rootContainer.resolve(DataService).loadOrganizations(abortController.signal),
           ]);
           setIsSideEffectLoading(false);
         } catch (error) {

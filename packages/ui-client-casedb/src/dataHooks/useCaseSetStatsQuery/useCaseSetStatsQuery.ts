@@ -20,7 +20,7 @@ export const useCaseSetStatsQuery = (caseSetIds: string[]): UseQueryResult<CaseD
       }, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_STATS, caseSetIds),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_STATS, caseSetIds),
   });
 };
 

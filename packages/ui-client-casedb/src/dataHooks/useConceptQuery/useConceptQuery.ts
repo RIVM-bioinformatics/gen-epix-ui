@@ -22,7 +22,7 @@ export const useConceptQuery = (): UseQueryResult<CaseDbConcept[]> => {
       const response = await rootContainer.resolve(CaseDbOntologyApi).conceptsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPTS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CONCEPTS),
   });
 };
 

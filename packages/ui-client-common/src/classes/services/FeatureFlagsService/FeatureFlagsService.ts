@@ -1,8 +1,5 @@
 import type { CommonDbFeatureFlagsResponseBody } from '@gen-epix/api-commondb';
-import {
-  container as rootContainer,
-  singleton,
-} from 'tsyringe';
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class FeatureFlagsService {
@@ -21,7 +18,4 @@ export class FeatureFlagsService {
 
   private __featureFlags: CommonDbFeatureFlagsResponseBody['feature_flags'] = null;
 
-  public static getInstance(): FeatureFlagsService {
-    return rootContainer.resolve(FeatureFlagsService);
-  }
 }

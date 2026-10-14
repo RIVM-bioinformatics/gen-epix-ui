@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { ReactElement } from 'react';
 import {
   useCallback,
@@ -42,7 +43,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
   }, []);
 
   const onCopyVersionInformationButtonClick = useCallback(async () => {
-    const versionInformation = `Frontend version: ${config.getSoftwareVersion()}\nBackend version: ${BackendVersionService.getInstance().version}\nURL: ${window.location.href}\nDate/time: ${new Date().toISOString()}`;
+    const versionInformation = `Frontend version: ${config.getSoftwareVersion()}\nBackend version: ${rootContainer.resolve(BackendVersionService).version}\nURL: ${window.location.href}\nDate/time: ${new Date().toISOString()}`;
     await navigator.clipboard.writeText(versionInformation);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
@@ -92,7 +93,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
         >
           <ListItemText
             primary={t('Backend version')}
-            secondary={BackendVersionService.getInstance().version}
+            secondary={rootContainer.resolve(BackendVersionService).version}
             slotProps={{
               primary: {
                 sx: {

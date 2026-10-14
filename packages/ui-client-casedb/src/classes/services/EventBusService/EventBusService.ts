@@ -1,10 +1,7 @@
 import type { EpiContactDetailsDialogOpenProps } from '@gen-epix/ui-client-common/components/epi/EpiContactDetailsDialog';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
-import {
-  container as rootContainer,
-  singleton,
-} from 'tsyringe';
+import { singleton } from 'tsyringe';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import type { AddCasesToEventDialogOpenProps } from '../../../components/ui/AddCasesToEventDialog';
@@ -66,8 +63,5 @@ export class EventBusService extends EventBusAbstract<EpiEvent> {
     super();
   }
 
-  public static getInstance(): EventBusService {
-    return rootContainer.resolve(EventBusService);
-  }
 
 }

@@ -20,7 +20,7 @@ export const useRefColsQuery = (): UseQueryResult<CaseDbRefCol[]> => {
       const response = await rootContainer.resolve(CaseDbCaseApi).refColsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REF_COLS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REF_COLS),
   });
 };
 

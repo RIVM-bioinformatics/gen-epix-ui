@@ -14,6 +14,6 @@ export const useCaseTypeSetMembersQuery = (): UseQueryResult<CaseDbCaseTypeSetMe
       const response = await rootContainer.resolve(CaseDbCaseApi).caseTypeSetMembersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),
   });
 };

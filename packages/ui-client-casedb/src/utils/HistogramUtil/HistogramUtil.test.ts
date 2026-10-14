@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   afterEach,
   beforeEach,
@@ -84,13 +85,13 @@ const makeCompleteCaseType = (
 let savedData: DataCache;
 
 beforeEach(() => {
-  savedData = { ...DataService.getInstance().data };
-  DataService.getInstance().data.conceptsIdsBySetId = {};
-  DataService.getInstance().data.conceptsById = {};
+  savedData = { ...rootContainer.resolve(DataService).data };
+  rootContainer.resolve(DataService).data.conceptsIdsBySetId = {};
+  rootContainer.resolve(DataService).data.conceptsById = {};
 });
 
 afterEach(() => {
-  Object.assign(DataService.getInstance().data, savedData);
+  Object.assign(rootContainer.resolve(DataService).data, savedData);
   vi.restoreAllMocks();
 });
 
@@ -114,9 +115,9 @@ describe('HistogramUtil', () => {
 
     const populateConcepts = (setId: string, count: number) => {
       const ids = Array.from({ length: count }, (_, i) => `${setId}_c${i}`);
-      DataService.getInstance().data.conceptsIdsBySetId[setId] = ids;
+      rootContainer.resolve(DataService).data.conceptsIdsBySetId[setId] = ids;
       ids.forEach(id => {
-        DataService.getInstance().data.conceptsById[id] = makeConcept(id, 0, id, setId);
+        rootContainer.resolve(DataService).data.conceptsById[id] = makeConcept(id, 0, id, setId);
       });
     };
 
@@ -216,10 +217,10 @@ describe('HistogramUtil', () => {
       const c1 = makeConcept('x1', 3, 'X1', 'setX');
       const c2 = makeConcept('x2', 1, 'X2', 'setX');
       const c3 = makeConcept('x3', 2, 'X3', 'setX');
-      DataService.getInstance().data.conceptsIdsBySetId['setX'] = ['x1', 'x2', 'x3'];
-      DataService.getInstance().data.conceptsById['x1'] = c1;
-      DataService.getInstance().data.conceptsById['x2'] = c2;
-      DataService.getInstance().data.conceptsById['x3'] = c3;
+      rootContainer.resolve(DataService).data.conceptsIdsBySetId['setX'] = ['x1', 'x2', 'x3'];
+      rootContainer.resolve(DataService).data.conceptsById['x1'] = c1;
+      rootContainer.resolve(DataService).data.conceptsById['x2'] = c2;
+      rootContainer.resolve(DataService).data.conceptsById['x3'] = c3;
 
       const result = HistogramUtil.getConceptsForCol(col, cct);
       expect(result.map(c => c.id)).toEqual(['x2', 'x3', 'x1']);
@@ -322,12 +323,12 @@ describe('HistogramUtil', () => {
       const conceptB1 = makeConcept('b1', 3, 'Concept B1', 'setB');
       const conceptB2 = makeConcept('b2', 1, 'Concept B2', 'setB');
 
-      DataService.getInstance().data.conceptsIdsBySetId['setA'] = ['a1', 'a2'];
-      DataService.getInstance().data.conceptsIdsBySetId['setB'] = ['b1', 'b2'];
-      DataService.getInstance().data.conceptsById['a1'] = conceptA1;
-      DataService.getInstance().data.conceptsById['a2'] = conceptA2;
-      DataService.getInstance().data.conceptsById['b1'] = conceptB1;
-      DataService.getInstance().data.conceptsById['b2'] = conceptB2;
+      rootContainer.resolve(DataService).data.conceptsIdsBySetId['setA'] = ['a1', 'a2'];
+      rootContainer.resolve(DataService).data.conceptsIdsBySetId['setB'] = ['b1', 'b2'];
+      rootContainer.resolve(DataService).data.conceptsById['a1'] = conceptA1;
+      rootContainer.resolve(DataService).data.conceptsById['a2'] = conceptA2;
+      rootContainer.resolve(DataService).data.conceptsById['b1'] = conceptB1;
+      rootContainer.resolve(DataService).data.conceptsById['b2'] = conceptB2;
 
       const [conceptsA, conceptsB] = HistogramUtil.getConcepts(aCol, bCol, cct);
 
@@ -373,10 +374,10 @@ describe('HistogramUtil', () => {
     );
 
     beforeEach(() => {
-      DataService.getInstance().data.conceptsById['a1'] = conceptA1;
-      DataService.getInstance().data.conceptsById['a2'] = conceptA2;
-      DataService.getInstance().data.conceptsById['b1'] = conceptB1;
-      DataService.getInstance().data.conceptsById['b2'] = conceptB2;
+      rootContainer.resolve(DataService).data.conceptsById['a1'] = conceptA1;
+      rootContainer.resolve(DataService).data.conceptsById['a2'] = conceptA2;
+      rootContainer.resolve(DataService).data.conceptsById['b1'] = conceptB1;
+      rootContainer.resolve(DataService).data.conceptsById['b2'] = conceptB2;
     });
 
     it('returns empty array when aCol is null', () => {

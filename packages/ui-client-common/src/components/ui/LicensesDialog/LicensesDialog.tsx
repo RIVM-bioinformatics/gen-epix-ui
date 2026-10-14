@@ -82,7 +82,7 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
       const response = await rootContainer.resolve(API_SYSTEM_TOKEN).retrieveLicenses({ signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.LICENSES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.LICENSES),
   });
 
   const isLoading = isFrontendLicensesLoading || isBackendLicensesLoading;

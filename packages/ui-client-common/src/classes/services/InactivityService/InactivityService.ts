@@ -4,7 +4,6 @@ import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/Subscr
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import {
   inject,
-  container as rootContainer,
   singleton,
 } from 'tsyringe';
 
@@ -24,15 +23,21 @@ export type InactivityState = {
 
 @singleton()
 export class InactivityService extends SubscribableAbstract<InactivityState> {
-  private idleDiff: number = 0;
+  private readonly authenticationService: AuthenticationService;
 
+  private idleDiff: number = 0;
   private idleSince: number = Date.now();
   private isIdle: boolean = false;
   private isPaused: boolean = false;
+  private readonly logService: LogService;
   private notificationDiff: number = 0;
   private readonly onActivityDebounced: () => void;
 
-  public constructor(@inject(CONFIG_TOKEN) config: ConfigBase) {
+  public constructor(
+    @inject(CONFIG_TOKEN) config: ConfigBase,
+    @inject(LogService) logService: LogService,
+    @inject(AuthenticationService) authenticationService: AuthenticationService,
+  ) {
     super(new Subject<InactivityState>({
       idleDiff: 0,
       isIdle: false,
@@ -40,6 +45,8 @@ export class InactivityService extends SubscribableAbstract<InactivityState> {
       readableIdleDiff: '',
       readableNotificationDiff: '',
     }));
+    this.logService = logService;
+    this.authenticationService = authenticationService;
 
     this.onActivityDebounced = throttle(this.onActivity.bind(this), 1000, {
       leading: true,
@@ -68,19 +75,16 @@ export class InactivityService extends SubscribableAbstract<InactivityState> {
     }, 500);
   }
 
-  public static getInstance(): InactivityService {
-    return rootContainer.resolve(InactivityService);
-  }
 
   public logout(): void {
-    LogService.getInstance().log([{
-      detail: AuthenticationService.getInstance().authContextProps.user,
+    this.logService.log([{
+      detail: this.authenticationService.authContextProps.user,
       level: CommonDbLogLevel.TRACE,
       topic: 'USER_LOGOUT_BY_INACTIVITY',
     }]);
-    LogService.getInstance().flushLog();
+    this.logService.flushLog();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    AuthenticationService.getInstance().authContextProps.signoutRedirect();
+    this.authenticationService.authContextProps.signoutRedirect();
   }
 
   public pause(): void {

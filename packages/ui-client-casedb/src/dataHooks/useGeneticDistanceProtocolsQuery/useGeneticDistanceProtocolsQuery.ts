@@ -17,7 +17,7 @@ export const useGeneticDistanceProtocolsQuery = (): UseQueryResult<CaseDbGenetic
       const response = await rootContainer.resolve(CaseDbCaseApi).geneticDistanceProtocolsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.GENETIC_DISTANCE_PROTOCOLS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.GENETIC_DISTANCE_PROTOCOLS),
   });
 };
 

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Accordion,
   AccordionDetails,
@@ -29,7 +30,7 @@ export const CaseTypeInfoRegions = ({ completeCaseType }: CaseTypeInfoRegionsPro
     <>
       {regionSetIds.map(regionSetId => {
         // NOTE: this assumes a complete case type's regions have been loaded before
-        const regions = DataService.getInstance().data.regionsByRegionSetId[regionSetId];
+        const regions = rootContainer.resolve(DataService).data.regionsByRegionSetId[regionSetId];
         const sortedRegions = regions.toSorted((a, b) => +a.code - +b.code);
         return (
           <Accordion
@@ -44,7 +45,7 @@ export const CaseTypeInfoRegions = ({ completeCaseType }: CaseTypeInfoRegionsPro
                 fontWeight: 'bold',
               }}
             >
-              {DataService.getInstance().data.regionSets[regionSetId].name}
+              {rootContainer.resolve(DataService).data.regionSets[regionSetId].name}
             </AccordionSummary>
             <AccordionDetails>
               <Stack
