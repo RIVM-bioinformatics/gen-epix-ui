@@ -152,98 +152,98 @@ export interface OmopDbCohortDefinition {
 }
 
 export const OmopDbCommandName = {
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    UploadPersonsCommand: 'UploadPersonsCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
-    ObservationIdentifierCrudCommand: 'ObservationIdentifierCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
-    ProviderCrudCommand: 'ProviderCrudCommand',
-    CareSiteCrudCommand: 'CareSiteCrudCommand',
-    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-    EpisodeCrudCommand: 'EpisodeCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    CostCrudCommand: 'CostCrudCommand',
-    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
-    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
-    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
-    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
-    LocationCrudCommand: 'LocationCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    SpecimenCrudCommand: 'SpecimenCrudCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
-    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    DoseEraCrudCommand: 'DoseEraCrudCommand',
-    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
-    FactRelationshipCrudCommand: 'FactRelationshipCrudCommand',
-    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
-    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
-    ProcedureOccurrenceIdentifierCrudCommand: 'ProcedureOccurrenceIdentifierCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    DomainCrudCommand: 'DomainCrudCommand',
-    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
     DrugExposureIdentifierCrudCommand: 'DrugExposureIdentifierCrudCommand',
-    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
-    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
-    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
-    CohortCrudCommand: 'CohortCrudCommand',
-    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    ConceptClassCrudCommand: 'ConceptClassCrudCommand',
-    RetrieveSpecimenIdsByCohortIdsCommand: 'RetrieveSpecimenIdsByCohortIdsCommand',
-    VocabularyCrudCommand: 'VocabularyCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RetrievePersonsByQueryCommand: 'RetrievePersonsByQueryCommand',
-    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    NoteCrudCommand: 'NoteCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    PersonCrudCommand: 'PersonCrudCommand',
-    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
-    DeathCrudCommand: 'DeathCrudCommand',
-    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    MeasurementCrudCommand: 'MeasurementCrudCommand',
-    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
-    MeasurementRelationIdentifierCrudCommand: 'MeasurementRelationIdentifierCrudCommand',
-    ConceptRelationshipCrudCommand: 'ConceptRelationshipCrudCommand',
-    DrugEraCrudCommand: 'DrugEraCrudCommand',
-    ObservationCrudCommand: 'ObservationCrudCommand',
+    EpisodeCrudCommand: 'EpisodeCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
     EpisodeEventCrudCommand: 'EpisodeEventCrudCommand',
-    MetadataCrudCommand: 'MetadataCrudCommand',
+    DomainCrudCommand: 'DomainCrudCommand',
     VisitDetailCrudCommand: 'VisitDetailCrudCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
-    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
-    RelationshipCrudCommand: 'RelationshipCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    VocabularyCrudCommand: 'VocabularyCrudCommand',
+    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    RetrieveSpecimenIdsByCohortIdsCommand: 'RetrieveSpecimenIdsByCohortIdsCommand',
+    PersonCrudCommand: 'PersonCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
     CohortDefinitionCrudCommand: 'CohortDefinitionCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    NoteCrudCommand: 'NoteCrudCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    ObservationCrudCommand: 'ObservationCrudCommand',
+    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
+    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
+    ProcedureOccurrenceIdentifierCrudCommand: 'ProcedureOccurrenceIdentifierCrudCommand',
+    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    CareSiteCrudCommand: 'CareSiteCrudCommand',
+    MeasurementRelationIdentifierCrudCommand: 'MeasurementRelationIdentifierCrudCommand',
+    ProviderCrudCommand: 'ProviderCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    CohortCrudCommand: 'CohortCrudCommand',
+    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
+    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
+    MetadataCrudCommand: 'MetadataCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    DrugEraCrudCommand: 'DrugEraCrudCommand',
+    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
     ConceptSynonymCrudCommand: 'ConceptSynonymCrudCommand',
+    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
+    UploadPersonsCommand: 'UploadPersonsCommand',
+    DeathCrudCommand: 'DeathCrudCommand',
+    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    DoseEraCrudCommand: 'DoseEraCrudCommand',
+    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    LocationCrudCommand: 'LocationCrudCommand',
+    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    RetrievePersonsByQueryCommand: 'RetrievePersonsByQueryCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    CostCrudCommand: 'CostCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
+    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
+    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
+    ConceptClassCrudCommand: 'ConceptClassCrudCommand',
+    ObservationIdentifierCrudCommand: 'ObservationIdentifierCrudCommand',
+    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    RelationshipCrudCommand: 'RelationshipCrudCommand',
+    ConceptRelationshipCrudCommand: 'ConceptRelationshipCrudCommand',
+    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
+    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
+    SpecimenCrudCommand: 'SpecimenCrudCommand',
+    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
+    FactRelationshipCrudCommand: 'FactRelationshipCrudCommand',
+    MeasurementCrudCommand: 'MeasurementCrudCommand',
+    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
 } as const;
 
 export type OmopDbCommandName = typeof OmopDbCommandName[keyof typeof OmopDbCommandName];
@@ -3970,7 +3970,6 @@ const OmopDbAbacApiFp = function(configuration?: Configuration) {
 @singleton()
 export class OmopDbAbacApi extends OmopDbBaseAPI {
 
-
     /**
      * Represents a request to manage policies that grant organization-administration rights to users.
      * @summary OmopDbOrganization Admin Policies  Delete All
@@ -4193,7 +4192,6 @@ const OmopDbAuthApiFp = function(configuration?: Configuration) {
 @singleton()
 export class OmopDbAuthApi extends OmopDbBaseAPI {
 
-
     /**
      * Get all public identity providers
      * @summary Identityprovider
@@ -4276,7 +4274,6 @@ const OmopDbDefaultApiFp = function(configuration?: Configuration) {
  */
 @singleton()
 export class OmopDbDefaultApi extends OmopDbBaseAPI {
-
 
     /**
      * Redirect the root path to the configured default API route.  Returns:     Redirect response targeting the configured default route.
@@ -38556,7 +38553,6 @@ const OmopDbOmopApiFp = function(configuration?: Configuration) {
 @singleton()
 export class OmopDbOmopApi extends OmopDbBaseAPI {
 
-
     /**
      * Represents a request to perform a CRUD operation on OMOP care-site records.
      * @summary Caresites  Delete All
@@ -54281,7 +54277,6 @@ const OmopDbOrganizationApiFp = function(configuration?: Configuration) {
 @singleton()
 export class OmopDbOrganizationApi extends OmopDbBaseAPI {
 
-
     /**
      * Represents a request to anonymize a target user according to GDPR requirements.  This removes the target user\'s name and replaces its key with the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
      * @summary Anonymizeuser
@@ -56948,7 +56943,6 @@ const OmopDbSystemApiFp = function(configuration?: Configuration) {
  */
 @singleton()
 export class OmopDbSystemApi extends OmopDbBaseAPI {
-
 
     /**
      * Return the service health status.  If no response is received within the timeout period, the service is considered unhealthy.

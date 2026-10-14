@@ -213,86 +213,86 @@ export interface SeqDbCalculateSeqDistancesEtlResult {
 
 
 export const SeqDbCommandName = {
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
-    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
-    ReadSetCrudCommand: 'ReadSetCrudCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    AlleleCrudCommand: 'AlleleCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
     LocusSetCrudCommand: 'LocusSetCrudCommand',
-    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
     RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-    FileCrudCommand: 'FileCrudCommand',
-    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
-    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
-    ConvertSeqFormatCommand: 'ConvertSeqFormatCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
     DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    LocusCrudCommand: 'LocusCrudCommand',
-    ProtocolCrudCommand: 'ProtocolCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
-    CreateFileCommand: 'CreateFileCommand',
-    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
-    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
     UploadSamplesCommand: 'UploadSamplesCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    ReadSetCrudCommand: 'ReadSetCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
+    CreateFileCommand: 'CreateFileCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
     TaxonCrudCommand: 'TaxonCrudCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    AstPredictionCrudCommand: 'AstPredictionCrudCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
+    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
     RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
+    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
+    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
+    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    FileCrudCommand: 'FileCrudCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    ConvertSeqFormatCommand: 'ConvertSeqFormatCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
     RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
     OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
     SeqProfileCrudCommand: 'SeqProfileCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
+    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    AlleleCrudCommand: 'AlleleCrudCommand',
+    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
+    RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
     RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
-    PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    LocusCrudCommand: 'LocusCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -3583,7 +3583,6 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
 @singleton()
 export class SeqDbAbacApi extends SeqDbBaseAPI {
 
-
     /**
      * Represents a request to manage policies that grant organization-administration rights to users.
      * @summary SeqDbOrganization Admin Policies  Delete All
@@ -3806,7 +3805,6 @@ const SeqDbAuthApiFp = function(configuration?: Configuration) {
 @singleton()
 export class SeqDbAuthApi extends SeqDbBaseAPI {
 
-
     /**
      * Get all public identity providers
      * @summary Identityprovider
@@ -3889,7 +3887,6 @@ const SeqDbDefaultApiFp = function(configuration?: Configuration) {
  */
 @singleton()
 export class SeqDbDefaultApi extends SeqDbBaseAPI {
-
 
     /**
      * Redirect the root path to the configured default API route.  Returns:     Redirect response targeting the configured default route.
@@ -4598,7 +4595,6 @@ const SeqDbFileApiFp = function(configuration?: Configuration) {
  */
 @singleton()
 export class SeqDbFileApi extends SeqDbBaseAPI {
-
 
     /**
      * Represents a request to create a file after validating its expected format and compression.  The expected format and compression determine how the file content is verified.
@@ -12784,7 +12780,6 @@ const SeqDbOrganizationApiFp = function(configuration?: Configuration) {
  */
 @singleton()
 export class SeqDbOrganizationApi extends SeqDbBaseAPI {
-
 
     /**
      * Represents a request to anonymize a target user according to GDPR requirements.  This removes the target user\'s name and replaces its key with the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
@@ -34430,7 +34425,6 @@ const SeqDbSeqApiFp = function(configuration?: Configuration) {
 @singleton()
 export class SeqDbSeqApi extends SeqDbBaseAPI {
 
-
     /**
      * Represents a request to perform a CRUD operation on Alleles.
      * @summary Alleles  Delete All
@@ -39748,7 +39742,6 @@ const SeqDbSystemApiFp = function(configuration?: Configuration) {
  */
 @singleton()
 export class SeqDbSystemApi extends SeqDbBaseAPI {
-
 
     /**
      * Return the service health status.  If no response is received within the timeout period, the service is considered unhealthy.
