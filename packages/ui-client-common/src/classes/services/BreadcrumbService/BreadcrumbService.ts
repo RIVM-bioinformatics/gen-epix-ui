@@ -14,7 +14,6 @@ export class BreadcrumbService extends SubscribableAbstract<SubjectData> {
     super(new Subject<SubjectData>({}));
   }
 
-
   public remove(position: string): void {
     this.subject.next({ ...omit(this.subject, position) });
   }
