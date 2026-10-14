@@ -19,7 +19,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
-import { API_SYSTEM_TOKEN } from '../../../models/api.models';
+import { API_SYSTEM_TOKEN } from '../../../constants/api.constants';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { outagesStore } from '../../../stores/outagesStore';
 import { OutageUtil } from '../../../utils/OutageUtil';

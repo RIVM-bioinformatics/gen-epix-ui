@@ -1,8 +1,8 @@
 import { App } from '@gen-epix/ui-client-common/components/app/App';
-import type { UiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import type { DependencyContainer } from 'tsyringe';
 
 export type OmopDbAppProps = {
-  readonly container: UiClientCommonContainer;
+  readonly container: DependencyContainer;
 };
 
 export const OmopDbApp = ({ container }: OmopDbAppProps) => {

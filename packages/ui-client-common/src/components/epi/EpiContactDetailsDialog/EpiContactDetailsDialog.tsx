@@ -19,7 +19,7 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { API_ORGANIZATION_TOKEN } from '../../../models/api.models';
+import { API_ORGANIZATION_TOKEN } from '../../../constants/api.constants';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 

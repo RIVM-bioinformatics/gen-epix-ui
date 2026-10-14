@@ -17,7 +17,7 @@ import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/compon
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
-import { API_SYSTEM_TOKEN } from '../../../models/api.models';
+import { API_SYSTEM_TOKEN } from '../../../constants/api.constants';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { FeatureFlagsService } from '../../../classes/services/FeatureFlagsService';
 import { I18nService } from '../../../classes/services/I18nService';

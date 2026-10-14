@@ -6,10 +6,7 @@ import {
   it,
   vi,
 } from 'vitest';
-import {
-  createUiClientCommonContainer,
-  resolveConfig,
-} from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 
 import type { CaseDbConfig } from '../../models/config.models';
 
@@ -60,7 +57,7 @@ describe('MapUtil', () => {
 
   describe('getPieChartRadius', () => {
     beforeAll(() => {
-      createUiClientCommonContainer({
+      DependencyContainerUtil.createUiClientCommonContainer({
         map: {
           MIN_PIE_CHART_RADIUS: 4,
         },
@@ -83,7 +80,7 @@ describe('MapUtil', () => {
         // test where minNumCases === maxNumCases (result should be maxArea)
         [[1, 1487, { ...statisticsBase, maxNumCases: 1, minNumCases: 1 }], 21.76],
         // test where numCases === minNumCases (result should be minArea)
-        [[1, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], resolveConfig<CaseDbConfig>().map.MIN_PIE_CHART_RADIUS],
+        [[1, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], DependencyContainerUtil.resolveConfig<CaseDbConfig>().map.MIN_PIE_CHART_RADIUS],
         // test where numCases === maxNumCases (result should be maxArea
         [[9, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], 21.76],
         // test where numCases is some where in between minNumCases and maxNumCases (area should be proportional)

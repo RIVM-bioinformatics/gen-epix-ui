@@ -11,7 +11,7 @@ import last from 'lodash/last';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
-import { API_ORGANIZATION_TOKEN } from '../../../models/api.models';
+import { API_ORGANIZATION_TOKEN } from '../../../constants/api.constants';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import type { MyNonIndexRouteObject } from '../../../models/react-router.models';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';

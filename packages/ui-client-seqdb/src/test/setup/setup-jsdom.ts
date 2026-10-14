@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 
 import { setupSeqDb } from '../../setup/setup';
 import { SeqDbStandardConfigUtil } from '../../utils/SeqDbStandardConfigUtil';
@@ -13,7 +13,7 @@ export const setupTestEnvironment = () => {
     ...SeqDbStandardConfigUtil.createConfig(),
     theme: createSeqDbDemoTheme('light'),
   };
-  setupSeqDb(createUiClientCommonContainer(config));
+  setupSeqDb(DependencyContainerUtil.createUiClientCommonContainer(config));
 
   vi.setConfig({
     testTimeout: 10000,

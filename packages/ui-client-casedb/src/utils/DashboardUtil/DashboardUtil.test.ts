@@ -7,7 +7,7 @@ import {
   vi,
 } from 'vitest';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
-import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import type { FieldValues } from 'react-hook-form';
 
 import {
@@ -153,7 +153,7 @@ const mockDashboard = (overrides: Partial<CaseDbConfig['dashboard']>): CaseDbCon
   dashboardConfig = {
     dashboard: overrides,
   } as unknown as CaseDbConfig;
-  createUiClientCommonContainer(dashboardConfig);
+  DependencyContainerUtil.createUiClientCommonContainer(dashboardConfig);
   return dashboardConfig;
 };
 

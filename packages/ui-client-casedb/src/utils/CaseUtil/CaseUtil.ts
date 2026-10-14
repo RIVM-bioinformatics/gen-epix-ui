@@ -12,7 +12,7 @@ import {
   CaseDbCaseApi,
   CaseDbColType,
 } from '@gen-epix/api-casedb';
-import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
@@ -111,7 +111,7 @@ export class CaseUtil {
   }
 
   public static getMissingRowValue(raw: string, machineReadable = true): CaseTypeRowValue {
-    const { DATA_MISSING_CHARACTER } = resolveConfig<CaseDbConfig>().epi;
+    const { DATA_MISSING_CHARACTER } = DependencyContainerUtil.resolveConfig<CaseDbConfig>().epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     return {
@@ -130,7 +130,7 @@ export class CaseUtil {
       return CaseUtil.getMappedValue(content[col.id], col, completeCaseType, machineReadable);
     }
 
-    const { DATA_MISSING_CHARACTER } = resolveConfig<CaseDbConfig>().epi;
+    const { DATA_MISSING_CHARACTER } = DependencyContainerUtil.resolveConfig<CaseDbConfig>().epi;
     const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
 
     const rowValue: CaseTypeRowValue = {

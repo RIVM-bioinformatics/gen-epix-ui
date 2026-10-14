@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 
 import { setupOmopDb } from '../../setup/setup';
 import { OmopDbStandardConfigUtil } from '../../utils/OmopDbStandardConfigUtil';
@@ -13,7 +13,7 @@ export const setupTestEnvironment = () => {
     ...OmopDbStandardConfigUtil.createConfig(),
     theme: createOmopDbDemoTheme('light'),
   };
-  setupOmopDb(createUiClientCommonContainer(config));
+  setupOmopDb(DependencyContainerUtil.createUiClientCommonContainer(config));
   vi.setConfig({
     testTimeout: 10000,
   });

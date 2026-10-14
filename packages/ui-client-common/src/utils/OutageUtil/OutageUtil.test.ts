@@ -8,7 +8,7 @@ import {
   vi,
 } from 'vitest';
 
-import { createUiClientCommonContainer } from '../../classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '../DependencyContainerUtil';
 import type { ConfigBase } from '../../models/config.models';
 
 import { OutageUtil } from './OutageUtil';
@@ -19,7 +19,7 @@ describe('OutageUtil', () => {
       const date = new Date(2020, 5, 1, 10, 0, 0);
       vi.useFakeTimers();
       vi.setSystemTime(date);
-      createUiClientCommonContainer({
+      DependencyContainerUtil.createUiClientCommonContainer({
         outages: {
           NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES: 8,
         },

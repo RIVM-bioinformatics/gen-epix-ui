@@ -13,7 +13,7 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import { LogService } from '@gen-epix/ui-client-common/classes/services/LogService';
 import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
@@ -139,7 +139,7 @@ export class CaseDbDownloadUtil {
 
   public static getExportFileName(baseName: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): string {
     return t('{{date}}--{{applicationName}}--{{caseTypeName}}--{{baseName}}', {
-      applicationName: StringUtil.createSlug(resolveConfig<CaseDbConfig>().applicationName),
+      applicationName: StringUtil.createSlug(DependencyContainerUtil.resolveConfig<CaseDbConfig>().applicationName),
       baseName: StringUtil.createSlug(baseName),
       caseTypeName: StringUtil.createSlug(completeCaseType.name),
       date: format(new Date(), DATE_FORMAT.DATE),
@@ -147,7 +147,7 @@ export class CaseDbDownloadUtil {
   }
 
   public static getTemplateFileName(completeCaseType: CaseDbCompleteCaseType): string {
-    return `${StringUtil.createSlug(resolveConfig<CaseDbConfig>().applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
+    return `${StringUtil.createSlug(DependencyContainerUtil.resolveConfig<CaseDbConfig>().applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
   }
 
   private static getColsForImportExport(colIds: string[], completeCaseType: CaseDbCompleteCaseType): CaseDbCol[] {
