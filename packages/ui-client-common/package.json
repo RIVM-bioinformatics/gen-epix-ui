@@ -511,7 +511,6 @@
     "immer": "11.1.21",
     "lodash": "4.18.1",
     "oidc-client-ts": "3.5.0",
-    "reflect-metadata": "0.2.2",
     "use-debounce": "10.1.1",
     "uuid": "14.0.3",
     "zustand": "5.0.15"
@@ -546,6 +545,7 @@
     "i18next": "26.4.4",
     "jsdom": "30.1.2",
     "playwright": "1.64.1",
+    "reflect-metadata": "0.2.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-error-boundary": "6.1.6",

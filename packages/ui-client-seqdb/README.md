@@ -34,18 +34,23 @@ Refer to `package.json` for the full list of peer dependencies.
 
 ```tsx
 import { createRoot } from 'react-dom/client';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
-import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   SeqDbApp,
-  setupSeqDb,
-} from '@gen-epix/ui-client-seqdb';
+} from '@gen-epix/ui-client-seqdb/components/app/SeqDbApp';
+import { setupSeqDb } from '@gen-epix/ui-client-seqdb/setup/setup';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 const init = async () => {
-  await I18nService.getInstance().init({
+  const config = {
+    // provide a SeqDbConfig implementation here
+  };
+  const container = DependencyContainerUtil.createUiClientCommonContainer(config);
+
+  await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
       return Promise.resolve(
         WindowService.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE)
@@ -73,11 +78,6 @@ const init = async () => {
       );
     },
   });
-
-  const config = {
-    // add your config here
-  };
-  const container = createUiClientCommonContainer(config);
 
   setupSeqDb(container);
 

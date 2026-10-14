@@ -36,6 +36,7 @@ pnpm add @gen-epix/api-casedb axios
 ## Usage
 
 ```ts
+import { container } from 'tsyringe';
 import { CaseDbBaseAPI, CaseDbCaseApi } from '@gen-epix/api-casedb';
 
 CaseDbBaseAPI.baseUrl = 'https://your-casedb-api/api';
@@ -47,7 +48,7 @@ CaseDbBaseAPI.onRequest = [
   },
 ];
 
-const cases = await CaseDbCaseApi.getInstance().getCases();
+const caseTypes = await container.resolve(CaseDbCaseApi).caseTypesGetAll();
 ```
 
 ## Regenerating the client

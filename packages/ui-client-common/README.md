@@ -42,14 +42,19 @@ The example below shows the minimal bootstrap for a host application that uses `
 import { createRoot } from 'react-dom/client';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { App } from '@gen-epix/ui-client-common/components/app/App';
-import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 const init = async () => {
-  await I18nService.getInstance().init({
+  const config = {
+    // provide a ConfigBase implementation here
+  };
+  const container = DependencyContainerUtil.createUiClientCommonContainer(config);
+
+  await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
       return Promise.resolve(
         WindowService.getInstance().window.localStorage.getItem(LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE)
@@ -67,11 +72,6 @@ const init = async () => {
       );
     },
   });
-
-  const config = {
-    // add your config here
-  };
-  const container = createUiClientCommonContainer(config);
 
   setupUi();
 

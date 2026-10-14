@@ -35,6 +35,7 @@ pnpm add @gen-epix/api-seqdb axios
 ## Usage
 
 ```ts
+import { container } from 'tsyringe';
 import { SeqDbBaseAPI, SeqDbSeqApi } from '@gen-epix/api-seqdb';
 
 SeqDbBaseAPI.baseUrl = 'https://your-seqdb-api/api';
@@ -46,7 +47,7 @@ SeqDbBaseAPI.onRequest = [
   },
 ];
 
-const sequences = await SeqDbSeqApi.getInstance().getSequences();
+const alleles = await container.resolve(SeqDbSeqApi).allelesGetAll();
 ```
 
 ## Regenerating the client

@@ -34,6 +34,7 @@ pnpm add @gen-epix/api-omopdb axios
 ## Usage
 
 ```ts
+import { container } from 'tsyringe';
 import { OmopDbBaseAPI, OmopDbOmopApi } from '@gen-epix/api-omopdb';
 
 OmopDbBaseAPI.baseUrl = 'https://your-omopdb-api/api';
@@ -45,7 +46,7 @@ OmopDbBaseAPI.onRequest = [
   },
 ];
 
-const data = await OmopDbOmopApi.getInstance().getOmopData();
+const careSites = await container.resolve(OmopDbOmopApi).careSitesGetAll();
 ```
 
 ## Regenerating the client

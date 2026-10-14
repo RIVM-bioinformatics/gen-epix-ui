@@ -1,12 +1,12 @@
 # Gen-EpiX: Genomic Epidemiology platform for disease X - Frontend UI Library - Demo client [beta]
 
-![gen-epix-logo](../.https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/gen-epix_logo_full.svg)
+![gen-epix-logo](https://github.com/RIVM-bioinformatics/gen-epix/raw/main/docs/assets/gen-epix_logo_full.svg)
 
 Genomic Epidemiology platform for disease X
 
 ---
 
-Gen-EpiX is platform for visualizing and analyzing genomic epidemiology data. It can be used for any disease and has very fine-grained access controls to enable collaboration between multiple organizations. It does not include, by design, bioinformatics pipelines or any other data analysis pipelines.
+Gen-EpiX is a platform for visualizing and analyzing genomic epidemiology data. It can be used for any disease and has very fine-grained access controls to enable collaboration between multiple organizations. It does not include, by design, bioinformatics pipelines or any other data analysis pipelines.
 
 The platform is currently at the beta release stage and as such not yet usable for production. We are currently to get the platform released, for use in the Netherlands as the official national platform for laboratory-based surveillance of infectious diseases. Feel free to [contact us](mailto:ivo.van.walle@rivm.nl) if you are interested.
 
@@ -17,12 +17,12 @@ The platform is currently at the beta release stage and as such not yet usable f
 Key characteristics:
 
 - **Authentication** — integrates with an OIDC provider; an optional local OIDC mock server is included for development
-- **Theming** — uses `@gen-epix/demo-theme` and MUI's `createTheme` to apply a custom Gen-EpiX visual theme
+- **Theming** — uses the Case DB package's `createCaseDbDemoTheme` helper
 - **Internationalisation** — powered by [i18next](https://www.i18next.com/) with English and Dutch locale files; includes tooling to detect missing or stale translations
 - **Routing** — uses [React Router](https://reactrouter.com/) for client-side navigation
 - **Development server** — served over HTTPS via Vite with local SSL certificates (mkcert)
 
-This package is not intended for production deployment. Its purpose is to showcase platform capabilities and serve as a starting point for building a production client on top of `@gen-epix/ui-client-common`.
+This package is not intended for production deployment. Its purpose is to showcase platform capabilities and serve as a starting point for building a production client on top of `@gen-epix/ui-client-casedb`.
 
 ## Installation
 
@@ -30,7 +30,7 @@ This package is not intended for production deployment. Its purpose is to showca
 
 Make sure you have node and pnpm installed.
 
-### SSL installation
+### SSL certificates
 
 Install mkcert: [docs](https://github.com/FiloSottile/mkcert)
 
@@ -40,17 +40,19 @@ Goto your home directory (`~`) and run:
 
 `mkcert -key-file key.pem -cert-file cert.pem localhost 127.0.0.1`
 
-Two files have now been created in your home directory `key.pem` and `cert.pem`. Copy these two files to the cert directory of this project (root directory).
+Copy the generated `key.pem` and `cert.pem` files to the repository's `cert/` directory. The Vite configuration reads certificates from there.
 
 ### OIDC Mock server installation (optional)
 
-Copy `oidc-mock-server.config.example.json` to `oidc-mock-server.config.json` (in the root of this repository) and make changes in `oidc-mock-server.config.json`
+Copy `oidc-mock-server.config.example.json` to `oidc-mock-server.config.json` in the repository root and adjust it as needed.
 
 ## Running
 
-**Note: This front-end requires a running backend.**
+The demo requires a running Case DB backend. From the repository root, start the Vite app together with its OIDC mock server:
 
-run `pnpm start`
+```sh
+pnpm start
+```
 
 ## Funding
 
