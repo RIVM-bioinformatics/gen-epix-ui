@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.5.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.5.0...ui-client-casedb-v4.5.1) (2026-10-14)
+
+
+### Bug Fixes
+
+* fix depenendy injection ([#196](https://github.com/RIVM-bioinformatics/gen-epix-ui/issues/196)) ([880f20b](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/880f20bacd1632be4083d7c7848d088504562a58))
+
 ## [4.5.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.4.0...ui-client-casedb-v4.5.0) (2026-10-14)
 
 
