@@ -1,6 +1,6 @@
 import type { TFunction } from 'i18next';
 import type { CaseDbColType } from '@gen-epix/api-casedb';
-import type { ConfigBase } from '@gen-epix/ui-client-common/models/config';
+import type { ConfigBase } from '@gen-epix/ui-client-common/models/config.models';
 import type { Range } from 'colorjs.io';
 import type { FieldValues } from 'react-hook-form';
 import type { ReactElement } from 'react';
@@ -10,7 +10,7 @@ import type {
   DashboardArrangementWidgetAssignments,
   WidgetDataBase,
   WidgetsConfig,
-} from './dashboard';
+} from './dashboard.models';
 
 export interface CaseDbConfig extends ConfigBase {
   dashboard: {

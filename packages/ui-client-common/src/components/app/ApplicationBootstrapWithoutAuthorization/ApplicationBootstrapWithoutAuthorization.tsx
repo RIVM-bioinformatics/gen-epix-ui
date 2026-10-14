@@ -17,14 +17,14 @@ import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/compon
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
-import { API_SYSTEM_TOKEN } from '../../../models/api';
+import { API_SYSTEM_TOKEN } from '../../../models/api.models';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { FeatureFlagsService } from '../../../classes/services/FeatureFlagsService';
 import { I18nService } from '../../../classes/services/I18nService';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
-import { COMMON_QUERY_KEY } from '../../../constants/query';
+import { COMMON_QUERY_KEY } from '../../../constants/query.constants';
 
 
 export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWithChildren): ReactNode => {

@@ -1,7 +1,7 @@
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import type { TreeConfiguration } from '../../models/dashboard';
+import type { TreeConfiguration } from '../../models/dashboard.models';
 import { DataService } from '../../classes/services/DataService';
 
 export class TreeWidgetUtil {

@@ -30,7 +30,7 @@ import type {
 import { useTranslation } from 'react-i18next';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import type { CheckboxOption } from '../../../models/form';
+import type { CheckboxOption } from '../../../models/form.models';
 import { FormUtil } from '../../../utils/FormUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';

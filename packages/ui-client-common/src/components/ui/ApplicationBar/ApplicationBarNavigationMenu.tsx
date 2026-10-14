@@ -17,7 +17,7 @@ import {
 import type { MouseEvent } from 'react';
 
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
-import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import type { MyNonIndexRouteObject } from '../../../models/react-router.models';
 import { RouterService } from '../../../classes/services/RouterService';
 
 const NavLink = styled(BaseNavLink)(({ theme }) => ({

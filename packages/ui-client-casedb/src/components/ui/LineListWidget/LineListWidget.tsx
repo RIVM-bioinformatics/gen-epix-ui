@@ -34,12 +34,12 @@ import type {
   TableColumnText,
   TableRowAndColumnParams,
   TableRowParams,
-} from '@gen-epix/ui-client-common/models/table';
+} from '@gen-epix/ui-client-common/models/table.models';
 import type { TableRef } from '@gen-epix/ui-client-common/components/ui/Table';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
 import { Table } from '@gen-epix/ui-client-common/components/ui/Table';
-import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui-client-common/models/table';
+import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui-client-common/models/table.models';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
@@ -50,21 +50,21 @@ import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { LegendaItem } from '../LegendaItem';
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { LineListCaseSetMembersService } from '../../../classes/services/LineListService/LineListCaseSetMembersService';
-import type { LineListWidgetData } from '../../../models/dashboard';
+import type { LineListWidgetData } from '../../../models/dashboard.models';
 import type {
   Stratification,
   StratificationLegendaItem,
-} from '../../../models/stratification';
-import { STRATIFICATION_MODE } from '../../../models/stratification';
+} from '../../../models/stratification.models';
+import { STRATIFICATION_MODE } from '../../../models/stratification.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
 import { CASE_INFO_DIALOG_TAB_NAME } from '../CaseInfoDialog';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { LineListIsOwnCaseService } from '../../../classes/services/LineListService/LineListIsOwnCaseService';
 

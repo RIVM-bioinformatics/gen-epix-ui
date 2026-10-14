@@ -3,7 +3,7 @@ import type { UiClientCommonContainer } from '@gen-epix/ui-client-common/classes
 import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { useMemo } from 'react';
 
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { createUserProfileStore } from '../../../stores/userProfileStore';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 

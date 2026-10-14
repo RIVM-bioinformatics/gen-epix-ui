@@ -27,7 +27,7 @@ import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 import { CaseContentForm } from '../CaseContentForm';
 
 export type CaseInfoFormProps = {

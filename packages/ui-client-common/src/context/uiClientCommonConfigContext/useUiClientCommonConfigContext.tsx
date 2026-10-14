@@ -1,6 +1,6 @@
 import { use } from 'react';
 
-import type { ConfigBase } from '../../models/config';
+import type { ConfigBase } from '../../models/config.models';
 
 import type { UiClientCommonConfig } from './UiClientCommonConfigContext';
 import { UiClientCommonConfigContext } from './UiClientCommonConfigContext';

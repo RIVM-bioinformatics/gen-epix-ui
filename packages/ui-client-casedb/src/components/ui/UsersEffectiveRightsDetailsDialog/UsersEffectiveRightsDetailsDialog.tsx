@@ -41,7 +41,7 @@ import {
   useColNameFactory,
 } from '../../../dataHooks/useColsQuery';
 import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollectionsQuery';
-import type { UserEffectiveRight } from '../../../models/caseAccess';
+import type { UserEffectiveRight } from '../../../models/case-access.models';
 import { CustomTabPanel } from '../CustomTabPanel';
 
 

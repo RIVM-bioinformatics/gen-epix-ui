@@ -1,6 +1,6 @@
 import '@mui/material';
 
-import type { GenEpixCaseDbUiTheme } from '../models/theme';
+import type { GenEpixCaseDbUiTheme } from '../models/theme.models';
 
 
 declare module '@mui/material/styles' {

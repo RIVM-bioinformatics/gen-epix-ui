@@ -4,15 +4,15 @@ import { useMemo } from 'react';
 import type { CommonDbOrganization } from '@gen-epix/api-commondb';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api';
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
 import type {
   UseMap,
   UseOptions,
-} from '../../models/dataHooks';
+} from '../../models/data-hooks.models';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../constants/query';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 
 export const useOrganizationsQuery = (): UseQueryResult<CommonDbOrganization[]> => {
   return useQueryMemo({

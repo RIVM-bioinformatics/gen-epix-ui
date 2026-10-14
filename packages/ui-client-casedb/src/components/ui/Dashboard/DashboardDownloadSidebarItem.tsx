@@ -22,7 +22,7 @@ import type {
   DownloadConfigSection,
 } from '../../../classes/services/EventBusService';
 import { EventBusService } from '../../../classes/services/EventBusService';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 
 export type DashboardDownloadSidebarItemProps = SidebarItemSharedProps;

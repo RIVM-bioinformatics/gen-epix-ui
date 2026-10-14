@@ -27,7 +27,7 @@ import type {
 } from 'react-hook-form';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import type { RadioButtonOption } from '../../../models/form';
+import type { RadioButtonOption } from '../../../models/form.models';
 import { FormUtil } from '../../../utils/FormUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 

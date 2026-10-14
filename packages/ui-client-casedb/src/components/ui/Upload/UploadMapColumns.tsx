@@ -32,10 +32,10 @@ import { useIdentifierIssuerOwnOrganizationOptionsQuery } from '@gen-epix/ui-cli
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { Select } from '@gen-epix/ui-core-form/components/fields/Select';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 
 import { useColMapQuery } from '../../../dataHooks/useColsQuery';
-import type { UploadMappedColumnsFormFields } from '../../../models/upload';
+import type { UploadMappedColumnsFormFields } from '../../../models/upload.models';
 import { UploadStoreContext } from '../../../stores/uploadStore';
 import { UploadUtil } from '../../../utils/UploadUtil';
 

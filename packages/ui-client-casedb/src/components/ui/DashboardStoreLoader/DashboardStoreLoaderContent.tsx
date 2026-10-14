@@ -9,7 +9,7 @@ import type {
   CaseDbCaseSet,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import type { TableColumnDimension } from '@gen-epix/ui-client-common/models/table';
+import type { TableColumnDimension } from '@gen-epix/ui-client-common/models/table.models';
 import { TableStoreContextProvider } from '@gen-epix/ui-client-common/stores/tableStore';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
@@ -19,7 +19,7 @@ import {
   DashboardStoreContext,
 } from '../../../stores/dashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 type DashboardStoreLoaderContentProps = PropsWithChildren<{
   readonly caseSet: CaseDbCaseSet;

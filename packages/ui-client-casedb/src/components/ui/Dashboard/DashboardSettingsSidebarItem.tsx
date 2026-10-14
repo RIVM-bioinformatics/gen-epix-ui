@@ -11,7 +11,7 @@ import type { SidebarItemSharedProps } from '@gen-epix/ui-client-common/componen
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { SidebarItem } from '@gen-epix/ui-client-common/components/ui/Sidebar';
 
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 import { DashboardGeneralSettingsForm } from './DashboardGeneralSettingsForm';
 import { DashboardLayoutSettingsForm } from './DashboardLayoutSettingsForm';

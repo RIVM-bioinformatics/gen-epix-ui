@@ -1,4 +1,4 @@
-import type { UnwrapArray } from '@gen-epix/ui-core/models/generic';
+import type { UnwrapArray } from '@gen-epix/ui-core/models/generic.models';
 
 import { BooleanFilter } from '../../../classes/filters/BooleanFilter';
 import { DateFilter } from '../../../classes/filters/DateFilter';
@@ -6,7 +6,7 @@ import { GeoFilter } from '../../../classes/filters/GeoFilter';
 import { MultiSelectFilter } from '../../../classes/filters/MultiSelectFilter';
 import { NumberRangeFilter } from '../../../classes/filters/NumberRangeFilter';
 import { TextFilter } from '../../../classes/filters/TextFilter';
-import type { Filters } from '../../../models/filter';
+import type { Filters } from '../../../models/filter.models';
 import { BooleanFilterField } from '../../filters/BooleanFilterField';
 import { DateFilterField } from '../../filters/DateFilterField';
 import { GeoFilterField } from '../../filters/GeoFilterField';

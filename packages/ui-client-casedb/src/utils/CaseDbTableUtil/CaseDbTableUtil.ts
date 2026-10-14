@@ -9,7 +9,7 @@ import type {
   GetTableCellValueProps,
   TableColumn,
   TableColumnText,
-} from '@gen-epix/ui-client-common/models/table';
+} from '@gen-epix/ui-client-common/models/table.models';
 
 import { DataService } from '../../classes/services/DataService';
 import { CaseUtil } from '../CaseUtil';

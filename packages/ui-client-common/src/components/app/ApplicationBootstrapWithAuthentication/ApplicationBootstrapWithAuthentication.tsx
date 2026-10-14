@@ -19,7 +19,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
-import { API_SYSTEM_TOKEN } from '../../../models/api';
+import { API_SYSTEM_TOKEN } from '../../../models/api.models';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { outagesStore } from '../../../stores/outagesStore';
 import { OutageUtil } from '../../../utils/OutageUtil';
@@ -27,7 +27,7 @@ import { QueryClientService } from '../../../classes/services/QueryClientService
 import { OutageList } from '../../ui/OutageList';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
-import { COMMON_QUERY_KEY } from '../../../constants/query';
+import { COMMON_QUERY_KEY } from '../../../constants/query.constants';
 
 
 export const ApplicationBootstrapWithAuthentication = ({ children }: PropsWithChildren): ReactNode => {

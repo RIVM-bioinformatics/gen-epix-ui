@@ -2,7 +2,7 @@ import { addHours } from 'date-fns';
 import type { CommonDbOutage } from '@gen-epix/api-commondb';
 
 import { resolveConfig } from '../../classes/containers/UiClientCommonContainer';
-import type { CategorizedOutages } from '../../models/outage';
+import type { CategorizedOutages } from '../../models/outage.models';
 
 export class OutageUtil {
   public static getCategorizedOutages(outages: CommonDbOutage[]): CategorizedOutages {

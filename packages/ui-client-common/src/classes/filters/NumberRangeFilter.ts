@@ -2,7 +2,7 @@ import isFinite from 'lodash/isFinite';
 import type { CommonDbNumberRangeFilter } from '@gen-epix/api-commondb';
 import { CommonDbComparisonOperator } from '@gen-epix/api-commondb';
 
-import type { Filter } from '../../models/filter';
+import type { Filter } from '../../models/filter.models';
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 

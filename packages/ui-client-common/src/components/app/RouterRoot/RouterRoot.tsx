@@ -24,7 +24,7 @@ import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService'
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
-import { API_AUTH_TOKEN } from '../../../models/api';
+import { API_AUTH_TOKEN } from '../../../models/api.models';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
 import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';
@@ -32,7 +32,7 @@ import { ChooseIdentityProviderPage } from '../../../pages/ChooseIdentityProvide
 import { UserManagerUtil } from '../../../utils/UserManagerUtil';
 import { NotificationsStack } from '../../ui/Notifications';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
-import type { IdentityProviderWithAvailability } from '../../../models/auth';
+import type { IdentityProviderWithAvailability } from '../../../models/auth.models';
 import { useConfig } from '../../../hooks/useConfig';
 import { PageContainer } from '../../ui/PageContainer';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
@@ -40,7 +40,7 @@ import { ApplicationBootstrapWithAuthentication } from '../ApplicationBootstrapW
 import { AuthenticationWrapper } from '../AuthenticationWrapper';
 import { AuthorizationWrapper } from '../AuthorizationWrapper';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../../constants/query';
+import { COMMON_QUERY_KEY } from '../../../constants/query.constants';
 import { RouterService } from '../../../classes/services/RouterService';
 
 

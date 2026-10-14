@@ -1,7 +1,7 @@
 import { createStore } from 'zustand';
 import type { CommonDbOutage } from '@gen-epix/api-commondb';
 
-import type { CategorizedOutages } from '../../models/outage';
+import type { CategorizedOutages } from '../../models/outage.models';
 
 export type OutagesStore = OutagesStoreActions & OutagesStoreState;
 

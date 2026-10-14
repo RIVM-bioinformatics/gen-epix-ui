@@ -11,7 +11,7 @@ import {
 } from 'tsyringe';
 
 import { AuthorizationService } from '../AuthorizationService';
-import type { AuthState } from '../../../models/auth';
+import type { AuthState } from '../../../models/auth.models';
 import { oidcStore } from '../../../stores/oidcStore';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 

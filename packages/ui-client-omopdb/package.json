@@ -18,13 +18,13 @@
       "types": "./src/components/app/OmopDbApp/index.ts",
       "import": "./src/components/app/OmopDbApp/index.ts"
     },
-    "./models/config": {
-      "types": "./src/models/config.ts",
-      "import": "./src/models/config.ts"
+    "./models/config.models": {
+      "types": "./src/models/config.models.ts",
+      "import": "./src/models/config.models.ts"
     },
-    "./models/theme": {
-      "types": "./src/models/theme.ts",
-      "import": "./src/models/theme.ts"
+    "./models/theme.models": {
+      "types": "./src/models/theme.models.ts",
+      "import": "./src/models/theme.models.ts"
     },
     "./pages/HomePage": {
       "types": "./src/pages/HomePage/index.ts",
@@ -148,13 +148,13 @@
         "types": "./dist/components/app/OmopDbApp/index.d.ts",
         "import": "./dist/components/app/OmopDbApp/index.js"
       },
-      "./models/config": {
-        "types": "./dist/models/config.d.ts",
-        "import": "./dist/models/config.js"
+      "./models/config.models": {
+        "types": "./dist/models/config.models.d.ts",
+        "import": "./dist/models/config.models.js"
       },
-      "./models/theme": {
-        "types": "./dist/models/theme.d.ts",
-        "import": "./dist/models/theme.js"
+      "./models/theme.models": {
+        "types": "./dist/models/theme.models.d.ts",
+        "import": "./dist/models/theme.models.js"
       },
       "./pages/HomePage": {
         "types": "./dist/pages/HomePage/index.d.ts",

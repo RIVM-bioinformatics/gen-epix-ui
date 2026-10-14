@@ -1,6 +1,6 @@
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
-import type { CASEDB_QUERY_KEY } from '../../../../constants/query';
+import type { CASEDB_QUERY_KEY } from '../../../../constants/query.constants';
 
 
 type CaseIdCache = { [caseId: string]: boolean };

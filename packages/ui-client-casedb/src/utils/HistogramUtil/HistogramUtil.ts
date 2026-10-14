@@ -11,10 +11,10 @@ import type { Theme } from '@mui/material';
 import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
 import { DataService } from '../../classes/services/DataService';
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseDbConfig } from '../../models/config.models';
 import { CaseUtil } from '../CaseUtil';
 import { StratificationUtil } from '../StratificationUtil';
-import { STRATIFICATION_MODE } from '../../models/stratification';
+import { STRATIFICATION_MODE } from '../../models/stratification.models';
 import { CaseDbDataUtil } from '../CaseDbDataUtil';
 
 export type GetChartOptionsParams = {

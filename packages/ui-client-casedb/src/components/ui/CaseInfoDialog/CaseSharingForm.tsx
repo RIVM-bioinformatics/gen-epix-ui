@@ -25,12 +25,12 @@ import { NotificationService } from '@gen-epix/ui-client-common/classes/services
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 export type CaseSharingFormProps = {
   readonly caseDbCase: CaseDbCase;

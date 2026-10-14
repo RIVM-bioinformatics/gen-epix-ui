@@ -30,13 +30,13 @@ import type {
   TableColumnParams,
   TableRowAndColumnParams,
   TableRowParams,
-} from '@gen-epix/ui-client-common/models/table';
+} from '@gen-epix/ui-client-common/models/table.models';
 import type { TableStore } from '@gen-epix/ui-client-common/stores/tableStore';
 import {
   Table,
   TableMenu,
 } from '@gen-epix/ui-client-common/components/ui/Table';
-import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui-client-common/models/table';
+import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui-client-common/models/table.models';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { useInitializeTableStore } from '@gen-epix/ui-client-common/hooks/useInitializeTableStore';
 

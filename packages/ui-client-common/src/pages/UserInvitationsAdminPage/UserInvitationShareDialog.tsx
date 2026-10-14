@@ -13,7 +13,7 @@ import { format } from 'date-fns';
 import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 import { CopyToClipboardButton } from '@gen-epix/ui-core-components/components/CopyToClipboardButton';
 import type {
   WithDialogRefMethods,

@@ -86,9 +86,9 @@
       "types": "./src/hooks/useIsFormFieldRequiredFromSchema/index.ts",
       "import": "./src/hooks/useIsFormFieldRequiredFromSchema/index.ts"
     },
-    "./models/form": {
-      "types": "./src/models/form.ts",
-      "import": "./src/models/form.ts"
+    "./models/form.models": {
+      "types": "./src/models/form.models.ts",
+      "import": "./src/models/form.models.ts"
     },
     "./setup/setup": {
       "types": "./src/setup/setup.ts",
@@ -280,9 +280,9 @@
         "types": "./dist/hooks/useIsFormFieldRequiredFromSchema/index.d.ts",
         "import": "./dist/hooks/useIsFormFieldRequiredFromSchema/index.js"
       },
-      "./models/form": {
-        "types": "./dist/models/form.d.ts",
-        "import": "./dist/models/form.js"
+      "./models/form.models": {
+        "types": "./dist/models/form.models.d.ts",
+        "import": "./dist/models/form.models.js"
       },
       "./setup/setup": {
         "types": "./dist/setup/setup.d.ts",

@@ -25,16 +25,16 @@ import { useTranslation } from 'react-i18next';
 import isArray from 'lodash/isArray';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import type { StratificationLegendaItem } from '../../../models/stratification';
+import type { StratificationLegendaItem } from '../../../models/stratification.models';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
-} from '../../../models/stratification';
+} from '../../../models/stratification.models';
 import { ContextMenu } from '../ContextMenu';
 import type { ContextMenuConfigWithAnchor } from '../ContextMenu';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 
 export type LegendaItemProps = {

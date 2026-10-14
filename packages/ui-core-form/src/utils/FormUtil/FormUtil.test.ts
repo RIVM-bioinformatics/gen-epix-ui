@@ -9,8 +9,8 @@ import type {
   FieldValues,
 } from 'react-hook-form';
 
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
-import type { FormFieldDefinition } from '../../models/form';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form.models';
+import type { FormFieldDefinition } from '../../models/form.models';
 
 import { FormUtil } from './FormUtil';
 

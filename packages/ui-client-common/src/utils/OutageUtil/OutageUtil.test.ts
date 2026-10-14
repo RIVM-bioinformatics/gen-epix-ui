@@ -9,7 +9,7 @@ import {
 } from 'vitest';
 
 import { createUiClientCommonContainer } from '../../classes/containers/UiClientCommonContainer';
-import type { ConfigBase } from '../../models/config';
+import type { ConfigBase } from '../../models/config.models';
 
 import { OutageUtil } from './OutageUtil';
 

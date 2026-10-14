@@ -5,7 +5,7 @@ import {
 } from 'vitest';
 import { Decimal } from 'decimal.js';
 
-import type { TreeNode } from '../../models/tree';
+import type { TreeNode } from '../../models/tree.models';
 
 import { NewickUtil } from './NewickUtil';
 

@@ -35,12 +35,12 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { API_SYSTEM_TOKEN } from '../../../models/api';
+import { API_SYSTEM_TOKEN } from '../../../models/api.models';
 import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { useConfig } from '../../../hooks/useConfig';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../../constants/query';
+import { COMMON_QUERY_KEY } from '../../../constants/query.constants';
 
 
 export interface LicensesDialogOpenProps {

@@ -11,21 +11,21 @@ import { t } from 'i18next';
 import type { Range } from 'colorjs.io';
 
 import { DataService } from '../../classes/services/DataService';
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseDbConfig } from '../../models/config.models';
 import type {
   CaseTypeRowValue,
   ConceptBoundaryProps,
-} from '../../models/caseDb';
+} from '../../models/case-db.models';
 import type {
   StratifiableColumn,
   Stratification,
   StratificationLegendaItem,
-} from '../../models/stratification';
+} from '../../models/stratification.models';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
   STRATIFICATION_SIMILAR_CASE,
-} from '../../models/stratification';
+} from '../../models/stratification.models';
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
 import { CaseDbDataUtil } from '../CaseDbDataUtil';

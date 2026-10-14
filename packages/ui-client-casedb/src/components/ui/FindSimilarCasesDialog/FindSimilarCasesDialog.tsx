@@ -55,22 +55,22 @@ import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericFo
 import type {
   AutoCompleteOption,
   FormFieldDefinition,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
-import type { CaseDbConfig } from '../../../models/config';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 import type {
   CaseDbSimilarCaseWithIsOwnCase,
   FindSimilarCasesChartDataPoint,
   FindSimilarCasesOrganizationFilter,
-} from '../../../models/caseDb';
-import type { TreeWidgetDataPersistable } from '../../../models/dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+} from '../../../models/case-db.models';
+import type { TreeWidgetDataPersistable } from '../../../models/dashboard.models';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 
 import { FindSimilarCasesDialogDateRangeChart } from './FindSimilarCasesDialogDateRangeChart';
 

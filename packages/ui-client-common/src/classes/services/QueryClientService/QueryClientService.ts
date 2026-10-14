@@ -11,8 +11,8 @@ import {
   singleton,
 } from 'tsyringe';
 
-import type { GenericData } from '../../../models/data';
-import type { ConfigBase } from '../../../models/config';
+import type { GenericData } from '../../../models/data.models';
+import type { ConfigBase } from '../../../models/config.models';
 
 @singleton()
 export class QueryClientService<TQueryKey extends string = string> {

@@ -6,7 +6,7 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { CaseDbTreeAlgorithm } from '@gen-epix/api-casedb';
 
 import { DataService } from '../../classes/services/DataService';
-import type { TreeConfiguration } from '../../models/dashboard';
+import type { TreeConfiguration } from '../../models/dashboard.models';
 
 import { TreeWidgetUtil } from './TreeWidgetUtil';
 

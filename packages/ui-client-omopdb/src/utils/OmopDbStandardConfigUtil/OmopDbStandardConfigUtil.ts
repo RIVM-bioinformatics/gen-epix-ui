@@ -3,7 +3,7 @@ import { StandardConfigUtil } from '@gen-epix/ui-client-common/utils/StandardCon
 import { t } from 'i18next';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import type { OmopDbConfig } from '../../models/config';
+import type { OmopDbConfig } from '../../models/config.models';
 
 export class OmopDbStandardConfigUtil {
   public static createConfig(): Omit<OmopDbConfig, 'theme'> {

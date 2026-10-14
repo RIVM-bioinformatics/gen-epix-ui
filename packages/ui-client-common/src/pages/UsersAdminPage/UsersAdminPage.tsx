@@ -32,25 +32,25 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type {
   FormFieldDefinition,
   OptionBase,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api';
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
   TableColumn,
   TableRowParams,
-} from '../../models/table';
+} from '../../models/table.models';
 import { TableUtil } from '../../utils/TableUtil';
 import type { CrudPageProps } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
-import type { OmitWithMetaData } from '../../models/data';
-import { COMMON_QUERY_KEY } from '../../constants/query';
+import type { OmitWithMetaData } from '../../models/data.models';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 

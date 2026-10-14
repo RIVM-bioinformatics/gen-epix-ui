@@ -23,7 +23,7 @@ import {
 import noop from 'lodash/noop';
 import type { CaseDbUser } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
-import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
 import { PageContainer } from '@gen-epix/ui-client-common/components/ui/PageContainer';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
@@ -31,8 +31,8 @@ import { useOrganizationMapQuery } from '@gen-epix/ui-client-common/dataHooks/us
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
@@ -42,7 +42,7 @@ import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrgani
 import { useUserAccessCasePoliciesQuery } from '../../dataHooks/useUserAccessCasePoliciesQuery';
 import { useUserShareCasePoliciesQuery } from '../../dataHooks/useUserShareCasePoliciesQuery';
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
-import type { UserEffectiveRight } from '../../models/caseAccess';
+import type { UserEffectiveRight } from '../../models/case-access.models';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 
 

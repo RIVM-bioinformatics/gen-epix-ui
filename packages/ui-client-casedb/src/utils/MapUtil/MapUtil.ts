@@ -8,10 +8,10 @@ import type {
   CaseDbRegion,
 } from '@gen-epix/api-casedb';
 import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
-import type { UnwrapArray } from '@gen-epix/ui-core/models/generic';
+import type { UnwrapArray } from '@gen-epix/ui-core/models/generic.models';
 
-import type { CaseDbConfig } from '../../models/config';
-import type { Stratification } from '../../models/stratification';
+import type { CaseDbConfig } from '../../models/config.models';
+import type { Stratification } from '../../models/stratification.models';
 import { DashboardUtil } from '../DashboardUtil';
 
 

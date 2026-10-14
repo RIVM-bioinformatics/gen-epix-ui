@@ -7,7 +7,7 @@ import { RouterRoot } from '../components/app/RouterRoot';
 import type {
   MyIndexRouteObject,
   MyNonIndexRouteObject,
-} from '../models/reactRouter';
+} from '../models/react-router.models';
 import { AcceptInvitationPage } from '../pages/AcceptInvitationPage';
 import { AdminPage } from '../pages/AdminPage';
 import { PostLoginPage } from '../pages/PostLoginPage';

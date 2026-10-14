@@ -1,4 +1,4 @@
-import type { Loadable } from '../../models/dataHooks';
+import type { Loadable } from '../../models/data-hooks.models';
 
 export class LoadableUtil {
   public static findFirstError(loadables: Loadable[]): unknown {

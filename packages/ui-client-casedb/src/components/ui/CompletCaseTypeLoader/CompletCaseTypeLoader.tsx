@@ -13,7 +13,7 @@ import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/Respon
 import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
 
 import { DataService } from '../../../classes/services/DataService';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 
 export type CompletCaseTypeLoaderProps = PropsWithChildren<{

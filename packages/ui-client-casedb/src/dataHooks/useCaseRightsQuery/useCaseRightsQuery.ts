@@ -5,7 +5,7 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 export const useCaseRightsQuery = (caseIds: string[], caseTypeId: string, enabled: boolean = true): UseQueryResult<CaseDbCaseRights[]> => {

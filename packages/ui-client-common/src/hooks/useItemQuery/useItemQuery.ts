@@ -8,7 +8,7 @@ import type {
   UseQueryOptions,
 } from '@tanstack/react-query';
 
-import type { GenericData } from '../../models/data';
+import type { GenericData } from '../../models/data.models';
 import { useQueryMemo } from '../useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 

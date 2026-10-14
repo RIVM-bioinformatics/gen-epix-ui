@@ -15,7 +15,7 @@ import {
 import { useStore } from 'zustand';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 

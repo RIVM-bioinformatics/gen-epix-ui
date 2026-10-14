@@ -5,8 +5,8 @@ import {
   singleton,
 } from 'tsyringe';
 
-import { CONFIG_TOKEN } from '../../../constants/config';
-import type { ConfigBase } from '../../../models/config';
+import { CONFIG_TOKEN } from '../../../constants/config.constants';
+import type { ConfigBase } from '../../../models/config.models';
 
 
 @singleton()

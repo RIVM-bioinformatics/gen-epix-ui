@@ -6,9 +6,9 @@ import {
 import cloneDeep from 'lodash/cloneDeep';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 
-import type { DashboardArrangementConfig } from '../../models/dashboard';
+import type { DashboardArrangementConfig } from '../../models/dashboard.models';
 import { DashboardUtil } from '../../utils/DashboardUtil';
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseDbConfig } from '../../models/config.models';
 
 
 export type DashboardGeneralSettings = {

@@ -27,7 +27,7 @@ import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/Respon
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 
 import { CaseSummary } from '../CaseSummary';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 import { CasesAlreadyInCaseSetWarningCaseSetLink } from './CasesAlreadyInCaseSetWarningCaseSetLink';
 

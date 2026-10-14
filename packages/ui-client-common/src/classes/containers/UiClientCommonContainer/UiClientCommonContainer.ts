@@ -3,8 +3,8 @@ import { container as rootContainer } from 'tsyringe';
 import type { DependencyContainer } from 'tsyringe';
 
 import { QueryClientService } from '../../services/QueryClientService';
-import { CONFIG_TOKEN } from '../../../constants/config';
-import type { ConfigBase } from '../../../models/config';
+import { CONFIG_TOKEN } from '../../../constants/config.constants';
+import type { ConfigBase } from '../../../models/config.models';
 
 export type UiClientCommonContainer = DependencyContainer;
 

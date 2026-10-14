@@ -26,8 +26,8 @@ import type {
 } from 'react-hook-form';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { CommonDbPermissionType } from '@gen-epix/api-commondb';
-import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/test-id.models';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
@@ -47,13 +47,13 @@ import { useDeleteMutation } from '../../hooks/useDeleteMutation';
 import type { MutationContextEdit } from '../../hooks/useEditMutation';
 import { useEditMutation } from '../../hooks/useEditMutation';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
-import type { GenericData } from '../../models/data';
-import type { Loadable } from '../../models/dataHooks';
+import type { GenericData } from '../../models/data.models';
+import type { Loadable } from '../../models/data-hooks.models';
 import type {
   TableColumn,
   TableRowParams,
   TableSortDirection,
-} from '../../models/table';
+} from '../../models/table.models';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -62,7 +62,7 @@ import { TableUtil } from '../../utils/TableUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import type { COMMON_QUERY_KEY } from '../../constants/query';
+import type { COMMON_QUERY_KEY } from '../../constants/query.constants';
 import { useConfig } from '../../hooks/useConfig';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';

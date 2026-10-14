@@ -2,7 +2,7 @@ import type { UiCoreComponentsConfig } from '@gen-epix/ui-core-components/contex
 import { createContext } from 'react';
 
 import type { UiClientCommonContainer } from '../../classes/containers/UiClientCommonContainer';
-import type { ConfigBase } from '../../models/config';
+import type { ConfigBase } from '../../models/config.models';
 
 export type UiClientCommonConfig<TConfig extends ConfigBase = ConfigBase> = {
   config: TConfig;

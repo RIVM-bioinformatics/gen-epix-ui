@@ -5,7 +5,7 @@ import sumBy from 'lodash/sumBy';
 import {
   DASHBOARD_ARRANGEMENT_ORIENTATION,
   WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/dashboard';
+} from '../../models/dashboard.models';
 import type {
   DashboardArrangement,
   DashboardArrangementCell,
@@ -13,8 +13,8 @@ import type {
   DashboardArrangementWidgetAssignments,
   WidgetDataBase,
   WidgetsConfig,
-} from '../../models/dashboard';
-import type { CaseDbConfig } from '../../models/config';
+} from '../../models/dashboard.models';
+import type { CaseDbConfig } from '../../models/config.models';
 
 export type ArrangementGroupInfo = {
   groupId: string;

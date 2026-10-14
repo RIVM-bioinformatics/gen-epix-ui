@@ -21,7 +21,7 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 import { MenuDataUtil } from '@gen-epix/ui-client-common/utils/MenuDataUtil';
 import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
@@ -32,7 +32,7 @@ import { WidgetMenu } from '../WidgetMenu';
 import { WidgetHeaderIconButton } from '../WidgetHeaderIconButton';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { Warning } from '../Warning';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 

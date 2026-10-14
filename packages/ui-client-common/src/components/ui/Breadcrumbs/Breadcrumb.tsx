@@ -15,7 +15,7 @@ import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
 import { BreadcrumbService } from '../../../classes/services/BreadcrumbService';
 import { RouterService } from '../../../classes/services/RouterService';
-import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import type { MyNonIndexRouteObject } from '../../../models/react-router.models';
 
 type BreadcrumbProps = {
   readonly isLast: boolean;

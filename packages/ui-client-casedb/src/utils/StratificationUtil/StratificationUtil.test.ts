@@ -17,12 +17,12 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
 import { DataService } from '../../classes/services/DataService';
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseDbConfig } from '../../models/config.models';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SIMILAR_CASE,
-} from '../../models/stratification';
-import type { DataCache } from '../../models/caseDb';
+} from '../../models/stratification.models';
+import type { DataCache } from '../../models/case-db.models';
 
 import { StratificationUtil } from './StratificationUtil';
 

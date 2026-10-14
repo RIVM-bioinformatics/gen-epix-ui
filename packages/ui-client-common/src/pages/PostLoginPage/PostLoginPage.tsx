@@ -7,7 +7,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
-import type { AuthState } from '../../models/auth';
+import type { AuthState } from '../../models/auth.models';
 
 export const PostLoginPage = () => {
   const { t } = useTranslation();

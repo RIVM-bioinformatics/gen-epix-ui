@@ -51,8 +51,8 @@ import {
 } from 'date-fns';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
 import { CaseDbDimType } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
@@ -64,13 +64,13 @@ import { EventBusService } from '../../../classes/services/EventBusService';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import type {
   DashboardEpiCurveSettings,
   EpiCurveWidgetData,
-} from '../../../models/dashboard';
+} from '../../../models/dashboard.models';
 
 import { EpiCurveBarChart } from './EpiCurveBarChart';
 import { EpiCurveStackedAreaChart } from './EpiCurveStackedAreaChart';

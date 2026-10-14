@@ -8,14 +8,14 @@ import { useStore } from 'zustand';
 import { useTranslation } from 'react-i18next';
 import { produce } from 'immer';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 
 import { LegendaItem } from '../LegendaItem';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { STRATIFICATION_MODE } from '../../../models/stratification';
-import type { CaseDbConfig } from '../../../models/config';
+import { STRATIFICATION_MODE } from '../../../models/stratification.models';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 export const Grouping = () => {
   const { t } = useTranslation();

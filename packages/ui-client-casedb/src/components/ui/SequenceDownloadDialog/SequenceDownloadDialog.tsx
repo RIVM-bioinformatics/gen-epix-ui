@@ -27,7 +27,7 @@ import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import { Autocomplete } from '@gen-epix/ui-core-form/components/fields/Autocomplete';
-import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
+import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form.models';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';

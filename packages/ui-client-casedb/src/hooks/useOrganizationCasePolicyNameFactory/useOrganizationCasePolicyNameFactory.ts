@@ -3,7 +3,7 @@ import type {
   CaseDbOrganizationAccessCasePolicy,
   CaseDbOrganizationShareCasePolicy,
 } from '@gen-epix/api-casedb';
-import type { UseNameFactory } from '@gen-epix/ui-client-common/models/dataHooks';
+import type { UseNameFactory } from '@gen-epix/ui-client-common/models/data-hooks.models';
 import { DataHookUtil } from '@gen-epix/ui-client-common/utils/DataHookUtil';
 import { useOrganizationMapQuery } from '@gen-epix/ui-client-common/dataHooks/useOrganizationsQuery';
 

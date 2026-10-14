@@ -17,8 +17,8 @@ import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui-client-common/models/table';
-import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+} from '@gen-epix/ui-client-common/models/table.models';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -60,7 +60,7 @@ import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrgan
 import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrganizationShareCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../../dataHooks/useUserAccessCasePoliciesQuery';
 import { useUserShareCasePoliciesQuery } from '../../dataHooks/useUserShareCasePoliciesQuery';
-import type { UserEffectiveRight } from '../../models/caseAccess';
+import type { UserEffectiveRight } from '../../models/case-access.models';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 
 

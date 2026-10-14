@@ -32,7 +32,7 @@ import type {
   CaseDbCol,
   CaseDbColType,
 } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { useStore } from 'zustand';
 import { BarChart } from 'echarts/charts';
@@ -41,7 +41,7 @@ import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
 import intersection from 'lodash/intersection';
 
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { DashboardWidget } from '../Dashboard';
@@ -50,7 +50,7 @@ import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import type { HistogramWidgetData } from '../../../models/dashboard';
+import type { HistogramWidgetData } from '../../../models/dashboard.models';
 import {
   HISTOGRAM_ALLOWED_COL_TYPES,
   HistogramUtil,

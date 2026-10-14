@@ -1,6 +1,6 @@
 import '@mui/material';
 
-import type { GenEpixOmopDbUiTheme } from '../models/theme';
+import type { GenEpixOmopDbUiTheme } from '../models/theme.models';
 
 
 declare module '@mui/material/styles' {

@@ -31,31 +31,31 @@ import type {
   TableStoreActions,
   TableStoreState,
 } from '@gen-epix/ui-client-common/stores/tableStore';
-import type { FilterValues } from '@gen-epix/ui-client-common/models/filter';
+import type { FilterValues } from '@gen-epix/ui-client-common/models/filter.models';
 import cloneDeep from 'lodash/cloneDeep';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
-import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree';
+import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree.models';
 import { NewickUtil } from '@gen-epix/ui-phylogenetic-tree/utils/NewickUtil';
 import { TreeUtil } from '@gen-epix/ui-phylogenetic-tree/utils/TreeUtil';
 
-import type { FindSimilarCasesResult } from '../../models/caseDb';
-import type { TreeWidgetDataPersistable } from '../../models/dashboard';
+import type { FindSimilarCasesResult } from '../../models/case-db.models';
+import type { TreeWidgetDataPersistable } from '../../models/dashboard.models';
 import type {
   StratifiableColumn,
   Stratification,
-} from '../../models/stratification';
-import { STRATIFICATION_MODE } from '../../models/stratification';
+} from '../../models/stratification.models';
+import { STRATIFICATION_MODE } from '../../models/stratification.models';
 import {
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
 } from '../../utils/CaseTypeUtil';
 import { FilterUtil } from '../../utils/FilterUtil';
-import type { CaseDbConfig } from '../../models/config';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import type { CaseDbConfig } from '../../models/config.models';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
 import { TreeFilter } from '../../classes/filters/TreeFilter';
 import { StratificationUtil } from '../../utils/StratificationUtil';
-import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard.constants';
 
 export interface CreateDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;

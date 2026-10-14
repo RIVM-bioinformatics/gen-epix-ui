@@ -13,14 +13,14 @@ import type { FieldValues } from 'react-hook-form';
 import {
   DASHBOARD_ARRANGEMENT_ORIENTATION,
   WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/dashboard';
+} from '../../models/dashboard.models';
 import type {
   DashboardArrangement,
   DashboardArrangementConfig,
   WidgetDataBase,
   WidgetsConfig,
-} from '../../models/dashboard';
-import type { CaseDbConfig } from '../../models/config';
+} from '../../models/dashboard.models';
+import type { CaseDbConfig } from '../../models/config.models';
 
 import { DashboardUtil } from './DashboardUtil';
 

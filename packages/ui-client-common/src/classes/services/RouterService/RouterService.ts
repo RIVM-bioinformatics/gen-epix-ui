@@ -5,7 +5,7 @@ import {
   singleton,
 } from 'tsyringe';
 
-import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import type { MyNonIndexRouteObject } from '../../../models/react-router.models';
 
 type HomePage = () => ReactElement;
 type RoutesFactory = () => MyNonIndexRouteObject[];

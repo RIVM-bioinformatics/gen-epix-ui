@@ -22,7 +22,7 @@ import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
 import { useConfig } from '../../../hooks/useConfig';
-import type { AuthState } from '../../../models/auth';
+import type { AuthState } from '../../../models/auth.models';
 import type { ConsentDialogRefMethods } from '../../ui/ConsentDialog';
 import { ConsentDialog } from '../../ui/ConsentDialog';
 import { PageContainer } from '../../ui/PageContainer';

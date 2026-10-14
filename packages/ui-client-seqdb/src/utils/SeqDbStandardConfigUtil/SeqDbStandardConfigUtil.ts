@@ -3,7 +3,7 @@ import { StandardConfigUtil } from '@gen-epix/ui-client-common/utils/StandardCon
 import { t } from 'i18next';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import type { SeqDbConfig } from '../../models/config';
+import type { SeqDbConfig } from '../../models/config.models';
 
 export class SeqDbStandardConfigUtil {
   public static createConfig(): Omit<SeqDbConfig, 'theme'> {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { CaseDbConceptRelationType } from '@gen-epix/api-casedb';
-import type { UseOptions } from '@gen-epix/ui-client-common/models/dataHooks';
-import type { OptionBase } from '@gen-epix/ui-core-form/models/form';
+import type { UseOptions } from '@gen-epix/ui-client-common/models/data-hooks.models';
+import type { OptionBase } from '@gen-epix/ui-core-form/models/form.models';
 
 export const conceptRelationTypePresentationValues: Partial<Record<CaseDbConceptRelationType, string>> = {
   [CaseDbConceptRelationType.CONTAINS]: 'CONTAINS',

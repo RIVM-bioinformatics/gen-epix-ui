@@ -13,18 +13,18 @@ import type { CommonDbOrganizationAdminPolicy } from '@gen-epix/api-commondb';
 import { CommonDbCommandName } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 
-import { API_ABAC_TOKEN } from '../../models/api';
+import { API_ABAC_TOKEN } from '../../models/api.models';
 import { useOrganizationAdminPolicyNameFactory } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
-import type { TableColumn } from '../../models/table';
+import type { TableColumn } from '../../models/table.models';
 import { TableUtil } from '../../utils/TableUtil';
-import type { OmitWithMetaData } from '../../models/data';
+import type { OmitWithMetaData } from '../../models/data.models';
 import { CrudPage } from '../CrudPage';
-import { COMMON_QUERY_KEY } from '../../constants/query';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 
 type FormFields = OmitWithMetaData<CommonDbOrganizationAdminPolicy, 'organization' | 'user'>;
 

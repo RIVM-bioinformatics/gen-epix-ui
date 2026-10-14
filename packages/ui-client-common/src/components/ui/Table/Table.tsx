@@ -61,7 +61,7 @@ import type {
   TableColumnVisualSettings,
   TableDragEvent,
   TableRowParams,
-} from '../../../models/table';
+} from '../../../models/table.models';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
 

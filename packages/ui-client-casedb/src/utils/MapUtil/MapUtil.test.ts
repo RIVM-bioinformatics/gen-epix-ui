@@ -11,7 +11,7 @@ import {
   resolveConfig,
 } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseDbConfig } from '../../models/config.models';
 
 import type { RegionStatistics } from './MapUtil';
 import { MapUtil } from './MapUtil';

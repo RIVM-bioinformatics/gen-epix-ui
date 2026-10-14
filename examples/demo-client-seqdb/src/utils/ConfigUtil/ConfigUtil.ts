@@ -1,4 +1,4 @@
-import type { SeqDbConfig } from '@gen-epix/ui-client-seqdb/models/config';
+import type { SeqDbConfig } from '@gen-epix/ui-client-seqdb/models/config.models';
 import { SeqDbStandardConfigUtil } from '@gen-epix/ui-client-seqdb/utils/SeqDbStandardConfigUtil';
 import { createSeqDbDemoTheme } from '@gen-epix/ui-client-seqdb/theme/demoTheme';
 import { t } from 'i18next';

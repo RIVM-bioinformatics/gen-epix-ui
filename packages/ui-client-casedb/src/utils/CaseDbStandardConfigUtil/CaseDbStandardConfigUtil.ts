@@ -9,11 +9,11 @@ import Color from 'colorjs.io';
 import type { Range } from 'colorjs.io';
 import { t } from 'i18next';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 
-import type { CaseDbConfig } from '../../models/config';
-import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard';
+import type { CaseDbConfig } from '../../models/config.models';
+import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard.constants';
 import { EpiCurveWidget } from '../../components/ui/EpiCurveWidget';
 import { LineListWidget } from '../../components/ui/LineListWidget';
 import { MapWidget } from '../../components/ui/MapWidget';
@@ -28,11 +28,11 @@ import type {
   MapWidgetData,
   TreeWidgetData,
   TreeWidgetDataPersistable,
-} from '../../models/dashboard';
+} from '../../models/dashboard.models';
 import {
   DASHBOARD_ARRANGEMENT_ORIENTATION,
   WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/dashboard';
+} from '../../models/dashboard.models';
 
 export class CaseDbStandardConfigUtil {
   public static createConfig(): Omit<CaseDbConfig, 'theme'> {

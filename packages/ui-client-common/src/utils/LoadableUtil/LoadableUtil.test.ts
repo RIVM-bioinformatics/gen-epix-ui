@@ -4,7 +4,7 @@ import {
   it,
 } from 'vitest';
 
-import type { Loadable } from '../../models/dataHooks';
+import type { Loadable } from '../../models/data-hooks.models';
 
 import { LoadableUtil } from './LoadableUtil';
 

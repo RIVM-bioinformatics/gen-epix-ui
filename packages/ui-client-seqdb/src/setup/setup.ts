@@ -1,6 +1,6 @@
-import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
-import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/reactRouter';
-import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/query';
+import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/react-router.models';
+import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/query.constants';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
@@ -20,7 +20,7 @@ import {
   API_BASE_TOKEN,
   API_ORGANIZATION_TOKEN,
   API_SYSTEM_TOKEN,
-} from '@gen-epix/ui-client-common/models/api';
+} from '@gen-epix/ui-client-common/models/api.models';
 
 import { HomePage } from '../pages/HomePage';
 import {
@@ -29,7 +29,7 @@ import {
 } from '../routes';
 import type { SEQDB_QUERY_KEY } from '../data/query';
 import { SEQDB_QUERY_DEPENDENCIES } from '../data/query';
-import type { SeqDbConfig } from '../models/config';
+import type { SeqDbConfig } from '../models/config.models';
 
 export const setupSeqDb = (container: UiClientCommonContainer) => {
   const config = resolveConfig<SeqDbConfig>(container);

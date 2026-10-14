@@ -17,9 +17,9 @@ import { NotificationService } from '@gen-epix/ui-client-common/classes/services
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
 import { DataService } from '../../classes/services/DataService';
-import type { CaseTypeRowValue } from '../../models/caseDb';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseTypeRowValue } from '../../models/case-db.models';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
+import type { CaseDbConfig } from '../../models/config.models';
 
 export class CaseUtil {
   public static async applyDataCollectionLinks(kwArgs: { caseIds?: string[]; caseSetDataCollectionIds: string[]; caseSetId?: string; caseTypeId: string }): Promise<void> {

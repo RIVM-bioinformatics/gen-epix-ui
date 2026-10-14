@@ -13,12 +13,12 @@ import {
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api';
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../constants/query';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 import { useConfig } from '../../hooks/useConfig';
 
 export const AcceptInvitationPage = () => {

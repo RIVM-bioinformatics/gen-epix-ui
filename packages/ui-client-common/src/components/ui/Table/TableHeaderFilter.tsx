@@ -12,12 +12,12 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useTranslation } from 'react-i18next';
-import type { UnwrapArray } from '@gen-epix/ui-core/models/generic';
+import type { UnwrapArray } from '@gen-epix/ui-core/models/generic.models';
 
 import type {
   Filters,
   FilterValues,
-} from '../../../models/filter';
+} from '../../../models/filter.models';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 import { TableFilter } from './TableFilter';

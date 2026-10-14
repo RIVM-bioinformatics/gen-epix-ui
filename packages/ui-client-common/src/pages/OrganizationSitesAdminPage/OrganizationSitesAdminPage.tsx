@@ -12,18 +12,18 @@ import {
   CommonDbPermissionType,
 } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api';
-import type { TableColumn } from '../../models/table';
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
+import type { TableColumn } from '../../models/table.models';
 import { TableUtil } from '../../utils/TableUtil';
 import type { CrudPageSubPage } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
-import type { OmitWithMetaData } from '../../models/data';
-import { COMMON_QUERY_KEY } from '../../constants/query';
+import type { OmitWithMetaData } from '../../models/data.models';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 
 type FormFields = OmitWithMetaData<CommonDbSite, 'organization_id' | 'organization'>;
 

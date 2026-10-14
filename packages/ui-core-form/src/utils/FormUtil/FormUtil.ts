@@ -18,10 +18,10 @@ import {
   string,
 } from 'yup';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
-import type { FormFieldDefinition } from '../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form';
+import type { FormFieldDefinition } from '../../models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../models/form.models';
 
 export class FormUtil {
   public static areFormValuesValid<TFormFields extends FieldValues>(formFieldDefinitions: FormFieldDefinition<TFormFields>[], values: unknown): boolean {

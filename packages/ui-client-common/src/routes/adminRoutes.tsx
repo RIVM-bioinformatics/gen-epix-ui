@@ -7,8 +7,8 @@ import {
 import { t } from 'i18next';
 import type { ComponentType } from 'react';
 
-import { ADMIN_PAGE_CATEGORY } from '../models/admin';
-import type { MyNonIndexRouteObject } from '../models/reactRouter';
+import { ADMIN_PAGE_CATEGORY } from '../models/admin.models';
+import type { MyNonIndexRouteObject } from '../models/react-router.models';
 import { IdentifierIssuersAdminPage } from '../pages/IdentifierIssuersAdminPage';
 import { OrganizationAdminPoliciesAdminPage } from '../pages/OrganizationAdminPoliciesAdminPage';
 import { OrganizationContactsAdminPage } from '../pages/OrganizationContactsAdminPage';

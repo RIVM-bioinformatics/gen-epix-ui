@@ -13,7 +13,7 @@ import {
   CaseDbOntologyApi,
   CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
-import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import {
   container as rootContainer,
@@ -21,8 +21,8 @@ import {
 } from 'tsyringe';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
-import type { DataCache } from '../../../models/caseDb';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
+import type { DataCache } from '../../../models/case-db.models';
 
 @singleton()
 export class DataService {

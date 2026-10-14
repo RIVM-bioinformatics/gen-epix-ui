@@ -41,8 +41,8 @@ import { FindSimilarCasesUtil } from '../../../utils/FindSimilarCasesUtil';
 import type {
   FindSimilarCasesChartDataPoint,
   FindSimilarCasesOrganizationFilter,
-} from '../../../models/caseDb';
-import type { CaseDbConfig } from '../../../models/config';
+} from '../../../models/case-db.models';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 registerECharts([BarChart, LineChart, GridComponent, LegendComponent, TooltipComponent, DataZoomComponent, CanvasRenderer]);
 

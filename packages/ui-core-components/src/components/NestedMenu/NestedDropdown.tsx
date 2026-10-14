@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import type { MenuItemData } from '../../models/nestedMenu';
+import type { MenuItemData } from '../../models/nested-menu.models';
 
 import { nestedMenuItemsFromObject } from './nestedMenuItemsFromObject';
 

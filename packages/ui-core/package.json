@@ -34,9 +34,9 @@
       "types": "./src/classes/services/WindowService/index.ts",
       "import": "./src/classes/services/WindowService/index.ts"
     },
-    "./constants/date": {
-      "types": "./src/constants/date.ts",
-      "import": "./src/constants/date.ts"
+    "./constants/date.constants": {
+      "types": "./src/constants/date.constants.ts",
+      "import": "./src/constants/date.constants.ts"
     },
     "./hooks/useArray": {
       "types": "./src/hooks/useArray/index.ts",
@@ -54,13 +54,13 @@
       "types": "./src/hooks/useSubscribable/index.ts",
       "import": "./src/hooks/useSubscribable/index.ts"
     },
-    "./models/generic": {
-      "types": "./src/models/generic.ts",
-      "import": "./src/models/generic.ts"
+    "./models/generic.models": {
+      "types": "./src/models/generic.models.ts",
+      "import": "./src/models/generic.models.ts"
     },
-    "./models/testId": {
-      "types": "./src/models/testId.ts",
-      "import": "./src/models/testId.ts"
+    "./models/test-id.models": {
+      "types": "./src/models/test-id.models.ts",
+      "import": "./src/models/test-id.models.ts"
     },
     "./utils/DataUtil": {
       "types": "./src/utils/DataUtil/index.ts",
@@ -162,9 +162,9 @@
         "types": "./dist/classes/services/WindowService/index.d.ts",
         "import": "./dist/classes/services/WindowService/index.js"
       },
-      "./constants/date": {
-        "types": "./dist/constants/date.d.ts",
-        "import": "./dist/constants/date.js"
+      "./constants/date.constants": {
+        "types": "./dist/constants/date.constants.d.ts",
+        "import": "./dist/constants/date.constants.js"
       },
       "./hooks/useArray": {
         "types": "./dist/hooks/useArray/index.d.ts",
@@ -182,13 +182,13 @@
         "types": "./dist/hooks/useSubscribable/index.d.ts",
         "import": "./dist/hooks/useSubscribable/index.js"
       },
-      "./models/generic": {
-        "types": "./dist/models/generic.d.ts",
-        "import": "./dist/models/generic.js"
+      "./models/generic.models": {
+        "types": "./dist/models/generic.models.d.ts",
+        "import": "./dist/models/generic.models.js"
       },
-      "./models/testId": {
-        "types": "./dist/models/testId.d.ts",
-        "import": "./dist/models/testId.js"
+      "./models/test-id.models": {
+        "types": "./dist/models/test-id.models.d.ts",
+        "import": "./dist/models/test-id.models.js"
       },
       "./utils/DataUtil": {
         "types": "./dist/utils/DataUtil/index.d.ts",

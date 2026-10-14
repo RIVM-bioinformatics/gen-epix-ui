@@ -6,11 +6,11 @@ import {
   CommonDbPermissionType,
 } from '@gen-epix/api-commondb';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api';
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../constants/query';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 
 
 export const useInviteUserConstraintsQuery = (): UseQueryResult<CommonDbUserInvitationConstraints> => {

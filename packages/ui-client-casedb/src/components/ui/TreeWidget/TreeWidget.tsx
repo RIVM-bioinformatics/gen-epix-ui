@@ -26,7 +26,7 @@ import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
 import type { CaseDbRetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
@@ -45,8 +45,8 @@ import type {
   TreeConfiguration,
   TreeWidgetData,
   TreeWidgetDataPersistable,
-} from '../../../models/dashboard';
-import type { Highlighting } from '../../../models/caseDb';
+} from '../../../models/dashboard.models';
+import type { Highlighting } from '../../../models/case-db.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
@@ -55,11 +55,11 @@ import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { TreeDescription } from '../TreeDescription';
 import { WidgetUnavailable } from '../WidgetUnavailable';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
-import type { CaseDbConfig } from '../../../models/config';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 

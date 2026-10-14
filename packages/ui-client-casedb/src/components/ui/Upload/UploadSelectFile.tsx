@@ -27,8 +27,8 @@ import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/Respon
 import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 
 import {
   useCaseTypeOptionsQuery,
@@ -38,7 +38,7 @@ import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollect
 import { useColsQuery } from '../../../dataHooks/useColsQuery';
 import { UploadUtil } from '../../../utils/UploadUtil';
 import { UploadStoreContext } from '../../../stores/uploadStore';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 import { UploadNavigation } from './UploadNavigation';
 

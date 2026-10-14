@@ -5,7 +5,7 @@ import {
   singleton,
 } from 'tsyringe';
 
-import { CASEDB_QUERY_KEY } from '../../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../../constants/query.constants';
 import { LineListServiceAbstract } from '../LineListServiceAbstract';
 
 

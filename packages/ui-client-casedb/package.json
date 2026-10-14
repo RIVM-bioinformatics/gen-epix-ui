@@ -190,13 +190,13 @@
       "types": "./src/components/ui/WidgetUnavailable/index.ts",
       "import": "./src/components/ui/WidgetUnavailable/index.ts"
     },
-    "./constants/dashboard": {
-      "types": "./src/constants/dashboard.ts",
-      "import": "./src/constants/dashboard.ts"
+    "./constants/dashboard.constants": {
+      "types": "./src/constants/dashboard.constants.ts",
+      "import": "./src/constants/dashboard.constants.ts"
     },
-    "./constants/query": {
-      "types": "./src/constants/query.ts",
-      "import": "./src/constants/query.ts"
+    "./constants/query.constants": {
+      "types": "./src/constants/query.constants.ts",
+      "import": "./src/constants/query.constants.ts"
     },
     "./context/caseAbac": {
       "types": "./src/context/caseAbac/index.ts",
@@ -382,33 +382,33 @@
       "types": "./src/hooks/useUserCasePolicyNameFactory/index.ts",
       "import": "./src/hooks/useUserCasePolicyNameFactory/index.ts"
     },
-    "./models/caseAccess": {
-      "types": "./src/models/caseAccess.ts",
-      "import": "./src/models/caseAccess.ts"
+    "./models/case-access.models": {
+      "types": "./src/models/case-access.models.ts",
+      "import": "./src/models/case-access.models.ts"
     },
-    "./models/caseDb": {
-      "types": "./src/models/caseDb.ts",
-      "import": "./src/models/caseDb.ts"
+    "./models/case-db.models": {
+      "types": "./src/models/case-db.models.ts",
+      "import": "./src/models/case-db.models.ts"
     },
-    "./models/config": {
-      "types": "./src/models/config.ts",
-      "import": "./src/models/config.ts"
+    "./models/config.models": {
+      "types": "./src/models/config.models.ts",
+      "import": "./src/models/config.models.ts"
     },
-    "./models/dashboard": {
-      "types": "./src/models/dashboard.ts",
-      "import": "./src/models/dashboard.ts"
+    "./models/dashboard.models": {
+      "types": "./src/models/dashboard.models.ts",
+      "import": "./src/models/dashboard.models.ts"
     },
-    "./models/stratification": {
-      "types": "./src/models/stratification.ts",
-      "import": "./src/models/stratification.ts"
+    "./models/stratification.models": {
+      "types": "./src/models/stratification.models.ts",
+      "import": "./src/models/stratification.models.ts"
     },
-    "./models/theme": {
-      "types": "./src/models/theme.ts",
-      "import": "./src/models/theme.ts"
+    "./models/theme.models": {
+      "types": "./src/models/theme.models.ts",
+      "import": "./src/models/theme.models.ts"
     },
-    "./models/upload": {
-      "types": "./src/models/upload.ts",
-      "import": "./src/models/upload.ts"
+    "./models/upload.models": {
+      "types": "./src/models/upload.models.ts",
+      "import": "./src/models/upload.models.ts"
     },
     "./pages/CaseDbUsersAdminPage": {
       "types": "./src/pages/CaseDbUsersAdminPage/index.ts",
@@ -968,13 +968,13 @@
         "types": "./dist/components/ui/WidgetUnavailable/index.d.ts",
         "import": "./dist/components/ui/WidgetUnavailable/index.js"
       },
-      "./constants/dashboard": {
-        "types": "./dist/constants/dashboard.d.ts",
-        "import": "./dist/constants/dashboard.js"
+      "./constants/dashboard.constants": {
+        "types": "./dist/constants/dashboard.constants.d.ts",
+        "import": "./dist/constants/dashboard.constants.js"
       },
-      "./constants/query": {
-        "types": "./dist/constants/query.d.ts",
-        "import": "./dist/constants/query.js"
+      "./constants/query.constants": {
+        "types": "./dist/constants/query.constants.d.ts",
+        "import": "./dist/constants/query.constants.js"
       },
       "./context/caseAbac": {
         "types": "./dist/context/caseAbac/index.d.ts",
@@ -1160,33 +1160,33 @@
         "types": "./dist/hooks/useUserCasePolicyNameFactory/index.d.ts",
         "import": "./dist/hooks/useUserCasePolicyNameFactory/index.js"
       },
-      "./models/caseAccess": {
-        "types": "./dist/models/caseAccess.d.ts",
-        "import": "./dist/models/caseAccess.js"
+      "./models/case-access.models": {
+        "types": "./dist/models/case-access.models.d.ts",
+        "import": "./dist/models/case-access.models.js"
       },
-      "./models/caseDb": {
-        "types": "./dist/models/caseDb.d.ts",
-        "import": "./dist/models/caseDb.js"
+      "./models/case-db.models": {
+        "types": "./dist/models/case-db.models.d.ts",
+        "import": "./dist/models/case-db.models.js"
       },
-      "./models/config": {
-        "types": "./dist/models/config.d.ts",
-        "import": "./dist/models/config.js"
+      "./models/config.models": {
+        "types": "./dist/models/config.models.d.ts",
+        "import": "./dist/models/config.models.js"
       },
-      "./models/dashboard": {
-        "types": "./dist/models/dashboard.d.ts",
-        "import": "./dist/models/dashboard.js"
+      "./models/dashboard.models": {
+        "types": "./dist/models/dashboard.models.d.ts",
+        "import": "./dist/models/dashboard.models.js"
       },
-      "./models/stratification": {
-        "types": "./dist/models/stratification.d.ts",
-        "import": "./dist/models/stratification.js"
+      "./models/stratification.models": {
+        "types": "./dist/models/stratification.models.d.ts",
+        "import": "./dist/models/stratification.models.js"
       },
-      "./models/theme": {
-        "types": "./dist/models/theme.d.ts",
-        "import": "./dist/models/theme.js"
+      "./models/theme.models": {
+        "types": "./dist/models/theme.models.d.ts",
+        "import": "./dist/models/theme.models.js"
       },
-      "./models/upload": {
-        "types": "./dist/models/upload.d.ts",
-        "import": "./dist/models/upload.js"
+      "./models/upload.models": {
+        "types": "./dist/models/upload.models.d.ts",
+        "import": "./dist/models/upload.models.js"
       },
       "./pages/CaseDbUsersAdminPage": {
         "types": "./dist/pages/CaseDbUsersAdminPage/index.d.ts",

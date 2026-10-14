@@ -10,7 +10,7 @@ import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../models/tree';
+} from '../../models/tree.models';
 
 type NodeAssemblyResult = {
   nodeNames: string[];

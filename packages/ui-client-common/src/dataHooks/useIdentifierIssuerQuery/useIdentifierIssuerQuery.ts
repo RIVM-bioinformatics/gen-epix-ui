@@ -3,15 +3,15 @@ import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CommonDbIdentifierIssuer } from '@gen-epix/api-commondb';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api';
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
 import type {
   UseMap,
   UseOptions,
-} from '../../models/dataHooks';
+} from '../../models/data-hooks.models';
 import { DataHookUtil } from '../../utils/DataHookUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../constants/query';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 
 type Select = (data: CommonDbIdentifierIssuer[]) => CommonDbIdentifierIssuer[];
 

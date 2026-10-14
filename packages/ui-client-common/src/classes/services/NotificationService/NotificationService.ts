@@ -7,9 +7,9 @@ import {
   singleton,
 } from 'tsyringe';
 
-import type { Notification } from '../../../models/notification';
-import { CONFIG_TOKEN } from '../../../constants/config';
-import type { ConfigBase } from '../../../models/config';
+import type { Notification } from '../../../models/notification.models';
+import { CONFIG_TOKEN } from '../../../constants/config.constants';
+import type { ConfigBase } from '../../../models/config.models';
 
 @singleton()
 export class NotificationService extends SubscribableAbstract<Notification[]> {

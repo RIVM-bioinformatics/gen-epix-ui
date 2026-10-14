@@ -9,7 +9,7 @@ import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { createRoutes as createCommonRoutes } from '@gen-epix/ui-client-common/routes';
 import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
 import { RouterErrorPage } from '@gen-epix/ui-client-common/pages/RouterErrorPage';
-import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/reactRouter';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/react-router.models';
 
 import { CasesDetailPage } from '../pages/CasesDetailPage';
 import { CasesPage } from '../pages/CasesPage';

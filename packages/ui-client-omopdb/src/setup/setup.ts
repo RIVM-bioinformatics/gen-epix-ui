@@ -1,6 +1,6 @@
-import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
-import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/reactRouter';
-import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/query';
+import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
+import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/react-router.models';
+import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/query.constants';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 import {
@@ -17,7 +17,7 @@ import {
   API_BASE_TOKEN,
   API_ORGANIZATION_TOKEN,
   API_SYSTEM_TOKEN,
-} from '@gen-epix/ui-client-common/models/api';
+} from '@gen-epix/ui-client-common/models/api.models';
 import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
 import type { UiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
@@ -29,7 +29,7 @@ import {
 } from '../routes';
 import type { OMOPDB_QUERY_KEY } from '../data/query';
 import { OMOPDB_QUERY_DEPENDENCIES } from '../data/query';
-import type { OmopDbConfig } from '../models/config';
+import type { OmopDbConfig } from '../models/config.models';
 
 export const setupOmopDb = (container: UiClientCommonContainer) => {
   const config = resolveConfig<OmopDbConfig>(container);

@@ -21,7 +21,7 @@ import type {
   HasCellDataFn,
   TableColumn,
   TableColumnVisualSettings,
-} from '../../../models/table';
+} from '../../../models/table.models';
 import { SortableList } from '../SortableList/SortableList';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';

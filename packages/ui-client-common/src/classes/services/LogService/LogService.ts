@@ -12,11 +12,11 @@ import {
   singleton,
 } from 'tsyringe';
 
-import { API_SYSTEM_TOKEN } from '../../../models/api';
+import { API_SYSTEM_TOKEN } from '../../../models/api.models';
 import { AuthenticationService } from '../AuthenticationService';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
-import { CONFIG_TOKEN } from '../../../constants/config';
-import type { ConfigBase } from '../../../models/config';
+import { CONFIG_TOKEN } from '../../../constants/config.constants';
+import type { ConfigBase } from '../../../models/config.models';
 
 type LogServiceItem = {
   detail?: unknown;

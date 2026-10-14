@@ -9,7 +9,7 @@ import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import type { GenericData } from '../../models/data';
+import type { GenericData } from '../../models/data.models';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 
 export type MutationContextEdit<TData> = { item?: TData; notificationKey?: string; previousData?: TData[] };

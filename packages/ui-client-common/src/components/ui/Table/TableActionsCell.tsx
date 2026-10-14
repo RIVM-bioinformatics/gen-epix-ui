@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
-import type { TableColumnActions } from '../../../models/table';
+import type { TableColumnActions } from '../../../models/table.models';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 import { TableCell } from './TableCell';

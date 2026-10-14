@@ -10,7 +10,7 @@ import { useShallow } from 'zustand/shallow';
 import type {
   TableColumnParams,
   TableColumnSelectable,
-} from '../../../models/table';
+} from '../../../models/table.models';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 

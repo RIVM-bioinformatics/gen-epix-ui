@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { useMemo } from 'react';
-import type { SelectOption } from '@gen-epix/ui-core-form/models/form';
+import type { SelectOption } from '@gen-epix/ui-core-form/models/form.models';
 import { Select } from '@gen-epix/ui-core-form/components/fields/Select';
 
 import type { BooleanFilter } from '../../../classes/filters/BooleanFilter';

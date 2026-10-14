@@ -1,4 +1,4 @@
-import type { OmopDbConfig } from '@gen-epix/ui-client-omopdb/models/config';
+import type { OmopDbConfig } from '@gen-epix/ui-client-omopdb/models/config.models';
 import { OmopDbStandardConfigUtil } from '@gen-epix/ui-client-omopdb/utils/OmopDbStandardConfigUtil';
 import { createOmopDbDemoTheme } from '@gen-epix/ui-client-omopdb/theme/demoTheme';
 import { t } from 'i18next';

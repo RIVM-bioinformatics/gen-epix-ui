@@ -24,7 +24,7 @@ import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 import {
   PanelSeparatorHorizontal,
   PanelSeparatorVertical,
@@ -32,7 +32,7 @@ import {
 import { WidgetUnavailable } from '../WidgetUnavailable';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import type { UserProfileStore } from '../../../stores/userProfileStore';
-import type { DashboardArrangement } from '../../../models/dashboard';
+import type { DashboardArrangement } from '../../../models/dashboard.models';
 
 import { DashboardZoneContext } from './DashboardZoneContext';
 import { DashboardWidgetPlaceHolder } from './DashboardWidgetPlaceHolder';

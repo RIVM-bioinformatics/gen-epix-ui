@@ -19,12 +19,12 @@ import { NotificationService } from '@gen-epix/ui-client-common/classes/services
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
-import type { CaseDbConfig } from '../../models/config';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
+import type { CaseDbConfig } from '../../models/config.models';
 
 export class CaseDbDownloadUtil {
   public static downloadAsCsv(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {

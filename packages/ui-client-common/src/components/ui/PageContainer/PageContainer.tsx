@@ -12,7 +12,7 @@ import type {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/test-id.models';
 
 import { Breadcrumbs } from '../Breadcrumbs';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';

@@ -11,8 +11,8 @@ import {
 import { AuthenticationService } from '../AuthenticationService';
 import { LogService } from '../LogService';
 import { TimeUtil } from '../../../utils/TimeUtil';
-import { CONFIG_TOKEN } from '../../../constants/config';
-import type { ConfigBase } from '../../../models/config';
+import { CONFIG_TOKEN } from '../../../constants/config.constants';
+import type { ConfigBase } from '../../../models/config.models';
 
 export type InactivityState = {
   idleDiff: number;

@@ -17,10 +17,10 @@ import { CaseDbColType } from '@gen-epix/api-casedb';
 import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
 import { DataService } from '../../classes/services/DataService';
-import type { CaseDbConfig } from '../../models/config';
-import { STRATIFICATION_MODE } from '../../models/stratification';
+import type { CaseDbConfig } from '../../models/config.models';
+import { STRATIFICATION_MODE } from '../../models/stratification.models';
 import { StratificationUtil } from '../StratificationUtil';
-import type { DataCache } from '../../models/caseDb';
+import type { DataCache } from '../../models/case-db.models';
 
 import {
   HISTOGRAM_ALLOWED_COL_TYPES,

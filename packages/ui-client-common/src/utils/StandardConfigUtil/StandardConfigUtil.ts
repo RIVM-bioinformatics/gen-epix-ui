@@ -1,4 +1,4 @@
-import type { ConfigBase } from '../../models/config';
+import type { ConfigBase } from '../../models/config.models';
 import { AxiosUtil } from '../AxiosUtil';
 
 const ApplicationHeader = (): ReturnType<ConfigBase['ApplicationHeader']> => null;

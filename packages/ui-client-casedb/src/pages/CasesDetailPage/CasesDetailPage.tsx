@@ -13,7 +13,7 @@ import { useUpdateBreadcrumb } from '@gen-epix/ui-client-common/hooks/useUpdateB
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { Dashboard } from '../../components/ui/Dashboard';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 export const CasesDetailPage = () => {

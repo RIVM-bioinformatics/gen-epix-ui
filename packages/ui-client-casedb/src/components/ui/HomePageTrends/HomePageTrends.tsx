@@ -36,8 +36,8 @@ import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
-import type { CaseDbConfig } from '../../../models/config';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import type { CaseDbConfig } from '../../../models/config.models';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 import { HomePageTrendCard } from './HomePageTrendCard';
 

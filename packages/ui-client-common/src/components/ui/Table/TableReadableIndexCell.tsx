@@ -5,7 +5,7 @@ import type { MouseEvent as ReactMouseEvent } from 'react';
 import type {
   TableColumnReadableIndex,
   TableRowParams,
-} from '../../../models/table';
+} from '../../../models/table.models';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
 import { useConfig } from '../../../hooks/useConfig';
 

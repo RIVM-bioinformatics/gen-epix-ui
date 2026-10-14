@@ -23,7 +23,7 @@ import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericFo
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 export type DashboardEpiCurveSettingsFormProps = {
   readonly widgetName: string;

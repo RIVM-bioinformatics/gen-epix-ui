@@ -52,7 +52,7 @@ import type { FindSimilarCasesDialogRefMethods } from '../FindSimilarCasesDialog
 import { RemoveFindSimilarCasesResultDialog } from '../RemoveFindSimilarCasesResultDialog/RemoveFindSimilarCasesResultDialog';
 import type { RemoveFindSimilarCasesResultDialogRefMethods } from '../RemoveFindSimilarCasesResultDialog/RemoveFindSimilarCasesResultDialog';
 import { EventBusService } from '../../../classes/services/EventBusService';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 import {
   DashboardSettingsSidebarItem,

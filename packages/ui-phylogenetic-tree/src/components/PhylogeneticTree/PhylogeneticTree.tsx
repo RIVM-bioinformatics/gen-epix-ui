@@ -19,7 +19,7 @@ import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../models/tree';
+} from '../../models/tree.models';
 import { TreeUtil } from '../../utils/TreeUtil';
 
 export type PhylogeneticTreeHighlightedNodeNamesSubjectValue = {

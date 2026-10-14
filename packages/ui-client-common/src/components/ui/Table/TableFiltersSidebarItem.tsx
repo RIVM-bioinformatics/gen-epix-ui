@@ -28,7 +28,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 
 import { SidebarItem } from '../Sidebar';
 import type { SidebarItemSharedProps } from '../Sidebar';
@@ -36,7 +36,7 @@ import type {
   FilterDimension,
   Filters,
   FilterValues,
-} from '../../../models/filter';
+} from '../../../models/filter.models';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 import { TableFilter } from './TableFilter';

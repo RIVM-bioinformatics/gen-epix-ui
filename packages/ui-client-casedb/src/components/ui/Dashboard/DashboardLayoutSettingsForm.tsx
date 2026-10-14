@@ -21,7 +21,7 @@ import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import noop from 'lodash/noop';
 
 import { ArrangementEditor } from '../../form/fields/ArrangementEditor';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 

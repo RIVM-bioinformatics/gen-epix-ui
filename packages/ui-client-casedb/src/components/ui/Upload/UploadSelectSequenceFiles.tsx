@@ -28,8 +28,8 @@ import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericFo
 import type {
   FormFieldDefinition,
   SelectOption,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { MultiFileUploader } from '@gen-epix/ui-core-components/components/MultiFileUploader';
 
 import { UploadUtil } from '../../../utils/UploadUtil';

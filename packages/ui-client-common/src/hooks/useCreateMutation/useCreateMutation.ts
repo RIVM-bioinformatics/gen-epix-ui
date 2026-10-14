@@ -5,7 +5,7 @@ import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 
 import { NotificationService } from '../../classes/services/NotificationService';
-import type { GenericData } from '../../models/data';
+import type { GenericData } from '../../models/data.models';
 import { NotificationUtil } from '../../utils/NotificationUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 

@@ -28,7 +28,7 @@ import {
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui-client-common/models/table';
+} from '@gen-epix/ui-client-common/models/table.models';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -49,15 +49,15 @@ import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
-import type { OptionBase } from '@gen-epix/ui-core-form/models/form';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
+import type { OptionBase } from '@gen-epix/ui-core-form/models/form.models';
 
 import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';
 import { CaseTypeInfoDialogWithLoader } from '../../components/ui/CaseTypeInfoDialog';
 import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
 import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { CaseDbDownloadUtil } from '../../utils/CaseDbDownloadUtil';
 
 

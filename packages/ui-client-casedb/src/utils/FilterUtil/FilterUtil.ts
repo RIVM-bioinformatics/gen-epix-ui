@@ -15,7 +15,7 @@ import {
 import type {
   FilterDimension,
   Filters,
-} from '@gen-epix/ui-client-common/models/filter';
+} from '@gen-epix/ui-client-common/models/filter.models';
 import {
   DateFilter,
   GeoFilter,
@@ -27,8 +27,8 @@ import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
 } from '@gen-epix/ui-client-common/classes/abstracts/FilterAbstract';
-import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form.models';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import {
   CaseTypeUtil,

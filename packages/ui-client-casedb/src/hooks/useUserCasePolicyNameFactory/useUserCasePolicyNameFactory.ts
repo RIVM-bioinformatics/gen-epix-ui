@@ -4,7 +4,7 @@ import type {
   CaseDbUserAccessCasePolicy,
   CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
-import type { UseNameFactory } from '@gen-epix/ui-client-common/models/dataHooks';
+import type { UseNameFactory } from '@gen-epix/ui-client-common/models/data-hooks.models';
 import { DataHookUtil } from '@gen-epix/ui-client-common/utils/DataHookUtil';
 import { UserUtil } from '@gen-epix/ui-client-common/utils/UserUtil';
 import { useUsersMapQuery } from '@gen-epix/ui-client-common/dataHooks/useUsersQuery';

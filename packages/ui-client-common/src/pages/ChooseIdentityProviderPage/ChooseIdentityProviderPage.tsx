@@ -16,7 +16,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { AuthenticationService } from '../../classes/services/AuthenticationService';
 import { PageContainer } from '../../components/ui/PageContainer';
-import type { IdentityProviderWithAvailability } from '../../models/auth';
+import type { IdentityProviderWithAvailability } from '../../models/auth.models';
 import { useConfig } from '../../hooks/useConfig';
 
 export type ChooseIdentityProviderPageProps = {

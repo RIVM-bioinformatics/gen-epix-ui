@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { t } from 'i18next';
-import type { CaseDbConfig } from '@gen-epix/ui-client-casedb/models/config';
+import type { CaseDbConfig } from '@gen-epix/ui-client-casedb/models/config.models';
 import { createCaseDbDemoTheme } from '@gen-epix/ui-client-casedb/theme/demoTheme';
 import { CaseDbStandardConfigUtil } from '@gen-epix/ui-client-casedb/utils/CaseDbStandardConfigUtil';
 

@@ -171,9 +171,6 @@ export default defineConfig({
         },
       },
       {
-        plugins: [
-          react(),
-        ],
         test: {
           browser: {
             enabled: true,

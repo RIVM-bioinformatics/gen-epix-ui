@@ -13,15 +13,15 @@ import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import type {
   AutoCompleteOption,
   OptionBase,
-} from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
 
 import type {
   UploadMappedColumn,
   UploadSequenceMapping,
-} from '../../models/upload';
-import { UPLOAD_STEP } from '../../models/upload';
+} from '../../models/upload.models';
+import { UPLOAD_STEP } from '../../models/upload.models';
 import { UploadUtil } from '../../utils/UploadUtil';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 export const STEP_ORDER_UPLOAD = [
   UPLOAD_STEP.SELECT_FILE,

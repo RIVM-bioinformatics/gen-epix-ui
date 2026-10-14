@@ -8,13 +8,13 @@ import LinkIcon from '@mui/icons-material/Link';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { useTheme } from '@mui/material';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { WidgetMenu } from '../WidgetMenu';
 import { EventBusService } from '../../../classes/services/EventBusService';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
-import type { TreeWidgetData } from '../../../models/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
+import type { TreeWidgetData } from '../../../models/dashboard.models';
 
 export const LineListWidgetSecondaryMenu = () => {
   const theme = useTheme();

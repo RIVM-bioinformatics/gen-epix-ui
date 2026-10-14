@@ -7,14 +7,14 @@ import type {
   UseMap,
   UseNameFactory,
   UseOptions,
-} from '@gen-epix/ui-client-common/models/dataHooks';
+} from '@gen-epix/ui-client-common/models/data-hooks.models';
 import { DataHookUtil } from '@gen-epix/ui-client-common/utils/DataHookUtil';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 
 import { useCaseTypeMapQuery } from '../useCaseTypesQuery';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 export const useDimsQuery = (): UseQueryResult<CaseDbDim[]> => {

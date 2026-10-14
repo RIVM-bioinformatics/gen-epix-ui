@@ -4,7 +4,7 @@ import { UiCoreComponentsConfigContext } from '@gen-epix/ui-core-components/cont
 
 import type { UiClientCommonContainer } from '../../classes/containers/UiClientCommonContainer';
 import { resolveConfig } from '../../classes/containers/UiClientCommonContainer';
-import type { ConfigBase } from '../../models/config';
+import type { ConfigBase } from '../../models/config.models';
 
 import type { UiClientCommonConfig } from './UiClientCommonConfigContext';
 import { UiClientCommonConfigContext } from './UiClientCommonConfigContext';

@@ -45,9 +45,9 @@ import type {
   AutoCompleteOption,
   FormFieldDefinition,
   OptionBase,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
@@ -57,9 +57,9 @@ import type {
   UploadMappedColumnsFormFields,
   UploadSequenceMapping,
   UploadSequenceMappingForCaseId,
-} from '../../models/upload';
+} from '../../models/upload.models';
 import { UploadError } from '../../classes/errors';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 export class UploadUtil {
   public static readonly caseDateColumnAliases = ['_timed_at', 'timed at', 'timed_at', 'timedat', 'case.timed_at', 'timed_at_date'];

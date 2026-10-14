@@ -21,7 +21,7 @@ import { useForm } from 'react-hook-form';
 import { useDebouncedCallback } from 'use-debounce';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 import type {
@@ -30,7 +30,7 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import type { GenericData } from '../../models/data';
+import type { GenericData } from '../../models/data.models';
 
 
 export interface CrudPageEditDialogOpenProps<TData extends GenericData> {

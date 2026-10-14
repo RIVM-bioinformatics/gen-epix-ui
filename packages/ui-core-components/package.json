@@ -62,9 +62,9 @@
       "types": "./src/hoc/withDialog/index.ts",
       "import": "./src/hoc/withDialog/index.ts"
     },
-    "./models/nestedMenu": {
-      "types": "./src/models/nestedMenu.ts",
-      "import": "./src/models/nestedMenu.ts"
+    "./models/nested-menu.models": {
+      "types": "./src/models/nested-menu.models.ts",
+      "import": "./src/models/nested-menu.models.ts"
     }
   },
   "files": [
@@ -178,9 +178,9 @@
         "types": "./dist/hoc/withDialog/index.d.ts",
         "import": "./dist/hoc/withDialog/index.js"
       },
-      "./models/nestedMenu": {
-        "types": "./dist/models/nestedMenu.d.ts",
-        "import": "./dist/models/nestedMenu.js"
+      "./models/nested-menu.models": {
+        "types": "./dist/models/nested-menu.models.d.ts",
+        "import": "./dist/models/nested-menu.models.js"
       }
     },
     "files": [
