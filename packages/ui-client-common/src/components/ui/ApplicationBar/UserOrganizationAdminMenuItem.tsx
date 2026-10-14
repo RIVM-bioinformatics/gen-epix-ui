@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Link,
   ListItem,
@@ -9,19 +10,19 @@ import {
   CommonDbPermissionType,
 } from '@gen-epix/api-commondb';
 
+import { API_ABAC_TOKEN } from '../../../models/api.models';
 import { withPermissions } from '../../../hoc/withPermissions';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../../constants/query';
-import { ApiService } from '../../../classes/services/ApiService';
+import { COMMON_QUERY_KEY } from '../../../constants/query.constants';
 
 export const UserOrganizationAdminMenuItem = withPermissions(() => {
   const { t } = useTranslation();
 
   const { data: organizationAdminNameEmails, error: organizationAdminNameEmailsError, isLoading: isOrganizationAdminNameEmailsLoading } = useQueryMemo({
     gcTime: 0,
-    queryFn: async ({ signal }) => (await ApiService.getInstance().abacApi.retrieveOrganizationAdminNameEmails({ signal })).data,
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
+    queryFn: async ({ signal }) => (await rootContainer.resolve(API_ABAC_TOKEN).retrieveOrganizationAdminNameEmails({ signal })).data,
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     staleTime: 0,
   });
 

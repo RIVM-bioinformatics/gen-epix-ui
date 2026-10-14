@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type {
@@ -11,13 +12,13 @@ import type {
   CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
 import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
-import type { UseMap } from '@gen-epix/ui-client-common/models/dataHooks';
-import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+import type { UseMap } from '@gen-epix/ui-client-common/models/data-hooks.models';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
 import { LoadableUtil } from '@gen-epix/ui-client-common/utils/LoadableUtil';
 import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
-import type { UserEffectiveRight } from '../../models/caseAccess';
+import type { UserEffectiveRight } from '../../models/case-access.models';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 import { useColSetMembersQuery } from '../useColSetMembersQuery';
 import { useColSetMapQuery } from '../useColSetsQuery';
@@ -54,7 +55,7 @@ export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryRes
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await CaseDbOrganizationApi.getInstance().usersGetOne(userId, { signal });
+        const response = await rootContainer.resolve(CaseDbOrganizationApi).usersGetOne(userId, { signal });
         return response.data;
       },
     },

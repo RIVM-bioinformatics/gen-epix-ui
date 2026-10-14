@@ -1,9 +1,8 @@
 import type { CommonDbFeatureFlagsResponseBody } from '@gen-epix/api-commondb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import { singleton } from 'tsyringe';
 
+@singleton()
 export class FeatureFlagsService {
-  private static __instance: FeatureFlagsService;
-
   public get featureFlags(): CommonDbFeatureFlagsResponseBody['feature_flags'] {
     if (this.__featureFlags === null) {
       throw new Error('Feature flags have not been loaded yet');
@@ -19,12 +18,4 @@ export class FeatureFlagsService {
 
   private __featureFlags: CommonDbFeatureFlagsResponseBody['feature_flags'] = null;
 
-  private constructor() {
-    //
-  }
-
-  public static getInstance(): FeatureFlagsService {
-    FeatureFlagsService.__instance = HmrUtil.getHmrSingleton('featureFlagsService', FeatureFlagsService.__instance, () => new FeatureFlagsService());
-    return FeatureFlagsService.__instance;
-  }
 }

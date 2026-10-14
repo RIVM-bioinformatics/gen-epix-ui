@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { ReactElement } from 'react';
 import {
   useCallback,
@@ -23,7 +24,7 @@ import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import type { LicensesDialogRefMethods } from '../LicensesDialog';
 import { LicensesDialog } from '../LicensesDialog';
 import { BackendVersionService } from '../../../classes/services/BackendVersionService';
-import { ConfigService } from '../../../classes/services/ConfigService';
+import { useConfig } from '../../../hooks/useConfig';
 
 type InfoMenuProps = {
   readonly anchorElement: HTMLElement;
@@ -35,17 +36,18 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
   const licensesDialogRef = useRef<LicensesDialogRefMethods>(null);
   const isInfoMenuOpen = !!anchorElement;
   const { t } = useTranslation();
+  const config = useConfig();
   const [isCopied, setIsCopied] = useState(false);
   const onShowLicenseInformationButtonClick = useCallback(() => {
     licensesDialogRef.current.open();
   }, []);
 
   const onCopyVersionInformationButtonClick = useCallback(async () => {
-    const versionInformation = `Frontend version: ${ConfigService.getInstance().config.getSoftwareVersion()}\nBackend version: ${BackendVersionService.getInstance().version}\nURL: ${window.location.href}\nDate/time: ${new Date().toISOString()}`;
+    const versionInformation = `Frontend version: ${config.getSoftwareVersion()}\nBackend version: ${rootContainer.resolve(BackendVersionService).version}\nURL: ${window.location.href}\nDate/time: ${new Date().toISOString()}`;
     await navigator.clipboard.writeText(versionInformation);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
-  }, []);
+  }, [config]);
 
   return (
     <Popover
@@ -75,7 +77,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
         >
           <ListItemText
             primary={t('Frontend version')}
-            secondary={ConfigService.getInstance().config.getSoftwareVersion()}
+            secondary={config.getSoftwareVersion()}
             slotProps={{
               primary: {
                 sx: {
@@ -91,7 +93,7 @@ export const InfoMenu = ({ anchorElement, onClose }: InfoMenuProps): ReactElemen
         >
           <ListItemText
             primary={t('Backend version')}
-            secondary={BackendVersionService.getInstance().version}
+            secondary={rootContainer.resolve(BackendVersionService).version}
             slotProps={{
               primary: {
                 sx: {

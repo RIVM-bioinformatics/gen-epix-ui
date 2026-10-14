@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Container,
@@ -12,11 +13,11 @@ import type {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/test-id.models';
 
 import { Breadcrumbs } from '../Breadcrumbs';
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
+import { useConfig } from '../../../hooks/useConfig';
 import { useUpdateDocumentTitle } from '../../../hooks/useUpdateDocumentTitle';
 import { ApplicationFooter } from '../ApplicationFooter/ApplicationFooter';
 
@@ -47,10 +48,11 @@ export const PageContainer = ({
   useUpdateDocumentTitle(title);
   const theme = useTheme();
   const { t } = useTranslation();
+  const config = useConfig();
 
   const hasContentHeaderArea = contentHeader || contentActions;
   const hasFooterArea = !fullHeight && !singleAction;
-  const { ApplicationHeader } = ConfigService.getInstance().config;
+  const { ApplicationHeader } = config;
 
   useEffect(() => {
     const pageName = testIdAttributes['data-testid'];
@@ -58,13 +60,13 @@ export const PageContainer = ({
       return;
     }
 
-    if (ConfigService.getInstance().config.enablePageEvents) {
-      PageEventBusService.getInstance().emit('changePage', {
+    if (config.enablePageEvents) {
+      rootContainer.resolve(PageEventBusService).emit('changePage', {
         location: WindowService.getInstance().window.location,
         pageName: testIdAttributes['data-testid'],
       });
     }
-  }, [ignorePageEvent, testIdAttributes]);
+  }, [config.enablePageEvents, ignorePageEvent, testIdAttributes]);
 
   return (
     <>
@@ -119,7 +121,7 @@ export const PageContainer = ({
           singleAction={singleAction}
         />
         <Box
-          id={ConfigService.getInstance().config.layout.MAIN_CONTENT_ID}
+          id={config.layout.MAIN_CONTENT_ID}
           sx={{
             display: 'grid',
             gridTemplateRows: `${showBreadcrumbs ? 'max-content' : ''} auto`,

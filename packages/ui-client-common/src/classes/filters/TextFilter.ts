@@ -1,6 +1,6 @@
 import type { CommonDbRegexFilter } from '@gen-epix/api-commondb';
 
-import type { Filter } from '../../models/filter';
+import type { Filter } from '../../models/filter.models';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 
 export class TextFilter extends FilterAbstract<string> implements Filter<string, string> {

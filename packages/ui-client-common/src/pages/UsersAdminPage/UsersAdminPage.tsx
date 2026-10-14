@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { ReactElement } from 'react';
 import {
   useCallback,
@@ -31,25 +32,25 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type {
   FormFieldDefinition,
   OptionBase,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import type {
   TableColumn,
   TableRowParams,
-} from '../../models/table';
+} from '../../models/table.models';
 import { TableUtil } from '../../utils/TableUtil';
 import type { CrudPageProps } from '../CrudPage';
 import { CrudPage } from '../CrudPage';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
-import type { OmitWithMetaData } from '../../models/data';
-import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
+import type { OmitWithMetaData } from '../../models/data.models';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 
@@ -75,7 +76,7 @@ export const UsersAdminPage = ({
     inviteUserConstraintsQuery,
   ]);
 
-  const userRoles = AuthorizationService.getInstance().user.roles;
+  const userRoles = rootContainer.resolve(AuthorizationService).user.roles;
 
   const onRowsChange = useCallback((items: CommonDbUser[]) => {
     // Because roles are a string array (instead of an enum or similar), we need to dynamically determine the options for the roles column in the table and in the form.
@@ -90,7 +91,7 @@ export const UsersAdminPage = ({
     }));
     setTableRoleOptions(_tableRoleOptions);
     let _formRoleOptions: OptionBase<string>[];
-    if (AuthorizationService.getInstance().doesUserHavePermission([
+    if (rootContainer.resolve(AuthorizationService).doesUserHavePermission([
       { command_name: CommonDbCommandName.RetrieveInviteUserConstraintsCommand, permission_type: CommonDbPermissionType.EXECUTE },
     ])) {
       _formRoleOptions = inviteUserConstraintsQuery?.data ? inviteUserConstraintsQuery.data.roles.map(role => ({
@@ -112,13 +113,13 @@ export const UsersAdminPage = ({
   }, [inviteUserConstraintsQuery.data, userRoles]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    const users = (await ApiService.getInstance().organizationApi.usersGetAll(null, null, { signal }))?.data;
+    const users = (await rootContainer.resolve(API_ORGANIZATION_TOKEN).usersGetAll(null, null, { signal }))?.data;
 
     return users;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbUser) => {
-    return (await ApiService.getInstance().organizationApi.updateUser(item.id, {
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).updateUser(item.id, {
       is_active: variables.is_active,
       organization_id: item.organization_id,
       roles: variables.roles,
@@ -126,7 +127,7 @@ export const UsersAdminPage = ({
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbUser) => {
-    return await ApiService.getInstance().organizationApi.usersDeleteOne(item.id);
+    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).usersDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -134,7 +135,7 @@ export const UsersAdminPage = ({
   }, []);
 
   const canEditItem = useCallback((item: CommonDbUser) => {
-    return AuthorizationService.getInstance().user.email !== item.email;
+    return rootContainer.resolve(AuthorizationService).user.email !== item.email;
   }, []);
 
   const schema = useMemo(() => {
@@ -220,28 +221,28 @@ export const UsersAdminPage = ({
 
   const onAnonymizeUserConfirmationConfirm = useCallback(async () => {
     const userName = selectedUserRef.current?.email ?? selectedUserRef.current?.key;
-    const notificationId = NotificationService.getInstance().showNotification({
+    const notificationId = rootContainer.resolve(NotificationService).showNotification({
       isLoading: true,
       message: t('Anonymizing user: {{userName}}', { userName }),
       severity: 'info',
     });
     try {
       // Anonymize the user
-      await ApiService.getInstance().organizationApi.anonymizeUser(selectedUserRef.current.id);
+      await rootContainer.resolve(API_ORGANIZATION_TOKEN).anonymizeUser(selectedUserRef.current.id);
       // Invalidate the users query key so that the users list is refreshed and the anonymized user is no longer visible in the list.
-      await QueryClientService.getInstance().invalidateQueryKeys(
-        QueryClientService.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USERS], true),
+      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(
+        rootContainer.resolve(QueryClientService).getQueryKeyDependencies([COMMON_QUERY_KEY.USERS], true),
       );
-      NotificationService.getInstance().fulfillNotification(notificationId, t('User anonymized successfully: {{userName}}', { userName }), 'success');
+      rootContainer.resolve(NotificationService).fulfillNotification(notificationId, t('User anonymized successfully: {{userName}}', { userName }), 'success');
     } catch (_error) {
-      NotificationService.getInstance().fulfillNotification(notificationId, t('Error anonymizing user: {{userName}}', { userName }), 'error');
+      rootContainer.resolve(NotificationService).fulfillNotification(notificationId, t('Error anonymizing user: {{userName}}', { userName }), 'error');
     }
   }, [t]);
 
   const extraActionsFactory = useCallback((params: TableRowParams<CommonDbUser, null>) => {
     const menuItems: ReactElement[] = [];
 
-    if (AuthorizationService.getInstance().doesUserHavePermission([
+    if (rootContainer.resolve(AuthorizationService).doesUserHavePermission([
       { command_name: CommonDbCommandName.AnonymizeUserCommand, permission_type: CommonDbPermissionType.EXECUTE },
     ])) {
       menuItems.push(

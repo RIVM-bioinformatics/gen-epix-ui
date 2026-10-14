@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   IconButton,
@@ -16,27 +17,28 @@ import ChatIcon from '@mui/icons-material/Chat';
 import { UserSettingsService } from '../../../classes/services/UserSettingsService';
 import { UserFeedbackDialog } from '../UserFeedbackDialog';
 import type { UserFeedbackDialogRefMethods } from '../UserFeedbackDialog';
-import { ConfigService } from '../../../classes/services/ConfigService';
+import { useConfig } from '../../../hooks/useConfig';
 
 const NOW = new Date().getTime();
 
 export const ApplicationBarActionsFeedbackItem = () => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const config = useConfig();
   const userFeedbackDialogRef = useRef<UserFeedbackDialogRefMethods>(null);
   const [isFeedbackTooltipOpen, setIsFeedbackTooltipOpen] = useState(false);
   useEffect(() => {
-    if (!UserSettingsService.getInstance().showShowUserFeedbackTooltip) {
+    if (!rootContainer.resolve(UserSettingsService).showShowUserFeedbackTooltip) {
       return;
     }
-    const timeoutMs = Math.max(0, ConfigService.getInstance().config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS - (new Date().getTime() - NOW));
+    const timeoutMs = Math.max(0, config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS - (new Date().getTime() - NOW));
     const handle = setTimeout(() => {
       setIsFeedbackTooltipOpen(true);
     }, timeoutMs);
     return () => {
       clearTimeout(handle);
     };
-  }, []);
+  }, [config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS]);
 
   const onUserFeedbackMenuIconClick = useCallback(() => {
     userFeedbackDialogRef.current.open();
@@ -44,7 +46,7 @@ export const ApplicationBarActionsFeedbackItem = () => {
 
   const onTooltipMouseEnter = useCallback(() => {
     setIsFeedbackTooltipOpen(false);
-    UserSettingsService.getInstance().showShowUserFeedbackTooltip = false;
+    rootContainer.resolve(UserSettingsService).showShowUserFeedbackTooltip = false;
   }, []);
 
   return (

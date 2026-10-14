@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -25,14 +26,14 @@ export type NotificationsDrawerProps = {
 export const NotificationsDrawer = ({ onDrawerClose, open }: NotificationsDrawerProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const notifications = useSubscribable(NotificationService.getInstance());
+  const notifications = useSubscribable(rootContainer.resolve(NotificationService));
 
   const onNotificationItemClose = useCallback((key: string) => {
-    NotificationService.getInstance().clearNotification(key);
+    rootContainer.resolve(NotificationService).clearNotification(key);
   }, []);
 
   const onClearAllButtonClick = useCallback(() => {
-    NotificationService.getInstance().clearNotifications();
+    rootContainer.resolve(NotificationService).clearNotifications();
     onDrawerClose();
   }, [onDrawerClose]);
 

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { ReactElement } from 'react';
 import {
   useCallback,
@@ -55,22 +56,22 @@ export const UserMenu = ({ anchorElement, onClose }: UserMenuProps): ReactElemen
   }, []);
 
   const onLogoutConfirmationConfirm = useCallback(() => {
-    LogService.getInstance().log([{
+    rootContainer.resolve(LogService).log([{
       detail: auth.user,
       level: CommonDbLogLevel.TRACE,
       topic: 'USER_LOGOUT',
     }]);
-    LogService.getInstance().flushLog();
+    rootContainer.resolve(LogService).flushLog();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     auth.signoutRedirect();
   }, [auth]);
 
   const userName = useMemo(() => {
-    return UserUtil.getUserDisplayValue(AuthorizationService.getInstance().user, t);
+    return UserUtil.getUserDisplayValue(rootContainer.resolve(AuthorizationService).user, t);
   }, [t]);
 
   const userRoles = useMemo(() => {
-    return AuthorizationService.getInstance().user?.roles;
+    return rootContainer.resolve(AuthorizationService).user?.roles;
   }, []);
 
   return (

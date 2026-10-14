@@ -26,8 +26,8 @@ import type { ObjectSchema } from 'yup';
 import type {
   FormFieldDefinition,
   FormGroupDefinition,
-} from '../../../models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form';
+} from '../../../models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '../../../models/form.models';
 import { FormUtil } from '../../../utils/FormUtil';
 import { RichTextEditor } from '../../fields/RichTextEditor';
 import { TransferList } from '../../fields/TransferList';

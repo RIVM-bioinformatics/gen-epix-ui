@@ -1,27 +1,31 @@
 import type { CaseDbCaseSetMember } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
-import { CASEDB_QUERY_KEY } from '../../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../../constants/query.constants';
 import { LineListServiceAbstract } from '../LineListServiceAbstract';
 
 
+@singleton()
 export class LineListCaseSetMembersService extends LineListServiceAbstract {
-  private static __instance: LineListCaseSetMembersService;
 
   protected readonly queryKey: CASEDB_QUERY_KEY = CASEDB_QUERY_KEY.XXX_CASE_ID_HAS_CASE_SET;
+  private readonly caseDbCaseApi: CaseDbCaseApi;
 
-  private constructor() {
-    super();
-  }
-
-  public static getInstance(): LineListCaseSetMembersService {
-    LineListCaseSetMembersService.__instance = HmrUtil.getHmrSingleton('lineListCaseSetMembersService', LineListCaseSetMembersService.__instance, () => new LineListCaseSetMembersService());
-    return LineListCaseSetMembersService.__instance;
+  public constructor(
+    @inject(QueryClientService) queryClientService: QueryClientService,
+    @inject(CaseDbCaseApi) caseDbCaseApi: CaseDbCaseApi,
+  ) {
+    super(queryClientService);
+    this.caseDbCaseApi = caseDbCaseApi;
   }
 
   protected async fetchMatchingCaseIds(caseIds: string[]): Promise<string[]> {
-    const caseSetMembersResult = (await CaseDbCaseApi.getInstance().caseSetMembersPostQuery({
+    const caseSetMembersResult = (await this.caseDbCaseApi.caseSetMembersPostQuery({
       invert: false,
       key: 'case_id',
       members: caseIds,

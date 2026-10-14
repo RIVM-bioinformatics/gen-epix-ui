@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   ListItemIcon,
@@ -49,7 +50,7 @@ import {
   CaseDbDimType,
   CaseDbGeoApi,
 } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { useDimensions } from '@gen-epix/ui-core/hooks/useDimensions';
@@ -65,12 +66,12 @@ import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { WidgetUnavailable } from '../WidgetUnavailable';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
-import type { MapWidgetData } from '../../../models/dashboard';
+import type { MapWidgetData } from '../../../models/dashboard.models';
 
 const echartsCore = {
   dispose,
@@ -122,9 +123,9 @@ export const MapWidget = () => {
 
   const { data: regionSetShapes, error: regionSetShapesError, isLoading: isRegionSetShapesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      return (await CaseDbGeoApi.getInstance().regionSetShapesPostQuery(regionSetShapesFilter, null, null, { signal })).data;
+      return (await rootContainer.resolve(CaseDbGeoApi).regionSetShapesPostQuery(regionSetShapesFilter, null, null, { signal })).data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,
     select: (shapes) => Object.fromEntries(shapes.map(regionSetShape => [regionSetShape.region_set_id, regionSetShape])),
   });
@@ -150,7 +151,7 @@ export const MapWidget = () => {
       return [];
     }
     const regionSetId = completeCaseType.ref_cols[col.ref_col_id].region_set_id;
-    return DataService.getInstance().data.regionsByRegionSetId[regionSetId];
+    return rootContainer.resolve(DataService).data.regionsByRegionSetId[regionSetId];
   }, [col, completeCaseType.ref_cols]);
 
   const lineListCaseCount = useMemo(() => {
@@ -393,7 +394,7 @@ export const MapWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      EventBusService.getInstance().emit('onDownloadOptionsChanged', {
+      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         disabled: !canShowWidget,
         items: [
           {
@@ -412,10 +413,10 @@ export const MapWidget = () => {
 
 
     emitDownloadOptions();
-    const eventBusService = EventBusService.getInstance();
+    const eventBusService = rootContainer.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
-      EventBusService.getInstance().emit('onDownloadOptionsChanged', {
+      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         items: null,
         zone: DASHBOARD_COMPONENT_NAME.MAP,
         zoneLabel: t`Map`,

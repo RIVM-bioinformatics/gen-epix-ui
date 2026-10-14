@@ -35,16 +35,13 @@ Refer to `package.json` for the full list of peer dependencies.
 
 ```tsx
 import { createRoot } from 'react-dom/client';
-import {
-  ConfigService,
-  I18nService,
-} from '@gen-epix/ui-client-common';
+import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
+import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   CaseDbApp,
   setupCaseDb,
 } from '@gen-epix/ui-client-casedb';
-import type { CaseDbConfig } from '@gen-epix/ui-client-casedb';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
@@ -78,13 +75,14 @@ const init = async () => {
     },
   });
 
-  ConfigService.getInstance<CaseDbConfig>().config = {
+  const config = {
     // add your config here
   };
+  const container = createUiClientCommonContainer(config);
 
-  setupCaseDb();
+  setupCaseDb(container);
 
-  createRoot(document.getElementById('root')!).render(<CaseDbApp />);
+  createRoot(document.getElementById('root')!).render(<CaseDbApp container={container} />);
 };
 
 init().catch((error) => {

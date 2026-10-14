@@ -1,4 +1,4 @@
-import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
 
 export const OMOPDB_QUERY_KEY = {
   FOO: 'FOO',

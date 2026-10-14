@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Link,
@@ -13,7 +14,7 @@ import {
   useState,
 } from 'react';
 import type { SidebarItemSharedProps } from '@gen-epix/ui-client-common/components/ui/Sidebar';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { SidebarItem } from '@gen-epix/ui-client-common/components/ui/Sidebar';
 
 import type {
@@ -22,7 +23,7 @@ import type {
   DownloadConfigSection,
 } from '../../../classes/services/EventBusService';
 import { EventBusService } from '../../../classes/services/EventBusService';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 
 export type DashboardDownloadSidebarItemProps = SidebarItemSharedProps;
@@ -32,6 +33,7 @@ export const DashboardDownloadSidebarItemIcon = DownloadIcon;
 const DashboardDownloadSidebarItemContent = () => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
   const [downloadConfigs, setDownloadConfigs] = useState<DownloadConfig[]>([]);
 
   useEffect(() => {
@@ -47,18 +49,18 @@ const DashboardDownloadSidebarItemContent = () => {
           ...prevDownloadOptions.filter(item => item.zone !== payload.zone),
           payload,
         ].sort((a, b) => {
-          return ConfigService.getInstance<CaseDbConfig>().config.dashboard.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - ConfigService.getInstance<CaseDbConfig>().config.dashboard.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
+          return config.dashboard.DOWNLOAD_SECTION_ORDER.indexOf(a.zone) - config.dashboard.DOWNLOAD_SECTION_ORDER.indexOf(b.zone);
         });
       });
     };
-    const eventBusService = EventBusService.getInstance();
+    const eventBusService = rootContainer.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
     eventBusService.emit('onDownloadOptionsRequested');
 
     return () => {
       eventBusService.removeEventListener('onDownloadOptionsChanged', onDownloadOptionsChanged);
     };
-  }, []);
+  }, [config.dashboard.DOWNLOAD_SECTION_ORDER]);
 
   const renderDownloadItem = useCallback((item: DownloadConfigItem, forceDisabled?: boolean) => {
     return (
@@ -101,9 +103,9 @@ const DashboardDownloadSidebarItemContent = () => {
         width: theme.spacing(59),
       }}
     >
-      {downloadConfigs.map((config) => (
+      {downloadConfigs.map((downloadConfig) => (
         <Box
-          key={config.zone}
+          key={downloadConfig.zone}
           sx={{
             borderBottom: `1px solid ${theme.palette.divider}`,
             padding: theme.spacing(1),
@@ -111,20 +113,20 @@ const DashboardDownloadSidebarItemContent = () => {
         >
           <Box>
             <Typography
-              color={config.disabled ? theme.palette.text.disabled : undefined}
+              color={downloadConfig.disabled ? theme.palette.text.disabled : undefined}
               variant={'h5'}
             >
-              {config.zoneLabel}
+              {downloadConfig.zoneLabel}
             </Typography>
           </Box>
-          {config.disabled && (
+          {downloadConfig.disabled && (
             <Box sx={{ padding: theme.spacing(1) }}>
               <Typography>
                 {t`No data available for download.`}
               </Typography>
             </Box>
           )}
-          {!config.disabled && config.items.map((item) => {
+          {!downloadConfig.disabled && downloadConfig.items.map((item) => {
             if ('items' in item && item.disabled) {
               return null;
             }

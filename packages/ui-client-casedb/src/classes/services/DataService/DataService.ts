@@ -13,16 +13,19 @@ import {
   CaseDbOntologyApi,
   CaseDbOrganizationApi,
 } from '@gen-epix/api-casedb';
-import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
 
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
-import type { DataCache } from '../../../models/caseDb';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
+import type { DataCache } from '../../../models/case-db.models';
 
+@singleton()
 export class DataService {
-  private static __instance: DataService;
 
   public readonly data: DataCache = {
     conceptsById: {},
@@ -38,33 +41,44 @@ export class DataService {
     userDataCollections: [],
     userDataCollectionsById: {},
   };
+  private readonly caseDbCaseApi: CaseDbCaseApi;
+  private readonly caseDbGeoApi: CaseDbGeoApi;
+  private readonly caseDbOntologyApi: CaseDbOntologyApi;
+  private readonly caseDbOrganizationApi: CaseDbOrganizationApi;
+  private readonly queryClientService: QueryClientService;
 
-  private constructor() {
-    //
+  public constructor(
+    @inject(QueryClientService) queryClientService: QueryClientService,
+    @inject(CaseDbCaseApi) caseDbCaseApi: CaseDbCaseApi,
+    @inject(CaseDbGeoApi) caseDbGeoApi: CaseDbGeoApi,
+    @inject(CaseDbOntologyApi) caseDbOntologyApi: CaseDbOntologyApi,
+    @inject(CaseDbOrganizationApi) caseDbOrganizationApi: CaseDbOrganizationApi,
+  ) {
+    this.queryClientService = queryClientService;
+    this.caseDbCaseApi = caseDbCaseApi;
+    this.caseDbGeoApi = caseDbGeoApi;
+    this.caseDbOntologyApi = caseDbOntologyApi;
+    this.caseDbOrganizationApi = caseDbOrganizationApi;
   }
 
-  public static getInstance(): DataService {
-    DataService.__instance = HmrUtil.getHmrSingleton('dataService', DataService.__instance, () => new DataService());
-    return DataService.__instance;
-  }
 
   public async loadConcepts(signal: AbortSignal): Promise<void> {
-    const queryClient = QueryClientService.getInstance().queryClient;
+    const queryClient = this.queryClientService.queryClient;
 
-    let conceptSets = QueryClientService.getInstance().getValidQueryData<CaseDbConceptSet[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS)) ?? null;
-    let concepts = QueryClientService.getInstance().getValidQueryData<CaseDbConcept[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPTS)) ?? null;
+    let conceptSets = this.queryClientService.getValidQueryData<CaseDbConceptSet[]>(this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS)) ?? null;
+    let concepts = this.queryClientService.getValidQueryData<CaseDbConcept[]>(this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.CONCEPTS)) ?? null;
 
     if (conceptSets !== null && concepts !== null) {
       return;
     }
 
     if (conceptSets === null) {
-      conceptSets = (await CaseDbOntologyApi.getInstance().conceptSetsGetAll(null, null, { signal })).data;
-      queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS), conceptSets);
+      conceptSets = (await this.caseDbOntologyApi.conceptSetsGetAll(null, null, { signal })).data;
+      queryClient.setQueryData(this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.CONCEPT_SETS), conceptSets);
     }
 
     if (concepts === null) {
-      concepts = (await CaseDbOntologyApi.getInstance().conceptsGetAll(null, null, { signal })).data;
+      concepts = (await this.caseDbOntologyApi.conceptsGetAll(null, null, { signal })).data;
       concepts.forEach(concept => {
         try {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -73,7 +87,7 @@ export class DataService {
           //
         }
       });
-      queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CONCEPTS), concepts);
+      queryClient.setQueryData(this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.CONCEPTS), concepts);
     }
 
     // Rebuild the cache
@@ -98,33 +112,33 @@ export class DataService {
   }
 
   public async loadMissingRegions(completeCaseType: CaseDbCompleteCaseType, signal: AbortSignal): Promise<void> {
-    const queryClient = QueryClientService.getInstance().queryClient;
+    const queryClient = this.queryClientService.queryClient;
 
     const regionSetIds = this.getMissingRegionSetIds(completeCaseType);
     if (!regionSetIds.length) {
       return;
     }
 
-    const currentRegionSets = QueryClientService.getInstance().getValidQueryData<CaseDbRegionSet[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY)) ?? [];
-    const currentRegions = QueryClientService.getInstance().getValidQueryData<CaseDbRegion[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGIONS_LAZY)) ?? [];
+    const currentRegionSets = this.queryClientService.getValidQueryData<CaseDbRegionSet[]>(this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY)) ?? [];
+    const currentRegions = this.queryClientService.getValidQueryData<CaseDbRegion[]>(this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.REGIONS_LAZY)) ?? [];
 
-    const regionSetsResult = (await CaseDbGeoApi.getInstance().regionSetsPostQuery({
+    const regionSetsResult = (await this.caseDbGeoApi.regionSetsPostQuery({
       invert: false,
       key: 'id',
       members: regionSetIds,
       type: 'UUID_SET',
     }, null, null, { signal })).data;
     const regionSets = [...regionSetsResult, ...currentRegionSets];
-    queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY), regionSets);
+    queryClient.setQueryData(this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY), regionSets);
 
-    const regionsResult = (await CaseDbGeoApi.getInstance().regionsPostQuery({
+    const regionsResult = (await this.caseDbGeoApi.regionsPostQuery({
       invert: false,
       key: 'region_set_id',
       members: regionSetIds,
       type: 'UUID_SET',
     }, null, null, { signal })).data;
     const regions = [...regionsResult, ...currentRegions];
-    queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGIONS_LAZY), regions);
+    queryClient.setQueryData(this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.REGIONS_LAZY), regions);
 
     // Rebuild the cache
     this.data.regionSets = {};
@@ -145,15 +159,15 @@ export class DataService {
   }
 
   public async loadOrganizations(signal: AbortSignal): Promise<void> {
-    const queryClient = QueryClientService.getInstance().queryClient;
+    const queryClient = this.queryClientService.queryClient;
 
-    let organizations = QueryClientService.getInstance().getValidQueryData<CaseDbOrganization[]>(QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS)) ?? null;
+    let organizations = this.queryClientService.getValidQueryData<CaseDbOrganization[]>(this.queryClientService.getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS)) ?? null;
 
     if (organizations !== null) {
       return;
     }
-    organizations = (await CaseDbOrganizationApi.getInstance().organizationsGetAll(null, null, { signal })).data;
-    queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS), organizations);
+    organizations = (await this.caseDbOrganizationApi.organizationsGetAll(null, null, { signal })).data;
+    queryClient.setQueryData(this.queryClientService.getGenericKey(COMMON_QUERY_KEY.ORGANIZATIONS), organizations);
 
     // Rebuild the cache
     this.data.organizationsById = {};
@@ -167,14 +181,14 @@ export class DataService {
     if (!completeCaseType.tree_algorithms) {
       return;
     }
-    const { queryClient } = QueryClientService.getInstance();
-    const queryKey = QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.TREE_ALGORITHMS);
+    const { queryClient } = this.queryClientService;
+    const queryKey = this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.TREE_ALGORITHMS);
 
-    const currentTreeAlgorithms = QueryClientService.getInstance().getValidQueryData<CaseDbTreeAlgorithm[]>(queryKey);
+    const currentTreeAlgorithms = this.queryClientService.getValidQueryData<CaseDbTreeAlgorithm[]>(queryKey);
     if (currentTreeAlgorithms) {
       return;
     }
-    const treeAlgorithms = (await CaseDbCaseApi.getInstance().treeAlgorithmsGetAll(null, null, { signal })).data.sort((a, b) => {
+    const treeAlgorithms = (await this.caseDbCaseApi.treeAlgorithmsGetAll(null, null, { signal })).data.sort((a, b) => {
       if (!a.rank && !b.rank) {
         return a.name.localeCompare(b.name);
       }
@@ -189,7 +203,7 @@ export class DataService {
 
   private getMissingRegionSetIds(completeCaseType: CaseDbCompleteCaseType): string[] {
     const regionSetIds = CaseTypeUtil.getRegionSetIds(completeCaseType);
-    const currentRegionSetsIds = (QueryClientService.getInstance().getValidQueryData<CaseDbRegionSet[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY)) ?? []).map(x => x.id);
+    const currentRegionSetsIds = (this.queryClientService.getValidQueryData<CaseDbRegionSet[]>(this.queryClientService.getGenericKey(CASEDB_QUERY_KEY.REGION_SETS_LAZY)) ?? []).map(x => x.id);
     return regionSetIds.filter(regionSetId => !currentRegionSetsIds.includes(regionSetId));
   }
 

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   ListItem,
   ListItemText,
@@ -25,7 +26,7 @@ export const UserOwnOrganizationMenuItem = withPermissions(() => {
     if (organizationMapQuery.error) {
       return t`Error`;
     }
-    return organizationMapQuery.map.get(AuthorizationService.getInstance().user?.organization_id ?? '')?.name ?? t`Unknown`;
+    return organizationMapQuery.map.get(rootContainer.resolve(AuthorizationService).user?.organization_id ?? '')?.name ?? t`Unknown`;
   }, [organizationMapQuery, t]);
 
   return (

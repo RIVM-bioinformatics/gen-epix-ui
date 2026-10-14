@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Alert,
   AlertTitle,
@@ -15,9 +16,9 @@ import { useTranslation } from 'react-i18next';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { AuthenticationService } from '../../classes/services/AuthenticationService';
-import { ConfigService } from '../../classes/services/ConfigService';
 import { PageContainer } from '../../components/ui/PageContainer';
-import type { IdentityProviderWithAvailability } from '../../models/auth';
+import type { IdentityProviderWithAvailability } from '../../models/auth.models';
+import { useConfig } from '../../hooks/useConfig';
 
 export type ChooseIdentityProviderPageProps = {
   readonly identityProvidersWithAvailability: IdentityProviderWithAvailability[];
@@ -27,9 +28,9 @@ export const ChooseIdentityProviderPage = ({
   identityProvidersWithAvailability,
 }: ChooseIdentityProviderPageProps) => {
   const { t } = useTranslation();
+  const config = useConfig();
 
-  const AfterIdentityProviderSelection =
-    ConfigService.getInstance().config.login?.AfterIdentityProviderSelection;
+  const AfterIdentityProviderSelection = config.login?.AfterIdentityProviderSelection;
 
   const onIdentityProviderButtonClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
@@ -37,7 +38,7 @@ export const ChooseIdentityProviderPage = ({
         'data-name',
       );
 
-      AuthenticationService.getInstance().next(
+      rootContainer.resolve(AuthenticationService).next(
         identityProvidersWithAvailability.find(
           (identityProviderWithAvailability) =>
             identityProviderWithAvailability.provider.name === name,
@@ -122,7 +123,7 @@ export const ChooseIdentityProviderPage = ({
           variant={'h1'}
         >
           {t('Welcome to {{applicationName}}', {
-            applicationName: ConfigService.getInstance().config.applicationName,
+            applicationName: config.applicationName,
           })}
         </Typography>
         <Typography

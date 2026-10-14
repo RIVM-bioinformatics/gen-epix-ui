@@ -190,13 +190,13 @@
       "types": "./src/components/ui/WidgetUnavailable/index.ts",
       "import": "./src/components/ui/WidgetUnavailable/index.ts"
     },
-    "./constants/dashboard": {
-      "types": "./src/constants/dashboard.ts",
-      "import": "./src/constants/dashboard.ts"
+    "./constants/dashboard.constants": {
+      "types": "./src/constants/dashboard.constants.ts",
+      "import": "./src/constants/dashboard.constants.ts"
     },
-    "./constants/query": {
-      "types": "./src/constants/query.ts",
-      "import": "./src/constants/query.ts"
+    "./constants/query.constants": {
+      "types": "./src/constants/query.constants.ts",
+      "import": "./src/constants/query.constants.ts"
     },
     "./context/caseAbac": {
       "types": "./src/context/caseAbac/index.ts",
@@ -382,33 +382,33 @@
       "types": "./src/hooks/useUserCasePolicyNameFactory/index.ts",
       "import": "./src/hooks/useUserCasePolicyNameFactory/index.ts"
     },
-    "./models/caseAccess": {
-      "types": "./src/models/caseAccess.ts",
-      "import": "./src/models/caseAccess.ts"
+    "./models/case-access.models": {
+      "types": "./src/models/case-access.models.ts",
+      "import": "./src/models/case-access.models.ts"
     },
-    "./models/caseDb": {
-      "types": "./src/models/caseDb.ts",
-      "import": "./src/models/caseDb.ts"
+    "./models/case-db.models": {
+      "types": "./src/models/case-db.models.ts",
+      "import": "./src/models/case-db.models.ts"
     },
-    "./models/config": {
-      "types": "./src/models/config.ts",
-      "import": "./src/models/config.ts"
+    "./models/config.models": {
+      "types": "./src/models/config.models.ts",
+      "import": "./src/models/config.models.ts"
     },
-    "./models/dashboard": {
-      "types": "./src/models/dashboard.ts",
-      "import": "./src/models/dashboard.ts"
+    "./models/dashboard.models": {
+      "types": "./src/models/dashboard.models.ts",
+      "import": "./src/models/dashboard.models.ts"
     },
-    "./models/stratification": {
-      "types": "./src/models/stratification.ts",
-      "import": "./src/models/stratification.ts"
+    "./models/stratification.models": {
+      "types": "./src/models/stratification.models.ts",
+      "import": "./src/models/stratification.models.ts"
     },
-    "./models/theme": {
-      "types": "./src/models/theme.ts",
-      "import": "./src/models/theme.ts"
+    "./models/theme.models": {
+      "types": "./src/models/theme.models.ts",
+      "import": "./src/models/theme.models.ts"
     },
-    "./models/upload": {
-      "types": "./src/models/upload.ts",
-      "import": "./src/models/upload.ts"
+    "./models/upload.models": {
+      "types": "./src/models/upload.models.ts",
+      "import": "./src/models/upload.models.ts"
     },
     "./pages/CaseDbUsersAdminPage": {
       "types": "./src/pages/CaseDbUsersAdminPage/index.ts",
@@ -688,17 +688,17 @@
   ],
   "dependencies": {
     "@hookform/resolvers": "5.9.1",
-    "@tanstack/react-query": "5.103.2",
+    "@tanstack/react-query": "5.104.2",
     "colorjs.io": "0.7.1",
-    "csv": "6.6.3",
+    "csv": "6.6.4",
     "date-fns": "4.4.0",
     "decimal.js": "10.6.0",
     "echarts": "6.1.0",
     "echarts-for-react": "3.0.6",
     "fuse.js": "7.5.0",
-    "immer": "11.1.18",
+    "immer": "11.1.21",
     "lodash": "4.18.1",
-    "read-excel-file": "9.3.10",
+    "read-excel-file": "9.3.12",
     "use-debounce": "10.1.1",
     "write-excel-file": "4.1.1",
     "zustand": "5.0.15"
@@ -710,47 +710,48 @@
     "@gen-epix/api-casedb": "workspace:^",
     "@gen-epix/api-commondb": "workspace:^",
     "@gen-epix/eslint-config": "0.7.0",
-    "@gen-epix/translation-util": "0.4.0",
+    "@gen-epix/translation-util": "0.5.0",
     "@gen-epix/ui-client-common": "workspace:^",
     "@gen-epix/ui-core": "workspace:^",
     "@gen-epix/ui-core-components": "workspace:^",
     "@gen-epix/ui-core-form": "workspace:^",
     "@gen-epix/ui-phylogenetic-tree": "workspace:^",
     "@hookform/resolvers": "5.9.1",
-    "@microsoft/api-extractor": "7.59.1",
-    "@mui/icons-material": "9.4.0",
-    "@mui/material": "9.4.0",
-    "@mui/styled-engine": "9.4.0",
-    "@mui/system": "9.4.0",
-    "@mui/utils": "9.4.0",
-    "@mui/x-date-pickers": "9.14.0",
-    "@types/lodash": "4.17.25",
-    "@types/node": "26.6.2",
+    "@microsoft/api-extractor": "7.59.4",
+    "@mui/icons-material": "9.5.0",
+    "@mui/material": "9.5.0",
+    "@mui/styled-engine": "9.5.0",
+    "@mui/system": "9.5.0",
+    "@mui/utils": "9.5.0",
+    "@mui/x-date-pickers": "9.15.0",
+    "@types/lodash": "4.17.26",
+    "@types/node": "26.6.5",
     "@types/react": "19.3.0",
-    "@vitejs/plugin-react": "6.1.1",
-    "@vitest/browser-playwright": "5.0.1",
-    "@vitest/coverage-v8": "5.0.1",
+    "@vitejs/plugin-react": "6.1.2",
+    "@vitest/browser-playwright": "5.0.4",
+    "@vitest/coverage-v8": "5.0.4",
     "axios": "1.20.0",
-    "eslint": "10.11.0",
-    "i18next": "26.4.2",
-    "jsdom": "30.1.0",
-    "playwright": "1.63.0",
+    "eslint": "10.12.0",
+    "i18next": "26.4.4",
+    "jsdom": "30.1.2",
+    "playwright": "1.64.1",
+    "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-error-boundary": "6.1.6",
-    "react-hook-form": "7.88.0",
-    "react-i18next": "17.0.14",
-    "react-resizable-panels": "4.13.1",
-    "react-router-dom": "7.18.4",
+    "react-hook-form": "7.90.0",
+    "react-i18next": "17.0.16",
+    "react-resizable-panels": "4.14.5",
     "react-router": "8.4.0",
-    "react-virtuoso": "4.18.14",
-    "react": "19.3.0",
+    "react-router-dom": "7.18.4",
+    "react-virtuoso": "4.18.19",
+    "tsyringe": "4.10.0",
     "typescript": "6.0.3",
-    "vite": "8.3.0",
-    "vite-plugin-dts": "5.1.1",
+    "vite": "8.3.4",
+    "vite-plugin-dts": "5.1.2",
     "vite-plugin-lib-inject-css": "2.2.2",
     "vite-plugin-static-copy": "4.1.1",
     "vite-plugin-svgr": "5.2.0",
-    "vitest": "5.0.1",
+    "vitest": "5.0.4",
     "vitest-browser-react": "2.3.0",
     "yup": "1.7.1"
   },
@@ -773,15 +774,16 @@
     "@mui/x-date-pickers": "*",
     "axios": "*",
     "i18next": "*",
+    "react": "*",
     "react-dom": "*",
     "react-error-boundary": "*",
     "react-hook-form": "*",
     "react-i18next": "*",
     "react-resizable-panels": "*",
-    "react-router-dom": "*",
     "react-router": "*",
+    "react-router-dom": "*",
     "react-virtuoso": "*",
-    "react": "*",
+    "tsyringe": "*",
     "yup": "*"
   },
   "publishConfig": {
@@ -967,13 +969,13 @@
         "types": "./dist/components/ui/WidgetUnavailable/index.d.ts",
         "import": "./dist/components/ui/WidgetUnavailable/index.js"
       },
-      "./constants/dashboard": {
-        "types": "./dist/constants/dashboard.d.ts",
-        "import": "./dist/constants/dashboard.js"
+      "./constants/dashboard.constants": {
+        "types": "./dist/constants/dashboard.constants.d.ts",
+        "import": "./dist/constants/dashboard.constants.js"
       },
-      "./constants/query": {
-        "types": "./dist/constants/query.d.ts",
-        "import": "./dist/constants/query.js"
+      "./constants/query.constants": {
+        "types": "./dist/constants/query.constants.d.ts",
+        "import": "./dist/constants/query.constants.js"
       },
       "./context/caseAbac": {
         "types": "./dist/context/caseAbac/index.d.ts",
@@ -1159,33 +1161,33 @@
         "types": "./dist/hooks/useUserCasePolicyNameFactory/index.d.ts",
         "import": "./dist/hooks/useUserCasePolicyNameFactory/index.js"
       },
-      "./models/caseAccess": {
-        "types": "./dist/models/caseAccess.d.ts",
-        "import": "./dist/models/caseAccess.js"
+      "./models/case-access.models": {
+        "types": "./dist/models/case-access.models.d.ts",
+        "import": "./dist/models/case-access.models.js"
       },
-      "./models/caseDb": {
-        "types": "./dist/models/caseDb.d.ts",
-        "import": "./dist/models/caseDb.js"
+      "./models/case-db.models": {
+        "types": "./dist/models/case-db.models.d.ts",
+        "import": "./dist/models/case-db.models.js"
       },
-      "./models/config": {
-        "types": "./dist/models/config.d.ts",
-        "import": "./dist/models/config.js"
+      "./models/config.models": {
+        "types": "./dist/models/config.models.d.ts",
+        "import": "./dist/models/config.models.js"
       },
-      "./models/dashboard": {
-        "types": "./dist/models/dashboard.d.ts",
-        "import": "./dist/models/dashboard.js"
+      "./models/dashboard.models": {
+        "types": "./dist/models/dashboard.models.d.ts",
+        "import": "./dist/models/dashboard.models.js"
       },
-      "./models/stratification": {
-        "types": "./dist/models/stratification.d.ts",
-        "import": "./dist/models/stratification.js"
+      "./models/stratification.models": {
+        "types": "./dist/models/stratification.models.d.ts",
+        "import": "./dist/models/stratification.models.js"
       },
-      "./models/theme": {
-        "types": "./dist/models/theme.d.ts",
-        "import": "./dist/models/theme.js"
+      "./models/theme.models": {
+        "types": "./dist/models/theme.models.d.ts",
+        "import": "./dist/models/theme.models.js"
       },
-      "./models/upload": {
-        "types": "./dist/models/upload.d.ts",
-        "import": "./dist/models/upload.js"
+      "./models/upload.models": {
+        "types": "./dist/models/upload.models.d.ts",
+        "import": "./dist/models/upload.models.js"
       },
       "./pages/CaseDbUsersAdminPage": {
         "types": "./dist/pages/CaseDbUsersAdminPage/index.d.ts",

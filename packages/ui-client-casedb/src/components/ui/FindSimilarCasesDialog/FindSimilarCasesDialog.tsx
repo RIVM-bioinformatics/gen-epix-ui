@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -44,32 +45,32 @@ import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
 import type {
   AutoCompleteOption,
   FormFieldDefinition,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
-import type { CaseDbConfig } from '../../../models/config';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { TreeWidgetUtil } from '../../../utils/TreeWidgetUtil';
 import type {
   CaseDbSimilarCaseWithIsOwnCase,
   FindSimilarCasesChartDataPoint,
   FindSimilarCasesOrganizationFilter,
-} from '../../../models/caseDb';
-import type { TreeWidgetDataPersistable } from '../../../models/dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+} from '../../../models/case-db.models';
+import type { TreeWidgetDataPersistable } from '../../../models/dashboard.models';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 
 import { FindSimilarCasesDialogDateRangeChart } from './FindSimilarCasesDialogDateRangeChart';
 
@@ -101,6 +102,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   }: FindSimilarCasesDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
   const searchFormId = useId();
   const dashboardStore = use(DashboardStoreContext);
   const treeConfiguration = dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE).treeConfiguration;
@@ -117,11 +119,11 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
         return s;
       }
       const sWithIntegerCheck = s.integer(t`Max distance must be an integer`);
-      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || ConfigService.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
+      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
     }),
     organizationFilter: string<FindSimilarCasesOrganizationFilter>().required().oneOf(['all', 'own', 'otherOrganization']),
     treeColId: string().required(),
-  }), [t, treeConfigurations]);
+  }), [config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK, t, treeConfigurations]);
 
   const treeOptions = useMemo<AutoCompleteOption<string>[]>(() => {
     const cols = new Set<CaseDbCol>();
@@ -162,14 +164,14 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         label: t`Max distance`,
-        max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigService.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
+        max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
         min: 0,
         name: 'maxDistance',
         showSlider: true,
         step: 1,
       } as const satisfies FormFieldDefinition<FormFields>,
     ];
-  }, [formValues.treeColId, t, treeConfigurations, treeOptions]);
+  }, [config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK, formValues.treeColId, t, treeConfigurations, treeOptions]);
 
   useEffect(() => {
     onTitleChange(t`Find similar cases`);
@@ -187,13 +189,13 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   const query = useQueryMemo({
     enabled: !!formData,
     queryFn: async ({ signal }) => {
-      const retrieveSimilarCasesResponse = await CaseDbCaseApi.getInstance().retrieveSimilarCases({
+      const retrieveSimilarCasesResponse = await rootContainer.resolve(CaseDbCaseApi).retrieveSimilarCases({
         case_ids: openProps.selectedRows.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
         genetic_distance_col_id: formData?.treeColId,
         max_distance: formData?.maxDistance,
       }, { signal });
-      const retrieveIsOwnCasesResponse = await CaseDbCaseApi.getInstance().retrieveIsOwnCases({
+      const retrieveIsOwnCasesResponse = await rootContainer.resolve(CaseDbCaseApi).retrieveIsOwnCases({
         case_ids: retrieveSimilarCasesResponse.data.cases.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
       }, { signal });
@@ -205,7 +207,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
         } satisfies CaseDbSimilarCaseWithIsOwnCase;
       });
     },
-    queryKey: [QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
+    queryKey: [rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
   const organizationFilteredCases = useMemo<CaseDbSimilarCaseWithIsOwnCase[]>(() => {

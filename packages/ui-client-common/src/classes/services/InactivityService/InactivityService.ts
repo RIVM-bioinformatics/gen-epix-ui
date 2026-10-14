@@ -2,12 +2,16 @@ import throttle from 'lodash/throttle';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
 
 import { AuthenticationService } from '../AuthenticationService';
-import { ConfigService } from '../ConfigService';
 import { LogService } from '../LogService';
 import { TimeUtil } from '../../../utils/TimeUtil';
+import { CONFIG_TOKEN } from '../../../constants/config.constants';
+import type { ConfigBase } from '../../../models/config.models';
 
 export type InactivityState = {
   idleDiff: number;
@@ -17,18 +21,23 @@ export type InactivityState = {
   readableNotificationDiff: string;
 };
 
+@singleton()
 export class InactivityService extends SubscribableAbstract<InactivityState> {
-  private static __instance: InactivityService;
+  private readonly authenticationService: AuthenticationService;
 
   private idleDiff: number = 0;
-
   private idleSince: number = Date.now();
   private isIdle: boolean = false;
   private isPaused: boolean = false;
+  private readonly logService: LogService;
   private notificationDiff: number = 0;
   private readonly onActivityDebounced: () => void;
 
-  private constructor() {
+  public constructor(
+    @inject(CONFIG_TOKEN) config: ConfigBase,
+    @inject(LogService) logService: LogService,
+    @inject(AuthenticationService) authenticationService: AuthenticationService,
+  ) {
     super(new Subject<InactivityState>({
       idleDiff: 0,
       isIdle: false,
@@ -36,15 +45,15 @@ export class InactivityService extends SubscribableAbstract<InactivityState> {
       readableIdleDiff: '',
       readableNotificationDiff: '',
     }));
-
-    const ALLOWED_IDLE_TIME_MS = ConfigService.getInstance().config.userInactivityConfirmation.ALLOWED_IDLE_TIME_MS;
-    const NOTIFICATION_TIME_MS = ConfigService.getInstance().config.userInactivityConfirmation.NOTIFICATION_TIME_MS;
+    this.logService = logService;
+    this.authenticationService = authenticationService;
 
     this.onActivityDebounced = throttle(this.onActivity.bind(this), 1000, {
       leading: true,
       trailing: true,
     });
 
+    const { ALLOWED_IDLE_TIME_MS, NOTIFICATION_TIME_MS } = config.userInactivityConfirmation;
     ['mousemove', 'keydown', 'scroll'].forEach((event) => window.addEventListener(event, this.onActivityDebounced));
 
     setInterval(() => {
@@ -66,20 +75,16 @@ export class InactivityService extends SubscribableAbstract<InactivityState> {
     }, 500);
   }
 
-  public static getInstance(): InactivityService {
-    InactivityService.__instance = HmrUtil.getHmrSingleton('inactivityService', InactivityService.__instance, () => new InactivityService());
-    return InactivityService.__instance;
-  }
 
   public logout(): void {
-    LogService.getInstance().log([{
-      detail: AuthenticationService.getInstance().authContextProps.user,
+    this.logService.log([{
+      detail: this.authenticationService.authContextProps.user,
       level: CommonDbLogLevel.TRACE,
       topic: 'USER_LOGOUT_BY_INACTIVITY',
     }]);
-    LogService.getInstance().flushLog();
+    this.logService.flushLog();
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    AuthenticationService.getInstance().authContextProps.signoutRedirect();
+    this.authenticationService.authContextProps.signoutRedirect();
   }
 
   public pause(): void {

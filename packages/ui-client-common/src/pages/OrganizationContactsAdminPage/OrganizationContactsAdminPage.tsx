@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -11,16 +12,16 @@ import { useParams } from 'react-router-dom';
 import type { CommonDbContact } from '@gen-epix/api-commondb';
 import { CommonDbCommandName } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
-import type { TableColumn } from '../../models/table';
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
+import type { TableColumn } from '../../models/table.models';
 import { TableUtil } from '../../utils/TableUtil';
 import { CrudPage } from '../CrudPage';
-import type { OmitWithMetaData } from '../../models/data';
-import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
+import type { OmitWithMetaData } from '../../models/data.models';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 
 // Note: site_id is given in the route params
 type FormFields = OmitWithMetaData<CommonDbContact, 'site_id' | 'site'>;
@@ -30,7 +31,7 @@ export const OrganizationContactsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiService.getInstance().organizationApi.contactsGetAll(null, null, { signal })).data;
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).contactsGetAll(null, null, { signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((contacts: CommonDbContact[]) => {
@@ -38,7 +39,7 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbContact) => {
-    return (await ApiService.getInstance().organizationApi.contactsPutOne(item.id, {
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).contactsPutOne(item.id, {
       id: item.id,
       site_id: siteId,
       ...variables,
@@ -46,14 +47,14 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ApiService.getInstance().organizationApi.contactsPostOne({
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).contactsPostOne({
       site_id: siteId,
       ...variables,
     })).data;
   }, [siteId]);
 
   const deleteOne = useCallback(async (item: CommonDbContact) => {
-    return await ApiService.getInstance().organizationApi.contactsDeleteOne(item.id);
+    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).contactsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {

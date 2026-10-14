@@ -22,13 +22,13 @@
       "types": "./src/classes/abstracts/FilterAbstract/index.ts",
       "import": "./src/classes/abstracts/FilterAbstract/index.ts"
     },
+    "./classes/containers/UiClientCommonContainer": {
+      "types": "./src/classes/containers/UiClientCommonContainer/index.ts",
+      "import": "./src/classes/containers/UiClientCommonContainer/index.ts"
+    },
     "./classes/filters": {
       "types": "./src/classes/filters/index.ts",
       "import": "./src/classes/filters/index.ts"
-    },
-    "./classes/services/ApiService": {
-      "types": "./src/classes/services/ApiService/index.ts",
-      "import": "./src/classes/services/ApiService/index.ts"
     },
     "./classes/services/AuthenticationService": {
       "types": "./src/classes/services/AuthenticationService/index.ts",
@@ -45,10 +45,6 @@
     "./classes/services/BreadcrumbService": {
       "types": "./src/classes/services/BreadcrumbService/index.ts",
       "import": "./src/classes/services/BreadcrumbService/index.ts"
-    },
-    "./classes/services/ConfigService": {
-      "types": "./src/classes/services/ConfigService/index.ts",
-      "import": "./src/classes/services/ConfigService/index.ts"
     },
     "./classes/services/EmotionCacheService": {
       "types": "./src/classes/services/EmotionCacheService/index.ts",
@@ -218,9 +214,13 @@
       "types": "./src/components/ui/UserInactivityConfirmation/index.ts",
       "import": "./src/components/ui/UserInactivityConfirmation/index.ts"
     },
-    "./constants/query": {
-      "types": "./src/constants/query.ts",
-      "import": "./src/constants/query.ts"
+    "./constants/config.constants": {
+      "types": "./src/constants/config.constants.ts",
+      "import": "./src/constants/config.constants.ts"
+    },
+    "./constants/query.constants": {
+      "types": "./src/constants/query.constants.ts",
+      "import": "./src/constants/query.constants.ts"
     },
     "./context/uiClientCommonConfigContext": {
       "types": "./src/context/uiClientCommonConfigContext/index.ts",
@@ -262,6 +262,10 @@
       "types": "./src/hooks/useColumnsMenu/index.ts",
       "import": "./src/hooks/useColumnsMenu/index.ts"
     },
+    "./hooks/useConfig": {
+      "types": "./src/hooks/useConfig/index.ts",
+      "import": "./src/hooks/useConfig/index.ts"
+    },
     "./hooks/useCreateMutation": {
       "types": "./src/hooks/useCreateMutation/index.ts",
       "import": "./src/hooks/useCreateMutation/index.ts"
@@ -294,53 +298,53 @@
       "types": "./src/hooks/useUpdateDocumentTitle/index.ts",
       "import": "./src/hooks/useUpdateDocumentTitle/index.ts"
     },
-    "./models/admin": {
-      "types": "./src/models/admin.ts",
-      "import": "./src/models/admin.ts"
+    "./models/admin.models": {
+      "types": "./src/models/admin.models.ts",
+      "import": "./src/models/admin.models.ts"
     },
-    "./models/api": {
-      "types": "./src/models/api.ts",
-      "import": "./src/models/api.ts"
+    "./models/api.models": {
+      "types": "./src/models/api.models.ts",
+      "import": "./src/models/api.models.ts"
     },
-    "./models/auth": {
-      "types": "./src/models/auth.ts",
-      "import": "./src/models/auth.ts"
+    "./models/auth.models": {
+      "types": "./src/models/auth.models.ts",
+      "import": "./src/models/auth.models.ts"
     },
-    "./models/config": {
-      "types": "./src/models/config.ts",
-      "import": "./src/models/config.ts"
+    "./models/config.models": {
+      "types": "./src/models/config.models.ts",
+      "import": "./src/models/config.models.ts"
     },
-    "./models/data": {
-      "types": "./src/models/data.ts",
-      "import": "./src/models/data.ts"
+    "./models/data-hooks.models": {
+      "types": "./src/models/data-hooks.models.ts",
+      "import": "./src/models/data-hooks.models.ts"
     },
-    "./models/dataHooks": {
-      "types": "./src/models/dataHooks.ts",
-      "import": "./src/models/dataHooks.ts"
+    "./models/data.models": {
+      "types": "./src/models/data.models.ts",
+      "import": "./src/models/data.models.ts"
     },
-    "./models/filter": {
-      "types": "./src/models/filter.ts",
-      "import": "./src/models/filter.ts"
+    "./models/filter.models": {
+      "types": "./src/models/filter.models.ts",
+      "import": "./src/models/filter.models.ts"
     },
-    "./models/notification": {
-      "types": "./src/models/notification.ts",
-      "import": "./src/models/notification.ts"
+    "./models/notification.models": {
+      "types": "./src/models/notification.models.ts",
+      "import": "./src/models/notification.models.ts"
     },
-    "./models/outage": {
-      "types": "./src/models/outage.ts",
-      "import": "./src/models/outage.ts"
+    "./models/outage.models": {
+      "types": "./src/models/outage.models.ts",
+      "import": "./src/models/outage.models.ts"
     },
-    "./models/reactRouter": {
-      "types": "./src/models/reactRouter.ts",
-      "import": "./src/models/reactRouter.ts"
+    "./models/react-router.models": {
+      "types": "./src/models/react-router.models.ts",
+      "import": "./src/models/react-router.models.ts"
     },
-    "./models/table": {
-      "types": "./src/models/table.ts",
-      "import": "./src/models/table.ts"
+    "./models/table.models": {
+      "types": "./src/models/table.models.ts",
+      "import": "./src/models/table.models.ts"
     },
-    "./models/theme": {
-      "types": "./src/models/theme.ts",
-      "import": "./src/models/theme.ts"
+    "./models/theme.models": {
+      "types": "./src/models/theme.models.ts",
+      "import": "./src/models/theme.models.ts"
     },
     "./pages/AcceptInvitationPage": {
       "types": "./src/pages/AcceptInvitationPage/index.ts",
@@ -496,16 +500,16 @@
   ],
   "dependencies": {
     "@hookform/resolvers": "5.9.1",
-    "@tanstack/react-query": "5.103.2",
+    "@tanstack/react-query": "5.104.2",
     "classnames": "2.5.1",
     "clsx": "2.1.1",
     "date-fns": "4.4.0",
-    "immer": "11.1.18",
+    "immer": "11.1.21",
     "lodash": "4.18.1",
     "oidc-client-ts": "3.5.0",
     "reflect-metadata": "0.2.2",
     "use-debounce": "10.1.1",
-    "uuid": "14.0.2",
+    "uuid": "14.0.3",
     "zustand": "5.0.15"
   },
   "devDependencies": {
@@ -517,43 +521,44 @@
     "@emotion/styled": "11.14.1",
     "@gen-epix/api-commondb": "workspace:^",
     "@gen-epix/eslint-config": "0.7.0",
-    "@gen-epix/translation-util": "0.4.0",
+    "@gen-epix/translation-util": "0.5.0",
     "@gen-epix/ui-core": "workspace:^",
     "@gen-epix/ui-core-components": "workspace:^",
     "@gen-epix/ui-core-form": "workspace:^",
-    "@microsoft/api-extractor": "7.59.1",
-    "@mui/icons-material": "9.4.0",
-    "@mui/material": "9.4.0",
-    "@mui/styled-engine": "9.4.0",
-    "@mui/system": "9.4.0",
-    "@mui/utils": "9.4.0",
-    "@types/lodash": "4.17.25",
-    "@types/node": "26.6.2",
+    "@microsoft/api-extractor": "7.59.4",
+    "@mui/icons-material": "9.5.0",
+    "@mui/material": "9.5.0",
+    "@mui/styled-engine": "9.5.0",
+    "@mui/system": "9.5.0",
+    "@mui/utils": "9.5.0",
+    "@types/lodash": "4.17.26",
+    "@types/node": "26.6.5",
     "@types/react": "19.3.0",
-    "@vitejs/plugin-react": "6.1.1",
-    "@vitest/browser-playwright": "5.0.1",
-    "@vitest/coverage-v8": "5.0.1",
+    "@vitejs/plugin-react": "6.1.2",
+    "@vitest/browser-playwright": "5.0.4",
+    "@vitest/coverage-v8": "5.0.4",
     "axios": "1.20.0",
-    "eslint": "10.11.0",
-    "i18next": "26.4.2",
-    "jsdom": "30.1.0",
-    "playwright": "1.63.0",
+    "eslint": "10.12.0",
+    "i18next": "26.4.4",
+    "jsdom": "30.1.2",
+    "playwright": "1.64.1",
+    "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-error-boundary": "6.1.6",
-    "react-hook-form": "7.88.0",
-    "react-i18next": "17.0.14",
+    "react-hook-form": "7.90.0",
+    "react-i18next": "17.0.16",
     "react-oidc-context": "3.3.1",
-    "react-router-dom": "7.18.4",
     "react-router": "8.4.0",
-    "react-virtuoso": "4.18.14",
-    "react": "19.3.0",
+    "react-router-dom": "7.18.4",
+    "react-virtuoso": "4.18.19",
+    "tsyringe": "4.10.0",
     "typescript": "6.0.3",
-    "vite": "8.3.0",
-    "vite-plugin-dts": "5.1.1",
+    "vite": "8.3.4",
+    "vite-plugin-dts": "5.1.2",
     "vite-plugin-lib-inject-css": "2.2.2",
     "vite-plugin-static-copy": "4.1.1",
     "vite-plugin-svgr": "5.2.0",
-    "vitest": "5.0.1",
+    "vitest": "5.0.4",
     "vitest-browser-react": "2.3.0",
     "yup": "1.7.1"
   },
@@ -575,15 +580,16 @@
     "@mui/utils": "*",
     "axios": "*",
     "i18next": "*",
+    "react": "*",
     "react-dom": "*",
     "react-error-boundary": "*",
     "react-hook-form": "*",
     "react-i18next": "*",
     "react-oidc-context": "*",
-    "react-router-dom": "*",
     "react-router": "*",
+    "react-router-dom": "*",
     "react-virtuoso": "*",
-    "react": "*",
+    "tsyringe": "*",
     "yup": "*"
   },
   "publishConfig": {
@@ -601,13 +607,13 @@
         "types": "./dist/classes/abstracts/FilterAbstract/index.d.ts",
         "import": "./dist/classes/abstracts/FilterAbstract/index.js"
       },
+      "./classes/containers/UiClientCommonContainer": {
+        "types": "./dist/classes/containers/UiClientCommonContainer/index.d.ts",
+        "import": "./dist/classes/containers/UiClientCommonContainer/index.js"
+      },
       "./classes/filters": {
         "types": "./dist/classes/filters/index.d.ts",
         "import": "./dist/classes/filters/index.js"
-      },
-      "./classes/services/ApiService": {
-        "types": "./dist/classes/services/ApiService/index.d.ts",
-        "import": "./dist/classes/services/ApiService/index.js"
       },
       "./classes/services/AuthenticationService": {
         "types": "./dist/classes/services/AuthenticationService/index.d.ts",
@@ -624,10 +630,6 @@
       "./classes/services/BreadcrumbService": {
         "types": "./dist/classes/services/BreadcrumbService/index.d.ts",
         "import": "./dist/classes/services/BreadcrumbService/index.js"
-      },
-      "./classes/services/ConfigService": {
-        "types": "./dist/classes/services/ConfigService/index.d.ts",
-        "import": "./dist/classes/services/ConfigService/index.js"
       },
       "./classes/services/EmotionCacheService": {
         "types": "./dist/classes/services/EmotionCacheService/index.d.ts",
@@ -797,9 +799,13 @@
         "types": "./dist/components/ui/UserInactivityConfirmation/index.d.ts",
         "import": "./dist/components/ui/UserInactivityConfirmation/index.js"
       },
-      "./constants/query": {
-        "types": "./dist/constants/query.d.ts",
-        "import": "./dist/constants/query.js"
+      "./constants/config.constants": {
+        "types": "./dist/constants/config.constants.d.ts",
+        "import": "./dist/constants/config.constants.js"
+      },
+      "./constants/query.constants": {
+        "types": "./dist/constants/query.constants.d.ts",
+        "import": "./dist/constants/query.constants.js"
       },
       "./context/uiClientCommonConfigContext": {
         "types": "./dist/context/uiClientCommonConfigContext/index.d.ts",
@@ -841,6 +847,10 @@
         "types": "./dist/hooks/useColumnsMenu/index.d.ts",
         "import": "./dist/hooks/useColumnsMenu/index.js"
       },
+      "./hooks/useConfig": {
+        "types": "./dist/hooks/useConfig/index.d.ts",
+        "import": "./dist/hooks/useConfig/index.js"
+      },
       "./hooks/useCreateMutation": {
         "types": "./dist/hooks/useCreateMutation/index.d.ts",
         "import": "./dist/hooks/useCreateMutation/index.js"
@@ -873,53 +883,53 @@
         "types": "./dist/hooks/useUpdateDocumentTitle/index.d.ts",
         "import": "./dist/hooks/useUpdateDocumentTitle/index.js"
       },
-      "./models/admin": {
-        "types": "./dist/models/admin.d.ts",
-        "import": "./dist/models/admin.js"
+      "./models/admin.models": {
+        "types": "./dist/models/admin.models.d.ts",
+        "import": "./dist/models/admin.models.js"
       },
-      "./models/api": {
-        "types": "./dist/models/api.d.ts",
-        "import": "./dist/models/api.js"
+      "./models/api.models": {
+        "types": "./dist/models/api.models.d.ts",
+        "import": "./dist/models/api.models.js"
       },
-      "./models/auth": {
-        "types": "./dist/models/auth.d.ts",
-        "import": "./dist/models/auth.js"
+      "./models/auth.models": {
+        "types": "./dist/models/auth.models.d.ts",
+        "import": "./dist/models/auth.models.js"
       },
-      "./models/config": {
-        "types": "./dist/models/config.d.ts",
-        "import": "./dist/models/config.js"
+      "./models/config.models": {
+        "types": "./dist/models/config.models.d.ts",
+        "import": "./dist/models/config.models.js"
       },
-      "./models/data": {
-        "types": "./dist/models/data.d.ts",
-        "import": "./dist/models/data.js"
+      "./models/data-hooks.models": {
+        "types": "./dist/models/data-hooks.models.d.ts",
+        "import": "./dist/models/data-hooks.models.js"
       },
-      "./models/dataHooks": {
-        "types": "./dist/models/dataHooks.d.ts",
-        "import": "./dist/models/dataHooks.js"
+      "./models/data.models": {
+        "types": "./dist/models/data.models.d.ts",
+        "import": "./dist/models/data.models.js"
       },
-      "./models/filter": {
-        "types": "./dist/models/filter.d.ts",
-        "import": "./dist/models/filter.js"
+      "./models/filter.models": {
+        "types": "./dist/models/filter.models.d.ts",
+        "import": "./dist/models/filter.models.js"
       },
-      "./models/notification": {
-        "types": "./dist/models/notification.d.ts",
-        "import": "./dist/models/notification.js"
+      "./models/notification.models": {
+        "types": "./dist/models/notification.models.d.ts",
+        "import": "./dist/models/notification.models.js"
       },
-      "./models/outage": {
-        "types": "./dist/models/outage.d.ts",
-        "import": "./dist/models/outage.js"
+      "./models/outage.models": {
+        "types": "./dist/models/outage.models.d.ts",
+        "import": "./dist/models/outage.models.js"
       },
-      "./models/reactRouter": {
-        "types": "./dist/models/reactRouter.d.ts",
-        "import": "./dist/models/reactRouter.js"
+      "./models/react-router.models": {
+        "types": "./dist/models/react-router.models.d.ts",
+        "import": "./dist/models/react-router.models.js"
       },
-      "./models/table": {
-        "types": "./dist/models/table.d.ts",
-        "import": "./dist/models/table.js"
+      "./models/table.models": {
+        "types": "./dist/models/table.models.d.ts",
+        "import": "./dist/models/table.models.js"
       },
-      "./models/theme": {
-        "types": "./dist/models/theme.d.ts",
-        "import": "./dist/models/theme.js"
+      "./models/theme.models": {
+        "types": "./dist/models/theme.models.d.ts",
+        "import": "./dist/models/theme.models.js"
       },
       "./pages/AcceptInvitationPage": {
         "types": "./dist/pages/AcceptInvitationPage/index.d.ts",

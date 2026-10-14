@@ -1,9 +1,16 @@
 import type { CommonDbUser } from '@gen-epix/api-commondb';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
 
-import { ConfigService } from '../ConfigService';
+import {
+  CONFIG_TOKEN,
+  WINDOW_SERVICE_TOKEN,
+} from '../../../constants/config.constants';
+import type { ConfigBase } from '../../../models/config.models';
 
 type EpiEvent = {
   changePage: Page;
@@ -22,20 +29,20 @@ type Page = {
   pageName: string;
 };
 
+@singleton()
 export class PageEventBusService extends EventBusAbstract<EpiEvent> {
-  private static __instance: PageEventBusService;
-
   private lastPageEventPayload: string = null;
+  private readonly windowService: WindowService;
 
-  private constructor() {
+  public constructor(
+    @inject(CONFIG_TOKEN) config: ConfigBase,
+    @inject(WINDOW_SERVICE_TOKEN) windowService: WindowService,
+  ) {
     super();
-    this.setupClickEventListener();
+    this.windowService = windowService;
+    this.setupClickEventListener(config.enablePageEvents);
   }
 
-  public static getInstance(): PageEventBusService {
-    PageEventBusService.__instance = HmrUtil.getHmrSingleton('pageEventBusService', PageEventBusService.__instance, () => new PageEventBusService());
-    return PageEventBusService.__instance;
-  }
 
   public emit<TEventName extends keyof EpiEvent>(eventName: TEventName, payload?: EpiEvent[TEventName]): void {
     if (eventName === 'changePage') {
@@ -52,19 +59,18 @@ export class PageEventBusService extends EventBusAbstract<EpiEvent> {
     super.emit(eventName, payload);
   }
 
-
   public getPage(): Page {
     return {
-      location: WindowService.getInstance().window.location,
+      location: this.windowService.window.location,
       pageName: document.querySelector('[data-page-container]')?.getAttribute('data-testid'),
     };
   }
 
-  private setupClickEventListener(): void {
-    if (!ConfigService.getInstance().config.enablePageEvents) {
+  private setupClickEventListener(enablePageEvents: boolean): void {
+    if (!enablePageEvents) {
       return;
     }
-    WindowService.getInstance().window.addEventListener('click', (event: Event): void => {
+    this.windowService.window.addEventListener('click', (event: Event): void => {
 
       const closestButton = (event.target as HTMLElement).closest('button');
       const closestLink = (event.target as HTMLElement).closest('a');

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   CircularProgress,
@@ -26,7 +27,7 @@ export const LineListWidgetIsOwnCaseCell = memo(({ row }: LineListWidgetIsOwnCas
   useEffect(() => {
     const perform = async () => {
       try {
-        setIsTrue(await LineListIsOwnCaseService.getInstance().query(row.id));
+        setIsTrue(await rootContainer.resolve(LineListIsOwnCaseService).query(row.id));
       } catch (_error) {
         setHasError(true);
       } finally {

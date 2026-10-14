@@ -11,7 +11,7 @@ import {
   persist,
 } from 'zustand/middleware';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import type { UnwrapArray } from '@gen-epix/ui-core/models/generic';
+import type { UnwrapArray } from '@gen-epix/ui-core/models/generic.models';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
 
 import {
@@ -24,13 +24,13 @@ import type {
   FilterDimension,
   Filters,
   FilterValues,
-} from '../../models/filter';
+} from '../../models/filter.models';
 import type {
   TableColumn,
   TableColumnDimension,
   TableColumnVisualSettings,
   TableSortDirection,
-} from '../../models/table';
+} from '../../models/table.models';
 import { TableUtil } from '../../utils/TableUtil';
 
 

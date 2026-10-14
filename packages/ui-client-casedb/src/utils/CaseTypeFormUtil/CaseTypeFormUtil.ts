@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type {
   CaseDbCase,
   CaseDbCompleteCaseType,
@@ -18,8 +19,8 @@ import type {
   FormFieldDefinition,
   FormGroupDefinition,
   FormGroupMessage,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 
 import { DataService } from '../../classes/services/DataService';
 import { AbacUtil } from '../AbacUtil';
@@ -69,14 +70,14 @@ export class CaseTypeFormUtil {
           } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
           break;
         case CaseDbColType.GEO_REGION:
-          if (DataService.getInstance().data.regionsByRegionSetId[refCol.region_set_id]) {
+          if (rootContainer.resolve(DataService).data.regionsByRegionSetId[refCol.region_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               disabled,
               label: col.label,
               name: col.id,
-              options: DataService.getInstance().data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
-                label: DataService.getInstance().data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
+              options: rootContainer.resolve(DataService).data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
+                label: rootContainer.resolve(DataService).data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
                 value: region.id,
               })),
             } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
@@ -85,13 +86,13 @@ export class CaseTypeFormUtil {
         case CaseDbColType.INTERVAL:
         case CaseDbColType.NOMINAL:
         case CaseDbColType.ORDINAL:
-          if (DataService.getInstance().data.conceptsBySetId[refCol.concept_set_id]) {
+          if (rootContainer.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               disabled,
               label: col.label,
               name: col.id,
-              options: DataService.getInstance().data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
+              options: rootContainer.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
                 label: concept.name,
                 value: concept.id,
               })),
@@ -104,7 +105,7 @@ export class CaseTypeFormUtil {
             disabled,
             label: col.label,
             name: col.id,
-            options: (DataService.getInstance().data.organizations ?? []).map(organization => ({
+            options: (rootContainer.resolve(DataService).data.organizations ?? []).map(organization => ({
               label: organization.name,
               value: organization.id,
             })).sort((a, b) => StringUtil.advancedSortComperator(a.label, b.label)),

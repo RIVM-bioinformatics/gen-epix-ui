@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -19,19 +20,19 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useColOptionsQuery } from '../../dataHooks/useColsQuery';
 import { useColSetMembersQuery } from '../../dataHooks/useColSetMembersQuery';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 type FormFields = OmitWithMetaData<TableData>;
 
@@ -46,27 +47,27 @@ export const ColSetsAdminPage = () => {
   const loadables = useArray([colOptionsQuery, colSetMembersQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().colSetsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbCaseApi).colSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbColSet) => {
-    return await CaseDbCaseApi.getInstance().colSetsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbCaseApi).colSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbColSet) => {
-    await CaseDbCaseApi.getInstance().colSetsPutCols(item.id, {
+    await rootContainer.resolve(CaseDbCaseApi).colSetsPutCols(item.id, {
       col_set_members: variables.colIds.map<CaseDbColSetMember>(col_id => ({
         col_id,
         col_set_id: item.id,
       })),
     });
 
-    return (await CaseDbCaseApi.getInstance().colSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['colIds']))).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).colSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['colIds']))).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseDbCaseApi.getInstance().colSetsPostOne(omit(variables, ['colIds']))).data;
-    await CaseDbCaseApi.getInstance().colSetsPutCols(resultItem.id, {
+    const resultItem = (await rootContainer.resolve(CaseDbCaseApi).colSetsPostOne(omit(variables, ['colIds']))).data;
+    await rootContainer.resolve(CaseDbCaseApi).colSetsPutCols(resultItem.id, {
       col_set_members: variables.colIds.map<CaseDbColSetMember>(col_id => ({
         col_id,
         col_set_id: resultItem.id,

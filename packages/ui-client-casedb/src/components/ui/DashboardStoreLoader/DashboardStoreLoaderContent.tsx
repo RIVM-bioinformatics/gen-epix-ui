@@ -9,15 +9,17 @@ import type {
   CaseDbCaseSet,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import type { TableColumnDimension } from '@gen-epix/ui-client-common/models/table';
+import type { TableColumnDimension } from '@gen-epix/ui-client-common/models/table.models';
 import { TableStoreContextProvider } from '@gen-epix/ui-client-common/stores/tableStore';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 
 import {
   createDashboardStore,
   DashboardStoreContext,
 } from '../../../stores/dashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 type DashboardStoreLoaderContentProps = PropsWithChildren<{
   readonly caseSet: CaseDbCaseSet;
@@ -25,16 +27,18 @@ type DashboardStoreLoaderContentProps = PropsWithChildren<{
 }>;
 
 export const DashboardStoreLoaderContent = ({ caseSet, children, completeCaseType }: DashboardStoreLoaderContentProps) => {
+  const config = useConfig<CaseDbConfig>();
   const dashBoardStore = useMemo(() => {
     const store = createDashboardStore({
       caseSetId: caseSet?.id,
       completeCaseType,
+      config,
       idSelectorCallback: (row) => row.id,
       storageNamePostFix: `epiDashboardStoreLoader-${StringUtil.createSlug(completeCaseType.name)}-${StringUtil.createHash(completeCaseType.id)}`,
       storageVersion: 1,
     });
     return store;
-  }, [caseSet, completeCaseType]);
+  }, [caseSet, completeCaseType, config]);
 
   const tableColumnDimensions = useMemo<TableColumnDimension[]>(() => {
     const items: TableColumnDimension[] = [];

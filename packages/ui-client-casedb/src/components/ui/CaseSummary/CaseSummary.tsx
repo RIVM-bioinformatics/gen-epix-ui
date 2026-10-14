@@ -15,7 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useTranslation } from 'react-i18next';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
-import type { TableColumnText } from '@gen-epix/ui-client-common/models/table';
+import type { TableColumnText } from '@gen-epix/ui-client-common/models/table.models';
 import { useTableStoreContext } from '@gen-epix/ui-client-common/stores/tableStore';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';

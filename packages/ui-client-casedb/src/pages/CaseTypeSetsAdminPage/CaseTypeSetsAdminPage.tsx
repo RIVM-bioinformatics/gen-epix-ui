@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -18,20 +19,20 @@ import {
   CaseDbCommandName,
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { useCaseTypeSetCategoryOptionsQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeSetMembersQuery } from '../../dataHooks/useCaseTypeSetMembersQuery';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 type FormFields = OmitWithMetaData<TableData, 'case_type_set_category'>;
 
@@ -48,27 +49,27 @@ export const CaseTypeSetsAdminPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal): Promise<CaseDbCaseTypeSet[]> => {
-    const caseTypesSets = (await CaseDbCaseApi.getInstance().caseTypeSetsGetAll(null, null, { signal }))?.data;
+    const caseTypesSets = (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsGetAll(null, null, { signal }))?.data;
     return caseTypesSets;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseTypeSet) => {
-    return await CaseDbCaseApi.getInstance().caseTypeSetsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseTypeSet) => {
-    await CaseDbCaseApi.getInstance().caseTypeSetsPutCaseTypes(item.id, {
+    await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsPutCaseTypes(item.id, {
       case_type_set_members: variables.caseTypeIds.map(case_type_id => ({
         case_type_id,
         case_type_set_id: item.id,
       })),
     });
-    return (await CaseDbCaseApi.getInstance().caseTypeSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeIds']))).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeIds']))).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await CaseDbCaseApi.getInstance().caseTypeSetsPostOne(omit(variables, ['caseTypeIds']))).data;
-    await CaseDbCaseApi.getInstance().caseTypeSetsPutCaseTypes(resultItem.id, {
+    const resultItem = (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsPostOne(omit(variables, ['caseTypeIds']))).data;
+    await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsPutCaseTypes(resultItem.id, {
       case_type_set_members: variables.caseTypeIds.map(case_type_id => ({
         case_type_id,
         case_type_set_id: resultItem.id,

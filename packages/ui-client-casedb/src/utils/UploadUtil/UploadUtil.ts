@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import readXlsxFile, { readSheet } from 'read-excel-file/browser';
 import type {
   CellValue,
@@ -44,9 +45,9 @@ import type {
   AutoCompleteOption,
   FormFieldDefinition,
   OptionBase,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
@@ -56,9 +57,9 @@ import type {
   UploadMappedColumnsFormFields,
   UploadSequenceMapping,
   UploadSequenceMappingForCaseId,
-} from '../../models/upload';
+} from '../../models/upload.models';
 import { UploadError } from '../../classes/errors';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 export class UploadUtil {
   public static readonly caseDateColumnAliases = ['_timed_at', 'timed at', 'timed_at', 'timedat', 'case.timed_at', 'timed_at_date'];
@@ -105,7 +106,7 @@ export class UploadUtil {
 
     const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col?.id === sampleIdColId) ?? {};
 
-    return (await CaseDbCaseApi.getInstance().uploadCases({
+    return (await rootContainer.resolve(CaseDbCaseApi).uploadCases({
       case_batch: {
         cases: validatedCases.map((vc) => {
           const caseId = vc.id;
@@ -202,7 +203,7 @@ export class UploadUtil {
       await UploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, endPercentage: 99, startPercentage: 1 });
       onProgress(100, t('Upload complete.'));
 
-      await QueryClientService.getInstance().invalidateQueryKeys(QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true));
+      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true));
       onComplete();
       return caseBatchUploadResult;
     } catch (error) {
@@ -813,7 +814,7 @@ export class UploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await UploadUtil.readFileAsBase64(file);
-          await CaseDbCaseApi.getInstance().createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
+          await rootContainer.resolve(CaseDbCaseApi).createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
             file_compression: UploadUtil.getFileCompressionFromFileName(caseSeqToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbSeqFileFormat.FASTA,
@@ -835,7 +836,7 @@ export class UploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await UploadUtil.readFileAsBase64(file);
-          await CaseDbCaseApi.getInstance().createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
+          await rootContainer.resolve(CaseDbCaseApi).createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
             file_compression: UploadUtil.getFileCompressionFromFileName(caseReadSetToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbReadsFileFormat.FASTQ,

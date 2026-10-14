@@ -12,7 +12,7 @@ import { useTableStoreContext } from '../../../stores/tableStore';
 import type {
   TableColumnSelectable,
   TableRowParams,
-} from '../../../models/table';
+} from '../../../models/table.models';
 
 
 export type TableCheckboxCellProps<TRowData, TDataContext = null> = {

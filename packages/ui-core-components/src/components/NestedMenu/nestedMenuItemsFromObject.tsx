@@ -1,6 +1,6 @@
 import { Tooltip } from '@mui/material';
 
-import type { MenuItemData } from '../../models/nestedMenu';
+import type { MenuItemData } from '../../models/nested-menu.models';
 
 import { IconMenuItem } from './IconMenuItem';
 import { NestedMenuItem } from './NestedMenuItem';

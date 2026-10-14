@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useEffect,
@@ -46,8 +47,8 @@ import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericFo
 import type {
   AutoCompleteOption,
   FormFieldDefinition,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { EventBusService } from '../../../classes/services/EventBusService';
@@ -57,7 +58,7 @@ import { useCaseTypeOptionsQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { useDataCollectionOptionsQuery } from '../../../dataHooks/useDataCollectionsQuery';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { CasesAlreadyInCaseSetWarning } from '../CasesAlreadyInCaseSetWarning';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 import { CreateEventDialogSuccessNotificationMessage } from './CreateEventDialogSuccessNotificationMessage';
 
@@ -136,7 +137,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
     useQueryOptions: {
       enabled: !openProps.completeCaseType && !!sanitizedCompleteCaseTypeId,
       queryFn: async ({ signal }) => {
-        return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
+        return (await rootContainer.resolve(CaseDbCaseApi).completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
       },
     },
   });
@@ -273,20 +274,20 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
         caseTypeId: completeCaseType.id,
       });
     }
-    EventBusService.getInstance().emit('onEventCreated');
+    rootContainer.resolve(EventBusService).emit('onEventCreated');
     onClose();
   }, [completeCaseType?.id, onClose, openProps.rows]);
 
   const onError = useCallback(() => {
-    EventBusService.getInstance().emit('onEventCreated');
+    rootContainer.resolve(EventBusService).emit('onEventCreated');
     onClose();
   }, [onClose]);
 
   const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<CaseDbCaseSet, FormFields>({
     associationQueryKeys: [
-      ...QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS]),
-      ...QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
-      ...QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
+      ...rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS]),
+      ...rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
+      ...rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
     ],
     getErrorNotificationMessage: (item, _error) => t('Failed to create event: {{name}}', { name: item.name }),
     getProgressNotificationMessage: (variables) => t('Creating event: {{name}}...', { name: variables.name }),
@@ -299,7 +300,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
     onError,
     onSuccess,
     queryFn: async (formData: FormFields): Promise<CaseDbCaseSet> => {
-      const caseSetResult = (await CaseDbCaseApi.getInstance().createCaseSet({
+      const caseSetResult = (await rootContainer.resolve(CaseDbCaseApi).createCaseSet({
         case_ids: openProps.rows?.map(row => row.id) ?? [],
         case_set: {
           case_set_category_id: formData.case_set_category_id,
@@ -315,7 +316,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
 
       return caseSetResult;
     },
-    resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    resourceQueryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   const isFormDisabled = useMemo(() => {

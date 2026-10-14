@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { PageContainer } from '@gen-epix/ui-client-common/components/ui/PageContainer';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 
 export const HomePage = () => {
   const { t } = useTranslation();
-  const { HomePageIntroduction } = ConfigService.getInstance().config;
+  const { HomePageIntroduction } = useConfig();
 
   return (
     <PageContainer

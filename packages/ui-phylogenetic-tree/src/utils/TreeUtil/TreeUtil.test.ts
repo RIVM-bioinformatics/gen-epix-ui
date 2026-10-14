@@ -1,12 +1,12 @@
 import { Decimal } from 'decimal.js';
 import { vi } from 'vitest';
-import type { ArgumentTypes } from '@gen-epix/ui-core/models/generic';
+import type { ArgumentTypes } from '@gen-epix/ui-core/models/generic.models';
 
 import type {
   TreeAssembly,
   TreeNode,
   TreePathProperties,
-} from '../../models/tree';
+} from '../../models/tree.models';
 import { NewickUtil } from '../NewickUtil';
 
 import { TreeUtil } from './TreeUtil';

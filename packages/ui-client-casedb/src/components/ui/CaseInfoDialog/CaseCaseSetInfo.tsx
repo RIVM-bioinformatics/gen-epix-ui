@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { BoxProps } from '@mui/material';
 import {
   Box,
@@ -23,7 +24,7 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { useCaseSetCategoryMapQuery } from '../../../dataHooks/useCaseSetCategoriesQuery';
 import { useCaseSetStatusMapQuery } from '../../../dataHooks/useCaseSetStatusesQuery';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 export type CaseCaseSetInfoProps = {
   readonly caseDbCase: CaseDbCase;
@@ -42,10 +43,10 @@ export const CaseCaseSetInfo = ({ caseDbCase, ...boxProps }: CaseCaseSetInfoProp
   };
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const caseSetsFilter: CaseDbUuidSetFilter = {
@@ -57,10 +58,10 @@ export const CaseCaseSetInfo = ({ caseDbCase, ...boxProps }: CaseCaseSetInfoProp
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     enabled: caseSetsFilter.members.length > 0,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetsFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsPostQuery(caseSetsFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetsFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetsFilter),
   });
 
   const loadables = useArray([caseSetCategoryMapQuery, caseSetStatusMapQuery]);

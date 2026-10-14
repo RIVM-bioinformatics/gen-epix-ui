@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -23,23 +24,23 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type {
   FormFieldDefinition,
   OptionBase,
-} from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
 import { useOrganizationAdminPolicyMapQuery } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';
 import type {
   TableColumn,
   TableRowParams,
-} from '../../models/table';
+} from '../../models/table.models';
 import { TableUtil } from '../../utils/TableUtil';
 import { CrudPage } from '../CrudPage';
 import { useInviteUserConstraintsQuery } from '../../dataHooks/useInviteUserConstraintsQuery';
-import type { OmitWithMetaData } from '../../models/data';
-import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
+import type { OmitWithMetaData } from '../../models/data.models';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 
 import { UserInvitationShareDialog } from './UserInvitationShareDialog';
 import type { UserInvitationShareDialogRefMethods } from './UserInvitationShareDialog';
@@ -79,15 +80,15 @@ export const UserInvitationsAdminPage = () => {
   const userInvitationConsumeDialogRef = useRef<UserInvitationConsumeDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await ApiService.getInstance().organizationApi.userInvitationsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).userInvitationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbUserInvitation) => {
-    return await ApiService.getInstance().organizationApi.userInvitationsDeleteOne(item.id);
+    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).userInvitationsDeleteOne(item.id);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await ApiService.getInstance().organizationApi.inviteUser({
+    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).inviteUser({
       ...variables,
     })).data;
   }, []);

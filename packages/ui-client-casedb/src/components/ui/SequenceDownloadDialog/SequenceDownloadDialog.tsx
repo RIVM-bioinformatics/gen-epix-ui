@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -22,12 +23,12 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { AuthenticationService } from '@gen-epix/ui-client-common/classes/services/AuthenticationService';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import { Autocomplete } from '@gen-epix/ui-core-form/components/fields/Autocomplete';
-import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
+import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form.models';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
@@ -58,6 +59,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
   }: SequenceDownloadDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig();
   const dashboardStore = use(DashboardStoreContext);
   const completeCaseType = useStore(dashboardStore, useShallow((state) => state.completeCaseType));
 
@@ -92,8 +94,8 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
 
   const onDownloadFastaButtonClick = useCallback(() => {
     DownloadUtil.downloadAsMultiPartForm({
-      accessToken: AuthenticationService.getInstance().authContextProps?.user?.access_token ?? '',
-      action: `${ConfigService.getInstance().config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
+      accessToken: rootContainer.resolve(AuthenticationService).authContextProps?.user?.access_token ?? '',
+      action: `${config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),
         case_type_id: completeCaseType.id,
@@ -102,7 +104,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
       },
     });
     onClose();
-  }, [completeCaseType.id, completeCaseType.name, geneticSequenceColId, geneticSequenceColOptions, onClose, openProps.cases]);
+  }, [completeCaseType.id, completeCaseType.name, config, geneticSequenceColId, geneticSequenceColOptions, onClose, openProps.cases]);
 
   useEffect(() => {
     onTitleChange(t`Download sequences`);
@@ -123,7 +125,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
       onActionsChange([...actions, ...buildInItems]);
     };
 
-    const eventBusService = EventBusService.getInstance();
+    const eventBusService = rootContainer.resolve(EventBusService);
     eventBusService.addEventListener('onFastaDownloadActionsChanged', onDownloadActionsChanged);
     eventBusService.emit('onFastaDownloadActionsRequested', {
       caseIds: openProps.cases.map(c => c.id),

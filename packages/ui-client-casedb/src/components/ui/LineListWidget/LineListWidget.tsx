@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Link,
@@ -34,12 +35,12 @@ import type {
   TableColumnText,
   TableRowAndColumnParams,
   TableRowParams,
-} from '@gen-epix/ui-client-common/models/table';
+} from '@gen-epix/ui-client-common/models/table.models';
 import type { TableRef } from '@gen-epix/ui-client-common/components/ui/Table';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
 import { Table } from '@gen-epix/ui-client-common/components/ui/Table';
-import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui-client-common/models/table';
+import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui-client-common/models/table.models';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
@@ -50,21 +51,21 @@ import CollectionIcon from '../../../assets/icons/CollectionIcon.svg?react';
 import { LegendaItem } from '../LegendaItem';
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { LineListCaseSetMembersService } from '../../../classes/services/LineListService/LineListCaseSetMembersService';
-import type { LineListWidgetData } from '../../../models/dashboard';
+import type { LineListWidgetData } from '../../../models/dashboard.models';
 import type {
   Stratification,
   StratificationLegendaItem,
-} from '../../../models/stratification';
-import { STRATIFICATION_MODE } from '../../../models/stratification';
+} from '../../../models/stratification.models';
+import { STRATIFICATION_MODE } from '../../../models/stratification.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { CaseDbTableUtil } from '../../../utils/CaseDbTableUtil';
 import { CASE_INFO_DIALOG_TAB_NAME } from '../CaseInfoDialog';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { LineListIsOwnCaseService } from '../../../classes/services/LineListService/LineListIsOwnCaseService';
 
@@ -81,6 +82,7 @@ export const LineListWidget = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const theme = useTheme();
+  const config = useConfig<CaseDbConfig>();
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
 
@@ -101,7 +103,7 @@ export const LineListWidget = () => {
   }, [dashboardContext]);
 
   const openCaseInfoDialog = useCallback((caseId: string, tabName: CASE_INFO_DIALOG_TAB_NAME) => {
-    EventBusService.getInstance().emit('openCaseInfoDialog', {
+    rootContainer.resolve(EventBusService).emit('openCaseInfoDialog', {
       caseId,
       caseTypeId: completeCaseType.id,
       initialTab: tabName,
@@ -109,7 +111,7 @@ export const LineListWidget = () => {
   }, [completeCaseType.id]);
 
   const onAddToEventClick = useCallback((row: CaseDbCase) => {
-    EventBusService.getInstance().emit('openAddCasesToEventDialog', {
+    rootContainer.resolve(EventBusService).emit('openAddCasesToEventDialog', {
       currentCaseSet: caseSet,
       rows: [row],
     });
@@ -134,12 +136,12 @@ export const LineListWidget = () => {
       maxWidth = maxWidth + +theme.spacing(3).replace('px', '');
     }
 
-    const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = ConfigService.getInstance<CaseDbConfig>().config.lineList;
+    const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = config.lineList;
     return Math.min(MAX_COLUMN_WIDTH, maxWidth) + REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT;
-  }, [completeCaseType, sortedData, stratification?.col?.id, theme]);
+  }, [completeCaseType, config.lineList, sortedData, stratification?.col?.id, theme]);
 
   const onOrganizationCellClick = useCallback((organizationId: string, organizationName: string) => {
-    EventBusService.getInstance().emit('openContactDetailsDialog', {
+    rootContainer.resolve(EventBusService).emit('openContactDetailsDialog', {
       organizationId,
       organizationName,
     });
@@ -185,7 +187,7 @@ export const LineListWidget = () => {
   }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.col?.id]);
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: CaseDbCase) => {
-    EventBusService.getInstance().emit('openSequenceDownloadDialog', {
+    rootContainer.resolve(EventBusService).emit('openSequenceDownloadDialog', {
       cases: [row],
       geneticSequenceColId: id,
     });
@@ -386,7 +388,7 @@ export const LineListWidget = () => {
             ),
             (
               <MenuItem
-                disabled={FeatureFlagsService.getInstance().featureFlags?.disable_upload}
+                disabled={rootContainer.resolve(FeatureFlagsService).featureFlags?.disable_upload}
                 key={'editInformation'}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={() => openCaseInfoDialog(params.row.id, CASE_INFO_DIALOG_TAB_NAME.EDIT)}
@@ -466,7 +468,7 @@ export const LineListWidget = () => {
   }, [completeCaseType]);
 
   const tableColumns = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
-    const { DATA_MISSING_CHARACTER } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { DATA_MISSING_CHARACTER } = config.epi;
 
     const initialVisibleColumnIds = CaseTypeUtil.getInitialVisibleColIds(completeCaseType);
     const caseTypeTableColumns: TableColumn<CaseDbCase, CaseDbCompleteCaseType>[] = [];
@@ -529,7 +531,7 @@ export const LineListWidget = () => {
       ...caseTypeTableColumns,
       ...frozenTableColumnsRight,
     ];
-  }, [completeCaseType, frozenTableColumnsLeft, frozenTableColumnsRight, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
+  }, [completeCaseType, config.epi, frozenTableColumnsLeft, frozenTableColumnsRight, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
 
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
     dashboardContext.highlight({
@@ -585,9 +587,9 @@ export const LineListWidget = () => {
   }, [updateVisibleIndexDebounced]);
 
   const onRangeChangedDebounced = useDebouncedCallback(async (range: ListRange) => {
-    await LineListCaseSetMembersService.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
-    await LineListIsOwnCaseService.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id), completeCaseType.id);
-  }, ConfigService.getInstance<CaseDbConfig>().config.lineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
+    await rootContainer.resolve(LineListCaseSetMembersService).loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
+    await rootContainer.resolve(LineListIsOwnCaseService).loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id), completeCaseType.id);
+  }, config.lineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
     leading: false,
     trailing: true,
   });
@@ -599,8 +601,8 @@ export const LineListWidget = () => {
 
   useEffect(() => {
     return () => {
-      LineListCaseSetMembersService.getInstance().cleanStaleQueue();
-      LineListIsOwnCaseService.getInstance().cleanStaleQueue();
+      rootContainer.resolve(LineListCaseSetMembersService).cleanStaleQueue();
+      rootContainer.resolve(LineListIsOwnCaseService).cleanStaleQueue();
     };
   }, []);
 

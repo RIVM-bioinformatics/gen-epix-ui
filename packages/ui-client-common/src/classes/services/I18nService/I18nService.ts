@@ -4,8 +4,13 @@ import i18next, {
 } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
+
+import { WINDOW_SERVICE_TOKEN } from '../../../constants/config.constants';
 
 export type LanguageConfig = {
   bundles: string[];
@@ -20,22 +25,21 @@ type I18nEvent = {
   onUserLanguageChange: string;
 };
 
+@singleton()
 export class I18nService extends EventBusAbstract<I18nEvent> {
-  private static __instance: I18nService;
 
   private getCurrentLanguageCode: () => Promise<string> | string;
   private isInitialized = false;
   private languageConfigs: LanguageConfig[];
   private languageLoaded: Record<string, boolean> = {};
   private setNewLanguageCode: (code: string) => Promise<void> | void;
-  private constructor() {
+  private readonly windowService: WindowService;
+
+  public constructor(@inject(WINDOW_SERVICE_TOKEN) windowService: WindowService) {
     super();
+    this.windowService = windowService;
   }
 
-  public static getInstance(): I18nService {
-    I18nService.__instance = HmrUtil.getHmrSingleton('i18nService', I18nService.__instance, () => new I18nService());
-    return I18nService.__instance;
-  }
 
   public async init(kwArgs: {
     getCurrentLanguageCode: () => Promise<string> | string;
@@ -112,7 +116,7 @@ export class I18nService extends EventBusAbstract<I18nEvent> {
   }
 
   private updateLangAttribute(code: string): void {
-    const doc = WindowService.getInstance().document;
+    const doc = this.windowService.document;
     if (!doc) {
       console.warn('Document is not available, cannot set lang attribute');
       return;

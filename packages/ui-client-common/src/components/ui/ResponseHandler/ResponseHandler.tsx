@@ -7,7 +7,7 @@ import type { CircularProgressProps } from '@mui/material';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { GenericErrorMessage } from '../GenericErrorMessage';
-import type { Loadable } from '../../../models/dataHooks';
+import type { Loadable } from '../../../models/data-hooks.models';
 import { LoadableUtil } from '../../../utils/LoadableUtil';
 
 export type ResponseHandlerProps = PropsWithChildren<{

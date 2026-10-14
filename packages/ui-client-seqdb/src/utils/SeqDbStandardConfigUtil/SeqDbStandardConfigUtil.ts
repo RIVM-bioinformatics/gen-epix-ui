@@ -1,18 +1,19 @@
+import { container as rootContainer } from 'tsyringe';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { StandardConfigUtil } from '@gen-epix/ui-client-common/utils/StandardConfigUtil';
 import { t } from 'i18next';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import type { SeqDbConfig } from '../../models/config';
+import type { SeqDbConfig } from '../../models/config.models';
 
 export class SeqDbStandardConfigUtil {
   public static createConfig(): Omit<SeqDbConfig, 'theme'> {
     const onEnglishClick = () => {
-      I18nService.getInstance().emit('onUserLanguageChange', 'en');
+      rootContainer.resolve(I18nService).emit('onUserLanguageChange', 'en');
     };
 
     const onDutchClick = () => {
-      I18nService.getInstance().emit('onUserLanguageChange', 'nl');
+      rootContainer.resolve(I18nService).emit('onUserLanguageChange', 'nl');
     };
 
     const config: Omit<SeqDbConfig, 'theme'> = {

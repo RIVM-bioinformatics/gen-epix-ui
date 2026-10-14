@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import type { ReactElement } from 'react';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/test-id.models';
 
 
 export type SidebarMenuItemProps = PropsWithTestIdAttributes<{

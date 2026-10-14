@@ -15,9 +15,9 @@ import type {
   ReactElement,
 } from 'react';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/test-id.models';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
+import { useConfig } from '../../../hooks/useConfig';
 
 export type SidebarItemProps = PropsWithTestIdAttributes<PropsWithChildren<{
   readonly closeIcon: ReactElement;
@@ -33,10 +33,11 @@ export type SidebarItemSharedProps = {
 
 export const SidebarItem = ({ children, closeIcon, closeIconTooltipText, onClose, open, testIdAttributes, title, width }: SidebarItemProps) => {
   const theme = useTheme();
+  const config = useConfig();
   const [mainContentDOMRect, setMainContentDOMRect] = useState<DOMRect>(null);
 
   useEffect(() => {
-    const mainContentElement = document.getElementById(ConfigService.getInstance().config.layout.MAIN_CONTENT_ID);
+    const mainContentElement = document.getElementById(config.layout.MAIN_CONTENT_ID);
 
 
     setMainContentDOMRect(mainContentElement.getBoundingClientRect());
@@ -51,7 +52,7 @@ export const SidebarItem = ({ children, closeIcon, closeIconTooltipText, onClose
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [config.layout.MAIN_CONTENT_ID]);
 
   const { height, top } = mainContentDOMRect ?? {};
 

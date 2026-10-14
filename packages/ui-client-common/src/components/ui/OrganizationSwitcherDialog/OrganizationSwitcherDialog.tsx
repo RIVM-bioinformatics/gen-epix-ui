@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -31,11 +32,11 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
+import { API_ORGANIZATION_TOKEN } from '../../../models/api.models';
 import { ResponseHandler } from '../ResponseHandler';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
 import { NotificationService } from '../../../classes/services/NotificationService';
 import { useOrganizationOptionsQuery } from '../../../dataHooks/useOrganizationsQuery';
-import { ApiService } from '../../../classes/services/ApiService';
 
 export interface OrganizationSwitcherDialogOpenProps {
   //
@@ -60,7 +61,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
 ): ReactElement => {
   const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
-  const user = AuthorizationService.getInstance().user;
+  const user = rootContainer.resolve(AuthorizationService).user;
   const [isChanging, setIsChanging] = useState(false);
   const [newOrganizationId, setNewOrganizationId] = useState<string>(null);
 
@@ -89,21 +90,21 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       onClose();
     }
     const perform = async () => {
-      const notificationKey = NotificationService.getInstance().showNotification({
+      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t`Changing organization...`,
         severity: 'info',
       });
       try {
         setIsChanging(true);
-        await ApiService.getInstance().organizationApi.updateUserOwnOrganization({
+        await rootContainer.resolve(API_ORGANIZATION_TOKEN).updateUserOwnOrganization({
           organization_id: formValues.organization_id,
         }, {});
         setNewOrganizationId(formValues.organization_id);
         setIsChanging(false);
-        NotificationService.getInstance().fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
       } catch (_error: unknown) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
         onClose();
       }
     };

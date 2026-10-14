@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { createStore } from 'zustand';
 import { t } from 'i18next';
 import type {
@@ -13,15 +14,15 @@ import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import type {
   AutoCompleteOption,
   OptionBase,
-} from '@gen-epix/ui-core-form/models/form';
+} from '@gen-epix/ui-core-form/models/form.models';
 
 import type {
   UploadMappedColumn,
   UploadSequenceMapping,
-} from '../../models/upload';
-import { UPLOAD_STEP } from '../../models/upload';
+} from '../../models/upload.models';
+import { UPLOAD_STEP } from '../../models/upload.models';
 import { UploadUtil } from '../../utils/UploadUtil';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 export const STEP_ORDER_UPLOAD = [
   UPLOAD_STEP.SELECT_FILE,
@@ -146,7 +147,7 @@ const createEpiUploadStoreInitialState: (kwArgs: CreateUploadStoreKwArgs) => Upl
   stepOrder: kwArgs.stepOrder,
   uploadCompleteButtonCallback: kwArgs.uploadCompleteButtonCallback ?? null,
   uploadCompleteButtonLabel: kwArgs.uploadCompleteButtonLabel ?? null,
-  validateCasesQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
+  validateCasesQueryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.VALIDATE_CASES, StringUtil.createUuid()),
   validatedCases: [],
 });
 
@@ -186,7 +187,7 @@ export const createUploadStore = (kwArgs: CreateUploadStoreKwArgs) => {
 
         if (nextStep === UPLOAD_STEP.MAP_COLUMNS) {
           if (shouldResetColumnMapping && mappedColumns.length > 0) {
-            NotificationService.getInstance().showNotification({
+            rootContainer.resolve(NotificationService).showNotification({
               isLoading: false,
               message: t`Column mappings have been reset due to changes in the selected case type or file.`,
               severity: 'info',
@@ -210,7 +211,7 @@ export const createUploadStore = (kwArgs: CreateUploadStoreKwArgs) => {
 
         if (nextStep === UPLOAD_STEP.MAP_SEQUENCES) {
           if (shouldResetSequenceMapping && Object.keys(sequenceMapping).length > 0) {
-            NotificationService.getInstance().showNotification({
+            rootContainer.resolve(NotificationService).showNotification({
               isLoading: false,
               message: t`Sequence mappings have been reset due to changes in the selected uploaded files.`,
               severity: 'info',
@@ -244,8 +245,8 @@ export const createUploadStore = (kwArgs: CreateUploadStoreKwArgs) => {
       invalidateCaseValidationQuery: async () => {
         const { validateCasesQueryKey } = get();
 
-        await QueryClientService.getInstance().invalidateQueryKeys([validateCasesQueryKey]);
-        QueryClientService.getInstance().removeQueries([validateCasesQueryKey]);
+        await rootContainer.resolve(QueryClientService).invalidateQueryKeys([validateCasesQueryKey]);
+        rootContainer.resolve(QueryClientService).removeQueries([validateCasesQueryKey]);
       },
 
       reset: async () => {

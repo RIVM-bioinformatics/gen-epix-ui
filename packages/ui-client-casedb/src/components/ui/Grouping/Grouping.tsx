@@ -8,17 +8,18 @@ import { useStore } from 'zustand';
 import { useTranslation } from 'react-i18next';
 import { produce } from 'immer';
 import type { CaseDbCol } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 
 import { LegendaItem } from '../LegendaItem';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { STRATIFICATION_MODE } from '../../../models/stratification';
-import type { CaseDbConfig } from '../../../models/config';
+import { STRATIFICATION_MODE } from '../../../models/stratification.models';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 export const Grouping = () => {
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
 
   const dashboardStore = use(DashboardStoreContext);
   const stratification = useStore(dashboardStore, (state) => state.stratification);
@@ -75,7 +76,7 @@ export const Grouping = () => {
       ],
       label,
       tooltip: t('Grouping allows you to group cases by a selected field. Grouping will be disabled when the maximum unique values of the selected field exceeds {{max_stratification_unique_values}}.', {
-        max_stratification_unique_values: ConfigService.getInstance<CaseDbConfig>().config.epi.STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES,
+        max_stratification_unique_values: config.epi.STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES,
       }),
     }, draft => {
       stratifyableColumns
@@ -89,7 +90,7 @@ export const Grouping = () => {
         });
       return draft;
     });
-  }, [stratification, t, stratifyableColumns, stratify, onStratifyMenuItemClick]);
+  }, [config.epi.STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES, stratification, t, stratifyableColumns, stratify, onStratifyMenuItemClick]);
 
   return (
     <Box

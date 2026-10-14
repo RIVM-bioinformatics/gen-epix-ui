@@ -1,27 +1,32 @@
 import type { EmotionCache } from '@emotion/cache';
 import createCache from '@emotion/cache';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
+import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import { ConfigService } from '../ConfigService';
+import {
+  CONFIG_TOKEN,
+  WINDOW_SERVICE_TOKEN,
+} from '../../../constants/config.constants';
+import type { ConfigBase } from '../../../models/config.models';
 
 
+@singleton()
 export class EmotionCacheService {
-  private static __instance: EmotionCacheService;
+  public readonly emotionCache: EmotionCache;
 
-  public emotionCache: EmotionCache;
-
-  private constructor() {
+  public constructor(
+    @inject(CONFIG_TOKEN) config: ConfigBase,
+    @inject(WINDOW_SERVICE_TOKEN) windowService: WindowService,
+  ) {
     this.emotionCache = createCache({
-      container: window.document.head,
+      container: windowService.document.head,
       key: 'genepix',
-      nonce: ConfigService.getInstance().config.nonce,
-      prepend: !!ConfigService.getInstance().config.nonce,
+      nonce: config.nonce,
+      prepend: !!config.nonce,
       stylisPlugins: [],
     });
-  }
-
-  public static getInstance(): EmotionCacheService {
-    EmotionCacheService.__instance = HmrUtil.getHmrSingleton('emotionCacheService', EmotionCacheService.__instance, () => new EmotionCacheService());
-    return EmotionCacheService.__instance;
   }
 }

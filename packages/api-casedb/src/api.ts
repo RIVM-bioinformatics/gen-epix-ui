@@ -12,6 +12,7 @@
  */
 
 
+import { singleton } from 'tsyringe';
 import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
@@ -886,99 +887,99 @@ export type CaseDbColType = typeof CaseDbColType[keyof typeof CaseDbColType];
 
 
 export const CaseDbCommandName = {
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
-    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
     RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    RegionSetCrudCommand: 'RegionSetCrudCommand',
-    UpdateCaseCreatedInDataCollectionCommand: 'UpdateCaseCreatedInDataCollectionCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
-    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
     DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
     GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
     RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
     RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
     CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    UpdateCaseCreatedInDataCollectionCommand: 'UpdateCaseCreatedInDataCollectionCommand',
     CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
+    RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
+    ColCrudCommand: 'ColCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
+    RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
     RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
     RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
     OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
     ColSetCrudCommand: 'ColSetCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    RegionSetCrudCommand: 'RegionSetCrudCommand',
 } as const;
 
 export type CaseDbCommandName = typeof CaseDbCommandName[keyof typeof CaseDbCommandName];
@@ -6347,19 +6348,8 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
  * CaseDbAbacApi - object-oriented interface
 
  */
+@singleton()
 export class CaseDbAbacApi extends CaseDbBaseAPI {
-  private static __instance: CaseDbAbacApi;
-    
-  public static getInstance(): CaseDbAbacApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = CaseDbAbacApi.__instance ?? (hotData?.['CaseDbAbacApi'] as CaseDbAbacApi) ?? new CaseDbAbacApi();
-    if (hotData && !hotData['CaseDbAbacApi']) {
-      hotData['CaseDbAbacApi'] = instance;
-    }
-
-    CaseDbAbacApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
@@ -7136,19 +7126,8 @@ const CaseDbAuthApiFp = function(configuration?: Configuration) {
  * CaseDbAuthApi - object-oriented interface
 
  */
+@singleton()
 export class CaseDbAuthApi extends CaseDbBaseAPI {
-  private static __instance: CaseDbAuthApi;
-    
-  public static getInstance(): CaseDbAuthApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = CaseDbAuthApi.__instance ?? (hotData?.['CaseDbAuthApi'] as CaseDbAuthApi) ?? new CaseDbAuthApi();
-    if (hotData && !hotData['CaseDbAuthApi']) {
-      hotData['CaseDbAuthApi'] = instance;
-    }
-
-    CaseDbAuthApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Get all public identity providers
@@ -21294,19 +21273,8 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
  * CaseDbCaseApi - object-oriented interface
 
  */
+@singleton()
 export class CaseDbCaseApi extends CaseDbBaseAPI {
-  private static __instance: CaseDbCaseApi;
-    
-  public static getInstance(): CaseDbCaseApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = CaseDbCaseApi.__instance ?? (hotData?.['CaseDbCaseApi'] as CaseDbCaseApi) ?? new CaseDbCaseApi();
-    if (hotData && !hotData['CaseDbCaseApi']) {
-      hotData['CaseDbCaseApi'] = instance;
-    }
-
-    CaseDbCaseApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represents a request to execute a CRUD operation on CaseDataCollection links.
@@ -24546,19 +24514,8 @@ const CaseDbDefaultApiFp = function(configuration?: Configuration) {
  * CaseDbDefaultApi - object-oriented interface
 
  */
+@singleton()
 export class CaseDbDefaultApi extends CaseDbBaseAPI {
-  private static __instance: CaseDbDefaultApi;
-    
-  public static getInstance(): CaseDbDefaultApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = CaseDbDefaultApi.__instance ?? (hotData?.['CaseDbDefaultApi'] as CaseDbDefaultApi) ?? new CaseDbDefaultApi();
-    if (hotData && !hotData['CaseDbDefaultApi']) {
-      hotData['CaseDbDefaultApi'] = instance;
-    }
-
-    CaseDbDefaultApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Redirect the root path to the configured default API route.  Returns:     Redirect response targeting the configured default route.
@@ -27074,19 +27031,8 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
  * CaseDbGeoApi - object-oriented interface
 
  */
+@singleton()
 export class CaseDbGeoApi extends CaseDbBaseAPI {
-  private static __instance: CaseDbGeoApi;
-    
-  public static getInstance(): CaseDbGeoApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = CaseDbGeoApi.__instance ?? (hotData?.['CaseDbGeoApi'] as CaseDbGeoApi) ?? new CaseDbGeoApi();
-    if (hotData && !hotData['CaseDbGeoApi']) {
-      hotData['CaseDbGeoApi'] = instance;
-    }
-
-    CaseDbGeoApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represent CRUD operations for relationships between regions.
@@ -31439,19 +31385,8 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
  * CaseDbOntologyApi - object-oriented interface
 
  */
+@singleton()
 export class CaseDbOntologyApi extends CaseDbBaseAPI {
-  private static __instance: CaseDbOntologyApi;
-    
-  public static getInstance(): CaseDbOntologyApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = CaseDbOntologyApi.__instance ?? (hotData?.['CaseDbOntologyApi'] as CaseDbOntologyApi) ?? new CaseDbOntologyApi();
-    if (hotData && !hotData['CaseDbOntologyApi']) {
-      hotData['CaseDbOntologyApi'] = instance;
-    }
-
-    CaseDbOntologyApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represent CRUD operations for semantic relationships between concepts.
@@ -40331,19 +40266,8 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
  * CaseDbOrganizationApi - object-oriented interface
 
  */
+@singleton()
 export class CaseDbOrganizationApi extends CaseDbBaseAPI {
-  private static __instance: CaseDbOrganizationApi;
-    
-  public static getInstance(): CaseDbOrganizationApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = CaseDbOrganizationApi.__instance ?? (hotData?.['CaseDbOrganizationApi'] as CaseDbOrganizationApi) ?? new CaseDbOrganizationApi();
-    if (hotData && !hotData['CaseDbOrganizationApi']) {
-      hotData['CaseDbOrganizationApi'] = instance;
-    }
-
-    CaseDbOrganizationApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Represents a request to anonymize a target user according to GDPR requirements.  This removes the target user\'s name and replaces its key with the user ID (a random UUID), so that they can no longer be identified directly. Because the key is altered, the user will no longer be able to log in either.
@@ -43009,19 +42933,8 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
  * CaseDbSystemApi - object-oriented interface
 
  */
+@singleton()
 export class CaseDbSystemApi extends CaseDbBaseAPI {
-  private static __instance: CaseDbSystemApi;
-    
-  public static getInstance(): CaseDbSystemApi {
-    const hotData = (import.meta as { hot?: { data: { [key: string]: unknown } } }).hot?.data || undefined;
-    const instance = CaseDbSystemApi.__instance ?? (hotData?.['CaseDbSystemApi'] as CaseDbSystemApi) ?? new CaseDbSystemApi();
-    if (hotData && !hotData['CaseDbSystemApi']) {
-      hotData['CaseDbSystemApi'] = instance;
-    }
-
-    CaseDbSystemApi.__instance = instance;
-    return instance;
-  }
 
     /**
      * Return the service health status.  If no response is received within the timeout period, the service is considered unhealthy.

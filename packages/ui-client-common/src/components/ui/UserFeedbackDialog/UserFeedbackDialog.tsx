@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import type { ReactElement } from 'react';
 import {
@@ -19,20 +20,20 @@ import {
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';
 import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';
 import { NotificationService } from '../../../classes/services/NotificationService';
 import { UserSettingsService } from '../../../classes/services/UserSettingsService';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
+import { useConfig } from '../../../hooks/useConfig';
 
 export interface UserFeedbackDialogOpenProps {
   //
@@ -58,6 +59,7 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   }: UserFeedbackDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig();
 
   const schema = useMemo(() => object<FormFields>().shape({
     email: string().email().required().max(200),
@@ -68,15 +70,15 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
-      email: AuthorizationService.getInstance().user?.email ?? AuthorizationService.getInstance().user?.key ?? '',
+      email: rootContainer.resolve(AuthorizationService).user?.email ?? rootContainer.resolve(AuthorizationService).user?.key ?? '',
       message: '',
-      name: AuthorizationService.getInstance().user?.name ?? '',
+      name: rootContainer.resolve(AuthorizationService).user?.name ?? '',
     },
   });
   const { handleSubmit } = formMethods;
 
   useEffect(() => {
-    UserSettingsService.getInstance().showShowUserFeedbackTooltip = false;
+    rootContainer.resolve(UserSettingsService).showShowUserFeedbackTooltip = false;
   }, []);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
@@ -104,8 +106,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   }, [onTitleChange, t]);
 
   const onFormSubmit = useCallback((formValues: FormFields): void => {
-    const navigationHistory = NavigationHistoryService.getInstance().navigationHistory;
-    LogService.getInstance().log([{
+    const navigationHistory = rootContainer.resolve(NavigationHistoryService).navigationHistory;
+    rootContainer.resolve(LogService).log([{
       detail: {
         ...formValues,
         navigationHistory: navigationHistory.slice(navigationHistory.length - 50).reverse(),
@@ -113,8 +115,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
       level: 'INFO',
       topic: 'USER_FEEDBACK',
     }]);
-    LogService.getInstance().flushLog();
-    NotificationService.getInstance().showNotification({
+    rootContainer.resolve(LogService).flushLog();
+    rootContainer.resolve(NotificationService).showNotification({
       message: t`Thank you for sharing your feedback with us`,
       severity: 'success',
     });
@@ -152,7 +154,7 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
         }}
       >
         <Typography component={'p'}>
-          {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: ConfigService.getInstance().config.applicationName })}
+          {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: config.applicationName })}
         </Typography>
       </Box>
       <GenericForm<FormFields>

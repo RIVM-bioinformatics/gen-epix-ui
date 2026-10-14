@@ -14,9 +14,9 @@
       "types": "./src/components/PhylogeneticTree/index.ts",
       "import": "./src/components/PhylogeneticTree/index.ts"
     },
-    "./models/tree": {
-      "types": "./src/models/tree.ts",
-      "import": "./src/models/tree.ts"
+    "./models/tree.models": {
+      "types": "./src/models/tree.models.ts",
+      "import": "./src/models/tree.models.ts"
     },
     "./utils/NewickUtil": {
       "types": "./src/utils/NewickUtil/index.ts",
@@ -52,22 +52,22 @@
   "devDependencies": {
     "@gen-epix/eslint-config": "0.7.0",
     "@gen-epix/ui-core": "workspace:^",
-    "@mui/material": "9.4.0",
-    "@types/lodash": "4.17.25",
-    "@types/node": "26.6.2",
+    "@mui/material": "9.5.0",
+    "@types/lodash": "4.17.26",
+    "@types/node": "26.6.5",
     "@types/react": "19.3.0",
-    "@vitejs/plugin-react": "6.1.1",
-    "@vitest/browser-playwright": "5.0.1",
-    "@vitest/coverage-v8": "5.0.1",
-    "eslint": "10.11.0",
-    "jsdom": "30.1.0",
-    "playwright": "1.63.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "@vitest/browser-playwright": "5.0.4",
+    "@vitest/coverage-v8": "5.0.4",
+    "eslint": "10.12.0",
+    "jsdom": "30.1.2",
+    "playwright": "1.64.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "typescript": "6.0.3",
-    "vite": "8.3.0",
-    "vite-plugin-dts": "5.1.1",
-    "vitest": "5.0.1",
+    "vite": "8.3.4",
+    "vite-plugin-dts": "5.1.2",
+    "vitest": "5.0.4",
     "vitest-browser-react": "2.3.0"
   },
   "peerDependencies": {
@@ -82,9 +82,9 @@
         "types": "./dist/components/PhylogeneticTree/index.d.ts",
         "import": "./dist/components/PhylogeneticTree/index.js"
       },
-      "./models/tree": {
-        "types": "./dist/models/tree.d.ts",
-        "import": "./dist/models/tree.js"
+      "./models/tree.models": {
+        "types": "./dist/models/tree.models.d.ts",
+        "import": "./dist/models/tree.models.js"
       },
       "./utils/NewickUtil": {
         "types": "./dist/utils/NewickUtil/index.d.ts",

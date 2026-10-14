@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type {
   SxProps,
   Theme,
@@ -50,8 +51,8 @@ import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService'
 import type { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { useScrollbarSize } from '@gen-epix/ui-core/hooks/useScrollbarSize';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
+import { useConfig } from '../../../hooks/useConfig';
 import type {
   HasCellDataFn,
   TableColumn,
@@ -61,7 +62,7 @@ import type {
   TableColumnVisualSettings,
   TableDragEvent,
   TableRowParams,
-} from '../../../models/table';
+} from '../../../models/table.models';
 import { useTableStoreContext } from '../../../stores/tableStore';
 import { TableUtil } from '../../../utils/TableUtil';
 
@@ -126,9 +127,10 @@ export const Table = <TRowData, TDataContext = null>({
 }: TableProps<TRowData, TDataContext>) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const config = useConfig();
   const tableStore = useTableStoreContext<TRowData, TDataContext>();
 
-  const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = ConfigService.getInstance().config.table;
+  const { DEFAULT_OVERSCAN_MAIN, DEFAULT_OVERSCAN_REVERSE } = config.table;
 
   // make sure the table re-renders when the visible columns change
   useStore(tableStore, useShallow((state) => state.getCurrentColumnVisualSettings().filter(c => c.isVisible).map(c => c.id)));
@@ -174,8 +176,8 @@ export const Table = <TRowData, TDataContext = null>({
       if (!getRowName) {
         throw new Error('getRowName is required when onRowClick is provided');
       }
-      if (ConfigService.getInstance().config.enablePageEvents) {
-        PageEventBusService.getInstance().emit('click', {
+      if (config.enablePageEvents) {
+        rootContainer.resolve(PageEventBusService).emit('click', {
           label: getRowName(row.row),
           type: 'table-row',
         });
@@ -184,7 +186,7 @@ export const Table = <TRowData, TDataContext = null>({
       event.stopPropagation();
       onRowClick(row);
     }
-  }, [getRowName, onRowClick]);
+  }, [config.enablePageEvents, getRowName, onRowClick]);
 
   const getVisibleTableSettingsColumns = useCallback(() => {
     return tableColumnVisualSettingsRef?.current?.filter(c => c.isVisible) ?? [];

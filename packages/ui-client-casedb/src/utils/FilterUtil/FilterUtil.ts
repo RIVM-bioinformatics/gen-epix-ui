@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   parse,
   parseISO,
@@ -15,7 +16,7 @@ import {
 import type {
   FilterDimension,
   Filters,
-} from '@gen-epix/ui-client-common/models/filter';
+} from '@gen-epix/ui-client-common/models/filter.models';
 import {
   DateFilter,
   GeoFilter,
@@ -27,8 +28,8 @@ import {
   DEFAULT_FILTER_GROUP,
   FILTER_MODE,
 } from '@gen-epix/ui-client-common/classes/abstracts/FilterAbstract';
-import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form.models';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import {
   CaseTypeUtil,
@@ -44,8 +45,8 @@ export class FilterUtil {
 
   public static createCategoricalFilter(col: CaseDbCol, dimId: string, completeCaseType: CaseDbCompleteCaseType): MultiSelectFilter | TextFilter {
     const refCol = completeCaseType.ref_cols[col.ref_col_id];
-    if ((refCol.col_type === CaseDbColType.NOMINAL || refCol.col_type === CaseDbColType.ORDINAL || refCol.col_type === CaseDbColType.INTERVAL) && DataService.getInstance().data.conceptsBySetId[refCol.concept_set_id]) {
-      const options = DataService.getInstance().data.conceptsBySetId[refCol.concept_set_id].map<AutoCompleteOption>(concept => ({
+    if ((refCol.col_type === CaseDbColType.NOMINAL || refCol.col_type === CaseDbColType.ORDINAL || refCol.col_type === CaseDbColType.INTERVAL) && rootContainer.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id]) {
+      const options = rootContainer.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id].map<AutoCompleteOption>(concept => ({
         label: `${concept.code} (${concept.name})`,
         value: concept.id,
       }));
@@ -156,8 +157,8 @@ export class FilterUtil {
             }),
           );
         } else if (refDim.dim_type === CaseDbDimType.GEO) {
-          const regionSet = DataService.getInstance().data.regionSets[refCol.region_set_id];
-          const options = (DataService.getInstance().data.regionsByRegionSetId[refCol.region_set_id]?.map<AutoCompleteOption>(region => {
+          const regionSet = rootContainer.resolve(DataService).data.regionSets[refCol.region_set_id];
+          const options = (rootContainer.resolve(DataService).data.regionsByRegionSetId[refCol.region_set_id]?.map<AutoCompleteOption>(region => {
             return {
               label: regionSet.region_code_as_label ? region.code : region.name,
               value: region.id,
@@ -189,7 +190,7 @@ export class FilterUtil {
           }
         } else if (refDim.dim_type === CaseDbDimType.ORGANIZATION) {
           // organizations are already sorted
-          const options = DataService.getInstance().data.organizations.map<AutoCompleteOption>(organization => {
+          const options = rootContainer.resolve(DataService).data.organizations.map<AutoCompleteOption>(organization => {
             return {
               label: organization.name,
               value: organization.id,

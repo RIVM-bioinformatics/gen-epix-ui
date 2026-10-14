@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { isValidElement } from 'react';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 import { MenuDataUtil } from '@gen-epix/ui-client-common/utils/MenuDataUtil';
 import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -26,12 +27,11 @@ import type {
 } from 'react-hook-form';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
 import { CommonDbPermissionType } from '@gen-epix/api-commondb';
-import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/testId';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
+import type { PropsWithTestIdAttributes } from '@gen-epix/ui-core/models/test-id.models';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
-import { ConfigService } from '../../classes/services/ConfigService';
 import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
@@ -48,13 +48,13 @@ import { useDeleteMutation } from '../../hooks/useDeleteMutation';
 import type { MutationContextEdit } from '../../hooks/useEditMutation';
 import { useEditMutation } from '../../hooks/useEditMutation';
 import { useInitializeTableStore } from '../../hooks/useInitializeTableStore';
-import type { GenericData } from '../../models/data';
-import type { Loadable } from '../../models/dataHooks';
+import type { GenericData } from '../../models/data.models';
+import type { Loadable } from '../../models/data-hooks.models';
 import type {
   TableColumn,
   TableRowParams,
   TableSortDirection,
-} from '../../models/table';
+} from '../../models/table.models';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -63,7 +63,8 @@ import { TableUtil } from '../../utils/TableUtil';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import type { COMMON_QUERY_KEY } from '../../constants/query';
+import type { COMMON_QUERY_KEY } from '../../constants/query.constants';
+import { useConfig } from '../../hooks/useConfig';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -198,15 +199,16 @@ export const CrudPage = <
 
   const { t } = useTranslation();
   const theme = useTheme();
+  const config = useConfig();
   const deleteConfirmationRef = useRef<CrudPageDeleteDialogRefMethods<TData>>(null);
   const editDialogRef = useRef<CrudPageEditDialogRefMethods<TData, TFormFields>>(null);
-  const authorizationService = useMemo(() => AuthorizationService.getInstance(), []);
+  const authorizationService = useMemo(() => rootContainer.resolve(AuthorizationService), []);
   const resourceQueryKey = useMemo(() => [resourceQueryKeyBase], [resourceQueryKeyBase]);
   const tableStore = useMemo(() => createTableStore<TTableData, null>({
     defaultSortByField: defaultSortByField as string,
     defaultSortDirection,
     idSelectorCallback: (item) => item.id,
-    navigatorFunction: RouterService.getInstance().router.navigate,
+    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
     storageNamePostFix: tableStoreStorageNamePostFix ? `CRUDPage-${resourceQueryKeyBase}-${tableStoreStorageNamePostFix}` : `CRUDPage-${resourceQueryKeyBase}`,
     storageVersion: tableStoreStorageVersion ?? 1,
   }), [defaultSortByField, defaultSortDirection, resourceQueryKeyBase, tableStoreStorageNamePostFix, tableStoreStorageVersion]);
@@ -301,7 +303,7 @@ export const CrudPage = <
       actions.push({
         color: 'primary',
         label: subPage.label,
-        onClick: async () => await RouterService.getInstance().router.navigate({
+        onClick: async () => await rootContainer.resolve(RouterService).router.navigate({
           pathname: subPage.getPathName(item),
         }),
         variant: 'outlined',
@@ -377,7 +379,7 @@ export const CrudPage = <
   const calculatedAssociationQueryKeys = useMemo<string[][]>(() => {
     const keys = associationQueryKeys ?? [];
 
-    QueryClientService.getInstance().getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
+    rootContainer.resolve(QueryClientService).getQueryKeyDependencies([resourceQueryKeyBase]).forEach(key => {
       keys.push(key);
     });
     return keys;
@@ -456,7 +458,7 @@ export const CrudPage = <
         <MenuItem
           key={subPage.label}
           // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
-          onClick={async () => await RouterService.getInstance().router.navigate({
+          onClick={async () => await rootContainer.resolve(RouterService).router.navigate({
             pathname: subPage.getPathName(params.row),
           })}
         >
@@ -658,7 +660,7 @@ export const CrudPage = <
             <Box
               sx={{
                 height: '100%',
-                paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                paddingLeft: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH + 1),
                 width: '100%',
               }}
             >

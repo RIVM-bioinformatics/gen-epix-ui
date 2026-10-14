@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import {
@@ -12,7 +13,7 @@ import { useUpdateBreadcrumb } from '@gen-epix/ui-client-common/hooks/useUpdateB
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { Dashboard } from '../../components/ui/Dashboard';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 export const CasesDetailPage = () => {
@@ -25,7 +26,7 @@ export const CasesDetailPage = () => {
     baseQueryKey: CASEDB_QUERY_KEY.CASE_TYPES,
     itemId: caseTypeId,
     useQueryOptions: {
-      queryFn: async ({ signal }) => (await CaseDbCaseApi.getInstance().caseTypesGetOne(caseTypeId, { signal })).data,
+      queryFn: async ({ signal }) => (await rootContainer.resolve(CaseDbCaseApi).caseTypesGetOne(caseTypeId, { signal })).data,
     },
   });
 

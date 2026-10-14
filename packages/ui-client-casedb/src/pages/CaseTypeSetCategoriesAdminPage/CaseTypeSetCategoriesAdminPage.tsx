@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -16,17 +17,17 @@ import {
   CaseDbCaseTypeSetCategoryPurpose,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { useCaseTypeSetCategoryPurposeOptionsQuery } from '../../dataHooks/useCaseTypeSetCategoryPurposeQuery';
 
 
@@ -40,19 +41,19 @@ export const CaseTypeSetCategoriesAdminPage = () => {
   const loadables = useArray([caseTypeSetCategoryPurposeOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().caseTypeSetCategoriesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetCategoriesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseTypeSetCategory) => {
-    return await CaseDbCaseApi.getInstance().caseTypeSetCategoriesDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbCaseApi).caseTypeSetCategoriesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseTypeSetCategory) => {
-    return (await CaseDbCaseApi.getInstance().caseTypeSetCategoriesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetCategoriesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.getInstance().caseTypeSetCategoriesPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetCategoriesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbCaseTypeSetCategory) => {

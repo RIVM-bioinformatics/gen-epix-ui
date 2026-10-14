@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -15,16 +16,16 @@ import {
   CaseDbCommandName,
   CaseDbOntologyApi,
 } from '@gen-epix/api-casedb';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 type FormFields = OmitWithMetaData<CaseDbDisease>;
@@ -33,19 +34,19 @@ export const DiseasesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().diseasesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).diseasesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbDisease) => {
-    return await CaseDbOntologyApi.getInstance().diseasesDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbOntologyApi).diseasesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbDisease) => {
-    return (await CaseDbOntologyApi.getInstance().diseasesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).diseasesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOntologyApi.getInstance().diseasesPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).diseasesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbDisease) => {

@@ -11,7 +11,7 @@ import type {
   Highlighting,
   LineListRangeSubjectValue,
   LinkedScrollSubjectValue,
-} from '../../../../models/caseDb';
+} from '../../../../models/case-db.models';
 import { UserProfileStoreContext } from '../../../../stores/userProfileStore/userProfileStoreContext';
 
 import { DashboardContext } from './DashboardContext';

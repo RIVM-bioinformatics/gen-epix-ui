@@ -6,9 +6,12 @@ import {
   it,
   vi,
 } from 'vitest';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import {
+  createUiClientCommonContainer,
+  resolveConfig,
+} from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseDbConfig } from '../../models/config.models';
 
 import type { RegionStatistics } from './MapUtil';
 import { MapUtil } from './MapUtil';
@@ -57,7 +60,7 @@ describe('MapUtil', () => {
 
   describe('getPieChartRadius', () => {
     beforeAll(() => {
-      vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
+      createUiClientCommonContainer({
         map: {
           MIN_PIE_CHART_RADIUS: 4,
         },
@@ -80,7 +83,7 @@ describe('MapUtil', () => {
         // test where minNumCases === maxNumCases (result should be maxArea)
         [[1, 1487, { ...statisticsBase, maxNumCases: 1, minNumCases: 1 }], 21.76],
         // test where numCases === minNumCases (result should be minArea)
-        [[1, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], ConfigService.getInstance<CaseDbConfig>().config.map.MIN_PIE_CHART_RADIUS],
+        [[1, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], resolveConfig<CaseDbConfig>().map.MIN_PIE_CHART_RADIUS],
         // test where numCases === maxNumCases (result should be maxArea
         [[9, 1487, { ...statisticsBase, maxNumCases: 9, minNumCases: 1 }], 21.76],
         // test where numCases is some where in between minNumCases and maxNumCases (area should be proportional)

@@ -35,8 +35,8 @@ import { FormFieldHelperText } from '@gen-epix/ui-core-form/components/helpers/F
 import { FormFieldLoadingIndicator } from '@gen-epix/ui-core-form/components/helpers/FormFieldLoadingIndicator';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 
-import { DASHBOARD_ARRANGEMENT_ORIENTATION } from '../../../../models/dashboard';
-import type { DashboardArrangement } from '../../../../models/dashboard';
+import { DASHBOARD_ARRANGEMENT_ORIENTATION } from '../../../../models/dashboard.models';
+import type { DashboardArrangement } from '../../../../models/dashboard.models';
 
 export type ArrangementEditorProps<TFieldValues extends FieldValues, TName extends Path<TFieldValues> = Path<TFieldValues>> = {
   readonly disabled?: boolean;

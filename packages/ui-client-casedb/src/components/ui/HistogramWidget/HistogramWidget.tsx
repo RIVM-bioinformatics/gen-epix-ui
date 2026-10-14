@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   ListItemIcon,
@@ -32,8 +33,8 @@ import type {
   CaseDbCol,
   CaseDbColType,
 } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { useStore } from 'zustand';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -41,7 +42,7 @@ import { useTranslation } from 'react-i18next';
 import round from 'lodash/round';
 import intersection from 'lodash/intersection';
 
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { DashboardWidget } from '../Dashboard';
@@ -50,7 +51,7 @@ import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
 import { EventBusService } from '../../../classes/services/EventBusService';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
-import type { HistogramWidgetData } from '../../../models/dashboard';
+import type { HistogramWidgetData } from '../../../models/dashboard.models';
 import {
   HISTOGRAM_ALLOWED_COL_TYPES,
   HistogramUtil,
@@ -69,11 +70,12 @@ const echartsCore = {
 export const HistogramWidget = () => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const config = useConfig();
   const chartRef = useRef<EChartsReact>(null);
   const chartInstanceRef = useRef<EChartsType | null>(null);
   const echartsOpts = useMemo(() => ({
-    nonce: ConfigService.getInstance().config.nonce,
-  }), []);
+    nonce: config.nonce,
+  }), [config.nonce]);
   const dashboardStore = use(DashboardStoreContext);
   const dashboardContext = use(DashboardContext);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
@@ -250,7 +252,7 @@ export const HistogramWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      EventBusService.getInstance().emit('onDownloadOptionsChanged', {
+      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         disabled: !canShowWidget,
         items: [
           {
@@ -269,7 +271,7 @@ export const HistogramWidget = () => {
       });
     };
     emitDownloadOptions();
-    const eventBusManager = EventBusService.getInstance();
+    const eventBusManager = rootContainer.resolve(EventBusService);
     eventBusManager.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
       eventBusManager.emit('onDownloadOptionsChanged', {

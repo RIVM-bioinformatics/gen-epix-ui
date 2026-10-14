@@ -14,7 +14,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
+import { useConfig } from '../../../hooks/useConfig';
 
 import { ApplicationFooterLink } from './ApplicationFooterLink';
 import { ApplicationFooterLinkSection } from './ApplicationFooterLinkSection';
@@ -27,6 +27,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
   const theme = useTheme();
   const navId = useId();
   const { t } = useTranslation();
+  const config = useConfig();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -48,7 +49,7 @@ export const ApplicationFooter = ({ fullWidth }: ApplicationFooterProps) => {
     setIsMenuOpen(x => !x);
   }, []);
 
-  const footer = useMemo(() => ConfigService.getInstance().config.createFooter(), []);
+  const footer = useMemo(() => config.createFooter(), [config]);
 
   return (
     <Box

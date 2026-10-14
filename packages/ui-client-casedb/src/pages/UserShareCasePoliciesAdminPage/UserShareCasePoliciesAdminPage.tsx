@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -16,20 +17,20 @@ import {
   CaseDbAbacApi,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { useUserOptionsQuery } from '@gen-epix/ui-client-common/dataHooks/useUsersQuery';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 
 import { useColSetsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { useUserCasePolicyNameFactory } from '../../hooks/useUserCasePolicyNameFactory';
 
 type FormFields = OmitWithMetaData<CaseDbUserShareCasePolicy, 'case_type_set' | 'data_collection' | 'from_data_collection' | 'user'>;
@@ -46,19 +47,19 @@ export const UserShareCasePoliciesAdminPage = () => {
   const loadables = useArray([userOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.getInstance().userShareCasePoliciesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbAbacApi).userShareCasePoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbUserShareCasePolicy) => {
-    return await CaseDbAbacApi.getInstance().userShareCasePoliciesDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbAbacApi).userShareCasePoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbUserShareCasePolicy) => {
-    return (await CaseDbAbacApi.getInstance().userShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbAbacApi).userShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbAbacApi.getInstance().userShareCasePoliciesPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbAbacApi).userShareCasePoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbUserShareCasePolicy) => {

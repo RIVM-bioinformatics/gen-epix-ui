@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   afterEach,
   beforeEach,
@@ -14,15 +15,15 @@ import type {
   CaseDbConcept,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
 import { DataService } from '../../classes/services/DataService';
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseDbConfig } from '../../models/config.models';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SIMILAR_CASE,
-} from '../../models/stratification';
-import type { DataCache } from '../../models/caseDb';
+} from '../../models/stratification.models';
+import type { DataCache } from '../../models/case-db.models';
 
 import { StratificationUtil } from './StratificationUtil';
 
@@ -56,18 +57,18 @@ const makeConcept = (
 let savedData: DataCache;
 
 beforeEach(() => {
-  savedData = { ...DataService.getInstance().data };
-  DataService.getInstance().data.conceptsIdsBySetId = {};
-  DataService.getInstance().data.conceptsById = {};
+  savedData = { ...rootContainer.resolve(DataService).data };
+  rootContainer.resolve(DataService).data.conceptsIdsBySetId = {};
+  rootContainer.resolve(DataService).data.conceptsById = {};
 });
 
 afterEach(() => {
-  Object.assign(DataService.getInstance().data, savedData);
+  Object.assign(rootContainer.resolve(DataService).data, savedData);
   vi.restoreAllMocks();
 });
 
 const getStratificationConfig = () =>
-  ConfigService.getInstance<CaseDbConfig>().config.epi.STRATIFICATION;
+  resolveConfig<CaseDbConfig>().epi.STRATIFICATION;
 
 describe('StratificationUtil', () => {
   // -------------------------------------------------------------------------
@@ -316,9 +317,9 @@ describe('StratificationUtil', () => {
         const SET_ID = 'set1';
 
         const setUpConcepts = (concepts: CaseDbConcept[]) => {
-          DataService.getInstance().data.conceptsIdsBySetId[SET_ID] = concepts.map(c => c.id);
+          rootContainer.resolve(DataService).data.conceptsIdsBySetId[SET_ID] = concepts.map(c => c.id);
           concepts.forEach(c => {
-            DataService.getInstance().data.conceptsById[c.id] = c;
+            rootContainer.resolve(DataService).data.conceptsById[c.id] = c;
           });
         };
 
@@ -448,7 +449,7 @@ describe('StratificationUtil', () => {
             makeConcept('c2', 2, null),
           ];
           concepts.forEach(c => {
-            DataService.getInstance().data.conceptsById[c.id] = c;
+            rootContainer.resolve(DataService).data.conceptsById[c.id] = c;
           });
           // conceptsIdsBySetId[SET_ID] is intentionally left unset
 

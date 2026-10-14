@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useEffect,
   useMemo,
@@ -8,7 +9,7 @@ import type {
   UseQueryOptions,
 } from '@tanstack/react-query';
 
-import type { GenericData } from '../../models/data';
+import type { GenericData } from '../../models/data.models';
 import { useQueryMemo } from '../useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 
@@ -25,13 +26,13 @@ export const useItemQuery = <T extends GenericData>({
   itemId,
   useQueryOptions,
 }: UseItemQueryProps<T>) => {
-  const { queryCache } = QueryClientService.getInstance();
-  const [itemFromCache, setItemFromCache] = useState<T>(QueryClientService.getInstance().getItemFromCache<T>(baseQueryKey, itemId));
+  const { queryCache } = rootContainer.resolve(QueryClientService);
+  const [itemFromCache, setItemFromCache] = useState<T>(rootContainer.resolve(QueryClientService).getItemFromCache<T>(baseQueryKey, itemId));
 
   const useQueryResult = useQueryMemo({
     ...useQueryOptions,
     enabled: !itemFromCache && useQueryOptions.enabled,
-    queryKey: QueryClientService.getInstance().getGenericKey(baseQueryKey, itemId),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(baseQueryKey, itemId),
   });
 
   useEffect(() => {

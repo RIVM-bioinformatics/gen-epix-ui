@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -16,9 +17,8 @@ import { CaseDbOrganizationApi } from '@gen-epix/api-casedb';
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui-client-common/models/table';
-import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+} from '@gen-epix/ui-client-common/models/table.models';
+import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -35,6 +35,7 @@ import {
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { useInitializeTableStore } from '@gen-epix/ui-client-common/hooks/useInitializeTableStore';
 import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { UserUtil } from '@gen-epix/ui-client-common/utils/UserUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
@@ -59,12 +60,13 @@ import { useOrganizationAccessCasePoliciesQuery } from '../../dataHooks/useOrgan
 import { useOrganizationShareCasePoliciesQuery } from '../../dataHooks/useOrganizationShareCasePoliciesQuery';
 import { useUserAccessCasePoliciesQuery } from '../../dataHooks/useUserAccessCasePoliciesQuery';
 import { useUserShareCasePoliciesQuery } from '../../dataHooks/useUserShareCasePoliciesQuery';
-import type { UserEffectiveRight } from '../../models/caseAccess';
+import type { UserEffectiveRight } from '../../models/case-access.models';
 import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 
 
 export const UserEffectiveRightsAdminPage = () => {
   const { t } = useTranslation();
+  const config = useConfig();
   const theme = useTheme();
   const usersEffectiveRightsDetailsDialogRef = useRef<UsersEffectiveRightsDetailsDialogRefMethods>(null);
 
@@ -75,7 +77,7 @@ export const UserEffectiveRightsAdminPage = () => {
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await CaseDbOrganizationApi.getInstance().usersGetOne(userId, { signal });
+        const response = await rootContainer.resolve(CaseDbOrganizationApi).usersGetOne(userId, { signal });
         return response.data;
       },
     },
@@ -111,7 +113,7 @@ export const UserEffectiveRightsAdminPage = () => {
     defaultSortByField: 'data_collection_id',
     defaultSortDirection: 'asc',
     idSelectorCallback: (entry) => entry.data_collection_id,
-    navigatorFunction: RouterService.getInstance().router.navigate,
+    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
     storageNamePostFix: 'UsersEffectiveRightsAdminPage-Table',
     storageVersion: 1,
   }), []);
@@ -314,7 +316,7 @@ export const UserEffectiveRightsAdminPage = () => {
             <Box
               sx={{
                 height: '100%',
-                paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                paddingLeft: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH + 1),
                 width: '100%',
               }}
             >

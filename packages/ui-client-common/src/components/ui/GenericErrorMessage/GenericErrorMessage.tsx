@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -14,10 +15,10 @@ import { isAxiosError } from 'axios';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
 import { RouterService } from '../../../classes/services/RouterService';
+import { useConfig } from '../../../hooks/useConfig';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 
 export type GenericErrorMessageProps = {
@@ -27,13 +28,14 @@ export type GenericErrorMessageProps = {
 
 export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericErrorMessageProps) => {
   const { t } = useTranslation();
+  const config = useConfig();
 
   useEffect(() => {
     if (!error || isAxiosError(error)) {
       // Axios errors are logged in LogService already
       return;
     }
-    LogService.getInstance().log([{
+    rootContainer.resolve(LogService).log([{
       detail: {
         error,
         stack: (error as Error)?.stack,
@@ -41,29 +43,29 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       level: isAxiosError(error) ? CommonDbLogLevel.DEBUG : CommonDbLogLevel.ERROR,
       topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
     }]);
-    LogService.getInstance().flushLog();
-    if (error instanceof Error && ConfigService.getInstance().config.enablePageEvents) {
-      PageEventBusService.getInstance().emit('error', error);
+    rootContainer.resolve(LogService).flushLog();
+    if (error instanceof Error && config.enablePageEvents) {
+      rootContainer.resolve(PageEventBusService).emit('error', error);
     }
-  }, [error]);
+  }, [config.enablePageEvents, error]);
 
   const onBackToHomePageButtonClick = useCallback(async () => {
-    await RouterService.getInstance().router.navigate({
+    await rootContainer.resolve(RouterService).router.navigate({
       pathname: '/',
     });
   }, []);
 
   const onBackButtonClick = useCallback(async () => {
-    await RouterService.getInstance().router.navigate(-1);
+    await rootContainer.resolve(RouterService).router.navigate(-1);
   }, []);
 
   const onLogoutButtonClick = useCallback(async () => {
     AuthenticationService.clearStaleState();
-    if (AuthenticationService.getInstance().authContextProps) {
+    if (rootContainer.resolve(AuthenticationService).authContextProps) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      AuthenticationService.getInstance().authContextProps.signoutRedirect();
+      rootContainer.resolve(AuthenticationService).authContextProps.signoutRedirect();
     } else {
-      await RouterService.getInstance().router.navigate({
+      await rootContainer.resolve(RouterService).router.navigate({
         pathname: '/',
       });
     }

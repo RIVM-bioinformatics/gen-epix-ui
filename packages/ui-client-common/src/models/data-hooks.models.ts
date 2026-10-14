@@ -1,4 +1,4 @@
-import type { OptionBase } from '@gen-epix/ui-core-form/models/form';
+import type { OptionBase } from '@gen-epix/ui-core-form/models/form.models';
 
 export interface Loadable {
   error: unknown;

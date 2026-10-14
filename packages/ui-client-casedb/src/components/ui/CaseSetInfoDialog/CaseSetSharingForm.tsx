@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -22,13 +23,13 @@ import { NotificationService } from '@gen-epix/ui-client-common/classes/services
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 
 export type CaseSetSharingFormProps = {
@@ -59,32 +60,32 @@ export const CaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, onIs
     const perform = async () => {
       setIsSaving(true);
       onIsSavingChange(true);
-      const queryKeys = QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
-      const notificationKey = NotificationService.getInstance().showNotification({
+      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
+      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t('Saving case set data collections'),
         severity: 'info',
       });
       try {
-        await QueryClientService.getInstance().cancelQueries(queryKeys);
+        await rootContainer.resolve(QueryClientService).cancelQueries(queryKeys);
         const rights = caseAbacContext?.rights?.[0];
         const dataCollectionIdsToAdd = difference(dataCollectionIds, rights.shared_in_data_collection_ids);
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
 
         if (dataCollectionIdsToAdd.length > 0) {
-          await CaseDbCaseApi.getInstance().caseSetDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
+          await rootContainer.resolve(CaseDbCaseApi).caseSetDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
             case_set_id: caseSet.id,
             data_collection_id,
           })));
         }
         if (dataCollectionIdsToRemove.length > 0) {
-          await CaseDbCaseApi.getInstance().caseSetDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
+          await rootContainer.resolve(CaseDbCaseApi).caseSetDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
         }
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Successfully saved case set data collections.'), 'success');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Successfully saved case set data collections.'), 'success');
       } catch (_error) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Could not save case set data collections.'), 'error');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Could not save case set data collections.'), 'error');
       } finally {
-        await QueryClientService.getInstance().invalidateQueryKeys(queryKeys);
+        await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
         if (shouldApplySharingToCases) {
           await CaseUtil.applyDataCollectionLinks({
             caseSetDataCollectionIds: dataCollectionIds,

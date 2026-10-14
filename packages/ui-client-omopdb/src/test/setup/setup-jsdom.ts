@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
 import { setupOmopDb } from '../../setup/setup';
 import { OmopDbStandardConfigUtil } from '../../utils/OmopDbStandardConfigUtil';
@@ -9,11 +9,11 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 export const setupTestEnvironment = () => {
-  ConfigService.getInstance().config = {
+  const config = {
     ...OmopDbStandardConfigUtil.createConfig(),
     theme: createOmopDbDemoTheme('light'),
   };
-  setupOmopDb();
+  setupOmopDb(createUiClientCommonContainer(config));
   vi.setConfig({
     testTimeout: 10000,
   });

@@ -2,7 +2,7 @@ import type { TFunction } from 'i18next';
 import type { CommonDbFiltersInner } from '@gen-epix/api-commondb';
 
 import { FilterAbstract } from '../abstracts/FilterAbstract';
-import type { Filter } from '../../models/filter';
+import type { Filter } from '../../models/filter.models';
 
 export class BooleanFilter extends FilterAbstract<boolean> implements Filter<boolean, boolean> {
   public filterValue: boolean = null;

@@ -168,7 +168,7 @@ constants/query-keys into a single `data/` folder).
 gets its own PascalCase-or-camelCase folder matching the unit name, containing
 the implementation file plus an `index.ts` barrel (`export * from './Xxx';`).
 This is load-bearing, not just style: `package.json` `exports` maps expose each
-folder as its own subpath (e.g. `"./classes/services/ApiService"`), so new
+ folder as its own subpath (e.g. `"./classes/services/NotificationService"`), so new
 public units need the same folder+barrel shape to be consumable.
 
 - **Components**: `src/components/<subarea>/<ComponentName>/ComponentName.tsx`
@@ -185,12 +185,12 @@ public units need the same folder+barrel shape to be consumable.
  name matches the hook name exactly, plus an `index.ts` barrel. Hook option/
  props types are named `Use<HookName>Props`.
 - **Classes** (managers, singletons, event buses): `src/classes/services/`
- (singletons suffixed `Service`, e.g. `ApiService`, `NotificationService`),
+ (singletons suffixed `Service`, e.g. `NotificationService`),
  `src/classes/abstracts/` (base classes suffixed `Abstract`), `src/classes/
  filters/` (concrete filter classes), and similar grouping folders (e.g.
- casedb's `classes/errors/` for `*Error` classes). Singletons use a private
- static `__instance`, private constructor, `public static getInstance()`,
- typically wrapped in `HmrUtil.getHmrSingleton(...)` for HMR safety.
+ casedb's `classes/errors/` for `*Error` classes). Services use tsyringe
+ `@singleton()` and are resolved from the application container; do not add
+ private static singleton state or HMR singleton wrappers.
 - **Constants**: flat files under `src/constants/*.ts`, one per domain, no
  subfolders or barrel. Identifiers are `UPPER_SNAKE_CASE`, declared `as const`,
  with a same-named companion type derived via
@@ -216,8 +216,9 @@ public units need the same folder+barrel shape to be consumable.
  `UPPER_SNAKE_CASE`, with string values mirroring the key
  (`FIXED_COLUMN_ID.ROW_SELECT = 'ROW_SELECT'`).
 - **Services/API layer**: same folder pattern as classes, under
- `src/classes/services/<ServiceName>/`. `ApiService` wraps generated OpenAPI
- clients behind an `initialize({...})` method and typed public fields.
+ `src/classes/services/<ServiceName>/`. Generated OpenAPI clients are
+ tsyringe singletons registered directly under typed API tokens; do not add an
+ API facade or an `initialize(...)` lifecycle.
 - **Context**: `src/context/<contextName>/` with four files —
  `XxxContext.tsx` (the `createContext` call), `XxxContextProvider.tsx`
  (provider component), `useXxxContext.tsx` (consumer hook), and an `index.ts`

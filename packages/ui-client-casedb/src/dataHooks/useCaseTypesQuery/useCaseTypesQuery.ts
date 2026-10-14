@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbCaseType } from '@gen-epix/api-casedb';
@@ -5,16 +6,16 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type {
   UseMap,
   UseOptions,
-} from '@gen-epix/ui-client-common/models/dataHooks';
+} from '@gen-epix/ui-client-common/models/data-hooks.models';
 import { DataHookUtil } from '@gen-epix/ui-client-common/utils/DataHookUtil';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Promise<CaseDbCaseType[]> => {
-  const response = await CaseDbCaseApi.getInstance().caseTypesGetAll(null, null, { signal });
+  const response = await rootContainer.resolve(CaseDbCaseApi).caseTypesGetAll(null, null, { signal });
   const items = response.data;
   items.sort((a, b) => a.name.localeCompare(b.name));
   return items;
@@ -23,7 +24,7 @@ export const caseTypesQueryFn = async ({ signal }: { signal: AbortSignal }): Pro
 export const useCaseTypesQuery = (): UseQueryResult<CaseDbCaseType[]> => {
   return useQueryMemo({
     queryFn: caseTypesQueryFn,
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
   });
 };
 

@@ -29,7 +29,7 @@ import sum from 'lodash/sum';
 import type {
   TableColumn,
   TableDragEvent,
-} from '../../../models/table';
+} from '../../../models/table.models';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 import { TableHeaderFilter } from './TableHeaderFilter';

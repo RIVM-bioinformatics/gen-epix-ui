@@ -38,7 +38,7 @@ import { useTranslation } from 'react-i18next';
 import { useDebouncedCallback } from 'use-debounce';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import type { TransferListOption } from '../../../models/form';
+import type { TransferListOption } from '../../../models/form.models';
 import { FormUtil } from '../../../utils/FormUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 

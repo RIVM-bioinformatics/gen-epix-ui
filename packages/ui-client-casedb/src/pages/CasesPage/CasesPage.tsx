@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -27,8 +28,7 @@ import {
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui-client-common/models/table';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+} from '@gen-epix/ui-client-common/models/table.models';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -46,17 +46,18 @@ import {
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { useInitializeTableStore } from '@gen-epix/ui-client-common/hooks/useInitializeTableStore';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { DataUtil } from '@gen-epix/ui-core/utils/DataUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
-import type { OptionBase } from '@gen-epix/ui-core-form/models/form';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
+import type { OptionBase } from '@gen-epix/ui-core-form/models/form.models';
 
 import type { CaseTypeInfoDialogWithLoaderRefMethods } from '../../components/ui/CaseTypeInfoDialog';
 import { CaseTypeInfoDialogWithLoader } from '../../components/ui/CaseTypeInfoDialog';
 import { useCaseTypeSetCategoriesQuery } from '../../dataHooks/useCaseTypeSetCategoriesQuery';
 import { useCaseTypeStatsQuery } from '../../dataHooks/useCaseTypeStatsQuery';
 import { CaseTypeUtil } from '../../utils/CaseTypeUtil';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { CaseDbDownloadUtil } from '../../utils/CaseDbDownloadUtil';
 
 
@@ -71,6 +72,7 @@ const getCaseTypeSetCategoryRowId = (id: string) => `caseTypeSetCategory-${id}`;
 
 export const CasesPage = () => {
   const { t } = useTranslation();
+  const config = useConfig();
   const theme = useTheme();
   const caseTypeInfoDialogWithLoaderRef = useRef<CaseTypeInfoDialogWithLoaderRefMethods>(null);
   const caseTypeStatsQuery = useCaseTypeStatsQuery();
@@ -78,10 +80,10 @@ export const CasesPage = () => {
 
   const { data: caseTypes, error: caseTypesError, isLoading: isCaseTypesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseTypesGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseTypesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPES),
   });
 
   const caseTypeStatsMap = useMemo(() => {
@@ -91,25 +93,25 @@ export const CasesPage = () => {
 
   const { data: caseTypeSets, error: caseTypeSetsError, isLoading: isCaseTypeSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseTypeSetsGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SETS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SETS),
   });
 
   const { data: caseTypeSetMembers, error: caseTypeSetMembersError, isLoading: isCaseTypeSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseTypeSetMembersGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseTypeSetMembersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_SET_MEMBERS),
   });
 
   const isLoading = isCaseTypesLoading || isCaseTypeSetsLoading || isCaseTypeSetMembersLoading || caseTypeSetCategoriesQuery.isLoading || caseTypeStatsQuery.isLoading;
   const error = caseTypesError || caseTypeSetsError || caseTypeSetMembersError || caseTypeSetCategoriesQuery.error || caseTypeStatsQuery.error;
 
   const handleCellNavigation = useCallback(async (caseType: Row) => {
-    await RouterService.getInstance().router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
+    await rootContainer.resolve(RouterService).router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
   }, []);
 
   const onRowClick = useCallback(async (params: TableRowParams<Row>) => {
@@ -281,7 +283,7 @@ export const CasesPage = () => {
     defaultSortDirection: 'asc',
     idSelectorCallback: (row) => row.id,
     isRowEnabledCallback: (row) => row.n_cases > 0,
-    navigatorFunction: RouterService.getInstance().router.navigate,
+    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
     storageNamePostFix: 'cases',
     storageVersion: 1,
   }), []);
@@ -337,7 +339,7 @@ export const CasesPage = () => {
                 <Box
                   sx={{
                     height: '100%',
-                    paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                    paddingLeft: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH + 1),
                     width: '100%',
                   }}
                 >

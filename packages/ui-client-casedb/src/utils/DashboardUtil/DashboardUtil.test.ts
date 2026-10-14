@@ -7,20 +7,20 @@ import {
   vi,
 } from 'vitest';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import type { FieldValues } from 'react-hook-form';
 
 import {
   DASHBOARD_ARRANGEMENT_ORIENTATION,
   WIDGET_CONSTRAINT_CARDINAL_DIRECTION,
-} from '../../models/dashboard';
+} from '../../models/dashboard.models';
 import type {
   DashboardArrangement,
   DashboardArrangementConfig,
   WidgetDataBase,
   WidgetsConfig,
-} from '../../models/dashboard';
-import type { CaseDbConfig } from '../../models/config';
+} from '../../models/dashboard.models';
+import type { CaseDbConfig } from '../../models/config.models';
 
 import { DashboardUtil } from './DashboardUtil';
 
@@ -144,13 +144,17 @@ const makeWidgets = (): WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBas
 });
 
 // ---------------------------------------------------------------------------
-// ConfigService mock helper
+// Dashboard configuration fixture helper
 // ---------------------------------------------------------------------------
 
-const mockDashboard = (overrides: Partial<CaseDbConfig['dashboard']>): void => {
-  vi.spyOn(ConfigService.getInstance<CaseDbConfig>(), 'config', 'get').mockReturnValue({
+let dashboardConfig: CaseDbConfig;
+
+const mockDashboard = (overrides: Partial<CaseDbConfig['dashboard']>): CaseDbConfig => {
+  dashboardConfig = {
     dashboard: overrides,
-  } as unknown as CaseDbConfig);
+  } as unknown as CaseDbConfig;
+  createUiClientCommonContainer(dashboardConfig);
+  return dashboardConfig;
 };
 
 // ---------------------------------------------------------------------------
@@ -367,53 +371,53 @@ describe('DashboardUtil', () => {
     it('includes unconstrained widgets not yet assigned to any zone', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
-      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null }), 'A', widgets)).toContain('unconstrained');
+      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null }), 'A', widgets, dashboardConfig)).toContain('unconstrained');
     });
 
     it('excludes widgets already assigned to another zone', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
       // 'unconstrained' is assigned to zone B; asking what can go in zone A
-      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: 'unconstrained' }), 'A', widgets)).not.toContain('unconstrained');
+      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: 'unconstrained' }), 'A', widgets, dashboardConfig)).not.toContain('unconstrained');
     });
 
     it('does not exclude the widget currently occupying the target zone', () => {
       // zone A already holds 'unconstrained'; it should still appear as an option for A
       const widgets = makeWidgets();
       setup(FLAT_H);
-      expect(DashboardUtil.getAvailableWidgets(cfg({ A: 'unconstrained', B: null }), 'A', widgets)).toContain('unconstrained');
+      expect(DashboardUtil.getAvailableWidgets(cfg({ A: 'unconstrained', B: null }), 'A', widgets, dashboardConfig)).toContain('unconstrained');
     });
 
     it('includes a widget whose require_adjacent constraint is satisfied', () => {
       // withAdjacent requires 'unconstrained' to the EAST; B (east of A) is assigned 'unconstrained'
       const widgets = makeWidgets();
       setup(FLAT_H);
-      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: 'unconstrained' }), 'A', widgets)).toContain('withAdjacent');
+      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: 'unconstrained' }), 'A', widgets, dashboardConfig)).toContain('withAdjacent');
     });
 
     it('excludes a widget whose require_adjacent constraint is not satisfied', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
-      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null }), 'A', widgets)).not.toContain('withAdjacent');
+      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null }), 'A', widgets, dashboardConfig)).not.toContain('withAdjacent');
     });
 
     it('includes a widget whose require_adjacent_direct_sibling constraint is satisfied', () => {
       // withSibling requires 'unconstrained' in a direct sibling; B is the only direct sibling of A in FLAT_H
       const widgets = makeWidgets();
       setup(FLAT_H);
-      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: 'unconstrained' }), 'A', widgets)).toContain('withSibling');
+      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: 'unconstrained' }), 'A', widgets, dashboardConfig)).toContain('withSibling');
     });
 
     it('excludes a widget whose require_adjacent_direct_sibling constraint is not satisfied', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
-      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null }), 'A', widgets)).not.toContain('withSibling');
+      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null }), 'A', widgets, dashboardConfig)).not.toContain('withSibling');
     });
 
     it('treats a constraint with neither field set as automatically satisfied', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
-      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null }), 'A', widgets)).toContain('withEmptyConstraint');
+      expect(DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null }), 'A', widgets, dashboardConfig)).toContain('withEmptyConstraint');
     });
 
     it('direct-sibling constraint is NOT satisfied by a zone in a different nested group', () => {
@@ -422,7 +426,7 @@ describe('DashboardUtil', () => {
       const widgets = makeWidgets();
       setup(NESTED_HV);
       expect(
-        DashboardUtil.getAvailableWidgets(cfg({ A: null, B: 'unconstrained', C: null }), 'A', widgets),
+        DashboardUtil.getAvailableWidgets(cfg({ A: null, B: 'unconstrained', C: null }), 'A', widgets, dashboardConfig),
       ).not.toContain('withSibling');
     });
 
@@ -431,7 +435,7 @@ describe('DashboardUtil', () => {
       const widgets = makeWidgets();
       setup(NESTED_HV);
       expect(
-        DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null, C: 'unconstrained' }), 'B', widgets),
+        DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null, C: 'unconstrained' }), 'B', widgets, dashboardConfig),
       ).toContain('withSibling');
     });
 
@@ -440,7 +444,7 @@ describe('DashboardUtil', () => {
       const widgets = makeWidgets();
       setup(TWO_NESTED);
       expect(
-        DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null, C: null, D: 'unconstrained' }), 'C', widgets),
+        DashboardUtil.getAvailableWidgets(cfg({ A: null, B: null, C: null, D: 'unconstrained' }), 'C', widgets, dashboardConfig),
       ).toContain('withSibling');
     });
 
@@ -449,7 +453,7 @@ describe('DashboardUtil', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
       expect(
-        DashboardUtil.getAvailableWidgets(cfg({ A: 'unconstrained', B: null }), 'Z', widgets),
+        DashboardUtil.getAvailableWidgets(cfg({ A: 'unconstrained', B: null }), 'Z', widgets, dashboardConfig),
       ).not.toContain('withSibling');
     });
   });
@@ -487,15 +491,15 @@ describe('DashboardUtil', () => {
     });
 
     it('returns only the zones with a non-null widget assignment', () => {
-      expect(DashboardUtil.getEnabledWidgets(cfg({ A: 'widgetA', B: null }))).toEqual(['A']);
+      expect(DashboardUtil.getEnabledWidgets(cfg({ A: 'widgetA', B: null }), dashboardConfig)).toEqual(['A']);
     });
 
     it('returns an empty array when no zone is assigned', () => {
-      expect(DashboardUtil.getEnabledWidgets(cfg({ A: null, B: null }))).toEqual([]);
+      expect(DashboardUtil.getEnabledWidgets(cfg({ A: null, B: null }), dashboardConfig)).toEqual([]);
     });
 
     it('returns all zones when every zone is assigned', () => {
-      expect(DashboardUtil.getEnabledWidgets(cfg({ A: 'widgetA', B: 'widgetB' }))).toEqual(['A', 'B']);
+      expect(DashboardUtil.getEnabledWidgets(cfg({ A: 'widgetA', B: 'widgetB' }), dashboardConfig)).toEqual(['A', 'B']);
     });
   });
 
@@ -559,17 +563,17 @@ describe('DashboardUtil', () => {
 
     it('returns true when there is exactly one zone in the layout and it is assigned', () => {
       mockDashboard({ ARRANGEMENT_OPTIONS: { key: grp(H, [leaf('A')], 100) } });
-      expect(DashboardUtil.isSingleWidget(cfg({ A: 'widgetA' }), 'A')).toBe(true);
+      expect(DashboardUtil.isSingleWidget(cfg({ A: 'widgetA' }), 'A', dashboardConfig)).toBe(true);
     });
 
     it('returns false when the arrangement contains more than one zone', () => {
       mockDashboard({ ARRANGEMENT_OPTIONS: { key: FLAT_H } });
-      expect(DashboardUtil.isSingleWidget(cfg({ A: 'widgetA', B: 'widgetB' }), 'A')).toBe(false);
+      expect(DashboardUtil.isSingleWidget(cfg({ A: 'widgetA', B: 'widgetB' }), 'A', dashboardConfig)).toBe(false);
     });
 
     it('returns falsy when the target zone has no widget assigned', () => {
       mockDashboard({ ARRANGEMENT_OPTIONS: { key: grp(H, [leaf('A')], 100) } });
-      expect(DashboardUtil.isSingleWidget(cfg({ A: null }), 'A')).toBeFalsy();
+      expect(DashboardUtil.isSingleWidget(cfg({ A: null }), 'A', dashboardConfig)).toBeFalsy();
     });
   });
 
@@ -591,35 +595,35 @@ describe('DashboardUtil', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
       const input = cfg({ A: 'withAdjacent', B: 'unconstrained' });
-      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets)).toEqual(input);
+      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets, dashboardConfig)).toEqual(input);
     });
 
     it('returns the config unchanged when all assignments are null', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
       const input = cfg({ A: null, B: null });
-      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets)).toEqual(input);
+      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets, dashboardConfig)).toEqual(input);
     });
 
     it('keeps a validly assigned unconstrained widget', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
       const input = cfg({ A: 'unconstrained', B: null });
-      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets)).toEqual(input);
+      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets, dashboardConfig)).toEqual(input);
     });
 
     it('does not remove a widget whose constraint object has no fields (always satisfied)', () => {
       const widgets = makeWidgets();
       setup(FLAT_H);
       const input = cfg({ A: 'withEmptyConstraint', B: null });
-      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets)).toEqual(input);
+      expect(DashboardUtil.removeInvalidWidgetAssignments(input, widgets, dashboardConfig)).toEqual(input);
     });
 
     it('nulls a zone whose require_adjacent constraint is not satisfied', () => {
       // withAdjacent requires 'unconstrained' to EAST; B is empty → constraint fails
       const widgets = makeWidgets();
       setup(FLAT_H);
-      const result = DashboardUtil.removeInvalidWidgetAssignments(cfg({ A: 'withAdjacent', B: null }), widgets);
+      const result = DashboardUtil.removeInvalidWidgetAssignments(cfg({ A: 'withAdjacent', B: null }), widgets, dashboardConfig);
       expect(result.arrangementWidgetAssignments).toEqual({ A: null, B: null });
     });
 
@@ -627,7 +631,7 @@ describe('DashboardUtil', () => {
       // withSibling requires 'unconstrained' as a direct sibling; B is empty → constraint fails
       const widgets = makeWidgets();
       setup(FLAT_H);
-      const result = DashboardUtil.removeInvalidWidgetAssignments(cfg({ A: 'withSibling', B: null }), widgets);
+      const result = DashboardUtil.removeInvalidWidgetAssignments(cfg({ A: 'withSibling', B: null }), widgets, dashboardConfig);
       expect(result.arrangementWidgetAssignments).toEqual({ A: null, B: null });
     });
 
@@ -650,7 +654,7 @@ describe('DashboardUtil', () => {
         },
       };
       setup(FLAT_H);
-      const result = DashboardUtil.removeInvalidWidgetAssignments(cfg({ A: 'Y', B: 'Z' }), cascadeWidgets);
+      const result = DashboardUtil.removeInvalidWidgetAssignments(cfg({ A: 'Y', B: 'Z' }), cascadeWidgets, dashboardConfig);
       expect(result.arrangementWidgetAssignments).toEqual({ A: null, B: null });
     });
   });
@@ -675,14 +679,14 @@ describe('DashboardUtil', () => {
 
     it('returns the config unchanged when both the key and assignments are valid', () => {
       const config = { arrangementKey: 'layout1', arrangementWidgetAssignments: { A: 'widgetA', B: null as string } };
-      expect(DashboardUtil.validateAndMigrateArrangementConfig(config)).toEqual(config);
+      expect(DashboardUtil.validateAndMigrateArrangementConfig(config, dashboardConfig)).toEqual(config);
     });
 
     it('resets the arrangement key to the default when the key is not in ARRANGEMENT_OPTIONS', () => {
       const result = DashboardUtil.validateAndMigrateArrangementConfig({
         arrangementKey: 'unknown',
         arrangementWidgetAssignments: {},
-      });
+      }, dashboardConfig);
       expect(result.arrangementKey).toBe('layout1');
     });
 
@@ -690,7 +694,7 @@ describe('DashboardUtil', () => {
       const result = DashboardUtil.validateAndMigrateArrangementConfig({
         arrangementKey: '',
         arrangementWidgetAssignments: {},
-      });
+      }, dashboardConfig);
       expect(result.arrangementKey).toBe('layout1');
     });
 
@@ -698,7 +702,7 @@ describe('DashboardUtil', () => {
       const result = DashboardUtil.validateAndMigrateArrangementConfig({
         arrangementKey: 'layout1',
         arrangementWidgetAssignments: { A: 'unknownWidget' },
-      });
+      }, dashboardConfig);
       expect(result.arrangementWidgetAssignments).toEqual({ A: 'widgetA', B: null });
     });
 
@@ -715,7 +719,7 @@ describe('DashboardUtil', () => {
       const result = DashboardUtil.validateAndMigrateArrangementConfig({
         arrangementKey: 'layout2',
         arrangementWidgetAssignments: { A: 'unknownWidget' },
-      });
+      }, dashboardConfig);
       expect(result.arrangementWidgetAssignments).toEqual({ A: 'widgetA', B: null });
     });
   });
@@ -727,7 +731,7 @@ describe('DashboardUtil', () => {
         DEFAULT_ARRANGEMENT_KEY: 'layout1',
         DEFAULT_WIDGET_ASSIGNMENTS: { layout1: { A: 'widgetA', B: null } },
       });
-      expect(DashboardUtil.createDashboardArrangementConfigInitialState()).toEqual({
+      expect(DashboardUtil.createDashboardArrangementConfigInitialState(dashboardConfig)).toEqual({
         arrangementKey: 'layout1',
         arrangementWidgetAssignments: { A: 'widgetA', B: null },
       });

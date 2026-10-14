@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import type { ReactElement } from 'react';
@@ -18,20 +19,20 @@ import { useForm } from 'react-hook-form';
 import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
+import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
 import { AuthenticationService } from '../../classes/services/AuthenticationService';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { NotificationService } from '../../classes/services/NotificationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../constants/query';
-import { ApiService } from '../../classes/services/ApiService';
+import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 
 export interface UserInvitationConsumeDialogOpenProps {
   item: CommonDbUserInvitation;
@@ -82,9 +83,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
 
   const onFormSubmit = useCallback(async (data: FormFields) => {
     try {
-      AuthenticationService.getInstance().temporaryToken = data.bearerToken;
-      await ApiService.getInstance().organizationApi.userRegistrationsPostOne(openProps.item.token);
-      NotificationService.getInstance().showNotification({
+      rootContainer.resolve(AuthenticationService).temporaryToken = data.bearerToken;
+      await rootContainer.resolve(API_ORGANIZATION_TOKEN).userRegistrationsPostOne(openProps.item.token);
+      rootContainer.resolve(NotificationService).showNotification({
         message: t`Invitation has been consumed by bearer token`,
         severity: 'success',
       });
@@ -92,9 +93,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
     } catch (responseError) {
       setError(responseError);
     } finally {
-      delete AuthenticationService.getInstance().temporaryToken;
-      const queryKeys = QueryClientService.getInstance().getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
-      await QueryClientService.getInstance().invalidateQueryKeys(queryKeys);
+      delete rootContainer.resolve(AuthenticationService).temporaryToken;
+      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
+      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
     }
   }, [onClose, openProps.item.token, t]);
 

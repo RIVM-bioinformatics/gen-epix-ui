@@ -1,7 +1,8 @@
+import { container as rootContainer } from 'tsyringe';
 import type { CaseDbCompleteCaseType } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 
-import type { TreeConfiguration } from '../../models/dashboard';
+import type { TreeConfiguration } from '../../models/dashboard.models';
 import { DataService } from '../../classes/services/DataService';
 
 export class TreeWidgetUtil {
@@ -21,7 +22,7 @@ export class TreeWidgetUtil {
       return refCol.col_type === CaseDbColType.GENETIC_DISTANCE;
     });
 
-    const sortedTreeAlgorithmCodes = DataService.getInstance().data.treeAlgorithms.map(x => x.code);
+    const sortedTreeAlgorithmCodes = rootContainer.resolve(DataService).data.treeAlgorithms.map(x => x.code);
 
     geneticDistanceCols.forEach(col => {
       const refCol = completeCaseType.ref_cols[col.ref_col_id];

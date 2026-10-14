@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useEffect,
@@ -16,14 +17,14 @@ import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/compon
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
+import { API_SYSTEM_TOKEN } from '../../../models/api.models';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { FeatureFlagsService } from '../../../classes/services/FeatureFlagsService';
 import { I18nService } from '../../../classes/services/I18nService';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
-import { COMMON_QUERY_KEY } from '../../../constants/query';
-import { ApiService } from '../../../classes/services/ApiService';
+import { COMMON_QUERY_KEY } from '../../../constants/query.constants';
 
 
 export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWithChildren): ReactNode => {
@@ -34,7 +35,7 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
   const [isLanguageChanging, setIsLanguageChanging] = useState(false);
 
   useEffect(() => {
-    const i18nService = I18nService.getInstance();
+    const i18nService = rootContainer.resolve(I18nService);
     const callback = (code: string) => {
       newLanguageCodeRef.current = code;
       confirmationRef.current?.open();
@@ -48,20 +49,20 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
   const onLanguageChangeConfirm = useCallback(async () => {
     if (newLanguageCodeRef.current) {
       setIsLanguageChanging(true);
-      await I18nService.getInstance().switchLanguageConfig(newLanguageCodeRef.current);
+      await rootContainer.resolve(I18nService).switchLanguageConfig(newLanguageCodeRef.current);
       WindowService.getInstance().window.location.reload();
     }
   }, []);
 
   const featureFlagsQuery = useQueryMemo({
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await ApiService.getInstance().systemApi.retrieveFeatureFlags({ signal })).data,
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.FEATURE_FLAGS),
+    queryFn: async ({ signal }) => (await rootContainer.resolve(API_SYSTEM_TOKEN).retrieveFeatureFlags({ signal })).data,
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.FEATURE_FLAGS),
     staleTime: Infinity,
   });
 
   if (featureFlagsQuery.data) {
-    FeatureFlagsService.getInstance().featureFlags = featureFlagsQuery.data.feature_flags;
+    rootContainer.resolve(FeatureFlagsService).featureFlags = featureFlagsQuery.data.feature_flags;
   }
 
   const loadables = useArray([featureFlagsQuery]);

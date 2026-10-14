@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -20,9 +21,9 @@ import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';
-import type { AuthState } from '../../../models/auth';
+import { useConfig } from '../../../hooks/useConfig';
+import type { AuthState } from '../../../models/auth.models';
 import type { ConsentDialogRefMethods } from '../../ui/ConsentDialog';
 import { ConsentDialog } from '../../ui/ConsentDialog';
 import { PageContainer } from '../../ui/PageContainer';
@@ -30,17 +31,17 @@ import { PageContainer } from '../../ui/PageContainer';
 export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation();
   const auth = useAuth();
+  const config = useConfig();
   const consentDialogRef = useRef<ConsentDialogRefMethods>(null);
   const [hasGivenConsent, setHasGivenConsent] = useState<boolean>(
-    !ConfigService.getInstance().config.consentDialog?.getShouldShow(),
+    !config.consentDialog?.getShouldShow(),
   );
 
-  const oidcConfiguration = useSubscribable(AuthenticationService.getInstance());
-  const AfterLoginElement =
-    ConfigService.getInstance().config.login?.AfterLoginElement;
+  const oidcConfiguration = useSubscribable(rootContainer.resolve(AuthenticationService));
+  const AfterLoginElement = config.login?.AfterLoginElement;
 
   useEffect(() => {
-    AuthenticationService.getInstance().authContextProps = auth;
+    rootContainer.resolve(AuthenticationService).authContextProps = auth;
   }, [auth]);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   }, [auth.isAuthenticated, hasGivenConsent]);
 
   const onConsentDialogConsent = useCallback(() => {
-    LogService.getInstance().log([
+    rootContainer.resolve(LogService).log([
       {
         level: CommonDbLogLevel.INFO,
         topic: 'CONSENT',
@@ -85,7 +86,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   const onChangeLoginProviderButtonClick = useCallback(() => {
     AuthenticationService.clearStaleState();
-    AuthenticationService.getInstance().next(undefined);
+    rootContainer.resolve(AuthenticationService).next(undefined);
   }, []);
 
   const now = useMemo(() => new Date().getTime(), []);
@@ -142,7 +143,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   if (auth.error) {
     AuthenticationService.clearStaleState();
-    LogService.getInstance().log([
+    rootContainer.resolve(LogService).log([
       {
         detail: {
           error: auth.error,
@@ -173,9 +174,9 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
 
   if (!auth.isAuthenticated) {
     if (
-      AuthenticationService.getInstance().getUserManagerSettingsCreatedAt() &&
+      rootContainer.resolve(AuthenticationService).getUserManagerSettingsCreatedAt() &&
       now -
-        AuthenticationService.getInstance().getUserManagerSettingsCreatedAt() <
+        rootContainer.resolve(AuthenticationService).getUserManagerSettingsCreatedAt() <
         AuthenticationService.autoLoginSkew
     ) {
       login();
@@ -205,7 +206,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   return (
     <>
       {children}
-      {ConfigService.getInstance().config.consentDialog?.getShouldShow() && (
+      {config.consentDialog?.getShouldShow() && (
         <ConsentDialog
           onConsent={onConsentDialogConsent}
           ref={consentDialogRef}

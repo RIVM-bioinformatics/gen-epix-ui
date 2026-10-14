@@ -9,8 +9,8 @@ import type { TFunction } from 'i18next';
 import difference from 'lodash/difference';
 import sumBy from 'lodash/sumBy';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
-import type { OptionBase } from '@gen-epix/ui-core-form/models/form';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import type { OptionBase } from '@gen-epix/ui-core-form/models/form.models';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import {
   DEFAULT_FILTER_GROUP,
@@ -21,7 +21,7 @@ import { DateFilter } from '../../classes/filters/DateFilter';
 import { MultiSelectFilter } from '../../classes/filters/MultiSelectFilter';
 import { NumberRangeFilter } from '../../classes/filters/NumberRangeFilter';
 import { TextFilter } from '../../classes/filters/TextFilter';
-import type { Filters } from '../../models/filter';
+import type { Filters } from '../../models/filter.models';
 import type {
   GetTableCellRowComparatorProps,
   GetTableCellValueProps,
@@ -38,12 +38,12 @@ import type {
   TableColumnText,
   TableColumnVisualSettings,
   TableRowParams,
-} from '../../models/table';
+} from '../../models/table.models';
 import {
   FIXED_COLUMN_ID,
   TABLE_COLUMN_FROZEN,
-} from '../../models/table';
-import { ConfigService } from '../../classes/services/ConfigService';
+} from '../../models/table.models';
+import { resolveConfig } from '../../classes/containers/UiClientCommonContainer';
 
 export class TableUtil {
   public static areColumnVisualSettingsValid<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], columnVisualSettings: TableColumnVisualSettings[]): boolean {
@@ -103,7 +103,7 @@ export class TableUtil {
     tableColumnVisualSettingsCopy.forEach(setting => {
       const tableColumn = tableColumns.find(c => c.id === setting.id);
       if (tableColumn?.cellColorGetter) {
-        setting.widthPx = ConfigService.getInstance().config.table.CONDENSED_WIDTH_PX;
+        setting.widthPx = resolveConfig().table.CONDENSED_WIDTH_PX;
         setting.isVisible = true;
       }
     });

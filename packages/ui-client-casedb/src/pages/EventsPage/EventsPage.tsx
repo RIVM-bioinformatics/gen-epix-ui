@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -22,8 +23,7 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui-client-common/models/table';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+} from '@gen-epix/ui-client-common/models/table.models';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -42,9 +42,10 @@ import {
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { useInitializeTableStore } from '@gen-epix/ui-client-common/hooks/useInitializeTableStore';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import CollectionIcon from '../../assets/icons/CollectionIcon.svg?react';
 import type { CaseSetInfoDialogRefMethods } from '../../components/ui/CaseSetInfoDialog';
@@ -56,13 +57,14 @@ import { useCaseSetStatsMapQuery } from '../../dataHooks/useCaseSetStatsQuery';
 import { useCaseSetStatusOptionsQuery } from '../../dataHooks/useCaseSetStatusesQuery';
 import { useCaseTypeOptionsQuery } from '../../dataHooks/useCaseTypesQuery';
 import { CaseSetUtil } from '../../utils/CaseSetUtil';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 type Row = CaseDbCaseSet & CaseDbCaseStats;
 
 export const EventsPage = () => {
   const { t } = useTranslation();
+  const config = useConfig();
   const theme = useTheme();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseSetCategoryOptionsQuery = useCaseSetCategoryOptionsQuery();
@@ -72,16 +74,16 @@ export const EventsPage = () => {
 
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetsGetAll(null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
   const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
   const navigateToEvent = useCallback(async (row: CaseDbCaseSet) => {
-    await RouterService.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(row));
+    await rootContainer.resolve(RouterService).router.navigate(CaseSetUtil.createCaseSetLink(row));
   }, []);
 
   const showEventInformation = useCallback((row: CaseDbCaseSet) => {
@@ -171,7 +173,7 @@ export const EventsPage = () => {
     defaultSortByField: 'case_set_date',
     defaultSortDirection: 'desc',
     idSelectorCallback: (row) => row.id,
-    navigatorFunction: RouterService.getInstance().router.navigate,
+    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
     storageNamePostFix: 'caseSets',
     storageVersion: 3,
   }), []);
@@ -252,7 +254,7 @@ export const EventsPage = () => {
                 <Box
                   sx={{
                     height: '100%',
-                    paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                    paddingLeft: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH + 1),
                     width: '100%',
                   }}
                 >

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { Box } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 import {
@@ -12,7 +13,7 @@ import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/Respon
 import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
 
 import { DataService } from '../../../classes/services/DataService';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 
 export type CompletCaseTypeLoaderProps = PropsWithChildren<{
@@ -30,7 +31,7 @@ export const CompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseType
     itemId: caseTypeId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
+        return (await rootContainer.resolve(CaseDbCaseApi).completeCaseTypesGetOne(caseTypeId, { signal })).data;
       },
     },
   });
@@ -47,10 +48,10 @@ export const CompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseType
       const perform = async () => {
         try {
           await Promise.all([
-            DataService.getInstance().loadConcepts(abortController.signal),
-            DataService.getInstance().loadMissingRegions(completeCaseType, abortController.signal),
-            DataService.getInstance().loadTreeAlgorithms(completeCaseType, abortController.signal),
-            DataService.getInstance().loadOrganizations(abortController.signal),
+            rootContainer.resolve(DataService).loadConcepts(abortController.signal),
+            rootContainer.resolve(DataService).loadMissingRegions(completeCaseType, abortController.signal),
+            rootContainer.resolve(DataService).loadTreeAlgorithms(completeCaseType, abortController.signal),
+            rootContainer.resolve(DataService).loadOrganizations(abortController.signal),
           ]);
           setIsSideEffectLoading(false);
         } catch (error) {

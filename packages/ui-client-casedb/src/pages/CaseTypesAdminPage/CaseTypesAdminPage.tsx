@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -20,20 +21,20 @@ import {
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 import type { CrudPageSubPage } from '@gen-epix/ui-client-common/pages/CrudPage';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 type FormFields = CaseDbCaseTypeProps & OmitWithMetaData<CaseDbCaseType, 'disease' | 'etiological_agent' | 'props'>;
 
@@ -58,19 +59,19 @@ export const CaseTypesAdminPage = () => {
   }, []);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().caseTypesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseTypesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseType) => {
-    return await CaseDbCaseApi.getInstance().caseTypesDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbCaseApi).caseTypesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseType) => {
-    return (await CaseDbCaseApi.getInstance().caseTypesPutOne(item.id, getCaseTypeFromVariables(variables, item.id))).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseTypesPutOne(item.id, getCaseTypeFromVariables(variables, item.id))).data;
   }, [getCaseTypeFromVariables]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.getInstance().caseTypesPostOne(getCaseTypeFromVariables(variables))).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).caseTypesPostOne(getCaseTypeFromVariables(variables))).data;
   }, [getCaseTypeFromVariables]);
 
   const getName = useCallback((item: CaseDbCaseType) => {
@@ -227,7 +228,7 @@ export const CaseTypesAdminPage = () => {
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbCaseType>[]>(() => {
-    if (!AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.DimCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

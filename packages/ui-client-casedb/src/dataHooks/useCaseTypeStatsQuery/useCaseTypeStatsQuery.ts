@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type {
   CaseDbCaseStats,
@@ -7,15 +8,15 @@ import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 export const useCaseTypeStatsQuery = (options?: CaseDbRetrieveCaseTypeStatsRequestBody): UseQueryResult<CaseDbCaseStats[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats(options ?? {}, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseTypeStats(options ?? {}, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, options ?? {}),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, options ?? {}),
   });
 };

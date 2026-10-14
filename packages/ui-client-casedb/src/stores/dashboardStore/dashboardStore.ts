@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { createStore } from 'zustand';
 import { produce } from 'immer';
 import { t } from 'i18next';
@@ -16,7 +17,6 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import { AxiosUtil } from '@gen-epix/ui-client-common/utils/AxiosUtil';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import {
   createTableStoreActions,
   createTableStoreInitialState,
@@ -31,40 +31,42 @@ import type {
   TableStoreActions,
   TableStoreState,
 } from '@gen-epix/ui-client-common/stores/tableStore';
-import type { FilterValues } from '@gen-epix/ui-client-common/models/filter';
+import type { FilterValues } from '@gen-epix/ui-client-common/models/filter.models';
 import cloneDeep from 'lodash/cloneDeep';
 import { ObjectUtil } from '@gen-epix/ui-core/utils/ObjectUtil';
-import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree';
+import type { TreeNode } from '@gen-epix/ui-phylogenetic-tree/models/tree.models';
 import { NewickUtil } from '@gen-epix/ui-phylogenetic-tree/utils/NewickUtil';
 import { TreeUtil } from '@gen-epix/ui-phylogenetic-tree/utils/TreeUtil';
 
-import type { FindSimilarCasesResult } from '../../models/caseDb';
-import type { TreeWidgetDataPersistable } from '../../models/dashboard';
+import type { FindSimilarCasesResult } from '../../models/case-db.models';
+import type { TreeWidgetDataPersistable } from '../../models/dashboard.models';
 import type {
   StratifiableColumn,
   Stratification,
-} from '../../models/stratification';
-import { STRATIFICATION_MODE } from '../../models/stratification';
+} from '../../models/stratification.models';
+import { STRATIFICATION_MODE } from '../../models/stratification.models';
 import {
   SELECTION_FILTER_GROUP,
   TREE_FILTER_GROUP,
 } from '../../utils/CaseTypeUtil';
 import { FilterUtil } from '../../utils/FilterUtil';
-import type { CaseDbConfig } from '../../models/config';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import type { CaseDbConfig } from '../../models/config.models';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { SelectionFilter } from '../../classes/filters/SelectionFilter';
 import { TreeFilter } from '../../classes/filters/TreeFilter';
 import { StratificationUtil } from '../../utils/StratificationUtil';
-import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard.constants';
 
 export interface CreateDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;
   completeCaseType: CaseDbCompleteCaseType;
+  config: CaseDbConfig;
 }
 
 export type CreateDashboardStoreKwArgs = {
   caseSetId: string;
   completeCaseType: CaseDbCompleteCaseType;
+  config: CaseDbConfig;
 } & CreateTableStoreKwArgs<CaseDbCase, CaseDbCompleteCaseType>;
 
 export type DashboardStore = DashboardStoreActions & DashboardStoreState;
@@ -121,7 +123,7 @@ interface DashboardStoreState extends TableStoreState<CaseDbCase, CaseDbComplete
 }
 
 const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialStateKwArgs): DashboardStoreState => {
-  const { caseSetId, completeCaseType, ...createTableStoreInitialStateKwArgs } = kwArgs;
+  const { caseSetId, completeCaseType, config, ...createTableStoreInitialStateKwArgs } = kwArgs;
 
   return {
     ...createTableStoreInitialState<CaseDbCase, CaseDbCompleteCaseType>(createTableStoreInitialStateKwArgs),
@@ -138,17 +140,17 @@ const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialSta
     isMaxResultsExceeded: false,
     isMaxResultsExceededDismissed: false,
     newick: null,
-    numVisibleAttributesInSummary: ConfigService.getInstance<CaseDbConfig>().config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
+    numVisibleAttributesInSummary: config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
     stratification: null,
     stratifyableColumns: [],
     tree: null,
     treeAddresses: {},
     treeResponse: null,
-    widgetData: Object.entries(ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
+    widgetData: Object.entries(config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
       acc[widgetName] = cloneDeep(widgetConfig.dataDefaultValues);
       return acc;
     }, {} as { [key: string]: { [key: string]: unknown } }),
-    widgetDataPersistable: Object.entries(ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
+    widgetDataPersistable: Object.entries(config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
       acc[widgetName] = cloneDeep(widgetConfig.dataDefaultValues);
       return acc;
     }, {} as { [key: string]: { [key: string]: unknown } }),
@@ -156,7 +158,7 @@ const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialSta
 };
 
 export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
-  const { caseSetId, completeCaseType, ...createTableStoreKwArgs } = kwArgs;
+  const { caseSetId, completeCaseType, config, ...createTableStoreKwArgs } = kwArgs;
 
   const dashboardStore = createStore<DashboardStore>()(
     persist(
@@ -164,6 +166,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
         const initialState = createDashboardStoreInitialState({
           caseSetId,
           completeCaseType,
+          config,
           ...createTableStoreKwArgs,
         });
         const tableStoreActions = createTableStoreActions<CaseDbCase, CaseDbCompleteCaseType>({
@@ -190,7 +193,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
           fetchData: async () => {
             set({ dataError: null, isMaxResultsExceeded: false, isMaxResultsExceededDismissed: false });
             const { fetchAbortController: previousFetchAbortController, findSimilarCasesResults, globalAbortSignal } = get();
-            const queryClient = QueryClientService.getInstance().queryClient;
+            const queryClient = rootContainer.resolve(QueryClientService).queryClient;
 
             const similarCaseIds = findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [];
 
@@ -227,9 +230,9 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             const retrieveCaseIdsByQueryQueryKey = [CASEDB_QUERY_KEY.CASE_IDS_BY_QUERY, completeCaseType.id, JSON.stringify(caseQuery)];
 
             try {
-              let currentCaseIdsByQueryResponse = QueryClientService.getInstance().getValidQueryData<CaseDbCaseQueryResult>(retrieveCaseIdsByQueryQueryKey);
+              let currentCaseIdsByQueryResponse = rootContainer.resolve(QueryClientService).getValidQueryData<CaseDbCaseQueryResult>(retrieveCaseIdsByQueryQueryKey);
               if (!currentCaseIdsByQueryResponse) {
-                const retrieveCaseIdsByQueryResponse = (await CaseDbCaseApi.getInstance().retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
+                const retrieveCaseIdsByQueryResponse = (await rootContainer.resolve(CaseDbCaseApi).retrieveCaseIdsByQuery(caseQuery, { signal: fetchAbortController.signal })).data;
                 currentCaseIdsByQueryResponse = retrieveCaseIdsByQueryResponse;
                 queryClient.setQueryData(retrieveCaseIdsByQueryQueryKey, currentCaseIdsByQueryResponse);
               }
@@ -238,20 +241,20 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
               //        It's possible the user added similar cases to the current case_set after. Then the case will be included in the query AND the similar case result. So we need to make sure to only include unique case ids.
               const caseIds = uniq([...currentCaseIdsByQueryResponse.case_ids, ...similarCaseIds]);
 
-              const currentCases = QueryClientService.getInstance().getValidQueryData<CaseDbCase[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY));
+              const currentCases = rootContainer.resolve(QueryClientService).getValidQueryData<CaseDbCase[]>(rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY));
               const currentCaseIds = (currentCases ?? []).map(x => x.id);
               const missingCaseIds = difference(caseIds, currentCaseIds);
               if (missingCaseIds.length) {
-                const missingCasesResult = (await CaseDbCaseApi.getInstance().retrieveCasesByIds({
+                const missingCasesResult = (await rootContainer.resolve(CaseDbCaseApi).retrieveCasesByIds({
                   case_ids: missingCaseIds,
                   case_type_id: completeCaseType.id,
                 }, { signal: fetchAbortController.signal })).data;
-                queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY), [...currentCases ?? [], ...missingCasesResult]);
+                queryClient.setQueryData(rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY), [...currentCases ?? [], ...missingCasesResult]);
               }
 
-              const casesMap = new Map((QueryClientService.getInstance().getValidQueryData<CaseDbCase[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY)) ?? []).map(x => [x.id, x]));
+              const casesMap = new Map((rootContainer.resolve(QueryClientService).getValidQueryData<CaseDbCase[]>(rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY)) ?? []).map(x => [x.id, x]));
               casesMap.forEach((item) => {
-                queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY, item.id), item);
+                queryClient.setQueryData(rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY, item.id), item);
               });
               const cases = caseIds.map(id => casesMap.get(id));
 
@@ -274,9 +277,9 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             return widgetData as TData;
           },
           mutateCachedCase: (caseId: string, item: CaseDbCase) => {
-            const queryClient = QueryClientService.getInstance().queryClient;
-            const currentCases = QueryClientService.getInstance().getValidQueryData<CaseDbCase[]>(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY));
-            queryClient.setQueryData(QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY), currentCases.map(c => c.id === caseId ? item : c));
+            const queryClient = rootContainer.resolve(QueryClientService).queryClient;
+            const currentCases = rootContainer.resolve(QueryClientService).getValidQueryData<CaseDbCase[]>(rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY));
+            queryClient.setQueryData(rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASES_LAZY), currentCases.map(c => c.id === caseId ? item : c));
           },
           reloadFieldStratification: () => {
             const { stratification, stratify, stratifyableColumns } = get();
@@ -284,7 +287,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
               const activeStratifyableColumn = stratifyableColumns.find(c => c.col.ref_col_id === stratification.col.ref_col_id);
               if (!activeStratifyableColumn?.enabled) {
                 // column no longer stratifiable
-                NotificationService.getInstance().showNotification({
+                rootContainer.resolve(NotificationService).showNotification({
                   message: t`The grouping column is no longer available. Grouping has been removed.`,
                   severity: 'info',
                 });
@@ -378,7 +381,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             const treeFilter = prevFilters.find(filter => filter instanceof TreeFilter);
             const hadTreeFilter = !treeFilter.isInitialFilterValue(previousFilterValues[treeFilter.id]);
             if (hadTreeFilter && !filterValuesDiff.includes(treeFilter.id)) {
-              NotificationService.getInstance().showNotification({
+              rootContainer.resolve(NotificationService).showNotification({
                 message: t`The tree filter has automatically been removed, because it's incompatible with the results of the other filters.`,
                 severity: 'info',
               });
@@ -399,7 +402,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             const treeFilter = filters.find(filter => filter instanceof TreeFilter);
             const hasTreeFilter = !treeFilter.isInitialFilterValue(filterValues[treeFilter.id]);
             if (hasTreeFilter) {
-              NotificationService.getInstance().showNotification({
+              rootContainer.resolve(NotificationService).showNotification({
                 message: t`The tree filter has automatically been removed, because it's incompatible with the results of "Find Similar Cases".`,
                 severity: 'info',
               });

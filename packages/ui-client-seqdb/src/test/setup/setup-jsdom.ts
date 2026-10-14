@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
 import { setupSeqDb } from '../../setup/setup';
 import { SeqDbStandardConfigUtil } from '../../utils/SeqDbStandardConfigUtil';
@@ -9,11 +9,11 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 export const setupTestEnvironment = () => {
-  ConfigService.getInstance().config = {
+  const config = {
     ...SeqDbStandardConfigUtil.createConfig(),
     theme: createSeqDbDemoTheme('light'),
   };
-  setupSeqDb();
+  setupSeqDb(createUiClientCommonContainer(config));
 
   vi.setConfig({
     testTimeout: 10000,

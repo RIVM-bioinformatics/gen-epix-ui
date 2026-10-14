@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -5,13 +6,14 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 
 export const HomePageIntroduction = () => {
   const [t] = useTranslation();
+  const config = useConfig();
   const onExploreCasesButtonClick = useCallback(async () => {
-    await RouterService.getInstance().router.navigate('/cases');
+    await rootContainer.resolve(RouterService).router.navigate('/cases');
   }, []);
 
   return (
@@ -22,7 +24,7 @@ export const HomePageIntroduction = () => {
         }}
       >
         <Typography variant={'h1'}>
-          {t('Welcome to {{applicationName}}', { applicationName: ConfigService.getInstance().config.applicationName })}
+          {t('Welcome to {{applicationName}}', { applicationName: config.applicationName })}
         </Typography>
       </Box>
       <Box

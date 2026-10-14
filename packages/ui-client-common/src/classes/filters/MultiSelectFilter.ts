@@ -2,11 +2,11 @@ import intersection from 'lodash/intersection';
 import isArray from 'lodash/isArray';
 import isNumber from 'lodash/isNumber';
 import type { CommonDbStringSetFilter } from '@gen-epix/api-commondb';
-import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
+import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form.models';
 
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
-import type { Filter } from '../../models/filter';
+import type { Filter } from '../../models/filter.models';
 
 export interface MultiSelectFilterKwArgs extends FilterAbstractKwArgs {
   maxNumOptionsExpanded?: number;

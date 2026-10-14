@@ -1,25 +1,26 @@
+import { container as rootContainer } from 'tsyringe';
 import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbCaseStats } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { UseMap } from '@gen-epix/ui-client-common/models/dataHooks';
+import type { UseMap } from '@gen-epix/ui-client-common/models/data-hooks.models';
 import { DataHookUtil } from '@gen-epix/ui-client-common/utils/DataHookUtil';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 
 export const useCaseSetStatsQuery = (caseSetIds: string[]): UseQueryResult<CaseDbCaseStats[]> => {
   return useQueryMemo({
     enabled: !!caseSetIds?.length,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrieveCaseSetStats({
+      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseSetStats({
         case_set_ids: caseSetIds,
       }, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_STATS, caseSetIds),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_STATS, caseSetIds),
   });
 };
 

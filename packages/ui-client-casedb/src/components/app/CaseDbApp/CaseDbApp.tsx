@@ -1,14 +1,22 @@
 import { App } from '@gen-epix/ui-client-common/components/app/App';
+import type { UiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { useMemo } from 'react';
 
+import type { CaseDbConfig } from '../../../models/config.models';
 import { createUserProfileStore } from '../../../stores/userProfileStore';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
-export const CaseDbApp = () => {
-  const userProfileStore = useMemo(() => createUserProfileStore(), []);
+export type CaseDbAppProps = {
+  readonly container: UiClientCommonContainer;
+};
+
+export const CaseDbApp = ({ container }: CaseDbAppProps) => {
+  const config = resolveConfig<CaseDbConfig>(container);
+  const userProfileStore = useMemo(() => createUserProfileStore(config), [config]);
   return (
     <UserProfileStoreContext value={userProfileStore}>
-      <App />
+      <App container={container} />
     </UserProfileStoreContext>
   );
 };

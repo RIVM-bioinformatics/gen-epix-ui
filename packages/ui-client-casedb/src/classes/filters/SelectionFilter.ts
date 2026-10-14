@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import type { CommonDbFiltersInner } from '@gen-epix/api-commondb';
-import type { Filter } from '@gen-epix/ui-client-common/models/filter';
+import type { Filter } from '@gen-epix/ui-client-common/models/filter.models';
 import { FilterAbstract } from '@gen-epix/ui-client-common/classes/abstracts/FilterAbstract';
 
 

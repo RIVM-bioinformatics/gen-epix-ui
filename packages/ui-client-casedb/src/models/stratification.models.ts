@@ -3,7 +3,7 @@ import type {
   CaseDbColType,
 } from '@gen-epix/api-casedb';
 
-import type { CaseTypeRowValue } from './caseDb';
+import type { CaseTypeRowValue } from './case-db.models';
 
 export enum STRATIFICATION_MODE {
   FIELD = 'FIELD',

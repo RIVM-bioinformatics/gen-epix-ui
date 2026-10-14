@@ -3,15 +3,22 @@ import type {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
+import type {
+  CommonDbExternalLogItem,
+  CommonDbSystemApi,
+} from '@gen-epix/api-commondb';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
-import type { CommonDbExternalLogItem } from '@gen-epix/api-commondb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
 
+import { API_SYSTEM_TOKEN } from '../../../models/api.models';
 import { AuthenticationService } from '../AuthenticationService';
-import { ConfigService } from '../ConfigService';
-import { ApiService } from '../ApiService';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
+import { CONFIG_TOKEN } from '../../../constants/config.constants';
+import type { ConfigBase } from '../../../models/config.models';
 
 type LogServiceItem = {
   detail?: unknown;
@@ -20,24 +27,29 @@ type LogServiceItem = {
   topic: string;
 };
 
+@singleton()
 export class LogService {
-  private static __instance: LogService;
-
   protected readonly requestMap: Map<string, number>;
 
+  private readonly authenticationService: AuthenticationService;
+  private readonly config: Pick<ConfigBase, 'getSoftwareVersion' | 'log'>;
   private logItems: CommonDbExternalLogItem[] = [];
+  private readonly systemApi: CommonDbSystemApi;
 
-  private constructor() {
+  public constructor(
+    @inject(CONFIG_TOKEN) config: ConfigBase,
+    @inject(AuthenticationService) authenticationService: AuthenticationService,
+    @inject(API_SYSTEM_TOKEN) systemApi: CommonDbSystemApi,
+  ) {
     this.requestMap = new Map<string, number>();
+    this.config = config;
+    this.authenticationService = authenticationService;
+    this.systemApi = systemApi;
     setInterval(() => {
       this.sendLog();
-    }, ConfigService.getInstance().config.log.LOG_INTERVAL_MS);
+    }, config.log.LOG_INTERVAL_MS);
   }
 
-  public static getInstance(): LogService {
-    LogService.__instance = HmrUtil.getHmrSingleton('logService', LogService.__instance, () => new LogService());
-    return LogService.__instance;
-  }
 
   public flushLog(): void {
     this.sendLog();
@@ -45,7 +57,7 @@ export class LogService {
 
   public log(items: LogServiceItem[]): void {
     const timestamp = new Date().toISOString();
-    const software_version = ConfigService.getInstance().config.getSoftwareVersion();
+    const software_version = this.config.getSoftwareVersion();
     this.logItems.push(...items.map<CommonDbExternalLogItem>(item => {
       return {
         command_id: StringUtil.createUuid(),
@@ -132,13 +144,13 @@ export class LogService {
   }
 
   private sendLog(): void {
-    if (!this.logItems.length || !AuthenticationService.getInstance()?.authContextProps?.isAuthenticated) {
+    if (!this.logItems.length || !this.authenticationService?.authContextProps?.isAuthenticated) {
       return;
     }
     if (document.location.href.includes('accept-invitation')) {
       return;
     }
-    ApiService.getInstance().systemApi.log({
+    this.systemApi.log({
       log_items: this.logItems,
     }, {
       headers: {

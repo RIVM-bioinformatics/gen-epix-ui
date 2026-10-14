@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -19,20 +20,20 @@ import {
   CaseDbUnit,
 } from '@gen-epix/api-casedb';
 import type { CrudPageSubPage } from '@gen-epix/ui-client-common/pages/CrudPage';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { UseFormReturn } from 'react-hook-form';
 
 import { useUnitOptionsQuery } from '../../dataHooks/useUnitQuery/useUnit';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { useConceptSetTypeOptionsQuery } from '../../dataHooks/useConceptSetTypeQuery';
 
 
@@ -46,19 +47,19 @@ export const ConceptSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().conceptSetsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbConceptSet) => {
-    return await CaseDbOntologyApi.getInstance().conceptSetsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbOntologyApi).conceptSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbConceptSet) => {
-    return (await CaseDbOntologyApi.getInstance().conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOntologyApi.getInstance().conceptSetsPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbConceptSet) => {
@@ -130,7 +131,7 @@ export const ConceptSetsAdminPage = () => {
   }, [conceptSetTypeOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbConceptSet>[]>(() => {
-    if (!AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.ConceptCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

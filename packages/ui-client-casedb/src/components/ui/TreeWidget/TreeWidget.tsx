@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -25,8 +26,8 @@ import { useStore } from 'zustand';
 import { useDebouncedCallback } from 'use-debounce';
 import type { CaseDbRetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
@@ -44,8 +45,8 @@ import type {
   TreeConfiguration,
   TreeWidgetData,
   TreeWidgetDataPersistable,
-} from '../../../models/dashboard';
-import type { Highlighting } from '../../../models/caseDb';
+} from '../../../models/dashboard.models';
+import type { Highlighting } from '../../../models/case-db.models';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { SELECTION_FILTER_GROUP } from '../../../utils/CaseTypeUtil';
 import { CaseDbDownloadUtil } from '../../../utils/CaseDbDownloadUtil';
@@ -54,11 +55,11 @@ import type { ContextMenuConfigWithPosition } from '../ContextMenu';
 import { ContextMenu } from '../ContextMenu';
 import { TreeDescription } from '../TreeDescription';
 import { WidgetUnavailable } from '../WidgetUnavailable';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
-import type { CaseDbConfig } from '../../../models/config';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { TreeFilter } from '../../../classes/filters/TreeFilter';
 import { DashboardWidget } from '../Dashboard';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
@@ -70,7 +71,8 @@ type ZoomInMenuItemConfig = {
 export const TreeWidget = () => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const treeConfig = ConfigService.getInstance<CaseDbConfig>().config.tree;
+  const config = useConfig<CaseDbConfig>();
+  const treeConfig = config.tree;
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [isTreeLinked, setIsTreeLinked] = useState(true);
   const treeRef = useRef<PhylogeneticTreeRef>(null);
@@ -175,7 +177,7 @@ export const TreeWidget = () => {
   const { data: treeData, error: treeError, isLoading: isTreeLoading } = useQueryMemo({
     enabled: hasEnoughSequencesToShowTree && !!treeConfiguration && !hasToManyResultsToShowTree,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
       return response.data;
     },
     queryKey: [CASEDB_QUERY_KEY.PHYLOGENETIC_TREE, JSON.stringify(retrievePhylogeneticTreeRequestBody)],
@@ -184,7 +186,7 @@ export const TreeWidget = () => {
   });
 
   const onOpenFiltersButtonClick = useCallback(() => {
-    EventBusService.getInstance().emit('openFiltersMenu');
+    rootContainer.resolve(EventBusService).emit('openFiltersMenu');
   }, []);
 
   const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreeLoading));
@@ -255,10 +257,10 @@ export const TreeWidget = () => {
       treeRef.current?.unlink({
         positionX: 0,
         positionY: 0,
-        zoomLevel: ConfigService.getInstance<CaseDbConfig>().config.tree.INITIAL_UNLINKED_ZOOM_LEVEL,
+        zoomLevel: config.tree.INITIAL_UNLINKED_ZOOM_LEVEL,
       });
     }
-  }, [isTreeLinked, shouldShowTree, sortByField]);
+  }, [config.tree.INITIAL_UNLINKED_ZOOM_LEVEL, isTreeLinked, shouldShowTree, sortByField]);
 
   const updateEpiTreeWidgetDataDebounced = useDebouncedCallback((viewState: PhylogeneticTreeViewState) => {
     updateWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE, {
@@ -356,7 +358,7 @@ export const TreeWidget = () => {
   }, []);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
-    EventBusService.getInstance().emit('openCaseInfoDialog', {
+    rootContainer.resolve(EventBusService).emit('openCaseInfoDialog', {
       caseId: baseData.find(c => c.id === extraLeafInfoId).id,
       caseTypeId: completeCaseType.id,
     });
@@ -405,23 +407,23 @@ export const TreeWidget = () => {
 
     const menu: MenuItemData = {
       disabled: !treeConfiguration,
-      items: treeConfigurations?.map<MenuItemData>(config => ({
-        active: !!treeConfiguration && treeConfiguration.computedId === config.computedId,
+      items: treeConfigurations?.map<MenuItemData>(treeConfigurationConfig => ({
+        active: !!treeConfiguration && treeConfiguration.computedId === treeConfigurationConfig.computedId,
         callback: () => {
           const perform = async () => {
             await removeTreeFilter();
             updateWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE, {
-              treeConfiguration: config,
+              treeConfiguration: treeConfigurationConfig,
             });
-            setTreeConfiguration(config);
+            setTreeConfiguration(treeConfigurationConfig);
           };
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           perform();
         },
-        label: TreeWidgetUtil.getTreeConfigurationLabel(config),
+        label: TreeWidgetUtil.getTreeConfigurationLabel(treeConfigurationConfig),
         tooltip: (
           <TreeDescription
-            treeConfiguration={config}
+            treeConfiguration={treeConfigurationConfig}
           />
         ),
       })) ?? [],
@@ -474,7 +476,7 @@ export const TreeWidget = () => {
           treeAlgorithm: treeConfiguration?.treeAlgorithm.name ?? '',
         });
 
-      EventBusService.getInstance().emit('onDownloadOptionsChanged', {
+      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         disabled: isTreeUnavailable,
         items: [
           {
@@ -497,7 +499,7 @@ export const TreeWidget = () => {
 
 
     emitDownloadOptions();
-    const eventBusService = EventBusService.getInstance();
+    const eventBusService = rootContainer.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
 
     return () => {
@@ -513,7 +515,7 @@ export const TreeWidget = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
-    const removeEventListener = EventBusService.getInstance().addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
+    const removeEventListener = rootContainer.resolve(EventBusService).addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
     return () => {
       removeEventListener();
     };
@@ -585,7 +587,7 @@ export const TreeWidget = () => {
         {(isLoading && !isTreeUnavailable) && (
           <Spinner
             label={t`Loading`}
-            takingLongerTimeoutMs={ConfigService.getInstance<CaseDbConfig>().config.tree.TAKING_LONGER_TIMEOUT_MS}
+            takingLongerTimeoutMs={config.tree.TAKING_LONGER_TIMEOUT_MS}
           />
         )}
         {!isTreeUnavailable && shouldShowTree && (
@@ -598,7 +600,7 @@ export const TreeWidget = () => {
             headerHeight={treeConfig.HEADER_HEIGHT}
             highlightedNodeNamesSubject={phylogeneticTreeHighlightedNodeNamesSubject}
             initialViewState={initialTreeViewState}
-            itemHeight={ConfigService.getInstance<CaseDbConfig>().config.lineList.TABLE_ROW_HEIGHT}
+            itemHeight={config.lineList.TABLE_ROW_HEIGHT}
             leafDotRadius={treeConfig.LEAF_DOT_RADIUS}
             linkedScrollDebounceDelayMs={treeConfig.LINKED_SCROLL_DEBOUNCE_DELAY_MS}
             maxScaleWidthPx={treeConfig.MAX_SCALE_WIDTH_PX}

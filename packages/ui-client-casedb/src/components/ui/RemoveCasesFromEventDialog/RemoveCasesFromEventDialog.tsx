@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { Box } from '@mui/material';
 import {
   use,
@@ -30,7 +31,7 @@ import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 export interface RemoveCasesFromEventDialogOpenProps {
   caseSet: CaseDbCaseSet;
@@ -81,10 +82,10 @@ export const RemoveCasesFromEventDialog = withDialog<RemoveCasesFromEventDialogP
 
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const onSuccess = useCallback(async () => {
@@ -99,14 +100,14 @@ export const RemoveCasesFromEventDialog = withDialog<RemoveCasesFromEventDialogP
   }, [fetchData, onClose]);
 
   const { isMutating, mutate } = useDeleteMutation<CaseDbCaseSetMember[]>({
-    associationQueryKeys: QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
+    associationQueryKeys: rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
     getErrorNotificationMessage: () => t('Could not remove all cases from {{eventName}}.', { eventName: openProps.caseSet.name }),
     getProgressNotificationMessage: (items) => t('Removing {{numCases}} case(s) from {{eventName}}...', { eventName: openProps.caseSet.name, numCases: items.length }),
     getSuccessNotificationMessage: (items) => t('Successfully removed {{numCases}} case(s) from {{eventName}}.', { eventName: openProps.caseSet.name, numCases: items.length }),
     onError,
     onSuccess,
     queryFn: async (items: CaseDbCaseSetMember[]) => {
-      await CaseDbCaseApi.getInstance().caseSetMembersDeleteSome(items.map(item => item.id).join(','));
+      await rootContainer.resolve(CaseDbCaseApi).caseSetMembersDeleteSome(items.map(item => item.id).join(','));
     },
   });
 

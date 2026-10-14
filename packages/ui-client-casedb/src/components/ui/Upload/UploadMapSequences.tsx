@@ -24,7 +24,7 @@ import type {
 import type {
   TableColumn,
   TableRowParams,
-} from '@gen-epix/ui-client-common/models/table';
+} from '@gen-epix/ui-client-common/models/table.models';
 import {
   createTableStore,
   TableStoreContextProvider,

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { Theme } from '@mui/material';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
@@ -6,26 +7,26 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { t } from 'i18next';
 import type { Range } from 'colorjs.io';
 
 import { DataService } from '../../classes/services/DataService';
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseDbConfig } from '../../models/config.models';
 import type {
   CaseTypeRowValue,
   ConceptBoundaryProps,
-} from '../../models/caseDb';
+} from '../../models/case-db.models';
 import type {
   StratifiableColumn,
   Stratification,
   StratificationLegendaItem,
-} from '../../models/stratification';
+} from '../../models/stratification.models';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SELECTED,
   STRATIFICATION_SIMILAR_CASE,
-} from '../../models/stratification';
+} from '../../models/stratification.models';
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
 import { CaseDbDataUtil } from '../CaseDbDataUtil';
@@ -83,7 +84,7 @@ export class StratificationUtil {
     },
   ): StratifiableColumn[] {
     const { completeCaseType, data } = kwArgs;
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
 
     const filteredCols = CaseTypeUtil.getCols(completeCaseType).filter(col => {
       const column = completeCaseType.ref_cols[col.ref_col_id];
@@ -108,7 +109,7 @@ export class StratificationUtil {
       useExtraGradients?: boolean;
     },
   ): Stratification {
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
     const { col, completeCaseType, sortedData, useExtraGradients } = kwArgs;
     if (!col) {
       return null;
@@ -145,9 +146,9 @@ export class StratificationUtil {
           gradient = STRATIFICATION.BASE_UNORDERED_GRADIENT;
         }
       }
-      const conceptSetConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+      const conceptSetConceptIds = rootContainer.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
       if (conceptSetConceptIds?.length) {
-        const concepts = conceptSetConceptIds.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort(CaseDbDataUtil.conceptComparator);
+        const concepts = conceptSetConceptIds.map(conceptId => rootContainer.resolve(DataService).data.conceptsById[conceptId]).sort(CaseDbDataUtil.conceptComparator);
         if (concepts.every(concept => StratificationUtil.isEpiConceptBoundaryProps(concept.props))) {
           const boundaryProps = concepts.map(concept => concept.props as ConceptBoundaryProps);
           const finiteLbs = boundaryProps.map(bp => bp.lb).filter(v => isFinite(v));
@@ -223,7 +224,7 @@ export class StratificationUtil {
       sortedData: CaseDbCase[];
     },
   ): Stratification {
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
     const { selectedIds, sortedData } = kwArgs;
     const caseIdColors: { [key: string]: string } = {};
     const legendaItems: StratificationLegendaItem[] = [];
@@ -273,7 +274,7 @@ export class StratificationUtil {
       sortedData: CaseDbCase[];
     },
   ): Stratification {
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
     const { similarCaseIds, sortedData } = kwArgs;
     const caseIdColors: { [key: string]: string } = {};
     const legendaItems: StratificationLegendaItem[] = [];
@@ -324,14 +325,14 @@ export class StratificationUtil {
       sortedData: CaseDbCase[];
     },
   ): CaseTypeRowValue[] {
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
     const { col, completeCaseType, sortedData } = kwArgs;
     const refCol = completeCaseType.ref_cols[col.ref_col_id];
-    const conceptSetConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+    const conceptSetConceptIds = rootContainer.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
 
     if (conceptSetConceptIds) {
       const uniqueRowValues: CaseTypeRowValue[] = [];
-      conceptSetConceptIds.map(conceptId => DataService.getInstance().data.conceptsById[conceptId]).sort((a, b) => {
+      conceptSetConceptIds.map(conceptId => rootContainer.resolve(DataService).data.conceptsById[conceptId]).sort((a, b) => {
         if (STRATIFICATION.GRADIENT_COL_TYPES.includes(refCol.col_type) && a.rank !== b.rank) {
           return a.rank - b.rank;
         }

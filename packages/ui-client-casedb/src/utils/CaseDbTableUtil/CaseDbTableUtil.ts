@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type {
   CaseDbCase,
   CaseDbCol,
@@ -9,7 +10,7 @@ import type {
   GetTableCellValueProps,
   TableColumn,
   TableColumnText,
-} from '@gen-epix/ui-client-common/models/table';
+} from '@gen-epix/ui-client-common/models/table.models';
 
 import { DataService } from '../../classes/services/DataService';
 import { CaseUtil } from '../CaseUtil';
@@ -36,7 +37,7 @@ export class CaseDbTableUtil {
       }
 
       if (refCol.col_type === CaseDbColType.ORDINAL) {
-        const conceptSetConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+        const conceptSetConceptIds = rootContainer.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
         return (conceptSetConceptIds.indexOf(aValue.raw) - conceptSetConceptIds.indexOf(bValue.raw)) * directionMultiplier;
       }
 

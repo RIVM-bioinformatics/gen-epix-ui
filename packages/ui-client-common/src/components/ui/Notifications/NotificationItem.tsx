@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { TimeUtil } from '../../../utils/TimeUtil';
-import type { Notification } from '../../../models/notification';
+import type { Notification } from '../../../models/notification.models';
 
 export type NotificationItemProps = {
   readonly allowClose: boolean;

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { TFunction } from 'i18next';
 import { format } from 'date-fns';
 import type { ECharts } from 'echarts';
@@ -12,17 +13,18 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { LogService } from '@gen-epix/ui-client-common/classes/services/LogService';
 import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
+import type { CaseDbConfig } from '../../models/config.models';
 
 export class CaseDbDownloadUtil {
   public static downloadAsCsv(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
@@ -84,13 +86,13 @@ export class CaseDbDownloadUtil {
   }
 
   public static async downloadExcelTemplate(caseTypeId: string, t: TFunction<'translation', undefined>): Promise<void> {
-    const queryClient = QueryClientService.getInstance().queryClient;
+    const queryClient = rootContainer.resolve(QueryClientService).queryClient;
     try {
       const completeCaseType = await queryClient.fetchQuery({
         queryFn: async ({ signal }) => {
-          return (await CaseDbCaseApi.getInstance().completeCaseTypesGetOne(caseTypeId, { signal })).data;
+          return (await rootContainer.resolve(CaseDbCaseApi).completeCaseTypesGetOne(caseTypeId, { signal })).data;
         },
-        queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
+        queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
       });
 
       const headers = CaseDbDownloadUtil.getColumnHeadersForImport(
@@ -115,7 +117,7 @@ export class CaseDbDownloadUtil {
       const base64 = DownloadUtil.arrayBufferToBase64(arrayBuffer);
       DownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
     } catch (error) {
-      LogService.getInstance().log([{
+      rootContainer.resolve(LogService).log([{
         detail: {
           error,
           stack: (error as Error)?.stack,
@@ -123,7 +125,7 @@ export class CaseDbDownloadUtil {
         level: CaseDbLogLevel.ERROR,
         topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
       }]);
-      NotificationService.getInstance().showNotification({
+      rootContainer.resolve(NotificationService).showNotification({
         message: t('Excel template could not be created'),
         severity: 'error',
       });
@@ -137,7 +139,7 @@ export class CaseDbDownloadUtil {
 
   public static getExportFileName(baseName: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): string {
     return t('{{date}}--{{applicationName}}--{{caseTypeName}}--{{baseName}}', {
-      applicationName: StringUtil.createSlug(ConfigService.getInstance().config.applicationName),
+      applicationName: StringUtil.createSlug(resolveConfig<CaseDbConfig>().applicationName),
       baseName: StringUtil.createSlug(baseName),
       caseTypeName: StringUtil.createSlug(completeCaseType.name),
       date: format(new Date(), DATE_FORMAT.DATE),
@@ -145,7 +147,7 @@ export class CaseDbDownloadUtil {
   }
 
   public static getTemplateFileName(completeCaseType: CaseDbCompleteCaseType): string {
-    return `${StringUtil.createSlug(ConfigService.getInstance().config.applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
+    return `${StringUtil.createSlug(resolveConfig<CaseDbConfig>().applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
   }
 
   private static getColsForImportExport(colIds: string[], completeCaseType: CaseDbCompleteCaseType): CaseDbCol[] {

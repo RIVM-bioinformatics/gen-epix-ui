@@ -11,9 +11,9 @@ import {
   useMemo,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 
-import type { HasCellDataFn } from '../../models/table';
+import type { HasCellDataFn } from '../../models/table.models';
 import { useTableStoreContext } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import {
@@ -13,7 +14,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 
 import { Dashboard } from '../../components/ui/Dashboard';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { useCaseTypeMapQuery } from '../../dataHooks/useCaseTypesQuery';
 
 export const EventsDetailPage = () => {
@@ -27,7 +28,7 @@ export const EventsDetailPage = () => {
     baseQueryKey: CASEDB_QUERY_KEY.CASE_SETS,
     itemId: caseSetId,
     useQueryOptions: {
-      queryFn: async ({ signal }) => (await CaseDbCaseApi.getInstance().caseSetsGetOne(caseSetId, { signal })).data,
+      queryFn: async ({ signal }) => (await rootContainer.resolve(CaseDbCaseApi).caseSetsGetOne(caseSetId, { signal })).data,
     },
   });
 

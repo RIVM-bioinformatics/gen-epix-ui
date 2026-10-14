@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -16,21 +17,21 @@ import {
   CaseDbAbacApi,
   CaseDbCommandName,
 } from '@gen-epix/api-casedb';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { useOrganizationOptionsQuery } from '@gen-epix/ui-client-common/dataHooks/useOrganizationsQuery';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import type { UseFormReturn } from 'react-hook-form';
 
 import { useColSetOptionsQuery } from '../../dataHooks/useColSetsQuery';
 import { useCaseTypeSetOptionsQuery } from '../../dataHooks/useCaseTypeSetsQuery';
 import { useDataCollectionOptionsQuery } from '../../dataHooks/useDataCollectionsQuery';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { useOrganizationCasePolicyNameFactory } from '../../hooks/useOrganizationCasePolicyNameFactory';
 
 type FormFields = OmitWithMetaData<CaseDbOrganizationAccessCasePolicy, 'case_type_set' | 'data_collection' | 'organization' | 'read_col_set' | 'write_col_set'>;
@@ -47,19 +48,19 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbAbacApi).organizationAccessCasePoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbOrganizationAccessCasePolicy) => {
-    return await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbAbacApi).organizationAccessCasePoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganizationAccessCasePolicy) => {
-    return (await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbAbacApi).organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbAbacApi.getInstance().organizationAccessCasePoliciesPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbAbacApi).organizationAccessCasePoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbOrganizationAccessCasePolicy) => {

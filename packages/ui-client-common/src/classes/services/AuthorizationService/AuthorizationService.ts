@@ -2,14 +2,16 @@ import type {
   CommonDbApiPermission,
   CommonDbUser,
 } from '@gen-epix/api-commondb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
 
-import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import type { MyNonIndexRouteObject } from '../../../models/react-router.models';
 import { PageEventBusService } from '../PageEventBusService';
 
+@singleton()
 export class AuthorizationService {
-  private static __instance: AuthorizationService;
-
   public set apiPermissions(permissions: CommonDbApiPermission[]) {
     this.__apiPermissions = permissions;
   }
@@ -19,7 +21,7 @@ export class AuthorizationService {
   }
 
   public set user(user: CommonDbUser) {
-    PageEventBusService.getInstance().emit('changeUser', user);
+    this.pageEventBusService.emit('changeUser', user);
     this.__user = user;
   }
 
@@ -31,15 +33,12 @@ export class AuthorizationService {
 
   private __user: CommonDbUser;
 
-  private constructor() {
-    //
+  private readonly pageEventBusService: PageEventBusService;
+
+  public constructor(@inject(PageEventBusService) pageEventBusService: PageEventBusService) {
+    this.pageEventBusService = pageEventBusService;
   }
 
-
-  public static getInstance(): AuthorizationService {
-    AuthorizationService.__instance = HmrUtil.getHmrSingleton('authorizationService', AuthorizationService.__instance, () => new AuthorizationService());
-    return AuthorizationService.__instance;
-  }
 
   public doesUserHavePermission<TApiPermission = CommonDbApiPermission>(permissions: NoInfer<TApiPermission>[]): boolean {
     if (!permissions?.length) {

@@ -4,7 +4,7 @@ import {
   it,
 } from 'vitest';
 
-import type { FindSimilarCasesChartDataPoint } from '../../models/caseDb';
+import type { FindSimilarCasesChartDataPoint } from '../../models/case-db.models';
 
 import { FindSimilarCasesUtil } from './FindSimilarCasesUtil';
 

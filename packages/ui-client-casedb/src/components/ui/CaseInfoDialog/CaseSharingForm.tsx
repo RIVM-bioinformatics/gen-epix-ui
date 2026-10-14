@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -24,12 +25,12 @@ import { NotificationService } from '@gen-epix/ui-client-common/classes/services
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 
 import { useCaseAbacContext } from '../../../context/caseAbac';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 export type CaseSharingFormProps = {
   readonly caseDbCase: CaseDbCase;
@@ -79,32 +80,32 @@ export const CaseSharingForm = ({ caseDbCase, formId, onFinish, onIsSavingChange
     const perform = async () => {
       setIsSaving(true);
       onIsSavingChange(true);
-      const queryKeys = QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
-      const notificationKey = NotificationService.getInstance().showNotification({
+      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS], true);
+      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t('Saving case data collections'),
         severity: 'info',
       });
       try {
-        await QueryClientService.getInstance().cancelQueries(queryKeys);
+        await rootContainer.resolve(QueryClientService).cancelQueries(queryKeys);
         const rights = caseAbacContext?.rights?.[0];
         const dataCollectionIdsToAdd = difference(dataCollectionIds, rights.shared_in_data_collection_ids);
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
 
         if (dataCollectionIdsToAdd.length > 0) {
-          await CaseDbCaseApi.getInstance().caseDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
+          await rootContainer.resolve(CaseDbCaseApi).caseDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
             case_id: caseDbCase.id,
             data_collection_id,
           })));
         }
         if (dataCollectionIdsToRemove.length > 0) {
-          await CaseDbCaseApi.getInstance().caseDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
+          await rootContainer.resolve(CaseDbCaseApi).caseDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
         }
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data collections.'), 'success');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Successfully saved case data collections.'), 'success');
       } catch (_error) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Could not save case data collections.'), 'error');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Could not save case data collections.'), 'error');
       } finally {
-        await QueryClientService.getInstance().invalidateQueryKeys(queryKeys);
+        await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

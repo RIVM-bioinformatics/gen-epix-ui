@@ -14,7 +14,7 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import type { GenericData } from '../../models/data';
+import type { GenericData } from '../../models/data.models';
 
 
 export interface CrudPageDeleteDialogOpenProps<TData extends GenericData> {

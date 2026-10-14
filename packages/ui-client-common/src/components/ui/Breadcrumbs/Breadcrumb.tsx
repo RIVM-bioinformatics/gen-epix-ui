@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Link,
   Typography,
@@ -15,7 +16,7 @@ import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 
 import { BreadcrumbService } from '../../../classes/services/BreadcrumbService';
 import { RouterService } from '../../../classes/services/RouterService';
-import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import type { MyNonIndexRouteObject } from '../../../models/react-router.models';
 
 type BreadcrumbProps = {
   readonly isLast: boolean;
@@ -23,7 +24,7 @@ type BreadcrumbProps = {
 };
 
 export const Breadcrumb = ({ isLast, item }: BreadcrumbProps): ReactElement => {
-  const breadcrumbsTitles = useSubscribable(BreadcrumbService.getInstance());
+  const breadcrumbsTitles = useSubscribable(rootContainer.resolve(BreadcrumbService));
 
   const title = useMemo(() => {
     if (breadcrumbsTitles[item.handle.title]) {
@@ -34,7 +35,7 @@ export const Breadcrumb = ({ isLast, item }: BreadcrumbProps): ReactElement => {
 
   const onLinkClick = useCallback(async (event: ReactMouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    await RouterService.getInstance().router.navigate(item.pathname);
+    await rootContainer.resolve(RouterService).router.navigate(item.pathname);
   }, [item.pathname]);
 
   if (!isLast) {

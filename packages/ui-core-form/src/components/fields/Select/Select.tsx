@@ -33,7 +33,7 @@ import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import type { SelectOption } from '../../../models/form';
+import type { SelectOption } from '../../../models/form.models';
 import { FormUtil } from '../../../utils/FormUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';

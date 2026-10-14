@@ -6,7 +6,7 @@ import type {
   UseMap,
   UseNameFactory,
   UseOptions,
-} from '../../models/dataHooks';
+} from '../../models/data-hooks.models';
 import { LoadableUtil } from '../LoadableUtil';
 
 export class DataHookUtil {

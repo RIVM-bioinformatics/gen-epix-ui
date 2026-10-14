@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { EChartsOption } from 'echarts';
 import type { CallbackDataParams } from 'echarts/types/dist/shared';
 import type {
@@ -8,13 +9,13 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { Theme } from '@mui/material';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
 import { DataService } from '../../classes/services/DataService';
-import type { CaseDbConfig } from '../../models/config';
+import type { CaseDbConfig } from '../../models/config.models';
 import { CaseUtil } from '../CaseUtil';
 import { StratificationUtil } from '../StratificationUtil';
-import { STRATIFICATION_MODE } from '../../models/stratification';
+import { STRATIFICATION_MODE } from '../../models/stratification.models';
 import { CaseDbDataUtil } from '../CaseDbDataUtil';
 
 export type GetChartOptionsParams = {
@@ -68,7 +69,7 @@ export class HistogramUtil {
       return [];
     }
     const { MAX_ALLOWED_UNIQUE_VALUES } =
-      ConfigService.getInstance<CaseDbConfig>().config.epi.STRATIFICATION;
+      resolveConfig<CaseDbConfig>().epi.STRATIFICATION;
     return completeCaseType.ordered_col_ids.reduce<CaseDbCol[]>((acc, colId) => {
       const col = completeCaseType.cols[colId];
       const refCol = completeCaseType.ref_cols[col.ref_col_id];
@@ -243,10 +244,10 @@ export class HistogramUtil {
   ): CaseDbConcept[] {
     const refCol = completeCaseType.ref_cols[col.ref_col_id ?? ''];
     const conceptIds =
-      DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];
+      rootContainer.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
     return (
       conceptIds
-        ?.map(conceptId => DataService.getInstance().data.conceptsById[conceptId])
+        ?.map(conceptId => rootContainer.resolve(DataService).data.conceptsById[conceptId])
         .sort(CaseDbDataUtil.conceptComparator) ?? []
     );
   }

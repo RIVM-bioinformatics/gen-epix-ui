@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Alert,
   AlertTitle,
@@ -18,8 +19,8 @@ import { useShallow } from 'zustand/shallow';
 import InfoIcon from '@mui/icons-material/Info';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui-client-common/components/epi/EpiContactDetailsDialog';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { EpiContactDetailsDialog } from '@gen-epix/ui-client-common/components/epi/EpiContactDetailsDialog';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -52,7 +53,7 @@ import type { FindSimilarCasesDialogRefMethods } from '../FindSimilarCasesDialog
 import { RemoveFindSimilarCasesResultDialog } from '../RemoveFindSimilarCasesResultDialog/RemoveFindSimilarCasesResultDialog';
 import type { RemoveFindSimilarCasesResultDialogRefMethods } from '../RemoveFindSimilarCasesResultDialog/RemoveFindSimilarCasesResultDialog';
 import { EventBusService } from '../../../classes/services/EventBusService';
-import type { CaseDbConfig } from '../../../models/config';
+import type { CaseDbConfig } from '../../../models/config.models';
 
 import {
   DashboardSettingsSidebarItem,
@@ -73,6 +74,7 @@ type DashboardProps = {
 export const DashboardContent = ({ caseSet }: DashboardProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const config = useConfig<CaseDbConfig>();
   const dashboardLayoutRendererRef = useRef<ForwardRefDashboardLayoutRendererRefMethods>(null);
   const caseSetInfoDialogRef = useRef<CaseSetInfoDialogRefMethods>(null);
   const caseTypeInfoDialogRef = useRef<CaseTypeInfoDialogRefMethods>(null);
@@ -99,7 +101,7 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
   }, [dashboardStore]);
 
   useEffect(() => {
-    const eventBus = EventBusService.getInstance();
+    const eventBus = rootContainer.resolve(EventBusService);
     const removers = [
       // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('onEventCreated', () => {
@@ -190,7 +192,7 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
     return !!isMaxResultsExceeded && !isMaxResultsExceededDismissed;
   }, [isMaxResultsExceededDismissed, isMaxResultsExceeded]);
 
-  const InjectedDashboardComponent = ConfigService.getInstance<CaseDbConfig>().config.dashboard.DASHBOARD_INJECTED_COMPONENT;
+  const InjectedDashboardComponent = config.dashboard.DASHBOARD_INJECTED_COMPONENT;
 
   return (
     <>
@@ -258,7 +260,7 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
           display: 'grid',
           gridTemplateRows: `${shouldShowMaxResultsExceededAlert ? 'max-content ' : ''}max-content auto`,
           height: '100%',
-          paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+          paddingLeft: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH + 1),
           width: '100%',
         }}
       >

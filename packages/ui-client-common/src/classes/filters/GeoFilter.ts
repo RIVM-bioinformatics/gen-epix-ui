@@ -1,8 +1,8 @@
 import isArray from 'lodash/isArray';
 import type { CommonDbStringSetFilter } from '@gen-epix/api-commondb';
-import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form';
+import type { AutoCompleteOption } from '@gen-epix/ui-core-form/models/form.models';
 
-import type { Filter } from '../../models/filter';
+import type { Filter } from '../../models/filter.models';
 import type { FilterAbstractKwArgs } from '../abstracts/FilterAbstract';
 import { FilterAbstract } from '../abstracts/FilterAbstract';
 

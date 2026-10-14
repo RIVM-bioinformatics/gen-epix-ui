@@ -51,7 +51,7 @@ import {
 } from 'date-fns/locale';
 import isEqual from 'lodash/isEqual';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import { FormUtil } from '../../../utils/FormUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';

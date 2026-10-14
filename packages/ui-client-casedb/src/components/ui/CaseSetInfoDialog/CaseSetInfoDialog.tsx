@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type { ReactElement } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
@@ -45,7 +46,7 @@ import {
   useDataCollectionsQuery,
 } from '../../../dataHooks/useDataCollectionsQuery';
 import { CaseSetUtil } from '../../../utils/CaseSetUtil';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 import { CaseSetDescription } from './CaseSetDescription';
 import { CaseSetSharingForm } from './CaseSetSharingForm';
@@ -101,16 +102,16 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
   }, [onClose]);
 
   const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<CaseDbCaseSet>({
-    associationQueryKeys: QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS], true),
+    associationQueryKeys: rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS], true),
     getErrorNotificationMessage: (data) => t('Unable to remove event: {{name}}.', { name: data.name }),
     getProgressNotificationMessage: (data) => t('Deleting event: {{name}}...', { name: data.name }),
     getSuccessNotificationMessage: (data) => t('Event: {{name}}, has been removed.', { name: data.name }),
     onError: onDeleteError,
     onSuccess: onDeleteSuccess,
     queryFn: async (item: CaseDbCaseSet) => {
-      return await CaseDbCaseApi.getInstance().caseSetsDeleteOne(item.id);
+      return await rootContainer.resolve(CaseDbCaseApi).caseSetsDeleteOne(item.id);
     },
-    resourceQueryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    resourceQueryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   const { data: caseSet, error: caseSetError, isLoading: isCaseSetLoading } = useItemQuery<CaseDbCaseSet>({
@@ -119,7 +120,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
     useQueryOptions: {
       enabled: !isDeleteMutating,
       queryFn: async ({ signal }) => {
-        const response = await CaseDbCaseApi.getInstance().caseSetsGetOne(openProps.caseSetId, { signal });
+        const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsGetOne(openProps.caseSetId, { signal });
         return response.data;
       },
     },
@@ -134,10 +135,10 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
   const { data: caseSetDataCollectionLinks, error: caseSetDataCollectionLinksError, isLoading: isSetCaseDataCollectionLinksLoading } = useQueryMemo({
     enabled: !!caseSet && !isDeleteMutating,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
   });
 
   const canEdit = useMemo(() => {
@@ -193,7 +194,7 @@ export const CaseSetInfoDialog = withDialog<CaseSetInfoDialogProps, CaseSetInfoD
   const isSaving = isEpiCaseSetFormSaving || isEpiCaseSetDataCollectionFormSaving;
 
   const onGotoEventButtonClick = useCallback(async () => {
-    await RouterService.getInstance().router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
+    await rootContainer.resolve(RouterService).router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
   }, [caseSet]);
 
   useEffect(() => {

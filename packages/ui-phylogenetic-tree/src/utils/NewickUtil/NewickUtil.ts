@@ -2,7 +2,7 @@ import { Decimal } from 'decimal.js';
 import sum from 'lodash/sum';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
-import type { TreeNode } from '../../models/tree';
+import type { TreeNode } from '../../models/tree.models';
 
 export class NewickUtil {
   public static getSortedNames(node: TreeNode): string[] {

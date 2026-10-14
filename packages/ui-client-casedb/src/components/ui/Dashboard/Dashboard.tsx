@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import type {
   CaseDbCase,
   CaseDbCaseSet,
@@ -34,7 +35,7 @@ export const Dashboard = withEpiDashboardStore(({ caseSet }: DashboardProps) => 
   }, []);
 
   useEffect(() => {
-    const eventBus = EventBusService.getInstance();
+    const eventBus = rootContainer.resolve(EventBusService);
     const removers = [
       // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('openEditCases', (cases: CaseDbCase[]) => {

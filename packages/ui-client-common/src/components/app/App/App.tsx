@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import { CacheProvider } from '@emotion/react';
 import {
   CssBaseline,
@@ -5,67 +6,58 @@ import {
 } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
-import { useMemo } from 'react';
-import { UiCoreComponentsContextProvider } from '@gen-epix/ui-core-components/context/uiCoreComponentsConfigContext';
-import type { UiCoreComponentsConfig } from '@gen-epix/ui-core-components/context/uiCoreComponentsConfigContext';
 
+import { API_BASE_TOKEN } from '../../../models/api.models';
 import { BackendVersionService } from '../../../classes/services/BackendVersionService';
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { ErrorPage } from '../../../pages/ErrorPage';
 import { EmotionCacheService } from '../../../classes/services/EmotionCacheService';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
-import { ApiService } from '../../../classes/services/ApiService';
 import { ApplicationBootstrapWithoutAuthorization } from '../ApplicationBootstrapWithoutAuthorization';
 import { AppRouterProvider } from '../AppRouterProvider/AppRouterProvider';
+import { UiClientCommonConfigContextProvider } from '../../../context/uiClientCommonConfigContext';
+import type { UiClientCommonContainer } from '../../../classes/containers/UiClientCommonContainer';
+import { resolveConfig } from '../../../classes/containers/UiClientCommonContainer';
+import type { ConfigBase } from '../../../models/config.models';
 
-export const App = () => {
-  const { config } = ConfigService.getInstance();
+export type AppProps = {
+  readonly container: UiClientCommonContainer;
+};
 
-  const uiCoreComponentsConfig = useMemo<UiCoreComponentsConfig>(() => {
-    const { DEFAULT_CIRCULAR_PROGRESS_SIZE, DEFAULT_TAKING_LONGER_TIMEOUT_MS } = config.spinner;
+export const App = ({ container }: AppProps) => {
+  const config = resolveConfig<ConfigBase>(container);
 
-    return {
-      spinner: {
-        defaultCircularProgressSize: DEFAULT_CIRCULAR_PROGRESS_SIZE,
-        defaultTakingLongerTimeoutMs: DEFAULT_TAKING_LONGER_TIMEOUT_MS,
-      },
-    };
-  }, [config.spinner]);
-
-  const authenticationService = AuthenticationService.getInstance();
-  const logService = LogService.getInstance();
-
+  const authenticationService = rootContainer.resolve(AuthenticationService);
+  const logService = rootContainer.resolve(LogService);
   const touchIconUrl = config.getTouchIconUrl();
   if (touchIconUrl) {
-
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
   }
-  const apiService = ApiService.getInstance();
-  apiService.api.baseUrl = config.getAPIBaseUrl();
-  apiService.api.defaultRequestTimeout = config.defaultRequestTimeout;
-  apiService.api.onRequest = [
+  const api = rootContainer.resolve(API_BASE_TOKEN);
+  api.baseUrl = config.getAPIBaseUrl();
+  api.defaultRequestTimeout = config.defaultRequestTimeout;
+  api.onRequest = [
     authenticationService.onRequest.bind(authenticationService),
     logService.onRequest.bind(logService),
   ];
-  apiService.api.onResponseFulfilled = [
+  api.onResponseFulfilled = [
     logService.onResponseFulfilled.bind(logService),
-    BackendVersionService.getInstance().onResponseFulfilled.bind(BackendVersionService.getInstance()),
+    rootContainer.resolve(BackendVersionService).onResponseFulfilled.bind(rootContainer.resolve(BackendVersionService)),
   ];
-  apiService.api.onResponseRejected = [
+  api.onResponseRejected = [
     logService.onResponseRejected.bind(logService),
     authenticationService.onResponseRejected.bind(authenticationService),
   ];
 
-  const queryQueryManager = QueryClientService.getInstance();
-  const emotionCacheService = EmotionCacheService.getInstance();
+  const queryClientService = container.resolve(QueryClientService);
+  const emotionCache = container.resolve(EmotionCacheService).emotionCache;
 
   return (
-    <UiCoreComponentsContextProvider config={uiCoreComponentsConfig}>
-      <QueryClientProvider client={queryQueryManager.queryClient}>
-        <CacheProvider value={emotionCacheService.emotionCache}>
-          <ThemeProvider theme={ConfigService.getInstance().config.theme}>
+    <UiClientCommonConfigContextProvider container={container}>
+      <QueryClientProvider client={queryClientService.queryClient}>
+        <CacheProvider value={emotionCache}>
+          <ThemeProvider theme={config.theme}>
             <CssBaseline />
             <ErrorBoundary FallbackComponent={ErrorPage}>
               <ApplicationBootstrapWithoutAuthorization>
@@ -75,6 +67,6 @@ export const App = () => {
           </ThemeProvider>
         </CacheProvider>
       </QueryClientProvider>
-    </UiCoreComponentsContextProvider>
+    </UiClientCommonConfigContextProvider>
   );
 };

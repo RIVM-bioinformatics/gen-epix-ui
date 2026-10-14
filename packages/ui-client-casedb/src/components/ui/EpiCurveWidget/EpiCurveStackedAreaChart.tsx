@@ -18,10 +18,10 @@ import { useTheme } from '@mui/material';
 
 import { EpiCurveUtil } from '../../../utils/EpiCurveUtil';
 import type { EpiCurveChartItem } from '../../../utils/EpiCurveUtil';
-import type { Stratification } from '../../../models/stratification';
+import type { Stratification } from '../../../models/stratification.models';
 import { StratificationUtil } from '../../../utils/StratificationUtil';
 import { DashboardContext } from '../Dashboard/context/DashboardContext';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 
 export interface EpiCurveStackedAreaChartProps {
   chartRef: Ref<EChartsReact>;

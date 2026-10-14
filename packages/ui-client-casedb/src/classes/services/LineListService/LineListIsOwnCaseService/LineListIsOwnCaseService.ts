@@ -1,29 +1,33 @@
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
+import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 
-import { CASEDB_QUERY_KEY } from '../../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../../constants/query.constants';
 import { LineListServiceAbstract } from '../LineListServiceAbstract';
 
 
+@singleton()
 export class LineListIsOwnCaseService extends LineListServiceAbstract {
-  private static __instance: LineListIsOwnCaseService;
 
   protected readonly queryKey: CASEDB_QUERY_KEY = CASEDB_QUERY_KEY.XXX_CASE_ID_IS_OWN_CASE;
+  private readonly caseDbCaseApi: CaseDbCaseApi;
 
-  private constructor() {
-    super();
-  }
-
-  public static getInstance(): LineListIsOwnCaseService {
-    LineListIsOwnCaseService.__instance = HmrUtil.getHmrSingleton('lineListIsOwnCaseService', LineListIsOwnCaseService.__instance, () => new LineListIsOwnCaseService());
-    return LineListIsOwnCaseService.__instance;
+  public constructor(
+    @inject(QueryClientService) queryClientService: QueryClientService,
+    @inject(CaseDbCaseApi) caseDbCaseApi: CaseDbCaseApi,
+  ) {
+    super(queryClientService);
+    this.caseDbCaseApi = caseDbCaseApi;
   }
 
   protected async fetchMatchingCaseIds(caseIds: string[], caseTypeId: string): Promise<string[]> {
     if (!caseTypeId) {
       throw new Error('caseTypeId is required for LineListIsOwnCaseService');
     }
-    const retrieveIsOwnCasesResult = (await CaseDbCaseApi.getInstance().retrieveIsOwnCases({
+    const retrieveIsOwnCasesResult = (await this.caseDbCaseApi.retrieveIsOwnCases({
       case_ids: caseIds,
       case_type_id: caseTypeId,
     })).data;

@@ -8,7 +8,7 @@ import type {
   CaseDbUserShareCasePolicy,
 } from '@gen-epix/api-casedb';
 
-import type { UserEffectiveRight } from '../../models/caseAccess';
+import type { UserEffectiveRight } from '../../models/case-access.models';
 import { DataSetUtil } from '../DataSetUtil';
 
 export type OrganizationPolicyGroup = {

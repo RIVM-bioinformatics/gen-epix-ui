@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Alert,
   AlertTitle,
@@ -50,7 +51,7 @@ import { useDataCollectionsMapQuery } from '../../../dataHooks/useDataCollection
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
 import { CasesAlreadyInCaseSetWarning } from '../CasesAlreadyInCaseSetWarning';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 import { CaseDbDataUtil } from '../../../utils/CaseDbDataUtil';
 
 import { AddCasesToEventDialogSuccessNotificationMessage } from './AddCasesToEventDialogSuccessNotificationMessage';
@@ -142,10 +143,10 @@ export const AddCasesToEventDialog = withDialog<AddCasesToEventDialogProps, AddC
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     enabled: !!caseSetId,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const caseSetDataCollectionLinksFilter = useMemo<CaseDbUuidSetFilter>(() => ({
@@ -157,10 +158,10 @@ export const AddCasesToEventDialog = withDialog<AddCasesToEventDialogProps, AddC
   const { data: caseSetDataCollectionLinks, error: caseSetDataCollectionLinksError, isLoading: isCaseSetDataCollectionLinksLoading } = useQueryMemo({
     enabled: !!caseSetId,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetDataCollectionLinksPostQuery(caseSetDataCollectionLinksFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS, caseSetDataCollectionLinksFilter),
   });
 
   const caseSetDataCollections = useMemo(() => {
@@ -190,7 +191,7 @@ export const AddCasesToEventDialog = withDialog<AddCasesToEventDialogProps, AddC
   }, [fetchData, onClose]);
 
   const { isMutating: isMutatingItems, mutate: mutateItems } = useEditMutation<CaseDbCaseSetMember[]>({
-    associationQueryKeys: QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
+    associationQueryKeys: rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
     getErrorNotificationMessage: () => t('Failed add case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
     getProgressNotificationMessage: () => t('Adding case(s) to {{caseSetName}}', { caseSetName: caseSetsMapQuery.map.get(caseSetId).name }),
     getSuccessNotificationMessage: () => (
@@ -202,7 +203,7 @@ export const AddCasesToEventDialog = withDialog<AddCasesToEventDialogProps, AddC
     onError,
     onSuccess,
     queryFn: async (items: CaseDbCaseSetMember[]) => {
-      await CaseDbCaseApi.getInstance().caseSetMembersPostSome(items);
+      await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostSome(items);
       return items;
     },
   });

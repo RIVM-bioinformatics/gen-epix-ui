@@ -1,16 +1,15 @@
 import type { ReactElement } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import { singleton } from 'tsyringe';
 
-import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import type { MyNonIndexRouteObject } from '../../../models/react-router.models';
 
 type HomePage = () => ReactElement;
 type RoutesFactory = () => MyNonIndexRouteObject[];
 type RoutesInput = MyNonIndexRouteObject[] | RoutesFactory;
 
+@singleton()
 export class RouterService {
-  private static __instance: RouterService;
-
   public get adminRoutes(): MyNonIndexRouteObject[] {
     if (!this.__adminRoutesFactory) {
       throw new Error('RouterService not initialized');
@@ -38,36 +37,26 @@ export class RouterService {
     return this.__routes;
   }
   private __adminRoutes: MyNonIndexRouteObject[] | null = null;
-  private __adminRoutesFactory: null | RoutesFactory = null;
+  private readonly __adminRoutesFactory: null | RoutesFactory = null;
 
-  private __homePageComponent: HomePage | null = null;
+  private readonly __homePageComponent: HomePage | null = null;
 
   private __router: null | ReturnType<typeof createBrowserRouter> = null;
 
   private __routes: MyNonIndexRouteObject[] | null = null;
 
-  private __routesFactory: null | RoutesFactory = null;
+  private readonly __routesFactory: null | RoutesFactory = null;
 
-  private constructor() {
-  }
-
-  public static getInstance(): RouterService {
-    RouterService.__instance = HmrUtil.getHmrSingleton('routerService', RouterService.__instance, () => new RouterService());
-    return RouterService.__instance;
-  }
-
-  public initialize(kwArgs: {
+  public constructor(kwArgs: {
     adminRoutes: RoutesInput;
     homePageComponent: HomePage;
     routes: RoutesInput;
-  }): void {
-    if (this.__routesFactory) {
-      throw new Error('RouterService already initialized');
-    }
+  }) {
     this.__homePageComponent = kwArgs.homePageComponent;
     this.__adminRoutesFactory = this.createRoutesFactory(kwArgs.adminRoutes);
     this.__routesFactory = this.createRoutesFactory(kwArgs.routes);
   }
+
 
   private createRoutesFactory(routes: RoutesInput): RoutesFactory {
     if (typeof routes === 'function') {

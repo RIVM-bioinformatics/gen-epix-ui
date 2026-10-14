@@ -21,16 +21,18 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 import { MenuDataUtil } from '@gen-epix/ui-client-common/utils/MenuDataUtil';
 import { NestedDropdown } from '@gen-epix/ui-core-components/components/NestedMenu';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 
 import { WidgetMenu } from '../WidgetMenu';
 import { WidgetHeaderIconButton } from '../WidgetHeaderIconButton';
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
+import type { CaseDbConfig } from '../../../models/config.models';
 import { Warning } from '../Warning';
 import { UserProfileStoreContext } from '../../../stores/userProfileStore/userProfileStoreContext';
 
@@ -55,13 +57,14 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 export const DashboardWidget = ({ children, expandDisabled, isLoading, primaryMenu, secondaryMenu, title, warningMessage, widgetName }: DashboardWidgetProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
 
   const userProfileStore = use(UserProfileStoreContext);
   const dashboardStore = use(DashboardStoreContext);
   const zoneKey = use(DashboardZoneContext);
   const expandZone = useStore(dashboardStore, (state) => state.expandZone);
   const expandedZone = useStore(dashboardStore, (state) => state.expandedZone);
-  const enabledLayoutZoneCount = useStore(userProfileStore, (state) => DashboardUtil.getEnabledWidgets(state.dashboardArrangementConfig).length);
+  const enabledLayoutZoneCount = useStore(userProfileStore, (state) => DashboardUtil.getEnabledWidgets(state.dashboardArrangementConfig, config).length);
   const setDashboardArrangementConfig = useStore(userProfileStore, (state) => state.setDashboardArrangementConfig);
 
   const isExpanded = expandedZone === zoneKey;

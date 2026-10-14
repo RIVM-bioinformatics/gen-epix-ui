@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -23,7 +24,6 @@ import {
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 import { AxiosUtil } from '@gen-epix/ui-client-common/utils/AxiosUtil';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { LoadableUtil } from '@gen-epix/ui-client-common/utils/LoadableUtil';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
@@ -31,12 +31,13 @@ import { RouterService } from '@gen-epix/ui-client-common/classes/services/Route
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { withPermissions } from '@gen-epix/ui-client-common/hoc/withPermissions';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
 import { CaseTypeUtil } from '../../../utils/CaseTypeUtil';
-import type { CaseDbConfig } from '../../../models/config';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import type { CaseDbConfig } from '../../../models/config.models';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 import { HomePageTrendCard } from './HomePageTrendCard';
 
@@ -55,26 +56,27 @@ type Statistic = {
 export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
 
   const dateTimeRangeFilter = useMemo<CaseDbDatetimeRangeFilter>(() => ({
     type: 'DATETIME_RANGE',
-    upper_bound: ConfigService.getInstance<CaseDbConfig>().config.trends.homePage.getSinceDate(),
+    upper_bound: config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-  } satisfies CaseDbDatetimeRangeFilter), []);
+  } satisfies CaseDbDatetimeRangeFilter), [config.trends.homePage]);
 
   const caseSetQueryFilter = useMemo<CaseDbDatetimeRangeFilter>(() => ({
     key: 'case_set_date',
     type: 'DATETIME_RANGE',
-    upper_bound: ConfigService.getInstance<CaseDbConfig>().config.trends.homePage.getSinceDate(),
+    upper_bound: config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-  } satisfies CaseDbDatetimeRangeFilter), []);
+  } satisfies CaseDbDatetimeRangeFilter), [config.trends.homePage]);
 
   const caseTypeStatsQueryNow = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats({}, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseTypeStats({}, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS),
   });
 
   const retrieveTypeCaseStatsRequestBody = useMemo<CaseDbRetrieveCaseTypeStatsRequestBody>(() => {
@@ -90,20 +92,20 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   const caseTypeStatsQueryPast = useQueryMemo({
     enabled: !!retrieveTypeCaseStatsRequestBody,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
   });
   const caseSetsNowQuery = useCaseSetsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
 
   const { data: caseSetsThenData, ...caseSetsThenQuery } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(caseSetQueryFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsPostQuery(caseSetQueryFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetQueryFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetQueryFilter),
   });
 
   const loadables = useArray([
@@ -127,7 +129,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
     s.push(
       {
         callback: async () => {
-          await RouterService.getInstance().router.navigate('/cases');
+          await rootContainer.resolve(RouterService).router.navigate('/cases');
         },
         callbackLabel: t`View all cases`,
         diffPercentage: round((nowTotalCases - thenTotalCases) / (thenTotalCases || 1) * 100, 2),
@@ -141,7 +143,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
     s.push(
       {
         callback: async () => {
-          await RouterService.getInstance().router.navigate('/events');
+          await rootContainer.resolve(RouterService).router.navigate('/events');
         },
         callbackLabel: t`View all events`,
         diffPercentage: round((numberOfCaseSetsNow - numberOfCaseSetsThen) / (numberOfCaseSetsThen || 1) * 100, 2),
@@ -175,7 +177,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
           s.push(
             {
               callback: async () => {
-                await RouterService.getInstance().router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
+                await rootContainer.resolve(RouterService).router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
               },
               callbackLabel: t`View cases`,
               diffPercentage: sortedStats[i].diffPercentage,
@@ -191,7 +193,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   }, [caseSetsNowQuery.data?.length, caseSetsThenData?.length, caseTypeMapQuery.map, caseTypeStatsQueryNow.data, caseTypeStatsQueryPast.data, loadables, t]);
 
   const onViewMoreTrendsButtonClick = useCallback(async () => {
-    await RouterService.getInstance().router.navigate('/trends');
+    await rootContainer.resolve(RouterService).router.navigate('/trends');
   }, []);
 
   if (AxiosUtil.isAxiosForbiddenError(LoadableUtil.findFirstError(loadables))) {
@@ -305,7 +307,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
                 diffPercentage={statistic.diffPercentage}
                 header={statistic.header}
                 key={statistic.header}
-                sinceLabel={ConfigService.getInstance<CaseDbConfig>().config.trends.homePage.getSinceLabel(t)}
+                sinceLabel={config.trends.homePage.getSinceLabel(t)}
                 value={statistic.value}
               />
             ))}

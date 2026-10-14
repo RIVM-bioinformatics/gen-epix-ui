@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -28,7 +29,7 @@ import {
   CaseDbUploadAction,
 } from '@gen-epix/api-casedb';
 import type { ConfirmationRefMethods } from '@gen-epix/ui-core-components/components/Confirmation';
-import type { TableRowAndColumnParams } from '@gen-epix/ui-client-common/models/table';
+import type { TableRowAndColumnParams } from '@gen-epix/ui-client-common/models/table.models';
 import { BackdropSpinner } from '@gen-epix/ui-core-components/components/BackdropSpinner';
 import { Confirmation } from '@gen-epix/ui-core-components/components/Confirmation';
 import {
@@ -78,7 +79,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
     enabled: casesForVerificationFromSourceData.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const response = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
+      const response = (await rootContainer.resolve(CaseDbCaseApi).uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
         case_batch: {
           cases: casesForVerificationFromSourceData,
         },
@@ -110,7 +111,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
   const revalidateCases = useCallback(async (casesToValidate: Array<{ content: CaseDbCase['content']; row: CaseDbCaseUploadResult }>) => {
     setIsRevalidatingCases(true);
     try {
-      const batchValidationResult = (await CaseDbCaseApi.getInstance().uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
+      const batchValidationResult = (await rootContainer.resolve(CaseDbCaseApi).uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
         case_batch: {
           cases: casesToValidate.map(({ content, row }, index) => {
             const caseFromSourceData = casesForVerificationFromSourceData.find(c => c.id === row.id);
@@ -143,7 +144,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
         casesToValidate.map(({ row }, index) => [row.id, batchValidationResult.cases[index]]),
       );
 
-      QueryClientService.getInstance().queryClient.setQueryData(validateCasesQueryKey, {
+      rootContainer.resolve(QueryClientService).queryClient.setQueryData(validateCasesQueryKey, {
         cases: caseUploadValidationResultQuery.data.map(row => {
           const newResult = resultById.get(row.id);
           if (newResult) {

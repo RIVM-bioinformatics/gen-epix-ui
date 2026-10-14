@@ -10,7 +10,7 @@ import type {
   CaseDbUser,
   CaseDbUserAccessCasePolicy,
 } from '@gen-epix/api-casedb';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import {
   createTableStore,
   TableStoreContextProvider,

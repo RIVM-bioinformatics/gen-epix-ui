@@ -1,4 +1,4 @@
-import type { GenEpixUiTheme } from '../models/theme';
+import type { GenEpixUiTheme } from '../models/theme.models';
 
 declare module '@mui/material/styles' {
   interface Theme extends GenEpixUiTheme { }

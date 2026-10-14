@@ -19,12 +19,12 @@ import type {
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 
-import { TABLE_COLUMN_FROZEN } from '../../../models/table';
+import { TABLE_COLUMN_FROZEN } from '../../../models/table.models';
 import type {
   TableColumn,
   TableDragEvent,
   TableRowParams,
-} from '../../../models/table';
+} from '../../../models/table.models';
 import { useTableStoreContext } from '../../../stores/tableStore';
 
 export type TableCellProps<TRowData, TDataContext = null> = PropsWithChildren<{

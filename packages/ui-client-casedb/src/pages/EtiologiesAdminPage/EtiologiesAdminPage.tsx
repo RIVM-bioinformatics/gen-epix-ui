@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -15,18 +16,18 @@ import {
   CaseDbCommandName,
   CaseDbOntologyApi,
 } from '@gen-epix/api-casedb';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 
 import { useDiseaseOptionsQuery } from '../../dataHooks/useDiseasesQuery';
 import { useEtiologicalAgentOptionsQuery } from '../../dataHooks/useEtiologicalAgentsQuery';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 
 type FormFields = OmitWithMetaData<CaseDbEtiology, 'disease' | 'etiological_agent'>;
 
@@ -38,19 +39,19 @@ export const EtiologiesAdminPage = () => {
   const loadables = useArray([diseaseOptionsQuery, etiologicalAgentOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbOntologyApi.getInstance().etiologiesGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).etiologiesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbEtiology) => {
-    return await CaseDbOntologyApi.getInstance().etiologiesDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbOntologyApi).etiologiesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbEtiology) => {
-    return (await CaseDbOntologyApi.getInstance().etiologiesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).etiologiesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbOntologyApi.getInstance().etiologiesPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbOntologyApi).etiologiesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbEtiology) => {

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useEffect,
@@ -8,12 +9,12 @@ import { BreadcrumbService } from '../../classes/services/BreadcrumbService';
 
 export const useUpdateBreadcrumb = (position: string) => {
   const update = useCallback((title: string) => {
-    BreadcrumbService.getInstance().update(position, title);
+    rootContainer.resolve(BreadcrumbService).update(position, title);
   }, [position]);
 
   useEffect(() => {
     return () => {
-      BreadcrumbService.getInstance().remove(position);
+      rootContainer.resolve(BreadcrumbService).remove(position);
     };
   }, [position]);
 

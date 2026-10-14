@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -8,13 +9,13 @@ import LinkIcon from '@mui/icons-material/Link';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
 import { useTheme } from '@mui/material';
-import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
+import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-menu.models';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { WidgetMenu } from '../WidgetMenu';
 import { EventBusService } from '../../../classes/services/EventBusService';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
-import type { TreeWidgetData } from '../../../models/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
+import type { TreeWidgetData } from '../../../models/dashboard.models';
 
 export const LineListWidgetSecondaryMenu = () => {
   const theme = useTheme();
@@ -26,7 +27,7 @@ export const LineListWidgetSecondaryMenu = () => {
   const onLinkButtonClick = useCallback(() => {
     const perform = async () => {
       await setSorting(null, null);
-      EventBusService.getInstance().emit('onLinkLineListAndTree');
+      rootContainer.resolve(EventBusService).emit('onLinkLineListAndTree');
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     perform();

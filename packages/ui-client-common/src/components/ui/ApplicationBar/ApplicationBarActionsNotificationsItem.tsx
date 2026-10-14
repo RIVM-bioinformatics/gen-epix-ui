@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Badge,
   Box,
@@ -21,13 +22,13 @@ import { NotificationService } from '../../../classes/services/NotificationServi
 export const ApplicationBarActionsNotificationsItem = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const notifications = useSubscribable(NotificationService.getInstance());
+  const notifications = useSubscribable(rootContainer.resolve(NotificationService));
   const isLoading = useMemo(() => notifications.some(x => x.isLoading), [notifications]);
   const [open, setOpen] = useState(false);
 
 
   const onMenuIconClick = useCallback(() => {
-    NotificationService.getInstance().hideAllNotifications();
+    rootContainer.resolve(NotificationService).hideAllNotifications();
     setOpen(true);
   }, []);
 

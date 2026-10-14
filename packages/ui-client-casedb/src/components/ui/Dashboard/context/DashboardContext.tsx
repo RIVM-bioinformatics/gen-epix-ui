@@ -6,7 +6,7 @@ import type {
   Highlighting,
   LineListRangeSubjectValue,
   LinkedScrollSubjectValue,
-} from '../../../../models/caseDb';
+} from '../../../../models/case-db.models';
 
 export type DashboardContextValue = {
   caseSet?: CaseDbCaseSet;

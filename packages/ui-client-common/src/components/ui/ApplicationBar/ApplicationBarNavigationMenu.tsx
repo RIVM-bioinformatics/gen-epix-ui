@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   IconButton,
@@ -17,7 +18,7 @@ import {
 import type { MouseEvent } from 'react';
 
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
-import type { MyNonIndexRouteObject } from '../../../models/reactRouter';
+import type { MyNonIndexRouteObject } from '../../../models/react-router.models';
 import { RouterService } from '../../../classes/services/RouterService';
 
 const NavLink = styled(BaseNavLink)(({ theme }) => ({
@@ -37,11 +38,11 @@ export type ApplicationBarNavigationMenuProps = {
 export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNavigationMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const authorizationService = useMemo(() => AuthorizationService.getInstance(), []);
+  const authorizationService = useMemo(() => rootContainer.resolve(AuthorizationService), []);
   const navId = useId();
 
   const menuItems = useMemo(() => {
-    const rootItem = RouterService.getInstance().routes.find(r => r.handle.root);
+    const rootItem = rootContainer.resolve(RouterService).routes.find(r => r.handle.root);
     return [rootItem, ...rootItem.children.filter(r => !r.handle.hidden)] as MyNonIndexRouteObject[];
   }, []);
 

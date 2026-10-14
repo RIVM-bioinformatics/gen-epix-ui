@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   Alert,
   AlertTitle,
@@ -26,7 +27,7 @@ import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/Respon
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 
 import { CaseSummary } from '../CaseSummary';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 
 import { CasesAlreadyInCaseSetWarningCaseSetLink } from './CasesAlreadyInCaseSetWarningCaseSetLink';
 
@@ -49,10 +50,10 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
   }, [cases]);
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   // Load all case sets for the given case set members
@@ -67,10 +68,10 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     enabled: existingCaseSetsFilter.members.length > 0,
     queryFn: async ({ signal }) => {
-      const response = await CaseDbCaseApi.getInstance().caseSetsPostQuery(existingCaseSetsFilter, null, null, { signal });
+      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsPostQuery(existingCaseSetsFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
   });
 
   const caseSetsByCase = useMemo(() => {
@@ -83,7 +84,7 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
       const caseItem = cases.find(x => x.id === member.case_id);
       const caseSetItem = caseSets.find(x => x.id === member.case_set_id);
       if (!caseItem || !caseSetItem) {
-        LogService.getInstance().log([
+        rootContainer.resolve(LogService).log([
           {
             detail: member,
             level: CaseDbLogLevel.DEBUG,

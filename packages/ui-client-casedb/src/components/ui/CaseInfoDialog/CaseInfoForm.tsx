@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -26,7 +27,7 @@ import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
-import { CASEDB_QUERY_KEY } from '../../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../../constants/query.constants';
 import { CaseContentForm } from '../CaseContentForm';
 
 export type CaseInfoFormProps = {
@@ -59,15 +60,15 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
-      const queryKeys = QueryClientService.getInstance().getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
-      const notificationKey = NotificationService.getInstance().showNotification({
+      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
+      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t('Saving case data'),
         severity: 'info',
       });
       try {
-        await QueryClientService.getInstance().cancelQueries(queryKeys);
-        const uploadResult = (await CaseDbCaseApi.getInstance().uploadCases({
+        await rootContainer.resolve(QueryClientService).cancelQueries(queryKeys);
+        const uploadResult = (await rootContainer.resolve(CaseDbCaseApi).uploadCases({
           case_batch: {
             cases: [
               {
@@ -86,13 +87,13 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
         if (uploadResult.status !== CaseDbEtlStatus.SKIPPED && uploadResult.status !== CaseDbEtlStatus.SUCCESS && uploadResult.status !== CaseDbEtlStatus.UPDATED) {
           throw new Error('Case upload failed');
         }
-        // await CaseDbCaseApi.getInstance().casesPutOne(item.id, item);
+        // await rootContainer.resolve(CaseDbCaseApi).casesPutOne(item.id, item);
         mutateCachedCase(caseDbCase.id, caseDbCase);
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
       } catch (_error) {
-        NotificationService.getInstance().fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
+        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
       } finally {
-        await QueryClientService.getInstance().invalidateQueryKeys(queryKeys);
+        await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

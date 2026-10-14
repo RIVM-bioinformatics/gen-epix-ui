@@ -3,7 +3,7 @@ import type { StoreApi } from 'zustand';
 import { useEffect } from 'react';
 
 import { DEFAULT_FILTER_GROUP } from '../../classes/abstracts/FilterAbstract';
-import type { TableColumn } from '../../models/table';
+import type { TableColumn } from '../../models/table.models';
 import type { TableStore } from '../../stores/tableStore';
 import { TableUtil } from '../../utils/TableUtil';
 

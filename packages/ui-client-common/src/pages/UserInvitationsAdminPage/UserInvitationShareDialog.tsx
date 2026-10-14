@@ -13,7 +13,7 @@ import { format } from 'date-fns';
 import type { CommonDbUserInvitation } from '@gen-epix/api-commondb';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 import { CopyToClipboardButton } from '@gen-epix/ui-core-components/components/CopyToClipboardButton';
 import type {
   WithDialogRefMethods,
@@ -21,7 +21,7 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { ConfigService } from '../../classes/services/ConfigService';
+import { useConfig } from '../../hooks/useConfig';
 
 export interface UserInvitationShareDialogOpenProps {
   item: CommonDbUserInvitation;
@@ -40,6 +40,7 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
   }: UserInvitationShareDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig();
 
   useEffect(() => {
     onTitleChange(t('Invitation details for {{email}}', { email: openProps.item.key }));
@@ -58,8 +59,8 @@ export const UserInvitationShareDialog = withDialog<UserInvitationShareDialogPro
   }, [openProps.item.token]);
 
   const shareInvitationHref = useMemo(() => {
-    return `mailto:?subject=${t('Invitation to join {{applicationName}}', { applicationName: ConfigService.getInstance().config.applicationName })}&body=${t('Use the following link to accept the invitation: {{invitationLink}}. This link will expire: {{expiryDate}}.', { expiryDate, invitationLink })}&to=${openProps.item.key}`;
-  }, [expiryDate, invitationLink, openProps.item.key, t]);
+    return `mailto:?subject=${t('Invitation to join {{applicationName}}', { applicationName: config.applicationName })}&body=${t('Use the following link to accept the invitation: {{invitationLink}}. This link will expire: {{expiryDate}}.', { expiryDate, invitationLink })}&to=${openProps.item.key}`;
+  }, [config.applicationName, expiryDate, invitationLink, openProps.item.key, t]);
 
 
   useEffect(() => {

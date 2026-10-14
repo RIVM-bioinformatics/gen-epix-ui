@@ -46,7 +46,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import type {
   AutoCompleteOption,
   AutocompleteSelectAllContextData,
-} from '../../../models/form';
+} from '../../../models/form.models';
 import { FormUtil } from '../../../utils/FormUtil';
 import { FormFieldHelperText } from '../../helpers/FormFieldHelperText';
 import { FormFieldLoadingIndicator } from '../../helpers/FormFieldLoadingIndicator';

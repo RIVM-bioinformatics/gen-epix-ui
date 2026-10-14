@@ -29,7 +29,7 @@ import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
 import { CaseUtil } from '../../../utils/CaseUtil';
-import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard';
+import { DASHBOARD_COMPONENT_NAME } from '../../../constants/dashboard.constants';
 
 import { DashboardContext } from './context/DashboardContext';
 import type { DashboardSearchMode } from './DashboardSearchSettings';
@@ -64,7 +64,6 @@ export const DashboardSearch = () => {
   const shouldRestoreSearchButtonFocusRef = useRef(false);
   const arrowUpButtonRef = useRef<HTMLButtonElement>(null);
   const arrowDownButtonRef = useRef<HTMLButtonElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dashboardStore = use(DashboardStoreContext);
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
@@ -384,7 +383,6 @@ export const DashboardSearch = () => {
                   edge={'end'}
                   onClick={onCloseButtonClick}
                   onKeyDown={onGenericKeyDown}
-                  ref={closeButtonRef}
                 >
                   <CloseIcon />
                 </IconButton>

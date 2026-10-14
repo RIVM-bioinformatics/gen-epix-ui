@@ -15,13 +15,13 @@ import {
   startOfQuarter,
   startOfYear,
 } from 'date-fns';
-import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
+import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
 import type {
   FindSimilarCasesChartDataPoint,
   FindSimilarCasesChartGranularity,
   FindSimilarCasesChartInterval,
-} from '../../models/caseDb';
+} from '../../models/case-db.models';
 
 export class FindSimilarCasesUtil {
   public static buildChartIntervals(data: FindSimilarCasesChartDataPoint[]): FindSimilarCasesChartInterval[] {

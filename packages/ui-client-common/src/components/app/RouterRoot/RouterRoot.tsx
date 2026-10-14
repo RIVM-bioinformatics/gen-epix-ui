@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   StrictMode,
   useCallback,
@@ -23,6 +24,7 @@ import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService'
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
+import { API_AUTH_TOKEN } from '../../../models/api.models';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
 import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';
@@ -30,29 +32,29 @@ import { ChooseIdentityProviderPage } from '../../../pages/ChooseIdentityProvide
 import { UserManagerUtil } from '../../../utils/UserManagerUtil';
 import { NotificationsStack } from '../../ui/Notifications';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
-import type { IdentityProviderWithAvailability } from '../../../models/auth';
-import { ConfigService } from '../../../classes/services/ConfigService';
+import type { IdentityProviderWithAvailability } from '../../../models/auth.models';
+import { useConfig } from '../../../hooks/useConfig';
 import { PageContainer } from '../../ui/PageContainer';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ApplicationBootstrapWithAuthentication } from '../ApplicationBootstrapWithAuthentication';
 import { AuthenticationWrapper } from '../AuthenticationWrapper';
 import { AuthorizationWrapper } from '../AuthorizationWrapper';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
-import { COMMON_QUERY_KEY } from '../../../constants/query';
+import { COMMON_QUERY_KEY } from '../../../constants/query.constants';
 import { RouterService } from '../../../classes/services/RouterService';
-import { ApiService } from '../../../classes/services/ApiService';
 
 
 export const RouterRoot = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const config = useConfig();
 
-  const oidcConfiguration = useSubscribable(AuthenticationService.getInstance());
+  const oidcConfiguration = useSubscribable(rootContainer.resolve(AuthenticationService));
 
   const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const providers = (await ApiService.getInstance().authApi.identityProvidersGetAll({ signal })).data;
+      const providers = (await rootContainer.resolve(API_AUTH_TOKEN).identityProvidersGetAll({ signal })).data;
       if (!Array.isArray(providers)) {
         throw new Error('Invalid response for identity providers. Backend is most likely misconfigured.');
       }
@@ -71,7 +73,7 @@ export const RouterRoot = () => {
         } catch (error: unknown) {
           console.error(`Identity provider ${provider.name} is not available`, error);
           if (oidcConfiguration?.name === provider.name) {
-            AuthenticationService.getInstance().next(undefined);
+            rootContainer.resolve(AuthenticationService).next(undefined);
           }
           providersWithAvailability.push({
             isAvailable: false,
@@ -81,7 +83,7 @@ export const RouterRoot = () => {
       }
       return providersWithAvailability;
     },
-    queryKey: QueryClientService.getInstance().getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
+    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
     staleTime: Infinity,
   });
 
@@ -90,8 +92,8 @@ export const RouterRoot = () => {
   }, [identityProvidersWithAvailability]);
 
   useEffect(() => {
-    NavigationHistoryService.getInstance().navigationHistory.push(location.pathname);
-    LogService.getInstance().log([{
+    rootContainer.resolve(NavigationHistoryService).navigationHistory.push(location.pathname);
+    rootContainer.resolve(LogService).log([{
       detail: {
         pathname: location.pathname,
       },
@@ -102,7 +104,7 @@ export const RouterRoot = () => {
 
   useEffect(() => {
     if (identityProvidersWithAvailability?.length === 1 && availableIdentityProviders.length === 1) {
-      AuthenticationService.getInstance().next(identityProvidersWithAvailability[0].provider);
+      rootContainer.resolve(AuthenticationService).next(identityProvidersWithAvailability[0].provider);
     }
   }, [availableIdentityProviders.length, identityProvidersWithAvailability]);
 
@@ -114,7 +116,7 @@ export const RouterRoot = () => {
     // Validate the storage
     const identityProvider = identityProvidersWithAvailability.find(x => x.provider.name === oidcConfiguration.name)?.provider;
     if (!identityProvider || JSON.stringify(oidcConfiguration) !== JSON.stringify(identityProvider)) {
-      AuthenticationService.getInstance().next(undefined);
+      rootContainer.resolve(AuthenticationService).next(undefined);
       return null;
     }
     WindowService.getInstance().window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
@@ -122,7 +124,7 @@ export const RouterRoot = () => {
   }, [availableIdentityProviders, identityProvidersWithAvailability, oidcConfiguration]);
 
   const onSignin = useCallback(() => {
-    LogService.getInstance().log([{
+    rootContainer.resolve(LogService).log([{
       level: CommonDbLogLevel.INFO,
       topic: 'USER_LOGIN',
     }]);
@@ -150,7 +152,7 @@ export const RouterRoot = () => {
           }}
         >
           <Typography>
-            {t('{{applicationName}} is currently unavailable. Please try again later.', { applicationName: ConfigService.getInstance().config.applicationName })}
+            {t('{{applicationName}} is currently unavailable. Please try again later.', { applicationName: config.applicationName })}
           </Typography>
           <Box sx={{ marginTop: 2 }}>
             <Button
@@ -171,7 +173,7 @@ export const RouterRoot = () => {
     );
   }
 
-  const HomePage = RouterService.getInstance().homePageComponent;
+  const HomePage = rootContainer.resolve(RouterService).homePageComponent;
 
   return (
     <AuthProvider

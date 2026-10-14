@@ -2,28 +2,39 @@ import 'reflect-metadata';
 import type { InternalAxiosRequestConfig } from 'axios';
 import type { AuthContextProps } from 'react-oidc-context';
 import type { CommonDbIdentityProvider } from '@gen-epix/api-commondb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
-import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import type { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
+import {
+  inject,
+  singleton,
+} from 'tsyringe';
 
 import { AuthorizationService } from '../AuthorizationService';
-import type { AuthState } from '../../../models/auth';
+import type { AuthState } from '../../../models/auth.models';
 import { oidcStore } from '../../../stores/oidcStore';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
+import { WINDOW_SERVICE_TOKEN } from '../../../constants/config.constants';
 
 export const createdAtMetaDataKey = Symbol('createdAt');
 
+@singleton()
 export class AuthenticationService extends SubscribableAbstract<CommonDbIdentityProvider> {
   public static autoLoginSkew = 500;
-  private static __instance: AuthenticationService;
 
   public authContextProps: AuthContextProps;
 
   public temporaryToken: string;
+  private readonly authorizationService: AuthorizationService;
+  private readonly windowService: WindowService;
 
-  private constructor() {
+  public constructor(
+    @inject(AuthorizationService) authorizationService: AuthorizationService,
+    @inject(WINDOW_SERVICE_TOKEN) windowService: WindowService,
+  ) {
     super(new Subject(oidcStore.getState().configuration));
+    this.authorizationService = authorizationService;
+    this.windowService = windowService;
   }
 
   public static clearStaleState(): void {
@@ -34,10 +45,6 @@ export class AuthenticationService extends SubscribableAbstract<CommonDbIdentity
     });
   }
 
-  public static getInstance(): AuthenticationService {
-    AuthenticationService.__instance = HmrUtil.getHmrSingleton('authenticationService', AuthenticationService.__instance, () => new AuthenticationService());
-    return AuthenticationService.__instance;
-  }
 
   public getUserManagerSettingsCreatedAt(): number {
     return Reflect.getMetadata(createdAtMetaDataKey, this.data) as number;
@@ -67,7 +74,7 @@ export class AuthenticationService extends SubscribableAbstract<CommonDbIdentity
 
       // If the user is not logged in, or the user is already redirected, throw the error
 
-      if (redirectCounter > 0 || !AuthorizationService.getInstance().user) {
+      if (redirectCounter > 0 || !this.authorizationService.user) {
         throw error;
       }
 
@@ -81,9 +88,9 @@ export class AuthenticationService extends SubscribableAbstract<CommonDbIdentity
         await this.authContextProps.signinRedirect({
           state: {
             preLoginLocation: {
-              hash: WindowService.getInstance().window.location.hash,
-              pathname: WindowService.getInstance().window.location.pathname,
-              search: WindowService.getInstance().window.location.search,
+              hash: this.windowService.window.location.hash,
+              pathname: this.windowService.window.location.pathname,
+              search: this.windowService.window.location.search,
             },
             redirectCounter: redirectCounter + 1,
           },

@@ -1,3 +1,4 @@
+import { container as rootContainer } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -19,22 +20,22 @@ import {
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 import type { CrudPageSubPage } from '@gen-epix/ui-client-common/pages/CrudPage';
-import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data';
-import type { TableColumn } from '@gen-epix/ui-client-common/models/table';
+import type { OmitWithMetaData } from '@gen-epix/ui-client-common/models/data.models';
+import type { TableColumn } from '@gen-epix/ui-client-common/models/table.models';
 import { AuthorizationService } from '@gen-epix/ui-client-common/classes/services/AuthorizationService';
 import { CrudPage } from '@gen-epix/ui-client-common/pages/CrudPage';
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
-import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
-import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form';
+import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
+import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import {
   useCaseTypeMapQuery,
   useCaseTypeOptionsQuery,
 } from '../../dataHooks/useCaseTypesQuery';
-import { CASEDB_QUERY_KEY } from '../../constants/query';
+import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { useRefDimOptionsQuery } from '../../dataHooks/useRefDimsQuery';
 
 type FormFields = OmitWithMetaData<CaseDbDim, 'case_type' | 'ref_dim'>;
@@ -49,7 +50,7 @@ export const DimsAdminPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, refDimOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await CaseDbCaseApi.getInstance().dimsGetAll(null, null, { signal }))?.data;
+    return (await rootContainer.resolve(CaseDbCaseApi).dimsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((dims: CaseDbDim[]) => {
@@ -60,15 +61,15 @@ export const DimsAdminPage = () => {
   }, [caseTypeId]);
 
   const deleteOne = useCallback(async (item: CaseDbDim) => {
-    return await CaseDbCaseApi.getInstance().dimsDeleteOne(item.id);
+    return await rootContainer.resolve(CaseDbCaseApi).dimsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbDim) => {
-    return (await CaseDbCaseApi.getInstance().dimsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).dimsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await CaseDbCaseApi.getInstance().dimsPostOne(variables)).data;
+    return (await rootContainer.resolve(CaseDbCaseApi).dimsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbDim) => {
@@ -160,7 +161,7 @@ export const DimsAdminPage = () => {
   }, [caseTypeId]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbDim>[]>(() => {
-    if (!AuthorizationService.getInstance().doesUserHavePermission<CaseDbApiPermission>([
+    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];
