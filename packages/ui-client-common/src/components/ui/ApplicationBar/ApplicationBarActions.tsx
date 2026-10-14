@@ -13,7 +13,7 @@ import {
 } from 'react';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
+import { useConfig } from '../../../hooks/useConfig';
 
 import { ApplicationBarActionsFeedbackItem } from './ApplicationBarActionsFeedbackItem';
 import { ApplicationBarActionsInfoItem } from './ApplicationBarActionsInfotem';
@@ -29,7 +29,8 @@ export type ApplicationBarActionsProps = {
 export const ApplicationBarActions = ({ fullWidth }: ApplicationBarActionsProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const environmentMessage = ConfigService.getInstance().config.getEnvironmentMessage();
+  const config = useConfig();
+  const environmentMessage = config.getEnvironmentMessage();
   const navId = useId();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);

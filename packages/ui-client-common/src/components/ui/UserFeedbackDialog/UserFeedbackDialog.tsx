@@ -27,12 +27,12 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';
 import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';
 import { NotificationService } from '../../../classes/services/NotificationService';
 import { UserSettingsService } from '../../../classes/services/UserSettingsService';
 import { AuthorizationService } from '../../../classes/services/AuthorizationService';
+import { useConfig } from '../../../hooks/useConfig';
 
 export interface UserFeedbackDialogOpenProps {
   //
@@ -58,6 +58,7 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   }: UserFeedbackDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig();
 
   const schema = useMemo(() => object<FormFields>().shape({
     email: string().email().required().max(200),
@@ -152,7 +153,7 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
         }}
       >
         <Typography component={'p'}>
-          {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: ConfigService.getInstance().config.applicationName })}
+          {t('Please help make {{applicationName}} better by sharing your feedback with us. You may use this form as many times as you like.', { applicationName: config.applicationName })}
         </Typography>
       </Box>
       <GenericForm<FormFields>

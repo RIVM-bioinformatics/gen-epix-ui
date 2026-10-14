@@ -22,7 +22,7 @@ import type {
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { AuthenticationService } from '@gen-epix/ui-client-common/classes/services/AuthenticationService';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { DownloadUtil } from '@gen-epix/ui-core/utils/DownloadUtil';
@@ -58,6 +58,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
   }: SequenceDownloadDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig();
   const dashboardStore = use(DashboardStoreContext);
   const completeCaseType = useStore(dashboardStore, useShallow((state) => state.completeCaseType));
 
@@ -93,7 +94,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
   const onDownloadFastaButtonClick = useCallback(() => {
     DownloadUtil.downloadAsMultiPartForm({
       accessToken: AuthenticationService.getInstance().authContextProps?.user?.access_token ?? '',
-      action: `${ConfigService.getInstance().config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
+      action: `${config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),
         case_type_id: completeCaseType.id,
@@ -102,7 +103,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
       },
     });
     onClose();
-  }, [completeCaseType.id, completeCaseType.name, geneticSequenceColId, geneticSequenceColOptions, onClose, openProps.cases]);
+  }, [completeCaseType.id, completeCaseType.name, config, geneticSequenceColId, geneticSequenceColOptions, onClose, openProps.cases]);
 
   useEffect(() => {
     onTitleChange(t`Download sequences`);

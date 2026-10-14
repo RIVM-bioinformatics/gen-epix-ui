@@ -13,7 +13,7 @@ import {
   useState,
 } from 'react';
 import { useStore } from 'zustand';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 
 import type { CaseDbConfig } from '../../../models/config';
 import { DashboardUtil } from '../../../utils/DashboardUtil';
@@ -23,6 +23,7 @@ import { DashboardZoneContext } from './DashboardZoneContext';
 
 export const DashboardWidgetPlaceHolder = () => {
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const userProfileStore = use(UserProfileStoreContext);
@@ -30,9 +31,9 @@ export const DashboardWidgetPlaceHolder = () => {
   const dashboardArrangementConfig = useStore(userProfileStore, (state) => state.dashboardArrangementConfig);
   const setDashboardArrangementConfig = useStore(userProfileStore, (state) => state.setDashboardArrangementConfig);
 
-  const widgetsConfig = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS;
+  const widgetsConfig = config.dashboard.WIDGETS;
   const availableWidgets = zoneName
-    ? DashboardUtil.getAvailableWidgets(dashboardArrangementConfig, zoneName, widgetsConfig)
+    ? DashboardUtil.getAvailableWidgets(dashboardArrangementConfig, zoneName, widgetsConfig, config)
     : [];
 
   const onButtonClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
@@ -47,11 +48,11 @@ export const DashboardWidgetPlaceHolder = () => {
     if (!zoneName) {
       return;
     }
-    const { dashboardArrangementConfig: config } = userProfileStore.getState();
+    const { dashboardArrangementConfig: currentDashboardConfig } = userProfileStore.getState();
     setDashboardArrangementConfig({
-      ...config,
+      ...currentDashboardConfig,
       arrangementWidgetAssignments: {
-        ...config.arrangementWidgetAssignments,
+        ...currentDashboardConfig.arrangementWidgetAssignments,
         [zoneName]: widgetName,
       },
     });

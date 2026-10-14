@@ -1,8 +1,7 @@
 import { createRoot } from 'react-dom/client';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import type { SeqDbConfig } from '@gen-epix/ui-client-seqdb/models/config';
 import { SeqDbApp } from '@gen-epix/ui-client-seqdb/components/app/SeqDbApp';
 import { setupSeqDb } from '@gen-epix/ui-client-seqdb/setup/setup';
 
@@ -34,11 +33,12 @@ const init = async () => {
     },
   });
 
-  ConfigService.getInstance<SeqDbConfig>().config = ConfigUtil.createConfig();
-  setupSeqDb();
+  const config = ConfigUtil.createConfig();
+  const container = createUiClientCommonContainer(config);
+  setupSeqDb(container);
 
   createRoot(document.getElementById('root')).render(
-    <SeqDbApp />,
+    <SeqDbApp container={container} />,
   );
 };
 

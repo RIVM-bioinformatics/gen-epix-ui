@@ -6,8 +6,8 @@ import type {
   TableColumnReadableIndex,
   TableRowParams,
 } from '../../../models/table';
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
+import { useConfig } from '../../../hooks/useConfig';
 
 export type TableReadableIndexCellProps<TRowData, TDataContext> = {
   readonly cell: TableRowParams<TRowData, TDataContext>;
@@ -22,12 +22,13 @@ export const TableReadableIndexCell = <TRowData, TDataContext>({
   onReadableIndexClick,
   tableColumn,
 }: TableReadableIndexCellProps<TRowData, TDataContext>) => {
+  const config = useConfig();
   const onClick = useCallback((event: ReactMouseEvent) => {
     if (onReadableIndexClick) {
       if (!getRowName) {
         throw new Error('getRowName is required when onReadableIndexClick is provided');
       }
-      if (ConfigService.getInstance().config.enablePageEvents) {
+      if (config.enablePageEvents) {
         PageEventBusService.getInstance().emit('click', {
           label: getRowName(cell.row),
           type: 'table-row-index',
@@ -37,7 +38,7 @@ export const TableReadableIndexCell = <TRowData, TDataContext>({
       event.stopPropagation();
       onReadableIndexClick(cell.row);
     }
-  }, [getRowName, onReadableIndexClick, cell.row]);
+  }, [config.enablePageEvents, getRowName, onReadableIndexClick, cell.row]);
 
   if (!onReadableIndexClick) {
     return cell.rowIndex + 1;

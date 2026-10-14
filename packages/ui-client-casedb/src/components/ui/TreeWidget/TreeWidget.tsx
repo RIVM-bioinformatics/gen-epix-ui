@@ -26,7 +26,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import type { CaseDbRetrievePhylogeneticTreeRequestBody } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import type { MenuItemData } from '@gen-epix/ui-core-components/models/nestedMenu';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
@@ -70,7 +70,8 @@ type ZoomInMenuItemConfig = {
 export const TreeWidget = () => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const treeConfig = ConfigService.getInstance<CaseDbConfig>().config.tree;
+  const config = useConfig<CaseDbConfig>();
+  const treeConfig = config.tree;
   const [treeCanvas, setTreeCanvas] = useState<HTMLCanvasElement>();
   const [isTreeLinked, setIsTreeLinked] = useState(true);
   const treeRef = useRef<PhylogeneticTreeRef>(null);
@@ -255,10 +256,10 @@ export const TreeWidget = () => {
       treeRef.current?.unlink({
         positionX: 0,
         positionY: 0,
-        zoomLevel: ConfigService.getInstance<CaseDbConfig>().config.tree.INITIAL_UNLINKED_ZOOM_LEVEL,
+        zoomLevel: config.tree.INITIAL_UNLINKED_ZOOM_LEVEL,
       });
     }
-  }, [isTreeLinked, shouldShowTree, sortByField]);
+  }, [config.tree.INITIAL_UNLINKED_ZOOM_LEVEL, isTreeLinked, shouldShowTree, sortByField]);
 
   const updateEpiTreeWidgetDataDebounced = useDebouncedCallback((viewState: PhylogeneticTreeViewState) => {
     updateWidgetData<TreeWidgetData>(DASHBOARD_COMPONENT_NAME.TREE, {
@@ -405,23 +406,23 @@ export const TreeWidget = () => {
 
     const menu: MenuItemData = {
       disabled: !treeConfiguration,
-      items: treeConfigurations?.map<MenuItemData>(config => ({
-        active: !!treeConfiguration && treeConfiguration.computedId === config.computedId,
+      items: treeConfigurations?.map<MenuItemData>(treeConfigurationConfig => ({
+        active: !!treeConfiguration && treeConfiguration.computedId === treeConfigurationConfig.computedId,
         callback: () => {
           const perform = async () => {
             await removeTreeFilter();
             updateWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE, {
-              treeConfiguration: config,
+              treeConfiguration: treeConfigurationConfig,
             });
-            setTreeConfiguration(config);
+            setTreeConfiguration(treeConfigurationConfig);
           };
           // eslint-disable-next-line @typescript-eslint/no-floating-promises
           perform();
         },
-        label: TreeWidgetUtil.getTreeConfigurationLabel(config),
+        label: TreeWidgetUtil.getTreeConfigurationLabel(treeConfigurationConfig),
         tooltip: (
           <TreeDescription
-            treeConfiguration={config}
+            treeConfiguration={treeConfigurationConfig}
           />
         ),
       })) ?? [],
@@ -585,7 +586,7 @@ export const TreeWidget = () => {
         {(isLoading && !isTreeUnavailable) && (
           <Spinner
             label={t`Loading`}
-            takingLongerTimeoutMs={ConfigService.getInstance<CaseDbConfig>().config.tree.TAKING_LONGER_TIMEOUT_MS}
+            takingLongerTimeoutMs={config.tree.TAKING_LONGER_TIMEOUT_MS}
           />
         )}
         {!isTreeUnavailable && shouldShowTree && (
@@ -598,7 +599,7 @@ export const TreeWidget = () => {
             headerHeight={treeConfig.HEADER_HEIGHT}
             highlightedNodeNamesSubject={phylogeneticTreeHighlightedNodeNamesSubject}
             initialViewState={initialTreeViewState}
-            itemHeight={ConfigService.getInstance<CaseDbConfig>().config.lineList.TABLE_ROW_HEIGHT}
+            itemHeight={config.lineList.TABLE_ROW_HEIGHT}
             leafDotRadius={treeConfig.LEAF_DOT_RADIUS}
             linkedScrollDebounceDelayMs={treeConfig.LINKED_SCROLL_DEBOUNCE_DELAY_MS}
             maxScaleWidthPx={treeConfig.MAX_SCALE_WIDTH_PX}

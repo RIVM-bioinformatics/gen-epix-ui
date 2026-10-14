@@ -2,12 +2,17 @@ import throttle from 'lodash/throttle';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  inject,
+  injectable,
+  container as rootContainer,
+} from 'tsyringe';
 
 import { AuthenticationService } from '../AuthenticationService';
-import { ConfigService } from '../ConfigService';
 import { LogService } from '../LogService';
 import { TimeUtil } from '../../../utils/TimeUtil';
+import { CONFIG_TOKEN } from '../../../constants/config';
+import type { ConfigBase } from '../../../models/config';
 
 export type InactivityState = {
   idleDiff: number;
@@ -17,9 +22,8 @@ export type InactivityState = {
   readableNotificationDiff: string;
 };
 
+@injectable()
 export class InactivityService extends SubscribableAbstract<InactivityState> {
-  private static __instance: InactivityService;
-
   private idleDiff: number = 0;
 
   private idleSince: number = Date.now();
@@ -28,7 +32,7 @@ export class InactivityService extends SubscribableAbstract<InactivityState> {
   private notificationDiff: number = 0;
   private readonly onActivityDebounced: () => void;
 
-  private constructor() {
+  public constructor(@inject(CONFIG_TOKEN) config: ConfigBase) {
     super(new Subject<InactivityState>({
       idleDiff: 0,
       isIdle: false,
@@ -37,14 +41,12 @@ export class InactivityService extends SubscribableAbstract<InactivityState> {
       readableNotificationDiff: '',
     }));
 
-    const ALLOWED_IDLE_TIME_MS = ConfigService.getInstance().config.userInactivityConfirmation.ALLOWED_IDLE_TIME_MS;
-    const NOTIFICATION_TIME_MS = ConfigService.getInstance().config.userInactivityConfirmation.NOTIFICATION_TIME_MS;
-
     this.onActivityDebounced = throttle(this.onActivity.bind(this), 1000, {
       leading: true,
       trailing: true,
     });
 
+    const { ALLOWED_IDLE_TIME_MS, NOTIFICATION_TIME_MS } = config.userInactivityConfirmation;
     ['mousemove', 'keydown', 'scroll'].forEach((event) => window.addEventListener(event, this.onActivityDebounced));
 
     setInterval(() => {
@@ -67,8 +69,7 @@ export class InactivityService extends SubscribableAbstract<InactivityState> {
   }
 
   public static getInstance(): InactivityService {
-    InactivityService.__instance = HmrUtil.getHmrSingleton('inactivityService', InactivityService.__instance, () => new InactivityService());
-    return InactivityService.__instance;
+    return rootContainer.resolve(InactivityService);
   }
 
   public logout(): void {

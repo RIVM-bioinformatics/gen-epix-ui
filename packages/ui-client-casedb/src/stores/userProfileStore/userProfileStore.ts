@@ -3,7 +3,6 @@ import {
   createJSONStorage,
   persist,
 } from 'zustand/middleware';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 
@@ -40,29 +39,28 @@ export interface UserProfileStoreState {
   };
 }
 
-export const createUserProfileStoreInitialState: () => UserProfileStoreState = () => {
-  const widgets = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS;
+export const createUserProfileStoreInitialState = (config: CaseDbConfig): UserProfileStoreState => {
+  const widgets = config.dashboard.WIDGETS;
   const dashboardWidgetSettings: UserProfileStoreState['dashboardWidgetSettings'] = {};
   for (const widgetName of Object.keys(widgets)) {
     dashboardWidgetSettings[widgetName] = cloneDeep(widgets[widgetName].configDefaultValues) ?? {};
   }
 
   return {
-    dashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
+    dashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(config),
     dashboardGeneralSettings: {
       isHighlightingEnabled: true,
     },
     dashboardPanels: {},
     dashboardWidgetSettings,
-    tableSettings: {},
   };
 };
 
-export const createUserProfileStore = () => createStore<UserProfileStore>()(
+export const createUserProfileStore = (config: CaseDbConfig) => createStore<UserProfileStore>()(
   persist(
     (set, get) => {
       return {
-        ...createUserProfileStoreInitialState(),
+        ...createUserProfileStoreInitialState(config),
         resetDashboardGeneralSettings: () => {
           set({
             dashboardGeneralSettings: {
@@ -72,7 +70,7 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
         },
         resetDashboardLayout: () => {
           set({
-            dashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(),
+            dashboardArrangementConfig: DashboardUtil.createDashboardArrangementConfigInitialState(config),
             dashboardPanels: {},
           });
         },
@@ -81,13 +79,13 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
           set({
             dashboardWidgetSettings: {
               ...dashboardWidgetSettings,
-              [widgetName]: ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS[widgetName].configDefaultValues ?? {},
+              [widgetName]: config.dashboard.WIDGETS[widgetName].configDefaultValues ?? {},
             },
           });
         },
-        setDashboardArrangementConfig: (config: DashboardArrangementConfig) => {
-          const widgetsConfig = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS;
-          set({ dashboardArrangementConfig: DashboardUtil.removeInvalidWidgetAssignments(config, widgetsConfig) });
+        setDashboardArrangementConfig: (dashboardArrangementConfig: DashboardArrangementConfig) => {
+          const widgetsConfig = config.dashboard.WIDGETS;
+          set({ dashboardArrangementConfig: DashboardUtil.removeInvalidWidgetAssignments(dashboardArrangementConfig, widgetsConfig, config) });
         },
         setDashboardGeneralSettings: (settings: DashboardGeneralSettings) => {
           set({ dashboardGeneralSettings: settings });
@@ -118,13 +116,13 @@ export const createUserProfileStore = () => createStore<UserProfileStore>()(
         if (!state) {
           return;
         }
-        const validatedConfig = DashboardUtil.validateAndMigrateArrangementConfig(state.dashboardArrangementConfig);
+        const validatedConfig = DashboardUtil.validateAndMigrateArrangementConfig(state.dashboardArrangementConfig, config);
         if (validatedConfig !== state.dashboardArrangementConfig) {
           state.setDashboardArrangementConfig(validatedConfig);
         }
 
-        const widgets = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS;
-        const initialWidgetSettings = createUserProfileStoreInitialState().dashboardWidgetSettings;
+        const widgets = config.dashboard.WIDGETS;
+        const initialWidgetSettings = createUserProfileStoreInitialState(config).dashboardWidgetSettings;
         for (const widgetName of Object.keys(state.dashboardWidgetSettings)) {
           const fieldDefs = widgets[widgetName]?.configFormFieldsDefinitions;
           if (!fieldDefs) {

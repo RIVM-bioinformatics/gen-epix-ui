@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
+import { useConfig } from '../../../hooks/useConfig';
 
 import { ApplicationBarNavigationMenu } from './ApplicationBarNavigationMenu';
 import { ApplicationBarActions } from './ApplicationBarActions';
@@ -24,6 +24,7 @@ export const ApplicationBar = ({
   singleAction,
 }: ApplicationBarProps) => {
   const theme = useTheme();
+  const config = useConfig();
 
   return (
     <AppBar
@@ -61,7 +62,7 @@ export const ApplicationBar = ({
                 }}
                 variant={'body2'}
               >
-                {ConfigService.getInstance().config.applicationName}
+                {config.applicationName}
               </Typography>
             </Box>
           )}

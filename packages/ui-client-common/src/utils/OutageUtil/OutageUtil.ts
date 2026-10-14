@@ -1,7 +1,7 @@
 import { addHours } from 'date-fns';
 import type { CommonDbOutage } from '@gen-epix/api-commondb';
 
-import { ConfigService } from '../../classes/services/ConfigService';
+import { resolveConfig } from '../../classes/containers/UiClientCommonContainer';
 import type { CategorizedOutages } from '../../models/outage';
 
 export class OutageUtil {
@@ -58,7 +58,7 @@ export class OutageUtil {
       }
       if (outage.active_from || outage.active_to) {
         const now = new Date();
-        const soon = addHours(now, ConfigService.getInstance().config.outages.NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES);
+        const soon = addHours(now, resolveConfig().outages.NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES);
         if (outage.active_from && outage.active_to) {
           return soon >= new Date(outage.active_from) && now < new Date(outage.active_to);
         }

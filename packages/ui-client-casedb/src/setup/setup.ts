@@ -5,6 +5,8 @@ import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
+import type { UiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import {
   CaseDbAbacApi,
   CaseDbAuthApi,
@@ -14,6 +16,7 @@ import {
 } from '@gen-epix/api-casedb';
 import type { CommonDbOrganizationApi } from '@gen-epix/api-commondb';
 
+import type { CaseDbConfig } from '../models/config';
 import type { CASEDB_QUERY_KEY } from '../constants/query';
 import { CASEDB_QUERY_DEPENDENCIES } from '../constants/query';
 import { HomePage } from '../pages/HomePage';
@@ -22,21 +25,29 @@ import {
   createRoutes,
 } from '../routes';
 
-export const setupCaseDb = () => {
-  RouterService.getInstance().initialize({
-    adminRoutes: () => createAdminRoutes() as MyNonIndexRouteObject[],
-    homePageComponent: HomePage,
-    routes: () => createRoutes(RouterService.getInstance().adminRoutes) as MyNonIndexRouteObject[],
+export const setupCaseDb = (container: UiClientCommonContainer) => {
+  const config = resolveConfig<CaseDbConfig>(container);
+  container.register(RouterService, {
+    useValue: new RouterService({
+      adminRoutes: () => createAdminRoutes() as MyNonIndexRouteObject[],
+      homePageComponent: HomePage,
+      routes: () => createRoutes(RouterService.getInstance().adminRoutes) as MyNonIndexRouteObject[],
+    }),
   });
-  QueryClientService.getInstance<CASEDB_QUERY_KEY & COMMON_QUERY_KEY>().initialize({
-    queryKeyDependencies: [COMMON_QUERY_DEPENDENCIES, CASEDB_QUERY_DEPENDENCIES],
+  container.register(QueryClientService, {
+    useValue: new QueryClientService<CASEDB_QUERY_KEY & COMMON_QUERY_KEY>({
+      config,
+      queryKeyDependencies: [COMMON_QUERY_DEPENDENCIES, CASEDB_QUERY_DEPENDENCIES],
+    }),
   });
-  ApiService.getInstance().initialize({
-    abacApi: CaseDbAbacApi.getInstance(),
-    authApi: CaseDbAuthApi.getInstance(),
-    baseApi: CaseDbBaseAPI,
-    organizationApi: CaseDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
-    systemApi: CaseDbSystemApi.getInstance(),
+  container.register(ApiService, {
+    useValue: new ApiService({
+      abacApi: CaseDbAbacApi.getInstance(),
+      authApi: CaseDbAuthApi.getInstance(),
+      baseApi: CaseDbBaseAPI,
+      organizationApi: CaseDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
+      systemApi: CaseDbSystemApi.getInstance(),
+    }),
   });
   setupUi();
 };

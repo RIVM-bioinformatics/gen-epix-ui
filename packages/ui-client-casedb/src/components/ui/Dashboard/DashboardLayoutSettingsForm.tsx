@@ -17,7 +17,7 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import noop from 'lodash/noop';
 
 import { ArrangementEditor } from '../../form/fields/ArrangementEditor';
@@ -35,6 +35,7 @@ type FormValues = {
 
 export const DashboardLayoutSettingsForm = ({ onReset }: DashboardLayoutSettingsFormProps) => {
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
   const userProfileStore = use(UserProfileStoreContext);
 
   const resetDashboardLayout = useStore(userProfileStore, useShallow((state) => state.resetDashboardLayout));
@@ -62,7 +63,7 @@ export const DashboardLayoutSettingsForm = ({ onReset }: DashboardLayoutSettings
     if (!arrangementKey) {
       return;
     }
-    const arrangementOptions = ConfigService.getInstance<CaseDbConfig>().config.dashboard.ARRANGEMENT_OPTIONS;
+    const arrangementOptions = config.dashboard.ARRANGEMENT_OPTIONS;
     const arrangement = arrangementOptions[arrangementKey];
     if (!arrangement) {
       return;
@@ -70,9 +71,9 @@ export const DashboardLayoutSettingsForm = ({ onReset }: DashboardLayoutSettings
 
     setDashboardLayoutUserConfig({
       arrangementKey,
-      arrangementWidgetAssignments: DashboardUtil.getArrangementWidgetAssignments(arrangement, ConfigService.getInstance<CaseDbConfig>().config.dashboard.DEFAULT_WIDGET_ASSIGNMENTS[arrangementKey]),
+      arrangementWidgetAssignments: DashboardUtil.getArrangementWidgetAssignments(arrangement, config.dashboard.DEFAULT_WIDGET_ASSIGNMENTS[arrangementKey]),
     });
-  }, [formValues, setDashboardLayoutUserConfig]);
+  }, [config, formValues, setDashboardLayoutUserConfig]);
 
   const onSubmit = noop;
 
@@ -91,7 +92,7 @@ export const DashboardLayoutSettingsForm = ({ onReset }: DashboardLayoutSettings
             <ArrangementEditor
               label={t`Arrangement`}
               name={'arrangementKey'}
-              options={ConfigService.getInstance<CaseDbConfig>().config.dashboard.ARRANGEMENT_OPTIONS}
+              options={config.dashboard.ARRANGEMENT_OPTIONS}
             />
           </FormGroup>
         </Box>

@@ -44,10 +44,10 @@ import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
@@ -101,6 +101,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   }: FindSimilarCasesDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
   const searchFormId = useId();
   const dashboardStore = use(DashboardStoreContext);
   const treeConfiguration = dashboardStore.getState().getWidgetDataPersistable<TreeWidgetDataPersistable>(DASHBOARD_COMPONENT_NAME.TREE).treeConfiguration;
@@ -117,11 +118,11 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
         return s;
       }
       const sWithIntegerCheck = s.integer(t`Max distance must be an integer`);
-      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || ConfigService.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
+      return sWithIntegerCheck.max(currentTreeConfiguration.geneticDistanceProtocol.seqdb_max_stored_distance || config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK);
     }),
     organizationFilter: string<FindSimilarCasesOrganizationFilter>().required().oneOf(['all', 'own', 'otherOrganization']),
     treeColId: string().required(),
-  }), [t, treeConfigurations]);
+  }), [config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK, t, treeConfigurations]);
 
   const treeOptions = useMemo<AutoCompleteOption<string>[]>(() => {
     const cols = new Set<CaseDbCol>();
@@ -162,14 +163,14 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
       {
         definition: FORM_FIELD_DEFINITION_TYPE.NUMBER,
         label: t`Max distance`,
-        max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || ConfigService.getInstance<CaseDbConfig>().config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
+        max: currentTreeConfiguration?.geneticDistanceProtocol?.seqdb_max_stored_distance || config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK,
         min: 0,
         name: 'maxDistance',
         showSlider: true,
         step: 1,
       } as const satisfies FormFieldDefinition<FormFields>,
     ];
-  }, [formValues.treeColId, t, treeConfigurations, treeOptions]);
+  }, [config.epi.SEQDB_MAX_STORED_DISTANCE_FALLBACK, formValues.treeColId, t, treeConfigurations, treeOptions]);
 
   useEffect(() => {
     onTitleChange(t`Find similar cases`);

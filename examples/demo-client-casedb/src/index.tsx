@@ -1,8 +1,7 @@
 import { createRoot } from 'react-dom/client';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
-import type { CaseDbConfig } from '@gen-epix/ui-client-casedb/models/config';
 import { CaseDbApp } from '@gen-epix/ui-client-casedb/components/app/CaseDbApp';
 import { setupCaseDb } from '@gen-epix/ui-client-casedb/setup/setup';
 
@@ -34,11 +33,12 @@ const init = async () => {
     },
   });
 
-  ConfigService.getInstance<CaseDbConfig>().config = ConfigUtil.createConfig();
-  setupCaseDb();
+  const config = ConfigUtil.createConfig();
+  const container = createUiClientCommonContainer(config);
+  setupCaseDb(container);
 
   createRoot(document.getElementById('root')).render(
-    <CaseDbApp />,
+    <CaseDbApp container={container} />,
   );
 };
 

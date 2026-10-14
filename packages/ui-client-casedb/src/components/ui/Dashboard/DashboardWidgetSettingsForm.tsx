@@ -18,7 +18,7 @@ import {
 } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/shallow';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { GenericForm } from '@gen-epix/ui-core-form/components/helpers/GenericForm';
 import { FormUtil } from '@gen-epix/ui-core-form/utils/FormUtil';
 
@@ -31,13 +31,14 @@ export type DashboardEpiCurveSettingsFormProps = {
 
 export const DashboardWidgetSettingsForm = ({ widgetName }: DashboardEpiCurveSettingsFormProps) => {
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
   const userProfileStore = use(UserProfileStoreContext);
   const formId = useId();
 
   const resetWidgetSettings = useStore(userProfileStore, useShallow((state) => state.resetWidgetSettings));
   const setWidgetSettings = useStore(userProfileStore, useShallow((state) => state.setWidgetSettings));
-  const formFieldDefinitions = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS[widgetName].configFormFieldsDefinitions;
-  const defaultFormValues = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS[widgetName].configDefaultValues;
+  const formFieldDefinitions = config.dashboard.WIDGETS[widgetName].configFormFieldsDefinitions;
+  const defaultFormValues = config.dashboard.WIDGETS[widgetName].configDefaultValues;
 
   const schema = useMemo(() => {
     if (!formFieldDefinitions) {

@@ -64,7 +64,6 @@ export const DashboardSearch = () => {
   const shouldRestoreSearchButtonFocusRef = useRef(false);
   const arrowUpButtonRef = useRef<HTMLButtonElement>(null);
   const arrowDownButtonRef = useRef<HTMLButtonElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dashboardStore = use(DashboardStoreContext);
   const sortedData = useStore(dashboardStore, (state) => state.sortedData);
   const completeCaseType = useStore(dashboardStore, (state) => state.completeCaseType);
@@ -384,7 +383,6 @@ export const DashboardSearch = () => {
                   edge={'end'}
                   onClick={onCloseButtonClick}
                   onKeyDown={onGenericKeyDown}
-                  ref={closeButtonRef}
                 >
                   <CloseIcon />
                 </IconButton>

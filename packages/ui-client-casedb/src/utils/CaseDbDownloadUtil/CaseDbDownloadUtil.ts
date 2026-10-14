@@ -12,7 +12,7 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { LogService } from '@gen-epix/ui-client-common/classes/services/LogService';
 import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
@@ -23,6 +23,7 @@ import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
 import { CaseTypeUtil } from '../CaseTypeUtil';
 import { CaseUtil } from '../CaseUtil';
 import { CASEDB_QUERY_KEY } from '../../constants/query';
+import type { CaseDbConfig } from '../../models/config';
 
 export class CaseDbDownloadUtil {
   public static downloadAsCsv(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
@@ -137,7 +138,7 @@ export class CaseDbDownloadUtil {
 
   public static getExportFileName(baseName: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): string {
     return t('{{date}}--{{applicationName}}--{{caseTypeName}}--{{baseName}}', {
-      applicationName: StringUtil.createSlug(ConfigService.getInstance().config.applicationName),
+      applicationName: StringUtil.createSlug(resolveConfig<CaseDbConfig>().applicationName),
       baseName: StringUtil.createSlug(baseName),
       caseTypeName: StringUtil.createSlug(completeCaseType.name),
       date: format(new Date(), DATE_FORMAT.DATE),
@@ -145,7 +146,7 @@ export class CaseDbDownloadUtil {
   }
 
   public static getTemplateFileName(completeCaseType: CaseDbCompleteCaseType): string {
-    return `${StringUtil.createSlug(ConfigService.getInstance().config.applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
+    return `${StringUtil.createSlug(resolveConfig<CaseDbConfig>().applicationName)}--${StringUtil.createSlug(completeCaseType.name)}--template`;
   }
 
   private static getColsForImportExport(colIds: string[], completeCaseType: CaseDbCompleteCaseType): CaseDbCol[] {

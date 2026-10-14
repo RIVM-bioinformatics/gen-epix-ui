@@ -43,7 +43,7 @@ import {
   FIXED_COLUMN_ID,
   TABLE_COLUMN_FROZEN,
 } from '../../models/table';
-import { ConfigService } from '../../classes/services/ConfigService';
+import { resolveConfig } from '../../classes/containers/UiClientCommonContainer';
 
 export class TableUtil {
   public static areColumnVisualSettingsValid<TData, TDataContext = null>(tableColumns: TableColumn<TData, TDataContext>[], columnVisualSettings: TableColumnVisualSettings[]): boolean {
@@ -103,7 +103,7 @@ export class TableUtil {
     tableColumnVisualSettingsCopy.forEach(setting => {
       const tableColumn = tableColumns.find(c => c.id === setting.id);
       if (tableColumn?.cellColorGetter) {
-        setting.widthPx = ConfigService.getInstance().config.table.CONDENSED_WIDTH_PX;
+        setting.widthPx = resolveConfig().table.CONDENSED_WIDTH_PX;
         setting.isVisible = true;
       }
     });

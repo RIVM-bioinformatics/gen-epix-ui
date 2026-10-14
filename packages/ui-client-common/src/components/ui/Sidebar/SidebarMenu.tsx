@@ -5,12 +5,13 @@ import {
 import type { PropsWithChildren } from 'react';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
+import { useConfig } from '../../../hooks/useConfig';
 
 export type SidebarMenuProps = PropsWithChildren;
 
 export const SidebarMenu = ({ children }: SidebarMenuProps) => {
   const theme = useTheme();
+  const config = useConfig();
 
   return (
     <Box
@@ -23,7 +24,7 @@ export const SidebarMenu = ({ children }: SidebarMenuProps) => {
         left: 0,
         position: 'absolute',
         top: 0,
-        width: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH),
+        width: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH),
         zIndex: 2,
       }}
     >

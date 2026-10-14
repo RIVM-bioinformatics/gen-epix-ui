@@ -16,7 +16,6 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
 import { AxiosUtil } from '@gen-epix/ui-client-common/utils/AxiosUtil';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import {
   createTableStoreActions,
   createTableStoreInitialState,
@@ -60,11 +59,13 @@ import { DASHBOARD_COMPONENT_NAME } from '../../constants/dashboard';
 export interface CreateDashboardStoreInitialStateKwArgs extends CreateTableStoreInitialStateKwArgs<CaseDbCase, CaseDbCompleteCaseType> {
   caseSetId: string;
   completeCaseType: CaseDbCompleteCaseType;
+  config: CaseDbConfig;
 }
 
 export type CreateDashboardStoreKwArgs = {
   caseSetId: string;
   completeCaseType: CaseDbCompleteCaseType;
+  config: CaseDbConfig;
 } & CreateTableStoreKwArgs<CaseDbCase, CaseDbCompleteCaseType>;
 
 export type DashboardStore = DashboardStoreActions & DashboardStoreState;
@@ -121,7 +122,7 @@ interface DashboardStoreState extends TableStoreState<CaseDbCase, CaseDbComplete
 }
 
 const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialStateKwArgs): DashboardStoreState => {
-  const { caseSetId, completeCaseType, ...createTableStoreInitialStateKwArgs } = kwArgs;
+  const { caseSetId, completeCaseType, config, ...createTableStoreInitialStateKwArgs } = kwArgs;
 
   return {
     ...createTableStoreInitialState<CaseDbCase, CaseDbCompleteCaseType>(createTableStoreInitialStateKwArgs),
@@ -138,17 +139,17 @@ const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialSta
     isMaxResultsExceeded: false,
     isMaxResultsExceededDismissed: false,
     newick: null,
-    numVisibleAttributesInSummary: ConfigService.getInstance<CaseDbConfig>().config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
+    numVisibleAttributesInSummary: config.epi.INITIAL_NUM_VISIBLE_ATTRIBUTES_IN_CASE_SUMMARY,
     stratification: null,
     stratifyableColumns: [],
     tree: null,
     treeAddresses: {},
     treeResponse: null,
-    widgetData: Object.entries(ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
+    widgetData: Object.entries(config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
       acc[widgetName] = cloneDeep(widgetConfig.dataDefaultValues);
       return acc;
     }, {} as { [key: string]: { [key: string]: unknown } }),
-    widgetDataPersistable: Object.entries(ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
+    widgetDataPersistable: Object.entries(config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
       acc[widgetName] = cloneDeep(widgetConfig.dataDefaultValues);
       return acc;
     }, {} as { [key: string]: { [key: string]: unknown } }),
@@ -156,7 +157,7 @@ const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialSta
 };
 
 export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
-  const { caseSetId, completeCaseType, ...createTableStoreKwArgs } = kwArgs;
+  const { caseSetId, completeCaseType, config, ...createTableStoreKwArgs } = kwArgs;
 
   const dashboardStore = createStore<DashboardStore>()(
     persist(
@@ -164,6 +165,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
         const initialState = createDashboardStoreInitialState({
           caseSetId,
           completeCaseType,
+          config,
           ...createTableStoreKwArgs,
         });
         const tableStoreActions = createTableStoreActions<CaseDbCase, CaseDbCompleteCaseType>({

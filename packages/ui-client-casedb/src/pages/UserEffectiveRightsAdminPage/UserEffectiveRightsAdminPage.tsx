@@ -18,7 +18,6 @@ import type {
   TableRowParams,
 } from '@gen-epix/ui-client-common/models/table';
 import { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -35,6 +34,7 @@ import {
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { useInitializeTableStore } from '@gen-epix/ui-client-common/hooks/useInitializeTableStore';
 import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { UserUtil } from '@gen-epix/ui-client-common/utils/UserUtil';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
@@ -65,6 +65,7 @@ import { EffectiveRightsUtil } from '../../utils/EffectiveRightsUtil';
 
 export const UserEffectiveRightsAdminPage = () => {
   const { t } = useTranslation();
+  const config = useConfig();
   const theme = useTheme();
   const usersEffectiveRightsDetailsDialogRef = useRef<UsersEffectiveRightsDetailsDialogRefMethods>(null);
 
@@ -314,7 +315,7 @@ export const UserEffectiveRightsAdminPage = () => {
             <Box
               sx={{
                 height: '100%',
-                paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                paddingLeft: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH + 1),
                 width: '100%',
               }}
             >

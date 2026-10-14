@@ -6,7 +6,7 @@ import type {
   CaseDbCol,
   CaseDbCompleteCaseType,
 } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { t } from 'i18next';
 import type { Range } from 'colorjs.io';
 
@@ -83,7 +83,7 @@ export class StratificationUtil {
     },
   ): StratifiableColumn[] {
     const { completeCaseType, data } = kwArgs;
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
 
     const filteredCols = CaseTypeUtil.getCols(completeCaseType).filter(col => {
       const column = completeCaseType.ref_cols[col.ref_col_id];
@@ -108,7 +108,7 @@ export class StratificationUtil {
       useExtraGradients?: boolean;
     },
   ): Stratification {
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
     const { col, completeCaseType, sortedData, useExtraGradients } = kwArgs;
     if (!col) {
       return null;
@@ -223,7 +223,7 @@ export class StratificationUtil {
       sortedData: CaseDbCase[];
     },
   ): Stratification {
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
     const { selectedIds, sortedData } = kwArgs;
     const caseIdColors: { [key: string]: string } = {};
     const legendaItems: StratificationLegendaItem[] = [];
@@ -273,7 +273,7 @@ export class StratificationUtil {
       sortedData: CaseDbCase[];
     },
   ): Stratification {
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
     const { similarCaseIds, sortedData } = kwArgs;
     const caseIdColors: { [key: string]: string } = {};
     const legendaItems: StratificationLegendaItem[] = [];
@@ -324,7 +324,7 @@ export class StratificationUtil {
       sortedData: CaseDbCase[];
     },
   ): CaseTypeRowValue[] {
-    const { STRATIFICATION } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { STRATIFICATION } = resolveConfig<CaseDbConfig>().epi;
     const { col, completeCaseType, sortedData } = kwArgs;
     const refCol = completeCaseType.ref_cols[col.ref_col_id];
     const conceptSetConceptIds = DataService.getInstance().data.conceptsIdsBySetId[refCol.concept_set_id];

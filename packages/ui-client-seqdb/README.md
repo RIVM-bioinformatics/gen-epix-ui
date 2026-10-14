@@ -34,16 +34,13 @@ Refer to `package.json` for the full list of peer dependencies.
 
 ```tsx
 import { createRoot } from 'react-dom/client';
-import {
-  ConfigService,
-  I18nService,
-} from '@gen-epix/ui-client-common';
+import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
+import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import {
   SeqDbApp,
   setupSeqDb,
 } from '@gen-epix/ui-client-seqdb';
-import type { SeqDbConfig } from '@gen-epix/ui-client-seqdb';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
@@ -77,13 +74,14 @@ const init = async () => {
     },
   });
 
-  ConfigService.getInstance<SeqDbConfig>().config = {
+  const config = {
     // add your config here
   };
+  const container = createUiClientCommonContainer(config);
 
-  setupSeqDb();
+  setupSeqDb(container);
 
-  createRoot(document.getElementById('root')!).render(<SeqDbApp />);
+  createRoot(document.getElementById('root')!).render(<SeqDbApp container={container} />);
 };
 
 init().catch((error) => {

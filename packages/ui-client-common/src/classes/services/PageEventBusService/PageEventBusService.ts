@@ -1,9 +1,14 @@
 import type { CommonDbUser } from '@gen-epix/api-commondb';
 import { EventBusAbstract } from '@gen-epix/ui-core/classes/abstracts/EventBusAbstract';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
+import {
+  inject,
+  injectable,
+  container as rootContainer,
+} from 'tsyringe';
 
-import { ConfigService } from '../ConfigService';
+import { CONFIG_TOKEN } from '../../../constants/config';
+import type { ConfigBase } from '../../../models/config';
 
 type EpiEvent = {
   changePage: Page;
@@ -22,19 +27,17 @@ type Page = {
   pageName: string;
 };
 
+@injectable()
 export class PageEventBusService extends EventBusAbstract<EpiEvent> {
-  private static __instance: PageEventBusService;
-
   private lastPageEventPayload: string = null;
 
-  private constructor() {
+  public constructor(@inject(CONFIG_TOKEN) config: ConfigBase) {
     super();
-    this.setupClickEventListener();
+    this.setupClickEventListener(config.enablePageEvents);
   }
 
   public static getInstance(): PageEventBusService {
-    PageEventBusService.__instance = HmrUtil.getHmrSingleton('pageEventBusService', PageEventBusService.__instance, () => new PageEventBusService());
-    return PageEventBusService.__instance;
+    return rootContainer.resolve(PageEventBusService);
   }
 
   public emit<TEventName extends keyof EpiEvent>(eventName: TEventName, payload?: EpiEvent[TEventName]): void {
@@ -52,7 +55,6 @@ export class PageEventBusService extends EventBusAbstract<EpiEvent> {
     super.emit(eventName, payload);
   }
 
-
   public getPage(): Page {
     return {
       location: WindowService.getInstance().window.location,
@@ -60,8 +62,8 @@ export class PageEventBusService extends EventBusAbstract<EpiEvent> {
     };
   }
 
-  private setupClickEventListener(): void {
-    if (!ConfigService.getInstance().config.enablePageEvents) {
+  private setupClickEventListener(enablePageEvents: boolean): void {
+    if (!enablePageEvents) {
       return;
     }
     WindowService.getInstance().window.addEventListener('click', (event: Event): void => {

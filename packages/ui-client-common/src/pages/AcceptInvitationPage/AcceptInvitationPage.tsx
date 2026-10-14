@@ -12,16 +12,17 @@ import {
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import { ConfigService } from '../../classes/services/ConfigService';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../constants/query';
 import { ApiService } from '../../classes/services/ApiService';
+import { useConfig } from '../../hooks/useConfig';
 
 export const AcceptInvitationPage = () => {
   const { token } = useParams();
+  const config = useConfig();
   const [shouldRegister, setShouldRegister] = useState(false);
 
   const { data, error, isLoading } = useQueryMemo({
@@ -64,7 +65,7 @@ export const AcceptInvitationPage = () => {
               }}
             >
               <Typography>
-                {t('You have been invited to join {{applicationName}}.', { applicationName: ConfigService.getInstance().config.applicationName })}
+                {t('You have been invited to join {{applicationName}}.', { applicationName: config.applicationName })}
               </Typography>
             </Box>
             <Box
@@ -86,7 +87,7 @@ export const AcceptInvitationPage = () => {
           <>
             <Box>
               <Typography>
-                {t('You have been successfully registered to {{applicationName}}.', { applicationName: ConfigService.getInstance().config.applicationName })}
+                {t('You have been successfully registered to {{applicationName}}.', { applicationName: config.applicationName })}
               </Typography>
             </Box>
             <Box

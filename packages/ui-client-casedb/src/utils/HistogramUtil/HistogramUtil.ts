@@ -8,7 +8,7 @@ import type {
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
 import type { Theme } from '@mui/material';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config';
@@ -68,7 +68,7 @@ export class HistogramUtil {
       return [];
     }
     const { MAX_ALLOWED_UNIQUE_VALUES } =
-      ConfigService.getInstance<CaseDbConfig>().config.epi.STRATIFICATION;
+      resolveConfig<CaseDbConfig>().epi.STRATIFICATION;
     return completeCaseType.ordered_col_ids.reduce<CaseDbCol[]>((acc, colId) => {
       const col = completeCaseType.cols[colId];
       const refCol = completeCaseType.ref_cols[col.ref_col_id];

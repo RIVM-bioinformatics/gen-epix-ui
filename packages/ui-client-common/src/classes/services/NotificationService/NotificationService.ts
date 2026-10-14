@@ -1,24 +1,29 @@
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import {
+  inject,
+  injectable,
+  container as rootContainer,
+} from 'tsyringe';
 
-import { ConfigService } from '../ConfigService';
 import type { Notification } from '../../../models/notification';
+import { CONFIG_TOKEN } from '../../../constants/config';
+import type { ConfigBase } from '../../../models/config';
 
+@injectable()
 export class NotificationService extends SubscribableAbstract<Notification[]> {
-  private static __instance: NotificationService;
-
+  private readonly config: Pick<ConfigBase, 'notifications'>;
   private readonly notificationTimeouts: Record<string, ReturnType<typeof setTimeout>>;
 
-  private constructor() {
+  public constructor(@inject(CONFIG_TOKEN) config: ConfigBase) {
     super(new Subject<Notification[]>([]));
+    this.config = config;
     this.notificationTimeouts = {};
   }
 
   public static getInstance(): NotificationService {
-    NotificationService.__instance = HmrUtil.getHmrSingleton('notificationService', NotificationService.__instance, () => new NotificationService());
-    return NotificationService.__instance;
+    return rootContainer.resolve(NotificationService);
   }
 
   public clearNotification(key: string): void {
@@ -74,7 +79,7 @@ export class NotificationService extends SubscribableAbstract<Notification[]> {
 
   public showNotification(notification: Omit<Notification, 'key' | 'timestamp' | 'visible'>): string {
     const key = StringUtil.createUuid();
-    const autoHideAfterMs = notification.autoHideAfterMs ?? ConfigService.getInstance().config.notifications.autoHideAfterMs;
+    const autoHideAfterMs = notification.autoHideAfterMs ?? this.config.notifications.autoHideAfterMs;
 
     this.subject.next([
       {

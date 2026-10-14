@@ -8,7 +8,7 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
+import { useConfig } from '../../../hooks/useConfig';
 
 export interface ConsentDialogOpenProps {
   //
@@ -28,10 +28,11 @@ export const ConsentDialog = withDialog<ConsentDialogProps, ConsentDialogOpenPro
   }: ConsentDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig();
 
   useEffect(() => {
-    onTitleChange(ConfigService.getInstance().config.consentDialog.getTitle());
-  }, [onTitleChange, t]);
+    onTitleChange(config.consentDialog.getTitle());
+  }, [config, onTitleChange, t]);
 
   useEffect(() => {
     onActionsChange([
@@ -39,14 +40,14 @@ export const ConsentDialog = withDialog<ConsentDialogProps, ConsentDialogOpenPro
         ...TestIdUtil.createAttributes('ConsentDialog-agree'),
         autoFocus: true,
         color: 'secondary',
-        label: ConfigService.getInstance().config.consentDialog.getButtonLabel(),
+        label: config.consentDialog.getButtonLabel(),
         onClick: onConsent,
         variant: 'contained',
       },
     ]);
-  }, [onActionsChange, onConsent, t]);
+  }, [config, onActionsChange, onConsent, t]);
 
-  return ConfigService.getInstance().config.consentDialog.Content();
+  return config.consentDialog.Content();
 }, {
   defaultTitle: '',
   disableBackdropClick: true,

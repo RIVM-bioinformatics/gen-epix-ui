@@ -15,7 +15,7 @@ import { defineConfig } from 'vitest/config';
 import { findGitRootPath } from '@gen-epix/tools-lib';
 
 // eslint-disable-next-line import-x/extensions
-import packageJson from './package.json';
+import packageJson from './package.json' with { type: 'json' };;
 
 let commitHash = 'not-a-git-repo';
 try {

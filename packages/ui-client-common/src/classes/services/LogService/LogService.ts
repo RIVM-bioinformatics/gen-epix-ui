@@ -5,13 +5,18 @@ import type {
 } from 'axios';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 import type { CommonDbExternalLogItem } from '@gen-epix/api-commondb';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
+import {
+  inject,
+  injectable,
+  container as rootContainer,
+} from 'tsyringe';
 
 import { AuthenticationService } from '../AuthenticationService';
-import { ConfigService } from '../ConfigService';
 import { ApiService } from '../ApiService';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
+import { CONFIG_TOKEN } from '../../../constants/config';
+import type { ConfigBase } from '../../../models/config';
 
 type LogServiceItem = {
   detail?: unknown;
@@ -20,23 +25,23 @@ type LogServiceItem = {
   topic: string;
 };
 
+@injectable()
 export class LogService {
-  private static __instance: LogService;
-
   protected readonly requestMap: Map<string, number>;
 
+  private readonly config: Pick<ConfigBase, 'getSoftwareVersion' | 'log'>;
   private logItems: CommonDbExternalLogItem[] = [];
 
-  private constructor() {
+  public constructor(@inject(CONFIG_TOKEN) config: ConfigBase) {
     this.requestMap = new Map<string, number>();
+    this.config = config;
     setInterval(() => {
       this.sendLog();
-    }, ConfigService.getInstance().config.log.LOG_INTERVAL_MS);
+    }, config.log.LOG_INTERVAL_MS);
   }
 
   public static getInstance(): LogService {
-    LogService.__instance = HmrUtil.getHmrSingleton('logService', LogService.__instance, () => new LogService());
-    return LogService.__instance;
+    return rootContainer.resolve(LogService);
   }
 
   public flushLog(): void {
@@ -45,7 +50,7 @@ export class LogService {
 
   public log(items: LogServiceItem[]): void {
     const timestamp = new Date().toISOString();
-    const software_version = ConfigService.getInstance().config.getSoftwareVersion();
+    const software_version = this.config.getSoftwareVersion();
     this.logItems.push(...items.map<CommonDbExternalLogItem>(item => {
       return {
         command_id: StringUtil.createUuid(),

@@ -23,7 +23,6 @@ import type {
   TableColumn,
   TableRowParams,
 } from '@gen-epix/ui-client-common/models/table';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import {
   createTableStore,
   TableStoreContextProvider,
@@ -42,6 +41,7 @@ import {
 import { TableUtil } from '@gen-epix/ui-client-common/utils/TableUtil';
 import { useInitializeTableStore } from '@gen-epix/ui-client-common/hooks/useInitializeTableStore';
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date';
@@ -63,6 +63,7 @@ type Row = CaseDbCaseSet & CaseDbCaseStats;
 
 export const EventsPage = () => {
   const { t } = useTranslation();
+  const config = useConfig();
   const theme = useTheme();
   const caseTypeOptionsQuery = useCaseTypeOptionsQuery();
   const caseSetCategoryOptionsQuery = useCaseSetCategoryOptionsQuery();
@@ -252,7 +253,7 @@ export const EventsPage = () => {
                 <Box
                   sx={{
                     height: '100%',
-                    paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                    paddingLeft: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH + 1),
                     width: '100%',
                   }}
                 >

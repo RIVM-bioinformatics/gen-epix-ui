@@ -1,4 +1,4 @@
-import { ConfigService } from '../../classes/services/ConfigService';
+import { createUiClientCommonContainer } from '../../classes/containers/UiClientCommonContainer';
 import { setupUi } from '../../setup/setup';
 import { createDemoTheme } from '../../theme/demoTheme';
 import { StandardConfigUtil } from '../../utils/StandardConfigUtil';
@@ -7,10 +7,11 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 export const setupTestEnvironment = () => {
-  ConfigService.getInstance().config = {
+  const config = {
     ...StandardConfigUtil.createConfig(),
     theme: createDemoTheme('light'),
   };
+  createUiClientCommonContainer(config);
   setupUi();
 
   vi.setConfig({

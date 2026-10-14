@@ -31,7 +31,6 @@ import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form';
 import type { DialogAction } from '@gen-epix/ui-core-components/components/Dialog';
 
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
-import { ConfigService } from '../../classes/services/ConfigService';
 import { RouterService } from '../../classes/services/RouterService';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
@@ -64,6 +63,7 @@ import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { LoadableUtil } from '../../utils/LoadableUtil';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 import type { COMMON_QUERY_KEY } from '../../constants/query';
+import { useConfig } from '../../hooks/useConfig';
 
 import type { CrudPageEditDialogRefMethods } from './CrudPageEditDialog';
 import { CrudPageEditDialog } from './CrudPageEditDialog';
@@ -198,6 +198,7 @@ export const CrudPage = <
 
   const { t } = useTranslation();
   const theme = useTheme();
+  const config = useConfig();
   const deleteConfirmationRef = useRef<CrudPageDeleteDialogRefMethods<TData>>(null);
   const editDialogRef = useRef<CrudPageEditDialogRefMethods<TData, TFormFields>>(null);
   const authorizationService = useMemo(() => AuthorizationService.getInstance(), []);
@@ -658,7 +659,7 @@ export const CrudPage = <
             <Box
               sx={{
                 height: '100%',
-                paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+                paddingLeft: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH + 1),
                 width: '100%',
               }}
             >

@@ -14,10 +14,10 @@ import { isAxiosError } from 'axios';
 import { CommonDbLogLevel } from '@gen-epix/api-commondb';
 
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';
 import { PageEventBusService } from '../../../classes/services/PageEventBusService';
 import { RouterService } from '../../../classes/services/RouterService';
+import { useConfig } from '../../../hooks/useConfig';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 
 export type GenericErrorMessageProps = {
@@ -27,6 +27,7 @@ export type GenericErrorMessageProps = {
 
 export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericErrorMessageProps) => {
   const { t } = useTranslation();
+  const config = useConfig();
 
   useEffect(() => {
     if (!error || isAxiosError(error)) {
@@ -42,10 +43,10 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
     }]);
     LogService.getInstance().flushLog();
-    if (error instanceof Error && ConfigService.getInstance().config.enablePageEvents) {
+    if (error instanceof Error && config.enablePageEvents) {
       PageEventBusService.getInstance().emit('error', error);
     }
-  }, [error]);
+  }, [config.enablePageEvents, error]);
 
   const onBackToHomePageButtonClick = useCallback(async () => {
     await RouterService.getInstance().router.navigate({

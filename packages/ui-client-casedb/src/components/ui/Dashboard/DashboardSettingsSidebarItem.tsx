@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useMemo } from 'react';
 import type { SidebarItemSharedProps } from '@gen-epix/ui-client-common/components/ui/Sidebar';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { SidebarItem } from '@gen-epix/ui-client-common/components/ui/Sidebar';
 
 import type { CaseDbConfig } from '../../../models/config';
@@ -27,6 +27,7 @@ export const DashboardSettingsSidebarItemIcon = SettingsIcon;
 const DashboardSettingsSidebarItemContent = ({ onReset }: DashboardSettingsSidebarItemContentProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
 
   const items = useMemo(() => {
     const x = [
@@ -39,7 +40,7 @@ const DashboardSettingsSidebarItemContent = ({ onReset }: DashboardSettingsSideb
         label: t`General`,
       },
     ];
-    Object.entries(ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS).forEach(([widgetName, widgetConfig]) => {
+    Object.entries(config.dashboard.WIDGETS).forEach(([widgetName, widgetConfig]) => {
       if (widgetConfig.configFormFieldsDefinitions) {
         x.push({
           component: <DashboardWidgetSettingsForm widgetName={widgetName} />,
@@ -48,7 +49,7 @@ const DashboardSettingsSidebarItemContent = ({ onReset }: DashboardSettingsSideb
       }
     });
     return x;
-  }, [onReset, t]);
+  }, [config.dashboard.WIDGETS, onReset, t]);
 
   return (
     <Box

@@ -15,7 +15,7 @@ The platform is currently in beta and is not yet intended for production use. Fe
 `@gen-epix/ui-client-common` is the core React component library shared by all Gen-EpiX frontend applications. It provides:
 
 - UI components (application bar, sidebar, breadcrumbs, tables, forms, notifications, dialogs, …)
-- Application services (`ConfigService`, `RouterService`, `AuthenticationService`, `AuthorizationService`, `I18nService`, `NotificationService`, …)
+- Application services (`RouterService`, `AuthenticationService`, `AuthorizationService`, `I18nService`, `NotificationService`, …) resolved through the application DI container
 - Data hooks built on [TanStack Query](https://tanstack.com/query)
 - Form primitives built on [React Hook Form](https://react-hook-form.com/)
 - Rich-text editing via [TipTap](https://tiptap.dev/)
@@ -40,12 +40,10 @@ The example below shows the minimal bootstrap for a host application that uses `
 
 ```tsx
 import { createRoot } from 'react-dom/client';
-import {
-  App,
-  ConfigService,
-  I18nService,
-  setup,
-} from '@gen-epix/ui-client-common';
+import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
+import { App } from '@gen-epix/ui-client-common/components/app/App';
+import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
@@ -70,13 +68,14 @@ const init = async () => {
     },
   });
 
-  ConfigService.getInstance().config = {
+  const config = {
     // add your config here
   };
+  const container = createUiClientCommonContainer(config);
 
-  setup();
+  setupUi();
 
-  createRoot(document.getElementById('root')!).render(<App />);
+  createRoot(document.getElementById('root')!).render(<App container={container} />);
 };
 
 init().catch((error) => {

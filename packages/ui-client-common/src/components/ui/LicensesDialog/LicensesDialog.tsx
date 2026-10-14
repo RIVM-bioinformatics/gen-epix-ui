@@ -34,9 +34,9 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
+import { useConfig } from '../../../hooks/useConfig';
 import { QueryClientService } from '../../../classes/services/QueryClientService';
 import { COMMON_QUERY_KEY } from '../../../constants/query';
 import { ApiService } from '../../../classes/services/ApiService';
@@ -62,9 +62,10 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
   }: LicensesDialogProps,
 ): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig();
   const [item, setItem] = useState<CommonDbPackageMetadata>(null);
 
-  const { LicenseInformation } = ConfigService.getInstance().config;
+  const { LicenseInformation } = config;
 
   const { data: frontendLicenses, error: frontendLicensesError, isLoading: isFrontendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {

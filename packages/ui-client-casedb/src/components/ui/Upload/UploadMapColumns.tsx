@@ -26,8 +26,8 @@ import { useTranslation } from 'react-i18next';
 import uniq from 'lodash/uniq';
 import { useStore } from 'zustand';
 import difference from 'lodash/difference';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { useIdentifierIssuerOwnOrganizationOptionsQuery } from '@gen-epix/ui-client-common/dataHooks/useIdentifierIssuerOwnOrganizationQuery';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import { Select } from '@gen-epix/ui-core-form/components/fields/Select';
@@ -44,6 +44,7 @@ import { UploadNavigation } from './UploadNavigation';
 
 export const UploadMapColumns = () => {
   const { t } = useTranslation();
+  const config = useConfig();
   const colMap = useColMapQuery();
   const identifierIssuerOptionsQuery = useIdentifierIssuerOwnOrganizationOptionsQuery();
 
@@ -176,7 +177,7 @@ export const UploadMapColumns = () => {
               {t`Source`}
             </TableCell>
             <TableCell sx={{ width: '33%' }}>
-              {ConfigService.getInstance().config.applicationName}
+              {config.applicationName}
             </TableCell>
             <TableCell sx={{ width: '34%' }}>
               {t`Data preview (first 5 unique values)`}
@@ -188,7 +189,7 @@ export const UploadMapColumns = () => {
         </TableBody>
       </Table>
     );
-  }, [t]);
+  }, [config.applicationName, t]);
 
   const onProceedButtonClick = useCallback(async () => {
     await handleSubmit(onFormSubmit)();
@@ -216,7 +217,7 @@ export const UploadMapColumns = () => {
           <Alert severity={unMappedColumns.length === 0 ? 'info' : 'warning'}>
             <AlertTitle>
               {unMappedColumns.length === 0 ?
-                t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { applicationName: ConfigService.getInstance().config.applicationName, fileName })
+                t('All columns in {{fileName}} have been mapped to known columns in {{applicationName}}', { applicationName: config.applicationName, fileName })
                 : t('{{numUnmappedColumns}} column(s) in {{fileName}} are not mapped', { fileName, numUnmappedColumns: unMappedColumns.length })}
             </AlertTitle>
             {unMappedColumns.map((unmappedColumn) => (

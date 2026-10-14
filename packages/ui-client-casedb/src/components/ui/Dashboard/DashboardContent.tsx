@@ -18,8 +18,8 @@ import { useShallow } from 'zustand/shallow';
 import InfoIcon from '@mui/icons-material/Info';
 import type { CaseDbCaseSet } from '@gen-epix/api-casedb';
 import type { EpiContactDetailsDialogRefMethods } from '@gen-epix/ui-client-common/components/epi/EpiContactDetailsDialog';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { EpiContactDetailsDialog } from '@gen-epix/ui-client-common/components/epi/EpiContactDetailsDialog';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -73,6 +73,7 @@ type DashboardProps = {
 export const DashboardContent = ({ caseSet }: DashboardProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const config = useConfig<CaseDbConfig>();
   const dashboardLayoutRendererRef = useRef<ForwardRefDashboardLayoutRendererRefMethods>(null);
   const caseSetInfoDialogRef = useRef<CaseSetInfoDialogRefMethods>(null);
   const caseTypeInfoDialogRef = useRef<CaseTypeInfoDialogRefMethods>(null);
@@ -190,7 +191,7 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
     return !!isMaxResultsExceeded && !isMaxResultsExceededDismissed;
   }, [isMaxResultsExceededDismissed, isMaxResultsExceeded]);
 
-  const InjectedDashboardComponent = ConfigService.getInstance<CaseDbConfig>().config.dashboard.DASHBOARD_INJECTED_COMPONENT;
+  const InjectedDashboardComponent = config.dashboard.DASHBOARD_INJECTED_COMPONENT;
 
   return (
     <>
@@ -258,7 +259,7 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
           display: 'grid',
           gridTemplateRows: `${shouldShowMaxResultsExceededAlert ? 'max-content ' : ''}max-content auto`,
           height: '100%',
-          paddingLeft: theme.spacing(ConfigService.getInstance().config.layout.SIDEBAR_MENU_WIDTH + 1),
+          paddingLeft: theme.spacing(config.layout.SIDEBAR_MENU_WIDTH + 1),
           width: '100%',
         }}
       >

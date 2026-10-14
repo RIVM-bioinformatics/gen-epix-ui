@@ -36,7 +36,7 @@ import type {
   TableRowParams,
 } from '@gen-epix/ui-client-common/models/table';
 import type { TableRef } from '@gen-epix/ui-client-common/components/ui/Table';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { FeatureFlagsService } from '@gen-epix/ui-client-common/classes/services/FeatureFlagsService';
 import { Table } from '@gen-epix/ui-client-common/components/ui/Table';
 import { TABLE_COLUMN_FROZEN } from '@gen-epix/ui-client-common/models/table';
@@ -81,6 +81,7 @@ export const LineListWidget = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const theme = useTheme();
+  const config = useConfig<CaseDbConfig>();
   const rowHighlightingSubject = useMemo(() => new Subject<string[]>([]), []);
   const tableRef = useRef<TableRef>(null);
 
@@ -134,9 +135,9 @@ export const LineListWidget = () => {
       maxWidth = maxWidth + +theme.spacing(3).replace('px', '');
     }
 
-    const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = ConfigService.getInstance<CaseDbConfig>().config.lineList;
+    const { MAX_COLUMN_WIDTH, REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT } = config.lineList;
     return Math.min(MAX_COLUMN_WIDTH, maxWidth) + REQUIRED_EXTRA_CELL_PADDING_TO_FIT_CONTENT;
-  }, [completeCaseType, sortedData, stratification?.col?.id, theme]);
+  }, [completeCaseType, config.lineList, sortedData, stratification?.col?.id, theme]);
 
   const onOrganizationCellClick = useCallback((organizationId: string, organizationName: string) => {
     EventBusService.getInstance().emit('openContactDetailsDialog', {
@@ -466,7 +467,7 @@ export const LineListWidget = () => {
   }, [completeCaseType]);
 
   const tableColumns = useMemo<TableColumn<CaseDbCase, CaseDbCompleteCaseType>[]>(() => {
-    const { DATA_MISSING_CHARACTER } = ConfigService.getInstance<CaseDbConfig>().config.epi;
+    const { DATA_MISSING_CHARACTER } = config.epi;
 
     const initialVisibleColumnIds = CaseTypeUtil.getInitialVisibleColIds(completeCaseType);
     const caseTypeTableColumns: TableColumn<CaseDbCase, CaseDbCompleteCaseType>[] = [];
@@ -529,7 +530,7 @@ export const LineListWidget = () => {
       ...caseTypeTableColumns,
       ...frozenTableColumnsRight,
     ];
-  }, [completeCaseType, frozenTableColumnsLeft, frozenTableColumnsRight, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
+  }, [completeCaseType, config.epi, frozenTableColumnsLeft, frozenTableColumnsRight, cellColorGetter, cellTitleGetter, treeAddresses, getColumnWidth, renderOrganizationCell, renderGeneticSequenceCell, renderCell]);
 
   const onRowMouseEnter = useCallback((row: CaseDbCase) => {
     dashboardContext.highlight({
@@ -587,7 +588,7 @@ export const LineListWidget = () => {
   const onRangeChangedDebounced = useDebouncedCallback(async (range: ListRange) => {
     await LineListCaseSetMembersService.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
     await LineListIsOwnCaseService.getInstance().loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id), completeCaseType.id);
-  }, ConfigService.getInstance<CaseDbConfig>().config.lineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
+  }, config.lineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
     leading: false,
     trailing: true,
   });

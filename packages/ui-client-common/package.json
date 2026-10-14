@@ -26,6 +26,10 @@
       "types": "./src/classes/filters/index.ts",
       "import": "./src/classes/filters/index.ts"
     },
+    "./classes/containers/UiClientCommonContainer": {
+      "types": "./src/classes/containers/UiClientCommonContainer/index.ts",
+      "import": "./src/classes/containers/UiClientCommonContainer/index.ts"
+    },
     "./classes/services/ApiService": {
       "types": "./src/classes/services/ApiService/index.ts",
       "import": "./src/classes/services/ApiService/index.ts"
@@ -45,10 +49,6 @@
     "./classes/services/BreadcrumbService": {
       "types": "./src/classes/services/BreadcrumbService/index.ts",
       "import": "./src/classes/services/BreadcrumbService/index.ts"
-    },
-    "./classes/services/ConfigService": {
-      "types": "./src/classes/services/ConfigService/index.ts",
-      "import": "./src/classes/services/ConfigService/index.ts"
     },
     "./classes/services/EmotionCacheService": {
       "types": "./src/classes/services/EmotionCacheService/index.ts",
@@ -261,6 +261,10 @@
     "./hooks/useColumnsMenu": {
       "types": "./src/hooks/useColumnsMenu/index.ts",
       "import": "./src/hooks/useColumnsMenu/index.ts"
+    },
+    "./hooks/useConfig": {
+      "types": "./src/hooks/useConfig/index.ts",
+      "import": "./src/hooks/useConfig/index.ts"
     },
     "./hooks/useCreateMutation": {
       "types": "./src/hooks/useCreateMutation/index.ts",
@@ -504,6 +508,7 @@
     "lodash": "4.18.1",
     "oidc-client-ts": "3.5.0",
     "reflect-metadata": "0.2.2",
+    "tsyringe": "4.10.0",
     "use-debounce": "10.1.1",
     "uuid": "14.0.2",
     "zustand": "5.0.15"
@@ -538,15 +543,15 @@
     "i18next": "26.4.2",
     "jsdom": "30.1.0",
     "playwright": "1.63.0",
+    "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-error-boundary": "6.1.6",
     "react-hook-form": "7.88.0",
     "react-i18next": "17.0.14",
     "react-oidc-context": "3.3.1",
-    "react-router-dom": "7.18.4",
     "react-router": "8.4.0",
+    "react-router-dom": "7.18.4",
     "react-virtuoso": "4.18.14",
-    "react": "19.3.0",
     "typescript": "6.0.3",
     "vite": "8.3.0",
     "vite-plugin-dts": "5.1.1",
@@ -575,15 +580,15 @@
     "@mui/utils": "*",
     "axios": "*",
     "i18next": "*",
+    "react": "*",
     "react-dom": "*",
     "react-error-boundary": "*",
     "react-hook-form": "*",
     "react-i18next": "*",
     "react-oidc-context": "*",
-    "react-router-dom": "*",
     "react-router": "*",
+    "react-router-dom": "*",
     "react-virtuoso": "*",
-    "react": "*",
     "yup": "*"
   },
   "publishConfig": {
@@ -605,6 +610,10 @@
         "types": "./dist/classes/filters/index.d.ts",
         "import": "./dist/classes/filters/index.js"
       },
+      "./classes/containers/UiClientCommonContainer": {
+        "types": "./dist/classes/containers/UiClientCommonContainer/index.d.ts",
+        "import": "./dist/classes/containers/UiClientCommonContainer/index.js"
+      },
       "./classes/services/ApiService": {
         "types": "./dist/classes/services/ApiService/index.d.ts",
         "import": "./dist/classes/services/ApiService/index.js"
@@ -624,10 +633,6 @@
       "./classes/services/BreadcrumbService": {
         "types": "./dist/classes/services/BreadcrumbService/index.d.ts",
         "import": "./dist/classes/services/BreadcrumbService/index.js"
-      },
-      "./classes/services/ConfigService": {
-        "types": "./dist/classes/services/ConfigService/index.d.ts",
-        "import": "./dist/classes/services/ConfigService/index.js"
       },
       "./classes/services/EmotionCacheService": {
         "types": "./dist/classes/services/EmotionCacheService/index.d.ts",
@@ -840,6 +845,10 @@
       "./hooks/useColumnsMenu": {
         "types": "./dist/hooks/useColumnsMenu/index.d.ts",
         "import": "./dist/hooks/useColumnsMenu/index.js"
+      },
+      "./hooks/useConfig": {
+        "types": "./dist/hooks/useConfig/index.d.ts",
+        "import": "./dist/hooks/useConfig/index.js"
       },
       "./hooks/useCreateMutation": {
         "types": "./dist/hooks/useCreateMutation/index.d.ts",

@@ -23,7 +23,6 @@ import {
   CaseDbPermissionType,
 } from '@gen-epix/api-casedb';
 import { AxiosUtil } from '@gen-epix/ui-client-common/utils/AxiosUtil';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import { LoadableUtil } from '@gen-epix/ui-client-common/utils/LoadableUtil';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
@@ -31,6 +30,7 @@ import { RouterService } from '@gen-epix/ui-client-common/classes/services/Route
 import { useQueryMemo } from '@gen-epix/ui-client-common/hooks/useQueryMemo';
 import { withPermissions } from '@gen-epix/ui-client-common/hoc/withPermissions';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 
 import { useCaseSetsQuery } from '../../../dataHooks/useCaseSetsQuery';
 import { useCaseTypeMapQuery } from '../../../dataHooks/useCaseTypesQuery';
@@ -55,19 +55,20 @@ type Statistic = {
 export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
 
   const dateTimeRangeFilter = useMemo<CaseDbDatetimeRangeFilter>(() => ({
     type: 'DATETIME_RANGE',
-    upper_bound: ConfigService.getInstance<CaseDbConfig>().config.trends.homePage.getSinceDate(),
+    upper_bound: config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-  } satisfies CaseDbDatetimeRangeFilter), []);
+  } satisfies CaseDbDatetimeRangeFilter), [config.trends.homePage]);
 
   const caseSetQueryFilter = useMemo<CaseDbDatetimeRangeFilter>(() => ({
     key: 'case_set_date',
     type: 'DATETIME_RANGE',
-    upper_bound: ConfigService.getInstance<CaseDbConfig>().config.trends.homePage.getSinceDate(),
+    upper_bound: config.trends.homePage.getSinceDate(),
     upper_bound_censor: '<=',
-  } satisfies CaseDbDatetimeRangeFilter), []);
+  } satisfies CaseDbDatetimeRangeFilter), [config.trends.homePage]);
 
   const caseTypeStatsQueryNow = useQueryMemo({
     queryFn: async ({ signal }) => {
@@ -305,7 +306,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
                 diffPercentage={statistic.diffPercentage}
                 header={statistic.header}
                 key={statistic.header}
-                sinceLabel={ConfigService.getInstance<CaseDbConfig>().config.trends.homePage.getSinceLabel(t)}
+                sinceLabel={config.trends.homePage.getSinceLabel(t)}
                 value={statistic.value}
               />
             ))}

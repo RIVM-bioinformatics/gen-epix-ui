@@ -13,6 +13,8 @@ import {
 } from '@gen-epix/api-omopdb';
 import type { CommonDbOrganizationApi } from '@gen-epix/api-commondb';
 import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
+import type { UiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 
 import { HomePage } from '../pages/HomePage';
 import {
@@ -21,25 +23,34 @@ import {
 } from '../routes';
 import type { OMOPDB_QUERY_KEY } from '../data/query';
 import { OMOPDB_QUERY_DEPENDENCIES } from '../data/query';
+import type { OmopDbConfig } from '../models/config';
 
-export const setupOmopDb = () => {
+export const setupOmopDb = (container: UiClientCommonContainer) => {
+  const config = resolveConfig<OmopDbConfig>(container);
   const adminRoutes = createAdminRoutes();
   const routes = createRoutes(adminRoutes);
 
-  RouterService.getInstance().initialize({
-    adminRoutes: adminRoutes as MyNonIndexRouteObject[],
-    homePageComponent: HomePage,
-    routes: routes as MyNonIndexRouteObject[],
+  container.register(RouterService, {
+    useValue: new RouterService({
+      adminRoutes: adminRoutes as MyNonIndexRouteObject[],
+      homePageComponent: HomePage,
+      routes: routes as MyNonIndexRouteObject[],
+    }),
   });
-  QueryClientService.getInstance<COMMON_QUERY_KEY & OMOPDB_QUERY_KEY>().initialize({
-    queryKeyDependencies: [COMMON_QUERY_DEPENDENCIES, OMOPDB_QUERY_DEPENDENCIES],
+  container.register(QueryClientService, {
+    useValue: new QueryClientService<COMMON_QUERY_KEY & OMOPDB_QUERY_KEY>({
+      config,
+      queryKeyDependencies: [COMMON_QUERY_DEPENDENCIES, OMOPDB_QUERY_DEPENDENCIES],
+    }),
   });
-  ApiService.getInstance().initialize({
-    abacApi: OmopDbAbacApi.getInstance(),
-    authApi: OmopDbAuthApi.getInstance(),
-    baseApi: OmopDbBaseAPI,
-    organizationApi: OmopDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
-    systemApi: OmopDbSystemApi.getInstance(),
+  container.register(ApiService, {
+    useValue: new ApiService({
+      abacApi: OmopDbAbacApi.getInstance(),
+      authApi: OmopDbAuthApi.getInstance(),
+      baseApi: OmopDbBaseAPI,
+      organizationApi: OmopDbOrganizationApi.getInstance() as CommonDbOrganizationApi,
+      systemApi: OmopDbSystemApi.getInstance(),
+    }),
   });
   setupUi();
 };

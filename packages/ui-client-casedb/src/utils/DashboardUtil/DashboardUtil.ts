@@ -1,4 +1,3 @@
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
 import type { CaseDbCase } from '@gen-epix/api-casedb';
 import type { FieldValues } from 'react-hook-form';
 import sumBy from 'lodash/sumBy';
@@ -25,12 +24,12 @@ export type ArrangementGroupInfo = {
 export class DashboardUtil {
   public static readonly dashboardLayoutStorageKey = 'GENEPIX-EpiDashboard-Layout-v1.3';
 
-  public static createDashboardArrangementConfigInitialState(): DashboardArrangementConfig {
-    const defaultArrangementKey = ConfigService.getInstance<CaseDbConfig>().config.dashboard.DEFAULT_ARRANGEMENT_KEY;
+  public static createDashboardArrangementConfigInitialState(config: CaseDbConfig): DashboardArrangementConfig {
+    const defaultArrangementKey = config.dashboard.DEFAULT_ARRANGEMENT_KEY;
 
     return {
       arrangementKey: defaultArrangementKey,
-      arrangementWidgetAssignments: ConfigService.getInstance<CaseDbConfig>().config.dashboard.DEFAULT_WIDGET_ASSIGNMENTS[defaultArrangementKey],
+      arrangementWidgetAssignments: config.dashboard.DEFAULT_WIDGET_ASSIGNMENTS[defaultArrangementKey],
     };
   }
 
@@ -108,9 +107,10 @@ export class DashboardUtil {
     arrangementConfig: DashboardArrangementConfig,
     zoneName: string,
     widgetsConfig: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase>,
+    config: CaseDbConfig,
   ): string[] {
     const assignments = DashboardUtil.getArrangementWidgetAssignments(
-      DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey),
+      DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey, config.dashboard),
       arrangementConfig.arrangementWidgetAssignments,
     );
     const assignedWidgetNames = new Set(
@@ -124,7 +124,7 @@ export class DashboardUtil {
         return false;
       }
       const constraints = widgetsConfig[widgetName].constraints ?? [];
-      const arrangement = DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey);
+      const arrangement = DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey, config.dashboard);
       return constraints.every((constraint) => {
         if (constraint.require_adjacent) {
           const { direction, widgetName: requiredWidget } = constraint.require_adjacent;
@@ -146,8 +146,8 @@ export class DashboardUtil {
     return sumBy(cases, (row) => (row.count ?? 1));
   }
 
-  public static getEnabledWidgets(arrangementConfig: DashboardArrangementConfig): string[] {
-    const arrangementWidgetAssignments = DashboardUtil.getArrangementWidgetAssignments(DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey), arrangementConfig.arrangementWidgetAssignments);
+  public static getEnabledWidgets(arrangementConfig: DashboardArrangementConfig, config: CaseDbConfig): string[] {
+    const arrangementWidgetAssignments = DashboardUtil.getArrangementWidgetAssignments(DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey, config.dashboard), arrangementConfig.arrangementWidgetAssignments);
     return Object.keys(arrangementWidgetAssignments).filter(widgetName => arrangementWidgetAssignments[widgetName]);
   }
 
@@ -162,14 +162,15 @@ export class DashboardUtil {
     return Object.values(assignments).every((widgetName) => !widgetName || widgetName in widgets);
   }
 
-  public static isSingleWidget(arrangementConfig: DashboardArrangementConfig, widgetName: string): boolean {
-    const arrangementWidgetAssignments = DashboardUtil.getArrangementWidgetAssignments(DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey), arrangementConfig.arrangementWidgetAssignments);
+  public static isSingleWidget(arrangementConfig: DashboardArrangementConfig, widgetName: string, config: CaseDbConfig): boolean {
+    const arrangementWidgetAssignments = DashboardUtil.getArrangementWidgetAssignments(DashboardUtil.getArrangementByKey(arrangementConfig.arrangementKey, config.dashboard), arrangementConfig.arrangementWidgetAssignments);
     return arrangementWidgetAssignments?.[widgetName] && Object.keys(arrangementWidgetAssignments).length === 1;
   }
 
   public static removeInvalidWidgetAssignments(
     config: DashboardArrangementConfig,
     widgetsConfig: WidgetsConfig<FieldValues, WidgetDataBase, WidgetDataBase>,
+    appConfig: CaseDbConfig,
   ): DashboardArrangementConfig {
     let updatedConfig = config;
     let changed = true;
@@ -180,7 +181,7 @@ export class DashboardUtil {
         if (!widgetName) {
           continue;
         }
-        const availableWidgets = DashboardUtil.getAvailableWidgets(updatedConfig, zoneName, widgetsConfig);
+        const availableWidgets = DashboardUtil.getAvailableWidgets(updatedConfig, zoneName, widgetsConfig, appConfig);
         if (!availableWidgets.includes(widgetName)) {
 
           assignments[zoneName] = null;
@@ -194,8 +195,8 @@ export class DashboardUtil {
     return updatedConfig;
   }
 
-  public static validateAndMigrateArrangementConfig(config: DashboardArrangementConfig): DashboardArrangementConfig {
-    const dashboardConfig = ConfigService.getInstance<CaseDbConfig>().config.dashboard;
+  public static validateAndMigrateArrangementConfig(config: DashboardArrangementConfig, appConfig: CaseDbConfig): DashboardArrangementConfig {
+    const dashboardConfig = appConfig.dashboard;
     let result = config;
 
     if (!result.arrangementKey || !(result.arrangementKey in dashboardConfig.ARRANGEMENT_OPTIONS)) {
@@ -213,8 +214,8 @@ export class DashboardUtil {
     return result;
   }
 
-  private static getArrangementByKey(arrangementKey: string): DashboardArrangement {
-    return ConfigService.getInstance<CaseDbConfig>().config.dashboard.ARRANGEMENT_OPTIONS[arrangementKey];
+  private static getArrangementByKey(arrangementKey: string, dashboardConfig: CaseDbConfig['dashboard']): DashboardArrangement {
+    return dashboardConfig?.ARRANGEMENT_OPTIONS[arrangementKey];
   }
 
   private static getBoundaryLeafZones(

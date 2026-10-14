@@ -7,7 +7,7 @@ import type {
   CaseDbCol,
   CaseDbRegion,
 } from '@gen-epix/api-casedb';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
 import type { UnwrapArray } from '@gen-epix/ui-core/models/generic';
 
 import type { CaseDbConfig } from '../../models/config';
@@ -179,7 +179,7 @@ export class MapUtil {
 
   public static getPieChartRadius(numCases: number, maxPieChartArea: number, statistics: RegionStatistics) {
     const { maxNumCases, minNumCases } = statistics;
-    const { MIN_PIE_CHART_RADIUS } = ConfigService.getInstance<CaseDbConfig>().config.map;
+    const { MIN_PIE_CHART_RADIUS } = resolveConfig<CaseDbConfig>().map;
     const MIN_PIE_CHART_AREA = MIN_PIE_CHART_RADIUS ** 2 * Math.PI;
 
     let area: number;

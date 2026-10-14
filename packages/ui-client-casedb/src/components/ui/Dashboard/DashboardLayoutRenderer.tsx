@@ -19,7 +19,7 @@ import {
 } from 'react-resizable-panels';
 import type { StoreApi } from 'zustand';
 import { useStore } from 'zustand';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
 import { DashboardStoreContext } from '../../../stores/dashboardStore';
@@ -64,12 +64,13 @@ export const DashboardLayoutRenderer = ({
 }: DashboardLayoutRendererProps) => {
   const userProfileStore = use(UserProfileStoreContext);
   const dashboardStore = use(DashboardStoreContext);
+  const config = useConfig<CaseDbConfig>();
   const dashboardArrangementConfig = useStore(userProfileStore, (state) => state.dashboardArrangementConfig);
   const expandedZone = useStore(dashboardStore, (state) => state.expandedZone);
-  const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = ConfigService.getInstance<CaseDbConfig>().config.dashboard;
+  const { MIN_PANEL_HEIGHT, MIN_PANEL_WIDTH } = config.dashboard;
 
   const { arrangementKey, arrangementWidgetAssignments } = dashboardArrangementConfig;
-  const arrangement = ConfigService.getInstance<CaseDbConfig>().config.dashboard.ARRANGEMENT_OPTIONS[arrangementKey];
+  const arrangement = config.dashboard.ARRANGEMENT_OPTIONS[arrangementKey];
 
   const storagePrefix = arrangementKey;
 
@@ -154,7 +155,7 @@ export const DashboardLayoutRenderer = ({
   }), [allGroupRefs]);
 
   const panelMap = useMemo(() => {
-    const widgetsConfig = ConfigService.getInstance<CaseDbConfig>().config.dashboard.WIDGETS;
+    const widgetsConfig = config.dashboard.WIDGETS;
     return Object.fromEntries(
       Object.entries(widgetsConfig).map(([widgetName, { component, widgetLabel }]) => [
         widgetName,
@@ -166,7 +167,7 @@ export const DashboardLayoutRenderer = ({
         </ErrorBoundary>,
       ]),
     );
-  }, []);
+  }, [config.dashboard.WIDGETS]);
 
   if (expandedZone) {
     const widgetName = arrangementWidgetAssignments[expandedZone];

@@ -7,7 +7,7 @@ import {
   Tooltip,
   useTheme,
 } from '@mui/material';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { useStore } from 'zustand';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import type {
@@ -45,6 +45,7 @@ export type LegendaItemProps = {
 };
 
 export const LegendaItem = ({ children, item, tooltip, tooltipProps }: LegendaItemProps) => {
+  const config = useConfig<CaseDbConfig>();
   const theme = useTheme();
   const { t } = useTranslation();
   const dashboardContext = use(DashboardContext);
@@ -163,7 +164,7 @@ export const LegendaItem = ({ children, item, tooltip, tooltipProps }: LegendaIt
   const disabled = stratification?.mode === STRATIFICATION_MODE.FIELD && item.caseIds.length === 0;
 
   const innerContent = useMemo(() => {
-    const value = item.rowValue.isMissing ? ConfigService.getInstance<CaseDbConfig>().config.epi.DATA_MISSING_CHARACTER : item.rowValue.short;
+    const value = item.rowValue.isMissing ? config.epi.DATA_MISSING_CHARACTER : item.rowValue.short;
     return (
       <Box
         sx={{
@@ -195,7 +196,7 @@ export const LegendaItem = ({ children, item, tooltip, tooltipProps }: LegendaIt
         </Box>
       </Box>
     );
-  }, [children, disabled, item.color, item.rowValue.isMissing, item.rowValue.short, theme]);
+  }, [children, config.epi.DATA_MISSING_CHARACTER, disabled, item.color, item.rowValue.isMissing, item.rowValue.short, theme]);
 
   return (
     <>

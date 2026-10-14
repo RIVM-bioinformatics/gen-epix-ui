@@ -35,7 +35,7 @@ import {
   Box,
   useTheme,
 } from '@mui/material';
-import { ConfigService } from '@gen-epix/ui-client-common/classes/services/ConfigService';
+import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 
 import { FindSimilarCasesUtil } from '../../../utils/FindSimilarCasesUtil';
 import type {
@@ -74,6 +74,7 @@ export const FindSimilarCasesDialogDateRangeChart = <
   organizationFilter,
 }: FindSimilarCasesDialogDateRangeChartProps<TFieldValues, TName>): ReactElement => {
   const { t } = useTranslation();
+  const config = useConfig<CaseDbConfig>();
   const intervals = useMemo(() => FindSimilarCasesUtil.buildChartIntervals(data), [data]);
   const theme = useTheme();
   const [tooltipState, setTooltipState] = useState<{ content: string; x: number; y: number } | null>(null);
@@ -120,7 +121,7 @@ export const FindSimilarCasesDialogDateRangeChart = <
   }, []);
 
   const option = useMemo(() => {
-    const { BASE_COLORS } = ConfigService.getInstance<CaseDbConfig>().config.epi.STRATIFICATION;
+    const { BASE_COLORS } = config.epi.STRATIFICATION;
     return {
       color: BASE_COLORS,
       dataZoom: [{
@@ -166,7 +167,7 @@ export const FindSimilarCasesDialogDateRangeChart = <
       type: 'category' },
       yAxis: { max: Math.max(...intervals.map(i => i.count), 1), minInterval: 1, type: 'value' },
     };
-  }, [intervals, organizationFilter, otherOrganizationCasesLabel, ownCasesLabel, theme]);
+  }, [config.epi.STRATIFICATION, intervals, organizationFilter, otherOrganizationCasesLabel, ownCasesLabel, theme]);
 
   const onLegendSelectChanged = useCallback((params: unknown) => {
     const { selected } = params as { selected?: Record<string, boolean> };

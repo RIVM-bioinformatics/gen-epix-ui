@@ -6,31 +6,42 @@ import {
 import remove from 'lodash/remove';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
-import { HmrUtil } from '@gen-epix/ui-core/utils/HmrUtil';
+import { container as rootContainer } from 'tsyringe';
 
-import { ConfigService } from '../ConfigService';
 import type { GenericData } from '../../../models/data';
+import type { ConfigBase } from '../../../models/config';
 
 export class QueryClientService<TQueryKey extends string = string> {
-  private static __instance: QueryClientService;
   public mutationCache: MutationCache;
   public queryCache: QueryCache;
   public queryClient: QueryClient;
 
   public queryKeyDependencies: Record<TQueryKey, TQueryKey[]>;
 
-  private constructor() {
+  public constructor(kwArgs: { config: Pick<ConfigBase, 'queryClient'>; queryKeyDependencies: Array<Record<TQueryKey, TQueryKey[]>> }) {
+    this.queryKeyDependencies = QueryClientService.mergeQueryKeyDependencies<TQueryKey>(kwArgs.queryKeyDependencies);
+    const queryCache = new QueryCache({});
+    const mutationCache = new MutationCache({});
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          gcTime: Infinity,
+          retry: kwArgs.config.queryClient.retry,
+          retryDelay: kwArgs.config.queryClient.retryDelay,
+          staleTime: Infinity,
+        },
+      },
+      mutationCache,
+      queryCache,
+    });
 
+    this.queryCache = queryCache;
+    this.mutationCache = mutationCache;
+    this.queryClient = queryClient;
   }
 
   public static getInstance<TQueryKey extends string>(): QueryClientService<TQueryKey> {
-    const instance = HmrUtil.getHmrSingleton<QueryClientService<TQueryKey>>(
-      'queryManager',
-      QueryClientService.__instance as QueryClientService<TQueryKey> | undefined,
-      () => new QueryClientService<TQueryKey>(),
-    );
-    QueryClientService.__instance = instance;
-    return instance;
+    return rootContainer.resolve(QueryClientService) as QueryClientService<TQueryKey>;
   }
 
   private static mergeQueryKeyDependencies<TQueryKey extends string>(dependencies: Array<Record<TQueryKey, TQueryKey[]>>): Record<TQueryKey, TQueryKey[]> {
@@ -98,31 +109,6 @@ export class QueryClientService<TQueryKey extends string = string> {
       return undefined;
     }
     return queryClient.getQueryData<T>(queryKey);
-  }
-
-  public initialize(kwArgs: { queryKeyDependencies: Array<Record<TQueryKey, TQueryKey[]>> }) {
-    if (this.queryKeyDependencies) {
-      throw new Error('QueryClientService already initialized');
-    }
-    this.queryKeyDependencies = QueryClientService.mergeQueryKeyDependencies<TQueryKey>(kwArgs.queryKeyDependencies);
-    const queryCache = new QueryCache({});
-    const mutationCache = new MutationCache({});
-    const queryClient = new QueryClient({
-      defaultOptions: {
-        queries: {
-          gcTime: Infinity,
-          retry: ConfigService.getInstance().config.queryClient.retry,
-          retryDelay: ConfigService.getInstance().config.queryClient.retryDelay,
-          staleTime: Infinity,
-        },
-      },
-      mutationCache,
-      queryCache,
-    });
-
-    this.queryCache = queryCache;
-    this.mutationCache = mutationCache;
-    this.queryClient = queryClient;
   }
 
   public async invalidateQueryKeys(queryKeys: string[][]) {

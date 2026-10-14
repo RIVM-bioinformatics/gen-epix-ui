@@ -31,7 +31,7 @@ import { UserManagerUtil } from '../../../utils/UserManagerUtil';
 import { NotificationsStack } from '../../ui/Notifications';
 import { UserInactivityConfirmation } from '../../ui/UserInactivityConfirmation';
 import type { IdentityProviderWithAvailability } from '../../../models/auth';
-import { ConfigService } from '../../../classes/services/ConfigService';
+import { useConfig } from '../../../hooks/useConfig';
 import { PageContainer } from '../../ui/PageContainer';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { ApplicationBootstrapWithAuthentication } from '../ApplicationBootstrapWithAuthentication';
@@ -46,6 +46,7 @@ import { ApiService } from '../../../classes/services/ApiService';
 export const RouterRoot = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const config = useConfig();
 
   const oidcConfiguration = useSubscribable(AuthenticationService.getInstance());
 
@@ -150,7 +151,7 @@ export const RouterRoot = () => {
           }}
         >
           <Typography>
-            {t('{{applicationName}} is currently unavailable. Please try again later.', { applicationName: ConfigService.getInstance().config.applicationName })}
+            {t('{{applicationName}} is currently unavailable. Please try again later.', { applicationName: config.applicationName })}
           </Typography>
           <Box sx={{ marginTop: 2 }}>
             <Button

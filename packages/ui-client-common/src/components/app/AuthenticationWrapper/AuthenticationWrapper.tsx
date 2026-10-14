@@ -20,8 +20,8 @@ import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
-import { ConfigService } from '../../../classes/services/ConfigService';
 import { LogService } from '../../../classes/services/LogService';
+import { useConfig } from '../../../hooks/useConfig';
 import type { AuthState } from '../../../models/auth';
 import type { ConsentDialogRefMethods } from '../../ui/ConsentDialog';
 import { ConsentDialog } from '../../ui/ConsentDialog';
@@ -30,14 +30,14 @@ import { PageContainer } from '../../ui/PageContainer';
 export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation();
   const auth = useAuth();
+  const config = useConfig();
   const consentDialogRef = useRef<ConsentDialogRefMethods>(null);
   const [hasGivenConsent, setHasGivenConsent] = useState<boolean>(
-    !ConfigService.getInstance().config.consentDialog?.getShouldShow(),
+    !config.consentDialog?.getShouldShow(),
   );
 
   const oidcConfiguration = useSubscribable(AuthenticationService.getInstance());
-  const AfterLoginElement =
-    ConfigService.getInstance().config.login?.AfterLoginElement;
+  const AfterLoginElement = config.login?.AfterLoginElement;
 
   useEffect(() => {
     AuthenticationService.getInstance().authContextProps = auth;
@@ -205,7 +205,7 @@ export const AuthenticationWrapper = ({ children }: PropsWithChildren) => {
   return (
     <>
       {children}
-      {ConfigService.getInstance().config.consentDialog?.getShouldShow() && (
+      {config.consentDialog?.getShouldShow() && (
         <ConsentDialog
           onConsent={onConsentDialogConsent}
           ref={consentDialogRef}
