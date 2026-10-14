@@ -6,7 +6,7 @@ import {
   CommonDbPermissionType,
 } from '@gen-epix/api-commondb';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
+import { API_ORGANIZATION_TOKEN } from '../../constants/api.constants';
 import { useQueryMemo } from '../../hooks/useQueryMemo';
 import { AuthorizationService } from '../../classes/services/AuthorizationService';
 import { QueryClientService } from '../../classes/services/QueryClientService';

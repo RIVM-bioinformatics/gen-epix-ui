@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 
 import { setupCaseDb } from '../../setup/setup';
 import { CaseDbStandardConfigUtil } from '../../utils/CaseDbStandardConfigUtil';
@@ -13,7 +13,7 @@ export const setupTestEnvironment = () => {
     ...CaseDbStandardConfigUtil.createConfig(),
     theme: createCaseDbDemoTheme('light'),
   };
-  setupCaseDb(createUiClientCommonContainer(config));
+  setupCaseDb(DependencyContainerUtil.createUiClientCommonContainer(config));
   vi.setConfig({
     testTimeout: 10000,
   });

@@ -17,10 +17,10 @@ import {
   API_BASE_TOKEN,
   API_ORGANIZATION_TOKEN,
   API_SYSTEM_TOKEN,
-} from '@gen-epix/ui-client-common/models/api.models';
+} from '@gen-epix/ui-client-common/constants/api.constants';
 import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
-import type { UiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
-import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
+import type { DependencyContainer } from 'tsyringe';
 
 import { HomePage } from '../pages/HomePage';
 import {
@@ -31,8 +31,8 @@ import type { OMOPDB_QUERY_KEY } from '../data/query';
 import { OMOPDB_QUERY_DEPENDENCIES } from '../data/query';
 import type { OmopDbConfig } from '../models/config.models';
 
-export const setupOmopDb = (container: UiClientCommonContainer) => {
-  const config = resolveConfig<OmopDbConfig>(container);
+export const setupOmopDb = (container: DependencyContainer) => {
+  const config = DependencyContainerUtil.resolveConfig<OmopDbConfig>(container);
   const adminRoutes = createAdminRoutes();
   const routes = createRoutes(adminRoutes);
 

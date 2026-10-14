@@ -16,7 +16,7 @@ import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.models';
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 
-import { API_ABAC_TOKEN } from '../../models/api.models';
+import { API_ABAC_TOKEN } from '../../constants/api.constants';
 import { useOrganizationAdminPolicyNameFactory } from '../../dataHooks/useOrganizationAdminPoliciesQuery';
 import { useOrganizationOptionsQuery } from '../../dataHooks/useOrganizationsQuery';
 import { useUserOptionsQuery } from '../../dataHooks/useUsersQuery';

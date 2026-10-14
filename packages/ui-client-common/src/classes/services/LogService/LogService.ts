@@ -14,7 +14,7 @@ import {
   singleton,
 } from 'tsyringe';
 
-import { API_SYSTEM_TOKEN } from '../../../models/api.models';
+import { API_SYSTEM_TOKEN } from '../../../constants/api.constants';
 import { AuthenticationService } from '../AuthenticationService';
 import { AxiosUtil } from '../../../utils/AxiosUtil';
 import { CONFIG_TOKEN } from '../../../constants/config.constants';

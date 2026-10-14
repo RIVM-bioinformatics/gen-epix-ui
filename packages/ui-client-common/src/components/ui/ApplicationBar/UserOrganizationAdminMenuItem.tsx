@@ -10,7 +10,7 @@ import {
   CommonDbPermissionType,
 } from '@gen-epix/api-commondb';
 
-import { API_ABAC_TOKEN } from '../../../models/api.models';
+import { API_ABAC_TOKEN } from '../../../constants/api.constants';
 import { withPermissions } from '../../../hoc/withPermissions';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { QueryClientService } from '../../../classes/services/QueryClientService';

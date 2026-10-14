@@ -16,7 +16,7 @@ import type { FormFieldDefinition } from '@gen-epix/ui-core-form/models/form.mod
 import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.models';
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
+import { API_ORGANIZATION_TOKEN } from '../../constants/api.constants';
 import type { TableColumn } from '../../models/table.models';
 import { TableUtil } from '../../utils/TableUtil';
 import type { CrudPageSubPage } from '../CrudPage';

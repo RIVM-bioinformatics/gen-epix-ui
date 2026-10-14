@@ -35,7 +35,7 @@ import type {
 } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 
-import { API_SYSTEM_TOKEN } from '../../../models/api.models';
+import { API_SYSTEM_TOKEN } from '../../../constants/api.constants';
 import { ResponseHandler } from '../ResponseHandler';
 import { useQueryMemo } from '../../../hooks/useQueryMemo';
 import { useConfig } from '../../../hooks/useConfig';

@@ -10,16 +10,13 @@ import {
 
 import { EmotionCacheService } from '../../classes/services/EmotionCacheService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
-import {
-  createUiClientCommonContainer,
-  resolveConfig,
-} from '../../classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '../../utils/DependencyContainerUtil';
 import { UiClientCommonConfigContextProvider } from '../../context/uiClientCommonConfigContext';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }: PropsWithChildren<unknown>) => {
-  const config = resolveConfig();
-  const container = createUiClientCommonContainer(config);
+  const config = DependencyContainerUtil.resolveConfig();
+  const container = DependencyContainerUtil.createUiClientCommonContainer(config);
   const queryQueryManager = rootContainer.resolve(QueryClientService);
   const emotionCache = container.resolve(EmotionCacheService).emotionCache;
 

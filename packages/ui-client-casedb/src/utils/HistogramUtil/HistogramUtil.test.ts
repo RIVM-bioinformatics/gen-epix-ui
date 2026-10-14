@@ -15,7 +15,7 @@ import type {
   CaseDbConcept,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config.models';
@@ -111,7 +111,7 @@ describe('HistogramUtil', () => {
 
   // -------------------------------------------------------------------------
   describe('getAllowedCols', () => {
-    const MAX = resolveConfig<CaseDbConfig>().epi.STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES;
+    const MAX = DependencyContainerUtil.resolveConfig<CaseDbConfig>().epi.STRATIFICATION.MAX_ALLOWED_UNIQUE_VALUES;
 
     const populateConcepts = (setId: string, count: number) => {
       const ids = Array.from({ length: count }, (_, i) => `${setId}_c${i}`);

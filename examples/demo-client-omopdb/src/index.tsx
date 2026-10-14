@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { createUiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 import { OmopDbApp } from '@gen-epix/ui-client-omopdb/components/app/OmopDbApp';
@@ -11,7 +11,7 @@ const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 const init = async () => {
   const config = ConfigUtil.createConfig();
-  const container = createUiClientCommonContainer(config);
+  const container = DependencyContainerUtil.createUiClientCommonContainer(config);
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {

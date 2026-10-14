@@ -22,7 +22,7 @@ import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.m
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import { DATE_FORMAT } from '@gen-epix/ui-core/constants/date.constants';
 
-import { API_SYSTEM_TOKEN } from '../../models/api.models';
+import { API_SYSTEM_TOKEN } from '../../constants/api.constants';
 import type { TableColumn } from '../../models/table.models';
 import { TableUtil } from '../../utils/TableUtil';
 import { CrudPage } from '../CrudPage';

@@ -1,4 +1,4 @@
-import { createUiClientCommonContainer } from '../../classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '../../utils/DependencyContainerUtil';
 import { setupUi } from '../../setup/setup';
 import { createDemoTheme } from '../../theme/demoTheme';
 import { StandardConfigUtil } from '../../utils/StandardConfigUtil';
@@ -11,7 +11,7 @@ export const setupTestEnvironment = () => {
     ...StandardConfigUtil.createConfig(),
     theme: createDemoTheme('light'),
   };
-  createUiClientCommonContainer(config);
+  DependencyContainerUtil.createUiClientCommonContainer(config);
   setupUi();
 
   vi.setConfig({

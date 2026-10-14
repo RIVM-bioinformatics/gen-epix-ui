@@ -15,7 +15,7 @@ import type {
   CaseDbConcept,
 } from '@gen-epix/api-casedb';
 import { CaseDbColType } from '@gen-epix/api-casedb';
-import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config.models';
@@ -68,7 +68,7 @@ afterEach(() => {
 });
 
 const getStratificationConfig = () =>
-  resolveConfig<CaseDbConfig>().epi.STRATIFICATION;
+  DependencyContainerUtil.resolveConfig<CaseDbConfig>().epi.STRATIFICATION;
 
 describe('StratificationUtil', () => {
   // -------------------------------------------------------------------------

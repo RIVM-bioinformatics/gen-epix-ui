@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import type { CommonDbUser } from '@gen-epix/api-commondb';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
+import { API_ORGANIZATION_TOKEN } from '../../constants/api.constants';
 import type {
   UseMap,
   UseOptions,

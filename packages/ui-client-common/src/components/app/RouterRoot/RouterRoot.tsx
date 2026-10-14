@@ -24,7 +24,7 @@ import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService'
 import { useSubscribable } from '@gen-epix/ui-core/hooks/useSubscribable';
 import { Spinner } from '@gen-epix/ui-core-components/components/Spinner';
 
-import { API_AUTH_TOKEN } from '../../../models/api.models';
+import { API_AUTH_TOKEN } from '../../../constants/api.constants';
 import { AuthenticationService } from '../../../classes/services/AuthenticationService';
 import { LogService } from '../../../classes/services/LogService';
 import { NavigationHistoryService } from '../../../classes/services/NavigationHistoryService';

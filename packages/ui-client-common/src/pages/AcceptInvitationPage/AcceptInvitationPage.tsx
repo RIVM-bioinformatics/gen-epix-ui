@@ -13,7 +13,7 @@ import {
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
+import { API_ORGANIZATION_TOKEN } from '../../constants/api.constants';
 import { PageContainer } from '../../components/ui/PageContainer';
 import { ResponseHandler } from '../../components/ui/ResponseHandler';
 import { useQueryMemo } from '../../hooks/useQueryMemo';

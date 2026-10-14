@@ -4,8 +4,7 @@ import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
 import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
-import type { UiClientCommonContainer } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
-import { resolveConfig } from '@gen-epix/ui-client-common/classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import {
   SeqDbAbacApi,
   SeqDbAuthApi,
@@ -20,7 +19,8 @@ import {
   API_BASE_TOKEN,
   API_ORGANIZATION_TOKEN,
   API_SYSTEM_TOKEN,
-} from '@gen-epix/ui-client-common/models/api.models';
+} from '@gen-epix/ui-client-common/constants/api.constants';
+import type { DependencyContainer } from 'tsyringe';
 
 import { HomePage } from '../pages/HomePage';
 import {
@@ -31,8 +31,8 @@ import type { SEQDB_QUERY_KEY } from '../data/query';
 import { SEQDB_QUERY_DEPENDENCIES } from '../data/query';
 import type { SeqDbConfig } from '../models/config.models';
 
-export const setupSeqDb = (container: UiClientCommonContainer) => {
-  const config = resolveConfig<SeqDbConfig>(container);
+export const setupSeqDb = (container: DependencyContainer) => {
+  const config = DependencyContainerUtil.resolveConfig<SeqDbConfig>(container);
   const adminRoutes = createAdminRoutes();
   const routes = createRoutes(adminRoutes);
 

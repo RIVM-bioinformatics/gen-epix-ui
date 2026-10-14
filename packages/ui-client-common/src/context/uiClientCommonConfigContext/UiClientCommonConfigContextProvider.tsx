@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import type { PropsWithChildren } from 'react';
 import { UiCoreComponentsConfigContext } from '@gen-epix/ui-core-components/context/uiCoreComponentsConfigContext';
+import type { DependencyContainer } from 'tsyringe';
 
-import type { UiClientCommonContainer } from '../../classes/containers/UiClientCommonContainer';
-import { resolveConfig } from '../../classes/containers/UiClientCommonContainer';
+import { DependencyContainerUtil } from '../../utils/DependencyContainerUtil';
 import type { ConfigBase } from '../../models/config.models';
 
 import type { UiClientCommonConfig } from './UiClientCommonConfigContext';
@@ -11,14 +11,14 @@ import { UiClientCommonConfigContext } from './UiClientCommonConfigContext';
 
 
 export type UiClientCommonConfigContextProviderProps = PropsWithChildren<{
-  readonly container: UiClientCommonContainer;
+  readonly container: DependencyContainer;
 }>;
 
 export const UiClientCommonConfigContextProvider = (
   props: UiClientCommonConfigContextProviderProps,
 ) => {
   const { children, container } = props;
-  const config = resolveConfig<ConfigBase>(container);
+  const config = DependencyContainerUtil.resolveConfig<ConfigBase>(container);
   const uiCoreComponentsConfig = useMemo<UiClientCommonConfig['uiCoreComponentsConfig']>(() => ({
     spinner: {
       defaultCircularProgressSize: config.spinner.DEFAULT_CIRCULAR_PROGRESS_SIZE,

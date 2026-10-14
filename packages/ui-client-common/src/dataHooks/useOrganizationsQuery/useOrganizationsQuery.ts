@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import type { CommonDbOrganization } from '@gen-epix/api-commondb';
 import { StringUtil } from '@gen-epix/ui-core/utils/StringUtil';
 
-import { API_ORGANIZATION_TOKEN } from '../../models/api.models';
+import { API_ORGANIZATION_TOKEN } from '../../constants/api.constants';
 import type {
   UseMap,
   UseOptions,
