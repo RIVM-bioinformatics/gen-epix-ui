@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-seqdb-v4.3.1...ui-client-seqdb-v4.3.2) (2026-10-15)
+
+
+### Bug Fixes
+
+* fix frozen lockfile issue ([2bd1c94](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2bd1c94b441891b6108cbcf5d27cb724da3a3827))
+
 ## [4.3.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-seqdb-v4.3.0...ui-client-seqdb-v4.3.1) (2026-10-14)
 
 
