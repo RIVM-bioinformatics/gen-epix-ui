@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.9.1](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.9.0...ui-core-v3.9.1) (2026-10-15)
+
+
+### Bug Fixes
+
+* fix frozen lockfile issue ([2bd1c94](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/2bd1c94b441891b6108cbcf5d27cb724da3a3827))
+
 ## [3.9.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-core-v3.8.1...ui-core-v3.9.0) (2026-10-14)
 
 
