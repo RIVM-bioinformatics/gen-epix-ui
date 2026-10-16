@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   ListItemIcon,
@@ -123,9 +123,9 @@ export const MapWidget = () => {
 
   const { data: regionSetShapes, error: regionSetShapesError, isLoading: isRegionSetShapesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      return (await rootContainer.resolve(CaseDbGeoApi).regionSetShapesPostQuery(regionSetShapesFilter, null, null, { signal })).data;
+      return (await container.resolve(CaseDbGeoApi).regionSetShapesPostQuery(regionSetShapesFilter, null, null, { signal })).data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REGION_SET_SHAPES, regionSetShapesFilter),
     retry: false,
     select: (shapes) => Object.fromEntries(shapes.map(regionSetShape => [regionSetShape.region_set_id, regionSetShape])),
   });
@@ -151,7 +151,7 @@ export const MapWidget = () => {
       return [];
     }
     const regionSetId = completeCaseType.ref_cols[col.ref_col_id].region_set_id;
-    return rootContainer.resolve(DataService).data.regionsByRegionSetId[regionSetId];
+    return container.resolve(DataService).data.regionsByRegionSetId[regionSetId];
   }, [col, completeCaseType.ref_cols]);
 
   const lineListCaseCount = useMemo(() => {
@@ -394,7 +394,7 @@ export const MapWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
+      container.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         disabled: !canShowWidget,
         items: [
           {
@@ -413,10 +413,10 @@ export const MapWidget = () => {
 
 
     emitDownloadOptions();
-    const eventBusService = rootContainer.resolve(EventBusService);
+    const eventBusService = container.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
-      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
+      container.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         items: null,
         zone: DASHBOARD_COMPONENT_NAME.MAP,
         zoneLabel: t`Map`,

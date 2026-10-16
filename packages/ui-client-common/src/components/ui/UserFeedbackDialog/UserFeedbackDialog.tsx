@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import type { ReactElement } from 'react';
 import {
@@ -70,15 +70,15 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   const formMethods = useForm<FormFields>({
     resolver: yupResolver(schema) as Resolver<FormFields>,
     values: {
-      email: rootContainer.resolve(AuthorizationService).user?.email ?? rootContainer.resolve(AuthorizationService).user?.key ?? '',
+      email: container.resolve(AuthorizationService).user?.email ?? container.resolve(AuthorizationService).user?.key ?? '',
       message: '',
-      name: rootContainer.resolve(AuthorizationService).user?.name ?? '',
+      name: container.resolve(AuthorizationService).user?.name ?? '',
     },
   });
   const { handleSubmit } = formMethods;
 
   useEffect(() => {
-    rootContainer.resolve(UserSettingsService).showShowUserFeedbackTooltip = false;
+    container.resolve(UserSettingsService).showShowUserFeedbackTooltip = false;
   }, []);
 
   const formFieldDefinitions = useMemo<FormFieldDefinition<FormFields>[]>(() => [
@@ -106,8 +106,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
   }, [onTitleChange, t]);
 
   const onFormSubmit = useCallback((formValues: FormFields): void => {
-    const navigationHistory = rootContainer.resolve(NavigationHistoryService).navigationHistory;
-    rootContainer.resolve(LogService).log([{
+    const navigationHistory = container.resolve(NavigationHistoryService).navigationHistory;
+    container.resolve(LogService).log([{
       detail: {
         ...formValues,
         navigationHistory: navigationHistory.slice(navigationHistory.length - 50).reverse(),
@@ -115,8 +115,8 @@ export const UserFeedbackDialog = withDialog<UserFeedbackDialogProps, UserFeedba
       level: 'INFO',
       topic: 'USER_FEEDBACK',
     }]);
-    rootContainer.resolve(LogService).flushLog();
-    rootContainer.resolve(NotificationService).showNotification({
+    container.resolve(LogService).flushLog();
+    container.resolve(NotificationService).showNotification({
       message: t`Thank you for sharing your feedback with us`,
       severity: 'success',
     });

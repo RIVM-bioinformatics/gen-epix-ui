@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -80,15 +80,15 @@ export const UserInvitationsAdminPage = () => {
   const userInvitationConsumeDialogRef = useRef<UserInvitationConsumeDialogRefMethods>(null);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).userInvitationsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(API_ORGANIZATION_TOKEN).userInvitationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbUserInvitation) => {
-    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).userInvitationsDeleteOne(item.id);
+    return await container.resolve(API_ORGANIZATION_TOKEN).userInvitationsDeleteOne(item.id);
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).inviteUser({
+    return (await container.resolve(API_ORGANIZATION_TOKEN).inviteUser({
       ...variables,
     })).data;
   }, []);

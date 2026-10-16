@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { Button } from '@mui/material';
 import { useCallback } from 'react';
 import type { MouseEvent as ReactMouseEvent } from 'react';
@@ -30,7 +30,7 @@ export const TableReadableIndexCell = <TRowData, TDataContext>({
         throw new Error('getRowName is required when onReadableIndexClick is provided');
       }
       if (config.enablePageEvents) {
-        rootContainer.resolve(PageEventBusService).emit('click', {
+        container.resolve(PageEventBusService).emit('click', {
           label: getRowName(cell.row),
           type: 'table-row-index',
         });

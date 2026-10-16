@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -40,7 +40,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
               label: t`Download as CSV`,
             },
             {
-              callback: () => rootContainer.resolve(EventBusService).emit('openSequenceDownloadDialog', { cases: sortedData }),
+              callback: () => container.resolve(EventBusService).emit('openSequenceDownloadDialog', { cases: sortedData }),
               label: t`Download sequences`,
             },
             {
@@ -63,7 +63,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
               label: t`Download as CSV`,
             },
             {
-              callback: () => rootContainer.resolve(EventBusService).emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedIds.includes(c.id)) }),
+              callback: () => container.resolve(EventBusService).emit('openSequenceDownloadDialog', { cases: sortedData.filter(c => selectedIds.includes(c.id)) }),
               label: t`Download sequences`,
             },
             {
@@ -76,7 +76,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
         },
       ];
 
-      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
+      container.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         items,
         zone: DASHBOARD_COMPONENT_NAME.LINE_LIST,
         zoneLabel: t`Line list`,
@@ -92,7 +92,7 @@ export const useEpiLineListWidgetEmitDownloadOptions = () => {
     const onDownloadOptionsRequested = () => {
       emitDownloadOptions(dashboardStore.getState().selectedIds);
     };
-    const eventBusService = rootContainer.resolve(EventBusService);
+    const eventBusService = container.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsRequested', onDownloadOptionsRequested);
     return () => {
       eventBusService.emit('onDownloadOptionsChanged', {

@@ -58,10 +58,7 @@ type EpiEvent = {
 
 @singleton()
 export class EventBusService extends EventBusAbstract<EpiEvent> {
-
   public constructor() {
     super();
   }
-
-
 }

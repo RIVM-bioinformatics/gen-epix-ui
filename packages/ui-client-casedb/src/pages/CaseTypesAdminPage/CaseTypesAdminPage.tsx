@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -59,19 +59,19 @@ export const CaseTypesAdminPage = () => {
   }, []);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).caseTypesGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbCaseApi).caseTypesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseType) => {
-    return await rootContainer.resolve(CaseDbCaseApi).caseTypesDeleteOne(item.id);
+    return await container.resolve(CaseDbCaseApi).caseTypesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseType) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).caseTypesPutOne(item.id, getCaseTypeFromVariables(variables, item.id))).data;
+    return (await container.resolve(CaseDbCaseApi).caseTypesPutOne(item.id, getCaseTypeFromVariables(variables, item.id))).data;
   }, [getCaseTypeFromVariables]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).caseTypesPostOne(getCaseTypeFromVariables(variables))).data;
+    return (await container.resolve(CaseDbCaseApi).caseTypesPostOne(getCaseTypeFromVariables(variables))).data;
   }, [getCaseTypeFromVariables]);
 
   const getName = useCallback((item: CaseDbCaseType) => {
@@ -228,7 +228,7 @@ export const CaseTypesAdminPage = () => {
   }, [etiologicalAgentOptionsQuery.options, diseaseOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbCaseType>[]>(() => {
-    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
+    if (!container.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.DimCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

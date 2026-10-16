@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   Button,
@@ -35,7 +35,7 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       // Axios errors are logged in LogService already
       return;
     }
-    rootContainer.resolve(LogService).log([{
+    container.resolve(LogService).log([{
       detail: {
         error,
         stack: (error as Error)?.stack,
@@ -43,29 +43,29 @@ export const GenericErrorMessage = ({ error, shouldHideActionButtons }: GenericE
       level: isAxiosError(error) ? CommonDbLogLevel.DEBUG : CommonDbLogLevel.ERROR,
       topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
     }]);
-    rootContainer.resolve(LogService).flushLog();
+    container.resolve(LogService).flushLog();
     if (error instanceof Error && config.enablePageEvents) {
-      rootContainer.resolve(PageEventBusService).emit('error', error);
+      container.resolve(PageEventBusService).emit('error', error);
     }
   }, [config.enablePageEvents, error]);
 
   const onBackToHomePageButtonClick = useCallback(async () => {
-    await rootContainer.resolve(RouterService).router.navigate({
+    await container.resolve(RouterService).router.navigate({
       pathname: '/',
     });
   }, []);
 
   const onBackButtonClick = useCallback(async () => {
-    await rootContainer.resolve(RouterService).router.navigate(-1);
+    await container.resolve(RouterService).router.navigate(-1);
   }, []);
 
   const onLogoutButtonClick = useCallback(async () => {
     AuthenticationService.clearStaleState();
-    if (rootContainer.resolve(AuthenticationService).authContextProps) {
+    if (container.resolve(AuthenticationService).authContextProps) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      rootContainer.resolve(AuthenticationService).authContextProps.signoutRedirect();
+      container.resolve(AuthenticationService).authContextProps.signoutRedirect();
     } else {
-      await rootContainer.resolve(RouterService).router.navigate({
+      await container.resolve(RouterService).router.navigate({
         pathname: '/',
       });
     }

@@ -1,5 +1,5 @@
 import { setupYup } from '@gen-epix/ui-core-form/setup/setup';
 
-export const setupUi = () => {
+export const setupClientCommon = () => {
   setupYup();
 };

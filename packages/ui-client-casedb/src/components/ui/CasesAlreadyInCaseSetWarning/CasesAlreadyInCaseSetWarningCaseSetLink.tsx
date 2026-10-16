@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { Link } from '@mui/material';
 import {
   useCallback,
@@ -32,7 +32,7 @@ export const CasesAlreadyInCaseSetWarningCaseSetLink = ({ caseSet }: CasesAlread
   }, []);
 
   const onConfirm = useCallback(async () => {
-    await rootContainer.resolve(RouterService).router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
+    await container.resolve(RouterService).router.navigate(CaseSetUtil.createCaseSetLink(caseSet));
   }, [caseSet]);
 
 

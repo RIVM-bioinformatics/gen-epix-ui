@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   afterEach,
   beforeEach,
@@ -57,13 +57,13 @@ const makeConcept = (
 let savedData: DataCache;
 
 beforeEach(() => {
-  savedData = { ...rootContainer.resolve(DataService).data };
-  rootContainer.resolve(DataService).data.conceptsIdsBySetId = {};
-  rootContainer.resolve(DataService).data.conceptsById = {};
+  savedData = { ...container.resolve(DataService).data };
+  container.resolve(DataService).data.conceptsIdsBySetId = {};
+  container.resolve(DataService).data.conceptsById = {};
 });
 
 afterEach(() => {
-  Object.assign(rootContainer.resolve(DataService).data, savedData);
+  Object.assign(container.resolve(DataService).data, savedData);
   vi.restoreAllMocks();
 });
 
@@ -317,9 +317,9 @@ describe('StratificationUtil', () => {
         const SET_ID = 'set1';
 
         const setUpConcepts = (concepts: CaseDbConcept[]) => {
-          rootContainer.resolve(DataService).data.conceptsIdsBySetId[SET_ID] = concepts.map(c => c.id);
+          container.resolve(DataService).data.conceptsIdsBySetId[SET_ID] = concepts.map(c => c.id);
           concepts.forEach(c => {
-            rootContainer.resolve(DataService).data.conceptsById[c.id] = c;
+            container.resolve(DataService).data.conceptsById[c.id] = c;
           });
         };
 
@@ -449,7 +449,7 @@ describe('StratificationUtil', () => {
             makeConcept('c2', 2, null),
           ];
           concepts.forEach(c => {
-            rootContainer.resolve(DataService).data.conceptsById[c.id] = c;
+            container.resolve(DataService).data.conceptsById[c.id] = c;
           });
           // conceptsIdsBySetId[SET_ID] is intentionally left unset
 

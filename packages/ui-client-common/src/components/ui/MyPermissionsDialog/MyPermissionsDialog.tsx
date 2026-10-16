@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   useEffect,
@@ -53,7 +53,7 @@ export const MyPermissionsDialog = withDialog<MyPermissionsDialogProps, MyPermis
   }), [t]);
 
   const readablePermissions = useMemo(() => {
-    return rootContainer.resolve(AuthorizationService).apiPermissions.sort((a, b) => a.command_name.localeCompare(b.command_name)).map(permission => ({
+    return container.resolve(AuthorizationService).apiPermissions.sort((a, b) => a.command_name.localeCompare(b.command_name)).map(permission => ({
       command_name: permission.command_name,
       key: `${permission.command_name}-${permission.permission_type}`,
       permission_type: permissionTypeTranslationMap[permission.permission_type],

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useMutation } from '@tanstack/react-query';
 import type { ReactElement } from 'react';
 import {
@@ -42,7 +42,7 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
   queryFn,
   resourceQueryKey,
 }: UseEditMutationProps<TData, TVariables>) => {
-  const queryClient = rootContainer.resolve(QueryClientService).queryClient;
+  const queryClient = container.resolve(QueryClientService).queryClient;
   const previousItemRef = useRef<TData>(undefined);
 
   const setPreviousItem = useCallback((item: TData) => {
@@ -65,14 +65,14 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
           return [...oldItems.filter(x => (x as GenericData).id !== (context.item as GenericData).id), context.item];
         });
       }
-      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
+      await container.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       if (onError) {
         await onError(error, variables, context);
       }
-      rootContainer.resolve(NotificationService).fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(context.item, variables, error), error), 'error');
+      container.resolve(NotificationService).fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(context.item, variables, error), error), 'error');
     },
     onMutate: async (variables) => {
-      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
+      const notificationKey = container.resolve(NotificationService).showNotification({
         isLoading: true,
         message: getProgressNotificationMessage(previousItemRef.current, variables),
         severity: 'info',
@@ -98,11 +98,11 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
     },
     onSuccess: async (item, variables, context) => {
       previousItemRef.current = undefined;
-      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
+      await container.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
         await onSuccess(item, variables, context);
       }
-      rootContainer.resolve(NotificationService).fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
+      container.resolve(NotificationService).fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
     },
   });
 

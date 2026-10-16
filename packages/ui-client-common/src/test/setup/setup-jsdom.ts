@@ -1,5 +1,5 @@
 import { DependencyContainerUtil } from '../../utils/DependencyContainerUtil';
-import { setupUi } from '../../setup/setup';
+import { setupClientCommon } from '../../setup/setup';
 import { createDemoTheme } from '../../theme/demoTheme';
 import { StandardConfigUtil } from '../../utils/StandardConfigUtil';
 
@@ -11,8 +11,8 @@ export const setupTestEnvironment = () => {
     ...StandardConfigUtil.createConfig(),
     theme: createDemoTheme('light'),
   };
-  DependencyContainerUtil.createUiClientCommonContainer(config);
-  setupUi();
+  DependencyContainerUtil.createContainer(config);
+  setupClientCommon();
 
   vi.setConfig({
     testTimeout: 10000,

@@ -1,6 +1,6 @@
 import type { ConfigBase } from '../../models/config.models';
-import { useUiClientCommonConfigContext } from '../../context/uiClientCommonConfigContext';
+import { useClientCommonConfigContext } from '../../context/ClientCommonConfigContext';
 
 export const useConfig = <TConfig extends ConfigBase = ConfigBase>(): TConfig => {
-  return useUiClientCommonConfigContext<TConfig>().config;
+  return useClientCommonConfigContext<TConfig>().config;
 };

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CommonDbUserInvitationConstraints } from '@gen-epix/api-commondb';
 import {
@@ -16,7 +16,7 @@ import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 export const useInviteUserConstraintsQuery = (): UseQueryResult<CommonDbUserInvitationConstraints> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission([
+      if (!container.resolve(AuthorizationService).doesUserHavePermission([
         { command_name: CommonDbCommandName.RetrieveInviteUserConstraintsCommand, permission_type: CommonDbPermissionType.EXECUTE },
       ])) {
         return {
@@ -25,9 +25,9 @@ export const useInviteUserConstraintsQuery = (): UseQueryResult<CommonDbUserInvi
         };
       }
 
-      const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).inviteUserConstraints({ signal });
+      const response = await container.resolve(API_ORGANIZATION_TOKEN).inviteUserConstraints({ signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.INVITE_USER_CONSTRAINTS),
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.INVITE_USER_CONSTRAINTS),
   });
 };

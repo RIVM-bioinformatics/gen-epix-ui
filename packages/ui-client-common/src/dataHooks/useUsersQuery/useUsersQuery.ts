@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
@@ -18,10 +18,10 @@ import { UserUtil } from '../../utils/UserUtil';
 export const useUsersQuery = (): UseQueryResult<CommonDbUser[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).usersGetAll(null, null, { signal });
+      const response = await container.resolve(API_ORGANIZATION_TOKEN).usersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USERS),
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USERS),
   });
 };
 

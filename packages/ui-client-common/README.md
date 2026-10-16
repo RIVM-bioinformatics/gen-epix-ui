@@ -43,7 +43,7 @@ import { createRoot } from 'react-dom/client';
 import { I18nService } from '@gen-epix/ui-client-common/classes/services/I18nService';
 import { App } from '@gen-epix/ui-client-common/components/app/App';
 import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
-import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
+import { setupClientCommon } from '@gen-epix/ui-client-common/setup/setup';
 import { WindowService } from '@gen-epix/ui-core/classes/services/WindowService';
 
 const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
@@ -52,7 +52,7 @@ const init = async () => {
   const config = {
     // provide a ConfigBase implementation here
   };
-  const container = DependencyContainerUtil.createUiClientCommonContainer(config);
+  const container = DependencyContainerUtil.createContainer(config);
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {
@@ -73,7 +73,7 @@ const init = async () => {
     },
   });
 
-  setupUi();
+  setupClientCommon();
 
   createRoot(document.getElementById('root')!).render(<App container={container} />);
 };

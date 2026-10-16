@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbDisease } from '@gen-epix/api-casedb';
@@ -16,10 +16,10 @@ import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 export const useDiseasesQuery = (): UseQueryResult<CaseDbDisease[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbOntologyApi).diseasesGetAll(null, null, { signal });
+      const response = await container.resolve(CaseDbOntologyApi).diseasesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.DISEASES),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.DISEASES),
   });
 };
 

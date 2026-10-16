@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   IconButton,
@@ -26,7 +26,7 @@ export const ApplicationBarActionsOrganizationSwitcherItem = () => {
     organizationSwitcherDialogRef.current.open();
   }, []);
 
-  if (!rootContainer.resolve(FeatureFlagsService).featureFlags.update_own_organization) {
+  if (!container.resolve(FeatureFlagsService).featureFlags.update_own_organization) {
     return null;
   }
 

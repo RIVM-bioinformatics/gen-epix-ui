@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Alert,
   AlertTitle,
@@ -101,7 +101,7 @@ export const DashboardContent = ({ caseSet }: DashboardProps) => {
   }, [dashboardStore]);
 
   useEffect(() => {
-    const eventBus = rootContainer.resolve(EventBusService);
+    const eventBus = container.resolve(EventBusService);
     const removers = [
       // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
       eventBus.addEventListener('onEventCreated', () => {

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   IconButton,
@@ -28,7 +28,7 @@ export const ApplicationBarActionsFeedbackItem = () => {
   const userFeedbackDialogRef = useRef<UserFeedbackDialogRefMethods>(null);
   const [isFeedbackTooltipOpen, setIsFeedbackTooltipOpen] = useState(false);
   useEffect(() => {
-    if (!rootContainer.resolve(UserSettingsService).showShowUserFeedbackTooltip) {
+    if (!container.resolve(UserSettingsService).showShowUserFeedbackTooltip) {
       return;
     }
     const timeoutMs = Math.max(0, config.userFeedback.SHOW_USER_FEEDBACK_TOOLTIP_AFTER_MS - (new Date().getTime() - NOW));
@@ -46,7 +46,7 @@ export const ApplicationBarActionsFeedbackItem = () => {
 
   const onTooltipMouseEnter = useCallback(() => {
     setIsFeedbackTooltipOpen(false);
-    rootContainer.resolve(UserSettingsService).showShowUserFeedbackTooltip = false;
+    container.resolve(UserSettingsService).showShowUserFeedbackTooltip = false;
   }, []);
 
   return (

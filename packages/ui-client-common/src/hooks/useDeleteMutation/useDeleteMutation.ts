@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useMutation } from '@tanstack/react-query';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
@@ -32,7 +32,7 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
   queryFn,
   resourceQueryKey,
 }: UseDeleteMutationProps<TData>) => {
-  const queryClient = rootContainer.resolve(QueryClientService).queryClient;
+  const queryClient = container.resolve(QueryClientService).queryClient;
 
   const deleteMutation = useMutation<unknown, Error, TData, MutationContextDelete<TData>>({
     mutationFn: async (item) => {
@@ -48,15 +48,15 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
         });
       }
       if (associationQueryKeys) {
-        await rootContainer.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
+        await container.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       }
       if (onError) {
         await onError(error, item, context);
       }
-      rootContainer.resolve(NotificationService).fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(item, error), error), 'error');
+      container.resolve(NotificationService).fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(item, error), error), 'error');
     },
     onMutate: async (item) => {
-      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
+      const notificationKey = container.resolve(NotificationService).showNotification({
         isLoading: true,
         message: getProgressNotificationMessage(item),
         severity: 'info',
@@ -76,12 +76,12 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
     },
     onSuccess: async (_data, item, context) => {
       if (associationQueryKeys) {
-        await rootContainer.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
+        await container.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       }
       if (onSuccess) {
         await onSuccess(item, context);
       }
-      rootContainer.resolve(NotificationService).fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
+      container.resolve(NotificationService).fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
     },
   });
 

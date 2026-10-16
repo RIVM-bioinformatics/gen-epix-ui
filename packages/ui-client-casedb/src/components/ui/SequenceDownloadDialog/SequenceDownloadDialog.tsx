@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -94,7 +94,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
 
   const onDownloadFastaButtonClick = useCallback(() => {
     DownloadUtil.downloadAsMultiPartForm({
-      accessToken: rootContainer.resolve(AuthenticationService).authContextProps?.user?.access_token ?? '',
+      accessToken: container.resolve(AuthenticationService).authContextProps?.user?.access_token ?? '',
       action: `${config.getAPIBaseUrl()}/v1/retrieve/genetic_sequence/fasta`,
       data: {
         case_ids: openProps.cases.map(c => c.id),
@@ -125,7 +125,7 @@ export const SequenceDownloadDialog = withDialog<SequenceDownloadDialogProps, Se
       onActionsChange([...actions, ...buildInItems]);
     };
 
-    const eventBusService = rootContainer.resolve(EventBusService);
+    const eventBusService = container.resolve(EventBusService);
     eventBusService.addEventListener('onFastaDownloadActionsChanged', onDownloadActionsChanged);
     eventBusService.emit('onFastaDownloadActionsRequested', {
       caseIds: openProps.cases.map(c => c.id),

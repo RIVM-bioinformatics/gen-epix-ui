@@ -222,9 +222,9 @@
       "types": "./src/constants/query.constants.ts",
       "import": "./src/constants/query.constants.ts"
     },
-    "./context/uiClientCommonConfigContext": {
-      "types": "./src/context/uiClientCommonConfigContext/index.ts",
-      "import": "./src/context/uiClientCommonConfigContext/index.ts"
+    "./context/ClientCommonConfigContext": {
+      "types": "./src/context/ClientCommonConfigContext/index.ts",
+      "import": "./src/context/ClientCommonConfigContext/index.ts"
     },
     "./dataHooks/useIdentifierIssuerOwnOrganizationQuery": {
       "types": "./src/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.ts",
@@ -511,6 +511,7 @@
     "immer": "11.1.21",
     "lodash": "4.18.1",
     "oidc-client-ts": "3.5.0",
+    "reflect-metadata": "0.2.2",
     "use-debounce": "10.1.1",
     "uuid": "14.0.3",
     "zustand": "5.0.15"
@@ -545,7 +546,6 @@
     "i18next": "26.4.5",
     "jsdom": "30.1.2",
     "playwright": "1.64.1",
-    "reflect-metadata": "0.2.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-error-boundary": "6.1.6",
@@ -811,9 +811,9 @@
         "types": "./dist/constants/query.constants.d.ts",
         "import": "./dist/constants/query.constants.js"
       },
-      "./context/uiClientCommonConfigContext": {
-        "types": "./dist/context/uiClientCommonConfigContext/index.d.ts",
-        "import": "./dist/context/uiClientCommonConfigContext/index.js"
+      "./context/ClientCommonConfigContext": {
+        "types": "./dist/context/ClientCommonConfigContext/index.d.ts",
+        "import": "./dist/context/ClientCommonConfigContext/index.js"
       },
       "./dataHooks/useIdentifierIssuerOwnOrganizationQuery": {
         "types": "./dist/dataHooks/useIdentifierIssuerOwnOrganizationQuery/index.d.ts",

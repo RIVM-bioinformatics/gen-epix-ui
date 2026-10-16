@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   CircularProgress,
@@ -27,7 +27,7 @@ export const LineListWidgetIsInEventCell = memo(({ row }: LineListWidgetIsInEven
   useEffect(() => {
     const perform = async () => {
       try {
-        setIsTrue(await rootContainer.resolve(LineListCaseSetMembersService).query(row.id));
+        setIsTrue(await container.resolve(LineListCaseSetMembersService).query(row.id));
       } catch (_error) {
         setHasError(true);
       } finally {

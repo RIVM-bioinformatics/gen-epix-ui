@@ -18,7 +18,7 @@ import {
   API_ORGANIZATION_TOKEN,
   API_SYSTEM_TOKEN,
 } from '@gen-epix/ui-client-common/constants/api.constants';
-import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
+import { setupClientCommon } from '@gen-epix/ui-client-common/setup/setup';
 import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import type { DependencyContainer } from 'tsyringe';
 
@@ -54,5 +54,5 @@ export const setupOmopDb = (container: DependencyContainer) => {
   container.register(API_AUTH_TOKEN, { useValue: container.resolve(OmopDbAuthApi) });
   container.register(API_ORGANIZATION_TOKEN, { useValue: container.resolve(OmopDbOrganizationApi) as CommonDbOrganizationApi });
   container.register(API_SYSTEM_TOKEN, { useValue: container.resolve(OmopDbSystemApi) });
-  setupUi();
+  setupClientCommon();
 };

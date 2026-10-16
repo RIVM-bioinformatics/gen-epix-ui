@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   Button,
@@ -177,7 +177,7 @@ export const TreeWidget = () => {
   const { data: treeData, error: treeError, isLoading: isTreeLoading } = useQueryMemo({
     enabled: hasEnoughSequencesToShowTree && !!treeConfiguration && !hasToManyResultsToShowTree,
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
+      const response = await container.resolve(CaseDbCaseApi).retrievePhylogeneticTree(retrievePhylogeneticTreeRequestBody, { signal });
       return response.data;
     },
     queryKey: [CASEDB_QUERY_KEY.PHYLOGENETIC_TREE, JSON.stringify(retrievePhylogeneticTreeRequestBody)],
@@ -186,7 +186,7 @@ export const TreeWidget = () => {
   });
 
   const onOpenFiltersButtonClick = useCallback(() => {
-    rootContainer.resolve(EventBusService).emit('openFiltersMenu');
+    container.resolve(EventBusService).emit('openFiltersMenu');
   }, []);
 
   const isLoading = !!treeConfiguration && (isCaseDataLoading || (hasEnoughSequencesToShowTree && isTreeLoading));
@@ -358,7 +358,7 @@ export const TreeWidget = () => {
   }, []);
 
   const onShowDetailsSelectionMenuItemClick = useCallback((onMenuClose: () => void) => {
-    rootContainer.resolve(EventBusService).emit('openCaseInfoDialog', {
+    container.resolve(EventBusService).emit('openCaseInfoDialog', {
       caseId: baseData.find(c => c.id === extraLeafInfoId).id,
       caseTypeId: completeCaseType.id,
     });
@@ -476,7 +476,7 @@ export const TreeWidget = () => {
           treeAlgorithm: treeConfiguration?.treeAlgorithm.name ?? '',
         });
 
-      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
+      container.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         disabled: isTreeUnavailable,
         items: [
           {
@@ -499,7 +499,7 @@ export const TreeWidget = () => {
 
 
     emitDownloadOptions();
-    const eventBusService = rootContainer.resolve(EventBusService);
+    const eventBusService = container.resolve(EventBusService);
     eventBusService.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
 
     return () => {
@@ -515,7 +515,7 @@ export const TreeWidget = () => {
 
   useEffect(() => {
     // eslint-disable-next-line @eslint-react/web-api-no-leaked-event-listener
-    const removeEventListener = rootContainer.resolve(EventBusService).addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
+    const removeEventListener = container.resolve(EventBusService).addEventListener('onLinkLineListAndTree', () => treeRef.current?.link());
     return () => {
       removeEventListener();
     };

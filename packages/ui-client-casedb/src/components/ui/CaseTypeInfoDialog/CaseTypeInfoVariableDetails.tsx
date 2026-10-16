@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -114,10 +114,10 @@ export const CaseTypeInfoVariableDetails = ({ completeCaseType, dim }: CaseTypeI
                   )}
                   {refCol.col_type === CaseDbColType.GEO_REGION && refCol.region_set_id && (
                     <>
-                      {rootContainer.resolve(DataService).data.regionSets[refCol.region_set_id].name}
+                      {container.resolve(DataService).data.regionSets[refCol.region_set_id].name}
                     </>
                   )}
-                  {([CaseDbColType.NOMINAL, CaseDbColType.ORDINAL] as CaseDbColType[]).includes(refCol.col_type) && refCol.concept_set_id && rootContainer.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id] && (
+                  {([CaseDbColType.NOMINAL, CaseDbColType.ORDINAL] as CaseDbColType[]).includes(refCol.col_type) && refCol.concept_set_id && container.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id] && (
                     <Box
                       sx={{
                         maxWidth: '100%',
@@ -131,7 +131,7 @@ export const CaseTypeInfoVariableDetails = ({ completeCaseType, dim }: CaseTypeI
                           rowGap: 1,
                         }}
                       >
-                        {rootContainer.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id].map(concept => (
+                        {container.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id].map(concept => (
                           <Chip
                             key={concept.id}
                             label={`${concept.name} (${concept.code})`}

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { EChartsOption } from 'echarts';
 import type { CallbackDataParams } from 'echarts/types/dist/shared';
 import type {
@@ -244,10 +244,10 @@ export class HistogramUtil {
   ): CaseDbConcept[] {
     const refCol = completeCaseType.ref_cols[col.ref_col_id ?? ''];
     const conceptIds =
-      rootContainer.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
+      container.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
     return (
       conceptIds
-        ?.map(conceptId => rootContainer.resolve(DataService).data.conceptsById[conceptId])
+        ?.map(conceptId => container.resolve(DataService).data.conceptsById[conceptId])
         .sort(CaseDbDataUtil.conceptComparator) ?? []
     );
   }

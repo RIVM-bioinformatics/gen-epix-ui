@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Link,
   ListItem,
@@ -21,8 +21,8 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
 
   const { data: organizationAdminNameEmails, error: organizationAdminNameEmailsError, isLoading: isOrganizationAdminNameEmailsLoading } = useQueryMemo({
     gcTime: 0,
-    queryFn: async ({ signal }) => (await rootContainer.resolve(API_ABAC_TOKEN).retrieveOrganizationAdminNameEmails({ signal })).data,
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
+    queryFn: async ({ signal }) => (await container.resolve(API_ABAC_TOKEN).retrieveOrganizationAdminNameEmails({ signal })).data,
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
     staleTime: 0,
   });
 

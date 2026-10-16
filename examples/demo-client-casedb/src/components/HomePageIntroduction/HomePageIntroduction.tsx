@@ -1,4 +1,3 @@
-import { container as rootContainer } from 'tsyringe';
 import {
   Box,
   Button,
@@ -8,12 +7,13 @@ import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
 import { useConfig } from '@gen-epix/ui-client-common/hooks/useConfig';
 import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
+import { container } from 'tsyringe';
 
 export const HomePageIntroduction = () => {
   const [t] = useTranslation();
   const config = useConfig();
   const onExploreCasesButtonClick = useCallback(async () => {
-    await rootContainer.resolve(RouterService).router.navigate('/cases');
+    await container.resolve(RouterService).router.navigate('/cases');
   }, []);
 
   return (

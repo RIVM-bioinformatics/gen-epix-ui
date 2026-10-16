@@ -1,5 +1,4 @@
 import type { DependencyContainer } from 'tsyringe';
-import { container as rootContainer } from 'tsyringe';
 import { CacheProvider } from '@emotion/react';
 import {
   CssBaseline,
@@ -17,7 +16,7 @@ import { AuthenticationService } from '../../../classes/services/AuthenticationS
 import { LogService } from '../../../classes/services/LogService';
 import { ApplicationBootstrapWithoutAuthorization } from '../ApplicationBootstrapWithoutAuthorization';
 import { AppRouterProvider } from '../AppRouterProvider/AppRouterProvider';
-import { UiClientCommonConfigContextProvider } from '../../../context/uiClientCommonConfigContext';
+import { ClientCommonConfigContextProvider } from '../../../context/ClientCommonConfigContext';
 import type { ConfigBase } from '../../../models/config.models';
 import { DependencyContainerUtil } from '../../../utils/DependencyContainerUtil';
 
@@ -28,13 +27,13 @@ export type AppProps = {
 export const App = ({ container }: AppProps) => {
   const config = DependencyContainerUtil.resolveConfig<ConfigBase>(container);
 
-  const authenticationService = rootContainer.resolve(AuthenticationService);
-  const logService = rootContainer.resolve(LogService);
+  const authenticationService = container.resolve(AuthenticationService);
+  const logService = container.resolve(LogService);
   const touchIconUrl = config.getTouchIconUrl();
   if (touchIconUrl) {
     document.querySelector('link[rel="icon"]')?.setAttribute('href', touchIconUrl);
   }
-  const api = rootContainer.resolve(API_BASE_TOKEN);
+  const api = container.resolve(API_BASE_TOKEN);
   api.baseUrl = config.getAPIBaseUrl();
   api.defaultRequestTimeout = config.defaultRequestTimeout;
   api.onRequest = [
@@ -43,7 +42,7 @@ export const App = ({ container }: AppProps) => {
   ];
   api.onResponseFulfilled = [
     logService.onResponseFulfilled.bind(logService),
-    rootContainer.resolve(BackendVersionService).onResponseFulfilled.bind(rootContainer.resolve(BackendVersionService)),
+    container.resolve(BackendVersionService).onResponseFulfilled.bind(container.resolve(BackendVersionService)),
   ];
   api.onResponseRejected = [
     logService.onResponseRejected.bind(logService),
@@ -54,7 +53,7 @@ export const App = ({ container }: AppProps) => {
   const emotionCache = container.resolve(EmotionCacheService).emotionCache;
 
   return (
-    <UiClientCommonConfigContextProvider container={container}>
+    <ClientCommonConfigContextProvider container={container}>
       <QueryClientProvider client={queryClientService.queryClient}>
         <CacheProvider value={emotionCache}>
           <ThemeProvider theme={config.theme}>
@@ -67,6 +66,6 @@ export const App = ({ container }: AppProps) => {
           </ThemeProvider>
         </CacheProvider>
       </QueryClientProvider>
-    </UiClientCommonConfigContextProvider>
+    </ClientCommonConfigContextProvider>
   );
 };

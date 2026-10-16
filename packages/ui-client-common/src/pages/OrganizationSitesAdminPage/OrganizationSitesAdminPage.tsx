@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -32,7 +32,7 @@ export const OrganizationSitesAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).sitesGetAll(null, null, { signal })).data;
+    return (await container.resolve(API_ORGANIZATION_TOKEN).sitesGetAll(null, null, { signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((sites: CommonDbSite[]) => {
@@ -40,7 +40,7 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbSite) => {
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).sitesPutOne(item.id, {
+    return (await container.resolve(API_ORGANIZATION_TOKEN).sitesPutOne(item.id, {
       id: item.id,
       name: variables.name,
       organization_id: organizationId,
@@ -48,14 +48,14 @@ export const OrganizationSitesAdminPage = () => {
   }, [organizationId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).sitesPostOne({
+    return (await container.resolve(API_ORGANIZATION_TOKEN).sitesPostOne({
       name: variables.name,
       organization_id: organizationId,
     })).data;
   }, [organizationId]);
 
   const deleteOne = useCallback(async (item: CommonDbSite) => {
-    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).sitesDeleteOne(item.id);
+    return await container.resolve(API_ORGANIZATION_TOKEN).sitesDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {
@@ -93,7 +93,7 @@ export const OrganizationSitesAdminPage = () => {
   }, []);
 
   const subPages = useMemo<CrudPageSubPage<CommonDbSite>[]>(() => {
-    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission([
+    if (!container.resolve(AuthorizationService).doesUserHavePermission([
       { command_name: CommonDbCommandName.ContactCrudCommand, permission_type: CommonDbPermissionType.READ },
     ])) {
       return [];

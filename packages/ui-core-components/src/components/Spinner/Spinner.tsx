@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { visuallyHidden } from '@mui/utils';
 
-import { useUiCoreComponentsConfigContext } from '../../context/uiCoreComponentsConfigContext';
+import { useCoreComponentsConfigContext } from '../../context/CoreComponentsConfigContext';
 
 
 const DEFAULT_TAKING_LONGER_TIMEOUT_MS = 5000;
@@ -32,16 +32,16 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
   const [isTakingLonger, setIsTakingLonger] = useState(false);
   const { t } = useTranslation();
 
-  const uiCoreComponentsConfig = useUiCoreComponentsConfigContext();
+  const coreComponentsConfig = useCoreComponentsConfigContext();
 
   useEffect(() => {
     const handle = setTimeout(() => {
       setIsTakingLonger(true);
-    }, takingLongerTimeoutMs ?? uiCoreComponentsConfig?.spinner?.defaultTakingLongerTimeoutMs ?? DEFAULT_TAKING_LONGER_TIMEOUT_MS);
+    }, takingLongerTimeoutMs ?? coreComponentsConfig?.spinner?.defaultTakingLongerTimeoutMs ?? DEFAULT_TAKING_LONGER_TIMEOUT_MS);
     return () => {
       clearTimeout(handle);
     };
-  }, [takingLongerTimeoutMs, uiCoreComponentsConfig?.spinner?.defaultTakingLongerTimeoutMs]);
+  }, [takingLongerTimeoutMs, coreComponentsConfig?.spinner?.defaultTakingLongerTimeoutMs]);
 
   return (
     <Box
@@ -67,7 +67,7 @@ export const Spinner = ({ color = 'primary', inline, label, size, takingLongerLa
       >
         <CircularProgress
           color={color}
-          size={size ?? uiCoreComponentsConfig?.spinner?.defaultCircularProgressSize ?? DEFAULT_CIRCULAR_PROGRESS_SIZE}
+          size={size ?? coreComponentsConfig?.spinner?.defaultCircularProgressSize ?? DEFAULT_CIRCULAR_PROGRESS_SIZE}
         />
       </Box>
       <Box

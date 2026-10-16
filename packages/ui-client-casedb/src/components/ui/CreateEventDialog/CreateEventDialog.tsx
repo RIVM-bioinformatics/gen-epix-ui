@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useEffect,
@@ -137,7 +137,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
     useQueryOptions: {
       enabled: !openProps.completeCaseType && !!sanitizedCompleteCaseTypeId,
       queryFn: async ({ signal }) => {
-        return (await rootContainer.resolve(CaseDbCaseApi).completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
+        return (await container.resolve(CaseDbCaseApi).completeCaseTypesGetOne(sanitizedCompleteCaseTypeId, { signal })).data;
       },
     },
   });
@@ -274,20 +274,20 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
         caseTypeId: completeCaseType.id,
       });
     }
-    rootContainer.resolve(EventBusService).emit('onEventCreated');
+    container.resolve(EventBusService).emit('onEventCreated');
     onClose();
   }, [completeCaseType?.id, onClose, openProps.rows]);
 
   const onError = useCallback(() => {
-    rootContainer.resolve(EventBusService).emit('onEventCreated');
+    container.resolve(EventBusService).emit('onEventCreated');
     onClose();
   }, [onClose]);
 
   const { isMutating: isCreating, mutate: mutateCreate } = useCreateMutation<CaseDbCaseSet, FormFields>({
     associationQueryKeys: [
-      ...rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS]),
-      ...rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
-      ...rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
+      ...container.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SETS]),
+      ...container.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
+      ...container.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.DATA_COLLECTION_SET_MEMBERS], true),
     ],
     getErrorNotificationMessage: (item, _error) => t('Failed to create event: {{name}}', { name: item.name }),
     getProgressNotificationMessage: (variables) => t('Creating event: {{name}}...', { name: variables.name }),
@@ -300,7 +300,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
     onError,
     onSuccess,
     queryFn: async (formData: FormFields): Promise<CaseDbCaseSet> => {
-      const caseSetResult = (await rootContainer.resolve(CaseDbCaseApi).createCaseSet({
+      const caseSetResult = (await container.resolve(CaseDbCaseApi).createCaseSet({
         case_ids: openProps.rows?.map(row => row.id) ?? [],
         case_set: {
           case_set_category_id: formData.case_set_category_id,
@@ -316,7 +316,7 @@ export const CreateEventDialog = withDialog<CreateEventDialogProps, CreateEventD
 
       return caseSetResult;
     },
-    resourceQueryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    resourceQueryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
 
   const isFormDisabled = useMemo(() => {

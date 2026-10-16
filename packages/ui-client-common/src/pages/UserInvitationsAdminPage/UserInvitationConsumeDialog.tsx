@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 import type { ReactElement } from 'react';
@@ -83,9 +83,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
 
   const onFormSubmit = useCallback(async (data: FormFields) => {
     try {
-      rootContainer.resolve(AuthenticationService).temporaryToken = data.bearerToken;
-      await rootContainer.resolve(API_ORGANIZATION_TOKEN).userRegistrationsPostOne(openProps.item.token);
-      rootContainer.resolve(NotificationService).showNotification({
+      container.resolve(AuthenticationService).temporaryToken = data.bearerToken;
+      await container.resolve(API_ORGANIZATION_TOKEN).userRegistrationsPostOne(openProps.item.token);
+      container.resolve(NotificationService).showNotification({
         message: t`Invitation has been consumed by bearer token`,
         severity: 'success',
       });
@@ -93,9 +93,9 @@ export const UserInvitationConsumeDialog = withDialog<UserInvitationConsumeDialo
     } catch (responseError) {
       setError(responseError);
     } finally {
-      delete rootContainer.resolve(AuthenticationService).temporaryToken;
-      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
-      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
+      delete container.resolve(AuthenticationService).temporaryToken;
+      const queryKeys = container.resolve(QueryClientService).getQueryKeyDependencies([COMMON_QUERY_KEY.USER_INVITATIONS], true);
+      await container.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
     }
   }, [onClose, openProps.item.token, t]);
 

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useMemo } from 'react';
 import type { ComponentType } from 'react';
 import type { CommonDbApiPermission } from '@gen-epix/api-commondb';
@@ -15,7 +15,7 @@ export const withPermissions = <TApiPermission = CommonDbApiPermission, TProps e
   options: WithPermissionsOptions<TApiPermission>,
 ) => {
   const WrappedComponent = (props: TProps) => {
-    const authorizationService = useMemo(() => rootContainer.resolve(AuthorizationService), []);
+    const authorizationService = useMemo(() => container.resolve(AuthorizationService), []);
 
     if (!authorizationService.doesUserHavePermission(options.requiredPermissions as CommonDbApiPermission[])) {
       if (options.fallback) {

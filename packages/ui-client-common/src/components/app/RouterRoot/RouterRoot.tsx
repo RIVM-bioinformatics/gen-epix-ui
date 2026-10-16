@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   StrictMode,
   useCallback,
@@ -49,12 +49,12 @@ export const RouterRoot = () => {
   const location = useLocation();
   const config = useConfig();
 
-  const oidcConfiguration = useSubscribable(rootContainer.resolve(AuthenticationService));
+  const oidcConfiguration = useSubscribable(container.resolve(AuthenticationService));
 
   const { data: identityProvidersWithAvailability, error: identityProvidersError, isLoading: isIdentityProvidersLoading } = useQueryMemo<IdentityProviderWithAvailability[], Error, IdentityProviderWithAvailability[]>({
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const providers = (await rootContainer.resolve(API_AUTH_TOKEN).identityProvidersGetAll({ signal })).data;
+      const providers = (await container.resolve(API_AUTH_TOKEN).identityProvidersGetAll({ signal })).data;
       if (!Array.isArray(providers)) {
         throw new Error('Invalid response for identity providers. Backend is most likely misconfigured.');
       }
@@ -73,7 +73,7 @@ export const RouterRoot = () => {
         } catch (error: unknown) {
           console.error(`Identity provider ${provider.name} is not available`, error);
           if (oidcConfiguration?.name === provider.name) {
-            rootContainer.resolve(AuthenticationService).next(undefined);
+            container.resolve(AuthenticationService).next(undefined);
           }
           providersWithAvailability.push({
             isAvailable: false,
@@ -83,7 +83,7 @@ export const RouterRoot = () => {
       }
       return providersWithAvailability;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTITY_PROVIDERS),
     staleTime: Infinity,
   });
 
@@ -92,8 +92,8 @@ export const RouterRoot = () => {
   }, [identityProvidersWithAvailability]);
 
   useEffect(() => {
-    rootContainer.resolve(NavigationHistoryService).navigationHistory.push(location.pathname);
-    rootContainer.resolve(LogService).log([{
+    container.resolve(NavigationHistoryService).navigationHistory.push(location.pathname);
+    container.resolve(LogService).log([{
       detail: {
         pathname: location.pathname,
       },
@@ -104,7 +104,7 @@ export const RouterRoot = () => {
 
   useEffect(() => {
     if (identityProvidersWithAvailability?.length === 1 && availableIdentityProviders.length === 1) {
-      rootContainer.resolve(AuthenticationService).next(identityProvidersWithAvailability[0].provider);
+      container.resolve(AuthenticationService).next(identityProvidersWithAvailability[0].provider);
     }
   }, [availableIdentityProviders.length, identityProvidersWithAvailability]);
 
@@ -116,7 +116,7 @@ export const RouterRoot = () => {
     // Validate the storage
     const identityProvider = identityProvidersWithAvailability.find(x => x.provider.name === oidcConfiguration.name)?.provider;
     if (!identityProvider || JSON.stringify(oidcConfiguration) !== JSON.stringify(identityProvider)) {
-      rootContainer.resolve(AuthenticationService).next(undefined);
+      container.resolve(AuthenticationService).next(undefined);
       return null;
     }
     WindowService.getInstance().window.userManager = new UserManager(UserManagerUtil.getSettings(oidcConfiguration));
@@ -124,7 +124,7 @@ export const RouterRoot = () => {
   }, [availableIdentityProviders, identityProvidersWithAvailability, oidcConfiguration]);
 
   const onSignin = useCallback(() => {
-    rootContainer.resolve(LogService).log([{
+    container.resolve(LogService).log([{
       level: CommonDbLogLevel.INFO,
       topic: 'USER_LOGIN',
     }]);
@@ -173,7 +173,7 @@ export const RouterRoot = () => {
     );
   }
 
-  const HomePage = rootContainer.resolve(RouterService).homePageComponent;
+  const HomePage = container.resolve(RouterService).homePageComponent;
 
   return (
     <AuthProvider

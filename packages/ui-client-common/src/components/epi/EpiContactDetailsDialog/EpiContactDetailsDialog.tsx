@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -48,7 +48,7 @@ export const EpiContactDetailsDialog = withDialog<EpiContactDetailsDialogProps, 
 
   const organizationContactsQuery = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const organizationApi = rootContainer.resolve(API_ORGANIZATION_TOKEN);
+      const organizationApi = container.resolve(API_ORGANIZATION_TOKEN);
       const response = await organizationApi.retrieveOrganizationContacts({
         organization_id: openProps.organizationId,
       }, { signal });

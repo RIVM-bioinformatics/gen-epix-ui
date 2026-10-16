@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Alert,
   AlertTitle,
@@ -50,10 +50,10 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
   }, [cases]);
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
+      const response = await container.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   // Load all case sets for the given case set members
@@ -68,10 +68,10 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     enabled: existingCaseSetsFilter.members.length > 0,
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsPostQuery(existingCaseSetsFilter, null, null, { signal });
+      const response = await container.resolve(CaseDbCaseApi).caseSetsPostQuery(existingCaseSetsFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, existingCaseSetsFilter),
   });
 
   const caseSetsByCase = useMemo(() => {
@@ -84,7 +84,7 @@ export const CasesAlreadyInCaseSetWarning = ({ cases }: CasesAlreadyInCaseSetWar
       const caseItem = cases.find(x => x.id === member.case_id);
       const caseSetItem = caseSets.find(x => x.id === member.case_set_id);
       if (!caseItem || !caseSetItem) {
-        rootContainer.resolve(LogService).log([
+        container.resolve(LogService).log([
           {
             detail: member,
             level: CaseDbLogLevel.DEBUG,

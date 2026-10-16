@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -77,7 +77,7 @@ export const UserEffectiveRightsAdminPage = () => {
     itemId: userId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        const response = await rootContainer.resolve(CaseDbOrganizationApi).usersGetOne(userId, { signal });
+        const response = await container.resolve(CaseDbOrganizationApi).usersGetOne(userId, { signal });
         return response.data;
       },
     },
@@ -113,7 +113,7 @@ export const UserEffectiveRightsAdminPage = () => {
     defaultSortByField: 'data_collection_id',
     defaultSortDirection: 'asc',
     idSelectorCallback: (entry) => entry.data_collection_id,
-    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
+    navigatorFunction: container.resolve(RouterService).router.navigate,
     storageNamePostFix: 'UsersEffectiveRightsAdminPage-Table',
     storageVersion: 1,
   }), []);

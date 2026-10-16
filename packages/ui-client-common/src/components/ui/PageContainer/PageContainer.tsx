@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   Container,
@@ -61,7 +61,7 @@ export const PageContainer = ({
     }
 
     if (config.enablePageEvents) {
-      rootContainer.resolve(PageEventBusService).emit('changePage', {
+      container.resolve(PageEventBusService).emit('changePage', {
         location: WindowService.getInstance().window.location,
         pageName: testIdAttributes['data-testid'],
       });

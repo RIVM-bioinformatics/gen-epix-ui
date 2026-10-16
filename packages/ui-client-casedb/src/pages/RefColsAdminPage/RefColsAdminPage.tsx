@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -72,7 +72,7 @@ export const RefColsAdminPage = () => {
   const loadables = useArray([unitOptionsQuery, conceptSetMapQuery, refDimMapQuery, refDimOptionsQuery, colTypeOptionsQuery, conceptSetOptionsQuery, regionSetOptionsQuery, geneticDistanceProtocolOptionsQuery, colsValidationRulesQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).refColsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbCaseApi).refColsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const fetchAllSelect = useCallback((refCols: CaseDbRefCol[]) => {
@@ -83,15 +83,15 @@ export const RefColsAdminPage = () => {
   }, [refDimId]);
 
   const deleteOne = useCallback(async (item: CaseDbRefCol) => {
-    return await rootContainer.resolve(CaseDbCaseApi).refColsDeleteOne(item.id);
+    return await container.resolve(CaseDbCaseApi).refColsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRefCol) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).refColsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbCaseApi).refColsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).refColsPostOne(variables)).data;
+    return (await container.resolve(CaseDbCaseApi).refColsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRefCol) => {

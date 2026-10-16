@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -47,19 +47,19 @@ export const ConceptSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbOntologyApi).conceptSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbConceptSet) => {
-    return await rootContainer.resolve(CaseDbOntologyApi).conceptSetsDeleteOne(item.id);
+    return await container.resolve(CaseDbOntologyApi).conceptSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbConceptSet) => {
-    return (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbOntologyApi).conceptSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbOntologyApi).conceptSetsPostOne(variables)).data;
+    return (await container.resolve(CaseDbOntologyApi).conceptSetsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbConceptSet) => {
@@ -131,7 +131,7 @@ export const ConceptSetsAdminPage = () => {
   }, [conceptSetTypeOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbConceptSet>[]>(() => {
-    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
+    if (!container.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.ConceptCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

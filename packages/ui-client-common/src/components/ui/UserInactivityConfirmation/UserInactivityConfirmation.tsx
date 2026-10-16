@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useEffect,
@@ -15,11 +15,11 @@ import { InactivityService } from '../../../classes/services/InactivityService';
 export const UserInactivityConfirmation = () => {
   const { t } = useTranslation();
   const confirmationRef = useRef<ConfirmationRefMethods>(null);
-  const [idleState, setIdleState] = useState<InactivityState>(rootContainer.resolve(InactivityService).data);
+  const [idleState, setIdleState] = useState<InactivityState>(container.resolve(InactivityService).data);
 
 
   useEffect(() => {
-    const unsubscribe = rootContainer.resolve(InactivityService).subscribe((data) => {
+    const unsubscribe = container.resolve(InactivityService).subscribe((data) => {
       if (data.isIdle) {
         setIdleState(data);
         confirmationRef.current?.open();
@@ -33,11 +33,11 @@ export const UserInactivityConfirmation = () => {
   }, []);
 
   const onCancel = useCallback(() => {
-    rootContainer.resolve(InactivityService).logout();
+    container.resolve(InactivityService).logout();
   }, []);
 
   const onClose = useCallback(() => {
-    rootContainer.resolve(InactivityService).reset();
+    container.resolve(InactivityService).reset();
   }, []);
 
 

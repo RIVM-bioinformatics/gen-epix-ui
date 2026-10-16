@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbCaseSetRights } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
@@ -10,9 +10,9 @@ import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 export const useCaseSetRightsQuery = (caseSetIds: string[]): UseQueryResult<CaseDbCaseSetRights[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseSetRights(caseSetIds, { signal });
+      const response = await container.resolve(CaseDbCaseApi).retrieveCaseSetRights(caseSetIds, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_RIGHTS, caseSetIds),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_RIGHTS, caseSetIds),
   });
 };

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -48,19 +48,19 @@ export const OrganizationAccessCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbAbacApi).organizationAccessCasePoliciesGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbAbacApi).organizationAccessCasePoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbOrganizationAccessCasePolicy) => {
-    return await rootContainer.resolve(CaseDbAbacApi).organizationAccessCasePoliciesDeleteOne(item.id);
+    return await container.resolve(CaseDbAbacApi).organizationAccessCasePoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganizationAccessCasePolicy) => {
-    return (await rootContainer.resolve(CaseDbAbacApi).organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbAbacApi).organizationAccessCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbAbacApi).organizationAccessCasePoliciesPostOne(variables)).data;
+    return (await container.resolve(CaseDbAbacApi).organizationAccessCasePoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbOrganizationAccessCasePolicy) => {

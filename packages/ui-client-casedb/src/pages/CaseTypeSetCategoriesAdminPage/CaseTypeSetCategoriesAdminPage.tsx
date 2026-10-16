@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -41,19 +41,19 @@ export const CaseTypeSetCategoriesAdminPage = () => {
   const loadables = useArray([caseTypeSetCategoryPurposeOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetCategoriesGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbCaseApi).caseTypeSetCategoriesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseTypeSetCategory) => {
-    return await rootContainer.resolve(CaseDbCaseApi).caseTypeSetCategoriesDeleteOne(item.id);
+    return await container.resolve(CaseDbCaseApi).caseTypeSetCategoriesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseTypeSetCategory) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetCategoriesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbCaseApi).caseTypeSetCategoriesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetCategoriesPostOne(variables)).data;
+    return (await container.resolve(CaseDbCaseApi).caseTypeSetCategoriesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbCaseTypeSetCategory) => {

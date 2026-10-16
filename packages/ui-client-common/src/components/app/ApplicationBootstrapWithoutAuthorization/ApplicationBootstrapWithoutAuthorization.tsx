@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useEffect,
@@ -35,7 +35,7 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
   const [isLanguageChanging, setIsLanguageChanging] = useState(false);
 
   useEffect(() => {
-    const i18nService = rootContainer.resolve(I18nService);
+    const i18nService = container.resolve(I18nService);
     const callback = (code: string) => {
       newLanguageCodeRef.current = code;
       confirmationRef.current?.open();
@@ -49,20 +49,20 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
   const onLanguageChangeConfirm = useCallback(async () => {
     if (newLanguageCodeRef.current) {
       setIsLanguageChanging(true);
-      await rootContainer.resolve(I18nService).switchLanguageConfig(newLanguageCodeRef.current);
+      await container.resolve(I18nService).switchLanguageConfig(newLanguageCodeRef.current);
       WindowService.getInstance().window.location.reload();
     }
   }, []);
 
   const featureFlagsQuery = useQueryMemo({
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await rootContainer.resolve(API_SYSTEM_TOKEN).retrieveFeatureFlags({ signal })).data,
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.FEATURE_FLAGS),
+    queryFn: async ({ signal }) => (await container.resolve(API_SYSTEM_TOKEN).retrieveFeatureFlags({ signal })).data,
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.FEATURE_FLAGS),
     staleTime: Infinity,
   });
 
   if (featureFlagsQuery.data) {
-    rootContainer.resolve(FeatureFlagsService).featureFlags = featureFlagsQuery.data.feature_flags;
+    container.resolve(FeatureFlagsService).featureFlags = featureFlagsQuery.data.feature_flags;
   }
 
   const loadables = useArray([featureFlagsQuery]);

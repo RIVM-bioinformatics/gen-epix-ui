@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -49,19 +49,19 @@ export const ConceptRelationsAdminPage = () => {
   const loadables = useArray([conceptOptionsQuery, conceptMapQuery, conceptRelationTypeOptionsQuery, nameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbOntologyApi).conceptRelationsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbOntologyApi).conceptRelationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbConceptRelation) => {
-    return await rootContainer.resolve(CaseDbOntologyApi).conceptRelationsDeleteOne(item.id);
+    return await container.resolve(CaseDbOntologyApi).conceptRelationsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbConceptRelation) => {
-    return (await rootContainer.resolve(CaseDbOntologyApi).conceptRelationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbOntologyApi).conceptRelationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbOntologyApi).conceptRelationsPostOne(variables)).data;
+    return (await container.resolve(CaseDbOntologyApi).conceptRelationsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbConceptRelation) => {

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CommonDbIdentifierIssuer } from '@gen-epix/api-commondb';
@@ -18,10 +18,10 @@ type Select = (data: CommonDbIdentifierIssuer[]) => CommonDbIdentifierIssuer[];
 export const useIdentifierIssuersQuery = (select?: Select): UseQueryResult<CommonDbIdentifierIssuer[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).identifierIssuersGetAll(null, null, { signal });
+      const response = await container.resolve(API_ORGANIZATION_TOKEN).identifierIssuersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS),
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS),
     select: select ? (data) => select(data) : undefined,
   });
 };

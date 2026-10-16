@@ -153,7 +153,7 @@ const mockDashboard = (overrides: Partial<CaseDbConfig['dashboard']>): CaseDbCon
   dashboardConfig = {
     dashboard: overrides,
   } as unknown as CaseDbConfig;
-  DependencyContainerUtil.createUiClientCommonContainer(dashboardConfig);
+  DependencyContainerUtil.createContainer(dashboardConfig);
   return dashboardConfig;
 };
 

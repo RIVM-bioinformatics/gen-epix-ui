@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { Path } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import { useEffect } from 'react';
@@ -24,7 +24,7 @@ export const PostLoginPage = () => {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    rootContainer.resolve(RouterService).router.navigate(path);
+    container.resolve(RouterService).router.navigate(path);
   }, [authState?.preLoginLocation]);
 
   return (

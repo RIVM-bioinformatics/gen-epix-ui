@@ -1,10 +1,10 @@
 import { createContext } from 'react';
 
-export type UiCoreComponentsConfig = {
+export type CoreComponentsConfig = {
   spinner: {
     defaultCircularProgressSize: number | string;
     defaultTakingLongerTimeoutMs: number;
   };
 };
 
-export const UiCoreComponentsConfigContext = createContext<UiCoreComponentsConfig>(null);
+export const CoreComponentsConfigContext = createContext<CoreComponentsConfig>(null);

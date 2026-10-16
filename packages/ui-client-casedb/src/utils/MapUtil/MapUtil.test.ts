@@ -57,7 +57,7 @@ describe('MapUtil', () => {
 
   describe('getPieChartRadius', () => {
     beforeAll(() => {
-      DependencyContainerUtil.createUiClientCommonContainer({
+      DependencyContainerUtil.createContainer({
         map: {
           MIN_PIE_CHART_RADIUS: 4,
         },

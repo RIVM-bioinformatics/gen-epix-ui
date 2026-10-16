@@ -9,7 +9,7 @@ export const setupTestEnvironment = () => {
     ...OmopDbStandardConfigUtil.createConfig(),
     theme: createOmopDbDemoTheme('light'),
   };
-  setupOmopDb(DependencyContainerUtil.createUiClientCommonContainer(config));
+  setupOmopDb(DependencyContainerUtil.createContainer(config));
 };
 
 setupTestEnvironment();

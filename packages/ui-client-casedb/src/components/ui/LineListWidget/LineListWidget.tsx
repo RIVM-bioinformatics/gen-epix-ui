@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   Link,
@@ -103,7 +103,7 @@ export const LineListWidget = () => {
   }, [dashboardContext]);
 
   const openCaseInfoDialog = useCallback((caseId: string, tabName: CASE_INFO_DIALOG_TAB_NAME) => {
-    rootContainer.resolve(EventBusService).emit('openCaseInfoDialog', {
+    container.resolve(EventBusService).emit('openCaseInfoDialog', {
       caseId,
       caseTypeId: completeCaseType.id,
       initialTab: tabName,
@@ -111,7 +111,7 @@ export const LineListWidget = () => {
   }, [completeCaseType.id]);
 
   const onAddToEventClick = useCallback((row: CaseDbCase) => {
-    rootContainer.resolve(EventBusService).emit('openAddCasesToEventDialog', {
+    container.resolve(EventBusService).emit('openAddCasesToEventDialog', {
       currentCaseSet: caseSet,
       rows: [row],
     });
@@ -141,7 +141,7 @@ export const LineListWidget = () => {
   }, [completeCaseType, config.lineList, sortedData, stratification?.col?.id, theme]);
 
   const onOrganizationCellClick = useCallback((organizationId: string, organizationName: string) => {
-    rootContainer.resolve(EventBusService).emit('openContactDetailsDialog', {
+    container.resolve(EventBusService).emit('openContactDetailsDialog', {
       organizationId,
       organizationName,
     });
@@ -187,7 +187,7 @@ export const LineListWidget = () => {
   }, [completeCaseType, onOrganizationCellClick, stratification?.caseIdColors, stratification?.col?.id]);
 
   const onGeneticSequenceCellClick = useCallback((id: string, row: CaseDbCase) => {
-    rootContainer.resolve(EventBusService).emit('openSequenceDownloadDialog', {
+    container.resolve(EventBusService).emit('openSequenceDownloadDialog', {
       cases: [row],
       geneticSequenceColId: id,
     });
@@ -388,7 +388,7 @@ export const LineListWidget = () => {
             ),
             (
               <MenuItem
-                disabled={rootContainer.resolve(FeatureFlagsService).featureFlags?.disable_upload}
+                disabled={container.resolve(FeatureFlagsService).featureFlags?.disable_upload}
                 key={'editInformation'}
                 // eslint-disable-next-line @eslint-react/kit/jsx-no-bind
                 onClick={() => openCaseInfoDialog(params.row.id, CASE_INFO_DIALOG_TAB_NAME.EDIT)}
@@ -587,8 +587,8 @@ export const LineListWidget = () => {
   }, [updateVisibleIndexDebounced]);
 
   const onRangeChangedDebounced = useDebouncedCallback(async (range: ListRange) => {
-    await rootContainer.resolve(LineListCaseSetMembersService).loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
-    await rootContainer.resolve(LineListIsOwnCaseService).loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id), completeCaseType.id);
+    await container.resolve(LineListCaseSetMembersService).loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id));
+    await container.resolve(LineListIsOwnCaseService).loadRange(sortedData.slice(range.startIndex, Math.min(range.endIndex + 1, sortedData.length)).map(row => row.id), completeCaseType.id);
   }, config.lineList.CASE_SET_MEMBERS_FETCH_DEBOUNCE_DELAY_MS, {
     leading: false,
     trailing: true,
@@ -601,8 +601,8 @@ export const LineListWidget = () => {
 
   useEffect(() => {
     return () => {
-      rootContainer.resolve(LineListCaseSetMembersService).cleanStaleQueue();
-      rootContainer.resolve(LineListIsOwnCaseService).cleanStaleQueue();
+      container.resolve(LineListCaseSetMembersService).cleanStaleQueue();
+      container.resolve(LineListIsOwnCaseService).cleanStaleQueue();
     };
   }, []);
 

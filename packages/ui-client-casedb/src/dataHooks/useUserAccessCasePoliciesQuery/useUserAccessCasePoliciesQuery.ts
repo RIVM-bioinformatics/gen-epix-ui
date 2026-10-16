@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbUserAccessCasePolicy } from '@gen-epix/api-casedb';
 import { CaseDbAbacApi } from '@gen-epix/api-casedb';
@@ -10,10 +10,10 @@ import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 export const useUserAccessCasePoliciesQuery = (select?: (data: CaseDbUserAccessCasePolicy[]) => CaseDbUserAccessCasePolicy[]): UseQueryResult<CaseDbUserAccessCasePolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbAbacApi).userAccessCasePoliciesGetAll(null, null, { signal });
+      const response = await container.resolve(CaseDbAbacApi).userAccessCasePoliciesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.USER_ACCESS_CASE_POLICIES),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.USER_ACCESS_CASE_POLICIES),
     select: select ? (data) => select(data) : undefined,
   });
 };

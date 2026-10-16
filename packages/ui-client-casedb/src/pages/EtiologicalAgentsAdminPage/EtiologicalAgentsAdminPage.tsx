@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -34,19 +34,19 @@ export const EtiologicalAgentsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbOntologyApi).etiologicalAgentsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbOntologyApi).etiologicalAgentsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbEtiologicalAgent) => {
-    return await rootContainer.resolve(CaseDbOntologyApi).etiologicalAgentsDeleteOne(item.id);
+    return await container.resolve(CaseDbOntologyApi).etiologicalAgentsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbEtiologicalAgent) => {
-    return (await rootContainer.resolve(CaseDbOntologyApi).etiologicalAgentsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbOntologyApi).etiologicalAgentsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbOntologyApi).etiologicalAgentsPostOne(variables)).data;
+    return (await container.resolve(CaseDbOntologyApi).etiologicalAgentsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((variables: CaseDbEtiologicalAgent) => {

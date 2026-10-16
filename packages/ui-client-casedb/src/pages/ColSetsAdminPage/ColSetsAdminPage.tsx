@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -47,27 +47,27 @@ export const ColSetsAdminPage = () => {
   const loadables = useArray([colOptionsQuery, colSetMembersQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).colSetsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbCaseApi).colSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbColSet) => {
-    return await rootContainer.resolve(CaseDbCaseApi).colSetsDeleteOne(item.id);
+    return await container.resolve(CaseDbCaseApi).colSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbColSet) => {
-    await rootContainer.resolve(CaseDbCaseApi).colSetsPutCols(item.id, {
+    await container.resolve(CaseDbCaseApi).colSetsPutCols(item.id, {
       col_set_members: variables.colIds.map<CaseDbColSetMember>(col_id => ({
         col_id,
         col_set_id: item.id,
       })),
     });
 
-    return (await rootContainer.resolve(CaseDbCaseApi).colSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['colIds']))).data;
+    return (await container.resolve(CaseDbCaseApi).colSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['colIds']))).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await rootContainer.resolve(CaseDbCaseApi).colSetsPostOne(omit(variables, ['colIds']))).data;
-    await rootContainer.resolve(CaseDbCaseApi).colSetsPutCols(resultItem.id, {
+    const resultItem = (await container.resolve(CaseDbCaseApi).colSetsPostOne(omit(variables, ['colIds']))).data;
+    await container.resolve(CaseDbCaseApi).colSetsPutCols(resultItem.id, {
       col_set_members: variables.colIds.map<CaseDbColSetMember>(col_id => ({
         col_id,
         col_set_id: resultItem.id,

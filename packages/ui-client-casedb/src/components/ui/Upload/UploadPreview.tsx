@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -79,7 +79,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
     enabled: casesForVerificationFromSourceData.length > 0,
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
-      const response = (await rootContainer.resolve(CaseDbCaseApi).uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
+      const response = (await container.resolve(CaseDbCaseApi).uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
         case_batch: {
           cases: casesForVerificationFromSourceData,
         },
@@ -111,7 +111,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
   const revalidateCases = useCallback(async (casesToValidate: Array<{ content: CaseDbCase['content']; row: CaseDbCaseUploadResult }>) => {
     setIsRevalidatingCases(true);
     try {
-      const batchValidationResult = (await rootContainer.resolve(CaseDbCaseApi).uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
+      const batchValidationResult = (await container.resolve(CaseDbCaseApi).uploadCases(ObjectUtil.deepNullifyEmptyStrings<CaseDbUploadCasesCommand>({
         case_batch: {
           cases: casesToValidate.map(({ content, row }, index) => {
             const caseFromSourceData = casesForVerificationFromSourceData.find(c => c.id === row.id);
@@ -144,7 +144,7 @@ export const UploadPreview = withEpiCompleteCaseTypeLoader<UploadPreviewProps>((
         casesToValidate.map(({ row }, index) => [row.id, batchValidationResult.cases[index]]),
       );
 
-      rootContainer.resolve(QueryClientService).queryClient.setQueryData(validateCasesQueryKey, {
+      container.resolve(QueryClientService).queryClient.setQueryData(validateCasesQueryKey, {
         cases: caseUploadValidationResultQuery.data.map(row => {
           const newResult = resultById.get(row.id);
           if (newResult) {

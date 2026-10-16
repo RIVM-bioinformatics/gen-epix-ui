@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { CaseDbRefDim } from '@gen-epix/api-casedb';
@@ -17,10 +17,10 @@ import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 export const useRefDimsQuery = (): UseQueryResult<CaseDbRefDim[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).refDimsGetAll(null, null, { signal });
+      const response = await container.resolve(CaseDbCaseApi).refDimsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REF_DIMS),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.REF_DIMS),
   });
 };
 

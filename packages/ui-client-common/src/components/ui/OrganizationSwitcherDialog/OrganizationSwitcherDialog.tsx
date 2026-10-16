@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -61,7 +61,7 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
 ): ReactElement => {
   const { t } = useTranslation();
   const organizationOptionsQuery = useOrganizationOptionsQuery();
-  const user = rootContainer.resolve(AuthorizationService).user;
+  const user = container.resolve(AuthorizationService).user;
   const [isChanging, setIsChanging] = useState(false);
   const [newOrganizationId, setNewOrganizationId] = useState<string>(null);
 
@@ -90,21 +90,21 @@ export const OrganizationSwitcherDialog = withDialog<OrganizationSwitcherDialogP
       onClose();
     }
     const perform = async () => {
-      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
+      const notificationKey = container.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t`Changing organization...`,
         severity: 'info',
       });
       try {
         setIsChanging(true);
-        await rootContainer.resolve(API_ORGANIZATION_TOKEN).updateUserOwnOrganization({
+        await container.resolve(API_ORGANIZATION_TOKEN).updateUserOwnOrganization({
           organization_id: formValues.organization_id,
         }, {});
         setNewOrganizationId(formValues.organization_id);
         setIsChanging(false);
-        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
+        container.resolve(NotificationService).fulfillNotification(notificationKey, t`Successfully changed organization.`, 'success');
       } catch (_error: unknown) {
-        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
+        container.resolve(NotificationService).fulfillNotification(notificationKey, t`Could not change organization.`, 'error');
         onClose();
       }
     };

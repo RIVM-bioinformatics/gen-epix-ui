@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import ShareIcon from '@mui/icons-material/Share';
@@ -121,16 +121,16 @@ export const CaseInfoDialog = withDialog<CaseInfoDialogProps, CaseInfoDialogOpen
   }, [onClose]);
 
   const { isMutating: isDeleteMutating, mutate: deleteMutate } = useDeleteMutation<CaseDbCase>({
-    associationQueryKeys: rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true),
+    associationQueryKeys: container.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true),
     getErrorNotificationMessage: (data) => t('Unable to remove case: {{id}}.', { id: data.id }),
     getProgressNotificationMessage: (data) => t('Deleting case: {{id}}...', { id: data.id }),
     getSuccessNotificationMessage: (data) => t('Case: {{id}}, has been removed.', { id: data.id }),
     onError: onDeleteError,
     onSuccess: onDeleteSuccess,
     queryFn: async (item: CaseDbCase) => {
-      return await rootContainer.resolve(CaseDbCaseApi).casesDeleteOne(item.id);
+      return await container.resolve(CaseDbCaseApi).casesDeleteOne(item.id);
     },
-    resourceQueryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASES),
+    resourceQueryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASES),
   });
 
   const caseRightsQuery = useCaseRightsQuery(caseIds, openProps.caseTypeId, !isDeleteMutating && !isRefreshingData);
@@ -142,7 +142,7 @@ export const CaseInfoDialog = withDialog<CaseInfoDialogProps, CaseInfoDialogOpen
     useQueryOptions: {
       enabled: !isDeleteMutating && !isRefreshingData,
       queryFn: async ({ signal }) => {
-        const response = await rootContainer.resolve(CaseDbCaseApi).casesGetOne(openProps.caseId, { signal });
+        const response = await container.resolve(CaseDbCaseApi).casesGetOne(openProps.caseId, { signal });
         return response.data;
       },
     },
@@ -157,15 +157,15 @@ export const CaseInfoDialog = withDialog<CaseInfoDialogProps, CaseInfoDialogOpen
   const { data: caseDataCollectionLinks, error: caseDataCollectionLinksError, isLoading: isCaseDataCollectionLinksLoading } = useQueryMemo({
     enabled: !!caseDbCase,
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).caseDataCollectionLinksPostQuery(caseDataCollectionLinksFilter, null, null, { signal });
+      const response = await container.resolve(CaseDbCaseApi).caseDataCollectionLinksPostQuery(caseDataCollectionLinksFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_DATA_COLLECTION_LINKS, caseDataCollectionLinksFilter),
   });
 
 
   const canEdit = useMemo(() => {
-    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.write_col_ids.length) && !rootContainer.resolve(FeatureFlagsService).featureFlags?.disable_upload;
+    return !!caseRightsQuery.data && caseRightsQuery.data.some((right) => right.is_full_access || right.write_col_ids.length) && !container.resolve(FeatureFlagsService).featureFlags?.disable_upload;
   }, [caseRightsQuery.data]);
 
   const canShare = useMemo(() => {

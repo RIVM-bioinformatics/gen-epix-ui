@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -37,19 +37,19 @@ export const OrganizationAdminPoliciesAdminPage = () => {
   const loadables = useArray([organizationOptionsQuery, userOptionsQuery, organizationAdminPolicyNameFactory]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(API_ABAC_TOKEN).organizationAdminPoliciesGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(API_ABAC_TOKEN).organizationAdminPoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOrganizationAdminPolicy) => {
-    return await rootContainer.resolve(API_ABAC_TOKEN).organizationAdminPoliciesDeleteOne(item.id);
+    return await container.resolve(API_ABAC_TOKEN).organizationAdminPoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganizationAdminPolicy) => {
-    return (await rootContainer.resolve(API_ABAC_TOKEN).organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(API_ABAC_TOKEN).organizationAdminPoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(API_ABAC_TOKEN).organizationAdminPoliciesPostOne(variables)).data;
+    return (await container.resolve(API_ABAC_TOKEN).organizationAdminPoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CommonDbOrganizationAdminPolicy) => {

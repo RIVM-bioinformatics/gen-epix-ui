@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { CaseDbApiPermission } from '@gen-epix/api-casedb';
 import {
@@ -141,7 +141,7 @@ export const createRoutes = (
       Component: UploadPage,
       errorElement: <RouterErrorPage />,
       handle: {
-        disabled: rootContainer.resolve(FeatureFlagsService).featureFlags?.disable_upload,
+        disabled: container.resolve(FeatureFlagsService).featureFlags?.disable_upload,
         requiredPermissions: [
           { command_name: CaseDbCommandName.CaseTypeCrudCommand, permission_type: CaseDbPermissionType.READ },
           { command_name: CaseDbCommandName.DataCollectionCrudCommand, permission_type: CaseDbPermissionType.READ },

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -47,19 +47,19 @@ export const RegionRelationsAdminPage = () => {
   const loadables = useArray([regionOptionsQuery, regionMapQuery, regionRelationTypeOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbGeoApi).regionRelationsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbGeoApi).regionRelationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRegionRelation) => {
-    return await rootContainer.resolve(CaseDbGeoApi).regionRelationsDeleteOne(item.id);
+    return await container.resolve(CaseDbGeoApi).regionRelationsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionRelation) => {
-    return (await rootContainer.resolve(CaseDbGeoApi).regionRelationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbGeoApi).regionRelationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbGeoApi).regionRelationsPostOne(variables)).data;
+    return (await container.resolve(CaseDbGeoApi).regionRelationsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRegionRelation) => {

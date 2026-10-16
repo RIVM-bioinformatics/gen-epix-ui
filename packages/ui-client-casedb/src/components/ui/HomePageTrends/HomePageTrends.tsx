@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   Button,
@@ -73,10 +73,10 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
 
   const caseTypeStatsQueryNow = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseTypeStats({}, { signal });
+      const response = await container.resolve(CaseDbCaseApi).retrieveCaseTypeStats({}, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS),
   });
 
   const retrieveTypeCaseStatsRequestBody = useMemo<CaseDbRetrieveCaseTypeStatsRequestBody>(() => {
@@ -92,20 +92,20 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   const caseTypeStatsQueryPast = useQueryMemo({
     enabled: !!retrieveTypeCaseStatsRequestBody,
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
+      const response = await container.resolve(CaseDbCaseApi).retrieveCaseTypeStats(retrieveTypeCaseStatsRequestBody ?? {}, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_TYPE_STATS, retrieveTypeCaseStatsRequestBody ?? {}),
   });
   const caseSetsNowQuery = useCaseSetsQuery();
   const caseTypeMapQuery = useCaseTypeMapQuery();
 
   const { data: caseSetsThenData, ...caseSetsThenQuery } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsPostQuery(caseSetQueryFilter, null, null, { signal });
+      const response = await container.resolve(CaseDbCaseApi).caseSetsPostQuery(caseSetQueryFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetQueryFilter),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS, caseSetQueryFilter),
   });
 
   const loadables = useArray([
@@ -129,7 +129,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
     s.push(
       {
         callback: async () => {
-          await rootContainer.resolve(RouterService).router.navigate('/cases');
+          await container.resolve(RouterService).router.navigate('/cases');
         },
         callbackLabel: t`View all cases`,
         diffPercentage: round((nowTotalCases - thenTotalCases) / (thenTotalCases || 1) * 100, 2),
@@ -143,7 +143,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
     s.push(
       {
         callback: async () => {
-          await rootContainer.resolve(RouterService).router.navigate('/events');
+          await container.resolve(RouterService).router.navigate('/events');
         },
         callbackLabel: t`View all events`,
         diffPercentage: round((numberOfCaseSetsNow - numberOfCaseSetsThen) / (numberOfCaseSetsThen || 1) * 100, 2),
@@ -177,7 +177,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
           s.push(
             {
               callback: async () => {
-                await rootContainer.resolve(RouterService).router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
+                await container.resolve(RouterService).router.navigate(CaseTypeUtil.createCaseTypeLink(caseType));
               },
               callbackLabel: t`View cases`,
               diffPercentage: sortedStats[i].diffPercentage,
@@ -193,7 +193,7 @@ export const HomePageTrends = withPermissions<CaseDbApiPermission>(() => {
   }, [caseSetsNowQuery.data?.length, caseSetsThenData?.length, caseTypeMapQuery.map, caseTypeStatsQueryNow.data, caseTypeStatsQueryPast.data, loadables, t]);
 
   const onViewMoreTrendsButtonClick = useCallback(async () => {
-    await rootContainer.resolve(RouterService).router.navigate('/trends');
+    await container.resolve(RouterService).router.navigate('/trends');
   }, []);
 
   if (AxiosUtil.isAxiosForbiddenError(LoadableUtil.findFirstError(loadables))) {

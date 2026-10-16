@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type {
   SxProps,
   Theme,
@@ -158,7 +158,7 @@ export const Table = <TRowData, TDataContext = null>({
   const renderedItemIndexesRef = useRef<Set<number>>(new Set());
   const isScrollingRef = useRef(false);
   const pendingScrollToIndexRef = useRef<{ hasRendered: boolean; index: number; onScrolledToIndex: () => void }>(null);
-  const [container, setContainer] = useState<HTMLDivElement>();
+  const [tableContainer, setTableContainer] = useState<HTMLDivElement>();
   const tableColumnsEditorDialogRef = useRef<TableColumnsEditorDialogRefMethods<TRowData, TDataContext>>(null);
   const lastClickedRowIdRef = useRef<string>(null);
 
@@ -177,7 +177,7 @@ export const Table = <TRowData, TDataContext = null>({
         throw new Error('getRowName is required when onRowClick is provided');
       }
       if (config.enablePageEvents) {
-        rootContainer.resolve(PageEventBusService).emit('click', {
+        container.resolve(PageEventBusService).emit('click', {
           label: getRowName(row.row),
           type: 'table-row',
         });
@@ -193,17 +193,17 @@ export const Table = <TRowData, TDataContext = null>({
   }, []);
 
   const updateTableWidth = useCallback(() => {
-    if (!tableColumnVisualSettingsRef?.current?.length || !container) {
+    if (!tableColumnVisualSettingsRef?.current?.length || !tableContainer) {
       return;
     }
     const tableWidth = sumBy(getVisibleTableSettingsColumns(), tableSettingsColumn => tableSettingsColumn.calculatedWidth);
-    const tableElement: HTMLDivElement = container.querySelector('[role=table]');
+    const tableElement: HTMLDivElement = tableContainer.querySelector('[role=table]');
     tableWidthRef.current = tableWidth;
     if (tableElement) {
       // update the width of the table
       tableElement.style.width = `${tableWidth}px`;
     }
-  }, [container, getVisibleTableSettingsColumns]);
+  }, [getVisibleTableSettingsColumns, tableContainer]);
 
   useLayoutEffect(() => {
     updateTableWidth();
@@ -271,12 +271,12 @@ export const Table = <TRowData, TDataContext = null>({
   }, [idSelectorCallback, onCheckBoxClick]);
 
   const updateColumnSizesInVisualSettings = useCallback(() => {
-    if (!tableColumns.length || !container) {
+    if (!tableColumns.length || !tableContainer) {
       return;
     }
 
     const tableSettingsMap = TableUtil.updateColumnSizesInVisualSettings(
-      container,
+      tableContainer,
       scrollbarSize,
       sortedData,
       tableColumns,
@@ -285,17 +285,17 @@ export const Table = <TRowData, TDataContext = null>({
 
     if (isInitialized) {
       // update the width of the cells in the current table imperatively
-      container.querySelectorAll('[data-column-index]').forEach(cell => {
+      tableContainer.querySelectorAll('[data-column-index]').forEach(cell => {
         const id = cell.getAttribute('data-id');
         (cell as HTMLDivElement).style.width = `${tableSettingsMap.get(id).calculatedWidth}px`;
       });
       updateTableWidth();
     }
-  }, [tableColumns, container, scrollbarSize, sortedData, isInitialized, updateTableWidth]);
+  }, [isInitialized, scrollbarSize, sortedData, tableColumns, tableContainer, updateTableWidth]);
 
   // Initialize the table
   useEffect(() => {
-    if (!container || isInitialized || !isStoreInitialized) {
+    if (!tableContainer || isInitialized || !isStoreInitialized) {
       return;
     }
 
@@ -303,10 +303,10 @@ export const Table = <TRowData, TDataContext = null>({
     updateColumnSizesInVisualSettings();
     updateTableWidth();
     setIsInitialized(true);
-  }, [container, isInitialized, isStoreInitialized, tableStore, updateColumnSizesInVisualSettings, updateTableWidth]);
+  }, [isInitialized, isStoreInitialized, tableContainer, tableStore, updateColumnSizesInVisualSettings, updateTableWidth]);
 
 
-  const getScrollerElement = useCallback(() => container?.querySelector('[data-virtuoso-scroller=true]'), [container]);
+  const getScrollerElement = useCallback(() => tableContainer?.querySelector('[data-virtuoso-scroller=true]'), [tableContainer]);
 
   const saveColumnVisualSettingsToStore = useCallback(() => {
     setCurrentColumnVisualSettingsInStore(tableColumnVisualSettingsRef.current);
@@ -388,11 +388,11 @@ export const Table = <TRowData, TDataContext = null>({
   }, [columnDimensions, tableColumns]);
 
   const updateColumnOrderInDOM = useCallback(() => {
-    container.querySelectorAll('[data-column-index]').forEach(cell => {
+    tableContainer.querySelectorAll('[data-column-index]').forEach(cell => {
       const id = cell.getAttribute('data-id');
       (cell as HTMLDivElement).style.order = tableColumnVisualSettingsRef.current.findIndex(c => c.id === id).toString();
     });
-  }, [container]);
+  }, [tableContainer]);
 
   useEffect(() => {
     const onWindowResize = () => {
@@ -444,7 +444,7 @@ export const Table = <TRowData, TDataContext = null>({
       WindowService.getInstance().body.style.setProperty('overflow', 'hidden');
 
       // Prevent text selection while dragging
-      container?.style.setProperty('--selection-background', 'none');
+      tableContainer?.style.setProperty('--selection-background', 'none');
 
       // Set the opacity of the original element to 0.3 to indicate it's being dragged
       event.target.style.setProperty('opacity', '0.3');
@@ -470,7 +470,7 @@ export const Table = <TRowData, TDataContext = null>({
     if (event.type === 'end') {
       // Restore the original behaviors and styles
       WindowService.getInstance().body.style.removeProperty('overflow');
-      container?.style.setProperty('--selection-background', 'highlight');
+      tableContainer?.style.setProperty('--selection-background', 'highlight');
       WindowService.getInstance().document.getSelection().empty();
       dragConfigRef.current.clonedElement.remove();
       event.target.style.setProperty('opacity', '1');
@@ -489,7 +489,7 @@ export const Table = <TRowData, TDataContext = null>({
         calculateColumnBoundaries(tableColumn);
       }
     }
-  }, [calculateColumnBoundaries, container?.style, getScrollerElement, moveColumn, theme.zIndex.modal, updateColumnOrderInDOM]);
+  }, [calculateColumnBoundaries, getScrollerElement, moveColumn, tableContainer?.style, theme.zIndex.modal, updateColumnOrderInDOM]);
 
   const renderFixedHeaderContent = useCallback(() => {
     return (
@@ -627,14 +627,14 @@ export const Table = <TRowData, TDataContext = null>({
     const unsubscribe = rowHighlightingSubject.subscribe((highlightedRowIds, previousHighlightedRowIds) => {
       // remove previous highlighting
       previousHighlightedRowIds.forEach(rowId => {
-        container.querySelectorAll(`[data-testid=virtuoso-item-list] [data-id='${rowId}']`).forEach(rowNode => {
+        tableContainer.querySelectorAll(`[data-testid=virtuoso-item-list] [data-id='${rowId}']`).forEach(rowNode => {
           (rowNode as HTMLElement).classList.remove('highlighted');
         });
       });
 
       // add current highlighting
       highlightedRowIds.forEach(rowId => {
-        container.querySelectorAll(`[data-testid=virtuoso-item-list] [data-id='${rowId}']`).forEach(rowNode => {
+        tableContainer.querySelectorAll(`[data-testid=virtuoso-item-list] [data-id='${rowId}']`).forEach(rowNode => {
           (rowNode as HTMLElement).classList.add('highlighted');
         });
       });
@@ -642,7 +642,7 @@ export const Table = <TRowData, TDataContext = null>({
     return () => {
       unsubscribe();
     };
-  }, [rowHighlightingSubject, container, theme.palette.action.hover, theme.palette.background.paper]);
+  }, [rowHighlightingSubject, tableContainer, theme.palette.action.hover, theme.palette.background.paper]);
 
   useEffect(() => {
     const updateTable = () => {
@@ -764,7 +764,7 @@ export const Table = <TRowData, TDataContext = null>({
 
   return (
     <Box
-      ref={setContainer}
+      ref={setTableContainer}
       style={{ '--selection-background': 'highlight' } as CSSProperties}
       sx={{
         '*::selection': {

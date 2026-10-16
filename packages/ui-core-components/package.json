@@ -54,9 +54,9 @@
       "types": "./src/components/Stepper/index.ts",
       "import": "./src/components/Stepper/index.ts"
     },
-    "./context/uiCoreComponentsConfigContext": {
-      "types": "./src/context/uiCoreComponentsConfigContext/index.ts",
-      "import": "./src/context/uiCoreComponentsConfigContext/index.ts"
+    "./context/CoreComponentsConfigContext": {
+      "types": "./src/context/CoreComponentsConfigContext/index.ts",
+      "import": "./src/context/CoreComponentsConfigContext/index.ts"
     },
     "./hoc/withDialog": {
       "types": "./src/hoc/withDialog/index.ts",
@@ -170,9 +170,9 @@
         "types": "./dist/components/Stepper/index.d.ts",
         "import": "./dist/components/Stepper/index.js"
       },
-      "./context/uiCoreComponentsConfigContext": {
-        "types": "./dist/context/uiCoreComponentsConfigContext/index.d.ts",
-        "import": "./dist/context/uiCoreComponentsConfigContext/index.js"
+      "./context/CoreComponentsConfigContext": {
+        "types": "./dist/context/CoreComponentsConfigContext/index.d.ts",
+        "import": "./dist/context/CoreComponentsConfigContext/index.js"
       },
       "./hoc/withDialog": {
         "types": "./dist/hoc/withDialog/index.d.ts",

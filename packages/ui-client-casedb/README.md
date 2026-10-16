@@ -47,7 +47,7 @@ const init = async () => {
   const config = {
     // provide a CaseDbConfig implementation here
   };
-  const container = DependencyContainerUtil.createUiClientCommonContainer(config);
+  const container = DependencyContainerUtil.createContainer(config);
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {

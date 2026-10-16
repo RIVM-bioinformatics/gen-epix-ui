@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import type {
   ReactElement,
@@ -79,10 +79,10 @@ export const LicensesDialog = withDialog<LicensesDialogProps, LicensesDialogOpen
 
   const { data: backendLicenses, error: backendLicensesError, isLoading: isBackendLicensesLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(API_SYSTEM_TOKEN).retrieveLicenses({ signal });
+      const response = await container.resolve(API_SYSTEM_TOKEN).retrieveLicenses({ signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.LICENSES),
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.LICENSES),
   });
 
   const isLoading = isFrontendLicensesLoading || isBackendLicensesLoading;

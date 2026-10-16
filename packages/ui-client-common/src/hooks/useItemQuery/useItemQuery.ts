@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useEffect,
   useMemo,
@@ -26,13 +26,13 @@ export const useItemQuery = <T extends GenericData>({
   itemId,
   useQueryOptions,
 }: UseItemQueryProps<T>) => {
-  const { queryCache } = rootContainer.resolve(QueryClientService);
-  const [itemFromCache, setItemFromCache] = useState<T>(rootContainer.resolve(QueryClientService).getItemFromCache<T>(baseQueryKey, itemId));
+  const { queryCache } = container.resolve(QueryClientService);
+  const [itemFromCache, setItemFromCache] = useState<T>(container.resolve(QueryClientService).getItemFromCache<T>(baseQueryKey, itemId));
 
   const useQueryResult = useQueryMemo({
     ...useQueryOptions,
     enabled: !itemFromCache && useQueryOptions.enabled,
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(baseQueryKey, itemId),
+    queryKey: container.resolve(QueryClientService).getGenericKey(baseQueryKey, itemId),
   });
 
   useEffect(() => {

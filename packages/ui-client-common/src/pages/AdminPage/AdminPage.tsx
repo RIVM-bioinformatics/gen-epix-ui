@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import {
   Outlet,
@@ -39,10 +39,10 @@ export const AdminPage = () => {
   const theme = useTheme();
 
   const menuItems = useMemo(() => {
-    const items = rootContainer.resolve(RouterService).adminRoutes
+    const items = container.resolve(RouterService).adminRoutes
       .map(r => r.children?.length ? r.children.find(child => child.index) as MyNonIndexRouteObject : r)
       .filter(r => {
-        const hasPermission = rootContainer.resolve(AuthorizationService).doesUserHavePermission(r.handle.requiredPermissions);
+        const hasPermission = container.resolve(AuthorizationService).doesUserHavePermission(r.handle.requiredPermissions);
         return !r.handle?.hidden && hasPermission;
       });
     return items;
@@ -76,7 +76,7 @@ export const AdminPage = () => {
   }, [categoryToLabelMap, menuItems]);
 
   const onCardClick = useCallback(async (path: string) => {
-    await rootContainer.resolve(RouterService).router.navigate(path);
+    await container.resolve(RouterService).router.navigate(path);
   }, []);
 
   if (location?.pathname !== '/management') {

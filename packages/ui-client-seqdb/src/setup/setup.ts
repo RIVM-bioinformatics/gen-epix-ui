@@ -3,7 +3,7 @@ import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/re
 import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/query.constants';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
-import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
+import { setupClientCommon } from '@gen-epix/ui-client-common/setup/setup';
 import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import {
   SeqDbAbacApi,
@@ -54,5 +54,5 @@ export const setupSeqDb = (container: DependencyContainer) => {
   container.register(API_AUTH_TOKEN, { useValue: container.resolve(SeqDbAuthApi) });
   container.register(API_ORGANIZATION_TOKEN, { useValue: container.resolve(SeqDbOrganizationApi) as CommonDbOrganizationApi });
   container.register(API_SYSTEM_TOKEN, { useValue: container.resolve(SeqDbSystemApi) });
-  setupUi();
+  setupClientCommon();
 };

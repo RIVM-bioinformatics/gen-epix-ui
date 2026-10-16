@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import {
@@ -30,10 +30,10 @@ export const AcceptInvitationPage = () => {
     enabled: shouldRegister,
     gcTime: 0,
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).userRegistrationsPostOne(token, { signal });
+      const response = await container.resolve(API_ORGANIZATION_TOKEN).userRegistrationsPostOne(token, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USER_INVITATIONS, token),
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USER_INVITATIONS, token),
     staleTime: 0,
   });
 

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type {
   CaseDbApiPermission,
   CaseDbUser,
@@ -24,7 +24,7 @@ export const CaseDbUsersAdminPage = () => {
   const userRightsDialogRef = useRef<UserRightsDialogRefMethods>(null);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbUser>[]>(() => {
-    const doesUserHavePermissionToViewEffectiveRights = rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
+    const doesUserHavePermissionToViewEffectiveRights = container.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.ColSetMemberCrudCommand, permission_type: CaseDbPermissionType.READ },
       { command_name: CaseDbCommandName.CaseTypeSetCrudCommand, permission_type: CaseDbPermissionType.READ },
       { command_name: CaseDbCommandName.ColSetCrudCommand, permission_type: CaseDbPermissionType.READ },

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useMemo } from 'react';
 import type {
   PropsWithChildren,
@@ -30,15 +30,15 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
   const userQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await rootContainer.resolve(API_ORGANIZATION_TOKEN).userMeGetOne({ signal })).data,
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USER_ME),
+    queryFn: async ({ signal }) => (await container.resolve(API_ORGANIZATION_TOKEN).userMeGetOne({ signal })).data,
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USER_ME),
     staleTime: Infinity,
   });
   const userPermissionsQuery = useQueryMemo({
     enabled: requiresUserProfile,
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await rootContainer.resolve(API_ORGANIZATION_TOKEN).userMeRetrievePermissions({ signal })).data,
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
+    queryFn: async ({ signal }) => (await container.resolve(API_ORGANIZATION_TOKEN).userMeRetrievePermissions({ signal })).data,
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.USER_PERMISSIONS),
     staleTime: Infinity,
   });
 
@@ -49,10 +49,10 @@ export const AuthorizationWrapper = ({ children }: PropsWithChildren): ReactNode
 
 
   if (userQuery.data) {
-    rootContainer.resolve(AuthorizationService).user = userQuery.data;
+    container.resolve(AuthorizationService).user = userQuery.data;
   }
   if (userPermissionsQuery.data) {
-    rootContainer.resolve(AuthorizationService).apiPermissions = userPermissionsQuery.data;
+    container.resolve(AuthorizationService).apiPermissions = userPermissionsQuery.data;
   }
 
   if (requiresUserProfile && (LoadableUtil.isSomeLoading(loadables) || LoadableUtil.hasSomeError(loadables))) {

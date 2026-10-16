@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -49,27 +49,27 @@ export const CaseTypeSetsAdminPage = () => {
   const loadables = useArray([caseTypeOptionsQuery, caseTypeSetCategoryOptionsQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal): Promise<CaseDbCaseTypeSet[]> => {
-    const caseTypesSets = (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsGetAll(null, null, { signal }))?.data;
+    const caseTypesSets = (await container.resolve(CaseDbCaseApi).caseTypeSetsGetAll(null, null, { signal }))?.data;
     return caseTypesSets;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbCaseTypeSet) => {
-    return await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsDeleteOne(item.id);
+    return await container.resolve(CaseDbCaseApi).caseTypeSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbCaseTypeSet) => {
-    await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsPutCaseTypes(item.id, {
+    await container.resolve(CaseDbCaseApi).caseTypeSetsPutCaseTypes(item.id, {
       case_type_set_members: variables.caseTypeIds.map(case_type_id => ({
         case_type_id,
         case_type_set_id: item.id,
       })),
     });
-    return (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeIds']))).data;
+    return (await container.resolve(CaseDbCaseApi).caseTypeSetsPutOne(item.id, omit({ id: item.id, ...variables }, ['caseTypeIds']))).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsPostOne(omit(variables, ['caseTypeIds']))).data;
-    await rootContainer.resolve(CaseDbCaseApi).caseTypeSetsPutCaseTypes(resultItem.id, {
+    const resultItem = (await container.resolve(CaseDbCaseApi).caseTypeSetsPostOne(omit(variables, ['caseTypeIds']))).data;
+    await container.resolve(CaseDbCaseApi).caseTypeSetsPutCaseTypes(resultItem.id, {
       case_type_set_members: variables.caseTypeIds.map(case_type_id => ({
         case_type_id,
         case_type_set_id: resultItem.id,

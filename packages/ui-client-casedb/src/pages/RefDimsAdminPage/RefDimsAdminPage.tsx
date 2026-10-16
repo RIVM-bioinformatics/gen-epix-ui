@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -40,19 +40,19 @@ export const RefDimsAdminPage = () => {
   const dimTypeOptionsQuery = useDimTypeOptionsQuery();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).refDimsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbCaseApi).refDimsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRefDim) => {
-    return await rootContainer.resolve(CaseDbCaseApi).refDimsDeleteOne(item.id);
+    return await container.resolve(CaseDbCaseApi).refDimsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRefDim) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).refDimsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbCaseApi).refDimsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbCaseApi).refDimsPostOne(variables)).data;
+    return (await container.resolve(CaseDbCaseApi).refDimsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRefDim) => {
@@ -120,7 +120,7 @@ export const RefDimsAdminPage = () => {
   }, [dimTypeOptionsQuery.options, t]);
 
   const subPages = useMemo<CrudPageSubPage<CaseDbRefDim>[]>(() => {
-    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
+    if (!container.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RefColCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       return [];

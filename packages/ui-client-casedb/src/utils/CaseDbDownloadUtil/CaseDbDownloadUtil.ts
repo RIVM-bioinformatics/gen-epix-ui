@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { TFunction } from 'i18next';
 import { format } from 'date-fns';
 import type { ECharts } from 'echarts';
@@ -86,13 +86,13 @@ export class CaseDbDownloadUtil {
   }
 
   public static async downloadExcelTemplate(caseTypeId: string, t: TFunction<'translation', undefined>): Promise<void> {
-    const queryClient = rootContainer.resolve(QueryClientService).queryClient;
+    const queryClient = container.resolve(QueryClientService).queryClient;
     try {
       const completeCaseType = await queryClient.fetchQuery({
         queryFn: async ({ signal }) => {
-          return (await rootContainer.resolve(CaseDbCaseApi).completeCaseTypesGetOne(caseTypeId, { signal })).data;
+          return (await container.resolve(CaseDbCaseApi).completeCaseTypesGetOne(caseTypeId, { signal })).data;
         },
-        queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
+        queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.COMPLETE_CASE_TYPES, caseTypeId),
       });
 
       const headers = CaseDbDownloadUtil.getColumnHeadersForImport(
@@ -117,7 +117,7 @@ export class CaseDbDownloadUtil {
       const base64 = DownloadUtil.arrayBufferToBase64(arrayBuffer);
       DownloadUtil.createDownloadUrl(`data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${base64}`, fileName);
     } catch (error) {
-      rootContainer.resolve(LogService).log([{
+      container.resolve(LogService).log([{
         detail: {
           error,
           stack: (error as Error)?.stack,
@@ -125,7 +125,7 @@ export class CaseDbDownloadUtil {
         level: CaseDbLogLevel.ERROR,
         topic: (error as Error)?.message ? `Error: ${(error as Error)?.message}` : 'Error',
       }]);
-      rootContainer.resolve(NotificationService).showNotification({
+      container.resolve(NotificationService).showNotification({
         message: t('Excel template could not be created'),
         severity: 'error',
       });

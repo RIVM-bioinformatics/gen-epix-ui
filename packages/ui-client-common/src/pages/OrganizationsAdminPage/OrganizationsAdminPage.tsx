@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -47,22 +47,22 @@ export const OrganizationsAdminPage = () => {
   const loadables = useArray([identifierIssuerOptionsQuery, organizationIdentifierIssuerLinksQuery]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(API_ORGANIZATION_TOKEN).organizationsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbOrganization) => {
-    await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsPutIdentifierIssuers(item.id, {
+    await container.resolve(API_ORGANIZATION_TOKEN).organizationsPutIdentifierIssuers(item.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: item.id,
       })),
     });
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(API_ORGANIZATION_TOKEN).organizationsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    const resultItem = (await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
-    await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsPutIdentifierIssuers(resultItem.id, {
+    const resultItem = (await container.resolve(API_ORGANIZATION_TOKEN).organizationsPostOne(omit(variables, ['identifierIssuerIds']))).data;
+    await container.resolve(API_ORGANIZATION_TOKEN).organizationsPutIdentifierIssuers(resultItem.id, {
       organization_identifier_issuer_links: variables.identifierIssuerIds.map(identifier_issuer_id => ({
         identifier_issuer_id,
         organization_id: resultItem.id,
@@ -72,7 +72,7 @@ export const OrganizationsAdminPage = () => {
   }, []);
 
   const deleteOne = useCallback(async (item: CommonDbOrganization) => {
-    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationsDeleteOne(item.id);
+    return await container.resolve(API_ORGANIZATION_TOKEN).organizationsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: CommonDbOrganization) => {
@@ -135,7 +135,7 @@ export const OrganizationsAdminPage = () => {
   }, [identifierIssuerOptionsQuery.options.length, t]);
 
   const subPages = useMemo<CrudPageSubPage<CommonDbOrganization>[]>(() => {
-    if (!rootContainer.resolve(AuthorizationService).doesUserHavePermission([
+    if (!container.resolve(AuthorizationService).doesUserHavePermission([
       { command_name: CommonDbCommandName.SiteCrudCommand, permission_type: CommonDbPermissionType.READ },
     ])) {
       return [];

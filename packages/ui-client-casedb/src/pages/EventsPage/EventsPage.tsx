@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -74,16 +74,16 @@ export const EventsPage = () => {
 
   const { data: caseSets, error: caseSetsError, isLoading: isCaseSetsLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetsGetAll(null, null, { signal });
+      const response = await container.resolve(CaseDbCaseApi).caseSetsGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SETS),
   });
   const caseSetStatsMapQuery = useCaseSetStatsMapQuery(caseSets ? caseSets.map(cs => cs.id) : null);
   const loadables = useArray([caseTypeOptionsQuery, caseSetCategoryOptionsQuery, caseSetStatusOptionsQuery, caseSetStatsMapQuery]);
 
   const navigateToEvent = useCallback(async (row: CaseDbCaseSet) => {
-    await rootContainer.resolve(RouterService).router.navigate(CaseSetUtil.createCaseSetLink(row));
+    await container.resolve(RouterService).router.navigate(CaseSetUtil.createCaseSetLink(row));
   }, []);
 
   const showEventInformation = useCallback((row: CaseDbCaseSet) => {
@@ -173,7 +173,7 @@ export const EventsPage = () => {
     defaultSortByField: 'case_set_date',
     defaultSortDirection: 'desc',
     idSelectorCallback: (row) => row.id,
-    navigatorFunction: rootContainer.resolve(RouterService).router.navigate,
+    navigatorFunction: container.resolve(RouterService).router.navigate,
     storageNamePostFix: 'caseSets',
     storageVersion: 3,
   }), []);

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type {
   CaseDbCase,
   CaseDbCompleteCaseType,
@@ -70,14 +70,14 @@ export class CaseTypeFormUtil {
           } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
           break;
         case CaseDbColType.GEO_REGION:
-          if (rootContainer.resolve(DataService).data.regionsByRegionSetId[refCol.region_set_id]) {
+          if (container.resolve(DataService).data.regionsByRegionSetId[refCol.region_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               disabled,
               label: col.label,
               name: col.id,
-              options: rootContainer.resolve(DataService).data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
-                label: rootContainer.resolve(DataService).data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
+              options: container.resolve(DataService).data.regionsByRegionSetId[refCol.region_set_id].map(region => ({
+                label: container.resolve(DataService).data.regionSets[refCol.region_set_id].region_code_as_label ? region.code : region.name,
                 value: region.id,
               })),
             } as const satisfies FormFieldDefinition<CaseDbCase['content']>);
@@ -86,13 +86,13 @@ export class CaseTypeFormUtil {
         case CaseDbColType.INTERVAL:
         case CaseDbColType.NOMINAL:
         case CaseDbColType.ORDINAL:
-          if (rootContainer.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id]) {
+          if (container.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id]) {
             acc.push({
               definition: FORM_FIELD_DEFINITION_TYPE.AUTOCOMPLETE,
               disabled,
               label: col.label,
               name: col.id,
-              options: rootContainer.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
+              options: container.resolve(DataService).data.conceptsBySetId[refCol.concept_set_id].map(concept => ({
                 label: concept.name,
                 value: concept.id,
               })),
@@ -105,7 +105,7 @@ export class CaseTypeFormUtil {
             disabled,
             label: col.label,
             name: col.id,
-            options: (rootContainer.resolve(DataService).data.organizations ?? []).map(organization => ({
+            options: (container.resolve(DataService).data.organizations ?? []).map(organization => ({
               label: organization.name,
               value: organization.id,
             })).sort((a, b) => StringUtil.advancedSortComperator(a.label, b.label)),

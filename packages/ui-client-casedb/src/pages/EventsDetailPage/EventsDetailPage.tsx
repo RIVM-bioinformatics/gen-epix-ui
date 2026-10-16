@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import {
@@ -28,7 +28,7 @@ export const EventsDetailPage = () => {
     baseQueryKey: CASEDB_QUERY_KEY.CASE_SETS,
     itemId: caseSetId,
     useQueryOptions: {
-      queryFn: async ({ signal }) => (await rootContainer.resolve(CaseDbCaseApi).caseSetsGetOne(caseSetId, { signal })).data,
+      queryFn: async ({ signal }) => (await container.resolve(CaseDbCaseApi).caseSetsGetOne(caseSetId, { signal })).data,
     },
   });
 

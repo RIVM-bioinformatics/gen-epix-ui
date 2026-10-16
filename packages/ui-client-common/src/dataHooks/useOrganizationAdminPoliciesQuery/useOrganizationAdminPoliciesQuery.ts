@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,10 +21,10 @@ import { UserUtil } from '../../utils/UserUtil';
 export const useOrganizationAdminPoliciesQuery = (): UseQueryResult<CommonDbOrganizationAdminPolicy[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(API_ABAC_TOKEN).organizationAdminPoliciesGetAll(null, null, { signal });
+      const response = await container.resolve(API_ABAC_TOKEN).organizationAdminPoliciesGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_POLICIES),
   });
 };
 

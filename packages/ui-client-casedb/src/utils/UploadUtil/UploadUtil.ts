@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import readXlsxFile, { readSheet } from 'read-excel-file/browser';
 import type {
   CellValue,
@@ -106,7 +106,7 @@ export class UploadUtil {
 
     const { col: mappedSampleIdCol, sampleIdentifierIssuerId } = mappedColumns.find(mc => mc.col?.id === sampleIdColId) ?? {};
 
-    return (await rootContainer.resolve(CaseDbCaseApi).uploadCases({
+    return (await container.resolve(CaseDbCaseApi).uploadCases({
       case_batch: {
         cases: validatedCases.map((vc) => {
           const caseId = vc.id;
@@ -203,7 +203,7 @@ export class UploadUtil {
       await UploadUtil.uploadFilesForCases({ ...kwArgs, caseBatchUploadResult, endPercentage: 99, startPercentage: 1 });
       onProgress(100, t('Upload complete.'));
 
-      await rootContainer.resolve(QueryClientService).invalidateQueryKeys(rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true));
+      await container.resolve(QueryClientService).invalidateQueryKeys(container.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true));
       onComplete();
       return caseBatchUploadResult;
     } catch (error) {
@@ -814,7 +814,7 @@ export class UploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await UploadUtil.readFileAsBase64(file);
-          await rootContainer.resolve(CaseDbCaseApi).createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
+          await container.resolve(CaseDbCaseApi).createFileForSeq(caseSeqToBeUploaded.caseId, caseSeqToBeUploaded.colId, {
             file_compression: UploadUtil.getFileCompressionFromFileName(caseSeqToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbSeqFileFormat.FASTA,
@@ -836,7 +836,7 @@ export class UploadUtil {
         if (file) {
           const fileSize = file.size;
           const base64Data = await UploadUtil.readFileAsBase64(file);
-          await rootContainer.resolve(CaseDbCaseApi).createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
+          await container.resolve(CaseDbCaseApi).createFileForReadSet(caseReadSetToBeUploaded.caseId, caseReadSetToBeUploaded.colId, {
             file_compression: UploadUtil.getFileCompressionFromFileName(caseReadSetToBeUploaded.fileName),
             file_content: base64Data,
             file_format: CaseDbReadsFileFormat.FASTQ,

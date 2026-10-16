@@ -13,7 +13,7 @@ export const setupTestEnvironment = () => {
     ...SeqDbStandardConfigUtil.createConfig(),
     theme: createSeqDbDemoTheme('light'),
   };
-  setupSeqDb(DependencyContainerUtil.createUiClientCommonContainer(config));
+  setupSeqDb(DependencyContainerUtil.createContainer(config));
 
   vi.setConfig({
     testTimeout: 10000,

@@ -11,7 +11,7 @@ const LOCAL_STORAGE_KEY_PREFERRED_LANGUAGE = 'GenEpix-preferred-language';
 
 const init = async () => {
   const config = ConfigUtil.createConfig();
-  const container = DependencyContainerUtil.createUiClientCommonContainer(config);
+  const container = DependencyContainerUtil.createContainer(config);
 
   await container.resolve(I18nService).init({
     getCurrentLanguageCode: async () => {

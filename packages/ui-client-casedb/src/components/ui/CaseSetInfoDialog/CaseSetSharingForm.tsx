@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -60,32 +60,32 @@ export const CaseSetSharingForm = ({ caseSet, caseTypeId, formId, onFinish, onIs
     const perform = async () => {
       setIsSaving(true);
       onIsSavingChange(true);
-      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
-      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
+      const queryKeys = container.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_DATA_COLLECTION_LINKS], true);
+      const notificationKey = container.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t('Saving case set data collections'),
         severity: 'info',
       });
       try {
-        await rootContainer.resolve(QueryClientService).cancelQueries(queryKeys);
+        await container.resolve(QueryClientService).cancelQueries(queryKeys);
         const rights = caseAbacContext?.rights?.[0];
         const dataCollectionIdsToAdd = difference(dataCollectionIds, rights.shared_in_data_collection_ids);
         const dataCollectionIdsToRemove = difference(rights.shared_in_data_collection_ids, dataCollectionIds);
 
         if (dataCollectionIdsToAdd.length > 0) {
-          await rootContainer.resolve(CaseDbCaseApi).caseSetDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
+          await container.resolve(CaseDbCaseApi).caseSetDataCollectionLinksPostSome(dataCollectionIdsToAdd.map(data_collection_id => ({
             case_set_id: caseSet.id,
             data_collection_id,
           })));
         }
         if (dataCollectionIdsToRemove.length > 0) {
-          await rootContainer.resolve(CaseDbCaseApi).caseSetDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
+          await container.resolve(CaseDbCaseApi).caseSetDataCollectionLinksDeleteSome(caseAbacContext.itemDataCollectionLinks[0]?.filter(x => dataCollectionIdsToRemove.includes(x.data_collection_id)).map(x => x.id).join(','));
         }
-        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Successfully saved case set data collections.'), 'success');
+        container.resolve(NotificationService).fulfillNotification(notificationKey, t('Successfully saved case set data collections.'), 'success');
       } catch (_error) {
-        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Could not save case set data collections.'), 'error');
+        container.resolve(NotificationService).fulfillNotification(notificationKey, t('Could not save case set data collections.'), 'error');
       } finally {
-        await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
+        await container.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
         if (shouldApplySharingToCases) {
           await CaseUtil.applyDataCollectionLinks({
             caseSetDataCollectionIds: dataCollectionIds,

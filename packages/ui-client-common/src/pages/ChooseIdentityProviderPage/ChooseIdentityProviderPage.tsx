@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Alert,
   AlertTitle,
@@ -38,7 +38,7 @@ export const ChooseIdentityProviderPage = ({
         'data-name',
       );
 
-      rootContainer.resolve(AuthenticationService).next(
+      container.resolve(AuthenticationService).next(
         identityProvidersWithAvailability.find(
           (identityProviderWithAvailability) =>
             identityProviderWithAvailability.provider.name === name,

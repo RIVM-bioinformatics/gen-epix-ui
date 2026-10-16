@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { Box } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 import {
@@ -31,7 +31,7 @@ export const CompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseType
     itemId: caseTypeId,
     useQueryOptions: {
       queryFn: async ({ signal }) => {
-        return (await rootContainer.resolve(CaseDbCaseApi).completeCaseTypesGetOne(caseTypeId, { signal })).data;
+        return (await container.resolve(CaseDbCaseApi).completeCaseTypesGetOne(caseTypeId, { signal })).data;
       },
     },
   });
@@ -48,10 +48,10 @@ export const CompletCaseTypeLoader = ({ caseTypeId, children, onCompleteCaseType
       const perform = async () => {
         try {
           await Promise.all([
-            rootContainer.resolve(DataService).loadConcepts(abortController.signal),
-            rootContainer.resolve(DataService).loadMissingRegions(completeCaseType, abortController.signal),
-            rootContainer.resolve(DataService).loadTreeAlgorithms(completeCaseType, abortController.signal),
-            rootContainer.resolve(DataService).loadOrganizations(abortController.signal),
+            container.resolve(DataService).loadConcepts(abortController.signal),
+            container.resolve(DataService).loadMissingRegions(completeCaseType, abortController.signal),
+            container.resolve(DataService).loadTreeAlgorithms(completeCaseType, abortController.signal),
+            container.resolve(DataService).loadOrganizations(abortController.signal),
           ]);
           setIsSideEffectLoading(false);
         } catch (error) {

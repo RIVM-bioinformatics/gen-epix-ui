@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -60,15 +60,15 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
     setIsSaving(true);
     onIsSavingChange(true);
     const perform = async () => {
-      const queryKeys = rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
-      const notificationKey = rootContainer.resolve(NotificationService).showNotification({
+      const queryKeys = container.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASES], true);
+      const notificationKey = container.resolve(NotificationService).showNotification({
         isLoading: true,
         message: t('Saving case data'),
         severity: 'info',
       });
       try {
-        await rootContainer.resolve(QueryClientService).cancelQueries(queryKeys);
-        const uploadResult = (await rootContainer.resolve(CaseDbCaseApi).uploadCases({
+        await container.resolve(QueryClientService).cancelQueries(queryKeys);
+        const uploadResult = (await container.resolve(CaseDbCaseApi).uploadCases({
           case_batch: {
             cases: [
               {
@@ -87,13 +87,13 @@ export const CaseInfoForm = ({ caseDbCase, caseRights, formId, onFinish, onIsSav
         if (uploadResult.status !== CaseDbEtlStatus.SKIPPED && uploadResult.status !== CaseDbEtlStatus.SUCCESS && uploadResult.status !== CaseDbEtlStatus.UPDATED) {
           throw new Error('Case upload failed');
         }
-        // await rootContainer.resolve(CaseDbCaseApi).casesPutOne(item.id, item);
+        // await container.resolve(CaseDbCaseApi).casesPutOne(item.id, item);
         mutateCachedCase(caseDbCase.id, caseDbCase);
-        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
+        container.resolve(NotificationService).fulfillNotification(notificationKey, t('Successfully saved case data.'), 'success');
       } catch (_error) {
-        rootContainer.resolve(NotificationService).fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
+        container.resolve(NotificationService).fulfillNotification(notificationKey, t('Could not save case data.'), 'error');
       } finally {
-        await rootContainer.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
+        await container.resolve(QueryClientService).invalidateQueryKeys(queryKeys);
         setIsSaving(false);
         onIsSavingChange(false);
         onFinish();

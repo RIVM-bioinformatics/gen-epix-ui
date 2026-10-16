@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -37,19 +37,19 @@ export const RegionSetsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbGeoApi).regionSetsGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbGeoApi).regionSetsGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbRegionSet) => {
-    return await rootContainer.resolve(CaseDbGeoApi).regionSetsDeleteOne(item.id);
+    return await container.resolve(CaseDbGeoApi).regionSetsDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbRegionSet) => {
-    return (await rootContainer.resolve(CaseDbGeoApi).regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbGeoApi).regionSetsPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbGeoApi).regionSetsPostOne(variables)).data;
+    return (await container.resolve(CaseDbGeoApi).regionSetsPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbRegionSet) => {
@@ -104,7 +104,7 @@ export const RegionSetsAdminPage = () => {
   const subPages = useMemo<CrudPageSubPage<CaseDbRegionSet>[]>(() => {
     const pages: CrudPageSubPage<CaseDbRegionSet>[] = [];
 
-    if (rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
+    if (container.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RegionCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(
@@ -115,7 +115,7 @@ export const RegionSetsAdminPage = () => {
       );
     }
 
-    if (rootContainer.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
+    if (container.resolve(AuthorizationService).doesUserHavePermission<CaseDbApiPermission>([
       { command_name: CaseDbCommandName.RegionSetShapeCrudCommand, permission_type: CaseDbPermissionType.READ },
     ])) {
       pages.push(

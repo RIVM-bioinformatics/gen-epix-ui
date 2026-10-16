@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 import {
@@ -66,13 +66,13 @@ export const UploadCreateCases = () => {
 
     const abort = () => {
       abortController.abort();
-      rootContainer.resolve(InactivityService).resume();
+      container.resolve(InactivityService).resume();
     };
 
     if (!isUploadStarted) {
       return abort;
     }
-    rootContainer.resolve(InactivityService).pause();
+    container.resolve(InactivityService).pause();
 
     const perform = async () => {
       const result = await UploadUtil.createCasesAndUploadFiles({
@@ -128,7 +128,7 @@ export const UploadCreateCases = () => {
 
   const onGotoCasesButtonClick = useCallback(async () => {
     const link = CaseTypeUtil.createCaseTypeLink(completeCaseType);
-    await rootContainer.resolve(RouterService).router.navigate(link);
+    await container.resolve(RouterService).router.navigate(link);
   }, [completeCaseType]);
 
   let content: ReactNode;

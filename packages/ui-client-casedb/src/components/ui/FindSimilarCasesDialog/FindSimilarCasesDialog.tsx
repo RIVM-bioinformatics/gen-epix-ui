@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   use,
   useCallback,
@@ -189,13 +189,13 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
   const query = useQueryMemo({
     enabled: !!formData,
     queryFn: async ({ signal }) => {
-      const retrieveSimilarCasesResponse = await rootContainer.resolve(CaseDbCaseApi).retrieveSimilarCases({
+      const retrieveSimilarCasesResponse = await container.resolve(CaseDbCaseApi).retrieveSimilarCases({
         case_ids: openProps.selectedRows.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
         genetic_distance_col_id: formData?.treeColId,
         max_distance: formData?.maxDistance,
       }, { signal });
-      const retrieveIsOwnCasesResponse = await rootContainer.resolve(CaseDbCaseApi).retrieveIsOwnCases({
+      const retrieveIsOwnCasesResponse = await container.resolve(CaseDbCaseApi).retrieveIsOwnCases({
         case_ids: retrieveSimilarCasesResponse.data.cases.map(x => x.id),
         case_type_id: openProps.completeCaseType.id,
       }, { signal });
@@ -207,7 +207,7 @@ export const FindSimilarCasesDialog = withDialog<FindSimilarCasesDialogProps, Fi
         } satisfies CaseDbSimilarCaseWithIsOwnCase;
       });
     },
-    queryKey: [rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
+    queryKey: [container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.SIMILAR_CASES), JSON.stringify({ formData, rowIds: openProps.selectedRows.map(row => row.id) })],
   });
 
   const organizationFilteredCases = useMemo<CaseDbSimilarCaseWithIsOwnCase[]>(() => {

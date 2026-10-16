@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -47,19 +47,19 @@ export const OrganizationShareCasePoliciesAdminPage = () => {
   const loadables = useArray([nameFactory, organizationOptionsQuery, dataCollectionOptionsQuery, colSetOptionsQuery, caseTypeSetOptions]);
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(CaseDbAbacApi).organizationShareCasePoliciesGetAll(null, null, { signal }))?.data;
+    return (await container.resolve(CaseDbAbacApi).organizationShareCasePoliciesGetAll(null, null, { signal }))?.data;
   }, []);
 
   const deleteOne = useCallback(async (item: CaseDbOrganizationShareCasePolicy) => {
-    return await rootContainer.resolve(CaseDbAbacApi).organizationShareCasePoliciesDeleteOne(item.id);
+    return await container.resolve(CaseDbAbacApi).organizationShareCasePoliciesDeleteOne(item.id);
   }, []);
 
   const updateOne = useCallback(async (variables: FormFields, item: CaseDbOrganizationShareCasePolicy) => {
-    return (await rootContainer.resolve(CaseDbAbacApi).organizationShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
+    return (await container.resolve(CaseDbAbacApi).organizationShareCasePoliciesPutOne(item.id, { id: item.id, ...variables })).data;
   }, []);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(CaseDbAbacApi).organizationShareCasePoliciesPostOne(variables)).data;
+    return (await container.resolve(CaseDbAbacApi).organizationShareCasePoliciesPostOne(variables)).data;
   }, []);
 
   const getName = useCallback((item: CaseDbOrganizationShareCasePolicy) => {

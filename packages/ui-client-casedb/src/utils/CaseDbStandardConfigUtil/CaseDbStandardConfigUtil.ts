@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   format,
   subDays,
@@ -38,11 +38,11 @@ import {
 export class CaseDbStandardConfigUtil {
   public static createConfig(): Omit<CaseDbConfig, 'theme'> {
     const onEnglishClick = () => {
-      rootContainer.resolve(I18nService).emit('onUserLanguageChange', 'en');
+      container.resolve(I18nService).emit('onUserLanguageChange', 'en');
     };
 
     const onDutchClick = () => {
-      rootContainer.resolve(I18nService).emit('onUserLanguageChange', 'nl');
+      container.resolve(I18nService).emit('onUserLanguageChange', 'nl');
     };
 
     const config: Omit<CaseDbConfig, 'theme'> = {

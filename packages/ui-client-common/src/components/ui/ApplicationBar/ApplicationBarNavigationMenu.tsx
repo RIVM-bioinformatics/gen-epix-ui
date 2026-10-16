@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   IconButton,
@@ -38,11 +38,11 @@ export type ApplicationBarNavigationMenuProps = {
 export const ApplicationBarNavigationMenu = ({ fullWidth }: ApplicationBarNavigationMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const authorizationService = useMemo(() => rootContainer.resolve(AuthorizationService), []);
+  const authorizationService = useMemo(() => container.resolve(AuthorizationService), []);
   const navId = useId();
 
   const menuItems = useMemo(() => {
-    const rootItem = rootContainer.resolve(RouterService).routes.find(r => r.handle.root);
+    const rootItem = container.resolve(RouterService).routes.find(r => r.handle.root);
     return [rootItem, ...rootItem.children.filter(r => !r.handle.hidden)] as MyNonIndexRouteObject[];
   }, []);
 

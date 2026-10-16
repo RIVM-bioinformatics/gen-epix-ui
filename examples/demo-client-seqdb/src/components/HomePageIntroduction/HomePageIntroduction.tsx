@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ export const HomePageIntroduction = () => {
   const [t] = useTranslation();
   const config = useConfig();
   const onExploreCasesButtonClick = useCallback(async () => {
-    await rootContainer.resolve(RouterService).router.navigate('/cases');
+    await container.resolve(RouterService).router.navigate('/cases');
   }, []);
 
   return (

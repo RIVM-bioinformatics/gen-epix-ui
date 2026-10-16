@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { Box } from '@mui/material';
 import {
   use,
@@ -82,10 +82,10 @@ export const RemoveCasesFromEventDialog = withDialog<RemoveCasesFromEventDialogP
 
   const { data: caseSetMembers, error: caseSetMembersError, isLoading: isCaseSetMembersLoading } = useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
+      const response = await container.resolve(CaseDbCaseApi).caseSetMembersPostQuery(caseSetMembersFilter, null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.CASE_SET_MEMBERS, caseSetMembersFilter),
   });
 
   const onSuccess = useCallback(async () => {
@@ -100,14 +100,14 @@ export const RemoveCasesFromEventDialog = withDialog<RemoveCasesFromEventDialogP
   }, [fetchData, onClose]);
 
   const { isMutating, mutate } = useDeleteMutation<CaseDbCaseSetMember[]>({
-    associationQueryKeys: rootContainer.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
+    associationQueryKeys: container.resolve(QueryClientService).getQueryKeyDependencies([CASEDB_QUERY_KEY.CASE_SET_MEMBERS], true),
     getErrorNotificationMessage: () => t('Could not remove all cases from {{eventName}}.', { eventName: openProps.caseSet.name }),
     getProgressNotificationMessage: (items) => t('Removing {{numCases}} case(s) from {{eventName}}...', { eventName: openProps.caseSet.name, numCases: items.length }),
     getSuccessNotificationMessage: (items) => t('Successfully removed {{numCases}} case(s) from {{eventName}}.', { eventName: openProps.caseSet.name, numCases: items.length }),
     onError,
     onSuccess,
     queryFn: async (items: CaseDbCaseSetMember[]) => {
-      await rootContainer.resolve(CaseDbCaseApi).caseSetMembersDeleteSome(items.map(item => item.id).join(','));
+      await container.resolve(CaseDbCaseApi).caseSetMembersDeleteSome(items.map(item => item.id).join(','));
     },
   });
 

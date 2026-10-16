@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CaseDbColSetMember } from '@gen-epix/api-casedb';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
@@ -11,9 +11,9 @@ import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 export const useColSetMembersQuery = (): UseQueryResult<CaseDbColSetMember[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const response = await rootContainer.resolve(CaseDbCaseApi).colSetMembersGetAll(null, null, { signal });
+      const response = await container.resolve(CaseDbCaseApi).colSetMembersGetAll(null, null, { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.COL_SET_MEMBERS),
+    queryKey: container.resolve(QueryClientService).getGenericKey(CASEDB_QUERY_KEY.COL_SET_MEMBERS),
   });
 };

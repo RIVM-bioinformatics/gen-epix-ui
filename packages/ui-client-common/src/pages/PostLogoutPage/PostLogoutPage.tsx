@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   Button,
@@ -15,7 +15,7 @@ export const PostLogoutPage = () => {
   const { t } = useTranslation();
   const onButtonClick = useCallback(async () => {
 
-    await rootContainer.resolve(RouterService).router.navigate('/');
+    await container.resolve(RouterService).router.navigate('/');
   }, []);
 
   return (

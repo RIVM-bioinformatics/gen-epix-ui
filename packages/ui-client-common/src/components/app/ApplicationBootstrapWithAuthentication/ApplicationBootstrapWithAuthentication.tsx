@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useEffect,
@@ -39,8 +39,8 @@ export const ApplicationBootstrapWithAuthentication = ({ children }: PropsWithCh
 
   const outagesQuery = useQueryMemo({
     gcTime: Infinity,
-    queryFn: async ({ signal }) => (await rootContainer.resolve(API_SYSTEM_TOKEN).retrieveOutages({ signal })).data,
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.OUTAGES),
+    queryFn: async ({ signal }) => (await container.resolve(API_SYSTEM_TOKEN).retrieveOutages({ signal })).data,
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.OUTAGES),
     refetchInterval: 5 * 60 * 1000,
     staleTime: Infinity,
   });

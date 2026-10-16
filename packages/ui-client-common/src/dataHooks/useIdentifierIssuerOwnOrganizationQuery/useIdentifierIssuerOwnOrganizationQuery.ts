@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import { useMemo } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import type { CommonDbIdentifierIssuer } from '@gen-epix/api-commondb';
@@ -14,15 +14,15 @@ import { COMMON_QUERY_KEY } from '../../constants/query.constants';
 export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<CommonDbIdentifierIssuer[]> => {
   return useQueryMemo({
     queryFn: async ({ signal }) => {
-      const links = (await rootContainer.resolve(API_ORGANIZATION_TOKEN).organizationIdentifierIssuerLinksPostQuery({
+      const links = (await container.resolve(API_ORGANIZATION_TOKEN).organizationIdentifierIssuerLinksPostQuery({
         key: 'organization_id',
         type: 'EQUALS_UUID',
-        value: rootContainer.resolve(AuthorizationService).user.organization_id,
+        value: container.resolve(AuthorizationService).user.organization_id,
       }, null, null, { signal })).data;
-      const response = await rootContainer.resolve(API_ORGANIZATION_TOKEN).identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
+      const response = await container.resolve(API_ORGANIZATION_TOKEN).identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
       return response.data;
     },
-    queryKey: rootContainer.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
+    queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.IDENTIFIER_ISSUERS_OWN_ORGANIZATION),
   });
 };
 

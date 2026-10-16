@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Box,
   ListItemIcon,
@@ -350,7 +350,7 @@ export const EpiCurveWidget = () => {
 
   useEffect(() => {
     const emitDownloadOptions = () => {
-      rootContainer.resolve(EventBusService).emit('onDownloadOptionsChanged', {
+      container.resolve(EventBusService).emit('onDownloadOptionsChanged', {
         disabled: !canShowWidget,
         items: [
           {
@@ -367,7 +367,7 @@ export const EpiCurveWidget = () => {
       });
     };
     emitDownloadOptions();
-    const eventBusManager = rootContainer.resolve(EventBusService);
+    const eventBusManager = container.resolve(EventBusService);
     eventBusManager.addEventListener('onDownloadOptionsRequested', emitDownloadOptions);
     return () => {
       eventBusManager.emit('onDownloadOptionsChanged', {

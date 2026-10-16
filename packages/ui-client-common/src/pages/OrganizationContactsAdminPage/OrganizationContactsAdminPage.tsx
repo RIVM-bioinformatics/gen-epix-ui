@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   useCallback,
   useMemo,
@@ -31,7 +31,7 @@ export const OrganizationContactsAdminPage = () => {
   const { t } = useTranslation();
 
   const fetchAll = useCallback(async (signal: AbortSignal) => {
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).contactsGetAll(null, null, { signal })).data;
+    return (await container.resolve(API_ORGANIZATION_TOKEN).contactsGetAll(null, null, { signal })).data;
   }, []);
 
   const fetchAllSelect = useCallback((contacts: CommonDbContact[]) => {
@@ -39,7 +39,7 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const updateOne = useCallback(async (variables: FormFields, item: CommonDbContact) => {
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).contactsPutOne(item.id, {
+    return (await container.resolve(API_ORGANIZATION_TOKEN).contactsPutOne(item.id, {
       id: item.id,
       site_id: siteId,
       ...variables,
@@ -47,14 +47,14 @@ export const OrganizationContactsAdminPage = () => {
   }, [siteId]);
 
   const createOne = useCallback(async (variables: FormFields) => {
-    return (await rootContainer.resolve(API_ORGANIZATION_TOKEN).contactsPostOne({
+    return (await container.resolve(API_ORGANIZATION_TOKEN).contactsPostOne({
       site_id: siteId,
       ...variables,
     })).data;
   }, [siteId]);
 
   const deleteOne = useCallback(async (item: CommonDbContact) => {
-    return await rootContainer.resolve(API_ORGANIZATION_TOKEN).contactsDeleteOne(item.id);
+    return await container.resolve(API_ORGANIZATION_TOKEN).contactsDeleteOne(item.id);
   }, []);
 
   const getName = useCallback((item: FormFields) => {

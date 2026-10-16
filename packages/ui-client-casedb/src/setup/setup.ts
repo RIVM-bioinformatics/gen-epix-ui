@@ -1,10 +1,9 @@
-import { container as rootContainer } from 'tsyringe';
 import type { COMMON_QUERY_KEY } from '@gen-epix/ui-client-common/constants/query.constants';
 import type { MyNonIndexRouteObject } from '@gen-epix/ui-client-common/models/react-router.models';
 import { COMMON_QUERY_DEPENDENCIES } from '@gen-epix/ui-client-common/constants/query.constants';
 import { QueryClientService } from '@gen-epix/ui-client-common/classes/services/QueryClientService';
 import { RouterService } from '@gen-epix/ui-client-common/classes/services/RouterService';
-import { setupUi } from '@gen-epix/ui-client-common/setup/setup';
+import { setupClientCommon } from '@gen-epix/ui-client-common/setup/setup';
 import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/DependencyContainerUtil';
 import {
   CaseDbAbacApi,
@@ -38,7 +37,7 @@ export const setupCaseDb = (container: DependencyContainer) => {
     useValue: new RouterService({
       adminRoutes: () => createAdminRoutes() as MyNonIndexRouteObject[],
       homePageComponent: HomePage,
-      routes: () => createRoutes(rootContainer.resolve(RouterService).adminRoutes) as MyNonIndexRouteObject[],
+      routes: () => createRoutes(container.resolve(RouterService).adminRoutes) as MyNonIndexRouteObject[],
     }),
   });
   container.register(QueryClientService, {
@@ -52,5 +51,5 @@ export const setupCaseDb = (container: DependencyContainer) => {
   container.register(API_AUTH_TOKEN, { useValue: container.resolve(CaseDbAuthApi) });
   container.register(API_ORGANIZATION_TOKEN, { useValue: container.resolve(CaseDbOrganizationApi) as CommonDbOrganizationApi });
   container.register(API_SYSTEM_TOKEN, { useValue: container.resolve(CaseDbSystemApi) });
-  setupUi();
+  setupClientCommon();
 };

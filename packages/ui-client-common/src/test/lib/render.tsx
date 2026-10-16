@@ -1,4 +1,3 @@
-import { container as rootContainer } from 'tsyringe';
 import { render } from 'vitest-browser-react';
 import { CacheProvider } from '@emotion/react';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -11,17 +10,17 @@ import {
 import { EmotionCacheService } from '../../classes/services/EmotionCacheService';
 import { QueryClientService } from '../../classes/services/QueryClientService';
 import { DependencyContainerUtil } from '../../utils/DependencyContainerUtil';
-import { UiClientCommonConfigContextProvider } from '../../context/uiClientCommonConfigContext';
+import { ClientCommonConfigContextProvider } from '../../context/ClientCommonConfigContext';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }: PropsWithChildren<unknown>) => {
   const config = DependencyContainerUtil.resolveConfig();
-  const container = DependencyContainerUtil.createUiClientCommonContainer(config);
-  const queryQueryManager = rootContainer.resolve(QueryClientService);
+  const container = DependencyContainerUtil.createContainer(config);
+  const queryQueryManager = container.resolve(QueryClientService);
   const emotionCache = container.resolve(EmotionCacheService).emotionCache;
 
   return (
-    <UiClientCommonConfigContextProvider container={container}>
+    <ClientCommonConfigContextProvider container={container}>
       <QueryClientProvider client={queryQueryManager.queryClient}>
         <CacheProvider value={emotionCache}>
           <ThemeProvider theme={config.theme}>
@@ -30,7 +29,7 @@ const AllTheProviders = ({ children }: PropsWithChildren<unknown>) => {
           </ThemeProvider>
         </CacheProvider>
       </QueryClientProvider>
-    </UiClientCommonConfigContextProvider>
+    </ClientCommonConfigContextProvider>
   );
 };
 

@@ -1,4 +1,4 @@
-import { container as rootContainer } from 'tsyringe';
+import { container } from 'tsyringe';
 import {
   Link,
   Typography,
@@ -24,7 +24,7 @@ type BreadcrumbProps = {
 };
 
 export const Breadcrumb = ({ isLast, item }: BreadcrumbProps): ReactElement => {
-  const breadcrumbsTitles = useSubscribable(rootContainer.resolve(BreadcrumbService));
+  const breadcrumbsTitles = useSubscribable(container.resolve(BreadcrumbService));
 
   const title = useMemo(() => {
     if (breadcrumbsTitles[item.handle.title]) {
@@ -35,7 +35,7 @@ export const Breadcrumb = ({ isLast, item }: BreadcrumbProps): ReactElement => {
 
   const onLinkClick = useCallback(async (event: ReactMouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    await rootContainer.resolve(RouterService).router.navigate(item.pathname);
+    await container.resolve(RouterService).router.navigate(item.pathname);
   }, [item.pathname]);
 
   if (!isLast) {
