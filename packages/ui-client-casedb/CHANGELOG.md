@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.5.2...ui-client-casedb-v4.6.0) (2026-10-16)
+
+
+### Features
+
+* refactor di and use of di ([15f54f1](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/15f54f1ba8bbbdbe9407997ae33adce621c75fa4))
+
 ## [4.5.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-casedb-v4.5.1...ui-client-casedb-v4.5.2) (2026-10-15)
 
 

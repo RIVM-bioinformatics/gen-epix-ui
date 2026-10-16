@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.0](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-omopdb-v4.3.2...ui-client-omopdb-v4.4.0) (2026-10-16)
+
+
+### Features
+
+* refactor di and use of di ([15f54f1](https://github.com/RIVM-bioinformatics/gen-epix-ui/commit/15f54f1ba8bbbdbe9407997ae33adce621c75fa4))
+
 ## [4.3.2](https://github.com/RIVM-bioinformatics/gen-epix-ui/compare/ui-client-omopdb-v4.3.1...ui-client-omopdb-v4.3.2) (2026-10-15)
 
 
