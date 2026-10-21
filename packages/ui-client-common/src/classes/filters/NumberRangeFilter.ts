@@ -33,7 +33,7 @@ export class NumberRangeFilter extends FilterAbstract<[number, number]> implemen
     const usedValue = value as [number, number] ?? this.filterValue;
     const left = isFinite(usedValue[0]) ? `[${usedValue[0]}` : '';
     const middle = usedValue.every(isFinite) ? ',' : '';
-    const right = isFinite(usedValue[1]) ? `${usedValue[1]}[` : '';
+    const right = isFinite(usedValue[1]) ? `${usedValue[1]}${usedValue[0] === usedValue[1] ? ']' : '['}` : '';
 
     return `${left}${middle}${right}`;
   }
@@ -53,7 +53,8 @@ export class NumberRangeFilter extends FilterAbstract<[number, number]> implemen
     if (isFinite(left) && +rowValue < this.filterValue[0]) {
       return false;
     }
-    if (isFinite(right) && +rowValue > this.filterValue[1]) {
+    const isSingleValueRange = left === right;
+    if (isFinite(right) && (isSingleValueRange ? +rowValue > right : +rowValue >= right)) {
       return false;
     }
     return true;

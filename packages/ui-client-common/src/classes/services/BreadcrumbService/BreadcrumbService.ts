@@ -1,5 +1,4 @@
 import omit from 'lodash/omit';
-import set from 'lodash/set';
 import { Subject } from '@gen-epix/ui-core/classes/Subject';
 import { SubscribableAbstract } from '@gen-epix/ui-core/classes/abstracts/SubscribableAbstract';
 import { singleton } from 'tsyringe';
@@ -15,10 +14,10 @@ export class BreadcrumbService extends SubscribableAbstract<SubjectData> {
   }
 
   public remove(position: string): void {
-    this.subject.next({ ...omit(this.subject, position) });
+    this.subject.next({ ...omit(this.subject.data, position) });
   }
 
   public update(position: string, title: string): void {
-    this.subject.next({ ...set(this.subject.data, position, title) });
+    this.subject.next({ ...this.subject.data, [position]: title });
   }
 }

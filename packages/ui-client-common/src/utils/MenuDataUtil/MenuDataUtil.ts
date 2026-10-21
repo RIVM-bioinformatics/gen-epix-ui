@@ -3,7 +3,7 @@ import type { MenuItemData } from '@gen-epix/ui-core-components/models/nested-me
 export class MenuDataUtil {
 
   public static isMenuItemData(value: unknown): value is MenuItemData {
-    if (typeof value !== 'object' || value === null) {
+    if (typeof value !== 'object' || value === null || Array.isArray(value)) {
       return false;
     }
 

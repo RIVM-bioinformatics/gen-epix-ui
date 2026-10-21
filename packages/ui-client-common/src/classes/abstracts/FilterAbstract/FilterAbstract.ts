@@ -50,6 +50,10 @@ export abstract class FilterAbstract<TFilterValue> {
   }
 
   public toURLSearchParameterValue(): string {
-    return JSON.stringify(this.filterValue);
+    const searchParameterValue = JSON.stringify(this.filterValue);
+    if (searchParameterValue === undefined) {
+      throw new TypeError('Filter value cannot be serialized as JSON.');
+    }
+    return searchParameterValue;
   }
 }

@@ -1,27 +1,40 @@
 import { t } from 'i18next';
+import {
+  createElement,
+  Fragment,
+} from 'react';
 import type { ReactElement } from 'react';
 
 import { AxiosUtil } from '../AxiosUtil';
 
 export class NotificationUtil {
   public static wrapErrorNotificationMessage(message: ReactElement | string, error: unknown): ReactElement | string {
+    const appendTranslatedError = (translationKey: string) => {
+      if (typeof message === 'string') {
+        message = t(translationKey, { message });
+      } else {
+        const translatedSuffix = t(translationKey, { message: '' });
+        message = createElement(Fragment, null, message, translatedSuffix);
+      }
+    };
+
     if (AxiosUtil.isAxiosForbiddenError(error)) {
-      message = t('{{message}} - You do not have permission to perform this action.', { message });
+      appendTranslatedError('{{message}} - You do not have permission to perform this action.');
     }
     if (AxiosUtil.isAxiosUnauthorizedError(error)) {
-      message = t('{{message}} - You are not logged in.', { message });
+      appendTranslatedError('{{message}} - You are not logged in.');
     }
     if (AxiosUtil.isAxiosNotFoundError(error)) {
-      message = t('{{message}} - The item does not exist.', { message });
+      appendTranslatedError('{{message}} - The item does not exist.');
     }
     if (AxiosUtil.isAxiosBadRequestError(error)) {
-      message = t('{{message}} - Bad request. The input data was not correct.', { message });
+      appendTranslatedError('{{message}} - Bad request. The input data was not correct.');
     }
     if (AxiosUtil.isAxiosConflictError(error)) {
-      message = t('{{message}} - Conflict. The request could not be completed due to a conflict with the current state of the resource.', { message });
+      appendTranslatedError('{{message}} - Conflict. The request could not be completed due to a conflict with the current state of the resource.');
     }
     if (AxiosUtil.isAxiosInternalServerError(error)) {
-      message = t('{{message}} - Internal Server Error. Please try again later.', { message });
+      appendTranslatedError('{{message}} - Internal Server Error. Please try again later.');
     }
     return message;
   }

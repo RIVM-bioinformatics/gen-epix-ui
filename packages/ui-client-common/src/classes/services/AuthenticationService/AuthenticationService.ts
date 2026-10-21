@@ -46,8 +46,8 @@ export class AuthenticationService extends SubscribableAbstract<CommonDbIdentity
   }
 
 
-  public getUserManagerSettingsCreatedAt(): number {
-    return Reflect.getMetadata(createdAtMetaDataKey, this.data) as number;
+  public getUserManagerSettingsCreatedAt(): number | undefined {
+    return this.data ? Reflect.getMetadata(createdAtMetaDataKey, this.data) as number : undefined;
   }
 
   public next(oidcConfiguration: CommonDbIdentityProvider) {

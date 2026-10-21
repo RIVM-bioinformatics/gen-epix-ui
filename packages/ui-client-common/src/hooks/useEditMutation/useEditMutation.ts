@@ -31,6 +31,8 @@ export type UseEditMutationProps<TData, TVariables = TData> = {
   readonly resourceQueryKey?: string[];
 };
 
+const isSingleGenericData = (item: GenericData | GenericData[]): item is GenericData => !Array.isArray(item);
+
 export const useEditMutation = <TData extends GenericData | GenericData[], TVariables = TData>({
   associationQueryKeys,
   getErrorNotificationMessage,
@@ -50,6 +52,9 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
   }, []);
 
   const mutationFn = useCallback(async (variables: TVariables) => {
+    if (!queryFn) {
+      throw new Error('Edit mutation queryFn is required');
+    }
     return queryFn(ObjectUtil.deepNullifyEmptyStrings(variables), previousItemRef.current);
   }, [previousItemRef, queryFn]);
 
@@ -57,47 +62,59 @@ export const useEditMutation = <TData extends GenericData | GenericData[], TVari
     mutationFn,
     onError: async (error, variables, context) => {
       previousItemRef.current = undefined;
-      if (resourceQueryKey && Array.isArray(context.previousData)) {
-        queryClient.setQueryData(resourceQueryKey, (oldItems: TData[]) => {
-          if (!Array.isArray(oldItems)) {
-            return oldItems;
-          }
-          return [...oldItems.filter(x => (x as GenericData).id !== (context.item as GenericData).id), context.item];
-        });
+      const safeContext: MutationContextEdit<TData> = context ?? {};
+      if (resourceQueryKey && Array.isArray(safeContext.previousData)) {
+        queryClient.setQueryData<TData[]>(resourceQueryKey, safeContext.previousData);
       }
       await container.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       if (onError) {
-        await onError(error, variables, context);
+        await onError(error, variables, safeContext);
       }
-      container.resolve(NotificationService).fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(context.item, variables, error), error), 'error');
+      const errorMessage = safeContext.item
+        ? getErrorNotificationMessage(safeContext.item, variables, error)
+        : String(error);
+      if (safeContext.notificationKey) {
+        container.resolve(NotificationService).fulfillNotification(safeContext.notificationKey, NotificationUtil.wrapErrorNotificationMessage(errorMessage, error), 'error');
+      }
     },
     onMutate: async (variables) => {
+      const previousItem = previousItemRef.current;
+      if (!previousItem) {
+        throw new Error('previousItem is not set');
+      }
       const notificationKey = container.resolve(NotificationService).showNotification({
         isLoading: true,
-        message: getProgressNotificationMessage(previousItemRef.current, variables),
+        message: getProgressNotificationMessage(previousItem, variables),
         severity: 'info',
       });
       if (resourceQueryKey) {
-        if (!previousItemRef.current) {
-          throw new Error('previousItem is not set');
-        }
         await queryClient.cancelQueries({ queryKey: resourceQueryKey });
         const previousData = queryClient.getQueryData<TData[]>(resourceQueryKey);
+
         if (Array.isArray(previousData) && !Array.isArray(variables)) {
-          const intermediateItem = getIntermediateItem ? getIntermediateItem(variables, previousItemRef.current) : {
+          const intermediateItem = getIntermediateItem ? getIntermediateItem(variables, previousItem) : {
             ...variables,
-            id: (previousItemRef.current as GenericData).id,
+            id: (previousItem as GenericData).id,
           } as GenericData;
           queryClient.setQueryData<GenericData[]>(resourceQueryKey, (oldItems) => {
-            return [...oldItems.filter(x => x.id !== (previousItemRef.current as GenericData).id), intermediateItem] as GenericData[];
+            return oldItems.map(x => x.id === (previousItem as GenericData).id ? intermediateItem : x) as GenericData[];
           });
-          return { item: previousItemRef.current, notificationKey, previousData };
+          return { item: previousItem, notificationKey, previousData };
         }
       }
-      return { notificationKey };
+      return { item: previousItem, notificationKey };
     },
     onSuccess: async (item, variables, context) => {
       previousItemRef.current = undefined;
+      if (resourceQueryKey && Array.isArray(context?.previousData) && isSingleGenericData(item)) {
+        const previousItemId = (context.item as GenericData)?.id;
+        queryClient.setQueryData<GenericData[]>(resourceQueryKey, (oldItems) => {
+          if (!Array.isArray(oldItems)) {
+            return oldItems;
+          }
+          return oldItems.map(oldItem => oldItem.id === previousItemId ? item : oldItem);
+        });
+      }
       await container.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
       if (onSuccess) {
         await onSuccess(item, variables, context);

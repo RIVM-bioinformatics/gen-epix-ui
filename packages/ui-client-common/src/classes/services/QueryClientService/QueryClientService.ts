@@ -66,12 +66,12 @@ export class QueryClientService<TQueryKey extends string = string> {
 
   public getGenericKey(key: TQueryKey, arg?: unknown) {
     const keyArray: string[] = [key];
-    if (arg) {
-      if (typeof arg === 'string') {
-        keyArray.push(arg);
-      } else {
-        keyArray.push(JSON.stringify(arg));
+    if (arg !== undefined) {
+      const serializedArg = typeof arg === 'string' ? arg : JSON.stringify(arg);
+      if (serializedArg === undefined) {
+        throw new TypeError('Query key argument cannot be serialized.');
       }
+      keyArray.push(serializedArg);
     }
     return keyArray;
   }
@@ -94,7 +94,7 @@ export class QueryClientService<TQueryKey extends string = string> {
   }
 
   public getUniqueQueryKeys<T>(queryKeys: T[][]): T[][] {
-    return uniqBy(queryKeys, x => x.join('-'));
+    return uniqBy(queryKeys, queryKey => JSON.stringify(queryKey));
   }
 
   public getValidQueryData<T>(queryKey: string[]): T {

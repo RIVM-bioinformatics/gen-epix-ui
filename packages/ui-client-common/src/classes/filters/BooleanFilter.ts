@@ -10,7 +10,8 @@ export class BooleanFilter extends FilterAbstract<boolean> implements Filter<boo
 
   public getPresentationValue(value?: unknown, t?: TFunction<'translation', undefined>): string {
     const usedValue = value as string ?? this.filterValue;
-    return usedValue ? t('Yes') : t('No');
+    const translationKey = usedValue ? 'Yes' : 'No';
+    return t?.(translationKey) ?? translationKey;
   }
 
   public matchRowValue(rowValue: boolean): boolean {

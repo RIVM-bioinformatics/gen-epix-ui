@@ -116,7 +116,7 @@ export class DataHookUtil {
     }[] = [];
     if (!isLoading) {
       const items = DataHookUtil.isResponse(response) ? response.data : response;
-      options = items?.sort(sort).map(item => ({ label: createLabel(item), value: getId(item) })) ?? [];
+      options = items?.slice().sort(sort).map(item => ({ label: createLabel(item), value: getId(item) })) ?? [];
     }
 
     return {

@@ -14,14 +14,30 @@ export const useQueryMemo = <TQueryFnData = unknown, TError = DefaultError, TDat
 
   return useMemo(() => {
     return query;
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/use-memo
-  }, [JSON.stringify({
-    data: query.data,
-    error: query.error,
-    isEnabled: query.isEnabled,
-    isFetching: query.isFetching,
-    isLoading: query.isLoading,
-    isPending: query.isPending,
-  })]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    query.data,
+    query.dataUpdatedAt,
+    query.error,
+    query.errorUpdatedAt,
+    query.failureCount,
+    query.failureReason,
+    query.fetchStatus,
+    query.isEnabled,
+    query.isError,
+    query.isFetched,
+    query.isFetchedAfterMount,
+    query.isFetching,
+    query.isLoading,
+    query.isLoadingError,
+    query.isPaused,
+    query.isPending,
+    query.isPlaceholderData,
+    query.isRefetchError,
+    query.isRefetching,
+    query.isStale,
+    query.isSuccess,
+    query.refetch,
+    query.status,
+  ]);
 };

@@ -111,7 +111,7 @@ export class TableUtil {
     // Move condensed columns (with cellColorGetter, not frozen/static) after the left-pinned/static columns using handleMoveColumn.
     // Right-pinned columns must remain at the far right.
     const leftPinnedIds = tableColumns.filter(c => c.frozen === TABLE_COLUMN_FROZEN.LEFT).map(c => c.id);
-    const condensedIds = tableColumns.filter(c => c.cellColorGetter && !c.frozen).map(c => c.id);
+    const condensedColumns = tableColumns.filter(c => c.cellColorGetter && !c.frozen);
 
     // Find the last left-pinned/static column's index in visual settings
     let insertIndex = -1;
@@ -124,38 +124,28 @@ export class TableUtil {
 
     // For each condensed column, move it to the correct position using handleMoveColumn
     // We need to use the actual TableUtil.handleMoveColumn logic for each move
-    condensedIds.forEach(condensedId => {
-      let currentIdx = tableColumnVisualSettingsCopy.findIndex(c => c.id === condensedId);
+    condensedColumns.forEach(condensedColumn => {
+      let currentIdx = tableColumnVisualSettingsCopy.findIndex(c => c.id === condensedColumn.id);
       if (currentIdx === -1) {
         return;
       }
       // Move the column right after the last left-pinned column (or after previous condensed)
       while (currentIdx > insertIndex) {
-        // Move left
-        const col = tableColumns.find(c => c.id === condensedId);
-        if (!col) {
-          break;
-        }
         TableUtil.handleMoveColumn(
           [], // no dimensions
           tableColumnVisualSettingsCopy,
           tableColumns,
-          col,
+          condensedColumn,
           -1,
         );
         currentIdx--;
       }
       while (currentIdx < insertIndex) {
-        // Move right
-        const col = tableColumns.find(c => c.id === condensedId);
-        if (!col) {
-          break;
-        }
         TableUtil.handleMoveColumn(
           [], // no dimensions
           tableColumnVisualSettingsCopy,
           tableColumns,
-          col,
+          condensedColumn,
           1,
         );
         currentIdx++;
@@ -577,8 +567,8 @@ export class TableUtil {
     }
 
     // Divide the available width between the columns
-    const totalFlexWidth = sumBy(visibleColumnVisualSettings, column => column.hasResized ? 0 : column.widthFlex) ?? 0;
-    const totalFixedWidth = sumBy(visibleColumnVisualSettings, column => tableColumnMap.get(column.id)?.widthPxFn ? tableColumnMap.get(column.id)?.widthPxFn(sortedData.length) : column.widthPx) ?? 0;
+    const totalFlexWidth = sumBy(visibleColumnVisualSettings, column => column.hasResized ? 0 : column.widthFlex);
+    const totalFixedWidth = sumBy(visibleColumnVisualSettings, column => tableColumnMap.get(column.id)?.widthPxFn ? tableColumnMap.get(column.id)?.widthPxFn(sortedData.length) : column.widthPx);
     const totalAvailableWidth = container.getBoundingClientRect().width - scrollbarSize;
     const availableFlexWidth = totalAvailableWidth - totalFixedWidth;
     const flexRatio = totalFlexWidth > 0 ? availableFlexWidth / totalFlexWidth : 1;
@@ -606,7 +596,7 @@ export class TableUtil {
       }
 
       column.offsetX = leftOffset;
-      leftOffset += column.calculatedWidth ?? 0;
+      leftOffset += column.calculatedWidth;
     });
 
     let rightOffset = 0;
@@ -618,7 +608,7 @@ export class TableUtil {
       }
 
       column.offsetX = rightOffset;
-      rightOffset += column.calculatedWidth ?? 0;
+      rightOffset += column.calculatedWidth;
     }
 
     return new Map(allColumnVisualSettings.map(c => [c.id, c]));

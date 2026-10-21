@@ -90,6 +90,7 @@ export class NotificationService extends SubscribableAbstract<Notification[]> {
 
     if (isFinite(autoHideAfterMs)) {
       this.notificationTimeouts[key] = setTimeout(() => {
+        delete this.notificationTimeouts[key];
         this.subject.next(this.subject.data.map(x => {
           if (x.key === key) {
             return {

@@ -11,16 +11,10 @@ type RoutesInput = MyNonIndexRouteObject[] | RoutesFactory;
 @singleton()
 export class RouterService {
   public get adminRoutes(): MyNonIndexRouteObject[] {
-    if (!this.__adminRoutesFactory) {
-      throw new Error('RouterService not initialized');
-    }
     this.__adminRoutes ??= this.__adminRoutesFactory();
     return this.__adminRoutes;
   }
   public get homePageComponent(): HomePage {
-    if (!this.__homePageComponent) {
-      throw new Error('RouterService not initialized');
-    }
     return this.__homePageComponent;
   }
   public get router(): ReturnType<typeof createBrowserRouter> {
@@ -30,22 +24,19 @@ export class RouterService {
     return this.__router;
   }
   public get routes(): MyNonIndexRouteObject[] {
-    if (!this.__routesFactory) {
-      throw new Error('RouterService not initialized');
-    }
     this.__routes ??= this.__routesFactory();
     return this.__routes;
   }
   private __adminRoutes: MyNonIndexRouteObject[] | null = null;
-  private readonly __adminRoutesFactory: null | RoutesFactory = null;
+  private readonly __adminRoutesFactory: RoutesFactory;
 
-  private readonly __homePageComponent: HomePage | null = null;
+  private readonly __homePageComponent: HomePage;
 
   private __router: null | ReturnType<typeof createBrowserRouter> = null;
 
   private __routes: MyNonIndexRouteObject[] | null = null;
 
-  private readonly __routesFactory: null | RoutesFactory = null;
+  private readonly __routesFactory: RoutesFactory;
 
   public constructor(kwArgs: {
     adminRoutes: RoutesInput;

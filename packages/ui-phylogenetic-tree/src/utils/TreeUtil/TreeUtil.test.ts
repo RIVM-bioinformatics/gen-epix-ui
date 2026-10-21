@@ -738,6 +738,12 @@ describe('TreeUtil', () => {
       expect(result.branchLength.toNumber()).toBe(0);
       expect(result.maxBranchLength.toNumber()).toBe(0);
     });
+
+    it('throws a descriptive error when the requested node is absent', () => {
+      const root = makeNode('root', 0, [makeLeaf('present')]);
+
+      expect(() => TreeUtil.findNewTreeRoot(root, 'missing', 'node')).toThrowError('Tree node "missing" was not found.');
+    });
   });
 
   describe('getMinGeneticScaleUnit', () => {
@@ -1044,6 +1050,22 @@ describe('TreeUtil', () => {
       const asm = assembleTreeForTest({ itemHeight: TABLE_ROW_HEIGHT, pixelToGeneticDistanceRatio, rootNode: tree, treeCanvasWidth });
 
       expect(asm.distanceTexts).toHaveLength(0);
+    });
+
+    it('omits a distance label when a positive branch rounds to zero', () => {
+      const rootNode: TreeNode = {
+        ...makeNode('root', 0, [makeLeaf('a', 0.001)]),
+        maxBranchLength: new Decimal(10),
+      };
+      const assembly = assembleTreeForTest({
+        itemHeight: TABLE_ROW_HEIGHT,
+        minimumDistancePercentageToShowLabel: 0,
+        pixelToGeneticDistanceRatio,
+        rootNode,
+        treeCanvasWidth,
+      });
+
+      expect(assembly.distanceTexts).toHaveLength(0);
     });
 
     it('returns an empty assembly for a null rootNode without throwing', () => {
@@ -1380,6 +1402,16 @@ describe('TreeUtil', () => {
 
       expect(ctx.stroke).toHaveBeenCalledTimes(1);
       expect(ctx.beginPath).toHaveBeenCalledTimes(1);
+    });
+
+    it('throws when the canvas cannot provide a 2D context', () => {
+      const canvas = {
+        getContext: vi.fn().mockReturnValue(null),
+        height: 400,
+        width: 600,
+      } as unknown as HTMLCanvasElement;
+
+      expect(() => TreeUtil.drawDivider({ canvas, devicePixelRatio: 1, y: 20 })).toThrowError('Failed to acquire 2D canvas context.');
     });
   });
 
@@ -2661,6 +2693,35 @@ describe('TreeUtil', () => {
       expect(ctx.moveTo).toHaveBeenCalledWith(100, 1500);
     });
 
+    it('uses the fallback sorting index when itemHeight is zero', () => {
+      const { ctx } = makeTrackedCtx();
+      const assembly = makeAssembly();
+      assembly.supportLines = [{ fromX: 100, fromY: 1500, nodeName: 'a', toX: 800, toY: 0 }];
+
+      TreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        devicePixelRatio: 1,
+        dimFn: makeDimFn(),
+        highlightedNodeNames: [],
+        horizontalScrollPosition: 0,
+        isLinked: false,
+        itemHeight: 0,
+        nodeNameColors: null,
+        range: { endIndex: -1, startIndex: -1 },
+        shouldShowDistances: false,
+        shouldShowSupportLinesWhenUnlinked: true,
+        supportLineColorLinked: TREE_COLOR,
+        supportLineColorUnlinked: DIM_COLOR,
+        treeAssembly: assembly,
+        treeColor: TREE_COLOR,
+        treeFont: TREE_FONT,
+        verticalScrollPosition: 0,
+        zoomLevel: 1,
+      });
+
+      expect(ctx.moveTo).toHaveBeenCalledWith(100, 1500);
+    });
+
     it('does not call fillText when shouldShowDistances is false', () => {
       const { ctx } = makeTrackedCtx();
       const assembly = makeAssembly();
@@ -2774,6 +2835,46 @@ describe('TreeUtil', () => {
       });
       expect(ctx.fillText).toHaveBeenCalledTimes(1);
       expect(ctx.fillText).toHaveBeenCalledWith('a', 100, 20);
+    });
+
+    it('renders an empty label when a leaf node has no name', () => {
+      const { ctx } = makeTrackedCtx();
+      const unnamedLeaf: TreeNode = {
+        branchLength: new Decimal(1),
+        size: 1,
+        subTreeLeaveNames: [],
+        subTreeNames: [],
+      };
+      const assembly = assembleTreeForTest({
+        itemHeight: 30,
+        pixelToGeneticDistanceRatio: 100,
+        rootNode: unnamedLeaf,
+        treeCanvasWidth: 400,
+      });
+
+      TreeUtil.drawTree({
+        canvas: makeCanvas(ctx),
+        devicePixelRatio: 1,
+        dimFn: makeDimFn(),
+        highlightedNodeNames: [],
+        horizontalScrollPosition: 0,
+        isLinked: false,
+        itemHeight: 30,
+        nodeNameColors: null,
+        range: { endIndex: 0, startIndex: 0 },
+        shouldShowDistances: false,
+        shouldShowLeafLabels: true,
+        shouldShowSupportLinesWhenUnlinked: false,
+        supportLineColorLinked: TREE_COLOR,
+        supportLineColorUnlinked: DIM_COLOR,
+        treeAssembly: assembly,
+        treeColor: TREE_COLOR,
+        treeFont: TREE_FONT,
+        verticalScrollPosition: 0,
+        zoomLevel: 1,
+      });
+
+      expect(ctx.fillText).toHaveBeenCalledWith('', expect.any(Number), expect.any(Number));
     });
 
     it('resolves the label through getLeafLabel when provided', () => {

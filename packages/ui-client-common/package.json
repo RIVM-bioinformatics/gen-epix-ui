@@ -535,6 +535,7 @@
     "@mui/styled-engine": "9.5.0",
     "@mui/system": "9.5.0",
     "@mui/utils": "9.5.0",
+    "@testing-library/react": "^16.3.3",
     "@types/lodash": "4.17.26",
     "@types/node": "26.6.5",
     "@types/react": "19.3.0",

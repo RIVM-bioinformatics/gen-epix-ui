@@ -56,7 +56,7 @@ export class AuthorizationService {
 
   public doesUserHavePermissionForRoute(route: MyNonIndexRouteObject): boolean {
     if (route.handle.requirePermissionForChildRoute) {
-      return route.children?.filter(r => !r.index)?.some((childRoute) => this.doesUserHavePermissionForRoute(childRoute as MyNonIndexRouteObject));
+      return route.children?.filter(r => !r.index)?.some((childRoute) => this.doesUserHavePermissionForRoute(childRoute as MyNonIndexRouteObject)) ?? false;
     }
     const indexRoute = route.children?.find((childRoute) => childRoute.index);
     if (!route.handle.requiredPermissions?.length && !indexRoute) {
