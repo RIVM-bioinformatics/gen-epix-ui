@@ -2,7 +2,7 @@ type Subscription<TData> = (data: TData, previousData?: TData) => void;
 
 export class Subject<TData> {
   public data: TData;
-  private subscriptions: Subscription<TData>[] = [];
+  private subscriptions: { callback: Subscription<TData> }[] = [];
 
   public constructor(initialData?: TData) {
     this.data = initialData;
@@ -12,15 +12,16 @@ export class Subject<TData> {
     const previousData = this.data;
     this.data = data;
     this.subscriptions.forEach((subscription) => {
-      subscription(data, previousData);
+      subscription.callback(data, previousData);
     });
   }
 
   public subscribe(subscription: Subscription<TData>): () => void {
-    this.subscriptions.push(subscription);
+    const subscriptionEntry = { callback: subscription };
+    this.subscriptions.push(subscriptionEntry);
 
     return () => {
-      this.subscriptions = this.subscriptions.filter(x => x !== subscription);
+      this.subscriptions = this.subscriptions.filter((entry) => entry !== subscriptionEntry);
     };
   }
 }

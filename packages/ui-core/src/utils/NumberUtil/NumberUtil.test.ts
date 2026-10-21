@@ -14,6 +14,7 @@ describe('NumberUtil', () => {
       expect(NumberUtil.toStringWithPrecision(123, 0.01)).toBe('123.00');
       expect(NumberUtil.toStringWithPrecision(123.456, 0.1)).toBe('123.4');
       expect(NumberUtil.toStringWithPrecision(123.456, 1)).toBe('123');
+      expect(NumberUtil.toStringWithPrecision(0, 0.01)).toBe('0');
     });
 
     it('should return an empty string if the value is not a number', () => {
@@ -91,6 +92,7 @@ describe('NumberUtil', () => {
       expect(NumberUtil.parse('abc')).toBeNaN();
       expect(NumberUtil.parse('12.34.56.78')).toBe(12345678);
       expect(NumberUtil.parse('1,2,3,4')).toBe(1234);
+      expect(NumberUtil.parse('1,234,567.8.9')).toBeNaN();
     });
 
     it('should handle type safety', () => {

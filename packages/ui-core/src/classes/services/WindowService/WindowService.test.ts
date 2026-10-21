@@ -20,4 +20,20 @@ describe('WindowService', () => {
       expect(windowService.window).toBe(window);
     });
   });
+
+  it('exposes the document, body, and cached service instance', () => {
+    expect(windowService.document).toBe(document);
+    expect(windowService.body).toBe(document.body);
+    expect(WindowService.getInstance()).toBe(windowService);
+  });
+
+  it('returns null for the document and body when no window is available', () => {
+    Object.defineProperty(windowService, 'window', {
+      configurable: true,
+      get: () => undefined,
+    });
+
+    expect(windowService.document).toBeNull();
+    expect(windowService.body).toBeNull();
+  });
 });

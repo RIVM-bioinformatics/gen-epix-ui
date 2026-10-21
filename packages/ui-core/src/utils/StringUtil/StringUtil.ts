@@ -13,8 +13,8 @@ export class StringUtil {
     }
 
     const regex = /\d+|\D+/g;
-    const aParts = (a || '').match(regex);
-    const bParts = (b || '').match(regex);
+    const aParts = a.match(regex);
+    const bParts = b.match(regex);
 
     for (let i = 0; i < Math.min(aParts.length, bParts.length); i++) {
       const aValue = aParts[i];
@@ -36,7 +36,7 @@ export class StringUtil {
       }
       return aValue.localeCompare(bValue);
     }
-    return aParts.length > bParts.length ? 1 : -1;
+    return Math.sign(aParts.length - bParts.length);
 
   }
 

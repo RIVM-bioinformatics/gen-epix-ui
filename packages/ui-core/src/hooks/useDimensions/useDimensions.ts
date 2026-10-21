@@ -63,6 +63,9 @@ export const useDimensions = (ref: RefObject<HTMLElement>, onResizeCallback?: ()
 
     return () => {
       observer.disconnect();
+      if (timeoutHandleRef.current) {
+        WindowService.getInstance().window.clearTimeout(timeoutHandleRef.current);
+      }
     };
   }, [isResizing, onResizeCallback, ref]);
 

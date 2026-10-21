@@ -22,10 +22,8 @@ import type {
   WithDialogRefMethods,
   WithDialogRenderProps,
 } from '@gen-epix/ui-core-components/hoc/withDialog';
-import {
-  Stepper,
-  STEPPER_DIRECTION,
-} from '@gen-epix/ui-core-components/components/Stepper';
+import { Stepper } from '@gen-epix/ui-core-components/components/Stepper';
+import { STEPPER_DIRECTION } from '@gen-epix/ui-core-components/models/stepper.model';
 import { withDialog } from '@gen-epix/ui-core-components/hoc/withDialog';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
