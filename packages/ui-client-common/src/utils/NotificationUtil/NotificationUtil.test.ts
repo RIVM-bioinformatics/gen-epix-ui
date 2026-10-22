@@ -5,10 +5,7 @@ import {
   it,
   vi,
 } from 'vitest';
-import {
-  createElement,
-  Fragment,
-} from 'react';
+import { createElement } from 'react';
 
 import { NotificationUtil } from './NotificationUtil';
 
@@ -50,28 +47,41 @@ describe('NotificationUtil.wrapErrorNotificationMessage', () => {
     expect(i18nMocks.t).toHaveBeenCalledExactlyOnceWith(`{{message}} - ${description}`, { message });
   });
 
-  it('returns the original string when the error has no mapped status', () => {
+  it.each([
+    { description: 'an unmapped Axios status', error: createAxiosError(418) },
+    { description: 'a non-Axios object', error: { status: 418 } },
+    { description: 'null', error: null },
+    { description: 'undefined', error: undefined },
+  ])('returns the original string for $description', ({ error }) => {
     const message = 'Unable to save';
 
-    const result = NotificationUtil.wrapErrorNotificationMessage(message, createAxiosError(418));
+    const result = NotificationUtil.wrapErrorNotificationMessage(message, error);
 
     expect(result).toBe(message);
     expect(i18nMocks.t).not.toHaveBeenCalled();
   });
 
-  it('appends a localized description without stringifying a React message', () => {
+  it('passes a React message to the translator and returns its translated result', () => {
     const message = createElement('strong', null, 'Unable to save');
+    i18nMocks.t.mockReturnValueOnce('translated notification');
 
     const result = NotificationUtil.wrapErrorNotificationMessage(message, createAxiosError(401));
 
-    if (typeof result === 'string') {
-      throw new TypeError('Expected a React element notification.');
-    }
-    expect(result).toEqual(createElement(Fragment, null, message, ' - You are not logged in.'));
+    expect(result).toBe('translated notification');
     expect(i18nMocks.t).toHaveBeenCalledExactlyOnceWith(
       '{{message}} - You are not logged in.',
-      { message: '' },
+      { message },
     );
+  });
+
+  it('propagates translation failures', () => {
+    const translationError = new Error('Translation failed');
+    i18nMocks.t.mockImplementationOnce(() => {
+      throw translationError;
+    });
+
+    expect(() => NotificationUtil.wrapErrorNotificationMessage('Unable to save', createAxiosError(401)))
+      .toThrow(translationError);
   });
 
   it('returns the original React message when the error has no mapped status', () => {

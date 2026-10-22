@@ -135,6 +135,11 @@ pnpm run add-missing-translations
  exist; Vitest uses `--passWithNoTests` in package scripts.
 - For translation changes, run the package's `test-missing-translations` or the
  root `add-missing-translations` flow when appropriate.
+- Keep translatable strings in forms recognized by `translation-util`: a
+  single-quoted literal passed directly to `t(...)` or a non-empty tagged
+  template such as ``t`literal``. Do not pass a variable, helper-produced,
+  or dynamically constructed key to `t(...)`; the extractor scans source text
+  for these literal forms and will not discover indirect keys.
 - For generated API clients, prefer regenerating through `pnpm run generate-api`
  or the relevant package script instead of hand-editing generated output.
 - For documentation-only edits, a focused diff review is acceptable when no
