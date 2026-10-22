@@ -132,8 +132,9 @@ export const createTableStoreInitialState = <TData, TDataContext = null>(kwArgs:
     if (searchParams.get('sortByField')) {
       sortByField = searchParams.get('sortByField');
     }
-    if (searchParams.get('sortDirection')) {
-      sortDirection = searchParams.get('sortDirection') as TableSortDirection;
+    const searchSortDirection = searchParams.get('sortDirection');
+    if (searchSortDirection === 'asc' || searchSortDirection === 'desc') {
+      sortDirection = searchSortDirection;
     }
   }
 
@@ -211,8 +212,8 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
     },
     destroy: () => {
       const { emitEvent, eventBus } = get();
-      eventBus.destroy();
       emitEvent('destroy');
+      eventBus.destroy();
     },
     emitEvent: (eventName, payload) => {
       get().eventBus.emit(eventName, payload);
@@ -225,10 +226,8 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       const { columnVisualSettingsCondensed, columnVisualSettingsUncondensed, isCondensed } = get();
       return isCondensed ? columnVisualSettingsCondensed : columnVisualSettingsUncondensed;
     },
-    initialize: async (globalAbortSignal?: AbortSignal) => {
-      if (globalAbortSignal) {
-        set({ globalAbortSignal });
-      }
+    initialize: async (globalAbortSignal: AbortSignal) => {
+      set({ globalAbortSignal });
       const { columns, columnVisualSettingsCondensed, columnVisualSettingsUncondensed, destroy, fetchData, isCondensed, setColumnVisualSettingsCondensed, setColumnVisualSettingsUncondensed, sortByField, sortDirection, updateUrl } = get();
 
       if (!TableUtil.areColumnVisualSettingsValid(columns, columnVisualSettingsUncondensed)) {
@@ -244,8 +243,12 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
         destroy();
       };
       globalAbortSignal.addEventListener('abort', globalAbortSignalListener);
-      await updateUrl(updateSearchParams('sortByField', sortByField));
-      await updateUrl(updateSearchParams('sortDirection', sortDirection));
+      if (sortByField) {
+        await updateUrl(updateSearchParams('sortByField', sortByField));
+      }
+      if (sortDirection) {
+        await updateUrl(updateSearchParams('sortDirection', sortDirection));
+      }
       await fetchData();
       set({ isInitialized: true });
     },
@@ -301,12 +304,6 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
       let sanitizedSortByField = sortByField;
       let sanitizedSortDirection = sortDirection;
 
-      // Nothing to sort
-      if ((!sanitizedSortByField || !sortDirection) && !sortedIds) {
-        set({ sortedData: preSortedData });
-        return;
-      }
-
       if (sanitizedSortByField && sanitizedSortDirection) {
         // Sort according to the sortByField and sortDirection
         let column = columns.find(c => c.id === sortByField);
@@ -347,7 +344,9 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
           return aIndex - bIndex;
         });
         set({ sortedData });
+        return;
       }
+      set({ sortedData: preSortedData });
     },
     resetColumns: () => {
       const { columns, isCondensed, setColumnVisualSettingsCondensed, setColumnVisualSettingsUncondensed } = get();
@@ -395,7 +394,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
     },
     setFilters: (filters: Filters, filterDimensions: FilterDimension[], frontendFilterPriorities: string[]) => {
       const { navigateFunction } = get();
-      set({ filterDimensions, filters });
+      set({ filterDimensions, filters, frontendFilterPriorities });
       set({ backendFilters: filters.filter(filter => filter.filterMode === FILTER_MODE.BACKEND) });
       set({
         frontendFilters: Object.fromEntries(frontendFilterPriorities.map(filterPriority => [filterPriority, filters.filter(filter => filter.filterPriority === filterPriority)])),
@@ -471,7 +470,7 @@ export const createTableStoreActions = <TData, TDataContext = null>(kwArgs: {
             searchParams.delete(filter.id);
             return;
           }
-          searchParams = updateSearchParams(filter.id, filter.toURLSearchParameterValue());
+          searchParams = updateSearchParams(filter.id, filter.toURLSearchParameterValue(), searchParams);
         });
         await updateUrl(searchParams);
       }

@@ -134,6 +134,61 @@ describe('KeyboardShortcutService', () => {
     expect(callback).toHaveBeenCalledOnce();
   });
 
+  it('allows an empty modifier list for a plain shortcut', () => {
+    const callback = vi.fn();
+    keyboardShortcutService.registerShortcut({ callback, key: 'f', modifiers: [] });
+
+    window.dispatchEvent(createKeyboardEvent());
+
+    expect(callback).toHaveBeenCalledOnce();
+  });
+
+  it('matches both key and code when both are configured', () => {
+    const callback = vi.fn();
+    keyboardShortcutService.registerShortcut({ callback, code: 'KeyF', key: 'f' });
+    const wrongCodeEvent = createKeyboardEventForKey('f');
+    Object.defineProperty(wrongCodeEvent, 'code', { value: 'KeyG' });
+    const matchingEvent = createKeyboardEventForKey('f');
+    Object.defineProperty(matchingEvent, 'code', { value: 'KeyF' });
+
+    window.dispatchEvent(wrongCodeEvent);
+    expect(callback).not.toHaveBeenCalled();
+
+    window.dispatchEvent(matchingEvent);
+
+    expect(callback).toHaveBeenCalledOnce();
+  });
+
+  it('ignores window shortcuts while focus is in a form element', () => {
+    const callback = vi.fn();
+    const input = document.createElement('input');
+    document.body.append(input);
+    keyboardShortcutService.registerShortcut({ callback, key: 'f' });
+    input.focus();
+
+    window.dispatchEvent(createKeyboardEvent());
+
+    expect(callback).not.toHaveBeenCalled();
+    input.blur();
+    input.remove();
+  });
+
+  it('removes the window listener after the final shortcut and ignores repeated cleanup', () => {
+    const removeEventListener = vi.spyOn(window, 'removeEventListener');
+    const firstCleanup = keyboardShortcutService.registerShortcut({ callback: vi.fn(), key: 'f' });
+    const secondCleanup = keyboardShortcutService.registerShortcut({ callback: vi.fn(), key: 'g' });
+
+    firstCleanup();
+
+    expect(removeEventListener).not.toHaveBeenCalledWith('keydown', expect.any(Function));
+
+    secondCleanup();
+    secondCleanup();
+
+    expect(removeEventListener).toHaveBeenCalledOnce();
+    vi.restoreAllMocks();
+  });
+
   it('handles shortcuts on a registered element', () => {
     const callback = vi.fn();
     const element = document.createElement('div');
@@ -152,6 +207,18 @@ describe('KeyboardShortcutService', () => {
     window.dispatchEvent(createKeyboardEvent());
 
     expect(callback).not.toHaveBeenCalled();
+  });
+
+  it('removes the element listener when its shortcut is unregistered', () => {
+    const callback = vi.fn();
+    const element = document.createElement('div');
+    const removeEventListener = vi.spyOn(element, 'removeEventListener');
+    const cleanup = keyboardShortcutService.registerShortcut({ callback, element, key: 'f' });
+
+    cleanup();
+
+    expect(removeEventListener).toHaveBeenCalledOnce();
+    vi.restoreAllMocks();
   });
 
   it('handles an element shortcut when focus is in a form descendant', () => {

@@ -377,7 +377,8 @@ export class UploadUtil {
       if (mappedColumn.col) {
         defaultFormValues[mappedColumn.originalIndex.toString()] = mappedColumn.col.id;
         if (mappedColumn.isSampleIdColumn) {
-          defaultFormValues[mappedColumn.col.id] = mappedColumn.sampleIdentifierIssuerId || identifierIssuerOptions.length === 1 ? identifierIssuerOptions[0].value : null;
+          defaultFormValues[mappedColumn.col.id] = mappedColumn.sampleIdentifierIssuerId
+            || (identifierIssuerOptions.length === 1 ? identifierIssuerOptions[0].value : null);
         }
       }
     });
@@ -503,7 +504,10 @@ export class UploadUtil {
       if (!formValue) {
         return;
       }
-      const originalIndex = parseInt(originalIndexString, 10);
+      const originalIndex = Number(originalIndexString);
+      if (!Number.isInteger(originalIndex) || originalIndex < 0) {
+        return;
+      }
       const isCaseIdColumn = formValue === 'case_id';
       let col: CaseDbCol = null;
       if (!isCaseIdColumn) {

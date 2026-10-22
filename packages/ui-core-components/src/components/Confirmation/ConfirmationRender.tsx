@@ -53,7 +53,7 @@ export const ConfirmationRender = <TOpenProps,>(
     if (cancelLabel) {
       actions.push({
         ...TestIdUtil.createAttributes('Confirmation-cancelButton'),
-        color: 'primary',
+        color: 'secondary',
         label: cancelLabel ?? t`Cancel`,
         onClick: onCancelButtonClick,
         variant: 'outlined',
@@ -62,7 +62,7 @@ export const ConfirmationRender = <TOpenProps,>(
     actions.push({
       ...TestIdUtil.createAttributes('Confirmation-confirmButton'),
       autoFocus: true,
-      color: 'secondary',
+      color: 'primary',
       label: confirmLabel ?? t`OK`,
       onClick: onConfirmButtonClick,
       variant: 'contained',

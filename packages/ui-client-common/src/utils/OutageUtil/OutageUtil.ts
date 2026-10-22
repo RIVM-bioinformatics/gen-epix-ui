@@ -53,9 +53,6 @@ export class OutageUtil {
       if (activeOutageIds.includes(outage.id)) {
         return false;
       }
-      if (outage.is_active) {
-        return true;
-      }
       if (outage.active_from || outage.active_to) {
         const now = new Date();
         const soon = addHours(now, DependencyContainerUtil.resolveConfig().outages.NUM_HOURS_TO_SHOW_SOON_ACTIVE_OUTAGES);
@@ -63,9 +60,6 @@ export class OutageUtil {
           return soon >= new Date(outage.active_from) && now < new Date(outage.active_to);
         }
         if (outage.active_from && soon >= new Date(outage.active_from)) {
-          return true;
-        }
-        if (outage.active_to && now < new Date(outage.active_to)) {
           return true;
         }
         return false;

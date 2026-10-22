@@ -55,7 +55,9 @@ export class I18nService extends EventBusAbstract<I18nEvent> {
     }
     const currentLanguageCode = await this.getCurrentLanguageCode();
     const defaultLanguageConfig = this.languageConfigs.find(x => x.code === currentLanguageCode);
-
+    if (!defaultLanguageConfig) {
+      throw new Error(`No i18n config found for code: ${currentLanguageCode}`);
+    }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(initReactI18next)
@@ -79,9 +81,8 @@ export class I18nService extends EventBusAbstract<I18nEvent> {
   }
 
   public async switchLanguage(code: string): Promise<void> {
-    await this.switchLanguageConfig(code);
-
     await this.loadResources(code);
+    await this.switchLanguageConfig(code);
     await changeLanguage(code);
   }
 

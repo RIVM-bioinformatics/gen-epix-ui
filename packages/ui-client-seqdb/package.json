@@ -18,6 +18,10 @@
       "types": "./src/components/app/SeqDbApp/index.ts",
       "import": "./src/components/app/SeqDbApp/index.ts"
     },
+    "./constants/query.constants": {
+      "types": "./src/constants/query.constants.ts",
+      "import": "./src/constants/query.constants.ts"
+    },
     "./models/config.models": {
       "types": "./src/models/config.models.ts",
       "import": "./src/models/config.models.ts"
@@ -148,6 +152,10 @@
       "./components/app/SeqDbApp": {
         "types": "./dist/components/app/SeqDbApp/index.d.ts",
         "import": "./dist/components/app/SeqDbApp/index.js"
+      },
+      "./constants/query.constants": {
+        "types": "./dist/constants/query.constants.d.ts",
+        "import": "./dist/constants/query.constants.js"
       },
       "./models/config.models": {
         "types": "./dist/models/config.models.d.ts",

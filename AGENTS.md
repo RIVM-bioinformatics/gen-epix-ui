@@ -135,6 +135,11 @@ pnpm run add-missing-translations
  exist; Vitest uses `--passWithNoTests` in package scripts.
 - For translation changes, run the package's `test-missing-translations` or the
  root `add-missing-translations` flow when appropriate.
+- Keep translatable strings in forms recognized by `translation-util`: a
+  single-quoted literal passed directly to `t(...)` or a non-empty tagged
+  template such as ``t`literal``. Do not pass a variable, helper-produced,
+  or dynamically constructed key to `t(...)`; the extractor scans source text
+  for these literal forms and will not discover indirect keys.
 - For generated API clients, prefer regenerating through `pnpm run generate-api`
  or the relevant package script instead of hand-editing generated output.
 - For documentation-only edits, a focused diff review is acceptable when no
@@ -271,6 +276,11 @@ public units need the same folder+barrel shape to be consumable.
 - Some browser-oriented tests require Playwright/browser dependencies.
 - Prefer the package script over invoking raw `vitest` unless there is a specific
  reason.
+- Tests rendering React hooks or components that use `react-i18next` must provide
+ an initialized i18n instance through `I18nextProvider` or configure the
+ instance with `initReactI18next`. Calling `i18next.init()` alone does not
+ connect it to React; avoid `NO_I18NEXT_INSTANCE` warnings, and prefer an
+ isolated instance to prevent shared test state.
 - Keep tests focused on observable behavior and existing public APIs.
 - Do not broaden snapshots or coverage churn while fixing a narrow bug.
 

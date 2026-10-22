@@ -61,7 +61,7 @@ export class LogService {
     this.logItems.push(...items.map<CommonDbExternalLogItem>(item => {
       return {
         command_id: StringUtil.createUuid(),
-        detail: item.detail ? JSON.stringify(item.detail) : null,
+        detail: item.detail === undefined || item.detail === null ? null : JSON.stringify(item.detail),
         duration: item.duration ?? null,
         level: item.level,
         software_version,
@@ -97,8 +97,12 @@ export class LogService {
       return response;
     }
 
-    const requestId = response?.config?.headers.get('X-REQUEST-ID') as string;
-    const duration = new Date().getTime() - this.requestMap.get(requestId);
+    const requestId = response.config.headers.get('X-REQUEST-ID');
+    const requestStartedAt = typeof requestId === 'string' ? this.requestMap.get(requestId) : undefined;
+    const duration = requestStartedAt === undefined ? undefined : Date.now() - requestStartedAt;
+    if (typeof requestId === 'string') {
+      this.requestMap.delete(requestId);
+    }
 
     this.log([{
       detail: {
@@ -116,17 +120,24 @@ export class LogService {
 
   public onResponseRejected(error: unknown): void {
     if (isAxiosError(error)) {
+      const requestId = error.config?.headers.get('X-REQUEST-ID');
       if (AxiosUtil.isAxiosCanceledError(error)) {
+        if (typeof requestId === 'string') {
+          this.requestMap.delete(requestId);
+        }
         return;
       }
-      const requestId = error?.config?.headers.get('X-REQUEST-ID') as string;
-      const duration = new Date().getTime() - this.requestMap.get(requestId);
+      const requestStartedAt = typeof requestId === 'string' ? this.requestMap.get(requestId) : undefined;
+      const duration = requestStartedAt === undefined ? undefined : Date.now() - requestStartedAt;
+      if (typeof requestId === 'string') {
+        this.requestMap.delete(requestId);
+      }
       this.log([{
         detail: {
-          requestParams: error.config.params as unknown,
-          responseData: error.response.data as unknown,
-          status: error.response.status,
-          url: error.config.url,
+          requestParams: error.config?.params as unknown,
+          responseData: error.response?.data as unknown,
+          status: error.response?.status,
+          url: error.config?.url,
         },
         duration,
         level: CommonDbLogLevel.ERROR,
@@ -135,7 +146,7 @@ export class LogService {
     } else {
       this.log([{
         detail: {
-          error,
+          error: error instanceof Error ? error.message : error,
         },
         level: CommonDbLogLevel.ERROR,
         topic: 'RESPONSE_ERROR',
@@ -156,7 +167,9 @@ export class LogService {
       headers: {
         'X-IGNORE-LOG': '1',
       },
-    }).catch(() => 0);
+    }).catch((error: unknown) => {
+      console.error('Failed to send logs', error);
+    });
     this.logItems = [];
   }
 }

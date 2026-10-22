@@ -22,7 +22,7 @@ import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import type { CaseDbConfig } from '../../models/config.models';
 
 export class CaseUtil {
-  public static async applyDataCollectionLinks(kwArgs: { caseIds?: string[]; caseSetDataCollectionIds: string[]; caseSetId?: string; caseTypeId: string }): Promise<void> {
+  public static async applyDataCollectionLinks(kwArgs: { caseIds?: string[]; caseSetDataCollectionIds?: string[]; caseSetId?: string; caseTypeId: string }): Promise<void> {
     const { caseIds, caseSetDataCollectionIds, caseSetId, caseTypeId } = kwArgs;
 
     if (!caseSetId && !caseIds) {
@@ -36,8 +36,9 @@ export class CaseUtil {
     });
 
     try {
-      if (!caseSetDataCollectionIds.length) {
+      if (!caseSetDataCollectionIds?.length) {
         container.resolve(NotificationService).fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because the event is not shared.'), 'info');
+        return;
       }
 
       let normalizedCaseIds: string[] = [];
@@ -54,6 +55,7 @@ export class CaseUtil {
 
       if (!normalizedCaseIds.length) {
         container.resolve(NotificationService).fulfillNotification(notificationKey, t('Sharing has not been applied to the cases because there are no cases in the event.'), 'info');
+        return;
       }
 
       const dataLinksToAdd: CaseDbCaseDataCollectionLink[] = [];
@@ -101,11 +103,11 @@ export class CaseUtil {
     const refCol = completeCaseType.ref_cols[col.ref_col_id];
 
     if (refCol.col_type === CaseDbColType.ORGANIZATION) {
-      return CaseUtil.getOrganizationMappedValue(raw);
+      return CaseUtil.getOrganizationMappedValue(raw, machineReadable);
     } else if (refCol.region_set_id) {
-      return CaseUtil.getRegionMappedValue(refCol, raw);
+      return CaseUtil.getRegionMappedValue(refCol, raw, machineReadable);
     } else if (refCol.concept_set_id) {
-      return CaseUtil.getConceptMappedValue(raw);
+      return CaseUtil.getConceptMappedValue(raw, machineReadable);
     }
     return CaseUtil.getMissingRowValue(raw, machineReadable);
   }
@@ -130,23 +132,25 @@ export class CaseUtil {
       return CaseUtil.getMappedValue(content[col.id], col, completeCaseType, machineReadable);
     }
 
-    const { DATA_MISSING_CHARACTER } = DependencyContainerUtil.resolveConfig<CaseDbConfig>().epi;
-    const dataMissingCharacter = machineReadable ? '' : DATA_MISSING_CHARACTER;
+    const rawValue = content[col.id];
+    if (!rawValue) {
+      return CaseUtil.getMissingRowValue(rawValue, machineReadable);
+    }
 
     const rowValue: CaseTypeRowValue = {
-      full: content[col.id] ?? t('{{dataMissingCharacter}} (missing)', { dataMissingCharacter }),
-      isMissing: !content[col.id],
-      long: content[col.id] ?? dataMissingCharacter,
-      raw: content?.[col.id],
-      short: content[col.id] ?? dataMissingCharacter,
+      full: rawValue,
+      isMissing: false,
+      long: rawValue,
+      raw: rawValue,
+      short: rawValue,
     };
     return rowValue;
   }
 
-  private static getConceptMappedValue(raw: string): CaseTypeRowValue {
+  private static getConceptMappedValue(raw: string, machineReadable: boolean): CaseTypeRowValue {
     const concept = container.resolve(DataService).data.conceptsById?.[raw];
     if (!concept) {
-      return CaseUtil.getMissingRowValue(raw);
+      return CaseUtil.getMissingRowValue(raw, machineReadable);
     }
     return {
       full: `${concept.code} (${concept.name})`,
@@ -157,10 +161,10 @@ export class CaseUtil {
     };
   }
 
-  private static getOrganizationMappedValue(raw: string): CaseTypeRowValue {
+  private static getOrganizationMappedValue(raw: string, machineReadable: boolean): CaseTypeRowValue {
     const organization = container.resolve(DataService).data?.organizationsById?.[raw];
     if (!organization) {
-      return CaseUtil.getMissingRowValue(raw);
+      return CaseUtil.getMissingRowValue(raw, machineReadable);
     }
     return {
       full: organization.name,
@@ -171,11 +175,11 @@ export class CaseUtil {
     };
   }
 
-  private static getRegionMappedValue(refCol: CaseDbRefCol, raw: string): CaseTypeRowValue {
+  private static getRegionMappedValue(refCol: CaseDbRefCol, raw: string, machineReadable: boolean): CaseTypeRowValue {
     const regionSet = container.resolve(DataService).data.regionSets[refCol.region_set_id];
     const region = container.resolve(DataService).data.regionsById?.[raw];
     if (!region) {
-      return CaseUtil.getMissingRowValue(raw);
+      return CaseUtil.getMissingRowValue(raw, machineReadable);
     }
     return {
       full: regionSet.region_code_as_label ? region.code : region.name,

@@ -105,7 +105,7 @@ export class CaseTypeFormUtil {
             disabled,
             label: col.label,
             name: col.id,
-            options: (container.resolve(DataService).data.organizations ?? []).map(organization => ({
+            options: container.resolve(DataService).data.organizations.map(organization => ({
               label: organization.name,
               value: organization.id,
             })).sort((a, b) => StringUtil.advancedSortComperator(a.label, b.label)),
@@ -213,27 +213,27 @@ export class CaseTypeFormUtil {
           }));
         case CaseDbColType.DECIMAL_1:
           return s.concat(object().shape({
-            [col.id]: string().nullable().decimal1().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal1().transform((_val: unknown, orig: string) => orig || null),
           }));
         case CaseDbColType.DECIMAL_2:
           return s.concat(object().shape({
-            [col.id]: string().nullable().decimal2().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal2().transform((_val: unknown, orig: string) => orig || null),
           }));
         case CaseDbColType.DECIMAL_3:
           return s.concat(object().shape({
-            [col.id]: string().nullable().decimal3().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal3().transform((_val: unknown, orig: string) => orig || null),
           }));
         case CaseDbColType.DECIMAL_4:
           return s.concat(object().shape({
-            [col.id]: string().nullable().decimal4().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal4().transform((_val: unknown, orig: string) => orig || null),
           }));
         case CaseDbColType.DECIMAL_5:
           return s.concat(object().shape({
-            [col.id]: string().nullable().decimal5().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal5().transform((_val: unknown, orig: string) => orig || null),
           }));
         case CaseDbColType.DECIMAL_6:
           return s.concat(object().shape({
-            [col.id]: string().nullable().decimal6().transform((_val: unknown, orig: string) => orig ?? null),
+            [col.id]: string().nullable().decimal6().transform((_val: unknown, orig: string) => orig || null),
           }));
         case CaseDbColType.GENETIC_DISTANCE:
         case CaseDbColType.GENETIC_READS:
@@ -263,11 +263,11 @@ export class CaseTypeFormUtil {
           try {
             return s.concat(object().shape({
               [col.id]: string().nullable().matches(new RegExp(col.pattern), t('Invalid value for pattern "{{pattern}}"', { pattern: col.pattern })),
-            })).transform((_val: unknown, orig: string) => orig || null);
+            }));
           } catch (_error) {
             return s.concat(object().shape({
               [col.id]: string().nullable().max(col.max_length ?? 65535),
-            })).transform((_val: unknown, orig: string) => orig || null);
+            }));
           }
         case CaseDbColType.TEXT:
           return s.concat(object().shape({

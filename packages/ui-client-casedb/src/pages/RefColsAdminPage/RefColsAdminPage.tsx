@@ -36,7 +36,7 @@ import { FORM_FIELD_DEFINITION_TYPE } from '@gen-epix/ui-core-form/models/form.m
 import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 
 import { useColTypeOptionsQuery } from '../../dataHooks/useColTypesQuery';
-import { useUnitOptionsQuery } from '../../dataHooks/useUnitQuery/useUnit';
+import { useUnitOptionsQuery } from '../../dataHooks/useUnitQuery/useUnitQuery';
 import {
   useConceptSetMapQuery,
   useConceptSetOptionsQuery,

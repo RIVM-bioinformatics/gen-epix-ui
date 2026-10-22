@@ -151,7 +151,7 @@ const createDashboardStoreInitialState = (kwArgs: CreateDashboardStoreInitialSta
       return acc;
     }, {} as { [key: string]: { [key: string]: unknown } }),
     widgetDataPersistable: Object.entries(config.dashboard.WIDGETS).reduce((acc, [widgetName, widgetConfig]) => {
-      acc[widgetName] = cloneDeep(widgetConfig.dataDefaultValues);
+      acc[widgetName] = cloneDeep(widgetConfig.dataPersistableDefaultValues ?? widgetConfig.dataDefaultValues);
       return acc;
     }, {} as { [key: string]: { [key: string]: unknown } }),
   };
@@ -195,7 +195,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
             const { fetchAbortController: previousFetchAbortController, findSimilarCasesResults, globalAbortSignal } = get();
             const queryClient = container.resolve(QueryClientService).queryClient;
 
-            const similarCaseIds = findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [];
+            const similarCaseIds = findSimilarCasesResults.flatMap(result => result.similarCaseIds);
 
             if (previousFetchAbortController && !previousFetchAbortController.signal.aborted) {
               previousFetchAbortController.abort();
@@ -261,8 +261,11 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
               setBaseData(cases);
               set({ isDataLoading: false, isMaxResultsExceeded: currentCaseIdsByQueryResponse.is_max_results_exceeded });
             } catch (error: unknown) {
-              if (!AxiosUtil.isAxiosCanceledError(error)) {
-                set({ dataError: error as Error });
+              if (get().fetchAbortController === fetchAbortController) {
+                set({ isDataLoading: false });
+                if (!AxiosUtil.isAxiosCanceledError(error)) {
+                  set({ dataError: error as Error });
+                }
               }
             } finally {
               globalAbortSignal.removeEventListener('abort', globalAbortSignalListener);
@@ -476,7 +479,7 @@ export const createDashboardStore = (kwArgs: CreateDashboardStoreKwArgs) => {
                 completeCaseType,
                 mode,
                 selectedIds,
-                similarCaseIds: findSimilarCasesResults?.flatMap((result) => result.similarCaseIds) || [],
+                similarCaseIds: findSimilarCasesResults.flatMap(result => result.similarCaseIds),
                 sortedData,
               }),
             });

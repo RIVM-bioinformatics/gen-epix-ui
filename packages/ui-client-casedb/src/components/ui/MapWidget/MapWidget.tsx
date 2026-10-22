@@ -137,13 +137,15 @@ export const MapWidget = () => {
     if (!geoDims.length) {
       throw Error('Epi map can not be shown');
     }
-    let preferredCol: CaseDbCol;
+    let preferredCol: CaseDbCol | undefined;
     if (mapWidgetData.columnId) {
       preferredCol = CaseTypeUtil.getCols(completeCaseType).find(c => c.id === mapWidgetData.columnId);
     } else {
       preferredCol = CaseTypeUtil.getPreferredGEOCol(CaseTypeUtil.getCols(completeCaseType, geoDims[0].id));
     }
-    setCol(preferredCol);
+    if (preferredCol) {
+      setCol(preferredCol);
+    }
   }, [col, completeCaseType, mapWidgetData.columnId, geoDims]);
 
   const regions = useMemo(() => {

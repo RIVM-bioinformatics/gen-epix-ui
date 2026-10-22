@@ -9,7 +9,7 @@ export class TimeUtil {
 
     const hours = Math.floor(milliseconds / 3600000);
     const seconds = Math.round(milliseconds / 1000);
-    const minutes = Math.floor(seconds / 60);
+    const minutes = Math.floor(seconds / 60) % 60;
     const remainingSeconds = seconds % 60;
 
     if (hours > 0) {

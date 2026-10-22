@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { visuallyHidden } from '@mui/utils';
 import { TestIdUtil } from '@gen-epix/ui-core/utils/TestIdUtil';
 
-import { STEPPER_DIRECTION } from './stepperModel';
+import { STEPPER_DIRECTION } from '../../models/stepper.model';
 
 export type Step = {
   content?: ReactNode;

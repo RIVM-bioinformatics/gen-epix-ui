@@ -19,11 +19,14 @@ import { DependencyContainerUtil } from '@gen-epix/ui-client-common/utils/Depend
 
 import { DataService } from '../../classes/services/DataService';
 import type { CaseDbConfig } from '../../models/config.models';
+import type {
+  CaseTypeRowValue,
+  DataCache,
+} from '../../models/case-db.models';
 import {
   STRATIFICATION_MODE,
   STRATIFICATION_SIMILAR_CASE,
 } from '../../models/stratification.models';
-import type { DataCache } from '../../models/case-db.models';
 
 import { StratificationUtil } from './StratificationUtil';
 
@@ -70,6 +73,18 @@ afterEach(() => {
 const getStratificationConfig = () =>
   DependencyContainerUtil.resolveConfig<CaseDbConfig>().epi.STRATIFICATION;
 
+const compareRowValues = (first: CaseTypeRowValue, second: CaseTypeRowValue): number => {
+  const comparator: unknown = Reflect.get(StratificationUtil, 'rowValueComperator');
+  if (typeof comparator !== 'function') {
+    throw new Error('Expected rowValueComperator to be callable');
+  }
+  const result: unknown = Reflect.apply(comparator, undefined, [first, second]);
+  if (typeof result !== 'number') {
+    throw new Error('Expected rowValueComperator to return a number');
+  }
+  return result;
+};
+
 describe('StratificationUtil', () => {
   // -------------------------------------------------------------------------
   describe('getEchartsColors', () => {
@@ -105,6 +120,17 @@ describe('StratificationUtil', () => {
         col,
         completeCaseType: cct,
         mode: null,
+        sortedData: [],
+      })).toBeNull();
+    });
+
+    it('returns null for an unsupported truthy mode', () => {
+      const col = makeCol('c', 'rc');
+      const cct = makeCompleteCaseType([col], { rc: makeRefCol(CaseDbColType.NOMINAL) });
+      expect(StratificationUtil.getStratification({
+        col,
+        completeCaseType: cct,
+        mode: 'unsupported' as unknown as STRATIFICATION_MODE,
         sortedData: [],
       })).toBeNull();
     });
@@ -249,9 +275,30 @@ describe('StratificationUtil', () => {
         const result = StratificationUtil.getStratification({
           col, completeCaseType: cct, mode: STRATIFICATION_MODE.FIELD, sortedData: cases,
         });
-
         expect(result.legendaItems[0].color).toBe(BASE_COLORS[0]);
         expect(result.legendaItems[1].color).toBe(BASE_COLORS[1]);
+      });
+
+      it('sorts concept-set row values by code for non-gradient columns', () => {
+        const col = makeCol('c', 'rc');
+        const cct = makeCompleteCaseType([col], { rc: makeRefCol(CaseDbColType.NOMINAL, 'set1') });
+        const concepts = [
+          makeConcept('z', 1, null),
+          makeConcept('a', 2, null),
+        ];
+        container.resolve(DataService).data.conceptsIdsBySetId.set1 = ['z', 'a'];
+        concepts.forEach(concept => {
+          container.resolve(DataService).data.conceptsById[concept.id] = concept;
+        });
+
+        const result = StratificationUtil.getStratification({
+          col,
+          completeCaseType: cct,
+          mode: STRATIFICATION_MODE.FIELD,
+          sortedData: [],
+        });
+
+        expect(result.legendaItems.map(item => item.rowValue.raw)).toEqual(['a', 'z']);
       });
     });
 
@@ -665,6 +712,30 @@ describe('StratificationUtil', () => {
       expect(result.colorForIsMissing).toBe(ITEM_MISSING_COLOR);
       expect(result.mode).toBe(STRATIFICATION_MODE.SIMILAR_CASES);
       expect(result.col).toBeUndefined();
+    });
+  });
+
+  describe('rowValueComperator', () => {
+    const rowValue = (raw: string, isMissing = false): CaseTypeRowValue => ({
+      full: raw,
+      isMissing,
+      long: raw,
+      raw,
+      short: raw,
+    });
+
+    it('returns zero for equal raw values', () => {
+      expect(compareRowValues(rowValue('same'), rowValue('same'))).toBe(0);
+    });
+
+    it('places missing values after present values', () => {
+      expect(compareRowValues(rowValue('missing', true), rowValue('value'))).toBe(1);
+      expect(compareRowValues(rowValue('value'), rowValue('missing', true))).toBe(-1);
+    });
+
+    it('orders present values by their short labels', () => {
+      expect(compareRowValues(rowValue('b'), rowValue('a'))).toBeGreaterThan(0);
+      expect(compareRowValues(rowValue('a'), rowValue('b'))).toBeLessThan(0);
     });
   });
 });

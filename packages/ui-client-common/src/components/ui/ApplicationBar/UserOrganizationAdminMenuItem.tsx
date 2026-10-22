@@ -19,7 +19,7 @@ import { COMMON_QUERY_KEY } from '../../../constants/query.constants';
 export const UserOrganizationAdminMenuItem = withPermissions(() => {
   const { t } = useTranslation();
 
-  const { data: organizationAdminNameEmails, error: organizationAdminNameEmailsError, isLoading: isOrganizationAdminNameEmailsLoading } = useQueryMemo({
+  const retrieveOrganizationAdminNameEmailsQuery = useQueryMemo({
     gcTime: 0,
     queryFn: async ({ signal }) => (await container.resolve(API_ABAC_TOKEN).retrieveOrganizationAdminNameEmails({ signal })).data,
     queryKey: container.resolve(QueryClientService).getGenericKey(COMMON_QUERY_KEY.ORGANIZATION_ADMIN_NAME_EMAILS),
@@ -38,9 +38,9 @@ export const UserOrganizationAdminMenuItem = withPermissions(() => {
         primary={t`My organizations admins`}
         secondary={(
           <>
-            {isOrganizationAdminNameEmailsLoading && t`Loading...`}
-            {organizationAdminNameEmailsError && t`Error`}
-            {organizationAdminNameEmails?.map(admin => (
+            {retrieveOrganizationAdminNameEmailsQuery.isLoading && t`Loading...`}
+            {retrieveOrganizationAdminNameEmailsQuery.error && t`Error loading organization admins`}
+            {retrieveOrganizationAdminNameEmailsQuery.data?.map(admin => (
               <Link
                 href={`mailto:${admin.email}`}
                 key={admin.id}

@@ -29,7 +29,7 @@ export class MultiSelectFilter extends FilterAbstract<string[]> implements Filte
       label: kwArgs.label,
     });
     this.options = kwArgs.options;
-    if (isNumber(kwArgs.maxNumOptionsExpanded)) {
+    if (isNumber(kwArgs.maxNumOptionsExpanded) && !Number.isNaN(kwArgs.maxNumOptionsExpanded)) {
       this.maxNumOptionsExpanded = kwArgs.maxNumOptionsExpanded;
     }
     kwArgs.options.forEach(option => {
@@ -42,7 +42,7 @@ export class MultiSelectFilter extends FilterAbstract<string[]> implements Filte
     return usedValues.map(v => this.optionsMap.get(v)).join(', ');
   }
 
-  public matchRowValue(rowValue: string): boolean {
+  public matchRowValue(rowValue: string | string[]): boolean {
     if (!this.filterValue) {
       return true;
     }

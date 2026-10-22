@@ -105,7 +105,7 @@ export class EpiCurveUtil {
     const areaSeries: unknown[] = seriesNames.map((seriesName, seriesIndex) => {
       return {
         areaStyle: {},
-        color: stratification.legendaItems[seriesIndex].color,
+        color: visibleLegendaItems[seriesIndex].color,
         data: normalizedDataPoints.map((point, pointIdx) => [
           xAxisLabels[pointIdx],
           point.values[seriesName],
@@ -333,43 +333,42 @@ export class EpiCurveUtil {
    * @param cols
    * @returns
    */
-  public static getPreferredTimeColumn(completeCaseType: CaseDbCompleteCaseType, cases: CaseDbCase[], cols: CaseDbCol[]): CaseDbCol {
+  public static getPreferredTimeColumn(completeCaseType: CaseDbCompleteCaseType, cases: CaseDbCase[], cols: CaseDbCol[]): CaseDbCol | null {
     const items = EpiCurveUtil.getSortedItems(completeCaseType, cases, cols);
 
     if (!items?.length) {
       return cols?.[0] ?? null;
     }
 
-    const duration: Duration = {
-      years: 0,
-      ...intervalToDuration({
-        end: items[items.length - 1].date,
-        start: items[0].date,
-      }),
-    };
+    const duration: Duration = intervalToDuration({
+      end: items[items.length - 1].date,
+      start: items[0].date,
+    });
+    const years = duration.years ?? 0;
+    const months = duration.months ?? 0;
 
     const dayCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === CaseDbColType.TIME_DAY);
-    if (dayCol && (duration.years ?? 0) === 0 && duration.months <= 3) {
+    if (dayCol && years === 0 && months <= 3) {
       return dayCol;
     }
     const weekCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === CaseDbColType.TIME_WEEK);
-    if (weekCol && (duration.years ?? 0) <= 1) {
+    if (weekCol && years <= 1) {
       return weekCol;
     }
     const monthCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === CaseDbColType.TIME_MONTH);
-    if (monthCol && (duration.years ?? 0) <= 2) {
+    if (monthCol && years <= 2) {
       return monthCol;
     }
     const quarterCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === CaseDbColType.TIME_QUARTER);
-    if (quarterCol && (duration.years ?? 0) <= 5) {
+    if (quarterCol && years <= 5) {
       return quarterCol;
     }
-    const yearCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === CaseDbColType.TIME_QUARTER);
+    const yearCol = cols.find(col => completeCaseType.ref_cols[col.ref_col_id].col_type === CaseDbColType.TIME_YEAR);
     if (yearCol) {
       return yearCol;
     }
 
-    return CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType);
+    return CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType) ?? null;
   }
 
   /**

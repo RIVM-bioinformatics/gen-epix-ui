@@ -19,6 +19,9 @@ export const useIdentifierIssuerOwnOrganizationQuery = (): UseQueryResult<Common
         type: 'EQUALS_UUID',
         value: container.resolve(AuthorizationService).user.organization_id,
       }, null, null, { signal })).data;
+      if (links.length === 0) {
+        return [];
+      }
       const response = await container.resolve(API_ORGANIZATION_TOKEN).identifierIssuersGetSome(links.map(x => x.identifier_issuer_id).join(','), { signal });
       return response.data;
     },

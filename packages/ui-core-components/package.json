@@ -65,6 +65,10 @@
     "./models/nested-menu.models": {
       "types": "./src/models/nested-menu.models.ts",
       "import": "./src/models/nested-menu.models.ts"
+    },
+    "./models/stepper.model": {
+      "types": "./src/models/stepper.model.ts",
+      "import": "./src/models/stepper.model.ts"
     }
   },
   "files": [
@@ -181,6 +185,10 @@
       "./models/nested-menu.models": {
         "types": "./dist/models/nested-menu.models.d.ts",
         "import": "./dist/models/nested-menu.models.js"
+      },
+      "./models/stepper.model": {
+        "types": "./dist/models/stepper.model.d.ts",
+        "import": "./dist/models/stepper.model.js"
       }
     },
     "files": [

@@ -1,6 +1,5 @@
 import { container } from 'tsyringe';
 import { useMemo } from 'react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import type {
   CaseDbCaseTypeSetMember,
   CaseDbColSet,
@@ -48,8 +47,15 @@ export type UserEffectiveRightsQueryResult = {
   userShareCasePolicies: CaseDbUserShareCasePolicy[];
 };
 
+export type UserEffectiveRightsQueryState = {
+  data: {
+    [TKey in keyof UserEffectiveRightsQueryResult]: undefined | UserEffectiveRightsQueryResult[TKey];
+  };
+  error: unknown;
+  loading: boolean;
+};
 
-export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryResult<UserEffectiveRightsQueryResult>> => {
+export const useUserEffectiveRightsQuery = (userId: string): UserEffectiveRightsQueryState => {
   const userQuery = useItemQuery<CaseDbUser>({
     baseQueryKey: COMMON_QUERY_KEY.USERS,
     itemId: userId,
@@ -70,10 +76,10 @@ export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryRes
   const caseTypeSetNameFactory = useCaseTypeSetNameFactory();
   const dataCollectionMapQuery = useDataCollectionsMapQuery();
   const dataCollectionOptionsQuery = useDataCollectionOptionsQuery();
-  const organizationAccessCasePoliciesQuery = useOrganizationAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user.organization_id));
-  const organizationShareCasePoliciesQuery = useOrganizationShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user.organization_id));
-  const userAccessCasePoliciesQuery = useUserAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
-  const userShareCasePoliciesQuery = useUserShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user.id));
+  const organizationAccessCasePoliciesQuery = useOrganizationAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user?.organization_id));
+  const organizationShareCasePoliciesQuery = useOrganizationShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.organization_id === user?.organization_id));
+  const userAccessCasePoliciesQuery = useUserAccessCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user?.id));
+  const userShareCasePoliciesQuery = useUserShareCasePoliciesQuery(policies => policies.filter(policy => policy.is_active && policy.user_id === user?.id));
 
   const loadables = useArray([
     userQuery,
@@ -118,7 +124,7 @@ export const useUserEffectiveRightsQuery = (userId: string): Partial<UseQueryRes
         userAccessCasePolicies: userAccessCasePoliciesQuery.data,
         userShareCasePolicies: userShareCasePoliciesQuery.data,
       },
-      error: (loadables.find(x => x.error)?.error ?? null) as Error,
+      error: loadables.find(x => x.error)?.error ?? null,
       loading: LoadableUtil.isSomeLoading(loadables),
     };
   }, [colSetMembersQuery.data, colSetMapQuery.map, caseTypeSetMembersQuery.data, effectiveRights, loadables, organizationAccessCasePoliciesQuery.data, organizationShareCasePoliciesQuery.data, user, userAccessCasePoliciesQuery.data, userShareCasePoliciesQuery.data]);

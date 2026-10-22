@@ -63,7 +63,7 @@ export interface UploadStoreActions {
   reset: () => Promise<void>;
   setCaseTypeId: (caseTypeId: string) => void;
   setCols: (cols: CaseDbCol[]) => void;
-  setCompleteCaseType: (completeCaseType: CaseDbCompleteCaseType) => void;
+  setCompleteCaseType: (completeCaseType: CaseDbCompleteCaseType) => Promise<void>;
   setCreatedInDataCollectionId: (createdInDataCollectionId: string) => void;
   setDataCollectionOptions: (options: OptionBase<string>[]) => void;
   setFileList: (fileList: FileList) => Promise<void>;
@@ -348,14 +348,11 @@ export const createUploadStore = (kwArgs: CreateUploadStoreKwArgs) => {
       },
 
       setSequenceFilesDataTransfer: (dataTransfer: DataTransfer) => {
-        const { sequenceFilesDataTransfer, sequenceMapping } = get();
+        const { sequenceFilesDataTransfer } = get();
         if (dataTransfer === sequenceFilesDataTransfer) {
           return;
         }
-        set({ sequenceFilesDataTransfer: dataTransfer });
-        if (sequenceMapping) {
-          set({ shouldResetSequenceMapping: true });
-        }
+        set({ sequenceFilesDataTransfer: dataTransfer, shouldResetSequenceMapping: true });
       },
 
       setSequenceMapping: (sequenceMapping: UploadSequenceMapping) => {

@@ -12,12 +12,15 @@ export const regionRelationTypePresentationValues: Partial<Record<CaseDbRegionRe
 };
 
 export const useRegionRelationTypeOptionsQuery = (): UseOptions<string> => {
-  return useMemo(() => {
+  return useMemo<UseOptions<string>>(() => {
     const options: OptionBase<string>[] = Object.entries(regionRelationTypePresentationValues).map(([value, label]) => ({ label, value }));
     return {
       error: null,
+      isEnabled: true,
+      isFetching: false,
       isLoading: false,
+      isPending: false,
       options,
-    } as UseOptions<string>;
+    };
   }, []);
 };

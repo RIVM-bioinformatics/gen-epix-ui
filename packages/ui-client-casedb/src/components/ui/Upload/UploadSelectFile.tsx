@@ -23,6 +23,7 @@ import {
 } from '@mui/material';
 import { useStore } from 'zustand';
 import { CaseDbCaseApi } from '@gen-epix/api-casedb';
+import { NotificationService } from '@gen-epix/ui-client-common/classes/services/NotificationService';
 import { ResponseHandler } from '@gen-epix/ui-client-common/components/ui/ResponseHandler';
 import { useItemQuery } from '@gen-epix/ui-client-common/hooks/useItemQuery';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
@@ -129,9 +130,14 @@ export const UploadSelectFile = () => {
 
   useEffect(() => {
     if (completeCaseType) {
-      setCompleteCaseType(completeCaseType);
+      void setCompleteCaseType(completeCaseType).catch((error: unknown) => {
+        container.resolve(NotificationService).showNotification({
+          message: error instanceof Error ? error.message : t`Sorry, an unexpected error has occurred.`,
+          severity: 'error',
+        });
+      });
     }
-  }, [completeCaseType, setCompleteCaseType]);
+  }, [completeCaseType, setCompleteCaseType, t]);
 
   const onFileListChange = useCallback(async (value: FileList) => {
     await setFileList(value);

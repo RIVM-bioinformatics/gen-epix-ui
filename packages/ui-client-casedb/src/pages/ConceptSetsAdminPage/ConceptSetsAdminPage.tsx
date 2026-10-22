@@ -32,7 +32,7 @@ import { SchemaUtil } from '@gen-epix/ui-core-form/utils/SchemaUtil';
 import { useArray } from '@gen-epix/ui-core/hooks/useArray';
 import type { UseFormReturn } from 'react-hook-form';
 
-import { useUnitOptionsQuery } from '../../dataHooks/useUnitQuery/useUnit';
+import { useUnitOptionsQuery } from '../../dataHooks/useUnitQuery/useUnitQuery';
 import { CASEDB_QUERY_KEY } from '../../constants/query.constants';
 import { useConceptSetTypeOptionsQuery } from '../../dataHooks/useConceptSetTypeQuery';
 

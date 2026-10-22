@@ -114,6 +114,7 @@
     "Enable all with data": "Alles met data inschakelen",
     "Error": "Fout",
     "Error anonymizing user: {{userName}}": "Fout bij anonimiseren van gebruiker: {{userName}}",
+    "Error loading organization admins": "Fout bij het laden van de organisatiebeheerders",
     "Execute": "Uitvoeren",
     "Expected end: ": "Verwacht einde: ",
     "Expected start: ": "Verwachte start: ",

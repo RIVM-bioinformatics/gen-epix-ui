@@ -82,7 +82,7 @@ export interface CaseDbCase {
     'content': { [key: string]: string | null; };
 }
 /**
- * Represents a batch of unique cases intended for upload.    PARENT CLASS DOCUMENTATION   BaseBatchForUpload: Represents a batch ParentForUpload objects to be uploaded.  This is a base class intended to be subclassed per application.  A batch is intended as a single unit of work for an upload operation and as such to be processed atomically.  Model validation: Parent and child IDs and external identifiers must be unique within the batch. Intra-parent child links may not point to children of another parent.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents a batch of unique cases intended for upload.    PARENT CLASS DOCUMENTATION   BaseBatchForUpload: Represents a batch ParentForUpload objects to be uploaded.  This is a base class intended to be subclassed per application.  A batch is intended as a single unit of work for an upload operation and as such to be processed atomically.  Model validation: Parent and child IDs and external identifiers must be unique within the batch. Intra-parent child links may not point to children of another parent.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  */
 export interface CaseDbCaseBatchForUpload {
     /**
@@ -99,11 +99,11 @@ export interface CaseDbCaseBatchForUpload {
     'cases': Array<CaseDbCaseForUpload>;
 }
 /**
- * Represents the results of uploading a batch of cases.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Represents the result for an atomic batch upload.  Subclasses use field names that match their BaseBatchForUpload payload.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents the results of uploading a batch of cases.    PARENT CLASS DOCUMENTATION   BaseBatchUploadResult: Represents the result for an atomic batch upload.  Subclasses use field names that match their BaseBatchForUpload payload.  Model validation: ``result_type`` is populated from the concrete class name when it is empty.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  */
 export interface CaseDbCaseBatchUploadResult {
     /**
-     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the ID class variable.
+     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the RESULT_ID class variable.
      */
     'type'?: string;
     'status'?: CaseDbEtlStatus;
@@ -205,7 +205,7 @@ export interface CaseDbCaseDataIssue {
 
 
 /**
- * Represents a case upload with identifiers, read sets, and sequences.  Model validation: Read sets and sequences must each use unique column IDs, cannot use the same column ID across both groups, and must map each alternate sample identifier consistently to one non-null sample ID. Violations raise ``ValueError``. Validation inspects the child lists without mutating them.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model and its linked child models for upload.  The term \"parent\" refers to a model that can have linked child models. Other identifiers can also be added here, in the \"identifiers\" field.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Model validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.
+ * Represents a case upload with identifiers, read sets, and sequences.  Model validation: Read sets and sequences must each use unique column IDs, cannot use the same column ID across both groups, and must map each alternate sample identifier consistently to one non-null sample ID. Violations raise ``ValueError``. Validation inspects the child lists without mutating them.    PARENT CLASS DOCUMENTATION   ParentForUpload: Represents a parent model and its linked child models for upload.  The term \"parent\" refers to a model that can have linked child models. Other identifiers can also be added here, in the \"identifiers\" field.  This class must be subclassed for specific parent models, adding the following fields: - A parent Parent|None field where the parent model that needs to be uploaded, if   any, will be put - For each child model type that can be associated with the parent, a \"children\"   list|None field that will contain the actual child models to be uploaded along with   the parent model. Metadata on the parent and child models, allowing introspection, must be provided through the class variables.  Model validation: - NULL_ID in the id field is converted to None. - If both the ParentForUpload id and the contained Parent model id are provided,   they must match. - For each child model type, if the ParentForUpload id is provided, the parent ID   field in each child model must either be None/NULL_ID or match the ParentForUpload   id.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.    IdentifiersMixin: Encapsulates a mixin that adds identifiers fields and validation.  Assumes that the inheriting model also has an \'identifiers\' field.
  */
 export interface CaseDbCaseForUpload {
     'identifiers'?: Array<CaseDbIdentifierForUpload> | null;
@@ -324,6 +324,19 @@ export interface CaseDbCaseRights {
      * The IDs of the Cols that are allowed to be written for the case
      */
     'write_col_ids': Array<string>;
+}
+/**
+ * Represents the distances from one case to other cases.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ */
+export interface CaseDbCaseSeqDistance {
+    /**
+     * The case ID.
+     */
+    'id': string;
+    /**
+     * The mapping of target case IDs to distances. CaseDbCase IDs not present in this list are assumed to be above the maximum stored distance or otherwise not yet computed.
+     */
+    'distances': { [key: string]: number; };
 }
 /**
  * Represents a named, typed collection of epidemiological cases.
@@ -501,7 +514,7 @@ export interface CaseDbCaseSetStatus {
     'rank'?: number;
 }
 /**
- * Represents aggregate statistics for cases or a case set.  Model validation: Own cases cannot exceed total cases. Empty statistics must omit both date bounds; non-empty statistics require both bounds in chronological order. Invalid combinations raise ``ValueError`` during model validation.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents aggregate statistics for cases or a case set.  Model validation: Own cases cannot exceed total cases. Empty statistics must omit both date bounds; non-empty statistics require both bounds in chronological order. Invalid combinations raise ``ValueError`` during model validation.    PARENT CLASS DOCUMENTATION   Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  */
 export interface CaseDbCaseStats {
     /**
@@ -637,7 +650,7 @@ export interface CaseDbCaseTypeSet {
     'rank': number;
 }
 /**
- * Represents a request to replace the association between a case type set and its case types.  The provided members keep the set synchronized for downstream access policies and presets.
+ * Represents a request to replace a case type set\'s case type associations.  The provided members keep the set synchronized for downstream access policies and presets.
  */
 export interface CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody {
     'case_type_set_members': Array<CaseDbCaseTypeSetMember>;
@@ -724,11 +737,11 @@ export interface CaseDbCaseTypeShareAbac {
     'remove_case_set_from_data_collection_ids': Array<string>;
 }
 /**
- * Represents one case upload result and its content validation issues.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents upload results for a parent payload and its children.  Subclasses correspond to their ParentForUpload payload type.    PARENT CLASS DOCUMENTATION   UploadResultWithIdentifiers: Represents an upload result with nested identifier results.  It mirrors a for-upload class that has identifiers.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResultWithIdentifiers: Represents an upload result with nested identifier results.  It mirrors a for-upload class that has identifiers.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents one case upload result and its content validation issues.    PARENT CLASS DOCUMENTATION   ParentUploadResult: Represents upload results for a parent payload and its children.  Subclasses correspond to their ParentForUpload payload type.    PARENT CLASS DOCUMENTATION   UploadResultWithIdentifiers: Represents an upload result with nested identifier results.  It mirrors a for-upload class that has identifiers.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   UploadResultWithIdentifiers: Represents an upload result with nested identifier results.  It mirrors a for-upload class that has identifiers.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   CaseDbUploadResult: Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  */
 export interface CaseDbCaseUploadResult {
     /**
-     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the ID class variable.
+     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the RESULT_ID class variable.
      */
     'type'?: string;
     'status'?: CaseDbEtlStatus;
@@ -887,99 +900,102 @@ export type CaseDbColType = typeof CaseDbColType[keyof typeof CaseDbColType];
 
 
 export const CaseDbCommandName = {
-    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
-    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
-    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    RefColCrudCommand: 'RefColCrudCommand',
-    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
-    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
-    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
-    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
-    UpdateCaseCreatedInDataCollectionCommand: 'UpdateCaseCreatedInDataCollectionCommand',
-    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
-    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
     RetrieveCasesByIdCommand: 'RetrieveCasesByIdCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
-    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
-    ColCrudCommand: 'ColCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    EtiologyCrudCommand: 'EtiologyCrudCommand',
-    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
-    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
-    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
-    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
+    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
     RetrievePhylogeneticTreeByCasesCommand: 'RetrievePhylogeneticTreeByCasesCommand',
-    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    RetrieveGeneticSequenceByIdCommand: 'RetrieveGeneticSequenceByIdCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    CreateFileForSeqCommand: 'CreateFileForSeqCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
     CaseSetStatusCrudCommand: 'CaseSetStatusCrudCommand',
+    ColSetCrudCommand: 'ColSetCrudCommand',
+    CaseSetMemberCrudCommand: 'CaseSetMemberCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    CaseSetCrudCommand: 'CaseSetCrudCommand',
+    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    EtiologyCrudCommand: 'EtiologyCrudCommand',
+    CaseCrudCommand: 'CaseCrudCommand',
+    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+    RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
+    CaseIdentifierCrudCommand: 'CaseIdentifierCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    RetrieveCaseSetRightsCommand: 'RetrieveCaseSetRightsCommand',
+    CaseDataCollectionLinkCrudCommand: 'CaseDataCollectionLinkCrudCommand',
+    ConceptSetCrudCommand: 'ConceptSetCrudCommand',
     CaseSetDataCollectionLinkCrudCommand: 'CaseSetDataCollectionLinkCrudCommand',
     RetrieveCaseSetStatsCommand: 'RetrieveCaseSetStatsCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    RetrieveCaseCohortLinksByCaseTypeCommand: 'RetrieveCaseCohortLinksByCaseTypeCommand',
-    RegionCrudCommand: 'RegionCrudCommand',
-    GeneticDistanceProtocolCrudCommand: 'GeneticDistanceProtocolCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
-    ColSetMemberCrudCommand: 'ColSetMemberCrudCommand',
-    CaseCrudCommand: 'CaseCrudCommand',
-    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
-    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
-    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
-    DiseaseCrudCommand: 'DiseaseCrudCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    UploadCasesCommand: 'UploadCasesCommand',
-    OrganizationAccessCasePolicyCrudCommand: 'OrganizationAccessCasePolicyCrudCommand',
-    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
-    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
-    CaseSetCrudCommand: 'CaseSetCrudCommand',
-    DimCrudCommand: 'DimCrudCommand',
-    RefDimCrudCommand: 'RefDimCrudCommand',
-    CaseTypeSetMemberCrudCommand: 'CaseTypeSetMemberCrudCommand',
-    ColSetCrudCommand: 'ColSetCrudCommand',
-    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    RegionSetShapeCrudCommand: 'RegionSetShapeCrudCommand',
-    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
-    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
     UserShareCasePolicyCrudCommand: 'UserShareCasePolicyCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    RefColCrudCommand: 'RefColCrudCommand',
+    OrganizationShareCasePolicyCrudCommand: 'OrganizationShareCasePolicyCrudCommand',
+    RetrieveProtocolsCommand: 'RetrieveProtocolsCommand',
+    UpdateCaseCreatedInDataCollectionCommand: 'UpdateCaseCreatedInDataCollectionCommand',
+    RetrieveCaseRightsCommand: 'RetrieveCaseRightsCommand',
+    RetrieveGeneticSequenceFastaByCaseCommand: 'RetrieveGeneticSequenceFastaByCaseCommand',
+    ColCrudCommand: 'ColCrudCommand',
     RegionSetCrudCommand: 'RegionSetCrudCommand',
+    RetrieveCasesByQueryCommand: 'RetrieveCasesByQueryCommand',
+    DiseaseEtiologicalAgentUpdateAssociationCommand: 'DiseaseEtiologicalAgentUpdateAssociationCommand',
+    RetrieveContainingRegionCommand: 'RetrieveContainingRegionCommand',
+    ConceptRelationCrudCommand: 'ConceptRelationCrudCommand',
+    CaseTypeSetCaseTypeUpdateAssociationCommand: 'CaseTypeSetCaseTypeUpdateAssociationCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    CreateFileForReadSetCommand: 'CreateFileForReadSetCommand',
+    RegionRelationCrudCommand: 'RegionRelationCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    ColSetColUpdateAssociationCommand: 'ColSetColUpdateAssociationCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    RetrieveSeqDistancesByCasesCommand: 'RetrieveSeqDistancesByCasesCommand',
+    CaseTypeCrudCommand: 'CaseTypeCrudCommand',
+    CaseTypeSetCrudCommand: 'CaseTypeSetCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    CaseSetCategoryCrudCommand: 'CaseSetCategoryCrudCommand',
+    RetrieveGeneticSequenceFastaByIdCommand: 'RetrieveGeneticSequenceFastaByIdCommand',
+    UserAccessCasePolicyCrudCommand: 'UserAccessCasePolicyCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
+    DimCrudCommand: 'DimCrudCommand',
+    UploadCasesCommand: 'UploadCasesCommand',
+    EtiologicalAgentCrudCommand: 'EtiologicalAgentCrudCommand',
+    RetrieveCaseTypeStatsCommand: 'RetrieveCaseTypeStatsCommand',
+    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    CreateCaseSetCommand: 'CreateCaseSetCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    DiseaseCrudCommand: 'DiseaseCrudCommand',
+    RetrieveSimilarCasesCommand: 'RetrieveSimilarCasesCommand',
+    CaseTypeSetCategoryCrudCommand: 'CaseTypeSetCategoryCrudCommand',
+    RetrievePhylogeneticTreeByProfilesCommand: 'RetrievePhylogeneticTreeByProfilesCommand',
+    RetrieveIsOwnCasesCommand: 'RetrieveIsOwnCasesCommand',
+    RetrieveCompleteCaseTypeCommand: 'RetrieveCompleteCaseTypeCommand',
+    RefDimCrudCommand: 'RefDimCrudCommand',
+    RegionCrudCommand: 'RegionCrudCommand',
 } as const;
 
 export type CaseDbCommandName = typeof CaseDbCommandName[keyof typeof CaseDbCommandName];
@@ -1079,7 +1095,7 @@ export interface CaseDbCompleteCaseType {
     'case_date_col_type_map'?: { [key: string]: string; };
 }
 /**
- * Represents a filter that combines child filters using a logical operator.  Model validation: At least one child filter is required. `NOT` requires exactly one child, and operators other than `AND` and `OR` support no more than two children.
+ * Represents a filter that combines child filters using a logical operator.  Model validation: At least one child filter is required. `NOT` requires exactly one child, `AND` and `OR` accept any number of children, and all other operators require exactly two children.
  */
 export interface CaseDbCompositeFilter {
     /**
@@ -1210,6 +1226,24 @@ export interface CaseDbContact {
     'phone'?: string | null;
 }
 /**
+ * Represents a filter matching a substring within a string value.
+ */
+export interface CaseDbContainsStringFilter {
+    /**
+     * Whether to invert the filter.
+     */
+    'invert'?: boolean;
+    /**
+     * The column key to apply the filter to, when applied to a row. If None, the filter cannot be applied to a row, only to a column.
+     */
+    'key'?: string;
+    'type'?: string;
+    /**
+     * The substring to match.
+     */
+    'value': string;
+}
+/**
  * Represents a request to create a case set and its initial associations.  Model validation:     The creating data collection is removed from the additional data     collections because it is already associated through the case set.
  */
 export interface CaseDbCreateCaseSetRequestBody {
@@ -1279,7 +1313,7 @@ export interface CaseDbDataCollectionSet {
     'description'?: string | null;
 }
 /**
- * Represents a request to update the association between a CaseDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
+ * Represents a request to update a data collection set\'s data collection associations.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
  */
 export interface CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody {
     'data_collection_set_members': Array<CaseDbDataCollectionSetMember>;
@@ -1620,12 +1654,12 @@ export interface CaseDbFilter {
 /**
  * @type CaseDbFilter1
  */
-export type CaseDbFilter1 = CaseDbCompositeFilter | CaseDbDateRangeFilter | CaseDbDatetimeRangeFilter | CaseDbEqualsBooleanFilter | CaseDbEqualsNumberFilter | CaseDbEqualsStringFilter | CaseDbEqualsUuidFilter | CaseDbExistsFilter | CaseDbNoFilter | CaseDbNumberRangeFilter | CaseDbNumberSetFilter | CaseDbPartialDateRangeFilter | CaseDbRegexFilter | CaseDbStringSetFilter | CaseDbUuidSetFilter;
+export type CaseDbFilter1 = CaseDbCompositeFilter | CaseDbContainsStringFilter | CaseDbDateRangeFilter | CaseDbDatetimeRangeFilter | CaseDbEqualsBooleanFilter | CaseDbEqualsNumberFilter | CaseDbEqualsStringFilter | CaseDbEqualsUuidFilter | CaseDbExistsFilter | CaseDbNoFilter | CaseDbNumberRangeFilter | CaseDbNumberSetFilter | CaseDbPartialDateRangeFilter | CaseDbRegexFilter | CaseDbStringSetFilter | CaseDbUuidSetFilter;
 
 /**
  * @type CaseDbFiltersInner
  */
-export type CaseDbFiltersInner = CaseDbDateRangeFilter | CaseDbDatetimeRangeFilter | CaseDbEqualsBooleanFilter | CaseDbEqualsNumberFilter | CaseDbEqualsStringFilter | CaseDbEqualsUuidFilter | CaseDbExistsFilter | CaseDbFilter | CaseDbNoFilter | CaseDbNumberRangeFilter | CaseDbNumberSetFilter | CaseDbPartialDateRangeFilter | CaseDbRegexFilter | CaseDbStringSetFilter | CaseDbUuidSetFilter;
+export type CaseDbFiltersInner = CaseDbContainsStringFilter | CaseDbDateRangeFilter | CaseDbDatetimeRangeFilter | CaseDbEqualsBooleanFilter | CaseDbEqualsNumberFilter | CaseDbEqualsStringFilter | CaseDbEqualsUuidFilter | CaseDbExistsFilter | CaseDbFilter | CaseDbNoFilter | CaseDbNumberRangeFilter | CaseDbNumberSetFilter | CaseDbPartialDateRangeFilter | CaseDbRegexFilter | CaseDbStringSetFilter | CaseDbUuidSetFilter;
 
 /**
  * Represents a protocol for calculating and storing genetic distances.
@@ -2026,7 +2060,7 @@ export interface CaseDbOrganizationIdentifierIssuerLink {
     'identifier_issuer'?: CaseDbIdentifierIssuer;
 }
 /**
- * Represents a request to update the association between an CaseDbOrganization and IdentifierIssuers.
+ * Represents a request to update an organization\'s identifier issuer associations.
  */
 export interface CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody {
     'organization_identifier_issuer_links': Array<CaseDbOrganizationIdentifierIssuerLink>;
@@ -2065,7 +2099,7 @@ export interface CaseDbOrganizationSetMember {
     'organization'?: CaseDbOrganization;
 }
 /**
- * Represents a request to update the association between an CaseDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
+ * Represents a request to update an organization set\'s organization associations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
  */
 export interface CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody {
     'organization_set_members': Array<CaseDbOrganizationSetMember>;
@@ -2212,7 +2246,7 @@ export interface CaseDbPhylogeneticTree {
 
 
 /**
- * Represents an analytical method used to derive a result from source data. The class is conceptually polymorphic, with the protocol_type field determining which additional fields are required and which results it may be linked to. This design allows for a flexible and extensible representation of various analytical protocols while maintaining a single model for this type of reference data.  The CaseDbProtocol model includes optional fields for linking to Git repositories and commits, so that the exact analytical logic can be traced.  Model validation: Datetimes are normalized to UTC,  fields accept their integer representations, Git references and JSON properties are validated, and type-dependent fields must be supplied only for compatible protocol types.  Model serialization:  fields are emitted as integer values and linked reference-sequence and locus-set identifiers are emitted as strings.
+ * Represents an analytical method for deriving results from source data.  The class is conceptually polymorphic, with the protocol_type field determining which additional fields are required and which results it may be linked to. This design allows for a flexible and extensible representation of various analytical protocols while maintaining a single model for this type of reference data.  The CaseDbProtocol model includes optional fields for linking to Git repositories and commits, so that the exact analytical logic can be traced.  Model validation: Datetimes are normalized to UTC,  fields accept their integer representations, Git references and JSON properties are validated, and type-dependent fields must be supplied only for compatible protocol types.  Model serialization:  fields are emitted as integer values and linked reference-sequence and locus-set identifiers are emitted as strings.
  */
 export interface CaseDbProtocol {
     'created_at'?: string | null;
@@ -2530,6 +2564,10 @@ export interface CaseDbRetrieveCaseCohortLinksByCaseTypeRequestBody {
      * The CaseDbCaseType ID to retrieve pairs for.
      */
     'case_type_id': string;
+    /**
+     * Whether to include cases that have no linked cohorts, with NULL_ID as the cohort_id and cohort_definition_id.
+     */
+    'include_missing'?: boolean;
 }
 /**
  * Represents a request to retrieve access rights to specified cases.
@@ -2572,7 +2610,7 @@ export interface CaseDbRetrieveCasesByIdRequestBody {
     'case_ids': Array<string>;
 }
 /**
- * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+ * Represents a request to retrieve contacts associated with one organization.  Returns contacts with their associated site and organization data cascaded.
  */
 export interface CaseDbRetrieveOrganizationContactsRequestBody {
     /**
@@ -2600,6 +2638,27 @@ export interface CaseDbRetrievePhylogeneticTreeRequestBody {
 }
 
 
+/**
+ * Represents a request to execute case-linked sequence-distance retrieval.  Requested distance content must be readable and populated. Entries above the configured casedb protocol storage maximum are omitted. External targets, when requested, also require readable linked sequence content on a matching case.
+ */
+export interface CaseDbRetrieveSeqDistancesByCasesRequestBody {
+    /**
+     * The CaseDbCaseType ID that all the cases must belong to.
+     */
+    'case_type_id': string;
+    /**
+     * The ID of the genetic distance CaseDbCol to use.
+     */
+    'genetic_distance_col_id': string;
+    /**
+     * The IDs of the cases to retrieve sequence distances for. Must be unique.
+     */
+    'case_ids': Array<string>;
+    /**
+     * Whether to omit distances to cases not included in case_ids.
+     */
+    'filter_other_cases'?: boolean;
+}
 /**
  * Represents a request to retrieve genetically similar cases.  Similarity is based on a genetic-distance column and a maximum distance threshold applied to the supplied case IDs.
  */
@@ -2707,7 +2766,7 @@ export interface CaseDbSimilarCase {
      */
     'id': string;
     /**
-     * The case date, if any.
+     * The case date.
      */
     'timed_at': string;
 }
@@ -2942,11 +3001,11 @@ export interface CaseDbUploadCasesCommand {
 
 
 /**
- * Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: Metadata for generic models; contains data used for a similar purpose to         __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
+ * Represents the result of an upload operation for one object.  It includes upload status and logs.  Model validation: - If the status is successful (NOT_FAILED), there must be no error log items. - If the status is failed, there must be at least one error log item.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   LoadResult: Represents a load ETL result.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   Result: Represents an ETL result, storing logs and status information for ETL operations.  Intended as the base class for specialized ETL results.  Includes severity-specific methods and status setting and tracking.  ``source_id`` stores whichever source-system identifier is most relevant for the concrete subclass as a string; ``SOURCE_ID_FIELD`` records its origin as ``\"ClassName.field_name\"`` so the value is always traceable.  Model validation: The ``type`` discriminator is set from the concrete class\'s ``RESULT_ID``.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    Model: Represents a domain model in an application. Models are used to represent the state of the application and are often persisted in a database. Models can also be used to represent the state of the application in memory, e.g. for caching or for passing data between services. Models can be immutable or mutable, depending on the use case.  Each model must have an associated Entity, which defines the metadata for the model. See the Entity class for more details. The Entity must be set in the subclass of Model. Analogously, a unique name for the model can be set in the subclass, which can be used for identification and logging purposes.  The model_entity and model_name class methods can be used to retrieve the Entity and name of the model, respectively. These methods have the same \"model_\" prefix as generic Pydantic models to avoid name conflicts with other.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.    PARENT CLASS DOCUMENTATION   BaseModel: !!! abstract \"Usage Documentation\"     [Models](../concepts/models.md)  A base class for creating Pydantic models.  Attributes:     __class_vars__: The names of the class variables defined on the model.     __private_attributes__: Metadata about the private attributes of the model.     __signature__: The synthesized `__init__` [`Signature`][inspect.Signature] of the model.      __pydantic_complete__: Whether model building is completed, or if there are still undefined fields.     __pydantic_core_schema__: The core schema of the model.     __pydantic_custom_init__: Whether the model has a custom `__init__` function.     __pydantic_decorators__: Metadata containing the decorators defined on the model.         This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.     __pydantic_generic_metadata__: A dictionary containing metadata about generic Pydantic models.         The `origin` and `args` items map to the [`__origin__`][genericalias.__origin__]         and [`__args__`][genericalias.__args__] attributes of [generic aliases][types-genericalias],         and the `parameter` item maps to the `__parameter__` attribute of generic classes.     __pydantic_parent_namespace__: Parent namespace of the model, used for automatic rebuilding of models.     __pydantic_post_init__: The name of the post-init method for the model, if defined.     __pydantic_root_model__: Whether the model is a [`RootModel`][pydantic.root_model.RootModel].     __pydantic_serializer__: The `pydantic-core` `SchemaSerializer` used to dump instances of the model.     __pydantic_validator__: The `pydantic-core` `SchemaValidator` used to validate instances of the model.      __pydantic_fields__: A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.     __pydantic_computed_fields__: A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.      __pydantic_extra__: A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]         is set to `\'allow\'`.     __pydantic_fields_set__: The names of fields explicitly set during instantiation.     __pydantic_private__: Values of private attributes set on the model instance.
  */
 export interface CaseDbUploadResult {
     /**
-     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the ID class variable.
+     * The class ID representing the specific ETL result subclass. This allows polymorphic deserialization of ETL results. The value is set equal to the RESULT_ID class variable.
      */
     'type'?: string;
     'status'?: CaseDbEtlStatus;
@@ -3194,12 +3253,10 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAccessCasePoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAccessCasePoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_access_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3211,14 +3268,6 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3329,6 +3378,77 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
+         * @summary CaseDbOrganization Access CaseDbCase Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAccessCasePoliciesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationAccessCasePoliciesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_access_case_policies/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
+         * @summary CaseDbOrganization Access CaseDbCase Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAccessCasePoliciesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationAccessCasePoliciesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_access_case_policies/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -3650,12 +3770,10 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to manage policies that grant organization-administration rights to users.
          * @summary CaseDbOrganization Admin Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationAdminPoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationAdminPoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_admin_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3667,14 +3785,6 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3785,6 +3895,77 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to manage policies that grant organization-administration rights to users.
+         * @summary CaseDbOrganization Admin Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationAdminPoliciesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_admin_policies/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to manage policies that grant organization-administration rights to users.
+         * @summary CaseDbOrganization Admin Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationAdminPoliciesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationAdminPoliciesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_admin_policies/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4106,12 +4287,10 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationShareCasePoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationShareCasePoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_share_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4123,14 +4302,6 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4241,6 +4412,77 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
+         * @summary CaseDbOrganization Share CaseDbCase Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationShareCasePoliciesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationShareCasePoliciesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_share_case_policies/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
+         * @summary CaseDbOrganization Share CaseDbCase Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationShareCasePoliciesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationShareCasePoliciesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_share_case_policies/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -4560,7 +4802,7 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
+         * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4592,12 +4834,10 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userAccessCasePoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userAccessCasePoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_access_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4609,14 +4849,6 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4727,6 +4959,77 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
+         * @summary CaseDbUser Access CaseDbCase Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userAccessCasePoliciesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('userAccessCasePoliciesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/user_access_case_policies/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
+         * @summary CaseDbUser Access CaseDbCase Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userAccessCasePoliciesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('userAccessCasePoliciesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/user_access_case_policies/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -5048,12 +5351,10 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userShareCasePoliciesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userShareCasePoliciesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_share_case_policies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5065,14 +5366,6 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -5183,6 +5476,77 @@ const CaseDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
+         * @summary CaseDbUser Share CaseDbCase Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userShareCasePoliciesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('userShareCasePoliciesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/user_share_case_policies/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
+         * @summary CaseDbUser Share CaseDbCase Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userShareCasePoliciesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('userShareCasePoliciesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/user_share_case_policies/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -5513,13 +5877,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
          * @summary CaseDbOrganization Access CaseDbCase Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAccessCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesDeleteAll(limit, offset, options);
+        async organizationAccessCasePoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAccessCasePoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5562,6 +5924,32 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAccessCasePoliciesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
+         * @summary CaseDbOrganization Access CaseDbCase Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAccessCasePoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAccessCasePoliciesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
+         * @summary CaseDbOrganization Access CaseDbCase Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAccessCasePoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAccessCasePoliciesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAccessCasePoliciesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5676,13 +6064,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to manage policies that grant organization-administration rights to users.
          * @summary CaseDbOrganization Admin Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationAdminPoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(limit, offset, options);
+        async organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5725,6 +6111,32 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to manage policies that grant organization-administration rights to users.
+         * @summary CaseDbOrganization Admin Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to manage policies that grant organization-administration rights to users.
+         * @summary CaseDbOrganization Admin Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationAdminPoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationAdminPoliciesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationAdminPoliciesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5839,13 +6251,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
          * @summary CaseDbOrganization Share CaseDbCase Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationShareCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesDeleteAll(limit, offset, options);
+        async organizationShareCasePoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationShareCasePoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5888,6 +6298,32 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationShareCasePoliciesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
+         * @summary CaseDbOrganization Share CaseDbCase Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationShareCasePoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationShareCasePoliciesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
+         * @summary CaseDbOrganization Share CaseDbCase Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationShareCasePoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationShareCasePoliciesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.organizationShareCasePoliciesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -6000,7 +6436,7 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
+         * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6014,13 +6450,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
          * @summary CaseDbUser Access CaseDbCase Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userAccessCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesDeleteAll(limit, offset, options);
+        async userAccessCasePoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userAccessCasePoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -6063,6 +6497,32 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userAccessCasePoliciesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
+         * @summary CaseDbUser Access CaseDbCase Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userAccessCasePoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.userAccessCasePoliciesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
+         * @summary CaseDbUser Access CaseDbCase Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userAccessCasePoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userAccessCasePoliciesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.userAccessCasePoliciesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -6177,13 +6637,11 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
          * @summary CaseDbUser Share CaseDbCase Policies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userShareCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesDeleteAll(limit, offset, options);
+        async userShareCasePoliciesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userShareCasePoliciesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -6226,6 +6684,32 @@ const CaseDbAbacApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.userShareCasePoliciesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
+         * @summary CaseDbUser Share CaseDbCase Policies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userShareCasePoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.userShareCasePoliciesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
+         * @summary CaseDbUser Share CaseDbCase Policies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userShareCasePoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userShareCasePoliciesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AbacApi.userShareCasePoliciesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -6354,13 +6838,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
      * @summary CaseDbOrganization Access CaseDbCase Policies  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAccessCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAccessCasePoliciesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6395,6 +6877,28 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      */
     public organizationAccessCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
+     * @summary CaseDbOrganization Access CaseDbCase Policies  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAccessCasePoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for organization-level case access policies.  Policies apply within a data collection and are scoped by case-type and read/write column sets.
+     * @summary CaseDbOrganization Access CaseDbCase Policies  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAccessCasePoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAccessCasePoliciesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6493,13 +6997,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represents a request to manage policies that grant organization-administration rights to users.
      * @summary CaseDbOrganization Admin Policies  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationAdminPoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationAdminPoliciesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6534,6 +7036,28 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      */
     public organizationAdminPoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to manage policies that grant organization-administration rights to users.
+     * @summary CaseDbOrganization Admin Policies  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to manage policies that grant organization-administration rights to users.
+     * @summary CaseDbOrganization Admin Policies  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationAdminPoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationAdminPoliciesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6632,13 +7156,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
      * @summary CaseDbOrganization Share CaseDbCase Policies  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationShareCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationShareCasePoliciesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6673,6 +7195,28 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      */
     public organizationShareCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
+     * @summary CaseDbOrganization Share CaseDbCase Policies  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationShareCasePoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for organization case-sharing policies.  Policies control which cases or case sets an organization may share between data collections for specific case-type sets.
+     * @summary CaseDbOrganization Share CaseDbCase Policies  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationShareCasePoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).organizationShareCasePoliciesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6769,7 +7313,7 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve the names and email addresses of organization administrators.  Results include all administrators for the user\'s organization.
+     * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
      * @summary Retrieveorganizationadminnameemailscommand
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -6781,13 +7325,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
      * @summary CaseDbUser Access CaseDbCase Policies  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userAccessCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userAccessCasePoliciesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6822,6 +7364,28 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      */
     public userAccessCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
+     * @summary CaseDbUser Access CaseDbCase Policies  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public userAccessCasePoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for per-user case access policies.  Effective rights within a data collection intersect with the applicable organization policy.
+     * @summary CaseDbUser Access CaseDbCase Policies  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public userAccessCasePoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userAccessCasePoliciesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6920,13 +7484,11 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
      * @summary CaseDbUser Share CaseDbCase Policies  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userShareCasePoliciesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userShareCasePoliciesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -6961,6 +7523,28 @@ export class CaseDbAbacApi extends CaseDbBaseAPI {
      */
     public userShareCasePoliciesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
+     * @summary CaseDbUser Share CaseDbCase Policies  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public userShareCasePoliciesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for per-user case-sharing policies.  CaseDbUser permissions for sharing cases or case sets between data collections are bounded by the applicable organization policy.
+     * @summary CaseDbUser Share CaseDbCase Policies  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public userShareCasePoliciesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbAbacApiFp(this.configuration).userShareCasePoliciesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -7150,12 +7734,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseDataCollectionLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseDataCollectionLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_data_collection_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7167,14 +7749,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7285,6 +7859,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
+         * @summary CaseDbCase Data Collection Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseDataCollectionLinksGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseDataCollectionLinksGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_data_collection_links/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
+         * @summary CaseDbCase Data Collection Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseDataCollectionLinksGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseDataCollectionLinksGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_data_collection_links/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -7606,12 +8251,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseIdentifiersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseIdentifiersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_identifiers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7623,14 +8266,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -7741,6 +8376,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
+         * @summary CaseDbCase Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseIdentifiersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_identifiers/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
+         * @summary CaseDbCase Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseIdentifiersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseIdentifiersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_identifiers/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8062,12 +8768,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetCategoriesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetCategoriesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8079,14 +8783,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8197,6 +8893,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
+         * @summary CaseDbCase Set Categories  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetCategoriesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseSetCategoriesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_set_categories/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
+         * @summary CaseDbCase Set Categories  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetCategoriesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseSetCategoriesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_set_categories/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8518,12 +9285,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetDataCollectionLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetDataCollectionLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_data_collection_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8535,14 +9300,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -8653,6 +9410,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
+         * @summary CaseDbCase Set Data Collection Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetDataCollectionLinksGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseSetDataCollectionLinksGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_set_data_collection_links/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
+         * @summary CaseDbCase Set Data Collection Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetDataCollectionLinksGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseSetDataCollectionLinksGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_set_data_collection_links/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -8974,12 +9802,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -8991,14 +9817,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9109,6 +9927,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * @summary CaseDbCase Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetMembersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseSetMembersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_set_members/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * @summary CaseDbCase Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetMembersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseSetMembersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_set_members/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9430,12 +10319,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetStatusesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetStatusesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_set_statuses`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9447,14 +10334,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -9565,6 +10444,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
+         * @summary CaseDbCase Set Statuses  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetStatusesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseSetStatusesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_set_statuses/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
+         * @summary CaseDbCase Set Statuses  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetStatusesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseSetStatusesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_set_statuses/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -9886,12 +10836,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -9903,14 +10851,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10021,6 +10961,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSets.
+         * @summary CaseDbCase Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSets.
+         * @summary CaseDbCase Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -10342,12 +11353,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetCategoriesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetCategoriesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_type_set_categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10359,14 +11368,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10477,6 +11478,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
+         * @summary CaseDbCase Type Set Categories  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeSetCategoriesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseTypeSetCategoriesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_type_set_categories/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
+         * @summary CaseDbCase Type Set Categories  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeSetCategoriesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseTypeSetCategoriesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_type_set_categories/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -10798,12 +11870,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_type_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -10815,14 +11885,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -10933,6 +11995,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
+         * @summary CaseDbCase Type Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeSetMembersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseTypeSetMembersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_type_set_members/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
+         * @summary CaseDbCase Type Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeSetMembersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseTypeSetMembersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_type_set_members/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -11254,12 +12387,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypeSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypeSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_type_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11271,14 +12402,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -11389,6 +12512,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
+         * @summary CaseDbCase Type Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseTypeSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_type_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
+         * @summary CaseDbCase Type Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypeSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseTypeSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_type_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -11634,7 +12828,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to replace the association between a case type set and its case types.  The provided members keep the set synchronized for downstream access policies and presets.
+         * Represents a request to replace a case type set\'s case type associations.  The provided members keep the set synchronized for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody} caseTypeSetCaseTypeUpdateAssociationRequestBody 
@@ -11749,12 +12943,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        caseTypesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        caseTypesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/case_types`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -11766,14 +12958,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -11884,6 +13068,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypes.
+         * @summary CaseDbCase Types  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('caseTypesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/case_types/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypes.
+         * @summary CaseDbCase Types  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        caseTypesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('caseTypesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/case_types/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -12205,12 +13460,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        casesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        casesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/cases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12222,14 +13475,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -12340,6 +13585,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Cases.
+         * @summary Cases  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        casesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('casesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/cases/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Cases.
+         * @summary Cases  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        casesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('casesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/cases/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -12661,12 +13977,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/col_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -12678,14 +13992,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -12796,6 +14102,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on ColSetMembers.
+         * @summary CaseDbCol Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('colSetMembersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/col_set_members/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on ColSetMembers.
+         * @summary CaseDbCol Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetMembersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('colSetMembersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/col_set_members/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -13117,12 +14494,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/col_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13134,14 +14509,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13252,6 +14619,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on ColSets.
+         * @summary CaseDbCol Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('colSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/col_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on ColSets.
+         * @summary CaseDbCol Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('colSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/col_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -13612,12 +15050,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        colsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        colsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/cols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -13629,14 +15065,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -13747,6 +15175,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Cols.
+         * @summary Cols  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('colsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/cols/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Cols.
+         * @summary Cols  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        colsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('colsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/cols/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -14224,14 +15723,12 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dimsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dimsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/dims`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14243,14 +15740,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14264,7 +15753,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Delete One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14298,7 +15787,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14335,7 +15824,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -14375,7 +15864,78 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
+         * @summary Dims  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dimsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('dimsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/dims/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
+         * @summary Dims  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dimsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('dimsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/dims/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -14409,7 +15969,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -14446,7 +16006,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Post One
          * @param {CaseDbDim} dim 
          * @param {*} [options] Override http request option.
@@ -14481,7 +16041,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -14526,7 +16086,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -14571,7 +16131,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Post Some
          * @param {Array<CaseDbDim>} dim 
          * @param {*} [options] Override http request option.
@@ -14606,7 +16166,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Put One
          * @param {string} objectId 
          * @param {CaseDbDim} dim 
@@ -14645,7 +16205,7 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Put Some
          * @param {Array<CaseDbDim>} dim 
          * @param {*} [options] Override http request option.
@@ -14682,12 +16242,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        geneticDistanceProtocolsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        geneticDistanceProtocolsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/genetic_distance_protocols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -14699,14 +16257,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -14817,6 +16367,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
+         * @summary Genetic Distance Protocols  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        geneticDistanceProtocolsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('geneticDistanceProtocolsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/genetic_distance_protocols/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
+         * @summary Genetic Distance Protocols  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        geneticDistanceProtocolsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('geneticDistanceProtocolsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/genetic_distance_protocols/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15138,12 +16759,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refColsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refColsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_cols`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15155,14 +16774,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15273,6 +16884,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on RefCols.
+         * @summary Ref Cols  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refColsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/ref_cols/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on RefCols.
+         * @summary Ref Cols  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refColsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('refColsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/ref_cols/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -15624,12 +17306,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refDimsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refDimsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/ref_dims`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -15641,14 +17321,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -15759,6 +17431,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on RefDims.
+         * @summary Ref Dims  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('refDimsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/ref_dims/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on RefDims.
+         * @summary Ref Dims  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refDimsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('refDimsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/ref_dims/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -16491,6 +18234,41 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Represents a request to execute case-linked sequence-distance retrieval.  Requested distance content must be readable and populated. Entries above the configured casedb protocol storage maximum are omitted. External targets, when requested, also require readable linked sequence content on a matching case.
+         * @summary Retrieve Sequence Distances
+         * @param {CaseDbRetrieveSeqDistancesByCasesRequestBody} retrieveSeqDistancesByCasesRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveSeqDistancesByCases: async (retrieveSeqDistancesByCasesRequestBody: CaseDbRetrieveSeqDistancesByCasesRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'retrieveSeqDistancesByCasesRequestBody' is not null or undefined
+            assertParamExists('retrieveSeqDistancesByCases', 'retrieveSeqDistancesByCasesRequestBody', retrieveSeqDistancesByCasesRequestBody)
+            const localVarPath = `/v1/retrieve/seq_distances_by_cases`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(retrieveSeqDistancesByCasesRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Represents a request to retrieve seqdb protocols by protocol type.
          * @summary Retrieve Sequencing Protocols
          * @param {*} [options] Override http request option.
@@ -16558,12 +18336,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmClassesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmClassesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithm_classes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -16575,14 +18351,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -16693,6 +18461,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
+         * @summary Tree Algorithm Classes  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        treeAlgorithmClassesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('treeAlgorithmClassesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/tree_algorithm_classes/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
+         * @summary Tree Algorithm Classes  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        treeAlgorithmClassesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('treeAlgorithmClassesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/tree_algorithm_classes/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -17014,12 +18853,10 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        treeAlgorithmsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        treeAlgorithmsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/tree_algorithms`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -17031,14 +18868,6 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -17149,6 +18978,77 @@ const CaseDbCaseApiAxiosParamCreator = function (configuration?: Configuration) 
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
+         * @summary Tree Algorithms  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        treeAlgorithmsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('treeAlgorithmsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/tree_algorithms/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
+         * @summary Tree Algorithms  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        treeAlgorithmsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('treeAlgorithmsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/tree_algorithms/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -17549,13 +19449,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseDataCollection links.
          * @summary CaseDbCase Data Collection Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksDeleteAll(limit, offset, options);
+        async caseDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseDataCollectionLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17598,6 +19496,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseDataCollectionLinksGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
+         * @summary CaseDbCase Data Collection Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseDataCollectionLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseDataCollectionLinksGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseDataCollection links.
+         * @summary CaseDbCase Data Collection Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseDataCollectionLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseDataCollectionLinksGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseDataCollectionLinksGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -17712,13 +19636,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseIdentifiers.
          * @summary CaseDbCase Identifiers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersDeleteAll(limit, offset, options);
+        async caseIdentifiersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17761,6 +19683,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
+         * @summary CaseDbCase Identifiers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseIdentifiers.
+         * @summary CaseDbCase Identifiers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseIdentifiersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseIdentifiersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -17875,13 +19823,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseSetCategories.
          * @summary CaseDbCase Set Categories  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesDeleteAll(limit, offset, options);
+        async caseSetCategoriesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetCategoriesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -17924,6 +19870,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetCategoriesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
+         * @summary CaseDbCase Set Categories  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetCategoriesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetCategoriesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetCategories.
+         * @summary CaseDbCase Set Categories  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetCategoriesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetCategoriesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetCategoriesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -18038,13 +20010,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
          * @summary CaseDbCase Set Data Collection Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksDeleteAll(limit, offset, options);
+        async caseSetDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetDataCollectionLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18087,6 +20057,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetDataCollectionLinksGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
+         * @summary CaseDbCase Set Data Collection Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetDataCollectionLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetDataCollectionLinksGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
+         * @summary CaseDbCase Set Data Collection Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetDataCollectionLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetDataCollectionLinksGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetDataCollectionLinksGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -18201,13 +20197,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseSetMembers.
          * @summary CaseDbCase Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersDeleteAll(limit, offset, options);
+        async caseSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18250,6 +20244,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * @summary CaseDbCase Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetMembersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetMembers.
+         * @summary CaseDbCase Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetMembersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetMembersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -18364,13 +20384,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseSetStatuses.
          * @summary CaseDbCase Set Statuses  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetStatusesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesDeleteAll(limit, offset, options);
+        async caseSetStatusesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetStatusesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18413,6 +20431,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetStatusesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
+         * @summary CaseDbCase Set Statuses  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetStatusesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetStatusesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSetStatuses.
+         * @summary CaseDbCase Set Statuses  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetStatusesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetStatusesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetStatusesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -18527,13 +20571,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseSets.
          * @summary CaseDbCase Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsDeleteAll(limit, offset, options);
+        async caseSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18576,6 +20618,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSets.
+         * @summary CaseDbCase Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseSets.
+         * @summary CaseDbCase Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -18690,13 +20758,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
          * @summary CaseDbCase Type Set Categories  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesDeleteAll(limit, offset, options);
+        async caseTypeSetCategoriesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetCategoriesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18739,6 +20805,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetCategoriesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
+         * @summary CaseDbCase Type Set Categories  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeSetCategoriesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetCategoriesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
+         * @summary CaseDbCase Type Set Categories  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeSetCategoriesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetCategoriesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetCategoriesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -18853,13 +20945,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
          * @summary CaseDbCase Type Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersDeleteAll(limit, offset, options);
+        async caseTypeSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -18902,6 +20992,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
+         * @summary CaseDbCase Type Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetMembersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
+         * @summary CaseDbCase Type Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetMembersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetMembersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -19016,13 +21132,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseTypeSets.
          * @summary CaseDbCase Type Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypeSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsDeleteAll(limit, offset, options);
+        async caseTypeSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19065,6 +21179,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
+         * @summary CaseDbCase Type Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypeSets.
+         * @summary CaseDbCase Type Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypeSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypeSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypeSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -19150,7 +21290,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to replace the association between a case type set and its case types.  The provided members keep the set synchronized for downstream access policies and presets.
+         * Represents a request to replace a case type set\'s case type associations.  The provided members keep the set synchronized for downstream access policies and presets.
          * @summary Update Association Between Casetypeset And Casetype
          * @param {string} caseTypeSetId 
          * @param {CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody} caseTypeSetCaseTypeUpdateAssociationRequestBody 
@@ -19193,13 +21333,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on CaseTypes.
          * @summary CaseDbCase Types  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async caseTypesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesDeleteAll(limit, offset, options);
+        async caseTypesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19242,6 +21380,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypes.
+         * @summary CaseDbCase Types  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on CaseTypes.
+         * @summary CaseDbCase Types  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async caseTypesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.caseTypesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.caseTypesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -19356,13 +21520,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on Cases.
          * @summary Cases  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async casesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.casesDeleteAll(limit, offset, options);
+        async casesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.casesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.casesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19405,6 +21567,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.casesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.casesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Cases.
+         * @summary Cases  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async casesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.casesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.casesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Cases.
+         * @summary Cases  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async casesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.casesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.casesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -19519,13 +21707,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on ColSetMembers.
          * @summary CaseDbCol Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersDeleteAll(limit, offset, options);
+        async colSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19568,6 +21754,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on ColSetMembers.
+         * @summary CaseDbCol Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on ColSetMembers.
+         * @summary CaseDbCol Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetMembersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetMembersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -19682,13 +21894,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on ColSets.
          * @summary CaseDbCol Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsDeleteAll(limit, offset, options);
+        async colSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19731,6 +21941,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on ColSets.
+         * @summary CaseDbCol Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on ColSets.
+         * @summary CaseDbCol Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -19859,13 +22095,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on Cols.
          * @summary Cols  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async colsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.colsDeleteAll(limit, offset, options);
+        async colsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -19908,6 +22142,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.colsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.colsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Cols.
+         * @summary Cols  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Cols.
+         * @summary Cols  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async colsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.colsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.colsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -20076,21 +22336,19 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dimsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsDeleteAll(limit, offset, options);
+        async dimsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.dimsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Delete One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20103,7 +22361,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20116,7 +22374,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -20130,7 +22388,33 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
+         * @summary Dims  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dimsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.dimsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
+         * @summary Dims  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dimsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dimsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.dimsGetExistsSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -20143,7 +22427,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -20156,7 +22440,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Post One
          * @param {CaseDbDim} dim 
          * @param {*} [options] Override http request option.
@@ -20169,7 +22453,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20184,7 +22468,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -20199,7 +22483,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Post Some
          * @param {Array<CaseDbDim>} dim 
          * @param {*} [options] Override http request option.
@@ -20212,7 +22496,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Put One
          * @param {string} objectId 
          * @param {CaseDbDim} dim 
@@ -20226,7 +22510,7 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to execute a CRUD operation on Dims.
+         * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
          * @summary Dims  Put Some
          * @param {Array<CaseDbDim>} dim 
          * @param {*} [options] Override http request option.
@@ -20241,13 +22525,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
          * @summary Genetic Distance Protocols  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async geneticDistanceProtocolsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsDeleteAll(limit, offset, options);
+        async geneticDistanceProtocolsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -20290,6 +22572,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
+         * @summary Genetic Distance Protocols  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async geneticDistanceProtocolsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
+         * @summary Genetic Distance Protocols  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async geneticDistanceProtocolsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.geneticDistanceProtocolsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.geneticDistanceProtocolsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -20404,13 +22712,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on RefCols.
          * @summary Ref Cols  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refColsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsDeleteAll(limit, offset, options);
+        async refColsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -20453,6 +22759,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refColsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on RefCols.
+         * @summary Ref Cols  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on RefCols.
+         * @summary Ref Cols  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refColsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refColsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refColsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -20579,13 +22911,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on RefDims.
          * @summary Ref Dims  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refDimsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsDeleteAll(limit, offset, options);
+        async refDimsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -20628,6 +22958,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on RefDims.
+         * @summary Ref Dims  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on RefDims.
+         * @summary Ref Dims  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refDimsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refDimsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.refDimsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -20886,6 +23242,19 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Represents a request to execute case-linked sequence-distance retrieval.  Requested distance content must be readable and populated. Entries above the configured casedb protocol storage maximum are omitted. External targets, when requested, also require readable linked sequence content on a matching case.
+         * @summary Retrieve Sequence Distances
+         * @param {CaseDbRetrieveSeqDistancesByCasesRequestBody} retrieveSeqDistancesByCasesRequestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveSeqDistancesByCases(retrieveSeqDistancesByCasesRequestBody: CaseDbRetrieveSeqDistancesByCasesRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CaseDbCaseSeqDistance>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveSeqDistancesByCases(retrieveSeqDistancesByCasesRequestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.retrieveSeqDistancesByCases']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * Represents a request to retrieve seqdb protocols by protocol type.
          * @summary Retrieve Sequencing Protocols
          * @param {*} [options] Override http request option.
@@ -20913,13 +23282,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
          * @summary Tree Algorithm Classes  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmClassesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteAll(limit, offset, options);
+        async treeAlgorithmClassesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmClassesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -20962,6 +23329,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmClassesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
+         * @summary Tree Algorithm Classes  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async treeAlgorithmClassesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmClassesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
+         * @summary Tree Algorithm Classes  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async treeAlgorithmClassesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmClassesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmClassesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -21076,13 +23469,11 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to execute a CRUD operation on TreeAlgorithms.
          * @summary Tree Algorithms  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async treeAlgorithmsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteAll(limit, offset, options);
+        async treeAlgorithmsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -21125,6 +23516,32 @@ const CaseDbCaseApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
+         * @summary Tree Algorithms  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async treeAlgorithmsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute a CRUD operation on TreeAlgorithms.
+         * @summary Tree Algorithms  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async treeAlgorithmsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.treeAlgorithmsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CaseApi.treeAlgorithmsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -21279,13 +23696,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseDataCollection links.
      * @summary CaseDbCase Data Collection Links  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21320,6 +23735,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseDataCollectionLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
+     * @summary CaseDbCase Data Collection Links  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseDataCollectionLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseDataCollection links.
+     * @summary CaseDbCase Data Collection Links  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseDataCollectionLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseDataCollectionLinksGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21418,13 +23855,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseIdentifiers.
      * @summary CaseDbCase Identifiers  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseIdentifiersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseIdentifiersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseIdentifiersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseIdentifiersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21459,6 +23894,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseIdentifiersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseIdentifiersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
+     * @summary CaseDbCase Identifiers  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseIdentifiersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseIdentifiersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseIdentifiers.
+     * @summary CaseDbCase Identifiers  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseIdentifiersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseIdentifiersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21557,13 +24014,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseSetCategories.
      * @summary CaseDbCase Set Categories  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetCategoriesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21598,6 +24053,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseSetCategoriesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetCategoriesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
+     * @summary CaseDbCase Set Categories  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetCategoriesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSetCategories.
+     * @summary CaseDbCase Set Categories  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetCategoriesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetCategoriesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21696,13 +24173,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
      * @summary CaseDbCase Set Data Collection Links  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetDataCollectionLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetDataCollectionLinksDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21737,6 +24212,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseSetDataCollectionLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
+     * @summary CaseDbCase Set Data Collection Links  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetDataCollectionLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSetDataCollectionLinks.
+     * @summary CaseDbCase Set Data Collection Links  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetDataCollectionLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetDataCollectionLinksGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21835,13 +24332,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseSetMembers.
      * @summary CaseDbCase Set Members  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21876,6 +24371,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * @summary CaseDbCase Set Members  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetMembersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSetMembers.
+     * @summary CaseDbCase Set Members  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetMembersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -21974,13 +24491,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseSetStatuses.
      * @summary CaseDbCase Set Statuses  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetStatusesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetStatusesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetStatusesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetStatusesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22015,6 +24530,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseSetStatusesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetStatusesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
+     * @summary CaseDbCase Set Statuses  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetStatusesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetStatusesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSetStatuses.
+     * @summary CaseDbCase Set Statuses  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetStatusesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetStatusesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22113,13 +24650,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseSets.
      * @summary CaseDbCase Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22154,6 +24689,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSets.
+     * @summary CaseDbCase Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseSets.
+     * @summary CaseDbCase Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22252,13 +24809,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
      * @summary CaseDbCase Type Set Categories  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetCategoriesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetCategoriesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22293,6 +24848,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseTypeSetCategoriesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
+     * @summary CaseDbCase Type Set Categories  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseTypeSetCategoriesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseTypeSetCategories.
+     * @summary CaseDbCase Type Set Categories  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseTypeSetCategoriesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetCategoriesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22391,13 +24968,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
      * @summary CaseDbCase Type Set Members  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22432,6 +25007,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseTypeSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
+     * @summary CaseDbCase Type Set Members  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseTypeSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseTypeSetMembers.
+     * @summary CaseDbCase Type Set Members  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseTypeSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetMembersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22530,13 +25127,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseTypeSets.
      * @summary CaseDbCase Type Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypeSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypeSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypeSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22571,6 +25166,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseTypeSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseTypeSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
+     * @summary CaseDbCase Type Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseTypeSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseTypeSets.
+     * @summary CaseDbCase Type Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseTypeSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypeSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22644,7 +25261,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to replace the association between a case type set and its case types.  The provided members keep the set synchronized for downstream access policies and presets.
+     * Represents a request to replace a case type set\'s case type associations.  The provided members keep the set synchronized for downstream access policies and presets.
      * @summary Update Association Between Casetypeset And Casetype
      * @param {string} caseTypeSetId 
      * @param {CaseDbCaseTypeSetCaseTypeUpdateAssociationRequestBody} caseTypeSetCaseTypeUpdateAssociationRequestBody 
@@ -22681,13 +25298,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on CaseTypes.
      * @summary CaseDbCase Types  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public caseTypesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).caseTypesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public caseTypesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22722,6 +25337,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public caseTypesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).caseTypesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseTypes.
+     * @summary CaseDbCase Types  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseTypesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on CaseTypes.
+     * @summary CaseDbCase Types  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public caseTypesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).caseTypesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22820,13 +25457,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on Cases.
      * @summary Cases  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public casesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).casesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public casesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).casesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22861,6 +25496,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public casesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).casesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on Cases.
+     * @summary Cases  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public casesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).casesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on Cases.
+     * @summary Cases  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public casesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).casesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -22959,13 +25616,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on ColSetMembers.
      * @summary CaseDbCol Set Members  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23000,6 +25655,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public colSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).colSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on ColSetMembers.
+     * @summary CaseDbCol Set Members  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public colSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetMembersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on ColSetMembers.
+     * @summary CaseDbCol Set Members  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public colSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetMembersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23098,13 +25775,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on ColSets.
      * @summary CaseDbCol Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23139,6 +25814,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public colSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).colSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on ColSets.
+     * @summary CaseDbCol Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public colSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on ColSets.
+     * @summary CaseDbCol Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public colSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23249,13 +25946,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on Cols.
      * @summary Cols  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public colsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).colsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public colsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23290,6 +25985,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public colsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).colsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on Cols.
+     * @summary Cols  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public colsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on Cols.
+     * @summary Cols  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public colsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).colsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23434,19 +26151,17 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dimsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).dimsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dimsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).dimsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Delete One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23457,7 +26172,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23468,7 +26183,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -23480,7 +26195,29 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
+     * @summary Dims  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dimsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).dimsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
+     * @summary Dims  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dimsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).dimsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -23491,7 +26228,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -23502,7 +26239,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Post One
      * @param {CaseDbDim} dim 
      * @param {*} [options] Override http request option.
@@ -23513,7 +26250,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23526,7 +26263,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -23539,7 +26276,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Post Some
      * @param {Array<CaseDbDim>} dim 
      * @param {*} [options] Override http request option.
@@ -23550,7 +26287,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Put One
      * @param {string} objectId 
      * @param {CaseDbDim} dim 
@@ -23562,7 +26299,7 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to execute a CRUD operation on Dims.
+     * Represents a request to execute a CRUD operation on Dims.  Model validation:     Write-some operations allow at most one case-date dimension per case type.
      * @summary Dims  Put Some
      * @param {Array<CaseDbDim>} dim 
      * @param {*} [options] Override http request option.
@@ -23575,13 +26312,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
      * @summary Genetic Distance Protocols  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public geneticDistanceProtocolsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public geneticDistanceProtocolsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23616,6 +26351,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public geneticDistanceProtocolsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
+     * @summary Genetic Distance Protocols  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public geneticDistanceProtocolsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on GeneticDistanceProtocols.
+     * @summary Genetic Distance Protocols  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public geneticDistanceProtocolsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).geneticDistanceProtocolsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23714,13 +26471,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on RefCols.
      * @summary Ref Cols  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refColsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refColsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refColsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refColsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23755,6 +26510,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public refColsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).refColsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on RefCols.
+     * @summary Ref Cols  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public refColsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refColsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on RefCols.
+     * @summary Ref Cols  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public refColsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refColsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23863,13 +26640,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on RefDims.
      * @summary Ref Dims  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public refDimsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).refDimsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public refDimsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refDimsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -23904,6 +26679,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public refDimsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).refDimsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on RefDims.
+     * @summary Ref Dims  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public refDimsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refDimsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on RefDims.
+     * @summary Ref Dims  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public refDimsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).refDimsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -24124,6 +26921,17 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     }
 
     /**
+     * Represents a request to execute case-linked sequence-distance retrieval.  Requested distance content must be readable and populated. Entries above the configured casedb protocol storage maximum are omitted. External targets, when requested, also require readable linked sequence content on a matching case.
+     * @summary Retrieve Sequence Distances
+     * @param {CaseDbRetrieveSeqDistancesByCasesRequestBody} retrieveSeqDistancesByCasesRequestBody 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public retrieveSeqDistancesByCases(retrieveSeqDistancesByCasesRequestBody: CaseDbRetrieveSeqDistancesByCasesRequestBody, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).retrieveSeqDistancesByCases(retrieveSeqDistancesByCasesRequestBody, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
      * Represents a request to retrieve seqdb protocols by protocol type.
      * @summary Retrieve Sequencing Protocols
      * @param {*} [options] Override http request option.
@@ -24147,13 +26955,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
      * @summary Tree Algorithm Classes  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmClassesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmClassesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -24188,6 +26994,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public treeAlgorithmClassesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
+     * @summary Tree Algorithm Classes  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public treeAlgorithmClassesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on TreeAlgorithmClasses.
+     * @summary Tree Algorithm Classes  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public treeAlgorithmClassesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmClassesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -24286,13 +27114,11 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
     /**
      * Represents a request to execute a CRUD operation on TreeAlgorithms.
      * @summary Tree Algorithms  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public treeAlgorithmsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public treeAlgorithmsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -24327,6 +27153,28 @@ export class CaseDbCaseApi extends CaseDbBaseAPI {
      */
     public treeAlgorithmsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbCaseApiFp(this.configuration).treeAlgorithmsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
+     * @summary Tree Algorithms  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public treeAlgorithmsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute a CRUD operation on TreeAlgorithms.
+     * @summary Tree Algorithms  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public treeAlgorithmsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbCaseApiFp(this.configuration).treeAlgorithmsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -24538,12 +27386,10 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represent CRUD operations for relationships between regions.
          * @summary CaseDbRegion Relations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionRelationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionRelationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/region_relations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -24555,14 +27401,6 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -24673,6 +27511,77 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for relationships between regions.
+         * @summary CaseDbRegion Relations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        regionRelationsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('regionRelationsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/region_relations/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for relationships between regions.
+         * @summary CaseDbRegion Relations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        regionRelationsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('regionRelationsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/region_relations/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -24994,12 +27903,10 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represent CRUD operations for shapes associated with region sets.
          * @summary CaseDbRegion Set Shapes  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetShapesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetShapesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/region_set_shapes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25011,14 +27918,6 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25129,6 +28028,77 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for shapes associated with region sets.
+         * @summary CaseDbRegion Set Shapes  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        regionSetShapesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('regionSetShapesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/region_set_shapes/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for shapes associated with region sets.
+         * @summary CaseDbRegion Set Shapes  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        regionSetShapesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('regionSetShapesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/region_set_shapes/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25450,12 +28420,10 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represent CRUD operations for geographic region sets.
          * @summary CaseDbRegion Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/region_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25467,14 +28435,6 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -25585,6 +28545,77 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for geographic region sets.
+         * @summary CaseDbRegion Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        regionSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('regionSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/region_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for geographic region sets.
+         * @summary CaseDbRegion Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        regionSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('regionSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/region_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -25906,12 +28937,10 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represent CRUD operations for geographic regions.
          * @summary Regions  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        regionsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        regionsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/regions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -25923,14 +28952,6 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -26041,6 +29062,77 @@ const CaseDbGeoApiAxiosParamCreator = function (configuration?: Configuration) {
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for geographic regions.
+         * @summary Regions  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        regionsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('regionsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/regions/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for geographic regions.
+         * @summary Regions  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        regionsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('regionsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/regions/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -26371,13 +29463,11 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for relationships between regions.
          * @summary CaseDbRegion Relations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionRelationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsDeleteAll(limit, offset, options);
+        async regionRelationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionRelationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26420,6 +29510,32 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionRelationsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for relationships between regions.
+         * @summary CaseDbRegion Relations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async regionRelationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeoApi.regionRelationsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for relationships between regions.
+         * @summary CaseDbRegion Relations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async regionRelationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionRelationsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeoApi.regionRelationsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -26534,13 +29650,11 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for shapes associated with region sets.
          * @summary CaseDbRegion Set Shapes  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetShapesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesDeleteAll(limit, offset, options);
+        async regionSetShapesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetShapesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26583,6 +29697,32 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetShapesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for shapes associated with region sets.
+         * @summary CaseDbRegion Set Shapes  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async regionSetShapesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetShapesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for shapes associated with region sets.
+         * @summary CaseDbRegion Set Shapes  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async regionSetShapesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetShapesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetShapesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -26697,13 +29837,11 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for geographic region sets.
          * @summary CaseDbRegion Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsDeleteAll(limit, offset, options);
+        async regionSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26746,6 +29884,32 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for geographic region sets.
+         * @summary CaseDbRegion Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async regionSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for geographic region sets.
+         * @summary CaseDbRegion Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async regionSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeoApi.regionSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -26860,13 +30024,11 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for geographic regions.
          * @summary Regions  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async regionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsDeleteAll(limit, offset, options);
+        async regionsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -26909,6 +30071,32 @@ const CaseDbGeoApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.regionsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GeoApi.regionsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for geographic regions.
+         * @summary Regions  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async regionsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeoApi.regionsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for geographic regions.
+         * @summary Regions  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async regionsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.regionsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GeoApi.regionsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -27037,13 +30225,11 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for relationships between regions.
      * @summary CaseDbRegion Relations  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionRelationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionRelationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionRelationsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionRelationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -27078,6 +30264,28 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
      */
     public regionRelationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbGeoApiFp(this.configuration).regionRelationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for relationships between regions.
+     * @summary CaseDbRegion Relations  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public regionRelationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionRelationsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for relationships between regions.
+     * @summary CaseDbRegion Relations  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public regionRelationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionRelationsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -27176,13 +30384,11 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for shapes associated with region sets.
      * @summary CaseDbRegion Set Shapes  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetShapesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetShapesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetShapesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetShapesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -27217,6 +30423,28 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
      */
     public regionSetShapesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbGeoApiFp(this.configuration).regionSetShapesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for shapes associated with region sets.
+     * @summary CaseDbRegion Set Shapes  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public regionSetShapesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetShapesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for shapes associated with region sets.
+     * @summary CaseDbRegion Set Shapes  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public regionSetShapesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetShapesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -27315,13 +30543,11 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for geographic region sets.
      * @summary CaseDbRegion Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -27356,6 +30582,28 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
      */
     public regionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbGeoApiFp(this.configuration).regionSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for geographic region sets.
+     * @summary CaseDbRegion Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public regionSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for geographic region sets.
+     * @summary CaseDbRegion Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public regionSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -27454,13 +30702,11 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for geographic regions.
      * @summary Regions  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public regionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbGeoApiFp(this.configuration).regionsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public regionsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -27495,6 +30741,28 @@ export class CaseDbGeoApi extends CaseDbBaseAPI {
      */
     public regionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbGeoApiFp(this.configuration).regionsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for geographic regions.
+     * @summary Regions  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public regionsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for geographic regions.
+     * @summary Regions  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public regionsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbGeoApiFp(this.configuration).regionsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -27601,12 +30869,10 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for semantic relationships between concepts.
          * @summary CaseDbConcept Relations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptRelationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptRelationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/concept_relations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -27618,14 +30884,6 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -27736,6 +30994,77 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for semantic relationships between concepts.
+         * @summary CaseDbConcept Relations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        conceptRelationsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('conceptRelationsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/concept_relations/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for semantic relationships between concepts.
+         * @summary CaseDbConcept Relations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        conceptRelationsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('conceptRelationsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/concept_relations/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -28057,12 +31386,10 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for controlled vocabularies and value sets.
          * @summary CaseDbConcept Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/concept_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28074,14 +31401,6 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -28192,6 +31511,77 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for controlled vocabularies and value sets.
+         * @summary CaseDbConcept Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        conceptSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('conceptSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/concept_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for controlled vocabularies and value sets.
+         * @summary CaseDbConcept Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        conceptSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('conceptSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/concept_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -28513,12 +31903,10 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for concepts within a concept set.
          * @summary Concepts  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        conceptsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        conceptsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/concepts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28530,14 +31918,6 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -28648,6 +32028,77 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for concepts within a concept set.
+         * @summary Concepts  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        conceptsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('conceptsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/concepts/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for concepts within a concept set.
+         * @summary Concepts  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        conceptsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('conceptsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/concepts/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -28969,12 +32420,10 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for diseases that anchor case types.
          * @summary Diseases  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        diseasesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        diseasesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/diseases`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -28986,14 +32435,6 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -29104,6 +32545,77 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for diseases that anchor case types.
+         * @summary Diseases  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        diseasesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('diseasesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/diseases/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for diseases that anchor case types.
+         * @summary Diseases  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        diseasesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('diseasesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/diseases/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -29464,12 +32976,10 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for disease etiological agents.
          * @summary Etiological Agents  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologicalAgentsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologicalAgentsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/etiological_agents`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29481,14 +32991,6 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -29599,6 +33101,77 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for disease etiological agents.
+         * @summary Etiological Agents  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        etiologicalAgentsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('etiologicalAgentsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/etiological_agents/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for disease etiological agents.
+         * @summary Etiological Agents  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        etiologicalAgentsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('etiologicalAgentsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/etiological_agents/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -29920,12 +33493,10 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * Represent CRUD operations for disease-agent etiology links.
          * @summary Etiologies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        etiologiesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        etiologiesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/etiologies`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -29937,14 +33508,6 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -30055,6 +33618,77 @@ const CaseDbOntologyApiAxiosParamCreator = function (configuration?: Configurati
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for disease-agent etiology links.
+         * @summary Etiologies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        etiologiesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('etiologiesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/etiologies/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represent CRUD operations for disease-agent etiology links.
+         * @summary Etiologies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        etiologiesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('etiologiesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/etiologies/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -30385,13 +34019,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for semantic relationships between concepts.
          * @summary CaseDbConcept Relations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptRelationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsDeleteAll(limit, offset, options);
+        async conceptRelationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptRelationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30434,6 +34066,32 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptRelationsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for semantic relationships between concepts.
+         * @summary CaseDbConcept Relations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async conceptRelationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptRelationsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for semantic relationships between concepts.
+         * @summary CaseDbConcept Relations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async conceptRelationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptRelationsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptRelationsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30548,13 +34206,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for controlled vocabularies and value sets.
          * @summary CaseDbConcept Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsDeleteAll(limit, offset, options);
+        async conceptSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30597,6 +34253,32 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for controlled vocabularies and value sets.
+         * @summary CaseDbConcept Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async conceptSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for controlled vocabularies and value sets.
+         * @summary CaseDbConcept Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async conceptSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30711,13 +34393,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for concepts within a concept set.
          * @summary Concepts  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async conceptsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsDeleteAll(limit, offset, options);
+        async conceptsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30760,6 +34440,32 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for concepts within a concept set.
+         * @summary Concepts  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async conceptsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for concepts within a concept set.
+         * @summary Concepts  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async conceptsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.conceptsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.conceptsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -30874,13 +34580,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for diseases that anchor case types.
          * @summary Diseases  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async diseasesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesDeleteAll(limit, offset, options);
+        async diseasesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -30923,6 +34627,32 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for diseases that anchor case types.
+         * @summary Diseases  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async diseasesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for diseases that anchor case types.
+         * @summary Diseases  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async diseasesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.diseasesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.diseasesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -31051,13 +34781,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for disease etiological agents.
          * @summary Etiological Agents  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologicalAgentsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsDeleteAll(limit, offset, options);
+        async etiologicalAgentsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologicalAgentsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31100,6 +34828,32 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologicalAgentsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for disease etiological agents.
+         * @summary Etiological Agents  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async etiologicalAgentsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologicalAgentsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for disease etiological agents.
+         * @summary Etiological Agents  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async etiologicalAgentsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologicalAgentsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologicalAgentsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -31214,13 +34968,11 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
         /**
          * Represent CRUD operations for disease-agent etiology links.
          * @summary Etiologies  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async etiologiesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesDeleteAll(limit, offset, options);
+        async etiologiesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologiesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -31263,6 +35015,32 @@ const CaseDbOntologyApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologiesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for disease-agent etiology links.
+         * @summary Etiologies  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async etiologiesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologiesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represent CRUD operations for disease-agent etiology links.
+         * @summary Etiologies  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async etiologiesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.etiologiesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OntologyApi.etiologiesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -31391,13 +35169,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for semantic relationships between concepts.
      * @summary CaseDbConcept Relations  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptRelationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptRelationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptRelationsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptRelationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31432,6 +35208,28 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      */
     public conceptRelationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).conceptRelationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for semantic relationships between concepts.
+     * @summary CaseDbConcept Relations  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public conceptRelationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptRelationsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for semantic relationships between concepts.
+     * @summary CaseDbConcept Relations  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public conceptRelationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptRelationsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31530,13 +35328,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for controlled vocabularies and value sets.
      * @summary CaseDbConcept Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31571,6 +35367,28 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      */
     public conceptSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).conceptSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for controlled vocabularies and value sets.
+     * @summary CaseDbConcept Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public conceptSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for controlled vocabularies and value sets.
+     * @summary CaseDbConcept Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public conceptSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31669,13 +35487,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for concepts within a concept set.
      * @summary Concepts  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public conceptsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).conceptsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public conceptsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31710,6 +35526,28 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      */
     public conceptsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).conceptsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for concepts within a concept set.
+     * @summary Concepts  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public conceptsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for concepts within a concept set.
+     * @summary Concepts  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public conceptsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).conceptsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31808,13 +35646,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for diseases that anchor case types.
      * @summary Diseases  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public diseasesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).diseasesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public diseasesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).diseasesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31849,6 +35685,28 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      */
     public diseasesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).diseasesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for diseases that anchor case types.
+     * @summary Diseases  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public diseasesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).diseasesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for diseases that anchor case types.
+     * @summary Diseases  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public diseasesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).diseasesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -31959,13 +35817,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for disease etiological agents.
      * @summary Etiological Agents  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologicalAgentsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologicalAgentsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32000,6 +35856,28 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      */
     public etiologicalAgentsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for disease etiological agents.
+     * @summary Etiological Agents  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public etiologicalAgentsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for disease etiological agents.
+     * @summary Etiological Agents  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public etiologicalAgentsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologicalAgentsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32098,13 +35976,11 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
     /**
      * Represent CRUD operations for disease-agent etiology links.
      * @summary Etiologies  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public etiologiesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOntologyApiFp(this.configuration).etiologiesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public etiologiesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologiesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32139,6 +36015,28 @@ export class CaseDbOntologyApi extends CaseDbBaseAPI {
      */
     public etiologiesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOntologyApiFp(this.configuration).etiologiesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for disease-agent etiology links.
+     * @summary Etiologies  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public etiologiesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologiesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represent CRUD operations for disease-agent etiology links.
+     * @summary Etiologies  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public etiologiesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOntologyApiFp(this.configuration).etiologiesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -32279,12 +36177,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        contactsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        contactsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/contacts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32296,14 +36192,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -32414,6 +36302,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Contacts.
+         * @summary Contacts  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('contactsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/contacts/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Contacts.
+         * @summary Contacts  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        contactsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('contactsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/contacts/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -32735,12 +36694,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -32752,14 +36709,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -32870,6 +36819,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+         * @summary Data Collection Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionSetMembersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('dataCollectionSetMembersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/data_collection_set_members/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+         * @summary Data Collection Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionSetMembersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('dataCollectionSetMembersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/data_collection_set_members/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -33191,12 +37211,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collection_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33208,14 +37226,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -33326,6 +37336,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
+         * @summary Data Collection Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('dataCollectionSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/data_collection_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
+         * @summary Data Collection Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('dataCollectionSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/data_collection_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -33571,7 +37652,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents a request to update the association between a CaseDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
+         * Represents a request to update a data collection set\'s data collection associations.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -33686,12 +37767,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        dataCollectionsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        dataCollectionsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/data_collections`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -33703,14 +37782,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -33821,6 +37892,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollections.
+         * @summary Data Collections  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('dataCollectionsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/data_collections/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollections.
+         * @summary Data Collections  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dataCollectionsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('dataCollectionsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/data_collections/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -34142,12 +38284,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        identifierIssuersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        identifierIssuersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/identifier_issuers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34159,14 +38299,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -34277,6 +38409,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
+         * @summary Identifier Issuers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        identifierIssuersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('identifierIssuersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/identifier_issuers/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
+         * @summary Identifier Issuers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        identifierIssuersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('identifierIssuersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/identifier_issuers/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -34631,7 +38834,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * Represents a request to retrieve user invitation constraints.  Constraints include valid roles and organizations needed for user invitations.
          * @summary The Constraints For Inviting A CaseDbUser
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -34663,12 +38866,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationIdentifierIssuerLinksDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationIdentifierIssuerLinksDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_identifier_issuer_links`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -34680,14 +38881,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -34798,6 +38991,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+         * @summary CaseDbOrganization Identifier Issuer Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_identifier_issuer_links/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+         * @summary CaseDbOrganization Identifier Issuer Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationIdentifierIssuerLinksGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationIdentifierIssuerLinksGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_identifier_issuer_links/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -35119,12 +39383,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetMembersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetMembersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_set_members`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35136,14 +39398,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -35254,6 +39508,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+         * @summary CaseDbOrganization Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationSetMembersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationSetMembersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_set_members/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+         * @summary CaseDbOrganization Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationSetMembersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationSetMembersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_set_members/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -35575,12 +39900,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationSetsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationSetsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organization_sets`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -35592,14 +39915,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -35710,6 +40025,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSets.
+         * @summary CaseDbOrganization Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationSetsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationSetsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organization_sets/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSets.
+         * @summary CaseDbOrganization Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationSetsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationSetsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organization_sets/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -35994,7 +40380,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents a request to update the association between an CaseDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
+         * Represents a request to update an organization set\'s organization associations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset CaseDbOrganization
          * @param {string} organizationSetId 
          * @param {CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -36070,12 +40456,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        organizationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        organizationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/organizations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36087,14 +40471,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -36205,6 +40581,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Organizations.
+         * @summary Organizations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('organizationsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/organizations/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Organizations.
+         * @summary Organizations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        organizationsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('organizationsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/organizations/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -36450,7 +40897,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents a request to update the association between an CaseDbOrganization and IdentifierIssuers.
+         * Represents a request to update an organization\'s identifier issuer associations.
          * @summary Update Association Between CaseDbOrganization And Identifierissuer
          * @param {string} organizationId 
          * @param {CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -36563,7 +41010,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * Represents a request to retrieve contacts associated with one organization.  Returns contacts with their associated site and organization data cascaded.
          * @summary Retrieve CaseDbOrganization Contacts
          * @param {CaseDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
          * @param {*} [options] Override http request option.
@@ -36600,12 +41047,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sitesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        sitesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/sites`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -36617,14 +41062,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -36735,6 +41172,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Sites.
+         * @summary Sites  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sitesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('sitesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/sites/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Sites.
+         * @summary Sites  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sitesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('sitesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/sites/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -37130,12 +41638,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userInvitationsDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userInvitationsDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/user_invitations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -37147,14 +41653,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -37265,6 +41763,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on UserInvitations.
+         * @summary CaseDbUser Invitations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userInvitationsGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('userInvitationsGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/user_invitations/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on UserInvitations.
+         * @summary CaseDbUser Invitations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userInvitationsGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('userInvitationsGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/user_invitations/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -37584,7 +42153,7 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * Represents an authenticated commondb user and their organization membership.  The user key is stored lower case for unique lookup. Inactive users retain their data but cannot perform operations that require authorization.
+         * Represents a request to retrieve the executing user.  The result is the registered user that the request is authenticated as, including its key, roles, and organization.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -37680,12 +42249,10 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -37697,14 +42264,6 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -37815,6 +42374,77 @@ const CaseDbOrganizationApiAxiosParamCreator = function (configuration?: Configu
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Users.
+         * @summary Users  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('usersGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/users/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Users.
+         * @summary Users  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('usersGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/users/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
             }
 
             localVarHeaderParameter['Accept'] = 'application/json';
@@ -38158,13 +42788,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Contacts.
          * @summary Contacts  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async contactsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteAll(limit, offset, options);
+        async contactsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -38207,6 +42835,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Contacts.
+         * @summary Contacts  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Contacts.
+         * @summary Contacts  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async contactsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.contactsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.contactsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -38321,13 +42975,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
          * @summary Data Collection Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteAll(limit, offset, options);
+        async dataCollectionSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -38370,6 +43022,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+         * @summary Data Collection Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+         * @summary Data Collection Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetMembersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetMembersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -38484,13 +43162,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on DataCollectionSets.
          * @summary Data Collection Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteAll(limit, offset, options);
+        async dataCollectionSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -38533,6 +43209,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
+         * @summary Data Collection Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollectionSets.
+         * @summary Data Collection Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -38618,7 +43320,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to update the association between a CaseDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
+         * Represents a request to update a data collection set\'s data collection associations.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
          * @summary Datacollectionset Datacollection
          * @param {string} dataCollectionSetId 
          * @param {CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -38661,13 +43363,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on DataCollections.
          * @summary Data Collections  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteAll(limit, offset, options);
+        async dataCollectionsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -38710,6 +43410,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollections.
+         * @summary Data Collections  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on DataCollections.
+         * @summary Data Collections  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dataCollectionsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dataCollectionsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.dataCollectionsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -38824,13 +43550,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on IdentifierIssuers.
          * @summary Identifier Issuers  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async identifierIssuersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteAll(limit, offset, options);
+        async identifierIssuersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -38873,6 +43597,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
+         * @summary Identifier Issuers  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async identifierIssuersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on IdentifierIssuers.
+         * @summary Identifier Issuers  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async identifierIssuersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.identifierIssuersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.identifierIssuersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -38998,7 +43748,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+         * Represents a request to retrieve user invitation constraints.  Constraints include valid roles and organizations needed for user invitations.
          * @summary The Constraints For Inviting A CaseDbUser
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -39012,13 +43762,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
          * @summary CaseDbOrganization Identifier Issuer Links  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteAll(limit, offset, options);
+        async organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39061,6 +43809,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+         * @summary CaseDbOrganization Identifier Issuer Links  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+         * @summary CaseDbOrganization Identifier Issuer Links  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationIdentifierIssuerLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationIdentifierIssuerLinksGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationIdentifierIssuerLinksGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -39175,13 +43949,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on OrganizationSetMembers.
          * @summary CaseDbOrganization Set Members  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteAll(limit, offset, options);
+        async organizationSetMembersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39224,6 +43996,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+         * @summary CaseDbOrganization Set Members  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+         * @summary CaseDbOrganization Set Members  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetMembersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetMembersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -39338,13 +44136,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on OrganizationSets.
          * @summary CaseDbOrganization Sets  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteAll(limit, offset, options);
+        async organizationSetsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39387,6 +44183,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSets.
+         * @summary CaseDbOrganization Sets  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on OrganizationSets.
+         * @summary CaseDbOrganization Sets  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationSetsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationSetsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -39486,7 +44308,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to update the association between an CaseDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
+         * Represents a request to update an organization set\'s organization associations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
          * @summary Organizationset CaseDbOrganization
          * @param {string} organizationSetId 
          * @param {CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -39515,13 +44337,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Organizations.
          * @summary Organizations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteAll(limit, offset, options);
+        async organizationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39564,6 +44384,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Organizations.
+         * @summary Organizations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Organizations.
+         * @summary Organizations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async organizationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.organizationsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.organizationsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -39649,7 +44495,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to update the association between an CaseDbOrganization and IdentifierIssuers.
+         * Represents a request to update an organization\'s identifier issuer associations.
          * @summary Update Association Between CaseDbOrganization And Identifierissuer
          * @param {string} organizationId 
          * @param {CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -39690,7 +44536,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+         * Represents a request to retrieve contacts associated with one organization.  Returns contacts with their associated site and organization data cascaded.
          * @summary Retrieve CaseDbOrganization Contacts
          * @param {CaseDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
          * @param {*} [options] Override http request option.
@@ -39705,13 +44551,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Sites.
          * @summary Sites  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sitesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteAll(limit, offset, options);
+        async sitesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39754,6 +44598,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Sites.
+         * @summary Sites  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sitesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Sites.
+         * @summary Sites  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sitesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sitesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.sitesGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -39895,13 +44765,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on UserInvitations.
          * @summary CaseDbUser Invitations  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userInvitationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteAll(limit, offset, options);
+        async userInvitationsDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -39944,6 +44812,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on UserInvitations.
+         * @summary CaseDbUser Invitations  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userInvitationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on UserInvitations.
+         * @summary CaseDbUser Invitations  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userInvitationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userInvitationsGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.userInvitationsGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -40056,7 +44950,7 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents an authenticated commondb user and their organization membership.  The user key is stored lower case for unique lookup. Inactive users retain their data but cannot perform operations that require authorization.
+         * Represents a request to retrieve the executing user.  The result is the registered user that the request is authenticated as, including its key, roles, and organization.
          * @summary Userme
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -40095,13 +44989,11 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to perform a CRUD operation on Users.
          * @summary Users  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteAll(limit, offset, options);
+        async usersDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -40144,6 +45036,32 @@ const CaseDbOrganizationApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetAll(limit, offset, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersGetAll']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Users.
+         * @summary Users  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to perform a CRUD operation on Users.
+         * @summary Users  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrganizationApi.usersGetExistsSome']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -40283,13 +45201,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Contacts.
      * @summary Contacts  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public contactsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).contactsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public contactsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).contactsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40324,6 +45240,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public contactsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).contactsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Contacts.
+     * @summary Contacts  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).contactsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Contacts.
+     * @summary Contacts  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public contactsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).contactsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40422,13 +45360,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
      * @summary Data Collection Set Members  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40463,6 +45399,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public dataCollectionSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+     * @summary Data Collection Set Members  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollectionSetMembers.
+     * @summary Data Collection Set Members  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetMembersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40561,13 +45519,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on DataCollectionSets.
      * @summary Data Collection Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40602,6 +45558,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public dataCollectionSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
+     * @summary Data Collection Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollectionSets.
+     * @summary Data Collection Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40675,7 +45653,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to update the association between a CaseDbDataCollectionSet and DataCollections.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
+     * Represents a request to update a data collection set\'s data collection associations.  This command manages the many-to-many relationship by creating or updating CaseDbDataCollectionSetMember associations between data collection sets and individual data collections.
      * @summary Datacollectionset Datacollection
      * @param {string} dataCollectionSetId 
      * @param {CaseDbDataCollectionSetDataCollectionUpdateAssociationRequestBody} dataCollectionSetDataCollectionUpdateAssociationRequestBody 
@@ -40712,13 +45690,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on DataCollections.
      * @summary Data Collections  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public dataCollectionsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public dataCollectionsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40753,6 +45729,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public dataCollectionsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).dataCollectionsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollections.
+     * @summary Data Collections  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on DataCollections.
+     * @summary Data Collections  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public dataCollectionsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).dataCollectionsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40851,13 +45849,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on IdentifierIssuers.
      * @summary Identifier Issuers  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public identifierIssuersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public identifierIssuersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40892,6 +45888,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public identifierIssuersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).identifierIssuersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
+     * @summary Identifier Issuers  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public identifierIssuersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on IdentifierIssuers.
+     * @summary Identifier Issuers  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public identifierIssuersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).identifierIssuersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -40999,7 +46017,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve the constraints for inviting a user, such as valid roles and organizations.  This command is used to gather the necessary information for the user invitation process.
+     * Represents a request to retrieve user invitation constraints.  Constraints include valid roles and organizations needed for user invitations.
      * @summary The Constraints For Inviting A CaseDbUser
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41011,13 +46029,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
      * @summary CaseDbOrganization Identifier Issuer Links  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationIdentifierIssuerLinksDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationIdentifierIssuerLinksDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41052,6 +46068,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public organizationIdentifierIssuerLinksGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+     * @summary CaseDbOrganization Identifier Issuer Links  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationIdentifierIssuerLinksGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationIdentifierIssuerLinks.
+     * @summary CaseDbOrganization Identifier Issuer Links  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationIdentifierIssuerLinksGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationIdentifierIssuerLinksGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41150,13 +46188,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on OrganizationSetMembers.
      * @summary CaseDbOrganization Set Members  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetMembersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetMembersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41191,6 +46227,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public organizationSetMembersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+     * @summary CaseDbOrganization Set Members  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationSetMembersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationSetMembers.
+     * @summary CaseDbOrganization Set Members  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationSetMembersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetMembersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41289,13 +46347,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on OrganizationSets.
      * @summary CaseDbOrganization Sets  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationSetsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationSetsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationSetsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41330,6 +46386,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public organizationSetsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).organizationSetsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationSets.
+     * @summary CaseDbOrganization Sets  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationSetsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on OrganizationSets.
+     * @summary CaseDbOrganization Sets  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationSetsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationSetsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41415,7 +46493,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to update the association between an CaseDbOrganizationSet and Organizations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
+     * Represents a request to update an organization set\'s organization associations.  This command manages the many-to-many relationship by creating or updating CaseDbOrganizationSetMember associations between organization sets and individual organizations.
      * @summary Organizationset CaseDbOrganization
      * @param {string} organizationSetId 
      * @param {CaseDbOrganizationSetOrganizationUpdateAssociationRequestBody} organizationSetOrganizationUpdateAssociationRequestBody 
@@ -41440,13 +46518,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Organizations.
      * @summary Organizations  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public organizationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).organizationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public organizationsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41481,6 +46557,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public organizationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).organizationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Organizations.
+     * @summary Organizations  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Organizations.
+     * @summary Organizations  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public organizationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).organizationsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41554,7 +46652,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to update the association between an CaseDbOrganization and IdentifierIssuers.
+     * Represents a request to update an organization\'s identifier issuer associations.
      * @summary Update Association Between CaseDbOrganization And Identifierissuer
      * @param {string} organizationId 
      * @param {CaseDbOrganizationIdentifierIssuerUpdateAssociationRequestBody} organizationIdentifierIssuerUpdateAssociationRequestBody 
@@ -41589,7 +46687,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve Contacts associated with organizations, sites, or specific contacts.  Exactly one of organization_ids, site_ids, or contact_ids must be provided. Returns a list of contacts with their associated site and organization data cascaded.
+     * Represents a request to retrieve contacts associated with one organization.  Returns contacts with their associated site and organization data cascaded.
      * @summary Retrieve CaseDbOrganization Contacts
      * @param {CaseDbRetrieveOrganizationContactsRequestBody} retrieveOrganizationContactsRequestBody 
      * @param {*} [options] Override http request option.
@@ -41602,13 +46700,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Sites.
      * @summary Sites  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public sitesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).sitesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public sitesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).sitesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41643,6 +46739,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public sitesGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).sitesGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Sites.
+     * @summary Sites  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public sitesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).sitesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Sites.
+     * @summary Sites  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public sitesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).sitesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41764,13 +46882,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on UserInvitations.
      * @summary CaseDbUser Invitations  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public userInvitationsDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).userInvitationsDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public userInvitationsDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).userInvitationsDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41805,6 +46921,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public userInvitationsGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).userInvitationsGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on UserInvitations.
+     * @summary CaseDbUser Invitations  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public userInvitationsGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).userInvitationsGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on UserInvitations.
+     * @summary CaseDbUser Invitations  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public userInvitationsGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).userInvitationsGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41901,7 +47039,7 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents an authenticated commondb user and their organization membership.  The user key is stored lower case for unique lookup. Inactive users retain their data but cannot perform operations that require authorization.
+     * Represents a request to retrieve the executing user.  The result is the registered user that the request is authenticated as, including its key, roles, and organization.
      * @summary Userme
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -41934,13 +47072,11 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
     /**
      * Represents a request to perform a CRUD operation on Users.
      * @summary Users  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public usersDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbOrganizationApiFp(this.configuration).usersDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public usersDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).usersDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -41975,6 +47111,28 @@ export class CaseDbOrganizationApi extends CaseDbBaseAPI {
      */
     public usersGetAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
         return CaseDbOrganizationApiFp(this.configuration).usersGetAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Users.
+     * @summary Users  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public usersGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).usersGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to perform a CRUD operation on Users.
+     * @summary Users  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public usersGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbOrganizationApiFp(this.configuration).usersGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
@@ -42144,14 +47302,12 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        outagesDeleteAll: async (limit?: number | null, offset?: number | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        outagesDeleteAll: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/outages`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -42163,14 +47319,6 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (limit !== undefined) {
-                localVarQueryParameter['limit'] = limit;
-            }
-
-            if (offset !== undefined) {
-                localVarQueryParameter['offset'] = offset;
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -42184,7 +47332,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -42218,7 +47366,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -42255,7 +47403,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -42295,7 +47443,78 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
+         * @summary Outages  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        outagesGetExistsOne: async (objectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'objectId' is not null or undefined
+            assertParamExists('outagesGetExistsOne', 'objectId', objectId)
+            const localVarPath = `/v1/outages/{object_id}/exists`
+                .replace(`{${"object_id"}}`, encodeURIComponent(String(objectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute CRUD operations on system outage windows.
+         * @summary Outages  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        outagesGetExistsSome: async (ids: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            assertParamExists('outagesGetExistsSome', 'ids', ids)
+            const localVarPath = `/v1/outages/exists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (ids !== undefined) {
+                localVarQueryParameter['ids'] = ids;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -42329,7 +47548,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -42366,7 +47585,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post One
          * @param {CaseDbOutage} outage 
          * @param {*} [options] Override http request option.
@@ -42401,7 +47620,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -42446,7 +47665,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -42491,7 +47710,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Some
          * @param {Array<CaseDbOutage>} outage 
          * @param {*} [options] Override http request option.
@@ -42526,7 +47745,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Put One
          * @param {string} objectId 
          * @param {CaseDbOutage} outage 
@@ -42565,7 +47784,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Put Some
          * @param {Array<CaseDbOutage>} outage 
          * @param {*} [options] Override http request option.
@@ -42600,7 +47819,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to retrieve feature flags exposed by the composed application.
+         * Represents a request to execute retrieval of composed-application flags.
          * @summary Feature Flags
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -42630,7 +47849,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to retrieve license metadata for installed application packages.
+         * Represents a request to execute retrieval of installed-package licenses.
          * @summary Licenses
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -42660,7 +47879,7 @@ const CaseDbSystemApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Represents a request to retrieve current and scheduled system outages for public availability status.
+         * Represents a request to execute retrieval of system outage information.
          * @summary Outages
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -42724,21 +47943,19 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete All
-         * @param {number | null} [limit] 
-         * @param {number | null} [offset] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async outagesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteAll(limit, offset, options);
+        async outagesDeleteAll(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesDeleteAll(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesDeleteAll']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -42751,7 +47968,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Delete Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -42764,7 +47981,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get All
          * @param {number | null} [limit] 
          * @param {number | null} [offset] 
@@ -42778,7 +47995,33 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
+         * @summary Outages  Get Exists One
+         * @param {string} objectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async outagesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesGetExistsOne(objectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesGetExistsOne']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute CRUD operations on system outage windows.
+         * @summary Outages  Get Exists Some
+         * @param {string} ids 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async outagesGetExistsSome(ids: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<boolean>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.outagesGetExistsSome(ids, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SystemApi.outagesGetExistsSome']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get One
          * @param {string} objectId 
          * @param {*} [options] Override http request option.
@@ -42791,7 +48034,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Get Some
          * @param {string} ids 
          * @param {*} [options] Override http request option.
@@ -42804,7 +48047,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post One
          * @param {CaseDbOutage} outage 
          * @param {*} [options] Override http request option.
@@ -42817,7 +48060,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Query
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -42832,7 +48075,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Query  Ids
          * @param {CaseDbFilter1} filter1 
          * @param {number | null} [limit] 
@@ -42847,7 +48090,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Post Some
          * @param {Array<CaseDbOutage>} outage 
          * @param {*} [options] Override http request option.
@@ -42860,7 +48103,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Put One
          * @param {string} objectId 
          * @param {CaseDbOutage} outage 
@@ -42874,7 +48117,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to manage persisted system outage windows and visibility information.
+         * Represents a request to execute CRUD operations on system outage windows.
          * @summary Outages  Put Some
          * @param {Array<CaseDbOutage>} outage 
          * @param {*} [options] Override http request option.
@@ -42887,7 +48130,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve feature flags exposed by the composed application.
+         * Represents a request to execute retrieval of composed-application flags.
          * @summary Feature Flags
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -42899,7 +48142,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve license metadata for installed application packages.
+         * Represents a request to execute retrieval of installed-package licenses.
          * @summary Licenses
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -42911,7 +48154,7 @@ const CaseDbSystemApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Represents a request to retrieve current and scheduled system outages for public availability status.
+         * Represents a request to execute retrieval of system outage information.
          * @summary Outages
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -42958,19 +48201,17 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Delete All
-     * @param {number | null} [limit] 
-     * @param {number | null} [offset] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public outagesDeleteAll(limit?: number | null, offset?: number | null, options?: RawAxiosRequestConfig) {
-        return CaseDbSystemApiFp(this.configuration).outagesDeleteAll(limit, offset, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public outagesDeleteAll(options?: RawAxiosRequestConfig) {
+        return CaseDbSystemApiFp(this.configuration).outagesDeleteAll(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Delete One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -42981,7 +48222,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Delete Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -42992,7 +48233,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Get All
      * @param {number | null} [limit] 
      * @param {number | null} [offset] 
@@ -43004,7 +48245,29 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
+     * @summary Outages  Get Exists One
+     * @param {string} objectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public outagesGetExistsOne(objectId: string, options?: RawAxiosRequestConfig) {
+        return CaseDbSystemApiFp(this.configuration).outagesGetExistsOne(objectId, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute CRUD operations on system outage windows.
+     * @summary Outages  Get Exists Some
+     * @param {string} ids 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public outagesGetExistsSome(ids: string, options?: RawAxiosRequestConfig) {
+        return CaseDbSystemApiFp(this.configuration).outagesGetExistsSome(ids, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    }
+
+    /**
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Get One
      * @param {string} objectId 
      * @param {*} [options] Override http request option.
@@ -43015,7 +48278,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Get Some
      * @param {string} ids 
      * @param {*} [options] Override http request option.
@@ -43026,7 +48289,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Post One
      * @param {CaseDbOutage} outage 
      * @param {*} [options] Override http request option.
@@ -43037,7 +48300,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Post Query
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -43050,7 +48313,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Post Query  Ids
      * @param {CaseDbFilter1} filter1 
      * @param {number | null} [limit] 
@@ -43063,7 +48326,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Post Some
      * @param {Array<CaseDbOutage>} outage 
      * @param {*} [options] Override http request option.
@@ -43074,7 +48337,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Put One
      * @param {string} objectId 
      * @param {CaseDbOutage} outage 
@@ -43086,7 +48349,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to manage persisted system outage windows and visibility information.
+     * Represents a request to execute CRUD operations on system outage windows.
      * @summary Outages  Put Some
      * @param {Array<CaseDbOutage>} outage 
      * @param {*} [options] Override http request option.
@@ -43097,7 +48360,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve feature flags exposed by the composed application.
+     * Represents a request to execute retrieval of composed-application flags.
      * @summary Feature Flags
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -43107,7 +48370,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve license metadata for installed application packages.
+     * Represents a request to execute retrieval of installed-package licenses.
      * @summary Licenses
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -43117,7 +48380,7 @@ export class CaseDbSystemApi extends CaseDbBaseAPI {
     }
 
     /**
-     * Represents a request to retrieve current and scheduled system outages for public availability status.
+     * Represents a request to execute retrieval of system outage information.
      * @summary Outages
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

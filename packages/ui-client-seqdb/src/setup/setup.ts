@@ -27,8 +27,8 @@ import {
   createAdminRoutes,
   createRoutes,
 } from '../routes';
-import type { SEQDB_QUERY_KEY } from '../data/query';
-import { SEQDB_QUERY_DEPENDENCIES } from '../data/query';
+import type { SEQDB_QUERY_KEY } from '../constants/query.constants';
+import { SEQDB_QUERY_DEPENDENCIES } from '../constants/query.constants';
 import type { SeqDbConfig } from '../models/config.models';
 
 export const setupSeqDb = (container: DependencyContainer) => {

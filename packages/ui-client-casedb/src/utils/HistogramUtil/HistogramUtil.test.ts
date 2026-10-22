@@ -241,6 +241,11 @@ describe('HistogramUtil', () => {
       expect(HistogramUtil.getDefaultCols([], cct)).toBeNull();
     });
 
+    it('returns null when the complete case type is absent', () => {
+      const col = makeCol('c1', 'r1', 'dim1');
+      expect(HistogramUtil.getDefaultCols([col], null)).toBeNull();
+    });
+
     it('returns null when there is only one dimension with cols', () => {
       const col = makeCol('c1', 'r1', 'dim1');
       const cct = makeCompleteCaseType([col], { r1: makeRefCol(CaseDbColType.NOMINAL) }, ['dim1']);

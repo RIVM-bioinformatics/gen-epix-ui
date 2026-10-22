@@ -28,17 +28,10 @@ describe('MenuDataUtil', () => {
       expect(MenuDataUtil.isMenuItemData((): void => undefined)).toBe(false);
     });
 
-    it('should return true for empty array (no properties to fail validation)', () => {
-      expect(MenuDataUtil.isMenuItemData([])).toBe(true);
-    });
-
-    it('should return true for array (arrays are objects with no uid, so pass validation)', () => {
-      expect(MenuDataUtil.isMenuItemData([])).toBe(true);
-    });
-
-    it('should return true for array with numeric elements (no uid property to fail)', () => {
-      expect(MenuDataUtil.isMenuItemData([123] as unknown)).toBe(true);
-      expect(MenuDataUtil.isMenuItemData([null] as unknown)).toBe(true);
+    it('should return false for arrays because lists are validated separately', () => {
+      expect(MenuDataUtil.isMenuItemData([])).toBe(false);
+      expect(MenuDataUtil.isMenuItemData([123] as unknown)).toBe(false);
+      expect(MenuDataUtil.isMenuItemData([null] as unknown)).toBe(false);
     });
 
     it('should return true for a minimal valid MenuItemData with only label', () => {

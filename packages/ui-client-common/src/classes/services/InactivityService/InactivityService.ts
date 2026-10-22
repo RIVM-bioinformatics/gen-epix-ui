@@ -68,9 +68,7 @@ export class InactivityService extends SubscribableAbstract<InactivityState> {
           this.logout();
         }
 
-        if (this.isIdle) {
-          this.doNext();
-        }
+        this.doNext();
       }
     }, 500);
   }

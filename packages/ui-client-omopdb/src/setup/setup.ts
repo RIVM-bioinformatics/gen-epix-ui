@@ -27,8 +27,8 @@ import {
   createAdminRoutes,
   createRoutes,
 } from '../routes';
-import type { OMOPDB_QUERY_KEY } from '../data/query';
-import { OMOPDB_QUERY_DEPENDENCIES } from '../data/query';
+import type { OMOPDB_QUERY_KEY } from '../constants/query.constants';
+import { OMOPDB_QUERY_DEPENDENCIES } from '../constants/query.constants';
 import type { OmopDbConfig } from '../models/config.models';
 
 export const setupOmopDb = (container: DependencyContainer) => {

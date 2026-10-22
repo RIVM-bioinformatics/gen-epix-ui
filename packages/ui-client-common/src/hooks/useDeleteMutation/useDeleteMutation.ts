@@ -36,16 +36,14 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
 
   const deleteMutation = useMutation<unknown, Error, TData, MutationContextDelete<TData>>({
     mutationFn: async (item) => {
+      if (!queryFn) {
+        throw new Error('Delete mutation queryFn is required');
+      }
       return queryFn(item);
     },
     onError: async (error, item, context) => {
-      if (resourceQueryKey) {
-        queryClient.setQueryData(resourceQueryKey, (oldItems: TData[]) => {
-          if (!Array.isArray(oldItems)) {
-            return oldItems;
-          }
-          return [...oldItems, item];
-        });
+      if (resourceQueryKey && Array.isArray(context.previousData)) {
+        queryClient.setQueryData<TData[]>(resourceQueryKey, context.previousData);
       }
       if (associationQueryKeys) {
         await container.resolve(QueryClientService).invalidateQueryKeys(associationQueryKeys);
@@ -53,7 +51,8 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
       if (onError) {
         await onError(error, item, context);
       }
-      container.resolve(NotificationService).fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(getErrorNotificationMessage(item, error), error), 'error');
+      const errorMessage = getErrorNotificationMessage?.(item, error) ?? String(error);
+      container.resolve(NotificationService).fulfillNotification(context.notificationKey, NotificationUtil.wrapErrorNotificationMessage(errorMessage, error), 'error');
     },
     onMutate: async (item) => {
       const notificationKey = container.resolve(NotificationService).showNotification({
@@ -81,7 +80,8 @@ export const useDeleteMutation = <TData extends GenericData | GenericData[]>({
       if (onSuccess) {
         await onSuccess(item, context);
       }
-      container.resolve(NotificationService).fulfillNotification(context.notificationKey, getSuccessNotificationMessage(item, context), 'success');
+      const successMessage = getSuccessNotificationMessage?.(item, context) ?? 'Deleted successfully';
+      container.resolve(NotificationService).fulfillNotification(context.notificationKey, successMessage, 'success');
     },
   });
 

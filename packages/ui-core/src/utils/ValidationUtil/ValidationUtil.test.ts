@@ -241,6 +241,8 @@ describe('ValidationUtil', () => {
     it('should return false for invalid week values', () => {
       expect(ValidationUtil.validate('TIME_WEEK', '2026-W54')).toBe(false);
       expect(ValidationUtil.validate('TIME_WEEK', '2026-W60')).toBe(false);
+      expect(ValidationUtil.validate('TIME_WEEK', '2026-W0')).toBe(false);
+      expect(ValidationUtil.validate('TIME_WEEK', '2026-W00')).toBe(false);
       expect(ValidationUtil.validate('TIME_WEEK', '2026-1')).toBe(false);
       expect(ValidationUtil.validate('TIME_WEEK', '26-W01')).toBe(false);
     });

@@ -107,9 +107,7 @@ export class DateFilter extends FilterAbstract<[Date, Date]> implements Filter<[
     if (isDate(left)) {
       return isAfter(rowDateValue, left) || isEqual(rowDateValue, left);
     }
-    if (isDate(right)) {
-      return isBefore(rowDateValue, right) || isEqual(rowDateValue, right);
-    }
+    return isBefore(rowDateValue, right) || isEqual(rowDateValue, right);
   }
 
   public toBackendFilter(): CommonDbDateRangeFilter | CommonDbPartialDateRangeFilter {
@@ -117,13 +115,18 @@ export class DateFilter extends FilterAbstract<[Date, Date]> implements Filter<[
       return;
     }
 
+    const lowerBound = this.filterValue[0];
+    const upperBound = this.filterValue[1];
+    const hasValidLowerBound = isDate(lowerBound) && isValid(lowerBound);
+    const hasValidUpperBound = isDate(upperBound) && isValid(upperBound);
+
     return {
       key: this.id,
-      lower_bound: this.filterValue[0] && isDate(this.filterValue[0]) ? format(this.filterValue[0], DATE_FORMAT.DATE) : undefined,
-      lower_bound_censor: this.filterValue[0] ? '>=' : undefined,
+      lower_bound: hasValidLowerBound ? format(lowerBound, DATE_FORMAT.DATE) : undefined,
+      lower_bound_censor: hasValidLowerBound ? '>=' : undefined,
       type: this.backendFilterType,
-      upper_bound: this.filterValue[1] && isDate(this.filterValue[1]) ? format(this.filterValue[1], DATE_FORMAT.DATE) : undefined,
-      upper_bound_censor: this.filterValue[1] ? '<=' : undefined,
+      upper_bound: hasValidUpperBound ? format(upperBound, DATE_FORMAT.DATE) : undefined,
+      upper_bound_censor: hasValidUpperBound ? '<=' : undefined,
     };
   }
 

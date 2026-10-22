@@ -556,6 +556,9 @@ export class TreeUtil {
       }
     };
     findNewRoot(rootNode);
+    if (!newRoot) {
+      throw new Error(`Tree node "${nodeName}" was not found.`);
+    }
     return {
       ...newRoot,
       branchLength: new Decimal(0),

@@ -116,7 +116,7 @@ export class PageEventBusService extends EventBusAbstract<EpiEvent> {
     for (const child of Array.from(element.childNodes)) {
       const found = this.traverseDom(child as HTMLElement, predicate);
       if (found) {
-        return child as HTMLElement;
+        return found;
       }
     }
     return null;

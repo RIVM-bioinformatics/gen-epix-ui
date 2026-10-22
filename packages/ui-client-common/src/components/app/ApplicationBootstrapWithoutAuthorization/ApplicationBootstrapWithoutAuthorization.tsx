@@ -25,6 +25,8 @@ import { QueryClientService } from '../../../classes/services/QueryClientService
 import { PageContainer } from '../../ui/PageContainer';
 import { ResponseHandler } from '../../ui/ResponseHandler';
 import { COMMON_QUERY_KEY } from '../../../constants/query.constants';
+import { LoadableUtil } from '../../../utils/LoadableUtil';
+import { ErrorPage } from '../../../pages/ErrorPage';
 
 
 export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWithChildren): ReactNode => {
@@ -67,6 +69,12 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
 
   const loadables = useArray([featureFlagsQuery]);
 
+  if (LoadableUtil.hasSomeError(loadables)) {
+    return (
+      <ErrorPage error={featureFlagsQuery.error} />
+    );
+  }
+
   if (isLanguageChanging) {
     return (
       <PageContainer
@@ -81,7 +89,6 @@ export const ApplicationBootstrapWithoutAuthorization = ({ children }: PropsWith
       </PageContainer>
     );
   }
-
 
   return (
     <ResponseHandler
