@@ -22,41 +22,41 @@ export type CommonDbAuthProtocol = typeof CommonDbAuthProtocol[keyof typeof Comm
 
 
 export const CommonDbCommandName = {
-  DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-  ContactCrudCommand: 'ContactCrudCommand',
-  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
   RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
   RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+  OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
   GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-  DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+  OutageCrudCommand: 'OutageCrudCommand',
+  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
   RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-  UpdateUserCommand: 'UpdateUserCommand',
+  UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+  IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+  AnonymizeUserCommand: 'AnonymizeUserCommand',
+  InviteUserCommand: 'InviteUserCommand',
+  RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+  OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+  OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+  OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+  DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+  RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
   UserCrudCommand: 'UserCrudCommand',
-  SiteCrudCommand: 'SiteCrudCommand',
   OrganizationCrudCommand: 'OrganizationCrudCommand',
+  DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+  DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+  ContactCrudCommand: 'ContactCrudCommand',
   RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+  UpdateUserCommand: 'UpdateUserCommand',
+  RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
   UserInvitationCrudCommand: 'UserInvitationCrudCommand',
   DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
-  RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
-  OutageCrudCommand: 'OutageCrudCommand',
-  InviteUserCommand: 'InviteUserCommand',
-  RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-  OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-  RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-  OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-  RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-  AnonymizeUserCommand: 'AnonymizeUserCommand',
-  DataCollectionCrudCommand: 'DataCollectionCrudCommand',
   RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+  DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+  SiteCrudCommand: 'SiteCrudCommand',
 } as const;
 
 export type CommonDbCommandName = typeof CommonDbCommandName[keyof typeof CommonDbCommandName];
@@ -674,7 +674,7 @@ export interface CommonDbAbacApi {
   organizationAdminPoliciesPostSome(organizationAdminPolicy: Array<CommonDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
   organizationAdminPoliciesPutOne(objectId: string, organizationAdminPolicy: CommonDbOrganizationAdminPolicy, options?: RawAxiosRequestConfig): Promise<AxiosResponse<CommonDbOrganizationAdminPolicy>>;
   organizationAdminPoliciesPutSome(organizationAdminPolicy: Array<CommonDbOrganizationAdminPolicy>, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbOrganizationAdminPolicy>>>;
-  retrieveOrganizationAdminNameEmails(args: any, kwargs: any, options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUserNameEmail>>>;
+  retrieveOrganizationAdminNameEmails(options?: RawAxiosRequestConfig): Promise<AxiosResponse<Array<CommonDbUserNameEmail>>>;
 }
 
 

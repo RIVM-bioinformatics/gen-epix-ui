@@ -152,100 +152,100 @@ export interface OmopDbCohortDefinition {
 }
 
 export const OmopDbCommandName = {
-    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
-    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
-    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
-    ConceptCrudCommand: 'ConceptCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
-    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
-    RelationshipCrudCommand: 'RelationshipCrudCommand',
-    ConceptSynonymCrudCommand: 'ConceptSynonymCrudCommand',
-    UploadPersonsCommand: 'UploadPersonsCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
-    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
-    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
-    LocationCrudCommand: 'LocationCrudCommand',
-    ObservationIdentifierCrudCommand: 'ObservationIdentifierCrudCommand',
-    DomainCrudCommand: 'DomainCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
-    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
-    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
-    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
-    EpisodeCrudCommand: 'EpisodeCrudCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    CostCrudCommand: 'CostCrudCommand',
-    DoseEraCrudCommand: 'DoseEraCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-    SpecimenCrudCommand: 'SpecimenCrudCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
-    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
-    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
-    RetrievePersonsByQueryCommand: 'RetrievePersonsByQueryCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
-    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
-    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
-    MeasurementRelationIdentifierCrudCommand: 'MeasurementRelationIdentifierCrudCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    VocabularyCrudCommand: 'VocabularyCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    CareSiteCrudCommand: 'CareSiteCrudCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
-    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
-    MeasurementCrudCommand: 'MeasurementCrudCommand',
-    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
-    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
-    CohortCrudCommand: 'CohortCrudCommand',
-    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
-    MetadataCrudCommand: 'MetadataCrudCommand',
-    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
-    ObservationCrudCommand: 'ObservationCrudCommand',
-    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
-    ConceptClassCrudCommand: 'ConceptClassCrudCommand',
-    VisitDetailCrudCommand: 'VisitDetailCrudCommand',
-    ConceptRelationshipCrudCommand: 'ConceptRelationshipCrudCommand',
-    EpisodeEventCrudCommand: 'EpisodeEventCrudCommand',
-    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
-    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
-    PersonCrudCommand: 'PersonCrudCommand',
-    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
-    DeathCrudCommand: 'DeathCrudCommand',
-    RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    ProcedureOccurrenceIdentifierCrudCommand: 'ProcedureOccurrenceIdentifierCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    DrugEraCrudCommand: 'DrugEraCrudCommand',
-    DrugExposureIdentifierCrudCommand: 'DrugExposureIdentifierCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    CohortDefinitionCrudCommand: 'CohortDefinitionCrudCommand',
-    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
-    ProviderCrudCommand: 'ProviderCrudCommand',
-    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
     RetrieveSpecimenIdsByCohortIdsCommand: 'RetrieveSpecimenIdsByCohortIdsCommand',
-    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
     FactRelationshipCrudCommand: 'FactRelationshipCrudCommand',
+    ConceptRelationshipCrudCommand: 'ConceptRelationshipCrudCommand',
+    RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    RetrievePersonsByIdCommand: 'RetrievePersonsByIdCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    DeathCrudCommand: 'DeathCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    MeasurementIdentifierCrudCommand: 'MeasurementIdentifierCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    SpecimenCrudCommand: 'SpecimenCrudCommand',
+    CdmSourceCrudCommand: 'CdmSourceCrudCommand',
+    DomainCrudCommand: 'DomainCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
+    ProcedureOccurrenceCrudCommand: 'ProcedureOccurrenceCrudCommand',
+    OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    ConditionEraCrudCommand: 'ConditionEraCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    ConceptCrudCommand: 'ConceptCrudCommand',
+    ObservationPeriodCrudCommand: 'ObservationPeriodCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    ConceptSynonymCrudCommand: 'ConceptSynonymCrudCommand',
     NoteCrudCommand: 'NoteCrudCommand',
+    ObservationPeriodIdentifierCrudCommand: 'ObservationPeriodIdentifierCrudCommand',
+    DeathIdentifierCrudCommand: 'DeathIdentifierCrudCommand',
+    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+    RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
+    DrugStrengthCrudCommand: 'DrugStrengthCrudCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    NoteIdentifierCrudCommand: 'NoteIdentifierCrudCommand',
+    ConditionOccurrenceCrudCommand: 'ConditionOccurrenceCrudCommand',
+    CareSiteCrudCommand: 'CareSiteCrudCommand',
+    NoteNlpIdentifierCrudCommand: 'NoteNlpIdentifierCrudCommand',
+    VisitOccurrenceCrudCommand: 'VisitOccurrenceCrudCommand',
+    LocationCrudCommand: 'LocationCrudCommand',
+    MeasurementCrudCommand: 'MeasurementCrudCommand',
+    CohortCrudCommand: 'CohortCrudCommand',
+    EpisodeCrudCommand: 'EpisodeCrudCommand',
+    SourceToConceptMapCrudCommand: 'SourceToConceptMapCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    VisitDetailCrudCommand: 'VisitDetailCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    ConceptClassCrudCommand: 'ConceptClassCrudCommand',
+    PersonCrudCommand: 'PersonCrudCommand',
+    MeasurementRelationCrudCommand: 'MeasurementRelationCrudCommand',
+    ObservationIdentifierCrudCommand: 'ObservationIdentifierCrudCommand',
+    ObservationCrudCommand: 'ObservationCrudCommand',
+    PersonIdentifierCrudCommand: 'PersonIdentifierCrudCommand',
+    DoseEraCrudCommand: 'DoseEraCrudCommand',
+    VocabularyCrudCommand: 'VocabularyCrudCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    VisitOccurrenceIdentifierCrudCommand: 'VisitOccurrenceIdentifierCrudCommand',
+    MetadataCrudCommand: 'MetadataCrudCommand',
+    DeviceExposureCrudCommand: 'DeviceExposureCrudCommand',
+    DrugExposureCrudCommand: 'DrugExposureCrudCommand',
+    MeasurementRelationIdentifierCrudCommand: 'MeasurementRelationIdentifierCrudCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    ProcedureOccurrenceIdentifierCrudCommand: 'ProcedureOccurrenceIdentifierCrudCommand',
+    DrugExposureIdentifierCrudCommand: 'DrugExposureIdentifierCrudCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    RetrievePersonsByQueryCommand: 'RetrievePersonsByQueryCommand',
+    NoteNlpCrudCommand: 'NoteNlpCrudCommand',
+    ConceptAncestorCrudCommand: 'ConceptAncestorCrudCommand',
+    SpecimenIdentifierCrudCommand: 'SpecimenIdentifierCrudCommand',
+    RelationshipCrudCommand: 'RelationshipCrudCommand',
+    UserInvitationCrudCommand: 'UserInvitationCrudCommand',
+    VisitDetailIdentifierCrudCommand: 'VisitDetailIdentifierCrudCommand',
+    EpisodeEventCrudCommand: 'EpisodeEventCrudCommand',
+    UploadPersonsCommand: 'UploadPersonsCommand',
+    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
+    RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    CostCrudCommand: 'CostCrudCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    ProviderCrudCommand: 'ProviderCrudCommand',
+    DrugEraCrudCommand: 'DrugEraCrudCommand',
+    PayerPlanPeriodCrudCommand: 'PayerPlanPeriodCrudCommand',
+    DeviceExposureIdentifierCrudCommand: 'DeviceExposureIdentifierCrudCommand',
+    CohortDefinitionCrudCommand: 'CohortDefinitionCrudCommand',
+    ConditionOccurrenceIdentifierCrudCommand: 'ConditionOccurrenceIdentifierCrudCommand',
 } as const;
 
 export type OmopDbCommandName = typeof OmopDbCommandName[keyof typeof OmopDbCommandName];
@@ -3826,16 +3826,10 @@ const OmopDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
-         * @param {any} args 
-         * @param {any} kwargs 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveOrganizationAdminNameEmails: async (args: any, kwargs: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'args' is not null or undefined
-            assertParamExists('retrieveOrganizationAdminNameEmails', 'args', args)
-            // verify required parameter 'kwargs' is not null or undefined
-            assertParamExists('retrieveOrganizationAdminNameEmails', 'kwargs', kwargs)
+        retrieveOrganizationAdminNameEmails: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/retrieve_organization_admin_name_emails`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3847,18 +3841,6 @@ const OmopDbAbacApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (args !== undefined) {
-                for (const [key, value] of Object.entries(args)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
-
-            if (kwargs !== undefined) {
-                for (const [key, value] of Object.entries(kwargs)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -4070,13 +4052,11 @@ const OmopDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
-         * @param {any} args 
-         * @param {any} kwargs 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveOrganizationAdminNameEmails(args: any, kwargs: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbUserNameEmail>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveOrganizationAdminNameEmails(args, kwargs, options);
+        async retrieveOrganizationAdminNameEmails(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<OmopDbUserNameEmail>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveOrganizationAdminNameEmails(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.retrieveOrganizationAdminNameEmails']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4257,13 +4237,11 @@ export class OmopDbAbacApi extends OmopDbBaseAPI {
     /**
      * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
      * @summary Retrieveorganizationadminnameemailscommand
-     * @param {any} args 
-     * @param {any} kwargs 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public retrieveOrganizationAdminNameEmails(args: any, kwargs: any, options?: RawAxiosRequestConfig) {
-        return OmopDbAbacApiFp(this.configuration).retrieveOrganizationAdminNameEmails(args, kwargs, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public retrieveOrganizationAdminNameEmails(options?: RawAxiosRequestConfig) {
+        return OmopDbAbacApiFp(this.configuration).retrieveOrganizationAdminNameEmails(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 }
 

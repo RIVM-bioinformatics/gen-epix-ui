@@ -213,89 +213,89 @@ export interface SeqDbCalculateSeqDistancesEtlResult {
 
 
 export const SeqDbCommandName = {
-    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
-    AlleleCrudCommand: 'AlleleCrudCommand',
+    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
     TaxonCrudCommand: 'TaxonCrudCommand',
-    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
-    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
-    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
-    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
-    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
-    ContactCrudCommand: 'ContactCrudCommand',
-    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
-    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
-    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
-    CreateFileCommand: 'CreateFileCommand',
     PcrMeasurementCrudCommand: 'PcrMeasurementCrudCommand',
-    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
     RegisterInvitedUserCommand: 'RegisterInvitedUserCommand',
-    LocusSetCrudCommand: 'LocusSetCrudCommand',
-    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
-    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
+    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
     RetrieveFeatureFlagsCommand: 'RetrieveFeatureFlagsCommand',
+    ProtocolSetCrudCommand: 'ProtocolSetCrudCommand',
+    RetrieveSeqDistanceLastModifiedCommand: 'RetrieveSeqDistanceLastModifiedCommand',
+    OrganizationIdentifierIssuerLinkCrudCommand: 'OrganizationIdentifierIssuerLinkCrudCommand',
+    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
+    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
+    OutageCrudCommand: 'OutageCrudCommand',
+    LocusSetCrudCommand: 'LocusSetCrudCommand',
+    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
+    FileCrudCommand: 'FileCrudCommand',
+    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
+    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
+    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
+    UpdateUserOwnOrganizationCommand: 'UpdateUserOwnOrganizationCommand',
+    RetrieveBestSeqPerSampleCommand: 'RetrieveBestSeqPerSampleCommand',
+    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
+    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
+    AnonymizeUserCommand: 'AnonymizeUserCommand',
+    ConvertSeqFormatCommand: 'ConvertSeqFormatCommand',
+    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
+    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
+    InviteUserCommand: 'InviteUserCommand',
+    AstMeasurementCrudCommand: 'AstMeasurementCrudCommand',
+    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
     OrganizationSetCrudCommand: 'OrganizationSetCrudCommand',
+    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
+    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
+    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
+    OrganizationSetOrganizationUpdateAssociationCommand: 'OrganizationSetOrganizationUpdateAssociationCommand',
+    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
+    SeqCrudCommand: 'SeqCrudCommand',
+    RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
+    UserCrudCommand: 'UserCrudCommand',
+    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
+    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
+    RefSeqCrudCommand: 'RefSeqCrudCommand',
+    OrganizationCrudCommand: 'OrganizationCrudCommand',
+    DataCollectionSetMemberCrudCommand: 'DataCollectionSetMemberCrudCommand',
+    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
+    RetrieveSeqDistancesBySeqProfilesCommand: 'RetrieveSeqDistancesBySeqProfilesCommand',
+    SampleDataCollectionLinkCrudCommand: 'SampleDataCollectionLinkCrudCommand',
+    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
+    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
+    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
+    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
+    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
+    ContactCrudCommand: 'ContactCrudCommand',
+    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    SeqProfileCrudCommand: 'SeqProfileCrudCommand',
+    CreateFileCommand: 'CreateFileCommand',
+    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
+    UpdateUserCommand: 'UpdateUserCommand',
+    RetrieveOrganizationsUnderAdminCommand: 'RetrieveOrganizationsUnderAdminCommand',
+    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
+    SampleCrudCommand: 'SampleCrudCommand',
+    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
+    SeqIdentifierCrudCommand: 'SeqIdentifierCrudCommand',
+    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
+    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
+    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
+    LocusCrudCommand: 'LocusCrudCommand',
     AstPredictionCrudCommand: 'AstPredictionCrudCommand',
     UploadSamplesCommand: 'UploadSamplesCommand',
-    TaxonSetMemberCrudCommand: 'TaxonSetMemberCrudCommand',
-    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
-    RetrieveInviteUserConstraintsCommand: 'RetrieveInviteUserConstraintsCommand',
-    ReadSetIdentifierCrudCommand: 'ReadSetIdentifierCrudCommand',
-    GetIdentityProvidersCommand: 'GetIdentityProvidersCommand',
-    CalculateSeqDistancesForNewProfilesCommand: 'CalculateSeqDistancesForNewProfilesCommand',
-    SampleIdentifierCrudCommand: 'SampleIdentifierCrudCommand',
-    IdentifierIssuerCrudCommand: 'IdentifierIssuerCrudCommand',
-    DeleteAllOperationalDataCommand: 'DeleteAllOperationalDataCommand',
-    OrganizationSetMemberCrudCommand: 'OrganizationSetMemberCrudCommand',
-    RetrieveSubRolesCommand: 'RetrieveSubRolesCommand',
-    DataCollectionSetDataCollectionUpdateAssociationCommand: 'DataCollectionSetDataCollectionUpdateAssociationCommand',
-    RefSeqCrudCommand: 'RefSeqCrudCommand',
-    LocusCrudCommand: 'LocusCrudCommand',
-    RetrieveBestSeqClassificationPerSampleCommand: 'RetrieveBestSeqClassificationPerSampleCommand',
-    UpdateUserCommand: 'UpdateUserCommand',
-    RetrieveBestSeqProfilePerSampleCommand: 'RetrieveBestSeqProfilePerSampleCommand',
-    RetrieveSimilarProfilesCommand: 'RetrieveSimilarProfilesCommand',
-    SampleCrudCommand: 'SampleCrudCommand',
-    UserCrudCommand: 'UserCrudCommand',
-    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
-    SiteCrudCommand: 'SiteCrudCommand',
-    RetrieveSampleIdentifiersByIdCommand: 'RetrieveSampleIdentifiersByIdCommand',
-    ConvertSeqFormatCommand: 'ConvertSeqFormatCommand',
-    OrganizationCrudCommand: 'OrganizationCrudCommand',
-    RetrieveLicensesCommand: 'RetrieveLicensesCommand',
     RetrieveSeqFastaCommand: 'RetrieveSeqFastaCommand',
-    SeqTaxonomyCrudCommand: 'SeqTaxonomyCrudCommand',
-    ReadSetCrudCommand: 'ReadSetCrudCommand',
-    FileCrudCommand: 'FileCrudCommand',
     UserInvitationCrudCommand: 'UserInvitationCrudCommand',
-    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
-    SeqCategoryCrudCommand: 'SeqCategoryCrudCommand',
-    RetrieveSeqDistancesBySeqProfilesCommand: 'RetrieveSeqDistancesBySeqProfilesCommand',
-    SeqCrudCommand: 'SeqCrudCommand',
-    LocusCodeMapCrudCommand: 'LocusCodeMapCrudCommand',
-    RetrieveOwnUserCommand: 'RetrieveOwnUserCommand',
-    OutageCrudCommand: 'OutageCrudCommand',
-    SeqCategorySetCrudCommand: 'SeqCategorySetCrudCommand',
-    TreeAlgorithmClassCrudCommand: 'TreeAlgorithmClassCrudCommand',
-    InviteUserCommand: 'InviteUserCommand',
-    RetrieveOwnPermissionsCommand: 'RetrieveOwnPermissionsCommand',
-    ProtocolSetMemberCrudCommand: 'ProtocolSetMemberCrudCommand',
-    SeqDistanceCrudCommand: 'SeqDistanceCrudCommand',
-    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
-    SeqClassificationCrudCommand: 'SeqClassificationCrudCommand',
-    OrganizationAdminPolicyCrudCommand: 'OrganizationAdminPolicyCrudCommand',
-    ProtocolCrudCommand: 'ProtocolCrudCommand',
+    RetrieveSamplesByIdCommand: 'RetrieveSamplesByIdCommand',
     TreeAlgorithmCrudCommand: 'TreeAlgorithmCrudCommand',
-    SeqProfileIdentifierCrudCommand: 'SeqProfileIdentifierCrudCommand',
-    RefAlleleCrudCommand: 'RefAlleleCrudCommand',
-    TaxonSetCrudCommand: 'TaxonSetCrudCommand',
-    RetrieveOutagesCommand: 'RetrieveOutagesCommand',
-    OrganizationIdentifierIssuerLinkUpdateAssociationCommand: 'OrganizationIdentifierIssuerLinkUpdateAssociationCommand',
-    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
-    RetrieveOrganizationAdminNameEmailsCommand: 'RetrieveOrganizationAdminNameEmailsCommand',
-    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
-    AnonymizeUserCommand: 'AnonymizeUserCommand',
-    DataCollectionCrudCommand: 'DataCollectionCrudCommand',
+    DeleteAllRefDataCommand: 'DeleteAllRefDataCommand',
     RetrieveOrganizationContactsCommand: 'RetrieveOrganizationContactsCommand',
+    RetrieveSamplesByQueryCommand: 'RetrieveSamplesByQueryCommand',
+    DataCollectionSetCrudCommand: 'DataCollectionSetCrudCommand',
+    AlleleCrudCommand: 'AlleleCrudCommand',
+    SiteCrudCommand: 'SiteCrudCommand',
+    CalculatePhylogeneticTreeCommand: 'CalculatePhylogeneticTreeCommand',
+    UpdateSeqDistancesCommand: 'UpdateSeqDistancesCommand',
+    ReadSetCrudCommand: 'ReadSetCrudCommand',
 } as const;
 
 export type SeqDbCommandName = typeof SeqDbCommandName[keyof typeof SeqDbCommandName];
@@ -3457,16 +3457,10 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
         /**
          * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
-         * @param {any} args 
-         * @param {any} kwargs 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveOrganizationAdminNameEmails: async (args: any, kwargs: any, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'args' is not null or undefined
-            assertParamExists('retrieveOrganizationAdminNameEmails', 'args', args)
-            // verify required parameter 'kwargs' is not null or undefined
-            assertParamExists('retrieveOrganizationAdminNameEmails', 'kwargs', kwargs)
+        retrieveOrganizationAdminNameEmails: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/retrieve_organization_admin_name_emails`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3478,18 +3472,6 @@ const SeqDbAbacApiAxiosParamCreator = function (configuration?: Configuration) {
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (args !== undefined) {
-                for (const [key, value] of Object.entries(args)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
-
-            if (kwargs !== undefined) {
-                for (const [key, value] of Object.entries(kwargs)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
 
             localVarHeaderParameter['Accept'] = 'application/json';
 
@@ -3701,13 +3683,11 @@ const SeqDbAbacApiFp = function(configuration?: Configuration) {
         /**
          * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
          * @summary Retrieveorganizationadminnameemailscommand
-         * @param {any} args 
-         * @param {any} kwargs 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveOrganizationAdminNameEmails(args: any, kwargs: any, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUserNameEmail>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveOrganizationAdminNameEmails(args, kwargs, options);
+        async retrieveOrganizationAdminNameEmails(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SeqDbUserNameEmail>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveOrganizationAdminNameEmails(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AbacApi.retrieveOrganizationAdminNameEmails']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3888,13 +3868,11 @@ export class SeqDbAbacApi extends SeqDbBaseAPI {
     /**
      * Represents a request to retrieve organization administrator contact details.  Results include the names and email addresses of administrators for the user\'s organization.
      * @summary Retrieveorganizationadminnameemailscommand
-     * @param {any} args 
-     * @param {any} kwargs 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public retrieveOrganizationAdminNameEmails(args: any, kwargs: any, options?: RawAxiosRequestConfig) {
-        return SeqDbAbacApiFp(this.configuration).retrieveOrganizationAdminNameEmails(args, kwargs, options).then((request) => request(this.axios, this.configuration.baseUrl));
+    public retrieveOrganizationAdminNameEmails(options?: RawAxiosRequestConfig) {
+        return SeqDbAbacApiFp(this.configuration).retrieveOrganizationAdminNameEmails(options).then((request) => request(this.axios, this.configuration.baseUrl));
     }
 }
 
