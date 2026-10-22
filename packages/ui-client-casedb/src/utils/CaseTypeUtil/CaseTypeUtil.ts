@@ -37,9 +37,6 @@ export class CaseTypeUtil {
 
     completeCaseType.ordered_dim_ids.forEach(dimId => {
       const cols = completeCaseType.ordered_col_ids_by_dim[dimId].map(x => completeCaseType.cols[x]);
-      if (!cols) {
-        return;
-      }
       const readsColumns = cols.filter(col => {
         const refCol = completeCaseType.ref_cols[col.ref_col_id];
         return refCol?.col_type === CaseDbColType.GENETIC_READS;
@@ -61,19 +58,8 @@ export class CaseTypeUtil {
    * @returns The unique column if found, otherwise null.
    */
   public static findUniqueColByColIdRefOrColId(completeCaseType: CaseDbCompleteCaseType, id: string): CaseDbCol {
-    const colId = Object.values(completeCaseType.cols).find(col => col.ref_col_id === id);
-    if (colId) {
-      return colId;
-    }
-    const colIds = Object.values(completeCaseType.ref_cols).filter(ref_col => ref_col.id === id);
-    if (colIds.length !== 1) {
-      return null;
-    }
-    const cols = Object.values(completeCaseType.cols).filter(col => col.ref_col_id === colIds[0].id);
-    if (cols.length !== 1) {
-      return null;
-    }
-    return cols[0];
+    const cols = Object.values(completeCaseType.cols).filter(col => col.id === id || col.ref_col_id === id);
+    return cols.length === 1 ? cols[0] : null;
   }
 
   public static getCols(completeCaseType: CaseDbCompleteCaseType, dimId?: string): CaseDbCol[] {
@@ -122,9 +108,15 @@ export class CaseTypeUtil {
       const refCols = cols.map(col => completeCaseType.ref_cols[col.ref_col_id]);
 
       if (refDims.dim_type === CaseDbDimType.GEO) {
-        visibleColumnIds.push(CaseTypeUtil.getPreferredGEOCol(cols).id);
+        const preferredCol = CaseTypeUtil.getPreferredGEOCol(cols);
+        if (preferredCol) {
+          visibleColumnIds.push(preferredCol.id);
+        }
       } else if (refDims.dim_type === CaseDbDimType.TIME || refDims.dim_type === CaseDbDimType.NUMBER || CaseTypeUtil.isGeneticDistanceDim(refDims, refCols)) {
-        visibleColumnIds.push(CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType).id);
+        const preferredCol = CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType);
+        if (preferredCol) {
+          visibleColumnIds.push(preferredCol.id);
+        }
       } else {
         visibleColumnIds.push(...cols.filter(cc => {
           const refCol = completeCaseType.ref_cols[cc.ref_col_id];
@@ -137,11 +129,11 @@ export class CaseTypeUtil {
     return visibleColumnIds;
   }
 
-  public static getPreferredColInDimHavingHighestRank(cols: CaseDbCol[], completeCaseType: CaseDbCompleteCaseType): CaseDbCol {
+  public static getPreferredColInDimHavingHighestRank(cols: CaseDbCol[], completeCaseType: CaseDbCompleteCaseType): CaseDbCol | undefined {
     return cols.find(col => completeCaseType.ref_cols[col.ref_col_id].rank === 1) ?? cols?.[0];
   }
 
-  public static getPreferredGEOCol(cols: CaseDbCol[]): CaseDbCol {
+  public static getPreferredGEOCol(cols: CaseDbCol[]): CaseDbCol | undefined {
     return cols[Math.min(cols.length - 1, Math.floor((cols.length - 1) / 2))];
   }
 

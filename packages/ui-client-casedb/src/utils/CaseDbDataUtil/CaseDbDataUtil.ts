@@ -14,13 +14,16 @@ import type { OptionBase } from '@gen-epix/ui-core-form/models/form.models';
 
 export class CaseDbDataUtil {
   public static conceptComparator(a: CaseDbConcept, b: CaseDbConcept): number {
-    if (!a.rank && !b.rank) {
+    const aHasRank = a.rank !== undefined && a.rank !== null;
+    const bHasRank = b.rank !== undefined && b.rank !== null;
+
+    if (!aHasRank && !bHasRank) {
       return a.code.localeCompare(b.code);
     }
-    if (a.rank && b.rank) {
+    if (aHasRank && bHasRank) {
       return a.rank - b.rank;
     }
-    return a.rank ? -1 : 1;
+    return aHasRank ? -1 : 1;
   }
 
   public static getCaseSetName(caseSet: CaseDbCaseSet): string {
@@ -32,9 +35,13 @@ export class CaseDbDataUtil {
     if (!refDim) {
       return [];
     }
+    const validColTypes = kwArgs.colsValidationRules?.[refDim.dim_type];
+    if (!validColTypes) {
+      return [];
+    }
     return kwArgs.colTypeOptions.filter((option) => {
       const colType = option.value as CaseDbColType;
-      return kwArgs.colsValidationRules[refDim.dim_type].includes(colType);
+      return validColTypes.includes(colType);
     });
   }
 
@@ -70,13 +77,20 @@ export class CaseDbDataUtil {
       return [];
     }
     const refDim = kwArgs.refDimMap.get(dim.ref_dim_id);
+    if (!refDim) {
+      return [];
+    }
+    const validColTypes = kwArgs.colsValidationRules?.[refDim.dim_type];
+    if (!validColTypes) {
+      return [];
+    }
     return kwArgs.refColOptions.filter((option) => {
       const refCol = kwArgs.refColMap.get(option.value);
-      if (refCol.ref_dim_id !== dim.ref_dim_id) {
+      if (refCol?.ref_dim_id !== dim.ref_dim_id) {
         return false;
       }
       const colType = refCol.col_type;
-      return kwArgs.colsValidationRules[refDim.dim_type].includes(colType);
+      return validColTypes.includes(colType);
     });
   }
 

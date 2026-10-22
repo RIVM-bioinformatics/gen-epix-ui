@@ -15,12 +15,15 @@ export const conceptSetTypePresentationValues: Partial<Record<CaseDbConceptSetTy
 };
 
 export const useConceptSetTypeOptionsQuery = (): UseOptions<string> => {
-  return useMemo(() => {
+  return useMemo<UseOptions<string>>(() => {
     const options: OptionBase<string>[] = Object.entries(conceptSetTypePresentationValues).map(([value, label]) => ({ label, value }));
     return {
       error: null,
+      isEnabled: true,
+      isFetching: false,
       isLoading: false,
+      isPending: false,
       options,
-    } as UseOptions<string>;
+    };
   }, []);
 };

@@ -5,7 +5,7 @@ import type { CASEDB_QUERY_KEY } from '../../../../constants/query.constants';
 
 type CaseIdCache = { [caseId: string]: boolean };
 
-type QueueItem = { caseId: string; isFetching: boolean; promise: Promise<boolean>; reject: () => void; resolve: (result: boolean) => void };
+type QueueItem = { caseId: string; isFetching: boolean; promise: Promise<boolean>; reject: (reason?: unknown) => void; resolve: (result: boolean) => void };
 
 export abstract class LineListServiceAbstract {
   protected readonly queryClientService: QueryClientService;
@@ -48,15 +48,14 @@ export abstract class LineListServiceAbstract {
     }
 
     caseIdsToFetch.forEach(caseId => {
-      if (this.queuedCases[caseId]) {
-        this.queuedCases[caseId].isFetching = true;
-      }
+      this.queuedCases[caseId].isFetching = true;
     });
 
     try {
       const queryClient = this.queryClientService.queryClient;
-      const newCache = { ...cache };
       const matchingCaseIds = await this.fetchMatchingCaseIds(caseIdsToFetch, caseTypeId);
+      const latestCache = this.queryClientService.getValidQueryData<CaseIdCache>([this.queryKey]) ?? {};
+      const newCache = { ...latestCache };
 
       matchingCaseIds.forEach((caseId) => {
         newCache[caseId] = true;
@@ -71,9 +70,9 @@ export abstract class LineListServiceAbstract {
       queryClient.setQueryData<CaseIdCache>(this.queryClientService.getGenericKey(this.queryKey), {
         ...newCache,
       });
-    } catch (_error: unknown) {
+    } catch (error: unknown) {
       caseIdsToFetch.forEach(caseId => {
-        this.queuedCases[caseId]?.reject();
+        this.queuedCases[caseId]?.reject(error);
         delete this.queuedCases[caseId];
       });
     }
@@ -95,7 +94,7 @@ export abstract class LineListServiceAbstract {
 
   private createQueueItem(caseId: string): QueueItem {
     let resolve!: (result: boolean) => void;
-    let reject!: () => void;
+    let reject!: (reason?: unknown) => void;
     const promise = new Promise<boolean>((res, rej) => {
       resolve = res;
       reject = rej;

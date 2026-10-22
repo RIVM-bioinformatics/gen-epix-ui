@@ -129,7 +129,7 @@ export const createUserProfileStore = (config: CaseDbConfig) => createStore<User
             continue;
           }
           if (!FormUtil.areFormValuesValid(fieldDefs, state.dashboardWidgetSettings[widgetName])) {
-            state.setWidgetSettings(widgetName, initialWidgetSettings[widgetName] ?? {});
+            state.setWidgetSettings(widgetName, initialWidgetSettings[widgetName]);
           }
         }
 

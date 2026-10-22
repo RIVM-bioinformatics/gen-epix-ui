@@ -36,7 +36,8 @@ export class CaseDbDownloadUtil {
       defaultEncoding: 'utf-8',
     });
     const fileName = `${CaseDbDownloadUtil.getExportFileName(t`Line list`, completeCaseType, t)}.csv`;
-    DownloadUtil.createDownloadUrl(`data:text/csv;base64,${btoa(csv)}`, fileName);
+    const base64 = DownloadUtil.arrayBufferToBase64(new TextEncoder().encode(csv).buffer);
+    DownloadUtil.createDownloadUrl(`data:text/csv;base64,${base64}`, fileName);
   }
 
   public static async downloadAsExcel(cases: CaseDbCase[], colIds: string[], completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): Promise<void> {
@@ -134,7 +135,8 @@ export class CaseDbDownloadUtil {
 
   public static downloadNewick(baseName: string, newick: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): void {
     const fileName = `${CaseDbDownloadUtil.getExportFileName(baseName, completeCaseType, t)}.txt`;
-    DownloadUtil.createDownloadUrl(`data:text/x-nh;base64,${btoa(newick)}`, fileName);
+    const base64 = DownloadUtil.arrayBufferToBase64(new TextEncoder().encode(newick).buffer);
+    DownloadUtil.createDownloadUrl(`data:text/x-nh;base64,${base64}`, fileName);
   }
 
   public static getExportFileName(baseName: string, completeCaseType: CaseDbCompleteCaseType, t: TFunction<'translation', undefined>): string {

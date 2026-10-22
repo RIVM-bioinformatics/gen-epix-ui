@@ -216,9 +216,13 @@ export class MapUtil {
         return;
       }
       if (!statisticsPerRegion[regionId]) {
+        const region = regions.find(regionData => regionData.id === regionId);
+        if (!region) {
+          return;
+        }
         statisticsPerRegion[regionId] = {
           numCases: 0,
-          region: regions.find(region => region.id === regionId),
+          region,
           rows: [],
         };
       }
@@ -228,8 +232,9 @@ export class MapUtil {
       // when count is null, 1 should be assumed
       numCases += (row.count ?? 1);
     });
-    const maxNumCases = max(Object.values(statisticsPerRegion).map(region => region.numCases));
-    const minNumCases = min(Object.values(statisticsPerRegion).map(region => region.numCases));
+    const regionCounts = Object.values(statisticsPerRegion).map(region => region.numCases);
+    const maxNumCases = max(regionCounts) ?? 0;
+    const minNumCases = min(regionCounts) ?? 0;
 
     return {
       maxNumCases,

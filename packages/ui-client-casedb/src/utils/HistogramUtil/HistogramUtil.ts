@@ -242,7 +242,7 @@ export class HistogramUtil {
     col: CaseDbCol,
     completeCaseType: CaseDbCompleteCaseType,
   ): CaseDbConcept[] {
-    const refCol = completeCaseType.ref_cols[col.ref_col_id ?? ''];
+    const refCol = completeCaseType.ref_cols[col.ref_col_id];
     const conceptIds =
       container.resolve(DataService).data.conceptsIdsBySetId[refCol.concept_set_id];
     return (

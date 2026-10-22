@@ -7,17 +7,20 @@ export class DataSetUtil {
     let uncategorizedMemberIds: string[] = [];
     const categorizedMemberIds: string[] = [];
 
-    const setIds: string[] = [];
+    const selectedSets: { id: string; memberIds: string[] }[] = [];
     if (intersectedMemberIds.length) {
       if (intersectedMemberIds.length === parentMemberIds.length && intersectedMemberIds.length === childMemberIds.length) {
         // all members are in the parent set and child set, so we can use the parent set id (optimization)
-        setIds.push(parentSetId);
+        selectedSets.push({ id: parentSetId, memberIds: intersectedMemberIds });
         categorizedMemberIds.push(...intersectedMemberIds);
       } else {
         mappedSetMembers.forEach((memberIds, setId) => {
+          if (!memberIds.length) {
+            return;
+          }
           const setIntersectedMemberIds = intersection(memberIds, intersectedMemberIds);
           if (setIntersectedMemberIds.length === memberIds.length) {
-            setIds.push(setId);
+            selectedSets.push({ id: setId, memberIds: setIntersectedMemberIds });
             categorizedMemberIds.push(...setIntersectedMemberIds);
           }
         });
@@ -27,29 +30,25 @@ export class DataSetUtil {
 
     // sanitize setIds (remove duplicates, larger sets containing smaller sets)
     const sanitizedSetIds: string[] = [];
-    if (setIds.length <= 1) {
-      sanitizedSetIds.push(...setIds);
+    if (selectedSets.length <= 1) {
+      sanitizedSetIds.push(...selectedSets.map(({ id }) => id));
     } else {
-      const sortedSetsIdsBySize = Array.from(mappedSetMembers.entries()).filter(([setId]) => setIds.includes(setId)).sort((a, b) => b[1].length - a[1].length).map(x => x[0]);
-      setIds.forEach(setId => {
-        const setIdIndex = sortedSetsIdsBySize.indexOf(setId);
+      const sortedSetsBySize = [...selectedSets].sort((a, b) => b.memberIds.length - a.memberIds.length);
+      selectedSets.forEach(({ id, memberIds }) => {
+        const setIdIndex = sortedSetsBySize.findIndex(set => set.id === id);
         for (let i = 0; i < setIdIndex; i++) {
-          const otherSetId = sortedSetsIdsBySize[i];
-          if (mappedSetMembers.get(otherSetId)?.length && mappedSetMembers.get(setId)?.length) {
-            const otherSetMemberIds = mappedSetMembers.get(otherSetId) || [];
-            const setMemberIds = mappedSetMembers.get(setId) || [];
-            if (intersection(otherSetMemberIds, setMemberIds).length === setMemberIds.length) {
-              // other set contains current set, do not add current set
-              return;
-            }
+          const otherSetMemberIds = sortedSetsBySize[i].memberIds;
+          if (intersection(otherSetMemberIds, memberIds).length === memberIds.length) {
+            // other set contains current set, do not add current set
+            return;
           }
         }
-        sanitizedSetIds.push(setId);
+        sanitizedSetIds.push(id);
       });
     }
 
     return {
-      categorizedMemberIds,
+      categorizedMemberIds: [...new Set(categorizedMemberIds)],
       setIds: sanitizedSetIds,
       uncategorizedMemberIds,
     };

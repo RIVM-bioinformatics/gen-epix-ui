@@ -85,9 +85,6 @@ export class FilterUtil {
         label: dim.label,
       };
       const cols = colIds.map(id => completeCaseType.cols[id]);
-      if (!cols.length) {
-        return null;
-      }
 
       let preferredFilterId: string;
       let allowMultipleVisibleFilters = false;
@@ -95,13 +92,22 @@ export class FilterUtil {
 
       if (refDim.dim_type === CaseDbDimType.TIME) {
         const preferredCol = CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType);
+        if (!preferredCol) {
+          return null;
+        }
         preferredFilterId = preferredCol.id;
         allowOnlyPreferredFilter = true;
       } else if (refDim.dim_type === CaseDbDimType.GEO) {
         const preferredCol = CaseTypeUtil.getPreferredGEOCol(cols);
+        if (!preferredCol) {
+          return null;
+        }
         preferredFilterId = preferredCol.id;
       } else {
         const preferredCol = CaseTypeUtil.getPreferredColInDimHavingHighestRank(cols, completeCaseType);
+        if (!preferredCol) {
+          return null;
+        }
         preferredFilterId = preferredCol.id;
         allowMultipleVisibleFilters = refDim.dim_type !== CaseDbDimType.NUMBER;
       }

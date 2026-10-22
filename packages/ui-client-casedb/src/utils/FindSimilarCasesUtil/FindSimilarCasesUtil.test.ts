@@ -15,11 +15,54 @@ const pt = (date: string, count: number, ownCaseCount = 0): FindSimilarCasesChar
   ownCaseCount,
 });
 
+const overrideStaticMethod = (
+  methodName: string,
+  implementation: (...args: unknown[]) => unknown,
+): (() => void) => {
+  const originalDescriptor = Object.getOwnPropertyDescriptor(FindSimilarCasesUtil, methodName);
+  if (!originalDescriptor) {
+    throw new Error(`Missing static method ${methodName}`);
+  }
+  Object.defineProperty(FindSimilarCasesUtil, methodName, {
+    ...originalDescriptor,
+    value: implementation,
+  });
+  return () => Object.defineProperty(FindSimilarCasesUtil, methodName, originalDescriptor);
+};
+
 describe('FindSimilarCasesUtil', () => {
   describe('buildChartIntervals', () => {
 
     it('returns empty array for empty data', () => {
       expect(FindSimilarCasesUtil.buildChartIntervals([])).toEqual([]);
+    });
+
+    it('throws when interval generation receives an unsupported granularity', () => {
+      const restoreGranularity = overrideStaticMethod('pickGranularity', () => 'unsupported');
+      const restoreBounds = overrideStaticMethod('getIntervalBoundsAndLabel', (...args) => {
+        const date = args[0];
+        if (!(date instanceof Date)) {
+          throw new Error('Expected a date argument');
+        }
+        return { end: date, label: 'forced', start: date };
+      });
+
+      try {
+        expect(() => FindSimilarCasesUtil.buildChartIntervals([pt('2024-01-01', 1)])).toThrow('Unhandled granularity: unsupported');
+      } finally {
+        restoreBounds();
+        restoreGranularity();
+      }
+    });
+
+    it('throws when interval-bound formatting receives an unsupported granularity', () => {
+      const restoreGranularity = overrideStaticMethod('pickGranularity', () => 'unsupported');
+
+      try {
+        expect(() => FindSimilarCasesUtil.buildChartIntervals([pt('2024-01-01', 1)])).toThrow('Unhandled granularity: unsupported');
+      } finally {
+        restoreGranularity();
+      }
     });
 
     describe('day granularity', () => {
